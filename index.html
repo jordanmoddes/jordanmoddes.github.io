@@ -43,7 +43,9 @@
       --bg-dark: #121212;
       --text-dark: #ffffff;
       --accent-dark: #00ffee;
+      --accent-dark-glow: #00ffee;
       --accent-light: #0000ff;
+      --accent-light-glow: #5656fc;
       --bg-light: #ffffff;
       --text-light: #121212;
     }
@@ -52,12 +54,14 @@
       background-color: var(--bg-dark);
       color: var(--text-dark);
       --accent: var(--accent-dark);
+      --accent-glow: var(--accent-dark-glow);
     }
 
     html[data-theme='light'] {
       background-color: var(--bg-light);
       color: var(--text-light);
-      --accent: linear-gradient(to right, #0000ff, #5656fc);
+      --accent: var(--accent-light);
+      --accent-glow: var(--accent-light-glow);
     }
 
     body {
@@ -120,8 +124,8 @@
       border-radius: 10px;
       text-align: center;
       font-size: 1.1rem;
-      box-shadow: 0 0 8px var(--accent);
-      border: 2px solid var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow);
+      border: 2px solid var(--accent-glow);
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
 
@@ -130,12 +134,23 @@
       font-weight: bold;
       margin-bottom: 0.5rem;
     }
+
+    header.site-header {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #000;
+      background: linear-gradient(to right, #00ffee, #71fff5);
+    }
+
+    html[data-theme='light'] header.site-header {
+      background: linear-gradient(to right, #0000ff, #5656fc);
+    }
   </style>
 </head>
 <body>
-  <header class="site-header" style="text-align: center; padding: 2rem 1rem; color: #000;">
-    <h1 style="margin-bottom: 0.5rem;">Jordan Moddes</h1>
-    <p style="margin-top: 0; font-weight: bold;">Strategic Ops Leader | Continuous Improvement | Leadership Development</p>
+<header class="site-header">
+  <h1>Jordan Moddes</h1>
+  <p><strong>Strategic Ops Leader | Continuous Improvement | Leadership Development</strong></p>
     <div class="button-container">
       <div class="button-row">
         <a class="button-link" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">
