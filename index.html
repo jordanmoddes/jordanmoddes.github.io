@@ -8,7 +8,7 @@
   <style>
     :root {
       --bg-dark: #121212;
-      --text-dark: #f0f0f0;
+      --text-dark: #ffffff;
       --accent-dark: #00ffee;
       --accent-light: #0000ff;
 
@@ -76,7 +76,7 @@
 
     .metrics {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.5rem;
       margin-top: 2rem;
       text-align: center;
@@ -111,6 +111,7 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.9rem;
+      color: inherit;
     }
 
     .blog-footer {
@@ -196,16 +197,16 @@
         document.documentElement.setAttribute('data-theme', storedTheme);
       }
 
-      animateValue(\"sitesVisited\", 0, 53, 1500);
-      animateValue(\"facilitiesHome\", 0, 5, 1500);
-      animateValue(\"leadersPromoted\", 0, 9, 1500);
-      animateValue(\"associatesPromoted\", 0, 22, 1500);
-      animateValue(\"networkProjects\", 0, 3, 1500);
-      animateValue(\"regionalProjects\", 0, 10, 1500);
-      animateValue(\"performanceGains\", 0, 15, 1500, \"%\");
+      animateValue("sitesVisited", 0, 53, 1500);
+      animateValue("facilitiesHome", 0, 5, 1500);
+      animateValue("leadersPromoted", 0, 9, 1500);
+      animateValue("associatesPromoted", 0, 22, 1500);
+      animateValue("networkProjects", 0, 3, 1500);
+      animateValue("regionalProjects", 0, 10, 1500);
+      animateValue("performanceGains", 0, 15, 1500, "%");
     })();
 
-    function animateValue(id, start, end, duration, suffix = \"\") {
+    function animateValue(id, start, end, duration, suffix = "") {
       const obj = document.getElementById(id);
       const range = end - start;
       const increment = end > start ? 1 : -1;
