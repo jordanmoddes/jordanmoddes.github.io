@@ -356,6 +356,35 @@
       widget.style.display = widget.style.display === "none" || widget.style.display === "" ? "block" : "none";
     }
   </script>
+ <!-- Add Metrics Script Fix -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      function animateValue(id, start, end, duration, suffix = "") {
+        const obj = document.getElementById(id);
+        if (!obj) return;
+        const range = end - start;
+        const stepTime = Math.abs(Math.floor(duration / range));
+        let current = start;
+        const timer = setInterval(() => {
+          current += Math.sign(range);
+          obj.textContent = current + suffix;
+          if ((range > 0 && current >= end) || (range < 0 && current <= end)) {
+            clearInterval(timer);
+          }
+        }, stepTime);
+      }
+
+      animateValue("sitesVisited", 0, 53, 1500);
+      animateValue("facilitiesHome", 0, 5, 1500);
+      animateValue("leadersPromoted", 0, 9, 1500);
+      animateValue("associatesPromoted", 0, 22, 1500);
+      animateValue("networkProjects", 0, 3, 1500);
+      animateValue("regionalProjects", 0, 10, 1500);
+      animateValue("performanceGains", 0, 15, 1500, "%");
+      animateValue("VBAMacros", 0, 19, 1500);
+      animateValue("SOPCreated", 0, 5, 1500);
+    });
+  </script>
   <footer style="text-align: center; margin-top: 3rem; font-size: 0.8rem;">
     ✦ Crafted by Jordan Moddes · Enhanced with AI development ✦
   </footer>
