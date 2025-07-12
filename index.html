@@ -73,26 +73,38 @@
       text-align: center;
     }
 
-    .theme-toggle, .translate-toggle {
-      position: fixed;
-      bottom: 1rem;
-      background: var(--accent);
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-      color: white;
-      font-weight: bold;
-      z-index: 1000;
-    }
+.theme-toggle, .translate-toggle {
+  position: fixed;
+  bottom: 1rem;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1000;
+}
 
-    .theme-toggle {
-      right: 1rem;
-    }
+/* DARK THEME buttons */
+html[data-theme='dark'] .theme-toggle,
+html[data-theme='dark'] .translate-toggle {
+  background: #00ffee;
+  color: black;
+}
 
-    .translate-toggle {
-      left: 1rem;
-    }
+/* LIGHT THEME buttons */
+html[data-theme='light'] .theme-toggle,
+html[data-theme='light'] .translate-toggle {
+  background: #0000ff;
+  color: white;
+}
+
+.theme-toggle {
+  right: 1rem;
+}
+
+.translate-toggle {
+  left: 1rem;
+}
 
     a {
       color: inherit;
