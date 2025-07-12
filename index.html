@@ -57,7 +57,7 @@
     html[data-theme='light'] {
       background-color: var(--bg-light);
       color: var(--text-light);
-      --accent: var(--accent-light);
+      --accent: linear-gradient(to right, #0000ff, #5656fc);
     }
 
     body {
@@ -128,10 +128,21 @@
       font-weight: bold;
       margin-bottom: 0.5rem;
     }
+      .site-header {
+      color: #000;
+    }
+
+    html[data-theme='dark'] .site-header {
+      background: linear-gradient(to right, #00ffee, #71fff5);
+    }
+
+    html[data-theme='light'] .site-header {
+      background: linear-gradient(to right, #0000ff, #5656fc);
+    }
   </style>
 </head>
 <body>
-  <header style="text-align: center; padding: 2rem 1rem; background: linear-gradient(to right, var(--accent), var(--text-dark)); color: #000;">
+  <header class="site-header" style="text-align: center; padding: 2rem 1rem; color: #000;">
     <h1 style="margin-bottom: 0.5rem;">Jordan Moddes</h1>
     <p style="margin-top: 0; font-weight: bold;">Strategic Ops Leader | Continuous Improvement | Leadership Development</p>
     <div class="button-container">
