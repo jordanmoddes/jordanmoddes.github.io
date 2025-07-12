@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jordan Moddes</title>
 
-  <!-- SEO Meta Tags -->
+   <!-- SEO Meta Tags -->
   <meta name="description" content="Jordan Moddes - Operations Leader with 10+ years at Amazon, driving performance gains, optimization, and leadership excellence.">
   <meta name="keywords" content="Jordan Moddes, Amazon, Operations Leader, Resume, Strategic Execution, Process Improvement">
   <meta name="author" content="Jordan Moddes">
@@ -36,6 +36,7 @@
   gtag('config', 'G-MPJ69EQK7P');
 </script>
 
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   <style>
     :root {
@@ -63,27 +64,36 @@
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 2rem;
+      padding: 0;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       line-height: 1.6;
+      animation: fadeIn 1s ease-in;
     }
 
-    header {
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header.hero {
+      padding: 4rem 2rem;
       text-align: center;
-      margin-bottom: 2rem;
+      background: linear-gradient(135deg, var(--accent) 0%, #121212 100%);
+      color: #fff;
+      animation: fadeIn 1.2s ease-in-out;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.2rem;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
     }
 
     .subtitle {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       font-weight: 500;
-      color: var(--accent);
+      color: #fff;
     }
 
     .linkedin-link {
@@ -97,99 +107,66 @@
     section {
       max-width: 1000px;
       margin: 0 auto;
-      margin-bottom: 2rem;
+      padding: 2rem;
     }
 
     h2 {
-      margin-top: 2rem;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       border-bottom: 1px solid var(--accent);
       padding-bottom: 0.3rem;
       text-align: center;
-    }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
       margin-top: 2rem;
-      text-align: center;
-    }
-
-    .metric {
-      font-size: 1rem;
-    }
-
-    .metric-number {
-      font-size: 2rem;
-      color: var(--accent);
-      font-weight: bold;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
     }
 
     .theme-toggle {
       position: fixed;
       bottom: 1rem;
       right: 1rem;
-      background: none;
-      border: 1px solid #888;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
+      background: var(--accent);
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 20px;
       cursor: pointer;
-      font-size: 0.9rem;
-      color: inherit;
+      color: #000;
+      font-weight: bold;
+      box-shadow: 0 0 10px var(--accent);
+      transition: background 0.3s ease;
     }
 
-    .blog-footer {
-      position: fixed;
-      bottom: 0.5rem;
-      left: 1rem;
-      font-size: 0.8rem;
+    .theme-toggle:hover {
+      background: #fff;
     }
 
     section p, section li {
       margin-bottom: 1rem;
     }
-
-    @media (max-width: 900px) {
-      .metrics {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .metrics {
-        grid-template-columns: 1fr;
-      }
-      h1 {
-        font-size: 1.75rem;
-      }
-    }
   </style>
 </head>
 <body>
-  <header>
+  <header class="hero">
     <h1>Jordan Moddes</h1>
     <div class="subtitle">Operations Leader | Strategic Execution | Project & Program Leader | Process Optimization</div>
     <p><a class="linkedin-link" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">View LinkedIn Profile ↗</a></p>
     <p><a class="linkedin-link" href="Jordan_Moddes_WebsiteResume.pdf" download>Download Resume PDF ↓</a></p>
-    <p style="font-style: italic; margin-top: 0.5rem; font-size: 0.95rem;">"Creating clarity from chaos. Leading with precision, growing people, and scaling impact."</p>
   </header>
 
   <section>
     <h2>More Than Metrics</h2>
     <p style="max-width: 800px; margin: auto; text-align: center;">
-      I believe leadership is more than metrics — it’s about mentoring people, solving chaos with clarity, and leaving every place better than I found it. Outside work, I recharge through nature, creative strategy games, and personal growth.
+      I believe leadership is more than metrics — it’s about mentoring people, solving chaos with clarity, and leaving every place better than I found it. Outside work, I recharge through attending various car shows supporting local businesses, creative strategy games on extreme downtime, and look for personal growth opportunities.
     </p>
   </section>
+
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      html.setAttribute("data-theme", newTheme);
+    }
+  </script>
 
     <h2>Amazon Impact Metrics</h2>
     <div class="metrics">
