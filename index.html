@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jordan Moddes</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --text-dark: #f0f0f0;
+      --accent-dark: #00ffee;
+      --accent-light: #0000ff;
+
+      --bg-light: #ffffff;
+      --text-light: #121212;
+    }
+
+    html[data-theme='dark'] {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      --accent: var(--accent-dark);
+    }
+
+    html[data-theme='light'] {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      --accent: var(--accent-light);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .linkedin-link {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--accent);
+      display: inline-block;
+      margin-top: 0.3rem;
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 0.3rem;
+      text-align: center;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .metric {
+      font-size: 1rem;
+    }
+
+    .metric-number {
+      font-size: 2rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: none;
+      border: 1px solid #888;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .blog-footer {
+      position: fixed;
+      bottom: 0.5rem;
+      left: 1rem;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Jordan Moddes</h1>
+    <div class="subtitle">Operations Leader | Strategic Execution | Project & Program Leader | Process Optimization</div>
+    <p><a class="linkedin-link" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">View LinkedIn Profile ↗</a></p>
+  </header>
+
+  <section>
+    <h2>Amazon Impact Metrics</h2>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-number" id="sitesVisited">0</div>
+        Sites Visited to Drive Impact
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="facilitiesHome">0</div>
+        Home Facilities with Continuous YoY Gains
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="leadersPromoted">0</div>
+        Salaried Leaders Developed
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="associatesPromoted">0</div>
+        Associates Promoted to Lead/Salaried Roles
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="networkProjects">0</div>
+        High-Yield Network Projects
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="regionalProjects">0</div>
+        High-Yield Regional Projects
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="performanceGains">0%</div>
+        Avg. YoY Performance Gains
+      </div>
+      <div class="metric">
+        <div class="metric-number">7</div>
+        VBA Macros Created (5 Standardized for NAFC)
+      </div>
+      <div class="metric">
+        <div class="metric-number">7</div>
+        SOPs Created (Adopted by Network)
+      </div>
+    </div>
+  </section>
+
+  <div class="blog-footer">
+    <a href="#" onclick="alert('Blog coming soon!')">Blog coming soon</a>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    (function () {
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme) {
+        document.documentElement.setAttribute('data-theme', storedTheme);
+      }
+
+      animateValue(\"sitesVisited\", 0, 53, 1500);
+      animateValue(\"facilitiesHome\", 0, 5, 1500);
+      animateValue(\"leadersPromoted\", 0, 9, 1500);
+      animateValue(\"associatesPromoted\", 0, 22, 1500);
+      animateValue(\"networkProjects\", 0, 3, 1500);
+      animateValue(\"regionalProjects\", 0, 10, 1500);
+      animateValue(\"performanceGains\", 0, 15, 1500, \"%\");
+    })();
+
+    function animateValue(id, start, end, duration, suffix = \"\") {
+      const obj = document.getElementById(id);
+      const range = end - start;
+      const increment = end > start ? 1 : -1;
+      const stepTime = Math.abs(Math.floor(duration / range));
+      let current = start;
+      const timer = setInterval(() => {
+        current += increment;
+        obj.textContent = current + suffix;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+          clearInterval(timer);
+        }
+      }, stepTime);
+    }
+  </script>
+</body>
+</html>
