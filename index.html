@@ -24,7 +24,83 @@
     gtag('js', new Date());
     gtag('config', 'G-MPJ69EQK7P');
   </script>
+  <!-- Google Translate Widget -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --text-dark: #ffffff;
+      --accent-dark: #00ffee;
+      --accent-light: #0000ff;
+      --bg-light: #ffffff;
+      --text-light: #121212;
+    }
+
+    html[data-theme='dark'] {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      --accent: var(--accent-dark);
+    }
+
+    html[data-theme='light'] {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      --accent: var(--accent-light);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .theme-toggle, .translate-toggle {
+      position: fixed;
+      bottom: 1rem;
+      background: var(--accent);
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+      z-index: 1000;
+    }
+
+    .theme-toggle {
+      right: 1rem;
+    }
+
+    .translate-toggle {
+      left: 1rem;
+    }
+
+    #google_translate_element {
+      position: fixed;
+      bottom: 3.5rem;
+      left: 1rem;
+      z-index: 1000;
+      background-color: rgba(0,0,0,0.85);
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      display: none;
+    }
+  </style>
+  
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   <style>
     :root {
@@ -264,12 +340,10 @@
 
   <div class="blog-footer">Website Enhancements Coming Soon</div>
   <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
-  <button class="translate-toggle" onclick="toggleTranslateMenu()">Translate ⌄</button>
-  <div class="translate-menu" id="translateMenu"></div>
+  <button class="translate-toggle" onclick="toggleTranslateWidget()">Translate ⌄</button>
+  <div id="google_translate_element"></div>
 
   <script>
-    const languages = ["Mandarin Chinese", "Spanish", "Hindi", "French", "Russian", "German", "Indonesian", "Japanese", "Portuguese", "Arabic", "Korean"];
-
     function toggleTheme() {
       const html = document.documentElement;
       const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -277,45 +351,9 @@
       localStorage.setItem('theme', newTheme);
     }
 
-    function animateCounters() {
-      const counters = document.querySelectorAll(".metric-number");
-      counters.forEach(counter => {
-        const target = +counter.getAttribute("data-target");
-        const isPercent = counter.textContent.includes('%');
-        let current = 0;
-        const increment = target / 50;
-        const updateCounter = () => {
-          current += increment;
-          if (current < target) {
-            counter.textContent = isPercent ? `${Math.floor(current)}%` : Math.floor(current);
-            requestAnimationFrame(updateCounter);
-          } else {
-            counter.textContent = isPercent ? `${target}%` : target;
-          }
-        };
-        updateCounter();
-      });
-    }
-
-    window.addEventListener("load", () => {
-      animateCounters();
-      populateTranslateMenu();
-    });
-
-    function toggleTranslateMenu() {
-      const menu = document.getElementById("translateMenu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-    }
-
-    function populateTranslateMenu() {
-      const menu = document.getElementById("translateMenu");
-      languages.forEach(lang => {
-        const btn = document.createElement("div");
-        btn.className = "translate-option";
-        btn.innerText = lang;
-        btn.onclick = () => alert(`Translation to '${lang}' is under development.`);
-        menu.appendChild(btn);
-      });
+    function toggleTranslateWidget() {
+      const widget = document.getElementById("google_translate_element");
+      widget.style.display = widget.style.display === "none" || widget.style.display === "" ? "block" : "none";
     }
   </script>
   <footer style="text-align: center; margin-top: 3rem; font-size: 0.8rem;">
