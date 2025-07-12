@@ -264,8 +264,12 @@
 
   <div class="blog-footer">Website Enhancements Coming Soon</div>
   <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
+  <button class="translate-toggle" onclick="toggleTranslateMenu()">Translate ⌄</button>
+  <div class="translate-menu" id="translateMenu"></div>
 
   <script>
+    const languages = ["Mandarin Chinese", "Spanish", "Hindi", "French", "Russian", "German", "Indonesian", "Japanese", "Portuguese", "Arabic", "Korean"];
+
     function toggleTheme() {
       const html = document.documentElement;
       const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -293,7 +297,26 @@
       });
     }
 
-    window.addEventListener("load", animateCounters);
+    window.addEventListener("load", () => {
+      animateCounters();
+      populateTranslateMenu();
+    });
+
+    function toggleTranslateMenu() {
+      const menu = document.getElementById("translateMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+    }
+
+    function populateTranslateMenu() {
+      const menu = document.getElementById("translateMenu");
+      languages.forEach(lang => {
+        const btn = document.createElement("div");
+        btn.className = "translate-option";
+        btn.innerText = lang;
+        btn.onclick = () => alert(`Translation to '${lang}' is under development.`);
+        menu.appendChild(btn);
+      });
+    }
   </script>
   <footer style="text-align: center; margin-top: 3rem; font-size: 0.8rem;">
     ✦ Crafted by Jordan Moddes · Enhanced with AI development ✦
