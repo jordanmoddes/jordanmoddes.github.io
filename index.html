@@ -43,9 +43,7 @@
       --bg-dark: #121212;
       --text-dark: #ffffff;
       --accent-dark: #00ffee;
-      --accent-dark-glow: #00ffee;
       --accent-light: #0000ff;
-      --accent-light-glow: #5656fc;
       --bg-light: #ffffff;
       --text-light: #121212;
     }
@@ -54,14 +52,12 @@
       background-color: var(--bg-dark);
       color: var(--text-dark);
       --accent: var(--accent-dark);
-      --accent-glow: var(--accent-dark-glow);
     }
 
     html[data-theme='light'] {
       background-color: var(--bg-light);
       color: var(--text-light);
       --accent: var(--accent-light);
-      --accent-glow: var(--accent-light-glow);
     }
 
     body {
@@ -85,7 +81,7 @@
       padding: 0.6rem 1rem;
       border-radius: 20px;
       cursor: pointer;
-      color: #000;
+      color: white;
       font-weight: bold;
       z-index: 1000;
     }
@@ -96,6 +92,15 @@
 
     .translate-toggle {
       left: 1rem;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    html[data-theme='light'] a {
+      color: white;
     }
 
     #google_translate_element {
@@ -124,8 +129,8 @@
       border-radius: 10px;
       text-align: center;
       font-size: 1.1rem;
-      box-shadow: 0 0 8px var(--accent-glow);
-      border: 2px solid var(--accent-glow);
+      box-shadow: 0 0 8px var(--accent);
+      border: 2px solid var(--accent);
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
 
@@ -144,6 +149,13 @@
 
     html[data-theme='light'] header.site-header {
       background: linear-gradient(to right, #0000ff, #5656fc);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      padding: 3rem 0;
     }
   </style>
 </head>
