@@ -16,8 +16,7 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Google Analytics (Enable after replacing YOUR-ID) -->
-  
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MPJ69EQK7P"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,16 +24,6 @@
     gtag('js', new Date());
     gtag('config', 'G-MPJ69EQK7P');
   </script>
-  
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MPJ69EQK7P"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-MPJ69EQK7P');
-</script>
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
@@ -118,6 +107,27 @@
       margin-top: 2rem;
     }
 
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .metric-box {
+      background-color: rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 255, 238, 0.2);
+    }
+
+    .metric-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
     .theme-toggle {
       position: fixed;
       bottom: 1rem;
@@ -151,6 +161,21 @@
   </header>
 
   <section>
+    <h2>Amazon Impact Metrics</h2>
+    <div class="impact-grid">
+      <div class="metric-box"><div class="metric-number" data-target="53">0</div><div>Sites Visited to Drive Impact</div></div>
+      <div class="metric-box"><div class="metric-number" data-target="5">0</div><div>Home Facilities with Continuous YoY Gains</div></div>
+      <div class="metric-box"><div class="metric-number" data-target="9">0</div><div>Salaried Leaders Developed</div></div>
+      <div class="metric-box"><div class="metric-number" data-target="22">0</div><div>Associates Promoted to Lead/Salaried Roles</div></div>
+      <div class="metric-box"><div class="metric-number" data-target="3">0</div><div>High-Yield Network Projects</div></div>
+      <div class="metric-box"><div class="metric-number" data-target="10">0</div><div>High-Yield Regional Projects</div></div>
+      <div class="metric-box"><div class="metric-number" data-target="15">0%</div><div>Avg. YoY Performance Gains</div></div>
+      <div class="metric-box"><div class="metric-number" data-target="7">0</div><div>VBA Macros Created (5 Standardized for NAFC)</div></div>
+      <div class="metric-box"><div class="metric-number" data-target="5">0</div><div>SOPs Created (Adopted by Network)</div></div>
+    </div>
+  </section>
+
+  <section>
     <h2>More Than Metrics</h2>
     <p style="max-width: 800px; margin: auto; text-align: center;">
       I believe leadership is more than metrics — it’s about mentoring people, solving chaos with clarity, and leaving every place better than I found it. Outside work, I recharge through attending various car shows supporting local businesses, creative strategy games on extreme downtime, and look for personal growth opportunities.
@@ -166,6 +191,28 @@
       const newTheme = currentTheme === "dark" ? "light" : "dark";
       html.setAttribute("data-theme", newTheme);
     }
+
+    function animateCounters() {
+      const counters = document.querySelectorAll(".metric-number");
+      counters.forEach(counter => {
+        const target = +counter.getAttribute("data-target");
+        const isPercent = counter.textContent.includes('%');
+        let current = 0;
+        const increment = target / 50; // Adjust speed here
+        const updateCounter = () => {
+          current += increment;
+          if (current < target) {
+            counter.textContent = isPercent ? `${Math.floor(current)}%` : Math.floor(current);
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.textContent = isPercent ? `${target}%` : target;
+          }
+        };
+        updateCounter();
+      });
+    }
+
+    window.addEventListener('load', animateCounters);
   </script>
 
     <h2>Amazon Impact Metrics</h2>
