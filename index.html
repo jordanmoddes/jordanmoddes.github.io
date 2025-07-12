@@ -9,7 +9,9 @@
     :root {
       --bg-dark: #121212;
       --text-dark: #f0f0f0;
-      --accent: #00bfa6;
+      --accent-dark: #00ffee;
+      --accent-light: #0000ff;
+
       --bg-light: #ffffff;
       --text-light: #121212;
     }
@@ -17,11 +19,13 @@
     html[data-theme='dark'] {
       background-color: var(--bg-dark);
       color: var(--text-dark);
+      --accent: var(--accent-dark);
     }
 
     html[data-theme='light'] {
       background-color: var(--bg-light);
       color: var(--text-light);
+      --accent: var(--accent-light);
     }
 
     body {
@@ -45,11 +49,20 @@
 
     .subtitle {
       font-size: 1.1rem;
+      font-weight: 500;
       color: var(--accent);
     }
 
+    .linkedin-link {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--accent);
+      display: inline-block;
+      margin-top: 0.3rem;
+    }
+
     section {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
@@ -98,20 +111,19 @@
     }
 
     .metrics {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
     }
 
     .metric {
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 1.1rem;
     }
 
     .metric-number {
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: var(--accent);
       font-weight: bold;
     }
@@ -120,75 +132,56 @@
       h1 {
         font-size: 1.75rem;
       }
-
-      .metrics {
-        flex-direction: column;
-        align-items: center;
-      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Jordan Moddes</h1>
-    <div class="subtitle">Program & Operations Leader | Strategic Execution | Process Optimization</div>
-    <p><a href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">View LinkedIn Profile</a></p>
+    <div class="subtitle">Operations Leader | Strategic Execution | Project & Program Leader | Process Optimization</div>
+    <p><a class="linkedin-link" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">View LinkedIn Profile ↗</a></p>
   </header>
 
   <section>
-    <h2>Impact Metrics</h2>
+    <h2>Amazon Impact Metrics</h2>
     <div class="metrics">
       <div class="metric">
-        <div class="metric-number" id="facilities">0</div>
-        Facilities Led
+        <div class="metric-number" id="sitesVisited">0</div>
+        Sites Visited to Drive Impact
       </div>
       <div class="metric">
-        <div class="metric-number" id="leaders">0</div>
-        Leaders Mentored
+        <div class="metric-number" id="facilitiesHome">0</div>
+        Home Facilities with Continuous YoY Gains
       </div>
       <div class="metric">
-        <div class="metric-number" id="efficiency">0%</div>
-        Efficiency Gained
+        <div class="metric-number" id="leadersPromoted">0</div>
+        Salaried Leaders Developed
       </div>
       <div class="metric">
-        <div class="metric-number" id="projects">0</div>
-        Projects Delivered
+        <div class="metric-number" id="associatesPromoted">0</div>
+        Associates Promoted to Lead/Salaried Roles
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="networkProjects">0</div>
+        High-Yield Network Projects
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="regionalProjects">0</div>
+        High-Yield Regional Projects
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="performanceGains">0%</div>
+        Avg. YoY Performance Gains
+      </div>
+      <div class="metric">
+        <div class="metric-number">7</div>
+        VBA Macros Created (5 Standardized for NAFC)
+      </div>
+      <div class="metric">
+        <div class="metric-number">7</div>
+        SOPs Created (Adopted by Network)
       </div>
     </div>
-
-    <h2>Summary</h2>
-    <p>Program and operations leader with nearly 10 years of experience managing large-scale logistics and fulfillment initiatives at Amazon. Proven ability to lead strategic initiatives, communicate with technical and business stakeholders, and deliver operational excellence through data-driven solutions.</p>
-
-    <h2>Selected Achievements</h2>
-    <ul>
-      <li>Achieved 15% efficiency gains across 25 US facilities through process optimization and workforce planning.</li>
-      <li>Reduced operational bottlenecks by 20% via cross-functional collaboration and strategic initiatives.</li>
-      <li>Led network enhancement projects resulting in standardized workflows and improved forecasting accuracy.</li>
-      <li>Mentored and developed 13 management leaders, enhancing team performance and engagement.</li>
-    </ul>
-
-    <h2>Professional Experience</h2>
-    <ul>
-      <li><strong>Amazon (2015–2025)</strong>
-        <ul>
-          <li><strong>Operations Manager (2021–2025)</strong> — Led multi-shift ops for 600+ associates across 25+ facilities, improved SLA performance, and drove 20% efficiency via SOP standardization and data tools.</li>
-          <li><strong>Area Manager I/II & Process Assistant (2015–2021)</strong> — Managed fulfillment programs, earned SME status, mentored teams on optimization and QA.</li>
-        </ul>
-      </li>
-      <li><strong>SC Johnson – Transportation Coordinator (2014–2015)</strong></li>
-      <li><strong>Menards / Reebok – Department & Assistant Manager (2011–2014)</strong></li>
-    </ul>
-
-    <h2>Education</h2>
-    <p>Bachelor of Business Administration, Bryant & Stratton College — Graduated April 2013</p>
-
-    <h2>Skills</h2>
-    <ul>
-      <li>Operations / Project Management | Process Optimization | Strategic Planning</li>
-      <li>Data Analysis | KPI Dashboards | Excel (Advanced), SQL (Basic)</li>
-      <li>Cross-Functional Collaboration | Mentoring & Leadership</li>
-      <li>Tools: Slack, Asana, PowerBI, Quip, Google Docs, WMS</li>
-    </ul>
   </section>
 
   <div class="blog-footer">
@@ -211,11 +204,13 @@
         document.documentElement.setAttribute('data-theme', storedTheme);
       }
 
-      // Animated Metrics
-      animateValue("facilities", 0, 25, 1500);
-      animateValue("leaders", 0, 13, 1500);
-      animateValue("efficiency", 0, 15, 1500, "%");
-      animateValue("projects", 0, 10, 1500);
+      animateValue("sitesVisited", 0, 53, 1500);
+      animateValue("facilitiesHome", 0, 5, 1500);
+      animateValue("leadersPromoted", 0, 9, 1500);
+      animateValue("associatesPromoted", 0, 22, 1500);
+      animateValue("networkProjects", 0, 3, 1500);
+      animateValue("regionalProjects", 0, 10, 1500);
+      animateValue("performanceGains", 0, 15, 1500, "%");
     })();
 
     function animateValue(id, start, end, duration, suffix = "") {
