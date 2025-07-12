@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jordan Moddes</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --text-dark: #f0f0f0;
+      --accent: #00bfa6;
+      --bg-light: #ffffff;
+      --text-light: #121212;
+    }
+
+    html[data-theme='dark'] {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    html[data-theme='light'] {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    section {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 0.3rem;
+    }
+
+    ul {
+      margin-left: 1.2rem;
+      padding-left: 0;
+    }
+
+    li {
+      margin-bottom: 0.6rem;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: none;
+      border: 1px solid #888;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .blog-footer {
+      position: fixed;
+      bottom: 0.5rem;
+      left: 1rem;
+      font-size: 0.8rem;
+    }
+
+    .metrics {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .metric {
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .metric-number {
+      font-size: 2.5rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .metrics {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Jordan Moddes</h1>
+    <div class="subtitle">Program & Operations Leader | Strategic Execution | Process Optimization</div>
+    <p><a href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">View LinkedIn Profile</a></p>
+  </header>
+
+  <section>
+    <h2>Impact Metrics</h2>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-number" id="facilities">0</div>
+        Facilities Led
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="leaders">0</div>
+        Leaders Mentored
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="efficiency">0%</div>
+        Efficiency Gained
+      </div>
+      <div class="metric">
+        <div class="metric-number" id="projects">0</div>
+        Projects Delivered
+      </div>
+    </div>
+
+    <h2>Summary</h2>
+    <p>Program and operations leader with nearly 10 years of experience managing large-scale logistics and fulfillment initiatives at Amazon. Proven ability to lead strategic initiatives, communicate with technical and business stakeholders, and deliver operational excellence through data-driven solutions.</p>
+
+    <h2>Selected Achievements</h2>
+    <ul>
+      <li>Achieved 15% efficiency gains across 25 US facilities through process optimization and workforce planning.</li>
+      <li>Reduced operational bottlenecks by 20% via cross-functional collaboration and strategic initiatives.</li>
+      <li>Led network enhancement projects resulting in standardized workflows and improved forecasting accuracy.</li>
+      <li>Mentored and developed 13 management leaders, enhancing team performance and engagement.</li>
+    </ul>
+
+    <h2>Professional Experience</h2>
+    <ul>
+      <li><strong>Amazon (2015–2025)</strong>
+        <ul>
+          <li><strong>Operations Manager (2021–2025)</strong> — Led multi-shift ops for 600+ associates across 25+ facilities, improved SLA performance, and drove 20% efficiency via SOP standardization and data tools.</li>
+          <li><strong>Area Manager I/II & Process Assistant (2015–2021)</strong> — Managed fulfillment programs, earned SME status, mentored teams on optimization and QA.</li>
+        </ul>
+      </li>
+      <li><strong>SC Johnson – Transportation Coordinator (2014–2015)</strong></li>
+      <li><strong>Menards / Reebok – Department & Assistant Manager (2011–2014)</strong></li>
+    </ul>
+
+    <h2>Education</h2>
+    <p>Bachelor of Business Administration, Bryant & Stratton College — Graduated April 2013</p>
+
+    <h2>Skills</h2>
+    <ul>
+      <li>Operations / Project Management | Process Optimization | Strategic Planning</li>
+      <li>Data Analysis | KPI Dashboards | Excel (Advanced), SQL (Basic)</li>
+      <li>Cross-Functional Collaboration | Mentoring & Leadership</li>
+      <li>Tools: Slack, Asana, PowerBI, Quip, Google Docs, WMS</li>
+    </ul>
+  </section>
+
+  <div class="blog-footer">
+    <a href="#" onclick="alert('Blog coming soon!')">Blog coming soon</a>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    (function () {
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme) {
+        document.documentElement.setAttribute('data-theme', storedTheme);
+      }
+
+      // Animated Metrics
+      animateValue("facilities", 0, 25, 1500);
+      animateValue("leaders", 0, 13, 1500);
+      animateValue("efficiency", 0, 15, 1500, "%");
+      animateValue("projects", 0, 10, 1500);
+    })();
+
+    function animateValue(id, start, end, duration, suffix = "") {
+      const obj = document.getElementById(id);
+      const range = end - start;
+      const increment = end > start ? 1 : -1;
+      const stepTime = Math.abs(Math.floor(duration / range));
+      let current = start;
+      const timer = setInterval(() => {
+        current += increment;
+        obj.textContent = current + suffix;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+          clearInterval(timer);
+        }
+      }, stepTime);
+    }
+  </script>
+</body>
+</html>
