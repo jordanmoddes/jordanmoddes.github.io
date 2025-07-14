@@ -3,45 +3,481 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jordan Moddes</title>
+  <title>JM | Strategic Ops Leader</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Jordan Moddes - Operations Leader with 10+ years at Amazon, driving performance gains, optimization, and leadership excellence.">
+  <meta name="keywords" content="Jordan Moddes, Amazon, Operations Leader, Resume, Strategic Execution, Process Improvement">
+  <meta name="author" content="Jordan Moddes">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Jordan Moddes">
+  <meta property="og:description" content="Operations Leader with a decade of experience leading performance at Amazon.">
+  <meta property="og:url" content="https://www.jordanmoddes.com">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MPJ69EQK7P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MPJ69EQK7P');
+  </script>
+
+  <!-- Google Translate Widget -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --text-dark: #ffffff;
+      --accent-dark: #00ffee;
+      --accent-light: #0000ff;
+      --bg-light: #ffffff;
+      --text-light: #121212;
+    }
+
+    html[data-theme='dark'] {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      --accent: var(--accent-dark);
+    }
+
+    html[data-theme='light'] {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      --accent: var(--accent-light);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    h2, h3 {
+      text-align: center;
+    }
+
+.theme-toggle, .translate-toggle {
+  position: fixed;
+  bottom: 1rem;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1000;
+}
+
+/* DARK THEME buttons */
+html[data-theme='dark'] .theme-toggle,
+html[data-theme='dark'] .translate-toggle {
+  background: #00ffee;
+  color: black;
+}
+
+/* LIGHT THEME buttons */
+html[data-theme='light'] .theme-toggle,
+html[data-theme='light'] .translate-toggle {
+  background: #0000ff;
+  color: white;
+}
+
+.theme-toggle {
+  right: 1rem;
+}
+
+.translate-toggle {
+  left: 1rem;
+}
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    html[data-theme='light'] a {
+      color: white;
+    }
+
+    #google_translate_element {
+      position: fixed;
+      bottom: 3.5rem;
+      left: 1rem;
+      z-index: 1000;
+      background-color: rgba(0,0,0,0.85);
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      display: none;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .metric-box {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      box-shadow: 0 0 8px var(--accent);
+      border: 2px solid var(--accent);
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .metric-number {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    header.site-header {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #000;
+      background: linear-gradient(to right, #00ffee 0%, #71fff5 50%, #ffffff 100%);
+    }
+
+    html[data-theme='light'] header.site-header {
+      background: linear-gradient(to right, #0000ff, #5656fc);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      padding: 3rem 0;
+    }
+    /* Share dropdown styles */
+    .share-dropdown {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      font-family: 'Inter', sans-serif;
+    }
+    
+.share-button {
+  background-color: transparent !important;
+  color: var(--accent) !important;
+  border: 2px solid black !important;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+}
+@media (max-width: 600px) {
+  .share-button {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-width: 1px;
+  }
+}
+
+    .share-button:hover + .share-content,
+    .share-content:hover {
+      display: block;
+    }
+    .share-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: #fff;
+      color: #000;
+      min-width: 180px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      border-radius: 6px;
+      margin-top: 8px;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .share-content a {
+      color: #000;
+      padding: 8px 12px;
+      text-decoration: none;
+      display: block;
+    }
+    .share-content a:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <h1>Jordan Moddes</h1>
-    <p><strong>Strategic Ops Leader | Continuous Improvement | Leadership Development</strong></p>
+<header class="site-header">
+  <h1>Jordan Moddes</h1>
+  <p><strong>Strategic Ops Leader | Continuous Improvement | Leadership Development</strong></p>
     <div class="button-container">
       <div class="button-row">
-        <a class="button-link" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">View LinkedIn</a>
-        <a class="button-link" href="Jordan_Moddes_WebsiteResume.pdf" download>Get Resume</a>
-        <a class="button-link" href="vCard.vcf" download>Save Contact</a>
+        <a class="button-link" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">
+          <img src="https://img.icons8.com/color/48/linkedin.png" width="18" height="18" alt="LinkedIn"> View LinkedIn
+        </a>
+        <a class="button-link" href="Jordan_Moddes_WebsiteResume.pdf" download>
+          <img src="https://img.icons8.com/ios-filled/50/000000/resume.png" width="18" height="18" alt="Resume"> Get Resume
+        </a>
+        <a class="button-link" href="vCard.vcf" download>💾 Save Contact</a>
       </div>
       <div class="button-row">
-        <a class="button-link" href="tel:2627050853">Call</a>
-        <a class="button-link" href="sms:2627050853">Text</a>
-        <a class="button-link" href="mailto:jmodwork@gmail.com">Email Me</a>
+        <a class="button-link" href="tel:2627050853">📞 Call</a>
+        <a class="button-link" href="sms:2627050853">💬 Text</a>
+        <a class="button-link" href="mailto:jmodwork@gmail.com">✉️ Email Me</a>
       </div>
     </div>
   </header>
+  <!-- Share dropdown added right under header -->
+  <div class="share-dropdown">
+    <button class="share-button">🔗 Share</button>
+    <div class="share-content">
+      <a href="mailto:?subject=Check%20out%20Jordan%20Moddes%27%20portfolio&body=Explore%20Jordan%20Moddes%27%20professional%20site%20at%20https://www.jordanmoddes.com" target="_blank">📧 Email</a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.jordanmoddes.com" target="_blank">💼 LinkedIn</a>
+      <a href="slack://open?team=&message=Check%20out%20this%20portfolio:%20https://www.jordanmoddes.com" target="_blank">💬 Slack</a>
+      <a href="https://twitter.com/intent/tweet?url=https://www.jordanmoddes.com&text=Check%20out%20Jordan%20Moddes%27%20portfolio!" target="_blank">🐦 X</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.jordanmoddes.com" target="_blank">📘 Facebook</a>
+      <a href="#" onclick="navigator.clipboard.writeText('https://www.jordanmoddes.com'); alert('Link copied to clipboard!'); return false;">📋 Copy Link</a>
+    </div>
+  </div>
+  <main>
+    <section>
+      <h2>More Than Metrics</h2>
+      <p style="text-align: center; max-width: 800px; margin: auto;">
+        I believe leadership is more than metrics — it’s about mentoring people, solving chaos with clarity, and leaving every place better than I found it. Outside work, I recharge through attending various car shows supporting local businesses, creative strategy games on extreme downtime, and look for personal growth opportunities.
+      </p>
+    </section>
 
-<select id="langSelect" style="position: fixed; bottom: 1rem; left: 1rem; z-index: 9999; padding: 0.4rem 0.6rem; border-radius: 8px;">
-  <option value="">Translate</option>
-  <option value="es">Spanish</option>
-  <option value="fr">French</option>
-  <option value="de">German</option>
-  <option value="zh-CN">Chinese</option>
-  <option value="hi">Hindi</option>
-  <option value="ar">Arabic</option>
-</select>
-<script>
-  document.getElementById("langSelect").addEventListener("change", function () {
-    const lang = this.value;
-    if (lang) {
-      const url = `https://translate.google.com/translate?hl=${lang}&sl=auto&u=${encodeURIComponent(window.location.href)}`;
-      window.open(url, "_blank");
-      this.selectedIndex = 0;
+    <section>
+      <h2>Amazon Impact Metrics</h2>
+      <div class="impact-grid">
+        <div class="metric-box"><div id="sitesVisited" class="metric-number">0</div><div>Sites Visited to Drive Impact</div></div>
+        <div class="metric-box"><div id="facilitiesHome" class="metric-number">0</div><div>Home Facilities with Continuous YoY Gains</div></div>
+        <div class="metric-box"><div id="leadersPromoted" class="metric-number">0</div><div>Salaried Leaders Developed</div></div>
+        <div class="metric-box"><div id="associatesPromoted" class="metric-number">0</div><div>Associates Promoted to Lead/Salaried Roles</div></div>
+        <div class="metric-box"><div id="networkProjects" class="metric-number">0</div><div>High-Yield Network Projects</div></div>
+        <div class="metric-box"><div id="regionalProjects" class="metric-number">0</div><div>High-Yield Regional Projects</div></div>
+        <div class="metric-box"><div id="performanceGains" class="metric-number">0%</div><div>Avg. YoY Performance Gains</div></div>
+        <div class="metric-box"><div id="VBAMacros" class="metric-number">0</div><div>VBA Macros Created</div></div>
+        <div class="metric-box"><div id="SOPCreated" class="metric-number">0</div><div>SOPs Created (Network Adopted)</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Professional Resume</h2>
+      <p style="text-align: center; max-width: 800px; margin: auto;">
+        Supply chain and operations leader with 10 years of experience driving strategic planning, inventory flow optimization, and cross-functional execution at Amazon. Skilled in translating real-time data into long-term solutions that enhance forecasting, labor planning, and delivery precision across a complex fulfillment network.
+      </p>
+    </section>
+
+   <section>
+  <h3 style="text-align:center;">Professional Experience</h3>
+      <ul style="max-width: 800px; margin: auto; padding-left: 1.2rem; line-height: 1.6;">
+         <strong>Amazon (2015 – 2025)</strong><br>
+          <li><em>Operations Manager (2021 – 2025)</em><br>
+        
+          <strong>Key Highlights</strong>
+          <ul>
+            <li>Led 25+ facilities as a rotating guest and held 5 home site leadership roles</li>
+            <li>Delivered sitewide 15%+ YoY gains through SOPs, dashboards, and macro automation</li>
+            <li>Mentored 22 associates and 9 salaried leaders into promotions</li>
+            <li>Managed regional and network projects (up to 52% yield improvements)</li>
+          </ul>
+        <br>
+          <details>
+            <summary><strong>Day to Day Execution</strong></summary>
+            <ul>
+              <li>Host preshift meetings and align shift expectations with prior results</li>
+              <li>Monitor KPIs, resolve escalations, and step in operationally when needed</li>
+              <li>Engage teams to boost morale and accountability</li>
+              <li>Analyze data in real-time and adjust labor or process to meet SLA goals</li>
+              <li>Audit quality benchmarks and resolve process gaps</li>
+              <li>Coach frontline leaders to overcome daily barriers</li>
+              <li>Plan following shift, update training schedules, and submit required reports</li>
+              <li>Communicate clearly with stakeholders and support VBA macro usage across ops</li>
+            </ul>
+          </details>
+        <br>
+          <details>
+            <summary><strong>Week to Week Execution</strong></summary>
+            <ul>
+              <li>Review headcount forecasts, fill labor gaps, and drive VET/VTO plans</li>
+              <li>Schedule and execute operational and leadership training initiatives</li>
+              <li>Report and track CI projects with measurable outcomes</li>
+              <li>Collect and analyze weekly ops data for trend reporting and reviews</li>
+              <li>Conduct building audits and present safety performance</li>
+              <li>Represent site in network calls; manage updates and scorecards</li>
+            </ul>
+          </details>
+        <br>
+          <details>
+            <summary><strong>Month to Month Execution</strong></summary>
+            <ul>
+              <li>Develop direct reports through regular 1:1s and progression planning</li>
+              <li>Update all dashboard tools and validate project KPIs</li>
+              <li>Forecast labor demand 21+ days out and align with leadership on cross-training or hiring plans</li>
+            </ul>
+          </details>
+        </li>
+<br>
+        <li><strong>Area Manager I/II & Process Assistant (2015 – 2021)</strong><br>
+          • Drove shift consistency and earned Subject Matter Expert recognition<br>
+          • Led best practice training across multiple teams
+        </li>
+  <br><br>
+        <li><strong>SC Johnson (2014 – 2015)</strong> — Transportation Coordinator<br>
+          • Managed outbound logistics and vendor scheduling
+        </li>
+  <br><br>
+        <li><strong>Menards / Reebok Retail (2011 – 2014)</strong> — Assistant Department Manager<br>
+          • Managed $3M department with >85% inventory accuracy
+        </li>
+      </ul>
+
+<br><br>
+           <h3>Education</h3>
+      <ul style="max-width: 800px; margin: auto; padding-left: 1.2rem; line-height: 1.6;">
+        <li><strong>Bachelor of Business Administration</strong>, Bryant & Stratton College — Graduated 04/2013</li>
+      </ul>
+     <br><br>
+    <details open style="max-width: 800px; margin: 2rem auto;">
+      <summary style="font-size: 1.3rem; font-weight: bold; text-align: center; padding: 0.5rem 0;">
+        Certifications & Specialized Training
+      </summary>
+      <ul style="padding-left: 1.5rem; line-height: 1.8;">
+        <li><strong>Weekly Business Review (WBR):</strong> Prep, Analysis & Reporting</li>
+        <li><strong>Peak & Prime Day:</strong> Playbook Planning & Execution Lead</li>
+        <li><strong>MMA (Management Methods Application)</strong> & <strong>TDR</strong> (Total Demand Review) Proficient</li>
+        <li><strong>ACES SOP Development:</strong> Created and standardized network-approved documentation</li>
+        <li><strong>PIT & Robotic Tools (RME):</strong> Hands-on experience with fulfillment tools (no active cert)</li>
+        <li><strong>Incident Command & CPR/First Aid:</strong> Previously certified, functioned in IC role</li>
+      </ul>
+    </details>
+<br>
+      <h3 style="text-align: center;">Skills</h3>
+      <ul style="max-width: 800px; margin: auto; padding-left: 1.2rem; columns: 2; line-height: 1.6;">
+        <li>Operations / Project Management</li>
+        <li>Strategic Planning & Operational Excellence</li>
+        <li>Process Optimization</li>
+        <li>Continuous Improvement</li>
+        <li>Program Implementation</li>
+        <li>Workforce Planning & People Operations</li>
+        <li>Cross-Functional Collaboration</li>
+        <li>Leadership & Development</li>
+        <li>Critical Thinking & Problem Solving</li>
+        <li>Change Management</li>
+        <li>Stakeholder Communication</li>
+        <li>WBR Preparation & Presentation</li>
+        <li>Prime Day & Peak Day Planning</li>
+        <li>Microsoft Excel (Advanced) | SQL (Basic)</li>
+        <li>Automation Strategy (VBA, Dashboards)</li>
+        <li>Data-Driven Decision Making</li>
+        <li>Data Visualization (Power BI, Tableau)</li>
+        <li>Supply Chain Management</li>
+        <li>Auditing & Quality Control</li>
+        <li>Inventory Control</li>
+        <li>AI Tools & AI-Powered Efficiency</li>
+        <li>Collaboration & Productivity Tools (Slack, Asana, Power BI, Google Suite)</li>
+      </ul>
+    </section>
+  
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
+  <button class="translate-toggle" onclick="toggleTranslateWidget()">Translate ⌄</button>
+  <div id="google_translate_element"></div>
+
+</main>
+
+  <footer style="text-align: center; margin-top: 3rem; font-size: 0.9rem; padding: 1rem 0;">
+  ✦ Crafted by Jordan Moddes · Enhanced with AI development ✦<br><br><br>
+  Appreciate Your Visit
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
     }
+
+    function toggleTranslateWidget() {
+      const widget = document.getElementById("google_translate_element");
+      widget.style.display = widget.style.display === "none" || widget.style.display === "" ? "block" : "none";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      function animateValue(id, start, end, duration, suffix = "") {
+        const obj = document.getElementById(id);
+        if (!obj) return;
+        const range = end - start;
+        const stepTime = Math.abs(Math.floor(duration / range));
+        let current = start;
+        const timer = setInterval(() => {
+          current += Math.sign(range);
+          obj.textContent = current + suffix;
+          if ((range > 0 && current >= end) || (range < 0 && current <= end)) {
+            clearInterval(timer);
+          }
+        }, stepTime);
+      }
+
+      animateValue("sitesVisited", 0, 53, 1500);
+      animateValue("facilitiesHome", 0, 5, 1500);
+      animateValue("leadersPromoted", 0, 9, 1500);
+      animateValue("associatesPromoted", 0, 22, 1500);
+      animateValue("networkProjects", 0, 3, 1500);
+      animateValue("regionalProjects", 0, 10, 1500);
+      animateValue("performanceGains", 0, 15, 1500, "%");
+      animateValue("VBAMacros", 0, 19, 1500);
+      animateValue("SOPCreated", 0, 5, 1500);
+    });
+  </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const shareButton = document.querySelector(".share-button");
+    const shareContent = document.querySelector(".share-content");
+
+    shareButton.addEventListener("click", function (e) {
+      e.stopPropagation();
+      shareContent.style.display = shareContent.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!shareContent.contains(e.target) && e.target !== shareButton) {
+        shareContent.style.display = "none";
+      }
+    });
   });
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  }
+
+  function toggleTranslateWidget() {
+    const widget = document.getElementById("google_translate_element");
+    widget.style.display = widget.style.display === "none" || widget.style.display === "" ? "block" : "none";
+  }
 </script>
 
 </body>
