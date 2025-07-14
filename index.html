@@ -187,7 +187,10 @@ html[data-theme='light'] .translate-toggle {
       font-size: 14px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
-    
+    .share-button:hover + .share-content,
+    .share-content:hover {
+      display: block;
+    }
     .share-content {
       display: none;
       position: absolute;
@@ -385,7 +388,12 @@ html[data-theme='light'] .translate-toggle {
         <li>Collaboration & Productivity Tools (Slack, Asana, Power BI, Google Suite)</li>
       </ul>
     </section>
-  </main>
+  
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
+  <button class="translate-toggle" onclick="toggleTranslateWidget()">Translate ⌄</button>
+  <div id="google_translate_element"></div>
+
+</main>
 
   <footer style="text-align: center; margin-top: 3rem; font-size: 0.9rem; padding: 1rem 0;">
   ✦ Crafted by Jordan Moddes · Enhanced with AI development ✦<br><br><br>
@@ -449,6 +457,18 @@ html[data-theme='light'] .translate-toggle {
       }
     });
   });
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  }
+
+  function toggleTranslateWidget() {
+    const widget = document.getElementById("google_translate_element");
+    widget.style.display = widget.style.display === "none" || widget.style.display === "" ? "block" : "none";
+  }
 </script>
 
 </body>
