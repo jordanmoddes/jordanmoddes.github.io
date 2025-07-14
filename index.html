@@ -187,10 +187,7 @@ html[data-theme='light'] .translate-toggle {
       font-size: 14px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
-    .share-button:hover + .share-content,
-    .share-content:hover {
-      display: block;
-    }
+    
     .share-content {
       display: none;
       position: absolute;
@@ -435,5 +432,24 @@ html[data-theme='light'] .translate-toggle {
       animateValue("SOPCreated", 0, 5, 1500);
     });
   </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const shareButton = document.querySelector(".share-button");
+    const shareContent = document.querySelector(".share-content");
+
+    shareButton.addEventListener("click", function (e) {
+      e.stopPropagation();
+      shareContent.style.display = shareContent.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!shareContent.contains(e.target) && e.target !== shareButton) {
+        shareContent.style.display = "none";
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
