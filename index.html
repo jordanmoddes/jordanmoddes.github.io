@@ -276,6 +276,14 @@ html[data-theme='light'] .translate-toggle {
   background-color: #00e0ff22;
   color: #ff8000;
 }
+
+  <!-- Skills Web/Mobile Clean -->
+    @media (max-width: 600px) {
+  .tools-columns {
+    flex-direction: column;
+    text-align: center;
+  }
+}
 </style>
 </head>
 <body>
@@ -469,25 +477,25 @@ html[data-theme='light'] .translate-toggle {
 </section>
 
 <section>
-  <h4 style="text-align: center; margin-top: 2rem; font-size: 1.25rem;">Tools & Tech</h4>
-  <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; max-width: 800px; margin: auto;">
-    <ul style="list-style: none; padding: 0; font-size: 1rem; line-height: 1.6;">
-      <li>Excel (Advanced)</li>
-      <li>VBA (Basic)</li>
-      <li>Dashboard Reporting</li>
-      <li>SharePoint</li>
-      <li>PowerBI</li>
-      <li>Google Suite</li>
-    </ul>
-    <ul style="list-style: none; padding: 0; font-size: 1rem; line-height: 1.6;">
-      <li>Asana</li>
-      <li>WMS</li>
-      <li>Quip</li>
-      <li>Internal Wiki Platforms</li>
-      <li>Slack</li>
-      <li>AI-Powered Tools & Process Integration</li>
-    </ul>
-  </div>
+  <h4 style="text-align: center; margin-top: 2rem;">Tools & Tech</h4>
+    <div class="tools-columns" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; max-width: 800px; margin: auto; font-size: 1rem; line-height: 1.6;">
+      <ul style="list-style: none; padding: 0; margin: 0;">
+        <li>Excel (Advanced)</li>
+        <li>VBA (Basic)</li>
+        <li>Dashboard Reporting</li>
+        <li>SharePoint</li>
+        <li>PowerBI</li>
+        <li>Google Suite</li>
+      </ul>
+      <ul style="list-style: none; padding: 0; margin: 0;">
+        <li>Asana</li>
+        <li>WMS</li>
+        <li>Quip</li>
+        <li>Internal Wiki Platforms</li>
+        <li>Slack</li>
+        <li>AI-Powered Tools & Process Integration</li>
+      </ul>
+    </div>
 </section>
   
   <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
