@@ -1,1 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JMOD's Dashboard</title>
+<meta name="color-scheme" content="dark light" />
+<style>
+:root{--bg:#0b0c10;--card:#13151b;--ink:#e8ebf4;--muted:#a2a8b6;--border:#222631;--accent:#4da3ff;--good:#17e5a1;--bad:#ff7b7b}
+html,body{height:100%}
+body{margin:0;background:linear-gradient(180deg,#0b0c10,#0e1218);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,Inter,Arial,sans-serif}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 14px 32px}
+/* Navbar */
+.nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;justify-content:center;padding:12px}
+.nav a{color:#f1f3f7;text-decoration:none;font-weight:600}
+.nav a:hover{opacity:.85}
+/* Ticker */
+.ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
+.ticker-inner{display:inline-block;padding-block:8px;animation:scroll 30s linear infinite}
+.tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* Layout */
+h1{font-size:22px;margin:16px 0}
+.grid{display:grid;gap:16px}
+@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.card .hd{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.card .bd{padding:14px}
+.pill{font-size:12px;background:#0f1420;border:1px solid #1f2a43;color:#a9c8ff;padding:5px 10px;border-radius:999px}
+iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
+.muted{color:var(--muted)}
+.val{font-weight:700}
+.mini{font-size:12px;color:#cbd5e1}
+/* Stock/Crypto grid */
+.symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.sym{border:1px solid var(--border);border-radius:12px;padding:10px}
+.sym .top{display:flex;justify-content:space-between}
+.sym .price{font-size:20px;font-weight:800;margin-top:4px}
+.chg.up{color:var(--good)} .chg.down{color:var(--bad)}
+/* Notes */
+textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;color:var(--ink);border-radius:12px;padding:10px}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<div class="nav">
+<div class="navin">
+<a href="/">🏠 Resume</a>
+<a href="/dashboard/">Dashboard</a>
+<a href="/traffic/">Traffic</a>
+<a href="/jmodshort/">Short Links</a>
+</div>
+</div>
 
+
+<!-- SPORTS TICKER -->
+<div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
+
+
+<div class="wrap">
+<h1>Personal Dashboard</h1>
+
+
+<!-- TRAFFIC -->
+<div class="grid">
+<div class="card">
+<div class="hd"><div>Traffic: 670 S AW Grimes → 411 W Main</div><span class="pill">Driving · live traffic</span></div>
+<div class="bd">
+<div class="row mini"><div>ETA: <span id="eta1" class="val">–</span></div><div class="muted">Distance: <span id="dist1">–</span></div></div>
+</div>
+<iframe id="map1" title="route1"></iframe>
+</div>
+
+
+<div class="card">
+<div class="hd"><div>Traffic: 411 W Main → 670 S AW Grimes</div><span class="pill">Driving · live traffic</span></div>
+<div class="bd">
+<div class="row mini"><div>ETA: <span id="eta2" class="val">–</span></div><div class="muted">Distance: <span id="dist2">–</span></div></div>
+</div>
+<iframe id="map2" title="route2"></iframe>
+</div>
+</div>
+
+
+<!-- WEATHER -->
+<div class="card" style="margin-top:16px">
+<div class="hd"><div>Weather</div><span class="pill">Open‑Meteo · no key</span></div>
+<div class="bd" id="weather" class="grid"></div>
+</div>
+
+
+<!-- STOCKS & CRYPTO -->
+<div class="grid" style="margin-top:16px">
+<div class="card">
+<div class="hd"><div>Stocks</div><span class="pill">auto refresh</span></div>
+<div class="bd">
+</html>
