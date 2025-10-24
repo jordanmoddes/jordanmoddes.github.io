@@ -221,9 +221,18 @@
           const d0max = Math.round(data.daily.temperature_2m_max[0]);
           const card = document.createElement("div"); card.className="sym";
           card.innerHTML = `
-            <div class="top"><div><strong>${zip}</strong> · ${WMO[cur.weather_code]||""}</div><div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div></div>
-            <div class="price" style="margin-top:2px">${Math.round(cur.temperature_2m)}°</div>
-            <div class="mini muted">Feels ${Math.round(cur.apparent_temperature)}° · Today ${d0min}° / ${d0max}°</div>`;
+            <div class="top">
+              <div><strong>${zip}</strong> · ${WMO[cur.weather_code]||""}</div>
+              <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
+            </div>
+            <div class="price" style="margin-top:2px">
+              ${Math.round(cur.temperature_2m)}°C / ${Math.round(toF(cur.temperature_2m))}°F
+            </div>
+            <div class="mini muted">
+              Feels ${Math.round(cur.apparent_temperature)}°C / ${Math.round(toF(cur.apparent_temperature))}°F ·
+              Today ${Math.round(data.daily.temperature_2m_min[0])}°C / ${Math.round(toF(data.daily.temperature_2m_min[0]))}°F – 
+              ${Math.round(data.daily.temperature_2m_max[0])}°C / ${Math.round(toF(data.daily.temperature_2m_max[0]))}°F
+            </div>`;
           host.appendChild(card);
         }catch(e){
           const card = document.createElement("div"); card.className="sym";
