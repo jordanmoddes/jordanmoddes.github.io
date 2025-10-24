@@ -109,208 +109,219 @@
     </div>
   </div>
 
-  <script>
-    // ---------------- CONFIG ----------------
-    // 1) If/when you create the Cloudflare Worker, put its URL here (for ticker + quotes proxy).
-    const WORKER_BASE = ""; // e.g. "https://jmod-proxy.yourname.workers.dev"
-    // 2) Your Google Distance Matrix key (restricted to your domain).
-    const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
+<script>
+  // ---------------- CONFIG ----------------
+  // 1) If/when you create the Cloudflare Worker, put its URL here (for ticker + quotes proxy).
+  const WORKER_BASE = ""; // e.g. "https://jmod-proxy.yourname.workers.dev"
+  // 2) Your Google Distance Matrix + Maps Embed key (restricted to your domain).
+  const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
 
-    // Addresses (exact strings for Google)
-    const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
-    const B = "411 W Main St, Round Rock, TX 78664";
+  // Addresses (exact strings for Google)
+  const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
+  const B = "411 W Main St, Round Rock, TX 78664";
 
-    // Weather ZIPs
-    const WEATHER_ZIPS = ["78664","53158","60030","44115"];
+  // Weather ZIPs
+  const WEATHER_ZIPS = ["78664","53158","60030","44115"];
 
-    // Stocks list (maps BRK.A→BRK-A, BRK.B→BRK-B automatically)
-    const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
+  // Stocks list (maps BRK.A→BRK-A, BRK.B→BRK-B automatically)
+  const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
 
-    // Crypto via Coingecko (ids). BTC ok; add more IDs when you have them.
-    const CRYPTO = ["bitcoin"];
+  // Crypto via Coingecko (ids). BTC ok; add more IDs when you have them.
+  const CRYPTO = ["bitcoin"];
 
-    // ---------------- HELPERS ----------------
-    const $ = (sel) => document.querySelector(sel);
-    const escapeHtml = (s)=> String(s).replace(/[&<>\"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
-    function enc(s){ return encodeURIComponent(s).replace(/%20/g,'+'); }
+  // ---------------- HELPERS ----------------
+  const $ = (sel) => document.querySelector(sel);
+  const escapeHtml = (s)=> String(s).replace(/[&<>\"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+  const enc = (s)=> encodeURIComponent(s).replace(/%20/g,'+');
+  const toF = (c)=> (c * 9/5) + 32; // Celsius → Fahrenheit
 
-    // ---------------- TICKER ----------------
-    async function loadTicker(){
-      const el = $("#ticker");
-      if(!WORKER_BASE){
-        el.innerHTML = `<span class="tick-item">Set WORKER_BASE to enable live NFL/F1 ticker</span>`;
-        return;
-      }
+  // ---------------- TICKER ----------------
+  async function loadTicker(){
+    const el = $("#ticker");
+    if(!WORKER_BASE){
+      el.innerHTML = `<span class="tick-item">Set WORKER_BASE to enable live NFL/F1 ticker</span>`;
+      return;
+    }
+    try{
+      const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
+      const items = await r.json(); // [{title}]
+      const twice = items.concat(items);
+      el.innerHTML = twice.map(x=>`<span class="tick-item">• ${escapeHtml(x.title)}</span>`).join("");
+    }catch(err){
+      console.error("ticker error", err);
+      el.innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
+    }
+  }
+
+  // ---------------- TRAFFIC (Google ETA + Google visual) ----------------
+  // Use Google Maps Embed so the visual matches the ETA source.
+  function googleEmbed(o, d) {
+    return `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
+  }
+
+  async function distanceMatrix(orig, dest){
+    const url = new URL("https://maps.googleapis.com/maps/api/distancematrix/json");
+    url.search = new URLSearchParams({
+      origins: orig,
+      destinations: dest,
+      departure_time: "now",
+      traffic_model: "best_guess",
+      units: "imperial",
+      key: GOOGLE_MAPS_API_KEY
+    }).toString();
+    const r = await fetch(url.toString());
+    if(!r.ok) throw new Error("ETA fetch failed");
+    return r.json();
+  }
+  function humanizeETA(ms){
+    const mins = Math.round(ms/60000);
+    if(mins < 60) return `${mins} min`;
+    const h = Math.floor(mins/60), m = mins%60;
+    return `${h} hr ${m} min`;
+  }
+  async function updateTraffic(){
+    $("#map1").src = googleEmbed(A, B);
+    $("#map2").src = googleEmbed(B, A);
+    const set1=(t,d)=>{ $("#eta1").textContent=t; $("#dist1").textContent=d; };
+    const set2=(t,d)=>{ $("#eta2").textContent=t; $("#dist2").textContent=d; };
+    try{
+      const j1 = await distanceMatrix(A, B);
+      const el1 = j1.rows?.[0]?.elements?.[0];
+      set1(humanizeETA((el1?.duration_in_traffic || el1?.duration).value*1000), el1?.distance?.text || "–");
+    }catch(err){
+      console.error("eta1 error", err);
+      set1("–","–");
+    }
+    try{
+      const j2 = await distanceMatrix(B, A);
+      const el2 = j2.rows?.[0]?.elements?.[0];
+      set2(humanizeETA((el2?.duration_in_traffic || el2?.duration).value*1000), el2?.distance?.text || "–");
+    }catch(err){
+      console.error("eta2 error", err);
+      set2("–","–");
+    }
+  }
+
+  // ---------------- WEATHER (Open-Meteo; show F / C; wind mph) ----------------
+  async function geocodeZip(zip){
+    const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${zip}&count=1&language=en&format=json`);
+    const j = await r.json();
+    const g = j.results?.[0];
+    if(!g) throw new Error("zip not found");
+    return { lat:g.latitude, lon:g.longitude, name:g.name };
+  }
+  async function fetchWeather(lat, lon){
+    const url = new URL("https://api.open-meteo.com/v1/forecast");
+    url.search = new URLSearchParams({
+      latitude: lat, longitude: lon, timezone: "auto",
+      wind_speed_unit: "mph",                        // wind in mph
+      current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
+      daily: "temperature_2m_max,temperature_2m_min,precipitation_sum"
+    }).toString();
+    const r = await fetch(url.toString());
+    return r.json();
+  }
+  const WMO={0:"Clear",1:"Mainly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",48:"Rime fog",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Rain",65:"Heavy rain",71:"Light snow",73:"Snow",75:"Heavy snow",80:"Rain showers",81:"Rain showers+",82:"Violent showers",95:"Thunderstorm"};
+  async function loadWeather(){
+    const host = $("#weather"); host.innerHTML="";
+    for (const zip of WEATHER_ZIPS){
       try{
-        const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
-        const items = await r.json(); // [{title}]
-        const twice = items.concat(items);
-        el.innerHTML = twice.map(x=>`<span class="tick-item">• ${escapeHtml(x.title)}</span>`).join("");
-      }catch{
-        el.innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
-      }
-    }
-
-    // ---------------- TRAFFIC (Google ETA + Bing visual) ----------------
-    function bingEmbed(o, d) {
-      const origin = encodeURIComponent(o);
-      const dest = encodeURIComponent(d);
-      return `https://www.bing.com/maps/embed?h=360&w=1200&lvl=12&typ=d&trfc=1&rtp=adr.${origin}~adr.${dest}`;
-    }
-
-    async function distanceMatrix(orig, dest){
-      const url = new URL("https://maps.googleapis.com/maps/api/distancematrix/json");
-      url.search = new URLSearchParams({
-        origins: orig,
-        destinations: dest,
-        departure_time: "now",
-        traffic_model: "best_guess",
-        units: "imperial",
-        key: GOOGLE_MAPS_API_KEY
-      }).toString();
-      const r = await fetch(url.toString());
-      if(!r.ok) throw new Error("ETA fetch failed");
-      return r.json();
-    }
-    function humanizeETA(ms){
-      const mins = Math.round(ms/60000);
-      if(mins < 60) return `${mins} min`;
-      const h = Math.floor(mins/60), m = mins%60;
-      return `${h} hr ${m} min`;
-    }
-    async function updateTraffic(){
-      $("#map1").src = bingEmbed(A, B);
-      $("#map2").src = bingEmbed(B, A);
-      const set1=(t,d)=>{ $("#eta1").textContent=t; $("#dist1").textContent=d; };
-      const set2=(t,d)=>{ $("#eta2").textContent=t; $("#dist2").textContent=d; };
-      try{
-        const j1 = await distanceMatrix(A, B);
-        const el1 = j1.rows?.[0]?.elements?.[0];
-        set1(humanizeETA((el1?.duration_in_traffic || el1?.duration).value*1000), el1?.distance?.text || "–");
-      }catch{ set1("–","–"); }
-      try{
-        const j2 = await distanceMatrix(B, A);
-        const el2 = j2.rows?.[0]?.elements?.[0];
-        set2(humanizeETA((el2?.duration_in_traffic || el2?.duration).value*1000), el2?.distance?.text || "–");
-      }catch{ set2("–","–"); }
-    }
-
-    // ---------------- WEATHER ----------------
-    async function geocodeZip(zip){
-      const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${zip}&count=1&language=en&format=json`);
-      const j = await r.json();
-      const g = j.results?.[0];
-      if(!g) throw new Error("zip not found");
-      return { lat:g.latitude, lon:g.longitude };
-    }
-    async function fetchWeather(lat, lon){
-      const url = new URL("https://api.open-meteo.com/v1/forecast");
-      url.search = new URLSearchParams({
-        latitude: lat, longitude: lon, timezone: "auto",
-        current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
-        daily: "temperature_2m_max,temperature_2m_min,precipitation_sum"
-      }).toString();
-      const r = await fetch(url.toString());
-      return r.json();
-    }
-    const WMO={0:"Clear",1:"Mainly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",48:"Rime fog",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Rain",65:"Heavy rain",71:"Light snow",73:"Snow",75:"Heavy snow",80:"Rain showers",81:"Rain showers+",82:"Violent showers",95:"Thunderstorm"};
-    async function loadWeather(){
-      const host = $("#weather"); host.innerHTML="";
-      for (const zip of WEATHER_ZIPS){
-        try{
-          const geo = await geocodeZip(zip);
-          const data = await fetchWeather(geo.lat, geo.lon);
-          const cur = data.current;
-          const d0min = Math.round(data.daily.temperature_2m_min[0]);
-          const d0max = Math.round(data.daily.temperature_2m_max[0]);
-          const card = document.createElement("div"); card.className="sym";
-          card.innerHTML = `
-            <div class="top">
-              <div><strong>${zip}</strong> · ${WMO[cur.weather_code]||""}</div>
-              <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
-            </div>
-            <div class="price" style="margin-top:2px">
-              ${Math.round(cur.temperature_2m)}°C / ${Math.round(toF(cur.temperature_2m))}°F
-            </div>
-            <div class="mini muted">
-              Feels ${Math.round(cur.apparent_temperature)}°C / ${Math.round(toF(cur.apparent_temperature))}°F ·
-              Today ${Math.round(data.daily.temperature_2m_min[0])}°C / ${Math.round(toF(data.daily.temperature_2m_min[0]))}°F – 
-              ${Math.round(data.daily.temperature_2m_max[0])}°C / ${Math.round(toF(data.daily.temperature_2m_max[0]))}°F
-            </div>`;
-          host.appendChild(card);
-        }catch(e){
-          const card = document.createElement("div"); card.className="sym";
-          card.innerHTML = `<div class="top"><div><strong>${zip}</strong></div></div><div class="mini muted">Weather unavailable</div>`;
-          host.appendChild(card);
-        }
-      }
-    }
-
-    // ---------------- STOCKS ----------------
-    function mapYahoo(sym){ return sym.replace("BRK.A","BRK-A").replace("BRK.B","BRK-B"); }
-    async function loadStocks(){
-      const host = $("#stocks"); host.innerHTML = "";
-      try{
-        const url = WORKER_BASE
-          ? `${WORKER_BASE}/quotes?symbols=${STOCKS.map(mapYahoo).join(',')}`
-          : `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(STOCKS.map(mapYahoo).join(','))}`;
-        const r = await fetch(url);
-        const j = await r.json();
-        const rows = WORKER_BASE ? j : (j.quoteResponse?.result||[]).map(q=>({
-          symbol:q.symbol, name:q.shortName||q.longName||q.symbol, price:q.regularMarketPrice, changePercent:q.regularMarketChangePercent
-        }));
-        rows.forEach(q=>{
-          const chg = Number(q.changePercent||0);
-          const div = document.createElement("div");
-          div.className = "sym";
-          div.innerHTML = `
-            <div class="top"><div><strong>${q.symbol}</strong> <span class="mini muted">${escapeHtml(q.name||"")}</span></div>
-            <div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${(chg||0).toFixed(2)}%</div></div>
-            <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-          host.appendChild(div);
-        });
+        const geo = await geocodeZip(zip);
+        const data = await fetchWeather(geo.lat, geo.lon);
+        const cur = data.current;
+        const minC = Math.round(data.daily.temperature_2m_min[0]);
+        const maxC = Math.round(data.daily.temperature_2m_max[0]);
+        const card = document.createElement("div"); card.className="sym";
+        card.innerHTML = `
+          <div class="top">
+            <div><strong>${zip}</strong> · ${WMO[cur.weather_code]||""}</div>
+            <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
+          </div>
+          <div class="price" style="margin-top:2px">
+            ${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C
+          </div>
+          <div class="mini muted">
+            Feels ${Math.round(toF(cur.apparent_temperature))}°F / ${Math.round(cur.apparent_temperature)}°C ·
+            Today ${Math.round(toF(minC))}°F / ${minC}°C – ${Math.round(toF(maxC))}°F / ${maxC}°C
+          </div>`;
+        host.appendChild(card);
       }catch(e){
-        host.innerHTML = `<div class='mini muted'>Quotes blocked by CORS. Add WORKER_BASE to enable.</div>`;
+        console.error("weather error", zip, e);
+        const card = document.createElement("div"); card.className="sym";
+        card.innerHTML = `<div class="top"><div><strong>${zip}</strong></div></div><div class="mini muted">Weather unavailable</div>`;
+        host.appendChild(card);
       }
     }
+  }
 
-    // ---------------- CRYPTO ----------------
-    function nice(id){ return id.charAt(0).toUpperCase()+id.slice(1); }
-    async function loadCrypto(){
-      if(!CRYPTO.length){ $("#crypto").innerHTML = "<div class='mini muted'>No crypto selected</div>"; return; }
-      const url = new URL("https://api.coingecko.com/api/v3/simple/price");
-      url.search = new URLSearchParams({ ids: CRYPTO.join(","), vs_currencies: "usd", include_24hr_change: "true" }).toString();
-      try{
-        const r = await fetch(url.toString());
-        const j = await r.json();
-        const host = $("#crypto"); host.innerHTML = "";
-        for (const id of CRYPTO){
-          if(!j[id]) continue;
-          const chg = Number(j[id].usd_24h_change||0);
-          const div = document.createElement("div"); div.className="sym";
-          div.innerHTML = `
-            <div class="top"><div><strong>${nice(id)}</strong></div>
-            <div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</div></div>
-            <div class="price">$${Number(j[id].usd||0).toLocaleString()}</div>`;
-          host.appendChild(div);
-        }
-      }catch{
-        $("#crypto").innerHTML = `<div class='mini muted'>Crypto unavailable</div>`;
-      }
+  // ---------------- STOCKS ----------------
+  function mapYahoo(sym){ return sym.replace("BRK.A","BRK-A").replace("BRK.B","BRK-B"); }
+  async function loadStocks(){
+    const host = $("#stocks"); host.innerHTML = "";
+    try{
+      const url = WORKER_BASE
+        ? `${WORKER_BASE}/quotes?symbols=${STOCKS.map(mapYahoo).join(',')}`
+        : `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(STOCKS.map(mapYahoo).join(','))}`;
+      const r = await fetch(url);
+      const j = await r.json();
+      const rows = WORKER_BASE ? j : (j.quoteResponse?.result||[]).map(q=>({
+        symbol:q.symbol, name:q.shortName||q.longName||q.symbol, price:q.regularMarketPrice, changePercent:q.regularMarketChangePercent
+      }));
+      if(!rows.length) throw new Error("empty quotes");
+      rows.forEach(q=>{
+        const chg = Number(q.changePercent||0);
+        const div = document.createElement("div");
+        div.className = "sym";
+        div.innerHTML = `
+          <div class="top"><div><strong>${q.symbol}</strong> <span class="mini muted">${escapeHtml(q.name||"")}</span></div>
+          <div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${(chg||0).toFixed(2)}%</div></div>
+          <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+        host.appendChild(div);
+      });
+    }catch(e){
+      console.error("stocks error", e);
+      host.innerHTML = `<div class='mini muted'>Quotes blocked by CORS. Add WORKER_BASE to enable.</div>`;
     }
+  }
 
-    // ---------------- NOTES ----------------
-    const notesEl = $("#notes");
-    notesEl.value = localStorage.getItem("dashboard-notes") || "";
-    notesEl.addEventListener("input", ()=>localStorage.setItem("dashboard-notes", notesEl.value));
-    $("#clearNotes").onclick = ()=>{ notesEl.value=""; localStorage.removeItem("dashboard-notes"); };
+  // ---------------- CRYPTO ----------------
+  function nice(id){ return id.charAt(0).toUpperCase()+id.slice(1); }
+  async function loadCrypto(){
+    if(!CRYPTO.length){ $("#crypto").innerHTML = "<div class='mini muted'>No crypto selected</div>"; return; }
+    const url = new URL("https://api.coingecko.com/api/v3/simple/price");
+    url.search = new URLSearchParams({ ids: CRYPTO.join(","), vs_currencies: "usd", include_24hr_change: "true" }).toString();
+    try{
+      const r = await fetch(url.toString());
+      const j = await r.json();
+      const host = $("#crypto"); host.innerHTML = "";
+      for (const id of CRYPTO){
+        if(!j[id]) continue;
+        const chg = Number(j[id].usd_24h_change||0);
+        const div = document.createElement("div"); div.className="sym";
+        div.innerHTML = `
+          <div class="top"><div><strong>${nice(id)}</strong></div>
+          <div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</div></div>
+          <div class="price">$${Number(j[id].usd||0).toLocaleString()}</div>`;
+        host.appendChild(div);
+      }
+    }catch(err){
+      console.error("crypto error", err);
+      $("#crypto").innerHTML = `<div class='mini muted'>Crypto unavailable</div>`;
+    }
+  }
 
-    // ---------------- INIT ----------------
-    loadTicker();
-    updateTraffic(); setInterval(updateTraffic, 120000);
-    loadWeather();
-    loadStocks(); setInterval(loadStocks, 60000);
-    loadCrypto(); setInterval(loadCrypto, 60000);
-  </script>
+  // ---------------- NOTES ----------------
+  const notesEl = $("#notes");
+  notesEl.value = localStorage.getItem("dashboard-notes") || "";
+  notesEl.addEventListener("input", ()=>localStorage.setItem("dashboard-notes", notesEl.value));
+  $("#clearNotes").onclick = ()=>{ notesEl.value=""; localStorage.removeItem("dashboard-notes"); };
+
+  // ---------------- INIT ----------------
+  loadTicker();
+  updateTraffic(); setInterval(updateTraffic, 120000);
+  loadWeather();
+  loadStocks(); setInterval(loadStocks, 60000);
+  loadCrypto(); setInterval(loadCrypto, 60000);
+</script>
 </body>
 </html>
