@@ -152,7 +152,11 @@
     }
 
     // ---------------- TRAFFIC (Google ETA + Bing visual) ----------------
-    function bingEmbed(o,d){ return `https://www.bing.com/maps/embed?h=360&w=1200&lvl=12&typ=d&trfc=1&rtp=adr.${enc(o)}~adr.${enc(d)}`; }
+    function bingEmbed(o, d) {
+      const origin = encodeURIComponent(o);
+      const dest = encodeURIComponent(d);
+      return `https://www.bing.com/maps/embed?h=360&w=1200&lvl=12&typ=d&trfc=1&rtp=adr.${origin}~adr.${dest}`;
+    }
 
     async function distanceMatrix(orig, dest){
       const url = new URL("https://maps.googleapis.com/maps/api/distancematrix/json");
