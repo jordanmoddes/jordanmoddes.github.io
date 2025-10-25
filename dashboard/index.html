@@ -170,83 +170,103 @@
   const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
   function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
 
-  /* ---------- WEATHER (no geocode needed for your 4 ZIPs) ---------- */
-  const ZIP_COORDS = {
-    "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
-    "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
-    "60030": { lat: 42.3445, lon: -88.0417, name: "Grayslake, IL" },
-    "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
-  };
+/* ===== WEATHER via NWS (no key) – calls the Worker /nws endpoint ===== */
 
-  async function fetchWeather(lat, lon){
-    if (WORKER_BASE) {
-      try {
-        const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
-        if (r.ok) return await r.json();
-        console.warn("wx via worker status", r.status);
-      } catch (e) { console.warn("wx via worker failed", e); }
+// Fixed coordinates for your ZIPs (no geocoder needed)
+const ZIP_COORDS = {
+  "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
+  "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
+  "60030": { lat: 42.3445, lon: -88.0417, name: "Grayslake, IL" },
+  "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
+};
+
+// Small icon helper from shortForecast text
+function iconFromText(t=""){
+  const s = t.toLowerCase();
+  if (s.includes("thunder")) return "⛈️";
+  if (s.includes("snow"))    return "❄️";
+  if (s.includes("rain")||s.includes("showers")||s.includes("drizzle")) return "🌧️";
+  if (s.includes("fog")||s.includes("haze")) return "🌫️";
+  if (s.includes("cloud"))   return "☁️";
+  if (s.includes("sun")||s.includes("clear")) return "☀️";
+  if (s.includes("partly")||s.includes("mostly")) return "⛅";
+  return "🌡️";
+}
+
+async function fetchNWS(lat, lon){
+  // New Worker endpoint; returns { place, daily[], hourly[] }
+  const r = await fetch(`${WORKER_BASE}/nws?lat=${lat}&lon=${lon}`);
+  if (!r.ok) throw new Error("NWS worker status " + r.status);
+  return r.json();
+}
+
+function formatHour(iso){
+  const d = new Date(iso);
+  let h = d.getHours();
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12; if (h === 0) h = 12;
+  return `${h}${ampm}`;
+}
+
+async function loadWeather(){
+  const host = document.querySelector("#weatherList");
+  if (!host) return;
+  host.innerHTML = "";
+
+  for (const zip of WEATHER_ZIPS){
+    const card = document.createElement("div"); card.className = "sym";
+    try{
+      const loc = ZIP_COORDS[zip];
+      if (!loc) throw new Error("no coords for "+zip);
+
+      const data = await fetchNWS(loc.lat, loc.lon);
+      const place = data.place || loc.name;
+
+      // Current: take first hourly period (already temperature in °F)
+      const hourly = Array.isArray(data.hourly) ? data.hourly : [];
+      const current = hourly[0] || {};
+      const currTempF = current.temperature ?? "—";
+      const currText  = current.shortForecast || "";
+      const currIcon  = iconFromText(currText);
+      const windText  = current.windSpeed || ""; // already mph text
+
+      // Next 5 hours chips
+      const chips = hourly.slice(0, 5).map(p => ({
+        hour: formatHour(p.startTime),
+        tF: p.temperature,
+        txt: p.shortForecast
+      }));
+
+      // Today highs/lows from daily (NWS daily returns both day/night)
+      const daily = Array.isArray(data.daily) ? data.daily : [];
+      // find the first daytime and the next nighttime entries
+      const day  = daily.find(p => p.isDaytime);
+      const night= daily.find(p => !p.isDaytime);
+      const hi = day?.temperature ?? "—";
+      const lo = night?.temperature ?? "—";
+
+      card.innerHTML = `
+        <div class="top">
+          <div><strong>${place}</strong> · ${currIcon} ${currText}</div>
+          <div class="mini">${windText || ""}</div>
+        </div>
+        <div class="price">${currTempF}°F</div>
+        <div class="mini muted">Today ${lo}°F – ${hi}°F</div>
+        <div class="hrow">
+          ${chips.map(h => `
+            <div class="hchip">
+              <div class="ico">${iconFromText(h.txt)}</div>
+              <div class="t mini">${h.tF}°F</div>
+              <div class="mini muted">${h.hour}</div>
+            </div>`).join("")}
+        </div>`;
+    }catch(err){
+      console.error("weather (NWS) error", zip, err);
+      card.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
     }
-    const u = new URL("https://api.open-meteo.com/v1/forecast");
-    u.search = new URLSearchParams({
-      latitude: lat, longitude: lon, timezone: "auto",
-      wind_speed_unit: "mph",
-      current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
-      daily: "temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
-      hourly: "temperature_2m,weather_code"
-    }).toString();
-    const r2 = await fetch(u.toString());
-    if (!r2.ok) throw new Error("open-meteo status "+r2.status);
-    return r2.json();
+    host.appendChild(card);
   }
-
-  async function loadWeather(){
-    const host = document.querySelector("#weatherList");
-    host.innerHTML = "";
-    for (const zip of WEATHER_ZIPS){
-      const card = document.createElement("div"); card.className="sym";
-      try{
-        const loc = ZIP_COORDS[zip];
-        if (!loc) throw new Error("no coords for "+zip);
-        const data = await fetchWeather(loc.lat, loc.lon);
-        const cur = data.current;
-        const minC = Math.round(data.daily.temperature_2m_min[0]);
-        const maxC = Math.round(data.daily.temperature_2m_max[0]);
-
-        const times = data.hourly.time.map(t => new Date(t));
-        const tempsC = data.hourly.temperature_2m;
-        const codes = data.hourly.weather_code;
-        let idx = times.findIndex(t => t >= new Date()); if (idx < 0) idx = 0;
-
-        const hrs = [];
-        for (let i=0; i<5 && idx+i<times.length; i++){
-          const dt = times[idx+i];
-          hrs.push({ hour: dt.getHours().toString().padStart(2,"0"), tempC: tempsC[idx+i], code: codes[idx+i] });
-        }
-
-        card.innerHTML = `
-          <div class="top">
-            <div><strong>${loc.name}</strong> · ${iconFor(cur.weather_code)}</div>
-            <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
-          </div>
-          <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
-          <div class="mini muted">
-            Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F
-          </div>
-          <div class="hrow">
-            ${hrs.map(h => `
-              <div class="hchip">
-                <div class="ico">${iconFor(h.code)}</div>
-                <div class="t mini">${Math.round(toF(h.tempC))}°F</div>
-                <div class="mini muted">${h.hour}:00</div>
-              </div>`).join("")}
-          </div>`;
-      }catch(err){
-        console.error("weather error", zip, err);
-        card.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
-      }
-      host.appendChild(card);
-    }
-  }
+}
 
   /* ---------- STOCKS ---------- */
   async function loadStocks(){
