@@ -143,22 +143,19 @@ textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#
      ========================= -->
 <script>
 /* ---- CONFIG YOU EDIT ---- */
-const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";     // your Worker URL
+const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
 const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
-
 const HOME = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
 const WORK = "411 W Main St, Round Rock, TX 78664";
-
 const WEATHER_ZIPS = ["78664","53158","60030","44115"];
 const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
-const CRYPTO = ["bitcoin","ethereum","dogecoin"];  // change/remove freely
+const CRYPTO = ["bitcoin","ethereum","dogecoin"];
 
 /* ---- helpers ---- */
 const $ = s => document.querySelector(s);
 const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
 const toF = c => (c*9/5)+32;
-const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",
- 61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code]||"🌡️");
+const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code]||"🌡️");
 
 const ZIP_COORDS = {
   "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
@@ -167,11 +164,24 @@ const ZIP_COORDS = {
   "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
 };
 
-/* ---- header date ---- */
-(function setLocalDate(){
-  const d=new Date(); const mm=String(d.getMonth()+1).padStart(2,"0"); const dd=String(d.getDate()).padStart(2,"0"); const yyyy=d.getFullYear();
+/* ---- header date & creative welcome ---- */
+(function setGreeting(){
+  const now = new Date();
+  const hrs = now.getHours();
+  const mm=String(now.getMonth()+1).padStart(2,"0"), dd=String(now.getDate()).padStart(2,"0"), yyyy=now.getFullYear();
   $("#localDate").textContent = `${mm}/${dd}/${yyyy}`;
   $("#sunDate").textContent   = `${mm}/${dd}/${yyyy}`;
+
+  let greet;
+  if (hrs < 5) greet = "Still awake? Night owl energy. 🌙";
+  else if (hrs < 11) greet = "Good morning! ☕ Let’s make today count.";
+  else if (hrs < 17) greet = "Good afternoon! Keep that focus rolling. 🔥";
+  else if (hrs < 21) greet = "Good evening! Unwind, you’ve earned it. 🌇";
+  else greet = "Late night tinkering? Welcome back, creator. 🌌";
+
+  document.querySelector("#welcome .bd").innerHTML =
+    `<div style="font-size:1rem;">${greet}</div>
+     <div class="mini muted" style="margin-top:6px">This is my private dashboard — built for learning, testing, and keeping tabs on life. Explore and enjoy.</div>`;
 })();
 
 /* ---- ticker ---- */
@@ -186,11 +196,11 @@ async function loadTicker(){
   }
 }
 
-/* ---- traffic (visual only via Google embed) ---- */
+/* ---- traffic (visual) ---- */
 const mapsURL = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
 function loadTraffic(){ $("#map1").src = mapsURL(HOME, WORK); $("#map2").src = mapsURL(WORK, HOME); }
 
-/* ---- weather via Worker (/wx) with fallback ---- */
+/* ---- weather ---- */
 async function fetchWeather(lat, lon){
   try{
     const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
@@ -209,15 +219,15 @@ async function fetchWeather(lat, lon){
 
 async function loadWeather(){
   const host = $("#weatherList"); host.innerHTML = "";
+  const seen = new Set();
   for (const zip of WEATHER_ZIPS){
+    if (seen.has(zip)) continue; seen.add(zip);
     try{
       const geo = ZIP_COORDS[zip] || await (await fetch(`${WORKER_BASE}/geo?zip=${zip}`)).json();
       const data = await fetchWeather(geo.lat, geo.lon);
       const cur = data.current;
       const minC = Math.round(data.daily.temperature_2m_min[0]);
       const maxC = Math.round(data.daily.temperature_2m_max[0]);
-
-      // next 5 hours
       const times = data.hourly.time.map(t=>new Date(t));
       let idx = times.findIndex(t=>t>=new Date()); if (idx<0) idx=0;
       const hrs = Array.from({length:5},(_,i)=> idx+i).filter(i=>i<times.length).map(i=>({
@@ -246,31 +256,38 @@ async function loadWeather(){
   }
 }
 
-/* ---- sunrise/sunset (uses ZIP 78664 as “local”) ---- */
+/* ---- sunrise/sunset ---- */
 async function loadSun(){
   const {lat,lon} = ZIP_COORDS["78664"];
-  const u = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`;
   try{
-    const r = await fetch(u); const j = await r.json();
-    const s = new Date(j.results.sunrise); const t = new Date(j.results.sunset);
-    const f = x => x.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
-    $("#sunBox").textContent = `Sunrise ${f(s)} • Sunset ${f(t)}`;
-  }catch{ $("#sunBox").textContent = "Unavailable"; }
+    const r = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`);
+    const j = await r.json();
+    if (!j.results) throw 0;
+    const s = new Date(j.results.sunrise);
+    const t = new Date(j.results.sunset);
+    const fmt = x => x.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+    $("#sunBox").textContent = `Sunrise ${fmt(s)} • Sunset ${fmt(t)}`;
+  }catch{ $("#sunBox").textContent = "Sunrise/Sunset unavailable"; }
 }
 
-/* ---- verse of the day (OurManna API, no key) ---- */
+/* ---- verse of the day ---- */
 async function loadVOTD(){
   try{
     const r = await fetch("https://beta.ourmanna.com/api/v1/get/?format=json");
     const j = await r.json();
-    const v = j.verse?.details;
-    $("#votd").innerHTML = v
-      ? `<div>${v.text}</div><div class="mini muted" style="margin-top:6px">${v.reference}</div>`
-      : "Unavailable";
-  }catch{ $("#votd").textContent = "Unavailable"; }
+    const v = j.verse?.details || j.verse?.verse?.details;
+    if (v && v.text){
+      $("#votd").innerHTML = `<div>${v.text}</div><div class="mini muted" style="margin-top:6px">${v.reference}</div>`;
+      localStorage.setItem("votd_cache", JSON.stringify({text:v.text,ref:v.reference,ts:Date.now()}));
+    }else throw 0;
+  }catch{
+    const cached = JSON.parse(localStorage.getItem("votd_cache")||"{}");
+    if (cached.text) $("#votd").innerHTML = `<div>${cached.text}</div><div class="mini muted" style="margin-top:6px">${cached.ref}</div>`;
+    else $("#votd").textContent = "Verse unavailable";
+  }
 }
 
-/* ---- local events (Worker → Ticketmaster). Needs TM_KEY in Worker ---- */
+/* ---- local events ---- */
 async function loadEvents(){
   const {lat,lon} = ZIP_COORDS["78664"];
   try{
@@ -292,7 +309,7 @@ async function loadEvents(){
   }
 }
 
-/* ---- stocks (Worker → Finnhub) ---- */
+/* ---- stocks ---- */
 async function loadStocks(){
   const host = $("#stocksList"); host.innerHTML = "";
   try{
@@ -309,7 +326,7 @@ async function loadStocks(){
   }catch{ host.innerHTML = `<div class="mini muted">Quotes unavailable.</div>`; }
 }
 
-/* ---- crypto (Coingecko, no key) ---- */
+/* ---- crypto ---- */
 async function loadCrypto(){
   const host=$("#cryptoList"); host.innerHTML="";
   try{
@@ -338,10 +355,10 @@ loadTicker();
 loadTraffic();
 loadWeather();
 loadSun();
-loadVOTD();
+loadVOTD(); setInterval(loadVOTD, 30*60*1000);
 loadEvents();
-loadStocks();  setInterval(loadStocks, 60_000);
-loadCrypto();  setInterval(loadCrypto, 120_000);
+loadStocks(); setInterval(loadStocks, 60_000);
+loadCrypto(); setInterval(loadCrypto, 120_000);
 </script>
 </body>
 </html>
