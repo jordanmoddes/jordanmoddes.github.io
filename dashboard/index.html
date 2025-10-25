@@ -25,7 +25,7 @@
 
     /* Ticker */
     .ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
-    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 160s linear infinite} /* slowed to 160s */
+    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite} /* slowed to 160s */
     .ticker:hover .ticker-inner{animation-play-state:paused}
     .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
     @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -166,25 +166,27 @@
   const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
   function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
 
-// ---------- WEATHER: robust ZIP -> (lat, lon, city) ----------
+// Robust ZIP → {lat, lon, name}. Tries Worker → Zippopotam → Open-Meteo → hardcoded
 async function geocodeZip(zip){
+  // 0) Try your Worker if present
+  if (WORKER_BASE) {
+    try{
+      const r = await fetch(`${WORKER_BASE}/geo?zip=${encodeURIComponent(zip)}`);
+      if (r.ok) return await r.json();
+    }catch{}
+  }
+
   // 1) Zippopotam (no key)
   try {
     const r = await fetch(`https://api.zippopotam.us/us/${zip}`);
     if (r.ok) {
       const j = await r.json();
       const p = j.places?.[0];
-      if (p) {
-        return {
-          lat: Number(p.latitude),
-          lon: Number(p.longitude),
-          name: `${p["place name"]}, ${p["state abbreviation"]}`
-        };
-      }
+      if (p) return { lat:+p.latitude, lon:+p.longitude, name:`${p["place name"]}, ${p["state abbreviation"]}` };
     }
   } catch {}
 
-  // 2) Open-Meteo geocoder (hint with USA)
+  // 2) Open-Meteo geocoder (with USA hint)
   try {
     const r2 = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(zip + " USA")}&count=1&language=en&format=json`);
     if (r2.ok) {
@@ -197,7 +199,7 @@ async function geocodeZip(zip){
     }
   } catch {}
 
-  // 3) Final safety net — known coords for your ZIPs
+  // 3) Known-good fallbacks (so it ALWAYS works)
   const FALLBACK = {
     "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
     "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
@@ -206,28 +208,121 @@ async function geocodeZip(zip){
   };
   if (FALLBACK[zip]) return FALLBACK[zip];
 
-  // If truly unknown, throw so the UI shows "Weather unavailable"
   throw new Error("Geocoding failed");
 }
 
+// Forecast provider; uses Worker proxy if available
+async function fetchWeather(lat, lon){
+  if (WORKER_BASE) {
+    try {
+      const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
+      if (r.ok) return await r.json();
+    } catch {}
+  }
+  // Direct (no key, should work from browser)
+  const url = new URL("https://api.open-meteo.com/v1/forecast");
+  url.search = new URLSearchParams({
+    latitude: lat, longitude: lon, timezone: "auto",
+    wind_speed_unit: "mph",
+    current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
+    daily: "temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
+    hourly: "temperature_2m,weather_code"
+  }).toString();
+  const r = await fetch(url.toString());
+  return r.json();
+}
+
+async function loadWeather(){
+  const host = $("#weatherList"); host.innerHTML = "";
+  for (const zip of WEATHER_ZIPS){
+    try{
+      const geo = await geocodeZip(zip);
+      const data = await fetchWeather(geo.lat, geo.lon);
+      const cur = data.current;
+      const minC = Math.round(data.daily.temperature_2m_min[0]);
+      const maxC = Math.round(data.daily.temperature_2m_max[0]);
+
+      const times = data.hourly.time.map(t => new Date(t));
+      const tempsC = data.hourly.temperature_2m;
+      const codes = data.hourly.weather_code;
+      const now = new Date();
+      let idx = times.findIndex(t => t >= now);
+      if (idx < 0) idx = 0;
+      const hrs = [];
+      for (let i=0; i<5 && idx+i<times.length; i++){
+        const dt = times[idx+i];
+        hrs.push({
+          hour: dt.getHours().toString().padStart(2,"0"),
+          tempC: tempsC[idx+i],
+          code: codes[idx+i]
+        });
+      }
+
+      const card = document.createElement("div"); card.className="sym";
+      card.innerHTML = `
+        <div class="top">
+          <div><strong>${geo.name}</strong> · ${iconFor(cur.weather_code)}</div>
+          <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
+        </div>
+        <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
+        <div class="mini muted">
+          Feels ${Math.round(toF(cur.apparent_temperature))}°F · 
+          Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F
+        </div>
+        <div class="hrow">
+          ${hrs.map(h => `
+            <div class="hchip">
+              <div class="ico">${iconFor(h.code)}</div>
+              <div class="t mini">${Math.round(toF(h.tempC))}°F</div>
+              <div class="mini muted">${h.hour}:00</div>
+            </div>`).join("")}
+        </div>`;
+      host.appendChild(card);
+    }catch(e){
+      console.error("weather error", zip, e);
+      const card = document.createElement("div"); card.className="sym";
+      card.innerHTML = `<div class="top"><div><strong>${zip}</strong></div></div><div class="mini muted">Weather unavailable</div>`;
+      host.appendChild(card);
+    }
+  }
+}
+
+
 
   // ---------- STOCKS ----------
-  const mapYahoo=s=>s.replace("BRK.A","BRK-A").replace("BRK.B","BRK-B");
-  async function loadStocks(){
-    const host=$("#stocksList");host.innerHTML="";
-    try{
-      const r=await fetch(`${WORKER_BASE}/quotes?symbols=${STOCKS.map(mapYahoo).join(',')}`);
-      const rows=await r.json();
-      rows.forEach(q=>{
-        const chg=q.changePercent??0;
-        const d=document.createElement("div");d.className="sym";
-        d.innerHTML=`<div class="top"><div><strong>${q.symbol}</strong><span class="mini muted">${escapeHtml(q.name||"")}</span></div>
-        <div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</div></div>
+async function loadStocks(){
+  const host = $("#stocksList"); host.innerHTML = "";
+  try{
+    // No symbol remapping—send raw symbols to your Worker
+    const url = `${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(','))}`;
+    const r = await fetch(url);
+    const rows = await r.json();
+
+    if (!Array.isArray(rows) || !rows.length) {
+      host.innerHTML = `<div class='mini muted'>No quote data returned.</div>`;
+      return;
+    }
+
+    rows.forEach(q=>{
+      const chg = (q.changePercent == null) ? null : Number(q.changePercent);
+      const div = document.createElement("div");
+      div.className = "sym";
+      div.innerHTML = `
+        <div class="top">
+          <div><strong>${q.symbol}</strong> <span class="mini muted">${escapeHtml(q.name||"")}</span></div>
+          <div class="mini ${chg==null ? "muted" : ("chg " + (chg>=0?"up":"down"))}">
+            ${chg==null ? "—" : `${chg>=0?"+":""}${chg.toFixed(2)}%`}
+          </div>
+        </div>
         <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-        host.appendChild(d);
-      });
-    }catch(e){host.innerHTML=`<div class='mini muted'>Stock data unavailable</div>`;}
+      host.appendChild(div);
+    });
+  }catch(e){
+    console.error("stocks error", e);
+    host.innerHTML = `<div class='mini muted'>Quotes unavailable.</div>`;
   }
+}
+
 
   // ---------- CRYPTO ----------
   const nice=id=>id.charAt(0).toUpperCase()+id.slice(1);
