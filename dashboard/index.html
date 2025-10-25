@@ -166,53 +166,50 @@
   const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
   function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
 
-  // ---------- WEATHER ----------
-  async function geocodeZip(zip){
-    try{
-      const r = await fetch(`https://api.zippopotam.us/us/${zip}`);
-      if(!r.ok) throw 0;
+// ---------- WEATHER: robust ZIP -> (lat, lon, city) ----------
+async function geocodeZip(zip){
+  // 1) Zippopotam (no key)
+  try {
+    const r = await fetch(`https://api.zippopotam.us/us/${zip}`);
+    if (r.ok) {
       const j = await r.json();
       const p = j.places?.[0];
-      return {lat:+p.latitude, lon:+p.longitude, name:`${p["place name"]}, ${p["state abbreviation"]}`};
-    }catch{
-      const r2 = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${zip}&count=1`);
-      const j2 = await r2.json();
-      const g=j2.results?.[0];
-      return {lat:g?.latitude||0, lon:g?.longitude||0, name:g?.name||zip};
-    }
-  }
-  async function fetchWeather(lat,lon){
-    const u=new URL("https://api.open-meteo.com/v1/forecast");
-    u.search=new URLSearchParams({latitude:lat,longitude:lon,timezone:"auto",wind_speed_unit:"mph",current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",hourly:"temperature_2m,weather_code"}).toString();
-    const r=await fetch(u);return r.json();
-  }
-  async function loadWeather(){
-    const host=$("#weatherList");host.innerHTML="";
-    for(const zip of WEATHER_ZIPS){
-      try{
-        const geo=await geocodeZip(zip); if(!geo.lat) throw "no geo";
-        const data=await fetchWeather(geo.lat,geo.lon);
-        const cur=data.current;
-        const minC=Math.round(data.daily.temperature_2m_min[0]);
-        const maxC=Math.round(data.daily.temperature_2m_max[0]);
-        const times=data.hourly.time.map(t=>new Date(t));
-        const tempsC=data.hourly.temperature_2m,codes=data.hourly.weather_code,now=new Date();
-        let idx=times.findIndex(t=>t>=now); if(idx<0) idx=0;
-        const hrs=[]; for(let i=0;i<5&&idx+i<times.length;i++){const dt=times[idx+i];hrs.push({hour:dt.getHours().toString().padStart(2,"0"),tempC:tempsC[idx+i],code:codes[idx+i]});}
-        const div=document.createElement("div");div.className="sym";
-        div.innerHTML=`<div class="top"><div><strong>${geo.name}</strong> · ${iconFor(cur.weather_code)}</div><div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div></div>
-        <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
-        <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F</div>
-        <div class="hrow">${hrs.map(h=>`<div class="hchip"><div class="ico">${iconFor(h.code)}</div><div class="t mini">${Math.round(toF(h.tempC))}°F</div><div class="mini muted">${h.hour}:00</div></div>`).join("")}</div>`;
-        host.appendChild(div);
-      }catch(e){
-        console.error("weather fail",zip,e);
-        const d=document.createElement("div");d.className="sym";
-        d.innerHTML=`<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
-        host.appendChild(d);
+      if (p) {
+        return {
+          lat: Number(p.latitude),
+          lon: Number(p.longitude),
+          name: `${p["place name"]}, ${p["state abbreviation"]}`
+        };
       }
     }
-  }
+  } catch {}
+
+  // 2) Open-Meteo geocoder (hint with USA)
+  try {
+    const r2 = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(zip + " USA")}&count=1&language=en&format=json`);
+    if (r2.ok) {
+      const j2 = await r2.json();
+      const g = j2.results?.[0];
+      if (g) {
+        const label = [g.name, g.admin1, g.country_code].filter(Boolean).join(", ");
+        return { lat: g.latitude, lon: g.longitude, name: label };
+      }
+    }
+  } catch {}
+
+  // 3) Final safety net — known coords for your ZIPs
+  const FALLBACK = {
+    "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
+    "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
+    "60030": { lat: 42.3445, lon: -88.0417, name: "Grayslake, IL" },
+    "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
+  };
+  if (FALLBACK[zip]) return FALLBACK[zip];
+
+  // If truly unknown, throw so the UI shows "Weather unavailable"
+  throw new Error("Geocoding failed");
+}
+
 
   // ---------- STOCKS ----------
   const mapYahoo=s=>s.replace("BRK.A","BRK-A").replace("BRK.B","BRK-B");
