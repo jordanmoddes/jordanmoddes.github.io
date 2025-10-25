@@ -2,64 +2,59 @@
 <html lang="en" id="top">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JMOD's Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JMOD’s Dashboard</title>
   <meta name="color-scheme" content="dark light" />
-
-  <!-- ================================
-       CSS: THEME, LAYOUT, COMPONENTS
-       ================================= -->
   <style>
-    :root{--bg:#0b0c10;--card:#13151b;--ink:#e8ebf4;--muted:#a2a8b6;--border:#222631;--accent:#4da3ff;--good:#17e5a1;--bad:#ff7b7b}
-    html,body{height:100%}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:linear-gradient(180deg,#0b0c10,#0e1218);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,Inter,Arial,sans-serif}
+    :root{
+      --bg:#0b0c10;--card:#13151b;--ink:#e8ebf4;--muted:#a2a8b6;--border:#222631;
+      --accent:#4da3ff;--good:#17e5a1;--bad:#ff7b7b
+    }
+    html,body{height:100%} html{scroll-behavior:smooth}
+    body{margin:0;background:linear-gradient(180deg,#0b0c10,#0e1218);
+         color:var(--ink);font:14px/1.45 system-ui,Segoe UI,Inter,Arial,sans-serif;transition:background 1s}
     a{color:inherit}
     .wrap{max-width:1200px;margin:0 auto;padding:0 14px 48px}
 
-    /* Navbar */
-    .nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);
+         border-bottom:1px solid var(--border)}
     .navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;justify-content:center;padding:12px}
-    .nav a{color:#f1f3f7;text-decoration:none;font-weight:600}
-    .nav a:hover{opacity:.85}
+    .nav a{color:#f1f3f7;text-decoration:none;font-weight:600}.nav a:hover{opacity:.85}
 
-    /* Ticker */
+    /* TICKER */
     .ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
-    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite} /* slower & readable */
+    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
     .ticker:hover .ticker-inner{animation-play-state:paused}
     .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
     @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* Layout */
+    /* LAYOUT */
     h1{font-size:22px;margin:16px 0}
     .grid{display:grid;gap:16px}
-    @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+    @media(min-width:900px){.grid.two{grid-template-columns:1fr 1fr}}
     .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
     .card .hd{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
     .card .bd{padding:14px}
     .pill{font-size:12px;background:#0f1420;border:1px solid #1f2a43;color:#a9c8ff;padding:5px 10px;border-radius:999px}
-    iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
-    .muted{color:var(--muted)}
-    .mini{font-size:12px;color:#cbd5e1}
+    .muted{color:var(--muted)} .mini{font-size:12px;color:#cbd5e1}
     .section{scroll-margin-top:72px}
+    iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
 
-    /* Weather hourly chips */
+    /* WEATHER CARDS */
+    .symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+    .sym{border:1px solid var(--border);border-radius:12px;padding:10px}
+    .sym .top{display:flex;justify-content:space-between}
+    .sym .price{font-size:20px;font-weight:800;margin-top:4px}
     .hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
     .hchip{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--border);background:#0f1218;border-radius:10px;padding:6px 8px;min-width:52px}
     .hchip .ico{font-size:18px;line-height:1}
     .hchip .t{font-weight:700;margin-top:2px}
 
-    /* Stock/Crypto grid */
-    .symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-    .sym{border:1px solid var(--border);border-radius:12px;padding:10px}
-    .sym .top{display:flex;justify-content:space-between}
-    .sym .price{font-size:20px;font-weight:800;margin-top:4px}
+    /* STOCK/CRYPTO */
     .chg.up{color:var(--good)} .chg.down{color:var(--bad)}
 
-    /* Notes */
-    textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;color:#fff;border-radius:12px;padding:10px}
-
-    /* Bottom “Top” button + footer */
+    /* FOOTER */
     .btm{display:flex;justify-content:center;margin:28px 0}
     .btn-top{background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;border-radius:999px;text-decoration:none;font-weight:600}
     .btn-top:hover{opacity:.9}
@@ -67,45 +62,78 @@
   </style>
 </head>
 <body>
-
-  <!-- ================================
-       HTML: NAV + TICKER
-       ================================= -->
+  <!-- NAV -->
   <div class="nav">
     <div class="navin">
       <a href="/">🏠 Resume</a>
-      <a href="#traffic">Traffic</a>
+      <a href="#greet">Greeting</a>
       <a href="#weather">Weather</a>
+      <a href="#sun">Sun</a>
+      <a href="#verse">Verse</a>
+      <a href="#events">Events</a>
+      <a href="#traffic">Traffic</a>
       <a href="#stocks">Stocks</a>
+      <a href="#crypto">Crypto</a>
       <a href="#notes">Scratchpad</a>
     </div>
   </div>
 
+  <!-- TICKER -->
   <div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
 
-  <!-- ================================
-       HTML: PAGE CONTENT
-       ================================= -->
   <div class="wrap">
-    <h1 class="section" id="traffic">Personal Dashboard</h1>
-
-    <!-- TRAFFIC -->
-    <div class="grid">
-      <div class="card">
-        <div class="hd"><div>Traffic To Work</div></div>
-        <iframe id="map1" title="route1"></iframe>
+    <!-- GREETING -->
+    <div class="card section" id="greet" style="margin-top:16px">
+      <div class="hd"><div>Welcome</div>
+        <span class="pill">time-aware</span>
       </div>
-
-      <div class="card">
-        <div class="hd"><div>Traffic To Home</div></div>
-        <iframe id="map2" title="route2"></iframe>
+      <div class="bd">
+        <div class="grid two">
+          <div>
+            <div id="greetLine" style="font-size:22px;font-weight:800;margin-bottom:6px">Hello</div>
+            <div class="mini muted">Change name:</div>
+            <input id="nameBox" placeholder="Your name" style="margin-top:6px;width:260px;background:#0f1218;border:1px solid var(--border);color:var(--ink);border-radius:10px;padding:8px 10px" />
+          </div>
+          <div class="mini muted" id="greetMeta"></div>
+        </div>
       </div>
     </div>
 
     <!-- WEATHER -->
     <div class="card section" id="weather" style="margin-top:16px">
       <div class="hd"><div>Weather</div></div>
-      <div class="bd"><div id="weatherList"></div></div>
+      <div class="bd"><div id="weatherList" class="symbols"></div></div>
+    </div>
+
+    <!-- SUNRISE / SUNSET -->
+    <div class="card section" id="sun" style="margin-top:16px">
+      <div class="hd"><div>Sunrise • Sunset</div><span class="pill">today</span></div>
+      <div class="bd" id="sunBox" class="grid"></div>
+    </div>
+
+    <!-- VERSE -->
+    <div class="card section" id="verse" style="margin-top:16px">
+      <div class="hd"><div>Verse of the Day</div></div>
+      <div class="bd" id="verseBox">Loading…</div>
+    </div>
+
+    <!-- LOCAL EVENTS -->
+    <div class="card section" id="events" style="margin-top:16px">
+      <div class="hd"><div>Local Events</div><span class="pill">next 7–14 days</span></div>
+      <div class="bd" id="eventsList" class="symbols"></div>
+    </div>
+
+    <!-- TRAFFIC -->
+    <h1 class="section" id="traffic">Traffic</h1>
+    <div class="grid two">
+      <div class="card">
+        <div class="hd"><div>To Work</div></div>
+        <iframe id="map1" title="route1"></iframe>
+      </div>
+      <div class="card">
+        <div class="hd"><div>To Home</div></div>
+        <iframe id="map2" title="route2"></iframe>
+      </div>
     </div>
 
     <!-- STOCKS -->
@@ -123,215 +151,244 @@
     <!-- NOTES -->
     <div class="card section" id="notes" style="margin-top:16px">
       <div class="hd"><div>Scratchpad</div><button id="clearNotes" class="pill">Clear</button></div>
-      <div class="bd"><textarea id="notesBox" placeholder="Jot quick notes…"></textarea></div>
+      <div class="bd"><textarea id="notesBox" placeholder="Jot quick notes…" style="width:100%;min-height:120px;background:#0f1218;border:1px solid var(--border);color:var(--ink);border-radius:12px;padding:10px"></textarea></div>
     </div>
 
-    <!-- Back to top + footer -->
     <div class="btm"><a href="#top" class="btn-top">Top</a></div>
     <div class="footer">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
   </div>
 
-  <!-- ================================
-       JS: CONFIG + HELPERS + FEATURES
-       ================================= -->
 <script>
-  /* ---------- CONFIG ---------- */
-  const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
-  const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
+/* ================================
+   JS: CONFIG
+================================ */
+const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
+const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
 
-  const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
-  const B = "411 W Main St, Round Rock, TX 78664";
+const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
+const B = "411 W Main St, Round Rock, TX 78664";
 
-  const WEATHER_ZIPS = ["78664","53158","60030","44115"];
-  const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
-  const CRYPTO = ["bitcoin","ethereum","dogecoin"];
+const WEATHER_ZIPS = ["78664","53158","60030","44115"];
+const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
+const CRYPTO = ["bitcoin","ethereum","dogecoin"];
 
-  /* ---------- HELPERS ---------- */
-  const $ = sel => document.querySelector(sel);
-  const escapeHtml = s => String(s).replace(/[&<>\"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
-  const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
-  const toF = c => (c * 9/5) + 32;
-  const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code] ?? "🌡️");
+/* ================================
+   JS: HELPERS
+================================ */
+const $ = s => document.querySelector(s);
+const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
+const toF = c => (c * 9/5) + 32;
+const iconFor = c=>({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[c]??"🌡️");
 
-  /* ---------- TICKER ---------- */
-  async function loadTicker(){
-    const el = $("#ticker");
-    try{
-      const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
-      const items = await r.json();
-      const twice = items.concat(items);
-      el.innerHTML = twice.map(x=>`<span class="tick-item">• ${escapeHtml(x.title)}</span>`).join("");
-    }catch{
-      el.innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
-    }
-  }
+/* ================================
+   TICKER
+================================ */
+async function loadTicker(){
+  try{
+    const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
+    const items = await r.json();
+    const twice = items.concat(items);
+    $("#ticker").innerHTML = twice.map(x=>`<span class="tick-item">• ${x.title.replace(/</g,"&lt;")}</span>`).join("");
+  }catch{ $("#ticker").innerHTML=`<span class="tick-item">Ticker unavailable</span>`; }
+}
 
-  /* ---------- TRAFFIC ---------- */
-  const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
-  function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
+/* ================================
+   GREETING + TIME GRADIENT
+================================ */
+function setGradientByHour(){
+  const h = new Date().getHours();
+  const top = h<6 ? "#0a0c12" : h<12 ? "#0c1220" : h<18 ? "#0b1426" : "#09101a";
+  const bot = h<6 ? "#06070a" : h<12 ? "#0e1626" : h<18 ? "#0f1520" : "#070a10";
+  document.body.style.background = `linear-gradient(180deg, ${top}, ${bot})`;
+}
+function greet(){
+  const name = localStorage.getItem("jmod:name") || "Jordan";
+  const hour = new Date().getHours();
+  const part = hour<12?"Morning":hour<18?"Afternoon":"Evening";
+  $("#greetLine").textContent = `Good ${part}, ${name}`;
+  $("#nameBox").value = name;
+  $("#greetMeta").innerHTML = `Local time: <b>${new Date().toLocaleTimeString()}</b>`;
+}
+$("#nameBox").addEventListener("input",e=>{
+  localStorage.setItem("jmod:name", e.target.value.trim()||"Jordan");
+  greet();
+});
 
-/* ===== WEATHER via NWS (no key) – calls the Worker /nws endpoint ===== */
-
-// Fixed coordinates for your ZIPs (no geocoder needed)
-const ZIP_COORDS = {
-  "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
-  "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
-  "60030": { lat: 42.3445, lon: -88.0417, name: "Grayslake, IL" },
-  "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
+/* ================================
+   WEATHER + SUN
+================================ */
+const ZIP_COORDS={
+  "78664":{lat:30.5083,lon:-97.6789,name:"Round Rock, TX"},
+  "53158":{lat:42.5531,lon:-87.9501,name:"Pleasant Prairie, WI"},
+  "60030":{lat:42.3445,lon:-88.0417,name:"Grayslake, IL"},
+  "44115":{lat:41.4993,lon:-81.6944,name:"Cleveland, OH"}
 };
-
-// Small icon helper from shortForecast text
-function iconFromText(t=""){
-  const s = t.toLowerCase();
-  if (s.includes("thunder")) return "⛈️";
-  if (s.includes("snow"))    return "❄️";
-  if (s.includes("rain")||s.includes("showers")||s.includes("drizzle")) return "🌧️";
-  if (s.includes("fog")||s.includes("haze")) return "🌫️";
-  if (s.includes("cloud"))   return "☁️";
-  if (s.includes("sun")||s.includes("clear")) return "☀️";
-  if (s.includes("partly")||s.includes("mostly")) return "⛅";
-  return "🌡️";
+async function wx(lat,lon){
+  // try Worker proxy first
+  try{
+    const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
+    if(r.ok) return r.json();
+  }catch(e){}
+  // direct fallback
+  const u = new URL("https://api.open-meteo.com/v1/forecast");
+  u.search = new URLSearchParams({
+    latitude:lat, longitude:lon, timezone:"auto", wind_speed_unit:"mph",
+    current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
+    daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code,sunrise,sunset,daylight_duration",
+    hourly:"temperature_2m,weather_code"
+  }).toString();
+  const r = await fetch(u); return r.json();
 }
-
-async function fetchNWS(lat, lon){
-  // New Worker endpoint; returns { place, daily[], hourly[] }
-  const r = await fetch(`${WORKER_BASE}/nws?lat=${lat}&lon=${lon}`);
-  if (!r.ok) throw new Error("NWS worker status " + r.status);
-  return r.json();
-}
-
-function formatHour(iso){
-  const d = new Date(iso);
-  let h = d.getHours();
-  const ampm = h >= 12 ? "PM" : "AM";
-  h = h % 12; if (h === 0) h = 12;
-  return `${h}${ampm}`;
-}
-
 async function loadWeather(){
-  const host = document.querySelector("#weatherList");
-  if (!host) return;
-  host.innerHTML = "";
-
-  for (const zip of WEATHER_ZIPS){
-    const card = document.createElement("div"); card.className = "sym";
+  const host = $("#weatherList"); host.innerHTML="";
+  for(const zip of WEATHER_ZIPS){
     try{
-      const loc = ZIP_COORDS[zip];
-      if (!loc) throw new Error("no coords for "+zip);
+      const g = ZIP_COORDS[zip];
+      const data = await wx(g.lat,g.lon);
+      const cur = data.current;
+      const minC = Math.round(data.daily.temperature_2m_min[0]);
+      const maxC = Math.round(data.daily.temperature_2m_max[0]);
 
-      const data = await fetchNWS(loc.lat, loc.lon);
-      const place = data.place || loc.name;
-
-      // Current: take first hourly period (already temperature in °F)
-      const hourly = Array.isArray(data.hourly) ? data.hourly : [];
-      const current = hourly[0] || {};
-      const currTempF = current.temperature ?? "—";
-      const currText  = current.shortForecast || "";
-      const currIcon  = iconFromText(currText);
-      const windText  = current.windSpeed || ""; // already mph text
-
-      // Next 5 hours chips
-      const chips = hourly.slice(0, 5).map(p => ({
-        hour: formatHour(p.startTime),
-        tF: p.temperature,
-        txt: p.shortForecast
-      }));
-
-      // Today highs/lows from daily (NWS daily returns both day/night)
-      const daily = Array.isArray(data.daily) ? data.daily : [];
-      // find the first daytime and the next nighttime entries
-      const day  = daily.find(p => p.isDaytime);
-      const night= daily.find(p => !p.isDaytime);
-      const hi = day?.temperature ?? "—";
-      const lo = night?.temperature ?? "—";
-
+      const times = data.hourly.time.map(t=>new Date(t));
+      const temps = data.hourly.temperature_2m, codes = data.hourly.weather_code;
+      let idx = times.findIndex(t=>t>=new Date()); if(idx<0) idx=0;
+      const hrs=[];
+      for(let i=0;i<5 && idx+i<times.length;i++){
+        const dt = times[idx+i];
+        hrs.push({h:dt.getHours().toString().padStart(2,"0"), t:temps[idx+i], c:codes[idx+i]});
+      }
+      const card = document.createElement("div"); card.className="sym";
       card.innerHTML = `
-        <div class="top">
-          <div><strong>${place}</strong> · ${currIcon} ${currText}</div>
-          <div class="mini">${windText || ""}</div>
-        </div>
-        <div class="price">${currTempF}°F</div>
-        <div class="mini muted">Today ${lo}°F – ${hi}°F</div>
+        <div class="top"><div><strong>${g.name}</strong> · ${iconFor(cur.weather_code)}</div>
+        <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div></div>
+        <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
+        <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F</div>
         <div class="hrow">
-          ${chips.map(h => `
-            <div class="hchip">
-              <div class="ico">${iconFromText(h.txt)}</div>
-              <div class="t mini">${h.tF}°F</div>
-              <div class="mini muted">${h.hour}</div>
-            </div>`).join("")}
+          ${hrs.map(x=>`<div class="hchip"><div class="ico">${iconFor(x.c)}</div><div class="t mini">${Math.round(toF(x.t))}°F</div><div class="mini muted">${x.h}:00</div></div>`).join("")}
         </div>`;
-    }catch(err){
-      console.error("weather (NWS) error", zip, err);
-      card.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
+      host.appendChild(card);
+
+      // fill sunrise/sunset from first ZIP (Round Rock)
+      if(zip==="78664"){
+        const sb = $("#sunBox");
+        const sr = new Date(data.daily.sunrise[0]);
+        const ss = new Date(data.daily.sunset[0]);
+        const dl = Math.round(data.daily.daylight_duration[0]/3600);
+        sb.innerHTML = `
+          <div><b>Sunrise:</b> ${sr.toLocaleTimeString()}</div>
+          <div><b>Sunset:</b> ${ss.toLocaleTimeString()}</div>
+          <div><b>Daylight:</b> ~${dl} hours</div>`;
+      }
+    }catch(e){
+      const div = document.createElement("div"); div.className="sym";
+      div.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
+      host.appendChild(div);
     }
-    host.appendChild(card);
   }
 }
 
-  /* ---------- STOCKS ---------- */
-  async function loadStocks(){
-    const host = $("#stocksList"); host.innerHTML = "";
-    try{
-      const url = `${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(','))}`;
-      const r = await fetch(url);
-      const rows = await r.json();
-      if (!Array.isArray(rows) || !rows.length) {
-        host.innerHTML = `<div class='mini muted'>No quote data returned.</div>`;
-        return;
-      }
-      rows.forEach(q=>{
-        const chg = (q.changePercent == null) ? null : Number(q.changePercent);
-        const div = document.createElement("div");
-        div.className = "sym";
-        div.innerHTML = `
-          <div class="top">
-            <div><strong>${q.symbol}</strong> <span class="mini muted">${escapeHtml(q.name||"")}</span></div>
-            <div class="mini ${chg==null ? "muted" : ("chg " + (chg>=0?"up":"down"))}">
-              ${chg==null ? "—" : `${chg>=0?"+":""}${chg.toFixed(2)}%`}
-            </div>
-          </div>
-          <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-        host.appendChild(div);
-      });
-    }catch(e){
-      console.error("stocks error", e);
-      host.innerHTML = `<div class='mini muted'>Quotes unavailable.</div>`;
-    }
+/* ================================
+   VERSE OF THE DAY
+================================ */
+async function loadVerse(){
+  try{
+    const r = await fetch(`${WORKER_BASE}/verse`);
+    const j = await r.json();
+    $("#verseBox").innerHTML = `<div style="font-size:18px;line-height:1.5">${j.text}</div><div class="mini muted" style="margin-top:6px">${j.ref}</div>`;
+  }catch{
+    $("#verseBox").innerHTML = `<span class="mini muted">Verse unavailable</span>`;
   }
+}
 
-  /* ---------- CRYPTO ---------- */
-  const nice=id=>id.charAt(0).toUpperCase()+id.slice(1);
-  async function loadCrypto(){
-    const host=$("#cryptoList");host.innerHTML="";
-    try{
-      const url=new URL("https://api.coingecko.com/api/v3/simple/price");
-      url.search=new URLSearchParams({ids:CRYPTO.join(","),vs_currencies:"usd",include_24hr_change:"true"}).toString();
-      const r=await fetch(url),j=await r.json();
-      for(const id of CRYPTO){
-        if(!j[id]) continue;
-        const chg=Number(j[id].usd_24h_change||0);
-        const div=document.createElement("div");div.className="sym";
-        div.innerHTML=`<div class="top"><strong>${nice(id)}</strong><div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</div></div>
+/* ================================
+   LOCAL EVENTS (optional TM key)
+================================ */
+async function loadEvents(){
+  const host = $("#eventsList"); host.innerHTML="";
+  try{
+    // use Round Rock lat/lon (same as primary) — or enhance with navigator.geolocation later
+    const {lat,lon} = ZIP_COORDS["78664"];
+    const r = await fetch(`${WORKER_BASE}/events?lat=${lat}&lon=${lon}&radius=25`);
+    const items = await r.json();
+    if(!items.length){
+      host.innerHTML = `<div class="mini muted">Add TM_KEY to Worker for local events.</div>`;
+      return;
+    }
+    items.slice(0,6).forEach(ev=>{
+      const div = document.createElement("div"); div.className="sym";
+      div.innerHTML = `<div class="top"><div><strong>${ev.name}</strong></div>
+        <div class="mini muted">${new Date(ev.date).toLocaleString()}</div></div>
+        <div class="mini"><a href="${ev.url}" target="_blank">Open details ↗</a> · ${ev.venue||""}</div>`;
+      host.appendChild(div);
+    });
+  }catch{
+    $("#eventsList").innerHTML = `<div class="mini muted">Events unavailable</div>`;
+  }
+}
+
+/* ================================
+   TRAFFIC
+================================ */
+const gEmbed=(o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
+function updateTraffic(){ $("#map1").src=gEmbed(A,B); $("#map2").src=gEmbed(B,A); }
+
+/* ================================
+   STOCKS & CRYPTO
+================================ */
+async function loadStocks(){
+  const host = $("#stocksList"); host.innerHTML="";
+  try{
+    const r = await fetch(`${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(','))}`);
+    const rows = await r.json();
+    if(!Array.isArray(rows)||!rows.length){ host.innerHTML=`<div class='mini muted'>No quote data</div>`; return; }
+    rows.forEach(q=>{
+      const chg = q.changePercent;
+      const div = document.createElement("div"); div.className="sym";
+      div.innerHTML = `<div class="top"><div><strong>${q.symbol}</strong></div>
+        <div class="mini ${chg==null?"muted":("chg " + (chg>=0?"up":"down"))}">${chg==null?"—":`${chg>=0?"+":""}${chg.toFixed(2)}%`}</div></div>
+        <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+      host.appendChild(div);
+    });
+  }catch{ $("#stocksList").innerHTML = `<div class="mini muted">Stocks unavailable</div>`; }
+}
+async function loadCrypto(){
+  const host=$("#cryptoList");host.innerHTML="";
+  try{
+    const u = new URL("https://api.coingecko.com/api/v3/simple/price");
+    u.search = new URLSearchParams({ids:CRYPTO.join(","),vs_currencies:"usd",include_24hr_change:"true"}).toString();
+    const r=await fetch(u); const j=await r.json();
+    for(const id of CRYPTO){
+      if(!j[id]) continue;
+      const chg = Number(j[id].usd_24h_change||0);
+      const div = document.createElement("div"); div.className="sym";
+      div.innerHTML = `<div class="top"><div><strong>${id[0].toUpperCase()+id.slice(1)}</strong></div>
+        <div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</div></div>
         <div class="price">$${Number(j[id].usd||0).toLocaleString()}</div>`;
-        host.appendChild(div);
-      }
-    }catch{
-      host.innerHTML=`<div class='mini muted'>Crypto unavailable</div>`;
+      host.appendChild(div);
     }
-  }
+  }catch{ host.innerHTML=`<div class='mini muted'>Crypto unavailable</div>`; }
+}
 
-  /* ---------- NOTES ---------- */
-  const notesEl=$("#notesBox");
-  notesEl.value=localStorage.getItem("dashboard-notes")||"";
-  notesEl.addEventListener("input",()=>localStorage.setItem("dashboard-notes",notesEl.value));
-  $("#clearNotes").onclick=()=>{notesEl.value="";localStorage.removeItem("dashboard-notes");};
+/* ================================
+   NOTES
+================================ */
+const notesEl=$("#notesBox");
+notesEl.value=localStorage.getItem("dashboard-notes")||"";
+notesEl.addEventListener("input",()=>localStorage.setItem("dashboard-notes",notesEl.value));
+$("#clearNotes").onclick=()=>{notesEl.value="";localStorage.removeItem("dashboard-notes");};
 
-  /* ---------- INIT ---------- */
-  loadTicker();
-  updateTraffic(); setInterval(updateTraffic,120000);
-  loadWeather();
-  loadStocks(); setInterval(loadStocks,60000);
-  loadCrypto(); setInterval(loadCrypto,120000);
+/* ================================
+   INIT
+================================ */
+setGradientByHour(); setInterval(setGradientByHour, 60000);
+greet(); setInterval(greet, 60000);
+loadTicker();
+loadWeather();
+loadVerse();
+loadEvents();
+updateTraffic(); setInterval(updateTraffic,120000);
+loadStocks(); setInterval(loadStocks,60000);
+loadCrypto(); setInterval(loadCrypto,120000);
 </script>
 </body>
 </html>
