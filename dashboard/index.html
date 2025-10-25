@@ -256,33 +256,43 @@
 
   // ---------------- STOCKS ----------------
   function mapYahoo(sym){ return sym.replace("BRK.A","BRK-A").replace("BRK.B","BRK-B"); }
-  async function loadStocks(){
-    const host = $("#stocks"); host.innerHTML = "";
-    try{
-      const url = WORKER_BASE
-        ? `${WORKER_BASE}/quotes?symbols=${STOCKS.map(mapYahoo).join(',')}`
-        : `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(STOCKS.map(mapYahoo).join(','))}`;
-      const r = await fetch(url);
-      const j = await r.json();
-      const rows = WORKER_BASE ? j : (j.quoteResponse?.result||[]).map(q=>({
-        symbol:q.symbol, name:q.shortName||q.longName||q.symbol, price:q.regularMarketPrice, changePercent:q.regularMarketChangePercent
-      }));
-      if(!rows.length) throw new Error("empty quotes");
-      rows.forEach(q=>{
-        const chg = Number(q.changePercent||0);
-        const div = document.createElement("div");
-        div.className = "sym";
-        div.innerHTML = `
-          <div class="top"><div><strong>${q.symbol}</strong> <span class="mini muted">${escapeHtml(q.name||"")}</span></div>
-          <div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${(chg||0).toFixed(2)}%</div></div>
-          <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-        host.appendChild(div);
-      });
-    }catch(e){
-      console.error("stocks error", e);
-      host.innerHTML = `<div class='mini muted'>Quotes blocked by CORS. Add WORKER_BASE to enable.</div>`;
+async function loadStocks(){
+  const host = $("#stocks"); host.innerHTML = "";
+  try{
+    const url = WORKER_BASE
+      ? `${WORKER_BASE}/quotes?symbols=${STOCKS.map(mapYahoo).join(',')}`
+      : `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(STOCKS.map(mapYahoo).join(','))}`;
+
+    const r = await fetch(url);
+    const j = await r.json();
+    const rows = WORKER_BASE ? j : (j.quoteResponse?.result||[]).map(q=>({
+      symbol:q.symbol, name:q.shortName||q.longName||q.symbol, price:q.regularMarketPrice, changePercent:q.regularMarketChangePercent
+    }));
+
+    if(!rows.length){
+      host.innerHTML = `<div class='mini muted'>No quote data returned.</div>`;
+      return;
     }
+
+    rows.forEach(q=>{
+      const chg = (q.changePercent == null) ? null : Number(q.changePercent);
+      const div = document.createElement("div");
+      div.className = "sym";
+      div.innerHTML = `
+        <div class="top">
+          <div><strong>${q.symbol}</strong> <span class="mini muted">${escapeHtml(q.name||"")}</span></div>
+          <div class="mini ${chg==null ? "muted" : ("chg " + (chg>=0?"up":"down"))}">
+            ${chg==null ? "—" : `${chg>=0?"+":""}${chg.toFixed(2)}%`}
+          </div>
+        </div>
+        <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+      host.appendChild(div);
+    });
+  }catch(e){
+    console.error("stocks error", e);
+    host.innerHTML = `<div class='mini muted'>Quotes unavailable.</div>`;
   }
+}
 
   // ---------------- CRYPTO ----------------
   function nice(id){ return id.charAt(0).toUpperCase()+id.slice(1); }
