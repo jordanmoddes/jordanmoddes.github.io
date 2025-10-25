@@ -18,7 +18,8 @@
     .nav a:hover{opacity:.85}
     /* Ticker */
     .ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
-    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 30s linear infinite}
+    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 80s linear infinite} /* was 30s */
+    .ticker:hover .ticker-inner{animation-play-state:paused} /* pause on hover */
     .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
     @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     /* Layout */
@@ -34,6 +35,11 @@
     .muted{color:var(--muted)}
     .val{font-weight:700}
     .mini{font-size:12px;color:#cbd5e1}
+    /* Weather hourly chips */
+.hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.hchip{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--border);background:#0f1218;border-radius:10px;padding:6px 8px;min-width:52px}
+.hchip .ico{font-size:18px;line-height:1}
+.hchip .t{font-weight:700;margin-top:2px}
     /* Stock/Crypto grid */
     .symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
     .sym{border:1px solid var(--border);border-radius:12px;padding:10px}
@@ -61,30 +67,24 @@
   <div class="wrap">
     <h1>Personal Dashboard</h1>
 
-    <!-- TRAFFIC -->
-    <div class="grid">
-      <div class="card">
-        <div class="hd"><div>Traffic: 2670 S AW Grimes → 411 W Main</div><span class="pill">Driving · live traffic</span></div>
-        <div class="bd">
-          <div class="row mini"><div>ETA: <span id="eta1" class="val">–</span></div><div class="muted">Distance: <span id="dist1">–</span></div></div>
-        </div>
-        <iframe id="map1" title="route1"></iframe>
-      </div>
+<!-- TRAFFIC -->
+<div class="grid">
+  <div class="card">
+    <div class="hd"><div>Traffic: To Work</div></div>
+    <iframe id="map1" title="route1"></iframe>
+  </div>
 
-      <div class="card">
-        <div class="hd"><div>Traffic: 411 W Main → 2670 S AW Grimes</div><span class="pill">Driving · live traffic</span></div>
-        <div class="bd">
-          <div class="row mini"><div>ETA: <span id="eta2" class="val">–</span></div><div class="muted">Distance: <span id="dist2">–</span></div></div>
-        </div>
-        <iframe id="map2" title="route2"></iframe>
-      </div>
-    </div>
+  <div class="card">
+    <div class="hd"><div>Traffic: To Home</div></div>
+    <iframe id="map2" title="route2"></iframe>
+  </div>
+</div>
 
     <!-- WEATHER -->
-    <div class="card" style="margin-top:16px">
-      <div class="hd"><div>Weather</div><span class="pill">Open-Meteo · no key</span></div>
-      <div class="bd" id="weather" class="grid"></div>
-    </div>
+<div class="card" style="margin-top:16px">
+  <div class="hd"><div>Weather</div></div>
+  <div class="bd" id="weather"></div>
+</div>
 
     <!-- STOCKS & CRYPTO -->
     <div class="grid" style="margin-top:16px">
@@ -153,106 +153,117 @@
     }
   }
 
-  // ---------------- TRAFFIC (Google ETA + Google visual) ----------------
-  // Use Google Maps Embed so the visual matches the ETA source.
-  function googleEmbed(o, d) {
-    return `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
-  }
 
-  async function distanceMatrix(orig, dest){
-    const url = new URL("https://maps.googleapis.com/maps/api/distancematrix/json");
-    url.search = new URLSearchParams({
-      origins: orig,
-      destinations: dest,
-      departure_time: "now",
-      traffic_model: "best_guess",
-      units: "imperial",
-      key: GOOGLE_MAPS_API_KEY
-    }).toString();
-    const r = await fetch(url.toString());
-    if(!r.ok) throw new Error("ETA fetch failed");
-    return r.json();
-  }
-  function humanizeETA(ms){
-    const mins = Math.round(ms/60000);
-    if(mins < 60) return `${mins} min`;
-    const h = Math.floor(mins/60), m = mins%60;
-    return `${h} hr ${m} min`;
-  }
-  async function updateTraffic(){
-    $("#map1").src = googleEmbed(A, B);
-    $("#map2").src = googleEmbed(B, A);
-    const set1=(t,d)=>{ $("#eta1").textContent=t; $("#dist1").textContent=d; };
-    const set2=(t,d)=>{ $("#eta2").textContent=t; $("#dist2").textContent=d; };
-    try{
-      const j1 = await distanceMatrix(A, B);
-      const el1 = j1.rows?.[0]?.elements?.[0];
-      set1(humanizeETA((el1?.duration_in_traffic || el1?.duration).value*1000), el1?.distance?.text || "–");
-    }catch(err){
-      console.error("eta1 error", err);
-      set1("–","–");
-    }
-    try{
-      const j2 = await distanceMatrix(B, A);
-      const el2 = j2.rows?.[0]?.elements?.[0];
-      set2(humanizeETA((el2?.duration_in_traffic || el2?.duration).value*1000), el2?.distance?.text || "–");
-    }catch(err){
-      console.error("eta2 error", err);
-      set2("–","–");
-    }
-  }
 
-  // ---------------- WEATHER (Open-Meteo; show F / C; wind mph) ----------------
-  async function geocodeZip(zip){
-    const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${zip}&count=1&language=en&format=json`);
-    const j = await r.json();
-    const g = j.results?.[0];
-    if(!g) throw new Error("zip not found");
-    return { lat:g.latitude, lon:g.longitude, name:g.name };
-  }
-  async function fetchWeather(lat, lon){
-    const url = new URL("https://api.open-meteo.com/v1/forecast");
-    url.search = new URLSearchParams({
-      latitude: lat, longitude: lon, timezone: "auto",
-      wind_speed_unit: "mph",                        // wind in mph
-      current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
-      daily: "temperature_2m_max,temperature_2m_min,precipitation_sum"
-    }).toString();
-    const r = await fetch(url.toString());
-    return r.json();
-  }
-  const WMO={0:"Clear",1:"Mainly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",48:"Rime fog",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Rain",65:"Heavy rain",71:"Light snow",73:"Snow",75:"Heavy snow",80:"Rain showers",81:"Rain showers+",82:"Violent showers",95:"Thunderstorm"};
-  async function loadWeather(){
-    const host = $("#weather"); host.innerHTML="";
-    for (const zip of WEATHER_ZIPS){
-      try{
-        const geo = await geocodeZip(zip);
-        const data = await fetchWeather(geo.lat, geo.lon);
-        const cur = data.current;
-        const minC = Math.round(data.daily.temperature_2m_min[0]);
-        const maxC = Math.round(data.daily.temperature_2m_max[0]);
-        const card = document.createElement("div"); card.className="sym";
-        card.innerHTML = `
-          <div class="top">
-            <div><strong>${zip}</strong> · ${WMO[cur.weather_code]||""}</div>
-            <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
-          </div>
-          <div class="price" style="margin-top:2px">
-            ${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C
-          </div>
-          <div class="mini muted">
-            Feels ${Math.round(toF(cur.apparent_temperature))}°F / ${Math.round(cur.apparent_temperature)}°C ·
-            Today ${Math.round(toF(minC))}°F / ${minC}°C – ${Math.round(toF(maxC))}°F / ${maxC}°C
-          </div>`;
-        host.appendChild(card);
-      }catch(e){
-        console.error("weather error", zip, e);
-        const card = document.createElement("div"); card.className="sym";
-        card.innerHTML = `<div class="top"><div><strong>${zip}</strong></div></div><div class="mini muted">Weather unavailable</div>`;
-        host.appendChild(card);
+// ---------------- TRAFFIC (Google Maps Visual Only) ----------------
+    // Use Google Maps Embed so the visual matches the ETA source.
+function googleEmbed(o, d) {
+  return `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
+}
+
+function updateTraffic() {
+  // Just update the map embeds—no ETA lookups
+  $("#map1").src = googleEmbed(A, B);
+  $("#map2").src = googleEmbed(B, A);
+}
+
+
+// Convert C→F
+const toF = c => (c * 9/5) + 32;
+
+// Emoji icons for weather codes
+function iconFor(code){
+  const map = {
+    0:"☀️",1:"🌤️",2:"⛅",3:"☁️",
+    45:"🌫️",48:"🌫️",
+    51:"🌦️",53:"🌦️",55:"🌦️",
+    61:"🌧️",63:"🌧️",65:"🌧️",
+    71:"❄️",73:"❄️",75:"❄️",
+    80:"🌦️",81:"🌦️",82:"🌧️",
+    95:"⛈️",96:"⛈️",99:"⛈️"
+  };
+  return map[code] ?? "🌡️";
+}
+
+async function geocodeZip(zip){
+  const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${zip}&count=1&language=en&format=json`);
+  const j = await r.json();
+  const g = j.results?.[0];
+  if (!g) throw new Error("zip not found");
+  return { lat:g.latitude, lon:g.longitude, name: g.admin1 ? `${g.name}, ${g.admin1}` : g.name };
+}
+
+async function fetchWeather(lat, lon){
+  const url = new URL("https://api.open-meteo.com/v1/forecast");
+  url.search = new URLSearchParams({
+    latitude: lat, longitude: lon, timezone: "auto",
+    wind_speed_unit: "mph",
+    current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
+    daily: "temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
+    hourly: "temperature_2m,weather_code"
+  }).toString();
+  const r = await fetch(url.toString());
+  return r.json();
+}
+
+async function loadWeather(){
+  const host = $("#weather");
+  host.innerHTML = "";
+
+  for (const zip of WEATHER_ZIPS){
+    try{
+      const geo = await geocodeZip(zip);
+      const data = await fetchWeather(geo.lat, geo.lon);
+      const cur = data.current;
+      const minC = Math.round(data.daily.temperature_2m_min[0]);
+      const maxC = Math.round(data.daily.temperature_2m_max[0]);
+
+      // Next 5-hour mini-forecast
+      const times = data.hourly.time.map(t => new Date(t));
+      const tempsC = data.hourly.temperature_2m;
+      const codes = data.hourly.weather_code;
+      const now = new Date();
+      let idx = times.findIndex(t => t >= now);
+      if (idx < 0) idx = 0;
+      const hrs = [];
+      for (let i=0; i<5 && idx+i<times.length; i++){
+        const dt = times[idx+i];
+        hrs.push({
+          hour: dt.getHours().toString().padStart(2,"0"),
+          tempC: tempsC[idx+i],
+          code: codes[idx+i]
+        });
       }
+
+      const card = document.createElement("div"); 
+      card.className = "sym";
+      card.innerHTML = `
+        <div class="top">
+          <div><strong>${geo.name}</strong> · ${iconFor(cur.weather_code)}</div>
+          <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
+        </div>
+        <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
+        <div class="mini muted">
+          Feels ${Math.round(toF(cur.apparent_temperature))}°F · 
+          Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F
+        </div>
+        <div class="hrow">
+          ${hrs.map(h => `
+            <div class="hchip">
+              <div class="ico">${iconFor(h.code)}</div>
+              <div class="t mini">${Math.round(toF(h.tempC))}°F</div>
+              <div class="mini muted">${h.hour}:00</div>
+            </div>`).join("")}
+        </div>`;
+      host.appendChild(card);
+    } catch {
+      const card = document.createElement("div"); 
+      card.className = "sym";
+      card.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
+      host.appendChild(card);
     }
   }
+}
 
   // ---------------- STOCKS ----------------
   function mapYahoo(sym){ return sym.replace("BRK.A","BRK-A").replace("BRK.B","BRK-B"); }
