@@ -25,7 +25,7 @@
 
     /* Ticker */
     .ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
-    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite} /* slowed to 160s */
+    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite} /* slower & readable */
     .ticker:hover .ticker-inner{animation-play-state:paused}
     .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
     @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -57,7 +57,7 @@
     .chg.up{color:var(--good)} .chg.down{color:var(--bad)}
 
     /* Notes */
-    textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;color:var(--ink);border-radius:12px;padding:10px}
+    textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;color:#fff;border-radius:12px;padding:10px}
 
     /* Bottom “Top” button + footer */
     .btm{display:flex;justify-content:center;margin:28px 0}
@@ -135,6 +135,7 @@
        JS: CONFIG + HELPERS + FEATURES
        ================================= -->
 <script>
+  /* ---------- CONFIG ---------- */
   const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
   const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
 
@@ -145,13 +146,14 @@
   const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
   const CRYPTO = ["bitcoin","ethereum","dogecoin"];
 
+  /* ---------- HELPERS ---------- */
   const $ = sel => document.querySelector(sel);
   const escapeHtml = s => String(s).replace(/[&<>\"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
   const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
   const toF = c => (c * 9/5) + 32;
   const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code] ?? "🌡️");
 
-  // ---------- TICKER ----------
+  /* ---------- TICKER ---------- */
   async function loadTicker(){
     const el = $("#ticker");
     try{
@@ -159,193 +161,125 @@
       const items = await r.json();
       const twice = items.concat(items);
       el.innerHTML = twice.map(x=>`<span class="tick-item">• ${escapeHtml(x.title)}</span>`).join("");
-    }catch{ el.innerHTML = `<span class="tick-item">Ticker unavailable</span>`; }
+    }catch{
+      el.innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
+    }
   }
 
-  // ---------- TRAFFIC ----------
+  /* ---------- TRAFFIC ---------- */
   const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
   function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
 
-/* ---------- WEATHER: rock-solid version ---------- */
+  /* ---------- WEATHER (no geocode needed for your 4 ZIPs) ---------- */
+  const ZIP_COORDS = {
+    "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
+    "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
+    "60030": { lat: 42.3445, lon: -88.0417, name: "Grayslake, IL" },
+    "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
+  };
 
-// Primary coordinates for your four ZIPs (no geocoder required)
-const ZIP_COORDS = {
-  "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
-  "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
-  "60030": { lat: 42.3445, lon: -88.0417, name: "Grayslake, IL" },
-  "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
-};
-
-// Try Worker → direct Open-Meteo
-async function fetchWeather(lat, lon){
-  // Prefer your Worker proxy (handles CORS & caching)
-  if (WORKER_BASE) {
-    try {
-      const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
-      if (r.ok) return await r.json();
-    } catch (e) { console.warn("wx via worker failed", e); }
-  }
-  // Direct fallback (should also work without a key)
-  const url = new URL("https://api.open-meteo.com/v1/forecast");
-  url.search = new URLSearchParams({
-    latitude: lat, longitude: lon, timezone: "auto",
-    wind_speed_unit: "mph",
-    current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
-    daily: "temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
-    hourly: "temperature_2m,weather_code"
-  }).toString();
-  const r2 = await fetch(url.toString());
-  return r2.json();
-}
-
-// Safe geocoder if you add new ZIPs later
-async function geocodeZip(zip){
-  // 0) hardcoded first (fast + reliable)
-  if (ZIP_COORDS[zip]) return ZIP_COORDS[zip];
-
-  // 1) your Worker /geo
-  if (WORKER_BASE) {
-    try {
-      const r = await fetch(`${WORKER_BASE}/geo?zip=${encodeURIComponent(zip)}`);
-      if (r.ok) return await r.json();
-    } catch (e) { console.warn("geo via worker failed", e); }
+  async function fetchWeather(lat, lon){
+    if (WORKER_BASE) {
+      try {
+        const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
+        if (r.ok) return await r.json();
+        console.warn("wx via worker status", r.status);
+      } catch (e) { console.warn("wx via worker failed", e); }
+    }
+    const u = new URL("https://api.open-meteo.com/v1/forecast");
+    u.search = new URLSearchParams({
+      latitude: lat, longitude: lon, timezone: "auto",
+      wind_speed_unit: "mph",
+      current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
+      daily: "temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
+      hourly: "temperature_2m,weather_code"
+    }).toString();
+    const r2 = await fetch(u.toString());
+    if (!r2.ok) throw new Error("open-meteo status "+r2.status);
+    return r2.json();
   }
 
-  // 2) Zippopotam (no key)
-  try {
-    const r1 = await fetch(`https://api.zippopotam.us/us/${zip}`);
-    if (r1.ok) {
-      const j1 = await r1.json();
-      const p = j1.places?.[0];
-      if (p) return { lat:+p.latitude, lon:+p.longitude, name:`${p["place name"]}, ${p["state abbreviation"]}` };
-    }
-  } catch (e) { console.warn("zippopotam failed", e); }
-
-  // 3) Open-Meteo geocoder fallback
-  try {
-    const r2 = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(zip+" USA")}&count=1&language=en&format=json`);
-    if (r2.ok) {
-      const j2 = await r2.json();
-      const g = j2.results?.[0];
-      if (g) {
-        const label = [g.name, g.admin1, g.country_code].filter(Boolean).join(", ");
-        return { lat: g.latitude, lon: g.longitude, name: label };
-      }
-    }
-  } catch (e) { console.warn("open-meteo geocode failed", e); }
-
-  throw new Error("Geocoding failed for " + zip);
-}
-
-// same icon map you already had
-function iconFor(code){
-  const map = {0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",
-               61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",
-               95:"⛈️",96:"⛈️",99:"⛈️"};
-  return map[code] ?? "🌡️";
-}
-const toF = c => (c * 9/5) + 32;
-
-async function loadWeather(){
-  const host = document.querySelector("#weatherList") || document.querySelector("#weather");
-  if (!host) return;
-  host.innerHTML = "";
-
-  for (const zip of WEATHER_ZIPS){
-    try{
-      const geo = await geocodeZip(zip);
-      const data = await fetchWeather(geo.lat, geo.lon);
-      const cur = data.current;
-
-      const minC = Math.round(data.daily.temperature_2m_min[0]);
-      const maxC = Math.round(data.daily.temperature_2m_max[0]);
-
-      // next 5 hours
-      const times = data.hourly.time.map(t => new Date(t));
-      const tempsC = data.hourly.temperature_2m;
-      const codes = data.hourly.weather_code;
-      const now = new Date();
-      let idx = times.findIndex(t => t >= now);
-      if (idx < 0) idx = 0;
-
-      const hrs = [];
-      for (let i=0; i<5 && idx+i<times.length; i++){
-        const dt = times[idx+i];
-        hrs.push({
-          hour: dt.getHours().toString().padStart(2,"0"),
-          tempC: tempsC[idx+i],
-          code: codes[idx+i]
-        });
-      }
-
-      const card = document.createElement("div"); card.className = "sym";
-      card.innerHTML = `
-        <div class="top">
-          <div><strong>${geo.name}</strong> · ${iconFor(cur.weather_code)}</div>
-          <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
-        </div>
-        <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
-        <div class="mini muted">
-          Feels ${Math.round(toF(cur.apparent_temperature))}°F · 
-          Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F
-        </div>
-        <div class="hrow">
-          ${hrs.map(h => `
-            <div class="hchip">
-              <div class="ico">${iconFor(h.code)}</div>
-              <div class="t mini">${Math.round(toF(h.tempC))}°F</div>
-              <div class="mini muted">${h.hour}:00</div>
-            </div>`).join("")}
-        </div>`;
-      host.appendChild(card);
-    }catch(e){
-      console.error("weather error", zip, e);
+  async function loadWeather(){
+    const host = document.querySelector("#weatherList");
+    host.innerHTML = "";
+    for (const zip of WEATHER_ZIPS){
       const card = document.createElement("div"); card.className="sym";
-      card.innerHTML = `<div class="top"><div><strong>${zip}</strong></div></div><div class="mini muted">Weather unavailable</div>`;
+      try{
+        const loc = ZIP_COORDS[zip];
+        if (!loc) throw new Error("no coords for "+zip);
+        const data = await fetchWeather(loc.lat, loc.lon);
+        const cur = data.current;
+        const minC = Math.round(data.daily.temperature_2m_min[0]);
+        const maxC = Math.round(data.daily.temperature_2m_max[0]);
+
+        const times = data.hourly.time.map(t => new Date(t));
+        const tempsC = data.hourly.temperature_2m;
+        const codes = data.hourly.weather_code;
+        let idx = times.findIndex(t => t >= new Date()); if (idx < 0) idx = 0;
+
+        const hrs = [];
+        for (let i=0; i<5 && idx+i<times.length; i++){
+          const dt = times[idx+i];
+          hrs.push({ hour: dt.getHours().toString().padStart(2,"0"), tempC: tempsC[idx+i], code: codes[idx+i] });
+        }
+
+        card.innerHTML = `
+          <div class="top">
+            <div><strong>${loc.name}</strong> · ${iconFor(cur.weather_code)}</div>
+            <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
+          </div>
+          <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
+          <div class="mini muted">
+            Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F
+          </div>
+          <div class="hrow">
+            ${hrs.map(h => `
+              <div class="hchip">
+                <div class="ico">${iconFor(h.code)}</div>
+                <div class="t mini">${Math.round(toF(h.tempC))}°F</div>
+                <div class="mini muted">${h.hour}:00</div>
+              </div>`).join("")}
+          </div>`;
+      }catch(err){
+        console.error("weather error", zip, err);
+        card.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
+      }
       host.appendChild(card);
     }
   }
-}
 
-
-
-
-  // ---------- STOCKS ----------
-async function loadStocks(){
-  const host = $("#stocksList"); host.innerHTML = "";
-  try{
-    // No symbol remapping—send raw symbols to your Worker
-    const url = `${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(','))}`;
-    const r = await fetch(url);
-    const rows = await r.json();
-
-    if (!Array.isArray(rows) || !rows.length) {
-      host.innerHTML = `<div class='mini muted'>No quote data returned.</div>`;
-      return;
-    }
-
-    rows.forEach(q=>{
-      const chg = (q.changePercent == null) ? null : Number(q.changePercent);
-      const div = document.createElement("div");
-      div.className = "sym";
-      div.innerHTML = `
-        <div class="top">
-          <div><strong>${q.symbol}</strong> <span class="mini muted">${escapeHtml(q.name||"")}</span></div>
-          <div class="mini ${chg==null ? "muted" : ("chg " + (chg>=0?"up":"down"))}">
-            ${chg==null ? "—" : `${chg>=0?"+":""}${chg.toFixed(2)}%`}
+  /* ---------- STOCKS ---------- */
+  async function loadStocks(){
+    const host = $("#stocksList"); host.innerHTML = "";
+    try{
+      const url = `${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(','))}`;
+      const r = await fetch(url);
+      const rows = await r.json();
+      if (!Array.isArray(rows) || !rows.length) {
+        host.innerHTML = `<div class='mini muted'>No quote data returned.</div>`;
+        return;
+      }
+      rows.forEach(q=>{
+        const chg = (q.changePercent == null) ? null : Number(q.changePercent);
+        const div = document.createElement("div");
+        div.className = "sym";
+        div.innerHTML = `
+          <div class="top">
+            <div><strong>${q.symbol}</strong> <span class="mini muted">${escapeHtml(q.name||"")}</span></div>
+            <div class="mini ${chg==null ? "muted" : ("chg " + (chg>=0?"up":"down"))}">
+              ${chg==null ? "—" : `${chg>=0?"+":""}${chg.toFixed(2)}%`}
+            </div>
           </div>
-        </div>
-        <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-      host.appendChild(div);
-    });
-  }catch(e){
-    console.error("stocks error", e);
-    host.innerHTML = `<div class='mini muted'>Quotes unavailable.</div>`;
+          <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+        host.appendChild(div);
+      });
+    }catch(e){
+      console.error("stocks error", e);
+      host.innerHTML = `<div class='mini muted'>Quotes unavailable.</div>`;
+    }
   }
-}
 
-
-  // ---------- CRYPTO ----------
+  /* ---------- CRYPTO ---------- */
   const nice=id=>id.charAt(0).toUpperCase()+id.slice(1);
   async function loadCrypto(){
     const host=$("#cryptoList");host.innerHTML="";
@@ -361,16 +295,18 @@ async function loadStocks(){
         <div class="price">$${Number(j[id].usd||0).toLocaleString()}</div>`;
         host.appendChild(div);
       }
-    }catch{host.innerHTML=`<div class='mini muted'>Crypto unavailable</div>`;}
+    }catch{
+      host.innerHTML=`<div class='mini muted'>Crypto unavailable</div>`;
+    }
   }
 
-  // ---------- NOTES ----------
+  /* ---------- NOTES ---------- */
   const notesEl=$("#notesBox");
   notesEl.value=localStorage.getItem("dashboard-notes")||"";
   notesEl.addEventListener("input",()=>localStorage.setItem("dashboard-notes",notesEl.value));
   $("#clearNotes").onclick=()=>{notesEl.value="";localStorage.removeItem("dashboard-notes");};
 
-  // ---------- INIT ----------
+  /* ---------- INIT ---------- */
   loadTicker();
   updateTraffic(); setInterval(updateTraffic,120000);
   loadWeather();
