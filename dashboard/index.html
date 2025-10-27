@@ -1,456 +1,329 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="top">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dashboard — JMOD Co</title>
-<meta name="color-scheme" content="dark">
-<style>
-  :root{
-    --bg:#0f1117; --text:#e9eefc; --muted:#98a4bd; --card:#141a26; --border:#243042;
-    --accent:#7aa2ff; --shadow:0 12px 36px rgba(0,0,0,.35); --radius:14px;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Helvetica,Arial}
-  a{color:var(--accent);text-decoration:none}
-  /* Header */
-  header{position:sticky;top:0;background:#0c121c;border-bottom:1px solid var(--border);z-index:10}
-  .bar{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
-    gap:16px;padding:12px 16px}
-  .logo{display:flex;align-items:center;gap:10px}
-  .logo img{height:28px;width:auto;display:block}
-  .logo h1{font-size:1.05rem;margin:0 0 0 6px}
-  nav a{margin-left:16px;font-size:.95rem;opacity:.95}
-  @media (max-width:560px){
-    nav a{margin-left:10px;font-size:.88rem}
-    .logo h1{display:none}
-  }
-  /* Layout */
-  main{max-width:1200px;margin:20px auto;padding:0 16px;display:grid;gap:18px}
-  .grid{display:grid;gap:18px}
-  @media (min-width:960px){ .grid.cols-3{grid-template-columns:2fr 1fr 1fr}
-                             .grid.cols-2{grid-template-columns:1fr 1fr} }
-  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-    box-shadow:var(--shadow);padding:18px}
-  h2{font-size:1.2rem;margin:0 0 10px}
-  .muted{color:var(--muted);font-size:.92rem}
-  /* Welcome */
-  .welcome{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-  .metrics{display:flex;gap:14px;flex-wrap:wrap}
-  .chip{background:#0e1522;border:1px solid #28344a;color:#cfe0ff;padding:8px 10px;border-radius:999px;font-size:.9rem}
-  /* Weather */
-  .row{display:grid;grid-template-columns:1fr 170px;gap:10px;align-items:center;margin:8px 0}
-  .row.compact{grid-template-columns:1fr 1fr}
-  input[type="text"],input[type="number"]{
-    width:100%;padding:10px 12px;background:#0d131e;color:var(--text);border:1px solid var(--border);
-    border-radius:10px;outline:none
-  }
-  .out{background:#0d131e;border:1px dashed #2a3243;border-radius:10px;padding:10px 12px;color:#dfe7ff}
-  .weather-grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
-  @media (max-width:560px){ .weather-grid{grid-template-columns:1fr} }
-  .stat{background:#0e1522;border:1px solid #28344a;border-radius:12px;padding:10px}
-  .stat h4{margin:0 0 6px;font-size:.9rem;color:#c9d7ff}
-  /* Contact */
-  .contact-wrap{position:relative}
-  .contact-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0b1220,#0d1728);
-    border:1px solid #243044;border-radius:12px;opacity:.65}
-  .contact-inner{position:relative;padding:14px}
-  textarea{width:100%;min-height:160px;background:#0d131e;color:var(--text);
-    border:1px solid var(--border);border-radius:12px;padding:12px;resize:vertical}
-  button{background:#0e1a2e;border:1px solid #2a3b5b;color:#dfe7ff;border-radius:10px;padding:10px 14px;cursor:pointer}
-  button:active{transform:translateY(1px)}
-  /* QuickCalc */
-  #quickcalc .grid{display:grid;gap:14px}
-  @media(min-width:880px){#quickcalc .grid{grid-template-columns:1fr 1fr}}
-  #quickcalc .rowX{display:grid;grid-template-columns:1fr 180px 140px;gap:10px;align-items:center;margin:8px 0}
-  #quickcalc .rowX.small{grid-template-columns:1fr 180px 140px}
-  #quickcalc label{color:var(--muted);font-size:.95rem}
-  #quickcalc input[type="number"]{
-    width:100%;padding:10px 12px;background:#0d131e;color:var(--text);
-    border:1px solid var(--border);border-radius:10px;outline:none
-  }
-  #quickcalc .out{background:#0d131e;border:1px dashed #2b3143;border-radius:10px;
-    padding:10px 12px;text-align:right;color:#dfe7ff}
-  footer{padding:28px 16px 40px;text-align:center;color:var(--muted)}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JMOD Dashboard</title>
+  <meta name="color-scheme" content="dark light" />
+
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --card: #13151b;
+      --ink: #e8ebf4;
+      --muted: #a2a8b6;
+      --border: #222631;
+      --accent: #4da3ff;
+      --good: #17e5a1;
+      --bad: #ff7b7b;
+    }
+    html, body {height:100%;margin:0;}
+    html {scroll-behavior:smooth;}
+    body {
+      background: linear-gradient(180deg, #0b0c10, #0e1218);
+      color: var(--ink);
+      font: 14px/1.45 system-ui, Segoe UI, Inter, Arial, sans-serif;
+    }
+
+    /* NAVBAR */
+    .nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: #0d0f14cc;
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 10px 20px;
+    }
+    .nav-logo {
+      height: 40px;
+      width: auto;
+    }
+    .nav-links {
+      display: flex; gap: 18px;
+      align-items: flex-end;
+    }
+    .nav-links a {
+      color: #f1f3f7; text-decoration: none; font-weight: 600;
+    }
+    .nav-links a:hover {opacity: .85;}
+
+    /* TICKER */
+    .ticker {
+      white-space: nowrap;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: #0e1218;
+    }
+    .ticker-inner {
+      display: inline-block;
+      padding-block: 8px;
+      animation: scroll 200s linear infinite;
+    }
+    @keyframes scroll {
+      from {transform: translateX(0);}
+      to {transform: translateX(-50%);}
+    }
+    .tick-item {
+      display: inline-block;
+      margin-right: 28px;
+      color: #cfe0ff;
+    }
+
+    .wrap {max-width: 1200px; margin: 0 auto; padding: 0 14px 48px;}
+    h1 {font-size: 22px; margin: 16px 0;}
+    .grid {display: grid; gap: 16px;}
+    @media (min-width: 900px){ .grid {grid-template-columns: 1fr 1fr;} }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .card .hd {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card .bd {padding: 14px;}
+    .pill {
+      font-size: 12px;
+      background: #0f1420;
+      border: 1px solid #1f2a43;
+      color: #a9c8ff;
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+
+    /* Weather / Stocks */
+    .symbols {display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px;}
+    .sym {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .sym .top {display: flex; justify-content: space-between;}
+    .sym .price {font-size: 20px; font-weight: 800; margin-top: 4px;}
+    .chg.up {color: var(--good);}
+    .chg.down {color: var(--bad);}
+
+    .mini {font-size: 12px; color: var(--muted);}
+    .hrow {display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;}
+    .hchip {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      background: #0f1218;
+      border-radius: 10px;
+      padding: 6px 8px; min-width: 52px;
+    }
+    .hchip .ico {font-size: 18px;}
+    textarea {
+      width: 100%; min-height: 120px;
+      border: 1px solid var(--border);
+      background: #0f1218;
+      color: var(--ink);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .btm {display: flex; justify-content: center; margin: 28px 0;}
+    .btn-top {
+      background: #0f1420;
+      border: 1px solid var(--border);
+      color: #a9c8ff;
+      padding: 8px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer {color: #9aa3b6; text-align: center; padding-bottom: 24px;}
+  </style>
 </head>
 <body>
-  <header>
-    <div class="bar">
-      <div class="logo">
-        <!-- swap to your actual logo path -->
-        <img src="/assets/logo-jmodco.png" alt="JMOD Co" />
-        <h1>JMOD Co — Dashboard</h1>
-      </div>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/about.html">About</a>
-        <a href="/projects.html">Projects</a>
-        <a href="/dashboard.html">Dashboard</a>
-      </nav>
+
+  <!-- NAVBAR -->
+  <div class="nav">
+    <img src="/logo.png" alt="JMOD Co" class="nav-logo">
+    <div class="nav-links">
+      <a href="/">🏠 Resume</a>
+      <a href="#events">Local Events</a>
+      <a href="#traffic">Traffic</a>
+      <a href="#stocks">Stocks</a>
+      <a href="#notes">Scratchpad</a>
     </div>
-  </header>
+  </div>
 
-  <main>
-    <!-- Welcome -->
-    <section class="card">
-      <div class="welcome">
-        <div>
-          <h2>Welcome back, Jordan 👋</h2>
-          <div class="muted">Here’s your quick snapshot. Tweak inputs and it’ll remember for next time.</div>
-        </div>
-        <div class="metrics">
-          <div class="chip" id="localTimeChip">—</div>
-          <div class="chip" id="fxChip">FX: loading…</div>
-          <div class="chip" id="verseChip">Verse: loading…</div>
-        </div>
-      </div>
-    </section>
+  <!-- TICKER -->
+  <div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
 
-    <!-- Weather + Verse + Contact -->
-    <section class="grid cols-3">
-      <!-- Weather -->
+  <div class="wrap">
+    <h1>Welcome</h1>
+    <div id="welcome" class="card">
+      <div class="hd"><div>Welcome</div><span id="localDate" class="mini"></span></div>
+      <div class="bd"></div>
+    </div>
+
+    <div class="card section" id="weather" style="margin-top:16px">
+      <div class="hd"><div>Weather</div></div>
+      <div class="bd"><div id="weatherList" class="symbols"></div></div>
+    </div>
+
+    <div class="card section" id="sun" style="margin-top:16px">
+      <div class="hd"><div>Sunrise • Sunset</div><span id="sunDate" class="mini"></span></div>
+      <div class="bd" id="sunBox"></div>
+    </div>
+
+    <div class="grid section" id="verse-events" style="margin-top:16px">
       <div class="card">
-        <h2>Weather</h2>
-        <div class="muted">Enter a city or ZIP (ex: Round Rock, TX). We’ll fetch current data and sunrise/sunset.</div>
-        <div class="row">
-          <label for="loc">Location</label>
-          <input id="loc" type="text" placeholder="e.g., Round Rock, TX">
-        </div>
-        <div class="weather-grid" style="margin-top:6px">
-          <div class="stat">
-            <h4>Temperature</h4>
-            <div id="wxTemp">—</div>
-          </div>
-          <div class="stat">
-            <h4>Conditions</h4>
-            <div id="wxDesc">—</div>
-          </div>
-          <div class="stat">
-            <h4>Sunrise</h4>
-            <div id="sunrise">—</div>
-          </div>
-          <div class="stat">
-            <h4>Sunset</h4>
-            <div id="sunset">—</div>
-          </div>
-        </div>
-        <div class="muted" id="wxStatus" style="margin-top:8px">Enter a location to load weather.</div>
+        <div class="hd"><div>Verse of the Day</div></div>
+        <div class="bd" id="votd"></div>
       </div>
-
-      <!-- Verse of the Day -->
-      <div class="card">
-        <h2>Verse of the Day</h2>
-        <div id="verseText" class="out" style="min-height:96px">Loading…</div>
-        <div class="muted" id="verseRef" style="margin-top:8px">—</div>
-        <div class="muted" id="verseStatus" style="margin-top:6px">Auto-refresh every 30 minutes. Falls back to last good verse if today is unavailable.</div>
+      <div class="card" id="events">
+        <div class="hd"><div>Local Events</div></div>
+        <div class="bd" id="eventsList"></div>
       </div>
+    </div>
 
-      <!-- Contact / Inquiry -->
-      <div class="card contact-wrap">
-        <div class="contact-bg"></div>
-        <div class="contact-inner">
-          <h2>Contact / Inquiry</h2>
-          <div class="row compact">
-            <input id="cName" type="text" placeholder="Your name">
-            <input id="cEmail" type="text" placeholder="Your email">
-          </div>
-          <textarea id="cMsg" placeholder="How can I help?"></textarea>
-          <div style="margin-top:10px;display:flex;gap:10px;justify-content:flex-end">
-            <button id="cClear">Clear</button>
-            <button id="cSave">Save</button>
-          </div>
-          <div class="muted" id="cStatus" style="margin-top:6px">Not sent anywhere yet — saved locally.</div>
-        </div>
-      </div>
-    </section>
+    <div class="grid section" id="traffic" style="margin-top:16px">
+      <div class="card"><div class="hd"><div>To Work</div></div><iframe id="map1" title="route1"></iframe></div>
+      <div class="card"><div class="hd"><div>To Home</div></div><iframe id="map2" title="route2"></iframe></div>
+    </div>
 
-    <!-- QuickCalc (bottom, above Scratch Pad) -->
-    <section id="quickcalc" class="card">
-      <h2>QuickCalc</h2>
-      <div class="muted">Live FX (refreshes every 30 minutes) & mass/volume helpers. Amounts are editable; USD outputs are read-only.</div>
-      <div class="grid">
-        <!-- Currency -->
-        <div>
-          <h3 style="margin:10px 0 6px;font-size:1rem;color:#cfe0ff">Currency</h3>
-          <div class="rowX">
-            <label>EUR amount</label>
-            <input id="qc-eur" type="number" step="0.01" value="100">
-            <div id="qc-eur-usd" class="out">— USD</div>
-          </div>
-          <div class="rowX">
-            <label>GBP amount</label>
-            <input id="qc-gbp" type="number" step="0.01" value="100">
-            <div id="qc-gbp-usd" class="out">— USD</div>
-          </div>
-          <div class="rowX">
-            <label>JPY amount</label>
-            <input id="qc-jpy" type="number" step="1" value="100">
-            <div id="qc-jpy-usd" class="out">— USD</div>
-          </div>
-          <div class="muted" id="qc-fx-status" style="margin-top:6px">Fetching live rates…</div>
-        </div>
+    <div class="card section" id="stocks" style="margin-top:16px">
+      <div class="hd"><div>Stocks</div><span class="pill">auto refresh</span></div>
+      <div class="bd"><div id="stocksList" class="symbols"></div></div>
+    </div>
 
-        <!-- Mass / Volume / Lots -->
-        <div>
-          <h3 style="margin:10px 0 6px;font-size:1rem;color:#cfe0ff">Mass & Volume</h3>
-          <div class="rowX small">
-            <label>mg needed</label>
-            <input id="qc-mg" type="number" step="0.001" value="1">
-            <div></div>
-          </div>
-          <div class="rowX small">
-            <label>G (mg → g)</label>
-            <div id="qc-g" class="out">—</div>
-            <div></div>
-          </div>
-          <div class="rowX small">
-            <label>KG (mg → kg)</label>
-            <div id="qc-kg" class="out">—</div>
-            <div></div>
-          </div>
+    <div class="card section" id="notes" style="margin-top:16px">
+      <div class="hd"><div>Scratchpad</div><button id="clearNotes" class="pill">Clear</button></div>
+      <div class="bd"><textarea id="notesBox" placeholder="Jot quick notes…"></textarea></div>
+    </div>
 
-          <h3 style="margin:10px 0 6px;font-size:1rem;color:#cfe0ff">Density & Volume</h3>
-          <div class="rowX small">
-            <label>Density (g/mL)</label>
-            <input id="qc-density" type="number" step="0.0001" value="1">
-            <div></div>
-          </div>
-          <div class="rowX small">
-            <label>mL needed (mg ÷ 1000 ÷ density)</label>
-            <div id="qc-ml" class="out">—</div>
-            <div></div>
-          </div>
-          <div class="rowX small">
-            <label>L needed (mL ÷ 1000)</label>
-            <div id="qc-l" class="out">—</div>
-            <div></div>
-          </div>
+    <div class="btm"><a href="#top" class="btn-top">Top</a></div>
+    <div class="footer">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
+  </div>
 
-          <h3 style="margin:10px 0 6px;font-size:1rem;color:#cfe0ff">Lots</h3>
-          <div class="rowX small">
-            <label>Lots sold (mL)</label>
-            <input id="qc-lot" type="number" step="0.0001" value="25">
-            <div></div>
-          </div>
-          <div class="rowX small">
-            <label>Quantity to buy — ROUNDUP(mL ÷ lot)</label>
-            <div id="qc-qty" class="out">—</div>
-            <div></div>
-          </div>
-        </div>
-      </div>
-    </section>
+  <!-- ================================ -->
+  <!-- JS SECTION -->
+  <!-- ================================ -->
+  <script>
+  const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
+  const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
+  const HOME = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
+  const WORK = "411 W Main St, Round Rock, TX 78664";
+  const WEATHER_ZIPS = ["78664","53158","60030","44115"];
+  const STOCKS = ["AAPL","NVDA","AMZN","TSLA","BRK.B"];
+  const CRYPTO = ["bitcoin","ethereum","dogecoin"];
 
-    <!-- Scratch Pad -->
-    <section class="card">
-      <h2>Scratch Pad</h2>
-      <textarea id="scratch" placeholder="Notes…"></textarea>
-      <div style="margin-top:8px;display:flex;gap:10px;justify-content:flex-end">
-        <button id="scratchClear">Clear</button>
-        <button id="scratchSave">Save</button>
-      </div>
-      <div class="muted" id="scratchStatus" style="margin-top:6px">Saved locally to this device.</div>
-    </section>
-  </main>
+  const $ = s => document.querySelector(s);
+  const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
+  const toF = c => (c*9/5)+32;
+  const iconFor = c=>({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",61:"🌧️",63:"🌧️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️"}[c]||"🌡️");
 
-  <footer>© JMOD Co</footer>
+  const ZIP_COORDS = {
+    "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
+    "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
+    "60030": { lat: 42.3445, lon: -88.0417, name: "Grayslake, IL" },
+    "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
+  };
 
-<script>
-  const $ = id => document.getElementById(id);
-  const fmt = (n,d=6)=>Number(n).toLocaleString(undefined,{maximumFractionDigits:d});
-
-  // ===== Local Time chip
-  function updateLocalTime(){
-    $("localTimeChip").textContent = new Date().toLocaleString();
-  }
-  updateLocalTime();
-  setInterval(updateLocalTime, 1000*30);
-
-  // ===== Weather (Open-Meteo + Sunrise-Sunset)
-  async function geocode(q){
-    const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1`);
-    const j = await r.json();
-    if(!j.results || !j.results.length) throw new Error("Location not found");
-    const { latitude, longitude, name, admin1, country_code } = j.results[0];
-    return { lat:latitude, lon:longitude, label:`${name}${admin1?`, ${admin1}`:''}${country_code?`, ${country_code}`:''}` };
-  }
-  async function weather(lat,lon){
-    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`);
-    const j = await r.json();
-    const temp = j?.current?.temperature_2m;
-    const code = j?.current?.weather_code;
-    const desc = codeToText(code);
-    const s = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`);
-    const sj = await s.json();
-    const sr = new Date(sj.results.sunrise);
-    const ss = new Date(sj.results.sunset);
-    return { temp, desc, sunrise: sr, sunset: ss };
-  }
-  function codeToText(code){
-    const map = {
-      0:"Clear", 1:"Mainly clear", 2:"Partly cloudy", 3:"Overcast",
-      45:"Fog", 48:"Rime fog", 51:"Drizzle", 53:"Drizzle", 55:"Drizzle",
-      61:"Rain", 63:"Rain", 65:"Heavy rain", 71:"Snow", 73:"Snow",
-      75:"Heavy snow", 95:"Thunderstorm", 96:"Thunder w/ hail", 99:"Thunder w/ hail"
-    };
-    return map[code] || "—";
-  }
-  async function loadWeather(){
-    const q = $("loc").value.trim();
-    if(!q){ $("wxStatus").textContent="Enter a location to load weather."; return; }
-    $("wxStatus").textContent="Loading…";
-    try{
-      const g = await geocode(q);
-      const w = await weather(g.lat,g.lon);
-      $("wxTemp").textContent = (w.temp!=null) ? `${fmt(w.temp,1)} °C` : "—";
-      $("wxDesc").textContent = w.desc || "—";
-      $("sunrise").textContent = w.sunrise ? new Date(w.sunrise).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : "—";
-      $("sunset").textContent  = w.sunset  ? new Date(w.sunset ).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : "—";
-      $("wxStatus").textContent = `Weather for ${g.label}`;
-      localStorage.setItem("dash_loc", q);
-    }catch(e){
-      $("wxStatus").textContent = "Couldn’t load weather (check location or network).";
-    }
-  }
-  $("loc").addEventListener("change", loadWeather);
-  (function(){
-    const last = localStorage.getItem("dash_loc");
-    if(last){ $("loc").value = last; loadWeather(); }
+  (function setGreeting(){
+    const now = new Date();
+    const hrs = now.getHours();
+    const mm = String(now.getMonth()+1).padStart(2,"0"), dd = String(now.getDate()).padStart(2,"0"), yyyy = now.getFullYear();
+    $("#localDate").textContent = `${mm}/${dd}/${yyyy}`;
+    let msg = hrs<12?"Good morning ☕":"Good evening 🌇";
+    $("#welcome .bd").innerHTML = `<div>${msg}</div><div class="mini muted" style="margin-top:6px">Welcome to my private dashboard. I’m testing, learning, and having fun. Explore freely.</div>`;
   })();
 
-  // ===== Verse of the Day with fallback
-  const DEFAULT_VERSES = [
-    {ref:"Prov 3:5-6",text:"Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight."},
-    {ref:"Phil 4:6",text:"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."},
-    {ref:"Ps 46:1",text:"God is our refuge and strength, an ever-present help in trouble."}
-  ];
-  async function fetchVerse(){
+  async function loadTicker(){
     try{
-      const r = await fetch("https://beta.ourmanna.com/api/v1/get/?format=json");
+      const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
       const j = await r.json();
-      const ref = j.verse.details.reference;
-      const text = j.verse.details.text;
-      return {ref,text};
-    }catch(_){
-      const saved = JSON.parse(localStorage.getItem("dash_verse")||"{}");
-      if(saved.text && saved.ref) return saved;
-      const pick = DEFAULT_VERSES[(new Date().getDate()) % DEFAULT_VERSES.length];
-      return pick;
+      $("#ticker").innerHTML = j.concat(j).map(x=>`<span class='tick-item'>• ${x.title}</span>`).join("");
+    }catch{ $("#ticker").textContent="Ticker unavailable"; }
+  }
+
+  const mapsURL = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
+  function loadTraffic(){ $("#map1").src=mapsURL(HOME,WORK); $("#map2").src=mapsURL(WORK,HOME); }
+
+  async function fetchWeather(lat,lon){
+    const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
+    return r.json();
+  }
+
+  async function loadWeather(){
+    const host=$("#weatherList");host.innerHTML="";
+    const seen=new Set();
+    for(const zip of WEATHER_ZIPS){
+      if(seen.has(zip))continue;seen.add(zip);
+      try{
+        const g=ZIP_COORDS[zip];
+        const d=await fetchWeather(g.lat,g.lon);
+        const c=d.current, minC=d.daily.temperature_2m_min[0], maxC=d.daily.temperature_2m_max[0];
+        const t=d.hourly.time.map(t=>new Date(t));
+        let i=t.findIndex(x=>x>=new Date()); if(i<0)i=0;
+        const hrs=Array.from({length:5},(_,k)=>i+k).map(x=>({h:String(t[x].getHours()).padStart(2,"0"),v:d.hourly.temperature_2m[x],c:d.hourly.weather_code[x]}));
+        const card=document.createElement("div");card.className="sym";
+        card.innerHTML=`<div class='top'><div><strong>${g.name}</strong> ${iconFor(c.weather_code)}</div><div class='mini'>${Math.round(c.wind_speed_10m)} mph wind</div></div>
+        <div class='price'>${Math.round(toF(c.temperature_2m))}°F / ${Math.round(c.temperature_2m)}°C</div>
+        <div class='mini muted'>Feels ${Math.round(toF(c.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°–${Math.round(toF(maxC))}°F</div>
+        <div class='hrow'>${hrs.map(h=>`<div class='hchip'><div class='ico'>${iconFor(h.c)}</div><div class='t mini'>${Math.round(toF(h.v))}°F</div><div class='mini muted'>${h.h}:00</div></div>`).join("")}</div>`;
+        host.appendChild(card);
+      }catch{
+        const card=document.createElement("div");card.className="sym";card.innerHTML=`<div class='top'><strong>${zip}</strong></div><div class='mini muted'>Weather unavailable</div>`;
+        host.appendChild(card);
+      }
     }
   }
-  async function loadVerse(){
-    const v = await fetchVerse();
-    $("verseText").textContent = v.text || "—";
-    $("verseRef").textContent  = v.ref  || "—";
-    $("verseChip").textContent = v.ref ? `Verse: ${v.ref}` : "Verse: —";
-    localStorage.setItem("dash_verse", JSON.stringify(v));
-  }
-  loadVerse();
-  setInterval(loadVerse, 30*60*1000);
 
-  // ===== Contact store (local only)
-  $("cSave").addEventListener("click", ()=>{
-    const payload = {name:$("cName").value,email:$("cEmail").value,msg:$("cMsg").value,ts:Date.now()};
-    localStorage.setItem("dash_contact", JSON.stringify(payload));
-    $("cStatus").textContent = "Saved locally ✓";
-    setTimeout(()=>$("cStatus").textContent="Not sent anywhere yet — saved locally.", 1800);
-  });
-  $("cClear").addEventListener("click", ()=>{
-    $("cName").value="";$("cEmail").value="";$("cMsg").value="";
-    $("cStatus").textContent = "Cleared.";
-    setTimeout(()=>$("cStatus").textContent="Not sent anywhere yet — saved locally.", 1500);
-  });
-  (function restoreContact(){
+  async function loadSun(){
+    const {lat,lon}=ZIP_COORDS["78664"];
     try{
-      const c = JSON.parse(localStorage.getItem("dash_contact")||"{}");
-      if(c.name) $("cName").value = c.name;
-      if(c.email) $("cEmail").value = c.email;
-      if(c.msg) $("cMsg").value = c.msg;
-    }catch(_){}
-  })();
+      const r=await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`);
+      const j=await r.json();const s=new Date(j.results.sunrise),t=new Date(j.results.sunset);
+      const f=x=>x.toLocaleTimeString([], {hour:"numeric",minute:"2-digit"});
+      $("#sunBox").textContent=`Sunrise ${f(s)} • Sunset ${f(t)}`;
+    }catch{ $("#sunBox").textContent="Sunrise/Sunset unavailable"; }
+  }
 
-  // ===== Scratch Pad
-  $("scratchSave").addEventListener("click", ()=>{
-    localStorage.setItem("dash_scratch", $("scratch").value);
-    $("scratchStatus").textContent = "Saved ✓";
-    setTimeout(()=>$("scratchStatus").textContent="Saved locally to this device.", 1500);
-  });
-  $("scratchClear").addEventListener("click", ()=>{
-    $("scratch").value = "";
-    localStorage.removeItem("dash_scratch");
-    $("scratchStatus").textContent = "Cleared.";
-    setTimeout(()=>$("scratchStatus").textContent="Saved locally to this device.", 1500);
-  });
-  (function restoreScratch(){
-    const s = localStorage.getItem("dash_scratch");
-    if(s) $("scratch").value = s;
-  })();
-
-  // ===== QuickCalc (FX + Mass/Volume)
-  let rates = { EUR: 1.08, GBP: 1.25, JPY: 0.0066 }; // fallbacks
-  async function loadRates(){
+  async function loadVOTD(){
     try{
-      const r = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=EUR,GBP,JPY");
-      const data = await r.json();
-      rates.EUR = 1 / data.rates.EUR; // EUR→USD
-      rates.GBP = 1 / data.rates.GBP; // GBP→USD
-      rates.JPY = 1 / data.rates.JPY; // JPY→USD
-      $("qc-fx-status").textContent = "Live rates loaded ✓";
-      $("fxChip").textContent = "FX: live ✓";
-      localStorage.setItem("qc_rates", JSON.stringify(rates));
-    }catch(e){
-      const saved = localStorage.getItem("qc_rates");
-      if(saved){ rates = JSON.parse(saved); $("qc-fx-status").textContent = "Using saved rates"; $("fxChip").textContent="FX: saved"; }
-      else { $("qc-fx-status").textContent = "Using fallback rates"; $("fxChip").textContent="FX: fallback"; }
-    }
-    computeFX();
+      const r=await fetch("https://beta.ourmanna.com/api/v1/get/?format=json");
+      const j=await r.json();
+      const v=j.verse?.details||j.verse?.verse?.details;
+      if(v){$("#votd").innerHTML=`<div>${v.text}</div><div class='mini muted' style='margin-top:6px'>${v.reference}</div>`;}
+    }catch{$("#votd").textContent="Verse unavailable";}
   }
-  function computeFX(){
-    $("qc-eur-usd").textContent = fmt((Number($("qc-eur").value)||0) * rates.EUR, 6) + " USD";
-    $("qc-gbp-usd").textContent = fmt((Number($("qc-gbp").value)||0) * rates.GBP, 6) + " USD";
-    $("qc-jpy-usd").textContent = fmt((Number($("qc-jpy").value)||0) * rates.JPY, 6) + " USD";
-    localStorage.setItem("qc_amounts", JSON.stringify({
-      eur:$("qc-eur").value, gbp:$("qc-gbp").value, jpy:$("qc-jpy").value
-    }));
-  }
-  ["qc-eur","qc-gbp","qc-jpy"].forEach(id=>$(id).addEventListener("input", computeFX));
-  loadRates();
-  setInterval(loadRates, 30*60*1000);
 
-  function computeMass(){
-    const mg   = Number($("qc-mg").value)||0;
-    const dens = Number($("qc-density").value)||0;
-    const g  = mg/1000;
-    const kg = mg/1e6;
-    $("qc-g").textContent  = g ? fmt(g,6) : "0";
-    $("qc-kg").textContent = kg? fmt(kg,9) : "0";
-    const mL = (mg>0 && dens>0) ? (g/dens) : 0;
-    $("qc-ml").textContent = mL ? fmt(mL,6) : "0";
-    $("qc-l").textContent  = mL ? fmt(mL/1000,9) : "0";
-    const lot = Number($("qc-lot").value)||0;
-    const qty = (mL>0 && lot>0) ? Math.ceil(mL/lot) : 0;
-    $("qc-qty").textContent = qty ? qty : "0";
-    localStorage.setItem("qc_mass", JSON.stringify({mg,dens,lot}));
-  }
-  ["qc-mg","qc-density","qc-lot"].forEach(id=>$(id).addEventListener("input", computeMass));
-  (function initQuickCalc(){
+  async function loadEvents(){
+    const {lat,lon}=ZIP_COORDS["78664"];
     try{
-      const a = JSON.parse(localStorage.getItem("qc_amounts")||"{}");
-      if(a.eur) $("qc-eur").value = a.eur;
-      if(a.gbp) $("qc-gbp").value = a.gbp;
-      if(a.jpy) $("qc-jpy").value = a.jpy;
-      const m = JSON.parse(localStorage.getItem("qc_mass")||"{}");
-      if(m.mg)  $("qc-mg").value = m.mg;
-      if(m.dens)$("qc-density").value = m.dens;
-      if(m.lot) $("qc-lot").value = m.lot;
-      const r = JSON.parse(localStorage.getItem("qc_rates")||"{}");
-      if(r.EUR && r.GBP && r.JPY) rates = r;
-    }catch(_){}
-    computeFX();
-    computeMass();
-  })();
-</script>
-</body>
-</html>
+      const r=await fetch(`${WORKER_BASE}/events?lat=${lat}&lon=${lon}&radius=50&size=6`);
+      const j=await r.json();
+      if(Array.isArray(j)&&j.length){
+        $("#eventsList").innerHTML=j.map(e=>`<div class='sym'><div class='top'><strong>${e.name}</strong></div><div class='mini muted'>${e.city||""}</div><div class='mini'>${new Date(e.date).toLocaleDateString()}</div><a href='${e.url}' class='mini' target='_blank'>Details</a></div>`).join("");
+      }else{$("#eventsList").innerHTML="<div class='mini muted'>Add TM_KEY to Worker for local events.</div>";}
+    }catch{$("#eventsList").innerHTML="<div class='mini muted'>Events unavailable</div>";}
+  }
+
+  async function loadStocks(){
+    const host=$("#stocksList");host.innerHTML="";
+    try{
+      const r=await fetch(`${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(','))}`);
+      const rows=await r.json();
+      rows.forEach(q=>{
+        const c=q.changePercent,d=document.createElement("div");d.className="sym";
+        d.innerHTML=`<div class='top'><strong>${q.symbol}</strong><div class='mini chg ${c>=0?"up":"down"}'>${c>=0?"+":""}${c.toFixed(2)}%</div></div><div class='price'>$${q.price.toFixed(2)}</div>`;
+        host.appendChild(d);
+      });
+    }catch{host.innerHTML="<div class='mini muted'>Stocks unavailable</div>";}
+  }
+
+  const notesEl=$("#notesBox");
+  notesEl.value=localStorage.getItem("dashboard-notes")||"";
+  notesEl.addEventListener("input",()=>localStorage.setItem("dashboard-notes",notesEl.value));
+  $("#clearNotes").onclick=()=>{notesEl.value="";local
