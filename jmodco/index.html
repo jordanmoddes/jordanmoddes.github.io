@@ -18,6 +18,8 @@
       --gap:0.5in;            /* requested space below the sticky nav */
       --card: rgba(255,255,255,.04);
       --card-border: rgba(255,255,255,.08);
+      --cyan:#29b6e6;
+      --magenta:#e31caf;
     }
 
     *{box-sizing:border-box}
@@ -31,24 +33,33 @@
     .section{padding:24px 0}
     h1,h2{margin:0 0 12px}
 
-    /* Sticky header: logo left, nav right (baseline aligned) */
+    /* Sticky header: text wordmark left, nav right */
     .header{position:sticky;top:0;z-index:60;background:rgba(11,15,20,.7);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
     .header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
     .brand{display:flex;align-items:flex-end;gap:12px}
-    .brand img{width:clamp(120px,22vw,180px);height:auto;display:block}
-    /* Redesigned NAV: subtle pill group */
-    .nav{display:flex;align-items:center;gap:10px;padding:8px 0}
-    .nav .item{display:inline-block;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);font-weight:600;letter-spacing:.2px;opacity:.95;transition:.15s ease}
-    .nav .item:hover{opacity:1;background:rgba(255,255,255,.08)}
+    .brand .wordmark{font-weight:800;font-size:1.4rem;letter-spacing:.2px}
 
-    /* Mobile header behavior */
-    @media (max-width:700px){
-      .header-inner{flex-direction:column;align-items:center}
-      .nav{flex-wrap:wrap;justify-content:center}
+    /* NAV: pill group, responsive shrink on small screens */
+    .nav{display:flex;align-items:center;gap:10px;padding:8px 0;flex-wrap:nowrap}
+    .nav .item{display:inline-block;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);font-weight:600;letter-spacing:.2px;opacity:.95;transition:.15s ease;white-space:nowrap}
+    .nav .item:hover{opacity:1;background:rgba(255,255,255,.08)}
+    @media (max-width:560px){
+      .nav{gap:6px}
+      .nav .item{padding:6px 10px;font-size:.9rem}
+    }
+    @media (max-width:420px){
+      .nav .item{padding:5px 8px;font-size:.85rem}
     }
 
     /* Gap under header as requested */
     .nav-gap{height:var(--gap)}
+
+    /* Radial chip */
+    .radial{display:grid;place-items:center;margin:20px auto 10px}
+    .radial svg{width:min(520px,85vw);height:auto}
+    .arm{stroke:var(--cyan);stroke-width:6;stroke-linecap:round;opacity:.9;transition:stroke .2s, opacity .2s}
+    .arm.active{stroke:var(--magenta);opacity:1}
+    .core{fill:#0c1a25;stroke:var(--cyan);stroke-width:6}
 
     /* Hero / Slogan */
     .hero{max-width:980px;margin:0 auto}
@@ -66,68 +77,12 @@
     .card h3{margin:6px 0 6px}
     .card p{margin:0;color:var(--muted)}
 
-    <!-- Radial chip highlight -->
-<style>
-  .radial { display:grid; place-items:center; margin:20px auto 10px; }
-  .radial svg { width:min(520px, 85vw); height:auto; }
-  .arm { stroke:#29b6e6; stroke-width:6; stroke-linecap:round; opacity:.9; transition:stroke .2s, opacity .2s; }
-  .arm.active { stroke:#e31caf; opacity:1; }           /* magenta spotlight */
-  .core { fill:#0c1a25; stroke:#29b6e6; stroke-width:6; }
-</style>
-
-<div class="radial" id="jmod-radial">
-  <svg viewBox="-300 -300 600 600" aria-label="JmodCo radial chip">
-    <!-- Arms (8) — index clockwise starting at 12 o'clock -->
-    <line class="arm arm-0 active" x1="0" y1="-220" x2="0" y2="-280"/>   <!-- 12 -->
-    <line class="arm arm-1" x1="155" y1="-155" x2="198" y2="-198"/>      <!-- 1:30 -->
-    <line class="arm arm-2" x1="220" y1="0" x2="280" y2="0"/>            <!-- 3 -->
-    <line class="arm arm-3" x1="155" y1="155" x2="198" y2="198"/>        <!-- 4:30 -->
-    <line class="arm arm-4" x1="0" y1="220" x2="0" y2="280"/>            <!-- 6 -->
-    <line class="arm arm-5" x1="-155" y1="155" x2="-198" y2="198"/>      <!-- 7:30 -->
-    <line class="arm arm-6" x1="-220" y1="0" x2="-280" y2="0"/>          <!-- 9 -->
-    <line class="arm arm-7" x1="-155" y1="-155" x2="-198" y2="-198"/>    <!-- 10:30 -->
-
-    <!-- Chip core -->
-    <circle r="120" class="core"/>
-    <circle r="90" fill="none" stroke="#143247" stroke-width="8"/>
-    <!-- (You can drop tiny “pins” inside for detail later) -->
-  </svg>
-</div>
-
-<script>
-  // Helper to activate one arm
-  function setActiveArm(i){
-    document.querySelectorAll('#jmod-radial .arm').forEach(el=>el.classList.remove('active'));
-    const arm = document.querySelector(`#jmod-radial .arm-${i}`);
-    if (arm) arm.classList.add('active');
-  }
-
-  // Optional: hook up to your 4 division cards in order (top right down left as you like)
-  // Example mapping (edit to your profit layout):
-  // 0=top (most profitable), 2=right, 4=bottom, 6=left
-  const mapping = {
-    'Jmod Media': 0,   // most profitable at 12 o'clock
-    'Jmod Ops':   2,
-    'Jmod Advisor':4,
-    'Jmod Labs':  6
-  };
-
-  // Attach to cards by their visible titles
-  document.querySelectorAll('.card h3').forEach(h3=>{
-    h3.closest('.card').addEventListener('mouseenter', ()=>{
-      const key = h3.textContent.trim();
-      if (mapping[key] !== undefined) setActiveArm(mapping[key]);
-    });
-  });
-</script>
-
-
     /* Founder + Contact two-column */
     .two-col{display:grid;grid-template-columns:1fr;gap:24px;max-width:1100px;margin:20px auto 60px}
     @media (min-width: 850px){.two-col{grid-template-columns:1fr 1fr}}
     .founder{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px}
 
-    /* Contact card with inputs cleanly inside the card (no clipping) */
+    /* Contact card */
     .contact{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;overflow:hidden}
     .contact .field{display:flex;flex-direction:column;margin-bottom:12px}
     .contact label{font-size:.9rem;color:var(--muted);margin-bottom:6px}
@@ -136,18 +91,17 @@
     .contact .actions{display:flex;justify-content:flex-end}
     .contact button{background:var(--brand);color:#0b0f14;border:none;border-radius:12px;padding:12px 18px;font-weight:700}
 
-    /* Footer nav */
+    /* Footer */
     footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;margin-top:30px}
     footer .footnav{display:flex;gap:28px;justify-content:center;color:var(--muted)}
   </style>
 </head>
 <body>
-  <!-- Sticky header with logo (left) and nav (right) -->
+  <!-- Sticky header with wordmark (left) + nav (right) -->
   <header class="header">
     <div class="container header-inner">
-      <!-- Wordmark left (text, not the image logo) -->
       <div class="brand" aria-label="JmodCo">
-        <span style="font-weight:800;font-size:1.4rem;letter-spacing:.2px">JmodCo</span>
+        <span class="wordmark">JmodCo</span>
       </div>
       <nav class="nav" aria-label="Primary">
         <span class="item">Home</span>
@@ -158,8 +112,26 @@
     </div>
   </header>
 
-  <!-- Required gap below the header (~0.5 inches) -->
+  <!-- Space below header -->
   <div class="nav-gap"></div>
+
+  <!-- Radial chip (interactive spotlight) -->
+  <div class="radial" id="jmod-radial">
+    <svg viewBox="-300 -300 600 600" aria-label="JmodCo radial chip">
+      <!-- Arms (8) — index clockwise starting at 12 o'clock -->
+      <line class="arm arm-0 active" x1="0" y1="-220" x2="0" y2="-280"/>
+      <line class="arm arm-1" x1="155" y1="-155" x2="198" y2="-198"/>
+      <line class="arm arm-2" x1="220" y1="0" x2="280" y2="0"/>
+      <line class="arm arm-3" x1="155" y1="155" x2="198" y2="198"/>
+      <line class="arm arm-4" x1="0" y1="220" x2="0" y2="280"/>
+      <line class="arm arm-5" x1="-155" y1="155" x2="-198" y2="198"/>
+      <line class="arm arm-6" x1="-220" y1="0" x2="-280" y2="0"/>
+      <line class="arm arm-7" x1="-155" y1="-155" x2="-198" y2="-198"/>
+      <!-- Core -->
+      <circle r="120" class="core"/>
+      <circle r="90" fill="none" stroke="#143247" stroke-width="8"/>
+    </svg>
+  </div>
 
   <!-- Hero -->
   <section class="section hero">
@@ -181,22 +153,22 @@
     <div class="container">
       <h2>Our Divisions</h2>
       <div class="grid">
-        <div class="card">
+        <div class="card" data-arm="0">
           <div>🔗</div>
           <h3>Jmod Labs</h3>
           <p>AI tool creation & workflow automation</p>
         </div>
-        <div class="card">
+        <div class="card" data-arm="2">
           <div>🎬</div>
           <h3>Jmod Media</h3>
           <p>Automated content & social scheduling</p>
         </div>
-        <div class="card">
+        <div class="card" data-arm="6">
           <div>📊</div>
           <h3>Jmod Ops</h3>
           <p>Dashboards & inventory management</p>
         </div>
-        <div class="card">
+        <div class="card" data-arm="4">
           <div>🛡️</div>
           <h3>Jmod Advisor</h3>
           <p>Compliance-safe assistants for finance & insurance</p>
@@ -210,7 +182,7 @@
     <div class="container two-col">
       <div class="founder">
         <h2>Founder Note / Story</h2>
-        <p id="founder-copy">I built JmodCo to bring enterprise-grade discipline to everyday businesses—clear metrics, rapid iteration, and automations that respect budgets. The goal is simple: ship practical wins that compound.</p>
+        <p>I built JmodCo to bring enterprise-grade discipline to everyday businesses—clear metrics, rapid iteration, and automations that respect budgets. The goal is simple: ship practical wins that compound.</p>
       </div>
       <form class="contact" onsubmit="event.preventDefault()">
         <h2>Contact / Inquiry</h2>
@@ -224,7 +196,7 @@
         </div>
         <div class="field">
           <label for="msg">Message</label>
-          <textarea id="msg" rows="5" placeholder="How can we help?" ></textarea>
+          <textarea id="msg" rows="5" placeholder="How can we help?"></textarea>
         </div>
         <div class="actions">
           <button type="submit">Submit</button>
@@ -248,10 +220,23 @@
       </div>
     </div>
   </footer>
+
   <script>
     // dynamic year + copyright holder
     const year = new Date().getFullYear();
     document.getElementById('copyright').textContent = `© ${year} JmodCo`;
+
+    // Radial arm activation from division cards
+    function setActiveArm(i){
+      document.querySelectorAll('#jmod-radial .arm').forEach(el=>el.classList.remove('active'));
+      const arm = document.querySelector(`#jmod-radial .arm-${i}`);
+      if (arm) arm.classList.add('active');
+    }
+    document.querySelectorAll('.card').forEach(card=>{
+      const idx = card.getAttribute('data-arm');
+      card.addEventListener('mouseenter',()=> setActiveArm(idx));
+      card.addEventListener('focusin',()=> setActiveArm(idx));
+    });
   </script>
 </body>
 </html>
