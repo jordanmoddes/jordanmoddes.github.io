@@ -233,77 +233,108 @@
   const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
   function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
 
-  /* =========================
+  /*<!-- ================================
      WEATHER
-  ========================== */
-  // Prefer Worker proxy /wx (caches) and /geo fallback; direct Open-Meteo if needed.
-  async function wx(lat,lon){
-    const u = `${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`;
-    const r = await fetch(u);
-    if (r.ok) return r.json();
-    // fallback direct
+================================ -->
+<script>
+  // Small helpers already in your file:
+  // const WORKER_BASE = "...";
+  // const WEATHER_ZIPS = [...];
+  // const toF = c => (c*9/5)+32;
+  // function iconFor(code){ ... }  // your emoji map
+
+  // Prefer Worker proxy (/wx and /geo). Falls back to Open-Meteo direct if needed.
+  async function wx(lat, lon){
+    try {
+      const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
+      if (r.ok) return await r.json();
+    } catch {}
     const url = new URL("https://api.open-meteo.com/v1/forecast");
     url.search = new URLSearchParams({
-      latitude: lat, longitude: lon, timezone:"auto", wind_speed_unit:"mph",
-      current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
-      daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
-      hourly:"temperature_2m,weather_code"
+      latitude: lat, longitude: lon, timezone: "auto",
+      wind_speed_unit: "mph",
+      current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
+      daily: "temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
+      hourly: "temperature_2m,weather_code"
     }).toString();
-    const r2 = await fetch(url); return r2.json();
+    const r2 = await fetch(url);
+    return r2.json();
   }
+
   async function geo(zip){
-    const r = await fetch(`${WORKER_BASE}/geo?zip=${zip}`);
+    const r = await fetch(`${WORKER_BASE}/geo?zip=${encodeURIComponent(zip)}`);
     if (!r.ok) throw new Error("geo");
-    return r.json();
+    return r.json(); // { lat, lon, name }
   }
+
   async function loadWeather(){
-    const host = $("#weatherList"); host.innerHTML = "";
+    const host = document.querySelector("#weatherList");
+    if (!host) return;
+    host.innerHTML = "";
+
     for (const zip of WEATHER_ZIPS){
       try{
         const g = await geo(zip);
         const data = await wx(g.lat, g.lon);
-        const cur = data.current;
+
+        const cur  = data.current;
         const minC = data.daily.temperature_2m_min[0];
         const maxC = data.daily.temperature_2m_max[0];
 
-        // next 5 hours
-        const times = data.hourly.time.map(t=>new Date(t));
-        let i = times.findIndex(t=>t>=new Date()); if (i<0) i=0;
+        // --- next 5 hours ---
+        const times = data.hourly.time.map(t => new Date(t));
+        const now   = new Date();
+        let i = times.findIndex(t => t >= now);
+        if (i === -1) i = 0; // fallback to first entry
+
         const hrs = [];
-        for(let k=0;k<5 && i+k<times.length;k++){
+        for (let k = 0; k < 5 && (i+k) < times.length; k++){
           hrs.push({
-            h: times[i+k].getHours().toString().padStart(2,"0"),
+            h: String(times[i+k].getHours()).padStart(2, "0"),
             t: data.hourly.temperature_2m[i+k],
-            c: data.hourly.weather_code[i+k]
+            c: data.hourly.weather_code[i+k]   // <-- make sure underscore remains!
           });
         }
 
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `
+        const card = document.createElement("div");
+        card.className = "sym";
+        card.innerHTML = `
           <div class="top">
-            <div><strong>${g.name || zip}</strong></div>
+            <div><strong>${g.name}</strong> · ${iconFor(cur.weather_code)}</div>
             <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
           </div>
           <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
-          <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F</div>
+          <div class="mini muted">
+            Feels ${Math.round(toF(cur.apparent_temperature))}°F ·
+            Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F
+          </div>
           <div class="hrow">
-            ${hrs.map(h=>`
-            <div class="hchip">
-              <div class="ico">${iconFor(h.c)}</div>
-              <div class="t mini">${Math.round(toF(h.t))}°F</div>
-              <div class="mini muted">${h.h}:00</div>
-            </div>`).join("")}
+            ${hrs.map(h => `
+              <div class="hchip">
+                <div class="ico">${iconFor(h.c)}</div>
+                <div class="t mini">${Math.round(toF(h.t))}°F</div>
+                <div class="mini muted">${h.h}:00</div>
+              </div>`).join("")}
           </div>`;
-        host.appendChild(div);
-      }catch(e){
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
-        host.appendChild(div);
+        host.appendChild(card);
+
+      }catch(err){
+        console.error("weather error", zip, err);
+        const card = document.createElement("div");
+        card.className = "sym";
+        card.innerHTML = `
+          <div class="top"><div><strong>${zip}</strong></div></div>
+          <div class="mini muted">Weather unavailable</div>`;
+        host.appendChild(card);
       }
     }
   }
 
-  /* =========================
+  // Call once on page load (don’t auto-refresh to avoid rate limits)
+  // loadWeather();  <-- you likely already call this in your INIT block
+</script>
+
+*/ =========================
      SUNRISE / SUNSET
   ========================== */
   async function loadSun(){
