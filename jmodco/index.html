@@ -89,8 +89,9 @@
   <!-- Sticky header with logo (left) and nav (right) -->
   <header class="header">
     <div class="container header-inner">
-      <div class="brand">
-        <img src="./assets/ParentLogo.png" alt="JMODco Logo" />
+      <!-- Wordmark left (text, not the image logo) -->
+      <div class="brand" aria-label="JmodCo">
+        <span style="font-weight:800;font-size:1.4rem;letter-spacing:.2px">JmodCo</span>
       </div>
       <nav class="nav" aria-label="Primary">
         <span class="item">Home</span>
@@ -177,12 +178,24 @@
   </section>
 
   <footer>
-    <div class="container footnav">
-      <span>Jmod Labs</span>
-      <span>Jmod Media</span>
-      <span>Jmod Ops</span>
-      <span>Advisor</span>
+    <div class="container" style="display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center">
+      <div style="font-size:.9rem;color:var(--muted)">Backed and supported by <strong>GPT‑5 Engine</strong></div>
+      <div class="footnav" style="margin:4px 0 8px"> 
+        <span>Jmod Labs</span>
+        <span>Jmod Media</span>
+        <span>Jmod Ops</span>
+        <span>Advisor</span>
+      </div>
+      <div style="font-size:.9rem;color:var(--muted)">
+        <span id="copyright"></span>
+        <span> · All rights reserved.</span>
+      </div>
     </div>
   </footer>
+  <script>
+    // dynamic year + copyright holder
+    const year = new Date().getFullYear();
+    document.getElementById('copyright').textContent = `© ${year} JmodCo`;
+  </script>
 </body>
 </html>
