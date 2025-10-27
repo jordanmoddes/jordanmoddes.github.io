@@ -66,6 +66,62 @@
     .card h3{margin:6px 0 6px}
     .card p{margin:0;color:var(--muted)}
 
+    <!-- Radial chip highlight -->
+<style>
+  .radial { display:grid; place-items:center; margin:20px auto 10px; }
+  .radial svg { width:min(520px, 85vw); height:auto; }
+  .arm { stroke:#29b6e6; stroke-width:6; stroke-linecap:round; opacity:.9; transition:stroke .2s, opacity .2s; }
+  .arm.active { stroke:#e31caf; opacity:1; }           /* magenta spotlight */
+  .core { fill:#0c1a25; stroke:#29b6e6; stroke-width:6; }
+</style>
+
+<div class="radial" id="jmod-radial">
+  <svg viewBox="-300 -300 600 600" aria-label="JmodCo radial chip">
+    <!-- Arms (8) — index clockwise starting at 12 o'clock -->
+    <line class="arm arm-0 active" x1="0" y1="-220" x2="0" y2="-280"/>   <!-- 12 -->
+    <line class="arm arm-1" x1="155" y1="-155" x2="198" y2="-198"/>      <!-- 1:30 -->
+    <line class="arm arm-2" x1="220" y1="0" x2="280" y2="0"/>            <!-- 3 -->
+    <line class="arm arm-3" x1="155" y1="155" x2="198" y2="198"/>        <!-- 4:30 -->
+    <line class="arm arm-4" x1="0" y1="220" x2="0" y2="280"/>            <!-- 6 -->
+    <line class="arm arm-5" x1="-155" y1="155" x2="-198" y2="198"/>      <!-- 7:30 -->
+    <line class="arm arm-6" x1="-220" y1="0" x2="-280" y2="0"/>          <!-- 9 -->
+    <line class="arm arm-7" x1="-155" y1="-155" x2="-198" y2="-198"/>    <!-- 10:30 -->
+
+    <!-- Chip core -->
+    <circle r="120" class="core"/>
+    <circle r="90" fill="none" stroke="#143247" stroke-width="8"/>
+    <!-- (You can drop tiny “pins” inside for detail later) -->
+  </svg>
+</div>
+
+<script>
+  // Helper to activate one arm
+  function setActiveArm(i){
+    document.querySelectorAll('#jmod-radial .arm').forEach(el=>el.classList.remove('active'));
+    const arm = document.querySelector(`#jmod-radial .arm-${i}`);
+    if (arm) arm.classList.add('active');
+  }
+
+  // Optional: hook up to your 4 division cards in order (top right down left as you like)
+  // Example mapping (edit to your profit layout):
+  // 0=top (most profitable), 2=right, 4=bottom, 6=left
+  const mapping = {
+    'Jmod Media': 0,   // most profitable at 12 o'clock
+    'Jmod Ops':   2,
+    'Jmod Advisor':4,
+    'Jmod Labs':  6
+  };
+
+  // Attach to cards by their visible titles
+  document.querySelectorAll('.card h3').forEach(h3=>{
+    h3.closest('.card').addEventListener('mouseenter', ()=>{
+      const key = h3.textContent.trim();
+      if (mapping[key] !== undefined) setActiveArm(mapping[key]);
+    });
+  });
+</script>
+
+
     /* Founder + Contact two-column */
     .two-col{display:grid;grid-template-columns:1fr;gap:24px;max-width:1100px;margin:20px auto 60px}
     @media (min-width: 850px){.two-col{grid-template-columns:1fr 1fr}}
