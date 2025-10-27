@@ -54,12 +54,6 @@
     /* Gap under header as requested */
     .nav-gap{height:var(--gap)}
 
-    /* Radial chip */
-    .radial{display:grid;place-items:center;margin:20px auto 10px}
-    .radial svg{width:min(520px,85vw);height:auto}
-    .arm{stroke:var(--cyan);stroke-width:6;stroke-linecap:round;opacity:.9;transition:stroke .2s, opacity .2s}
-    .arm.active{stroke:var(--magenta);opacity:1}
-    .core{fill:#0c1a25;stroke:var(--cyan);stroke-width:6}
 
     /* Hero / Slogan */
     .hero{max-width:980px;margin:0 auto}
@@ -133,7 +127,7 @@
     </svg>
   </div>
 
-  <!-- Hero -->
+  <!-- Site Header Hero -->
   <section class="section hero">
     <h1 class="slogan center">AI-Driven Efficiency for Real-World Businesses</h1>
     <p class="slogan-sub">JMODco builds practical systems that simplify daily operations for trades, retailers, and professionals.</p>
@@ -148,34 +142,38 @@
     </div>
   </section>
 
-  <!-- Divisions -->
-  <section class="section">
-    <div class="container">
-      <h2>Our Divisions</h2>
-      <div class="grid">
-        <div class="card" data-arm="0">
-          <div>🔗</div>
-          <h3>Jmod Labs</h3>
-          <p>AI tool creation & workflow automation</p>
-        </div>
-        <div class="card" data-arm="2">
-          <div>🎬</div>
-          <h3>Jmod Media</h3>
-          <p>Automated content & social scheduling</p>
-        </div>
-        <div class="card" data-arm="6">
-          <div>📊</div>
-          <h3>Jmod Ops</h3>
-          <p>Dashboards & inventory management</p>
-        </div>
-        <div class="card" data-arm="4">
-          <div>🛡️</div>
-          <h3>Jmod Advisor</h3>
-          <p>Compliance-safe assistants for finance & insurance</p>
-        </div>
+<!-- Divisions -->
+<section class="section">
+  <div class="container">
+    <h2 class="center">Our Divisions</h2>
+    <div style="text-align:center;margin:20px 0;">
+      <img src="./assets/ParentLogo.png" alt="JMODco Logo" style="max-width:240px;width:60%;height:auto;">
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div>🔗</div>
+        <h3>Jmod Labs</h3>
+        <p>AI tool creation & workflow automation</p>
+      </div>
+      <div class="card">
+        <div>🎬</div>
+        <h3>Jmod Media</h3>
+        <p>Automated content & social scheduling</p>
+      </div>
+      <div class="card">
+        <div>📊</div>
+        <h3>Jmod Ops</h3>
+        <p>Dashboards & inventory management</p>
+      </div>
+      <div class="card">
+        <div>🛡️</div>
+        <h3>Jmod Advisor</h3>
+        <p>Compliance-safe assistants for finance & insurance</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- Founder + Contact -->
   <section class="section">
