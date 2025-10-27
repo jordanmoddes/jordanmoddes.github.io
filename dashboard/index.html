@@ -1,364 +1,431 @@
 <!DOCTYPE html>
 <html lang="en" id="top">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>JMOD's Dashboard</title>
-<meta name="color-scheme" content="dark light" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JMOD’s Dashboard</title>
+  <meta name="color-scheme" content="dark light" />
 
-<!-- =========================
-     CSS: theme & components
-     ========================= -->
-<style>
-:root{--bg:#0b0c10;--card:#13151b;--ink:#e8ebf4;--muted:#a2a8b6;--border:#222631;--accent:#4da3ff;--good:#17e5a1;--bad:#ff7b7b}
-html,body{height:100%} html{scroll-behavior:smooth}
-body{margin:0;background:linear-gradient(180deg,#0b0c10,#0e1218);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,Inter,Arial,sans-serif}
-a{color:inherit} .wrap{max-width:1200px;margin:0 auto;padding:0 14px 48px}
+  <style>
+    :root{
+      --bg:#0b0c10;--card:#13151b;--ink:#e8ebf4;--muted:#a2a8b6;--border:#222631;
+      --accent:#4da3ff;--good:#17e5a1;--bad:#ff7b7b
+    }
+    html,body{height:100%}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:linear-gradient(180deg,#0b0c10,#0e1218);color:var(--ink);
+         font:14px/1.45 system-ui,Segoe UI,Inter,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}
 
-/* Navbar */
-.nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-.navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;justify-content:center;padding:12px}
-.nav a{color:#f1f3f7;text-decoration:none;font-weight:600} .nav a:hover{opacity:.85}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 14px 48px}
 
-/* Ticker */
-.ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
-.ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
-.ticker:hover .ticker-inner{animation-play-state:paused}
-.tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    /* Nav */
+    .nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);
+         border-bottom:1px solid var(--border)}
+    .navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;
+           justify-content:center;padding:12px}
+    .nav a{color:#f1f3f7;font-weight:600}
+    .nav a:hover{opacity:.85}
 
-/* Cards & layout */
-h2{font-size:18px;margin:0}
-.grid{display:grid;gap:16px} @media(min-width:900px){.grid.two{grid-template-columns:1fr 1fr}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35);margin-top:16px}
-.card .hd{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.card .bd{padding:14px} .muted{color:var(--muted)} .mini{font-size:12px;color:#cbd5e1}
-.section{scroll-margin-top:72px}
+    /* Ticker */
+    .ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
+    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
+    .ticker:hover .ticker-inner{animation-play-state:paused}
+    .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
+    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* Widgets */
-iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
-.symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-.sym{border:1px solid var(--border);border-radius:12px;padding:10px}
-.sym .top{display:flex;justify-content:space-between}
-.sym .price{font-size:20px;font-weight:800;margin-top:4px}
-.chg.up{color:var(--good)} .chg.down{color:var(--bad)}
-.hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-.hchip{display:flex;flex-direction:column;align-items:center;border:1px solid var(--border);background:#0f1218;border-radius:10px;padding:6px 8px;min-width:52px}
-.hchip .ico{font-size:18px} .hchip .t{font-weight:700;margin-top:2px}
-textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;color:var(--ink);border-radius:12px;padding:10px}
-.btn{background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:6px 12px;border-radius:10px;text-decoration:none}
+    /* Cards / layout */
+    h1{font-size:22px;margin:16px 0}
+    .grid{display:grid;gap:16px}
+    @media(min-width:900px){.grid.cols-2{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;
+          box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .card .hd{padding:12px 14px;border-bottom:1px solid var(--border);
+              display:flex;justify-content:space-between;align-items:center}
+    .card .bd{padding:14px}
+    .pill{font-size:12px;background:#0f1420;border:1px solid #1f2a43;color:#a9c8ff;
+          padding:5px 10px;border-radius:999px}
+    .mini{font-size:12px;color:#cbd5e1}
+    .muted{color:var(--muted)}
+    .section{scroll-margin-top:72px}
+    iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
 
-/* Footer */
-.btm{display:flex;justify-content:center;margin:28px 0}
-.btn-top{background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;border-radius:999px;text-decoration:none;font-weight:600}
-.footer{color:#9aa3b6;text-align:center;padding-bottom:24px}
-</style>
+    /* Weather chips */
+    .symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+    .sym{border:1px solid var(--border);border-radius:12px;padding:10px}
+    .sym .top{display:flex;justify-content:space-between;gap:8px}
+    .sym .price{font-size:20px;font-weight:800;margin-top:4px}
+    .hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .hchip{display:flex;flex-direction:column;align-items:center;justify-content:center;
+           border:1px solid var(--border);background:#0f1218;border-radius:10px;padding:6px 8px;min-width:52px}
+    .hchip .ico{font-size:18px;line-height:1}
+    .hchip .t{font-weight:700;margin-top:2px}
+    .chg.up{color:var(--good)} .chg.down{color:var(--bad)}
+
+    /* Notes */
+    textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;
+             color:var(--ink);border-radius:12px;padding:10px}
+
+    /* “Top” + footer */
+    .btm{display:flex;justify-content:center;margin:28px 0}
+    .btn-top{background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;
+             border-radius:999px;font-weight:600}
+    .btn-top:hover{opacity:.9}
+    .footer{color:#9aa3b6;text-align:center;padding-bottom:24px}
+
+    /* ---------- Verse of the Day POP ---------- */
+    .votd-card{
+      position:relative;border:1px solid var(--border);border-left:4px solid var(--accent);
+      background:radial-gradient(1200px 400px at -10% -40%, rgba(77,163,255,.12), transparent 40%),
+                 linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.06));
+      border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25)
+    }
+    .votd-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .votd-badge{font-size:12px;font-weight:700;letter-spacing:.04em;color:#cfe0ff;
+      background:#0f1420;border:1px solid #1f2a43;border-radius:999px;padding:4px 10px}
+    .votd-date{font-size:12px;color:var(--muted)}
+    .votd-quote{margin:4px 0 10px;font-size:clamp(18px,2.2vw,22px);line-height:1.5;font-weight:600;color:var(--ink);position:relative}
+    .votd-quote::before{content:"“";position:absolute;left:-14px;top:-6px;font-size:28px;line-height:1;opacity:.25}
+    .votd-quote::after{content:"”";margin-left:4px;opacity:.25}
+    .votd-bottom{display:flex;justify-content:flex-end}
+    .votd-ref{font-size:13px;color:#a9c8ff;font-weight:700}
+  </style>
 </head>
 <body>
 
-<!-- =============== NAV =============== -->
-<div class="nav">
-  <div class="navin">
-    <a href="/">🏠 Resume</a>
-    <a href="#events">Local Events</a>
-    <a href="#traffic">Traffic</a>
-    <a href="#stocks">Stocks</a>
-    <a href="#notes">Scratchpad</a>
-  </div>
-</div>
-
-<!-- =============== TICKER =============== -->
-<div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
-
-<div class="wrap">
-
-  <!-- =============== GREETING =============== -->
-  <div class="card section" id="welcome">
-    <div class="hd"><h2>Welcome</h2><div class="mini" id="localDate"></div></div>
-    <div class="bd">
-      <div class="mini muted">Welcome to my private dashboard. I’m bored and testing/learning things. Feel free to enjoy what’s on display.</div>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="navin">
+      <a href="/">🏠 Resume</a>
+      <a href="#events">Local Events</a>
+      <a href="#traffic">Traffic</a>
+      <a href="#stocks">Stocks</a>
+      <a href="#notes">Scratchpad</a>
     </div>
   </div>
 
-  <!-- =============== WEATHER =============== -->
-  <div class="card section" id="weather">
-    <div class="hd"><h2>Weather</h2></div>
-    <div class="bd"><div id="weatherList"></div></div>
-  </div>
+  <!-- SPORTS TICKER -->
+  <div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
 
-  <!-- =============== SUNRISE / SUNSET =============== -->
-  <div class="card section" id="sun">
-    <div class="hd"><h2>Sunrise • Sunset</h2><div class="mini" id="sunDate"></div></div>
-    <div class="bd" id="sunBox" class="mini"></div>
-  </div>
+  <div class="wrap">
+    <h1 class="section" id="welcome">Welcome</h1>
 
-  <!-- =============== VERSE + EVENTS (side-by-side) =============== -->
-  <div class="grid two section" id="events">
+    <!-- WELCOME COPY -->
     <div class="card">
-      <div class="hd"><h2>Verse of the Day</h2></div>
-      <div class="bd" id="votd">Loading…</div>
+      <div class="hd">
+        <div>Welcome</div>
+        <span id="todayBadge" class="pill"></span>
+      </div>
+      <div class="bd">
+        <div class="mini muted" style="margin-bottom:8px">
+          Welcome to my private dashboard. I’m tinkering, learning, and having fun—feel free to explore anything on display.
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="hd"><h2>Local Events</h2><a class="btn mini" id="eventsRange">next 7–14 days</a></div>
-      <div class="bd" id="eventsList">Loading…</div>
+    <!-- WEATHER -->
+    <div class="card section" id="weather" style="margin-top:16px">
+      <div class="hd"><div>Weather</div></div>
+      <div class="bd"><div id="weatherList" class="symbols"></div></div>
     </div>
-  </div>
 
-  <!-- =============== TRAFFIC =============== -->
-  <div class="grid two section" id="traffic">
-    <div class="card">
-      <div class="hd"><h2>To Work</h2></div>
-      <iframe id="map1"></iframe>
+    <!-- SUNRISE / SUNSET -->
+    <div class="card section" id="sun" style="margin-top:16px">
+      <div class="hd"><div>Sunrise • Sunset</div><span id="sunDate" class="pill"></span></div>
+      <div class="bd"><div id="sunLine" class="mini"></div></div>
     </div>
-    <div class="card">
-      <div class="hd"><h2>To Home</h2></div>
-      <iframe id="map2"></iframe>
+
+    <!-- VOTD + EVENTS -->
+    <div class="grid cols-2 section" id="events" style="margin-top:16px">
+      <div class="card">
+        <div class="hd"><div>Verse of the Day</div></div>
+        <div class="bd">
+          <div class="votd-card">
+            <div class="votd-top">
+              <span class="votd-badge">Verse of the Day</span>
+              <span id="votdDate" class="votd-date"></span>
+            </div>
+            <blockquote id="votdText" class="votd-quote">Loading…</blockquote>
+            <div class="votd-bottom"><span id="votdRef" class="votd-ref"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><div>Local Events</div><span class="pill">next 7–14 days</span></div>
+        <div class="bd"><div id="eventsList" class="symbols"></div></div>
+      </div>
     </div>
+
+    <!-- TRAFFIC -->
+    <h1 class="section" id="traffic">Traffic</h1>
+    <div class="grid cols-2">
+      <div class="card">
+        <div class="hd"><div>To Work</div></div>
+        <iframe id="map1" title="route1"></iframe>
+      </div>
+      <div class="card">
+        <div class="hd"><div>To Home</div></div>
+        <iframe id="map2" title="route2"></iframe>
+      </div>
+    </div>
+
+    <!-- STOCKS -->
+    <div class="card section" id="stocks" style="margin-top:16px">
+      <div class="hd"><div>Stocks</div><span class="pill">auto refresh</span></div>
+      <div class="bd"><div id="stocksList" class="symbols"></div></div>
+    </div>
+
+    <!-- SCRATCHPAD -->
+    <div class="card section" id="notes" style="margin-top:16px">
+      <div class="hd"><div>Scratchpad</div><button id="clearNotes" class="pill">Clear</button></div>
+      <div class="bd"><textarea id="notesBox" placeholder="Jot quick notes…"></textarea></div>
+    </div>
+
+    <div class="btm"><a class="btn-top" href="#top">Top</a></div>
+    <div class="footer">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
   </div>
 
-  <!-- =============== STOCKS & CRYPTO =============== -->
-  <div class="card section" id="stocks">
-    <div class="hd"><h2>Stocks</h2><span class="mini">auto refresh</span></div>
-    <div class="bd"><div id="stocksList" class="symbols"></div></div>
-  </div>
-
-  <div class="card" id="crypto">
-    <div class="hd"><h2>Crypto</h2></div>
-    <div class="bd"><div id="cryptoList" class="symbols"></div></div>
-  </div>
-
-  <!-- =============== NOTES =============== -->
-  <div class="card section" id="notes">
-    <div class="hd"><h2>Scratchpad</h2><a id="clearNotes" class="btn mini" href="#">Clear</a></div>
-    <div class="bd"><textarea id="notesBox" placeholder="Jot quick notes…"></textarea></div>
-  </div>
-
-  <div class="btm"><a href="#top" class="btn-top">Top</a></div>
-  <div class="footer">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
-</div>
-
-<!-- =========================
-     JS: config & features
-     ========================= -->
 <script>
-/* ---- CONFIG YOU EDIT ---- */
-const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
-const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
-const HOME = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
-const WORK = "411 W Main St, Round Rock, TX 78664";
-const WEATHER_ZIPS = ["78664","53158","60030","44115"];
-const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
-const CRYPTO = ["bitcoin","ethereum","dogecoin"];
+  /* =========================
+     CONFIG
+  ========================== */
+  const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
+  const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
 
-/* ---- helpers ---- */
-const $ = s => document.querySelector(s);
-const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
-const toF = c => (c*9/5)+32;
-const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code]||"🌡️");
+  const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
+  const B = "411 W Main St, Round Rock, TX 78664";
 
-const ZIP_COORDS = {
-  "78664": { lat: 30.5083, lon: -97.6789, name: "Round Rock, TX" },
-  "53158": { lat: 42.5531, lon: -87.9501, name: "Pleasant Prairie, WI" },
-  "60030": { lat: 42.3445, lon: -88.0417, name: "Grayslake, IL" },
-  "44115": { lat: 41.4993, lon: -81.6944, name: "Cleveland, OH" }
-};
+  const WEATHER_ZIPS = ["78664","53158","60030","44115"]; // RR, Pleasant Prairie, Grayslake, Cleveland
+  const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
+  const EVENTS_ZIP = "78664"; // change if you want events for another base ZIP
 
-/* ---- header date & creative welcome ---- */
-(function setGreeting(){
-  const now = new Date();
-  const hrs = now.getHours();
-  const mm=String(now.getMonth()+1).padStart(2,"0"), dd=String(now.getDate()).padStart(2,"0"), yyyy=now.getFullYear();
-  $("#localDate").textContent = `${mm}/${dd}/${yyyy}`;
-  $("#sunDate").textContent   = `${mm}/${dd}/${yyyy}`;
+  /* =========================
+     HELPERS
+  ========================== */
+  const $ = s => document.querySelector(s);
+  const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
+  const toF = c => (c*9/5)+32;
+  const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code] || "🌡️");
+  const todayMMDDYYYY = () => {
+    const d = new Date(); const mm=String(d.getMonth()+1).padStart(2,"0");
+    const dd=String(d.getDate()).padStart(2,"0"); const yy=d.getFullYear();
+    return `${mm}/${dd}/${yy}`;
+  };
 
-  let greet;
-  if (hrs < 5) greet = "Still awake? Night owl energy. 🌙";
-  else if (hrs < 11) greet = "Good morning! ☕ Let’s make today count.";
-  else if (hrs < 17) greet = "Good afternoon! Keep that focus rolling. 🔥";
-  else if (hrs < 21) greet = "Good evening! Unwind, you’ve earned it. 🌇";
-  else greet = "Late night tinkering? Welcome back, creator. 🌌";
-
-  document.querySelector("#welcome .bd").innerHTML =
-    `<div style="font-size:1rem;">${greet}</div>
-     <div class="mini muted" style="margin-top:6px">This is my private dashboard — built for learning, testing, and keeping tabs on life. Explore and enjoy.</div>`;
-})();
-
-/* ---- ticker ---- */
-async function loadTicker(){
-  try{
-    const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
-    const items = await r.json();
-    const twice = items.concat(items);
-    $("#ticker").innerHTML = twice.map(x=>`<span class="tick-item">• ${x.title}</span>`).join("");
-  }catch{
-    $("#ticker").innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
-  }
-}
-
-/* ---- traffic (visual) ---- */
-const mapsURL = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
-function loadTraffic(){ $("#map1").src = mapsURL(HOME, WORK); $("#map2").src = mapsURL(WORK, HOME); }
-
-/* ---- weather ---- */
-async function fetchWeather(lat, lon){
-  try{
-    const r = await fetch(`${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`);
-    if (r.ok) return r.json();
-  }catch{}
-  const u = new URL("https://api.open-meteo.com/v1/forecast");
-  u.search = new URLSearchParams({
-    latitude: lat, longitude: lon, timezone: "auto", wind_speed_unit: "mph",
-    current: "temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
-    daily: "temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
-    hourly: "temperature_2m,weather_code"
-  }).toString();
-  const r2 = await fetch(u.toString());
-  return r2.json();
-}
-
-async function loadWeather(){
-  const host = $("#weatherList"); host.innerHTML = "";
-  const seen = new Set();
-  for (const zip of WEATHER_ZIPS){
-    if (seen.has(zip)) continue; seen.add(zip);
+  /* =========================
+     TICKER
+  ========================== */
+  async function loadTicker(){
     try{
-      const geo = ZIP_COORDS[zip] || await (await fetch(`${WORKER_BASE}/geo?zip=${zip}`)).json();
-      const data = await fetchWeather(geo.lat, geo.lon);
-      const cur = data.current;
-      const minC = Math.round(data.daily.temperature_2m_min[0]);
-      const maxC = Math.round(data.daily.temperature_2m_max[0]);
-      const times = data.hourly.time.map(t=>new Date(t));
-      let idx = times.findIndex(t=>t>=new Date()); if (idx<0) idx=0;
-      const hrs = Array.from({length:5},(_,i)=> idx+i).filter(i=>i<times.length).map(i=>({
-        hour: String(times[i].getHours()).padStart(2,"0"),
-        tempC: data.hourly.temperature_2m[i],
-        code: data.hourly.weather_code[i]
-      }));
-
-      const card = document.createElement("div"); card.className="sym";
-      card.innerHTML = `
-        <div class="top">
-          <div><strong>${geo.name}</strong> · ${iconFor(cur.weather_code)}</div>
-          <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
-        </div>
-        <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
-        <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F</div>
-        <div class="hrow">
-          ${hrs.map(h=>`<div class="hchip"><div class="ico">${iconFor(h.code)}</div><div class="t mini">${Math.round(toF(h.tempC))}°F</div><div class="mini muted">${h.hour}:00</div></div>`).join("")}
-        </div>`;
-      host.appendChild(card);
-    }catch(e){
-      const d=document.createElement("div"); d.className="sym";
-      d.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
-      host.appendChild(d);
+      const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
+      const items = await r.json();
+      const twice = items.concat(items);
+      $("#ticker").innerHTML = twice.map(x=>`<span class="tick-item">• ${x.title}</span>`).join("");
+    }catch{
+      $("#ticker").innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
     }
   }
-}
 
-/* ---- sunrise/sunset ---- */
-async function loadSun(){
-  const {lat,lon} = ZIP_COORDS["78664"];
-  try{
-    const r = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`);
-    const j = await r.json();
-    if (!j.results) throw 0;
-    const s = new Date(j.results.sunrise);
-    const t = new Date(j.results.sunset);
-    const fmt = x => x.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
-    $("#sunBox").textContent = `Sunrise ${fmt(s)} • Sunset ${fmt(t)}`;
-  }catch{ $("#sunBox").textContent = "Sunrise/Sunset unavailable"; }
-}
+  /* =========================
+     TRAFFIC
+  ========================== */
+  const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
+  function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
 
-/* ---- verse of the day ---- */
-async function loadVOTD(){
-  try{
-    const r = await fetch("https://beta.ourmanna.com/api/v1/get/?format=json");
-    const j = await r.json();
-    const v = j.verse?.details || j.verse?.verse?.details;
-    if (v && v.text){
-      $("#votd").innerHTML = `<div>${v.text}</div><div class="mini muted" style="margin-top:6px">${v.reference}</div>`;
-      localStorage.setItem("votd_cache", JSON.stringify({text:v.text,ref:v.reference,ts:Date.now()}));
-    }else throw 0;
-  }catch{
-    const cached = JSON.parse(localStorage.getItem("votd_cache")||"{}");
-    if (cached.text) $("#votd").innerHTML = `<div>${cached.text}</div><div class="mini muted" style="margin-top:6px">${cached.ref}</div>`;
-    else $("#votd").textContent = "Verse unavailable";
+  /* =========================
+     WEATHER
+  ========================== */
+  // Prefer Worker proxy /wx (caches) and /geo fallback; direct Open-Meteo if needed.
+  async function wx(lat,lon){
+    const u = `${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`;
+    const r = await fetch(u);
+    if (r.ok) return r.json();
+    // fallback direct
+    const url = new URL("https://api.open-meteo.com/v1/forecast");
+    url.search = new URLSearchParams({
+      latitude: lat, longitude: lon, timezone:"auto", wind_speed_unit:"mph",
+      current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
+      daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
+      hourly:"temperature_2m,weather_code"
+    }).toString();
+    const r2 = await fetch(url); return r2.json();
   }
-}
-
-/* ---- local events ---- */
-async function loadEvents(){
-  const {lat,lon} = ZIP_COORDS["78664"];
-  try{
-    const r = await fetch(`${WORKER_BASE}/events?lat=${lat}&lon=${lon}&radius=50&size=6`);
-    const data = await r.json();
-    if (Array.isArray(data) && data.length){
-      $("#eventsList").innerHTML = data.map(ev=>`
-        <div class="sym">
-          <div class="top"><div><strong>${ev.name}</strong></div><div class="mini muted">${(ev.city||"")} ${(ev.state||"")}</div></div>
-          <div class="mini" style="margin-top:6px">${ev.date ? new Date(ev.date).toLocaleString() : ""}</div>
-          <div class="mini" style="margin-top:6px"><a class="btn mini" href="${ev.url}" target="_blank" rel="noopener">Details</a></div>
-        </div>
-      `).join("");
-    }else{
-      $("#eventsList").innerHTML = `<div class="mini muted">Add TM_KEY to your Worker for local events.</div>`;
-    }
-  }catch{
-    $("#eventsList").innerHTML = `<div class="mini muted">Events unavailable</div>`;
+  async function geo(zip){
+    const r = await fetch(`${WORKER_BASE}/geo?zip=${zip}`);
+    if (!r.ok) throw new Error("geo");
+    return r.json();
   }
-}
+  async function loadWeather(){
+    const host = $("#weatherList"); host.innerHTML = "";
+    for (const zip of WEATHER_ZIPS){
+      try{
+        const g = await geo(zip);
+        const data = await wx(g.lat, g.lon);
+        const cur = data.current;
+        const minC = data.daily.temperature_2m_min[0];
+        const maxC = data.daily.temperature_2m_max[0];
 
-/* ---- stocks ---- */
-async function loadStocks(){
-  const host = $("#stocksList"); host.innerHTML = "";
-  try{
-    const r = await fetch(`${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(','))}`);
-    const rows = await r.json();
-    if (!Array.isArray(rows) || !rows.length){ host.innerHTML=`<div class="mini muted">No quote data returned.</div>`; return; }
-    rows.forEach(q=>{
-      const chg = q.changePercent; const cls = (chg==null)?"muted":("chg "+(chg>=0?"up":"down"));
-      const d = document.createElement("div"); d.className="sym";
-      d.innerHTML = `<div class="top"><div><strong>${q.symbol}</strong></div><div class="mini ${cls}">${chg==null?"—":`${chg>=0?"+":""}${chg.toFixed(2)}%`}</div></div>
-                     <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-      host.appendChild(d);
-    });
-  }catch{ host.innerHTML = `<div class="mini muted">Quotes unavailable.</div>`; }
-}
+        // next 5 hours
+        const times = data.hourly.time.map(t=>new Date(t));
+        let i = times.findIndex(t=>t>=new Date()); if (i<0) i=0;
+        const hrs = [];
+        for(let k=0;k<5 && i+k<times.length;k++){
+          hrs.push({
+            h: times[i+k].getHours().toString().padStart(2,"0"),
+            t: data.hourly.temperature_2m[i+k],
+            c: data.hourly.weather_code[i+k]
+          });
+        }
 
-/* ---- crypto ---- */
-async function loadCrypto(){
-  const host=$("#cryptoList"); host.innerHTML="";
-  try{
-    const u = new URL("https://api.coingecko.com/api/v3/simple/price");
-    u.search = new URLSearchParams({ ids: CRYPTO.join(","), vs_currencies:"usd", include_24hr_change:"true" }).toString();
-    const r = await fetch(u); const j = await r.json();
-    for (const id of CRYPTO){
-      if (!j[id]) continue;
-      const chg = Number(j[id].usd_24h_change||0);
-      const div = document.createElement("div"); div.className="sym";
-      div.innerHTML = `<div class="top"><div><strong>${id[0].toUpperCase()+id.slice(1)}</strong></div><div class="mini chg ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</div></div>
-                       <div class="price">$${Number(j[id].usd||0).toLocaleString()}</div>`;
-      host.appendChild(div);
+        const div = document.createElement("div"); div.className="sym";
+        div.innerHTML = `
+          <div class="top">
+            <div><strong>${g.name || zip}</strong></div>
+            <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
+          </div>
+          <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
+          <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F</div>
+          <div class="hrow">
+            ${hrs.map(h=>`
+            <div class="hchip">
+              <div class="ico">${iconFor(h.c)}</div>
+              <div class="t mini">${Math.round(toF(h.t))}°F</div>
+              <div class="mini muted">${h.h}:00</div>
+            </div>`).join("")}
+          </div>`;
+        host.appendChild(div);
+      }catch(e){
+        const div = document.createElement("div"); div.className="sym";
+        div.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
+        host.appendChild(div);
+      }
     }
-  }catch{ host.innerHTML = `<div class="mini muted">Crypto unavailable</div>`; }
-}
+  }
 
-/* ---- notes ---- */
-const notesEl=$("#notesBox");
-notesEl.value=localStorage.getItem("dashboard-notes")||"";
-notesEl.addEventListener("input",()=>localStorage.setItem("dashboard-notes",notesEl.value));
-$("#clearNotes").onclick=(e)=>{e.preventDefault(); notesEl.value=""; localStorage.removeItem("dashboard-notes");};
+  /* =========================
+     SUNRISE / SUNSET
+  ========================== */
+  async function loadSun(){
+    $("#sunDate").textContent = todayMMDDYYYY();
+    try{
+      // use first ZIP for sun line
+      const g = await geo(WEATHER_ZIPS[0]);
+      const u = new URL("https://api.sunrisesunset.io/json");
+      u.search = new URLSearchParams({ lat:g.lat, lng:g.lon, timezone:"auto" }).toString();
+      const r = await fetch(u); const j = await r.json();
+      const s = j?.results;
+      if (s?.sunrise && s?.sunset){
+        $("#sunLine").textContent = `Sunrise ${s.sunrise} · Sunset ${s.sunset}`;
+        return;
+      }
+    }catch{}
+    $("#sunLine").textContent = "Unavailable";
+  }
 
-/* ---- init ---- */
-loadTicker();
-loadTraffic();
-loadWeather();
-loadSun();
-loadVOTD(); setInterval(loadVOTD, 30*60*1000);
-loadEvents();
-loadStocks(); setInterval(loadStocks, 60_000);
-loadCrypto(); setInterval(loadCrypto, 120_000);
+  /* =========================
+     VERSE OF THE DAY (pop card)
+  ========================== */
+  async function loadVOTD(){
+    $("#votdDate").textContent = todayMMDDYYYY();
+    // First try your worker (caches + fallback to yesterday), then direct Labs if needed
+    try{
+      const r = await fetch(`${WORKER_BASE}/votd`);
+      if (r.ok){
+        const j = await r.json();
+        if (j?.text){
+          $("#votdText").textContent = j.text;
+          $("#votdRef").textContent  = j.ref || "";
+          return;
+        }
+      }
+    }catch{}
+    try{
+      const r = await fetch("https://labs.bible.org/api/?passage=votd&type=json");
+      const j = await r.json();
+      const v = j?.[0];
+      if (v){
+        $("#votdText").textContent = v.text;
+        $("#votdRef").textContent  = `${v.bookname} ${v.chapter}:${v.verse}`;
+        return;
+      }
+    }catch{}
+    $("#votdText").textContent = "Verse unavailable."; $("#votdRef").textContent = "";
+  }
+
+  /* =========================
+     LOCAL EVENTS (Ticketmaster via Worker)
+  ========================== */
+  async function loadEvents(){
+    const host = $("#eventsList"); host.innerHTML = "";
+    try{
+      const r = await fetch(`${WORKER_BASE}/events?postalCode=${encodeURIComponent(EVENTS_ZIP)}`);
+      const j = await r.json();
+      if (Array.isArray(j) && j.length){
+        j.slice(0,8).forEach(ev=>{
+          const d = document.createElement("div"); d.className="sym";
+          d.innerHTML = `
+            <div class="top"><div><strong>${ev.name||"Event"}</strong></div>
+            <div class="mini muted">${ev.city||""} ${ev.state||""}</div></div>
+            <div class="mini">${ev.date||""}</div>
+            <div class="mini"><a class="pill" href="${ev.url||"#"}" target="_blank" rel="noopener">Details</a></div>`;
+          host.appendChild(d);
+        });
+        return;
+      }
+      host.innerHTML = `<div class="mini muted">No events or missing TM_KEY on Worker.</div>`;
+    }catch{
+      host.innerHTML = `<div class="mini muted">Events unavailable.</div>`;
+    }
+  }
+
+  /* =========================
+     STOCKS
+  ========================== */
+  function mapYahoo(sym){return sym.replace("BRK.A","BRK-A").replace("BRK.B","BRK-B");}
+  async function loadStocks(){
+    const host = $("#stocksList"); host.innerHTML = "";
+    try{
+      const url = `${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(","))}`;
+      const r = await fetch(url); const rows = await r.json();
+      if (!Array.isArray(rows) || !rows.length){
+        host.innerHTML = `<div class="mini muted">Quotes unavailable.</div>`; return;
+      }
+      rows.forEach(q=>{
+        const chg = q.changePercent; const badge = chg==null ? "muted" : (chg>=0?"chg up":"chg down");
+        const div = document.createElement("div"); div.className="sym";
+        div.innerHTML = `
+          <div class="top">
+            <div><strong>${q.symbol}</strong> <span class="mini muted">${q.name||""}</span></div>
+            <div class="mini ${badge}">${chg==null?"—":`${chg>=0?"+":""}${chg.toFixed(2)}%`}</div>
+          </div>
+          <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+        host.appendChild(div);
+      });
+    }catch{
+      host.innerHTML = `<div class="mini muted">Quotes unavailable.</div>`;
+    }
+  }
+
+  /* =========================
+     NOTES + TODAY BADGES
+  ========================== */
+  $("#todayBadge").textContent = todayMMDDYYYY();
+  $("#votdDate").textContent  = todayMMDDYYYY();
+  $("#clearNotes").onclick = ()=>{ const t=$("#notesBox"); t.value=""; localStorage.removeItem("dashboard-notes"); };
+  const tSaved = localStorage.getItem("dashboard-notes")||""; $("#notesBox").value = tSaved;
+  $("#notesBox").addEventListener("input", e=>localStorage.setItem("dashboard-notes", e.target.value));
+
+  /* =========================
+     INIT
+  ========================== */
+  loadTicker();
+  updateTraffic(); setInterval(updateTraffic, 120000);
+  loadWeather();
+  loadSun();
+  loadVOTD(); setInterval(loadVOTD, 30*60*1000); // refresh every 30 min
+  loadEvents();
+  loadStocks(); setInterval(loadStocks, 60000);
 </script>
 </body>
 </html>
