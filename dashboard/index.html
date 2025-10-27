@@ -1,126 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard — JMOD Co</title>
-  <meta name="color-scheme" content="dark">
-  <style>
-    :root{
-      --bg:#0f1117; --text:#e9eefc; --muted:#96a0b7; --card:#141927;
-      --border:#242a38; --shadow:0 10px 32px rgba(0,0,0,.35);
-      --radius:14px; --accent:#77a6ff;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Helvetica,Arial}
-    a{color:var(--accent);text-decoration:none}
-    header{position:sticky;top:0;background:#0c1019;border-bottom:1px solid var(--border);z-index:10}
-    .bar{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 16px}
-    .logo{display:flex;align-items:center;gap:10px}
-    .logo span{display:inline-block;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#64c0ff,#6a7dff)}
-    .logo h1{font-size:1.05rem;margin:0}
-    main{max-width:1100px;margin:20px auto;padding:0 16px;display:grid;gap:18px}
-    h2{font-size:1.25rem;margin:0 0 10px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
-    .muted{color:var(--muted);font-size:.92rem}
-    /* ---------- QuickCalc styles ---------- */
-    #quickcalc .grid{display:grid;gap:14px}
-    @media(min-width:880px){#quickcalc .grid{grid-template-columns:1fr 1fr}}
-    #quickcalc .row{display:grid;grid-template-columns:1fr 180px 140px;gap:10px;align-items:center;margin:8px 0}
-    #quickcalc .row.small{grid-template-columns:1fr 180px 140px}
-    #quickcalc label{color:var(--muted);font-size:.95rem}
-    #quickcalc input[type="number"], #quickcalc select{
-      width:100%;padding:10px 12px;background:#0d131e;color:var(--text);
-      border:1px solid var(--border);border-radius:10px;outline:none
-    }
-    #quickcalc .out{background:#0d131e;border:1px dashed #2b3143;border-radius:10px;
-      padding:10px 12px;text-align:right;color:#dfe7ff}
-    #quickcalc h3{margin:0 0 10px;font-size:1.1rem}
-    /* Scratch Pad */
-    textarea{width:100%;min-height:180px;background:#0d131e;color:var(--text);
-      border:1px solid var(--border);border-radius:12px;padding:12px;resize:vertical}
-    footer{padding:30px 16px 40px;color:var(--muted);text-align:center}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard — JMOD Co</title>
+<meta name="color-scheme" content="dark">
+<style>
+  :root{
+    --bg:#0f1117; --text:#e9eefc; --muted:#98a4bd; --card:#141a26; --border:#243042;
+    --accent:#7aa2ff; --shadow:0 12px 36px rgba(0,0,0,.35); --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Helvetica,Arial}
+  a{color:var(--accent);text-decoration:none}
+  /* Header */
+  header{position:sticky;top:0;background:#0c121c;border-bottom:1px solid var(--border);z-index:10}
+  .bar{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding:12px 16px}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo img{height:28px;width:auto;display:block}
+  .logo h1{font-size:1.05rem;margin:0 0 0 6px}
+  nav a{margin-left:16px;font-size:.95rem;opacity:.95}
+  @media (max-width:560px){
+    nav a{margin-left:10px;font-size:.88rem}
+    .logo h1{display:none}
+  }
+  /* Layout */
+  main{max-width:1200px;margin:20px auto;padding:0 16px;display:grid;gap:18px}
+  .grid{display:grid;gap:18px}
+  @media (min-width:960px){ .grid.cols-3{grid-template-columns:2fr 1fr 1fr}
+                             .grid.cols-2{grid-template-columns:1fr 1fr} }
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px}
+  h2{font-size:1.2rem;margin:0 0 10px}
+  .muted{color:var(--muted);font-size:.92rem}
+  /* Welcome */
+  .welcome{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .metrics{display:flex;gap:14px;flex-wrap:wrap}
+  .chip{background:#0e1522;border:1px solid #28344a;color:#cfe0ff;padding:8px 10px;border-radius:999px;font-size:.9rem}
+  /* Weather */
+  .row{display:grid;grid-template-columns:1fr 170px;gap:10px;align-items:center;margin:8px 0}
+  .row.compact{grid-template-columns:1fr 1fr}
+  input[type="text"],input[type="number"]{
+    width:100%;padding:10px 12px;background:#0d131e;color:var(--text);border:1px solid var(--border);
+    border-radius:10px;outline:none
+  }
+  .out{background:#0d131e;border:1px dashed #2a3243;border-radius:10px;padding:10px 12px;color:#dfe7ff}
+  .weather-grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+  @media (max-width:560px){ .weather-grid{grid-template-columns:1fr} }
+  .stat{background:#0e1522;border:1px solid #28344a;border-radius:12px;padding:10px}
+  .stat h4{margin:0 0 6px;font-size:.9rem;color:#c9d7ff}
+  /* Contact */
+  .contact-wrap{position:relative}
+  .contact-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0b1220,#0d1728);
+    border:1px solid #243044;border-radius:12px;opacity:.65}
+  .contact-inner{position:relative;padding:14px}
+  textarea{width:100%;min-height:160px;background:#0d131e;color:var(--text);
+    border:1px solid var(--border);border-radius:12px;padding:12px;resize:vertical}
+  button{background:#0e1a2e;border:1px solid #2a3b5b;color:#dfe7ff;border-radius:10px;padding:10px 14px;cursor:pointer}
+  button:active{transform:translateY(1px)}
+  /* QuickCalc */
+  #quickcalc .grid{display:grid;gap:14px}
+  @media(min-width:880px){#quickcalc .grid{grid-template-columns:1fr 1fr}}
+  #quickcalc .rowX{display:grid;grid-template-columns:1fr 180px 140px;gap:10px;align-items:center;margin:8px 0}
+  #quickcalc .rowX.small{grid-template-columns:1fr 180px 140px}
+  #quickcalc label{color:var(--muted);font-size:.95rem}
+  #quickcalc input[type="number"]{
+    width:100%;padding:10px 12px;background:#0d131e;color:var(--text);
+    border:1px solid var(--border);border-radius:10px;outline:none
+  }
+  #quickcalc .out{background:#0d131e;border:1px dashed #2b3143;border-radius:10px;
+    padding:10px 12px;text-align:right;color:#dfe7ff}
+  footer{padding:28px 16px 40px;text-align:center;color:var(--muted)}
+</style>
 </head>
 <body>
   <header>
     <div class="bar">
-      <div class="logo"><span></span><h1>JMOD Co — Dashboard</h1></div>
+      <div class="logo">
+        <!-- swap to your actual logo path -->
+        <img src="/assets/logo-jmodco.png" alt="JMOD Co" />
+        <h1>JMOD Co — Dashboard</h1>
+      </div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/projects.html">Projects</a>
+        <a href="/dashboard.html">Dashboard</a>
+      </nav>
     </div>
   </header>
 
   <main>
-    <!-- Your other dashboard content would be here -->
+    <!-- Welcome -->
+    <section class="card">
+      <div class="welcome">
+        <div>
+          <h2>Welcome back, Jordan 👋</h2>
+          <div class="muted">Here’s your quick snapshot. Tweak inputs and it’ll remember for next time.</div>
+        </div>
+        <div class="metrics">
+          <div class="chip" id="localTimeChip">—</div>
+          <div class="chip" id="fxChip">FX: loading…</div>
+          <div class="chip" id="verseChip">Verse: loading…</div>
+        </div>
+      </div>
+    </section>
 
-    <!-- ===================== QuickCalc (bottom, above Scratch Pad) ===================== -->
+    <!-- Weather + Verse + Contact -->
+    <section class="grid cols-3">
+      <!-- Weather -->
+      <div class="card">
+        <h2>Weather</h2>
+        <div class="muted">Enter a city or ZIP (ex: Round Rock, TX). We’ll fetch current data and sunrise/sunset.</div>
+        <div class="row">
+          <label for="loc">Location</label>
+          <input id="loc" type="text" placeholder="e.g., Round Rock, TX">
+        </div>
+        <div class="weather-grid" style="margin-top:6px">
+          <div class="stat">
+            <h4>Temperature</h4>
+            <div id="wxTemp">—</div>
+          </div>
+          <div class="stat">
+            <h4>Conditions</h4>
+            <div id="wxDesc">—</div>
+          </div>
+          <div class="stat">
+            <h4>Sunrise</h4>
+            <div id="sunrise">—</div>
+          </div>
+          <div class="stat">
+            <h4>Sunset</h4>
+            <div id="sunset">—</div>
+          </div>
+        </div>
+        <div class="muted" id="wxStatus" style="margin-top:8px">Enter a location to load weather.</div>
+      </div>
+
+      <!-- Verse of the Day -->
+      <div class="card">
+        <h2>Verse of the Day</h2>
+        <div id="verseText" class="out" style="min-height:96px">Loading…</div>
+        <div class="muted" id="verseRef" style="margin-top:8px">—</div>
+        <div class="muted" id="verseStatus" style="margin-top:6px">Auto-refresh every 30 minutes. Falls back to last good verse if today is unavailable.</div>
+      </div>
+
+      <!-- Contact / Inquiry -->
+      <div class="card contact-wrap">
+        <div class="contact-bg"></div>
+        <div class="contact-inner">
+          <h2>Contact / Inquiry</h2>
+          <div class="row compact">
+            <input id="cName" type="text" placeholder="Your name">
+            <input id="cEmail" type="text" placeholder="Your email">
+          </div>
+          <textarea id="cMsg" placeholder="How can I help?"></textarea>
+          <div style="margin-top:10px;display:flex;gap:10px;justify-content:flex-end">
+            <button id="cClear">Clear</button>
+            <button id="cSave">Save</button>
+          </div>
+          <div class="muted" id="cStatus" style="margin-top:6px">Not sent anywhere yet — saved locally.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QuickCalc (bottom, above Scratch Pad) -->
     <section id="quickcalc" class="card">
       <h2>QuickCalc</h2>
-      <div class="muted">Live FX (refreshes every 30 minutes) & mass/volume helpers. Amounts are editable; USD boxes are read-only.</div>
+      <div class="muted">Live FX (refreshes every 30 minutes) & mass/volume helpers. Amounts are editable; USD outputs are read-only.</div>
       <div class="grid">
-        <!-- Currency column -->
+        <!-- Currency -->
         <div>
-          <h3>Currency</h3>
-          <div class="row">
+          <h3 style="margin:10px 0 6px;font-size:1rem;color:#cfe0ff">Currency</h3>
+          <div class="rowX">
             <label>EUR amount</label>
             <input id="qc-eur" type="number" step="0.01" value="100">
             <div id="qc-eur-usd" class="out">— USD</div>
           </div>
-          <div class="row">
+          <div class="rowX">
             <label>GBP amount</label>
             <input id="qc-gbp" type="number" step="0.01" value="100">
             <div id="qc-gbp-usd" class="out">— USD</div>
           </div>
-          <div class="row">
+          <div class="rowX">
             <label>JPY amount</label>
             <input id="qc-jpy" type="number" step="1" value="100">
             <div id="qc-jpy-usd" class="out">— USD</div>
           </div>
-          <div class="muted" id="qc-fx-status">Fetching live rates…</div>
+          <div class="muted" id="qc-fx-status" style="margin-top:6px">Fetching live rates…</div>
         </div>
 
-        <!-- Mass/Volume column -->
+        <!-- Mass / Volume / Lots -->
         <div>
-          <h3>Mass & Volume</h3>
-          <div class="row small">
+          <h3 style="margin:10px 0 6px;font-size:1rem;color:#cfe0ff">Mass & Volume</h3>
+          <div class="rowX small">
             <label>mg needed</label>
             <input id="qc-mg" type="number" step="0.001" value="1">
             <div></div>
           </div>
-          <div class="row small">
+          <div class="rowX small">
             <label>G (mg → g)</label>
             <div id="qc-g" class="out">—</div>
             <div></div>
           </div>
-          <div class="row small">
+          <div class="rowX small">
             <label>KG (mg → kg)</label>
             <div id="qc-kg" class="out">—</div>
             <div></div>
           </div>
 
-          <h3>Density & Volume</h3>
-          <div class="row small">
+          <h3 style="margin:10px 0 6px;font-size:1rem;color:#cfe0ff">Density & Volume</h3>
+          <div class="rowX small">
             <label>Density (g/mL)</label>
             <input id="qc-density" type="number" step="0.0001" value="1">
             <div></div>
           </div>
-          <div class="row small">
+          <div class="rowX small">
             <label>mL needed (mg ÷ 1000 ÷ density)</label>
             <div id="qc-ml" class="out">—</div>
             <div></div>
           </div>
-          <div class="row small">
+          <div class="rowX small">
             <label>L needed (mL ÷ 1000)</label>
             <div id="qc-l" class="out">—</div>
             <div></div>
           </div>
 
-          <h3>Lots</h3>
-          <div class="row small">
+          <h3 style="margin:10px 0 6px;font-size:1rem;color:#cfe0ff">Lots</h3>
+          <div class="rowX small">
             <label>Lots sold (mL)</label>
             <input id="qc-lot" type="number" step="0.0001" value="25">
             <div></div>
           </div>
-          <div class="row small">
+          <div class="rowX small">
             <label>Quantity to buy — ROUNDUP(mL ÷ lot)</label>
             <div id="qc-qty" class="out">—</div>
             <div></div>
@@ -128,106 +242,215 @@
         </div>
       </div>
     </section>
-    <!-- ===================== /QuickCalc ===================== -->
 
-    <!-- Scratch Pad (sits directly below QuickCalc) -->
+    <!-- Scratch Pad -->
     <section class="card">
       <h2>Scratch Pad</h2>
       <textarea id="scratch" placeholder="Notes…"></textarea>
+      <div style="margin-top:8px;display:flex;gap:10px;justify-content:flex-end">
+        <button id="scratchClear">Clear</button>
+        <button id="scratchSave">Save</button>
+      </div>
+      <div class="muted" id="scratchStatus" style="margin-top:6px">Saved locally to this device.</div>
     </section>
   </main>
 
   <footer>© JMOD Co</footer>
 
-  <script>
-    // ---------- Helpers ----------
-    const $ = id => document.getElementById(id);
-    const fmt = (n, d=6) => Number(n).toLocaleString(undefined,{maximumFractionDigits:d});
+<script>
+  const $ = id => document.getElementById(id);
+  const fmt = (n,d=6)=>Number(n).toLocaleString(undefined,{maximumFractionDigits:d});
 
-    // ---------- Currency ----------
-    let rates = { EUR: 1.08, GBP: 1.25, JPY: 0.0066 }; // fallback defaults
-    const statusEl = $("qc-fx-status");
+  // ===== Local Time chip
+  function updateLocalTime(){
+    $("localTimeChip").textContent = new Date().toLocaleString();
+  }
+  updateLocalTime();
+  setInterval(updateLocalTime, 1000*30);
 
-    async function loadRates(){
-      try{
-        // Use a public free endpoint; base=USD so we invert to get *→USD*
-        const r = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=EUR,GBP,JPY");
-        const data = await r.json();
-        rates.EUR = 1 / data.rates.EUR; // EUR→USD
-        rates.GBP = 1 / data.rates.GBP; // GBP→USD
-        rates.JPY = 1 / data.rates.JPY; // JPY→USD
-        statusEl.textContent = "Live rates loaded ✓";
-        localStorage.setItem("qc_rates", JSON.stringify(rates));
-      }catch(e){
-        const saved = localStorage.getItem("qc_rates");
-        if(saved){ rates = JSON.parse(saved); statusEl.textContent = "Using saved rates"; }
-        else statusEl.textContent = "Using fallback rates";
-      }
-      computeFX();
+  // ===== Weather (Open-Meteo + Sunrise-Sunset)
+  async function geocode(q){
+    const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1`);
+    const j = await r.json();
+    if(!j.results || !j.results.length) throw new Error("Location not found");
+    const { latitude, longitude, name, admin1, country_code } = j.results[0];
+    return { lat:latitude, lon:longitude, label:`${name}${admin1?`, ${admin1}`:''}${country_code?`, ${country_code}`:''}` };
+  }
+  async function weather(lat,lon){
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`);
+    const j = await r.json();
+    const temp = j?.current?.temperature_2m;
+    const code = j?.current?.weather_code;
+    const desc = codeToText(code);
+    const s = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`);
+    const sj = await s.json();
+    const sr = new Date(sj.results.sunrise);
+    const ss = new Date(sj.results.sunset);
+    return { temp, desc, sunrise: sr, sunset: ss };
+  }
+  function codeToText(code){
+    const map = {
+      0:"Clear", 1:"Mainly clear", 2:"Partly cloudy", 3:"Overcast",
+      45:"Fog", 48:"Rime fog", 51:"Drizzle", 53:"Drizzle", 55:"Drizzle",
+      61:"Rain", 63:"Rain", 65:"Heavy rain", 71:"Snow", 73:"Snow",
+      75:"Heavy snow", 95:"Thunderstorm", 96:"Thunder w/ hail", 99:"Thunder w/ hail"
+    };
+    return map[code] || "—";
+  }
+  async function loadWeather(){
+    const q = $("loc").value.trim();
+    if(!q){ $("wxStatus").textContent="Enter a location to load weather."; return; }
+    $("wxStatus").textContent="Loading…";
+    try{
+      const g = await geocode(q);
+      const w = await weather(g.lat,g.lon);
+      $("wxTemp").textContent = (w.temp!=null) ? `${fmt(w.temp,1)} °C` : "—";
+      $("wxDesc").textContent = w.desc || "—";
+      $("sunrise").textContent = w.sunrise ? new Date(w.sunrise).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : "—";
+      $("sunset").textContent  = w.sunset  ? new Date(w.sunset ).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : "—";
+      $("wxStatus").textContent = `Weather for ${g.label}`;
+      localStorage.setItem("dash_loc", q);
+    }catch(e){
+      $("wxStatus").textContent = "Couldn’t load weather (check location or network).";
     }
+  }
+  $("loc").addEventListener("change", loadWeather);
+  (function(){
+    const last = localStorage.getItem("dash_loc");
+    if(last){ $("loc").value = last; loadWeather(); }
+  })();
 
-    function computeFX(){
-      $("qc-eur-usd").textContent = fmt((Number($("qc-eur").value)||0) * rates.EUR, 6) + " USD";
-      $("qc-gbp-usd").textContent = fmt((Number($("qc-gbp").value)||0) * rates.GBP, 6) + " USD";
-      $("qc-jpy-usd").textContent = fmt((Number($("qc-jpy").value)||0) * rates.JPY, 6) + " USD";
-      localStorage.setItem("qc_amounts", JSON.stringify({
-        eur:$("qc-eur").value, gbp:$("qc-gbp").value, jpy:$("qc-jpy").value
-      }));
+  // ===== Verse of the Day with fallback
+  const DEFAULT_VERSES = [
+    {ref:"Prov 3:5-6",text:"Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight."},
+    {ref:"Phil 4:6",text:"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."},
+    {ref:"Ps 46:1",text:"God is our refuge and strength, an ever-present help in trouble."}
+  ];
+  async function fetchVerse(){
+    try{
+      const r = await fetch("https://beta.ourmanna.com/api/v1/get/?format=json");
+      const j = await r.json();
+      const ref = j.verse.details.reference;
+      const text = j.verse.details.text;
+      return {ref,text};
+    }catch(_){
+      const saved = JSON.parse(localStorage.getItem("dash_verse")||"{}");
+      if(saved.text && saved.ref) return saved;
+      const pick = DEFAULT_VERSES[(new Date().getDate()) % DEFAULT_VERSES.length];
+      return pick;
     }
+  }
+  async function loadVerse(){
+    const v = await fetchVerse();
+    $("verseText").textContent = v.text || "—";
+    $("verseRef").textContent  = v.ref  || "—";
+    $("verseChip").textContent = v.ref ? `Verse: ${v.ref}` : "Verse: —";
+    localStorage.setItem("dash_verse", JSON.stringify(v));
+  }
+  loadVerse();
+  setInterval(loadVerse, 30*60*1000);
 
-    ["qc-eur","qc-gbp","qc-jpy"].forEach(id=>{
-      $(id).addEventListener("input", computeFX);
-    });
+  // ===== Contact store (local only)
+  $("cSave").addEventListener("click", ()=>{
+    const payload = {name:$("cName").value,email:$("cEmail").value,msg:$("cMsg").value,ts:Date.now()};
+    localStorage.setItem("dash_contact", JSON.stringify(payload));
+    $("cStatus").textContent = "Saved locally ✓";
+    setTimeout(()=>$("cStatus").textContent="Not sent anywhere yet — saved locally.", 1800);
+  });
+  $("cClear").addEventListener("click", ()=>{
+    $("cName").value="";$("cEmail").value="";$("cMsg").value="";
+    $("cStatus").textContent = "Cleared.";
+    setTimeout(()=>$("cStatus").textContent="Not sent anywhere yet — saved locally.", 1500);
+  });
+  (function restoreContact(){
+    try{
+      const c = JSON.parse(localStorage.getItem("dash_contact")||"{}");
+      if(c.name) $("cName").value = c.name;
+      if(c.email) $("cEmail").value = c.email;
+      if(c.msg) $("cMsg").value = c.msg;
+    }catch(_){}
+  })();
 
-    // Initial load and 30-minute refresh
-    loadRates();
-    setInterval(loadRates, 30*60*1000);
+  // ===== Scratch Pad
+  $("scratchSave").addEventListener("click", ()=>{
+    localStorage.setItem("dash_scratch", $("scratch").value);
+    $("scratchStatus").textContent = "Saved ✓";
+    setTimeout(()=>$("scratchStatus").textContent="Saved locally to this device.", 1500);
+  });
+  $("scratchClear").addEventListener("click", ()=>{
+    $("scratch").value = "";
+    localStorage.removeItem("dash_scratch");
+    $("scratchStatus").textContent = "Cleared.";
+    setTimeout(()=>$("scratchStatus").textContent="Saved locally to this device.", 1500);
+  });
+  (function restoreScratch(){
+    const s = localStorage.getItem("dash_scratch");
+    if(s) $("scratch").value = s;
+  })();
 
-    // ---------- Mass / Volume / Lots ----------
-    function computeMass(){
-      const mg   = Number($("qc-mg").value)||0;
-      const dens = Number($("qc-density").value)||0;
-      const g  = mg/1000;
-      const kg = mg/1e6;
-
-      $("qc-g").textContent  = g ? fmt(g,6) : "0";
-      $("qc-kg").textContent = kg? fmt(kg,9) : "0";
-
-      const mL = (mg>0 && dens>0) ? (g/dens) : 0; // mL needed
-      $("qc-ml").textContent = mL ? fmt(mL,6) : "0";
-      $("qc-l").textContent  = mL ? fmt(mL/1000,9) : "0";
-
-      const lot = Number($("qc-lot").value)||0; // mL per lot
-      const qty = (mL>0 && lot>0) ? Math.ceil(mL/lot) : 0;
-      $("qc-qty").textContent = qty ? qty : "0";
-
-      localStorage.setItem("qc_mass", JSON.stringify({mg,dens,lot}));
+  // ===== QuickCalc (FX + Mass/Volume)
+  let rates = { EUR: 1.08, GBP: 1.25, JPY: 0.0066 }; // fallbacks
+  async function loadRates(){
+    try{
+      const r = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=EUR,GBP,JPY");
+      const data = await r.json();
+      rates.EUR = 1 / data.rates.EUR; // EUR→USD
+      rates.GBP = 1 / data.rates.GBP; // GBP→USD
+      rates.JPY = 1 / data.rates.JPY; // JPY→USD
+      $("qc-fx-status").textContent = "Live rates loaded ✓";
+      $("fxChip").textContent = "FX: live ✓";
+      localStorage.setItem("qc_rates", JSON.stringify(rates));
+    }catch(e){
+      const saved = localStorage.getItem("qc_rates");
+      if(saved){ rates = JSON.parse(saved); $("qc-fx-status").textContent = "Using saved rates"; $("fxChip").textContent="FX: saved"; }
+      else { $("qc-fx-status").textContent = "Using fallback rates"; $("fxChip").textContent="FX: fallback"; }
     }
+    computeFX();
+  }
+  function computeFX(){
+    $("qc-eur-usd").textContent = fmt((Number($("qc-eur").value)||0) * rates.EUR, 6) + " USD";
+    $("qc-gbp-usd").textContent = fmt((Number($("qc-gbp").value)||0) * rates.GBP, 6) + " USD";
+    $("qc-jpy-usd").textContent = fmt((Number($("qc-jpy").value)||0) * rates.JPY, 6) + " USD";
+    localStorage.setItem("qc_amounts", JSON.stringify({
+      eur:$("qc-eur").value, gbp:$("qc-gbp").value, jpy:$("qc-jpy").value
+    }));
+  }
+  ["qc-eur","qc-gbp","qc-jpy"].forEach(id=>$(id).addEventListener("input", computeFX));
+  loadRates();
+  setInterval(loadRates, 30*60*1000);
 
-    ["qc-mg","qc-density","qc-lot"].forEach(id=>{
-      $(id).addEventListener("input", computeMass);
-    });
-
-    // ---------- Restore saved inputs ----------
-    (function init(){
-      try{
-        const a = JSON.parse(localStorage.getItem("qc_amounts")||"{}");
-        if(a.eur) $("qc-eur").value = a.eur;
-        if(a.gbp) $("qc-gbp").value = a.gbp;
-        if(a.jpy) $("qc-jpy").value = a.jpy;
-
-        const m = JSON.parse(localStorage.getItem("qc_mass")||"{}");
-        if(m.mg) $("qc-mg").value = m.mg;
-        if(m.dens) $("qc-density").value = m.dens;
-        if(m.lot) $("qc-lot").value = m.lot;
-
-        const r = JSON.parse(localStorage.getItem("qc_rates")||"{}");
-        if(r.EUR && r.GBP && r.JPY) rates = r;
-      }catch(_) {}
-
-      computeFX();
-      computeMass();
-    })();
-  </script>
+  function computeMass(){
+    const mg   = Number($("qc-mg").value)||0;
+    const dens = Number($("qc-density").value)||0;
+    const g  = mg/1000;
+    const kg = mg/1e6;
+    $("qc-g").textContent  = g ? fmt(g,6) : "0";
+    $("qc-kg").textContent = kg? fmt(kg,9) : "0";
+    const mL = (mg>0 && dens>0) ? (g/dens) : 0;
+    $("qc-ml").textContent = mL ? fmt(mL,6) : "0";
+    $("qc-l").textContent  = mL ? fmt(mL/1000,9) : "0";
+    const lot = Number($("qc-lot").value)||0;
+    const qty = (mL>0 && lot>0) ? Math.ceil(mL/lot) : 0;
+    $("qc-qty").textContent = qty ? qty : "0";
+    localStorage.setItem("qc_mass", JSON.stringify({mg,dens,lot}));
+  }
+  ["qc-mg","qc-density","qc-lot"].forEach(id=>$(id).addEventListener("input", computeMass));
+  (function initQuickCalc(){
+    try{
+      const a = JSON.parse(localStorage.getItem("qc_amounts")||"{}");
+      if(a.eur) $("qc-eur").value = a.eur;
+      if(a.gbp) $("qc-gbp").value = a.gbp;
+      if(a.jpy) $("qc-jpy").value = a.jpy;
+      const m = JSON.parse(localStorage.getItem("qc_mass")||"{}");
+      if(m.mg)  $("qc-mg").value = m.mg;
+      if(m.dens)$("qc-density").value = m.dens;
+      if(m.lot) $("qc-lot").value = m.lot;
+      const r = JSON.parse(localStorage.getItem("qc_rates")||"{}");
+      if(r.EUR && r.GBP && r.JPY) rates = r;
+    }catch(_){}
+    computeFX();
+    computeMass();
+  })();
+</script>
 </body>
 </html>
