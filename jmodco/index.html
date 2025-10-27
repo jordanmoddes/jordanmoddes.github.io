@@ -1,233 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard — JMOD Co</title>
-  <meta name="color-scheme" content="dark">
+  <title>JMODco — Preview</title>
+  <meta name="description" content="JMODco builds practical AI systems that simplify daily operations for real-world businesses." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0f1117; --text:#e9eefc; --muted:#96a0b7; --card:#141927;
-      --border:#242a38; --shadow:0 10px 32px rgba(0,0,0,.35);
-      --radius:14px; --accent:#77a6ff;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Helvetica,Arial}
-    a{color:var(--accent);text-decoration:none}
-    header{position:sticky;top:0;background:#0c1019;border-bottom:1px solid var(--border);z-index:10}
-    .bar{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 16px}
-    .logo{display:flex;align-items:center;gap:10px}
-    .logo span{display:inline-block;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#64c0ff,#6a7dff)}
-    .logo h1{font-size:1.05rem;margin:0}
-    main{max-width:1100px;margin:20px auto;padding:0 16px;display:grid;gap:18px}
-    h2{font-size:1.25rem;margin:0 0 10px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
-    .muted{color:var(--muted);font-size:.92rem}
-    /* ---------- QuickCalc styles ---------- */
-    #quickcalc .grid{display:grid;gap:14px}
-    @media(min-width:880px){#quickcalc .grid{grid-template-columns:1fr 1fr}}
-    #quickcalc .row{display:grid;grid-template-columns:1fr 180px 140px;gap:10px;align-items:center;margin:8px 0}
-    #quickcalc .row.small{grid-template-columns:1fr 180px 140px}
-    #quickcalc label{color:var(--muted);font-size:.95rem}
-    #quickcalc input[type="number"], #quickcalc select{
-      width:100%;padding:10px 12px;background:#0d131e;color:var(--text);
-      border:1px solid var(--border);border-radius:10px;outline:none
-    }
-    #quickcalc .out{background:#0d131e;border:1px dashed #2b3143;border-radius:10px;
-      padding:10px 12px;text-align:right;color:#dfe7ff}
-    #quickcalc h3{margin:0 0 10px;font-size:1.1rem}
-    /* Scratch Pad */
-    textarea{width:100%;min-height:180px;background:#0d131e;color:var(--text);
-      border:1px solid var(--border);border-radius:12px;padding:12px;resize:vertical}
-    footer{padding:30px 16px 40px;color:var(--muted);text-align:center}
+      --bg:#0b0f14;
+      --panel:#0f141b;
+      --text:#e8eef6;
+      --muted:#a7b4c7;
+      --brand:#4f86ff;
+      --radius:18px;
+      --gap:0.5in;
+      --card: rgba(255,255,255,.04);
+      --card-border: rgba(255,255,255,.08);
+    }*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:linear-gradient(180deg,#0b0f14 0%, #0d131b 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--text)}
+
+.container{max-width:1100px;margin:0 auto;padding:16px 24px}
+.center{text-align:center}
+.section{padding:24px 0}
+h1,h2{margin:0 0 12px}
+
+/* Header */
+.header{position:sticky;top:0;z-index:60;background:rgba(11,15,20,.7);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+.header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:flex-end;gap:12px}
+.brand .wordmark{font-weight:800;font-size:1.4rem;letter-spacing:.2px}
+
+/* NAV */
+.nav{display:flex;align-items:center;gap:10px;padding:8px 0;flex-wrap:nowrap}
+.nav .item{display:inline-block;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);font-weight:600;letter-spacing:.2px;opacity:.95;transition:.15s ease;white-space:nowrap}
+.nav .item:hover{opacity:1;background:rgba(255,255,255,.08)}
+@media (max-width:560px){
+  .nav{gap:6px}
+  .nav .item{padding:6px 10px;font-size:.9rem}
+}
+@media (max-width:420px){
+  .nav .item{padding:5px 8px;font-size:.85rem}
+}
+
+.nav-gap{height:var(--gap)}
+
+/* Hero */
+.hero{max-width:980px;margin:0 auto}
+.slogan{font-size:clamp(28px,6vw,56px);font-weight:800;line-height:1.1;text-align:center;margin:0 auto;padding:0 16px}
+.slogan-sub{color:var(--muted);text-align:center;margin:14px auto 24px;max-width:820px;padding:0 16px}
+.cta{display:block;width:max-content;margin:0 auto;background:var(--brand);color:#0b0f14;padding:12px 20px;border-radius:12px;font-weight:700;border:1px solid rgba(255,255,255,.12);text-decoration:none}
+
+/* About */
+.about{max-width:920px;margin:40px auto 8px;color:var(--muted)}
+.about h2{color:var(--text)}
+
+/* Divisions */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin:18px auto 60px;max-width:1100px}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px}
+.card h3{margin:6px 0 6px}
+.card p{margin:0;color:var(--muted)}
+
+/* Founder + Contact */
+.two-col{display:grid;grid-template-columns:1fr;gap:24px;max-width:1100px;margin:20px auto 60px}
+@media (min-width:850px){.two-col{grid-template-columns:1fr 1fr}}
+.founder{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px}
+.contact{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;overflow:hidden}
+.contact .field{display:flex;flex-direction:column;margin-bottom:12px}
+.contact label{font-size:.9rem;color:var(--muted);margin-bottom:6px}
+.contact input,.contact textarea{width:100%;background:#111825;border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:12px 14px;color:var(--text);font-family:inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.contact textarea{resize:vertical}
+.contact .actions{display:flex;justify-content:flex-end}
+.contact button{background:var(--brand);color:#0b0f14;border:none;border-radius:12px;padding:12px 18px;font-weight:700}
+
+footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;margin-top:30px}
+footer .footnav{display:flex;gap:28px;justify-content:center;color:var(--muted)}
+
   </style>
 </head>
 <body>
-  <header>
-    <div class="bar">
-      <div class="logo"><span></span><h1>JMOD Co — Dashboard</h1></div>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand" aria-label="JmodCo">
+        <span class="wordmark">JmodCo</span>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <span class="item">Home</span>
+        <span class="item">Solutions</span>
+        <span class="item">About</span>
+        <span class="item">Contact</span>
+      </nav>
     </div>
-  </header>
-
-  <main>
-    <!-- Your other dashboard content would be here -->
-
-    <!-- ===================== QuickCalc (bottom, above Scratch Pad) ===================== -->
-    <section id="quickcalc" class="card">
-      <h2>QuickCalc</h2>
-      <div class="muted">Live FX (refreshes every 30 minutes) & mass/volume helpers. Amounts are editable; USD boxes are read-only.</div>
+  </header>  <div class="nav-gap"></div>  <section class="section hero">
+    <h1 class="slogan center">AI-Driven Efficiency for Real-World Businesses</h1>
+    <p class="slogan-sub">JMODco builds practical systems that simplify daily operations for trades, retailers, and professionals.</p>
+    <a class="cta" href="#" role="button" aria-label="Explore Solutions">Explore Solutions</a>
+  </section>  <section class="section">
+    <div class="container about">
+      <h2>About JmodCo</h2>
+      <p>JmodCo is on a mission to harness the power of AI to streamline and enhance business operations. We create practical, effective solutions tailored to the needs of small-to-medium-sized businesses.</p>
+    </div>
+  </section>  <section class="section">
+    <div class="container">
+      <h2 class="center">Our Divisions</h2>
+      <div style="text-align:center;margin:30px 0;">
+        <img src="./assets/ParentLogo.png" alt="JMODco Logo" style="max-width:320px;width:70%;height:auto;">
+      </div>
       <div class="grid">
-        <!-- Currency column -->
-        <div>
-          <h3>Currency</h3>
-          <div class="row">
-            <label>EUR amount</label>
-            <input id="qc-eur" type="number" step="0.01" value="100">
-            <div id="qc-eur-usd" class="out">— USD</div>
-          </div>
-          <div class="row">
-            <label>GBP amount</label>
-            <input id="qc-gbp" type="number" step="0.01" value="100">
-            <div id="qc-gbp-usd" class="out">— USD</div>
-          </div>
-          <div class="row">
-            <label>JPY amount</label>
-            <input id="qc-jpy" type="number" step="1" value="100">
-            <div id="qc-jpy-usd" class="out">— USD</div>
-          </div>
-          <div class="muted" id="qc-fx-status">Fetching live rates…</div>
+        <div class="card">
+          <div>🔗</div>
+          <h3>Jmod Labs</h3>
+          <p>AI tool creation & workflow automation</p>
         </div>
-
-        <!-- Mass/Volume column -->
-        <div>
-          <h3>Mass & Volume</h3>
-          <div class="row small">
-            <label>mg needed</label>
-            <input id="qc-mg" type="number" step="0.001" value="1">
-            <div></div>
-          </div>
-          <div class="row small">
-            <label>G (mg → g)</label>
-            <div id="qc-g" class="out">—</div>
-            <div></div>
-          </div>
-          <div class="row small">
-            <label>KG (mg → kg)</label>
-            <div id="qc-kg" class="out">—</div>
-            <div></div>
-          </div>
-
-          <h3>Density & Volume</h3>
-          <div class="row small">
-            <label>Density (g/mL)</label>
-            <input id="qc-density" type="number" step="0.0001" value="1">
-            <div></div>
-          </div>
-          <div class="row small">
-            <label>mL needed (mg ÷ 1000 ÷ density)</label>
-            <div id="qc-ml" class="out">—</div>
-            <div></div>
-          </div>
-          <div class="row small">
-            <label>L needed (mL ÷ 1000)</label>
-            <div id="qc-l" class="out">—</div>
-            <div></div>
-          </div>
-
-          <h3>Lots</h3>
-          <div class="row small">
-            <label>Lots sold (mL)</label>
-            <input id="qc-lot" type="number" step="0.0001" value="25">
-            <div></div>
-          </div>
-          <div class="row small">
-            <label>Quantity to buy — ROUNDUP(mL ÷ lot)</label>
-            <div id="qc-qty" class="out">—</div>
-            <div></div>
-          </div>
+        <div class="card">
+          <div>🎬</div>
+          <h3>Jmod Media</h3>
+          <p>Automated content & social scheduling</p>
+        </div>
+        <div class="card">
+          <div>📊</div>
+          <h3>Jmod Ops</h3>
+          <p>Dashboards & inventory management</p>
+        </div>
+        <div class="card">
+          <div>🛡️</div>
+          <h3>Jmod Advisor</h3>
+          <p>Compliance-safe assistants for finance & insurance</p>
         </div>
       </div>
-    </section>
-    <!-- ===================== /QuickCalc ===================== -->
-
-    <!-- Scratch Pad (sits directly below QuickCalc) -->
-    <section class="card">
-      <h2>Scratch Pad</h2>
-      <textarea id="scratch" placeholder="Notes…"></textarea>
-    </section>
-  </main>
-
-  <footer>© JMOD Co</footer>
-
-  <script>
-    // ---------- Helpers ----------
-    const $ = id => document.getElementById(id);
-    const fmt = (n, d=6) => Number(n).toLocaleString(undefined,{maximumFractionDigits:d});
-
-    // ---------- Currency ----------
-    let rates = { EUR: 1.08, GBP: 1.25, JPY: 0.0066 }; // fallback defaults
-    const statusEl = $("qc-fx-status");
-
-    async function loadRates(){
-      try{
-        // Use a public free endpoint; base=USD so we invert to get *→USD*
-        const r = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=EUR,GBP,JPY");
-        const data = await r.json();
-        rates.EUR = 1 / data.rates.EUR; // EUR→USD
-        rates.GBP = 1 / data.rates.GBP; // GBP→USD
-        rates.JPY = 1 / data.rates.JPY; // JPY→USD
-        statusEl.textContent = "Live rates loaded ✓";
-        localStorage.setItem("qc_rates", JSON.stringify(rates));
-      }catch(e){
-        const saved = localStorage.getItem("qc_rates");
-        if(saved){ rates = JSON.parse(saved); statusEl.textContent = "Using saved rates"; }
-        else statusEl.textContent = "Using fallback rates";
-      }
-      computeFX();
-    }
-
-    function computeFX(){
-      $("qc-eur-usd").textContent = fmt((Number($("qc-eur").value)||0) * rates.EUR, 6) + " USD";
-      $("qc-gbp-usd").textContent = fmt((Number($("qc-gbp").value)||0) * rates.GBP, 6) + " USD";
-      $("qc-jpy-usd").textContent = fmt((Number($("qc-jpy").value)||0) * rates.JPY, 6) + " USD";
-      localStorage.setItem("qc_amounts", JSON.stringify({
-        eur:$("qc-eur").value, gbp:$("qc-gbp").value, jpy:$("qc-jpy").value
-      }));
-    }
-
-    ["qc-eur","qc-gbp","qc-jpy"].forEach(id=>{
-      $(id).addEventListener("input", computeFX);
-    });
-
-    // Initial load and 30-minute refresh
-    loadRates();
-    setInterval(loadRates, 30*60*1000);
-
-    // ---------- Mass / Volume / Lots ----------
-    function computeMass(){
-      const mg   = Number($("qc-mg").value)||0;
-      const dens = Number($("qc-density").value)||0;
-      const g  = mg/1000;
-      const kg = mg/1e6;
-
-      $("qc-g").textContent  = g ? fmt(g,6) : "0";
-      $("qc-kg").textContent = kg? fmt(kg,9) : "0";
-
-      const mL = (mg>0 && dens>0) ? (g/dens) : 0; // mL needed
-      $("qc-ml").textContent = mL ? fmt(mL,6) : "0";
-      $("qc-l").textContent  = mL ? fmt(mL/1000,9) : "0";
-
-      const lot = Number($("qc-lot").value)||0; // mL per lot
-      const qty = (mL>0 && lot>0) ? Math.ceil(mL/lot) : 0;
-      $("qc-qty").textContent = qty ? qty : "0";
-
-      localStorage.setItem("qc_mass", JSON.stringify({mg,dens,lot}));
-    }
-
-    ["qc-mg","qc-density","qc-lot"].forEach(id=>{
-      $(id).addEventListener("input", computeMass);
-    });
-
-    // ---------- Restore saved inputs ----------
-    (function init(){
-      try{
-        const a = JSON.parse(localStorage.getItem("qc_amounts")||"{}");
-        if(a.eur) $("qc-eur").value = a.eur;
-        if(a.gbp) $("qc-gbp").value = a.gbp;
-        if(a.jpy) $("qc-jpy").value = a.jpy;
-
-        const m = JSON.parse(localStorage.getItem("qc_mass")||"{}");
-        if(m.mg) $("qc-mg").value = m.mg;
-        if(m.dens) $("qc-density").value = m.dens;
-        if(m.lot) $("qc-lot").value = m.lot;
-
-        const r = JSON.parse(localStorage.getItem("qc_rates")||"{}");
-        if(r.EUR && r.GBP && r.JPY) rates = r;
-      }catch(_) {}
-
-      computeFX();
-      computeMass();
-    })();
-  </script>
-</body>
+    </div>
+  </section>  <section class="section">
+    <div class="container two-col">
+      <div class="founder">
+        <h2>Founder Note / Story</h2>
+        <p>I built JmodCo to bring enterprise-grade discipline to everyday businesses—clear metrics, rapid iteration, and automations that respect budgets. The goal is simple: ship practical wins that compound.</p>
+      </div>
+      <form class="contact" onsubmit="event.preventDefault()">
+        <h2>Contact / Inquiry</h2>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your name" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label for="msg">Message</label>
+          <textarea id="msg" rows="5" placeholder="How can we help?"></textarea>
+        </div>
+        <div class="actions">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </section>  <footer>
+    <div class="container" style="display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center">
+      <div style="font-size:.9rem;color:var(--muted)">Backed and supported by <strong>GPT‑5 Engine</strong></div>
+      <div class="footnav" style="margin:4px 0 8px"> 
+        <span>Jmod Labs</span>
+        <span>Jmod Media</span>
+        <span>Jmod Ops</span>
+        <span>Advisor</span>
+      </div>
+      <div style="font-size:.9rem;color:var(--muted)">
+        <span id="copyright"></span>
+        <span> · All rights reserved.</span>
+      </div>
+    </div>
+  </footer>  <script>
+    const year = new Date().getFullYear();
+    document.getElementById('copyright').textContent = `© ${year} JmodCo`;
+  </script></body>
 </html>
