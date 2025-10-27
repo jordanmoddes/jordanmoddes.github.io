@@ -13,21 +13,26 @@
       --panel:#0f141b;        /* slightly lighter */
       --text:#e8eef6;         /* near-white */
       --muted:#a7b4c7;        /* slate */
-      --brand:#7c3aed;        /* violet */
+      --brand:#4f86ff;        /* soft blue button */
       --radius:18px;
       --gap:0.5in;            /* requested space below the sticky nav */
+      --card: rgba(255,255,255,.04);
+      --card-border: rgba(255,255,255,.08);
     }
 
     html,body{height:100%}
     body{margin:0;background:linear-gradient(180deg,#0b0f14 0%, #0d131b 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
     a{color:var(--text)}
 
-    /* Wrapper */
+    /* Utility */
     .container{max-width:1100px;margin:0 auto;padding:24px}
+    .center{text-align:center}
+    .section{padding:24px 0}
+    h1,h2{margin:0 0 12px}
 
-    /* Top logo (center, bold, large) */
+    /* Top logo (center, bold, large, with size cap) */
     .masthead{display:flex;align-items:center;justify-content:center;padding:40px 0 16px 0;transition:opacity .25s ease, transform .25s ease}
-    .masthead img{width:min(720px,75vw);height:auto;display:block;filter:drop-shadow(0 20px 40px rgba(0,0,0,.35))}
+    .masthead img{width:clamp(220px, 42vw, 520px); /* limit size */ height:auto;display:block;filter:drop-shadow(0 16px 40px rgba(0,0,0,.35))}
 
     /* Sticky navbar */
     .nav-wrap{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.7);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
@@ -38,13 +43,33 @@
     /* Gap under nav as requested */
     .nav-gap{height:var(--gap)}
 
-    /* Slogan / hero line */
-    .slogan{font-size:clamp(28px,5vw,48px);font-weight:800;line-height:1.1;text-align:center;margin:0 auto;max-width:980px;padding:0 16px}
-    .slogan-sub{color:var(--muted);text-align:center;margin:16px auto 0;max-width:820px;padding:0 16px}
+    /* Hero / Slogan */
+    .hero{max-width:980px;margin:0 auto}
+    .slogan{font-size:clamp(32px,6vw,64px);font-weight:800;line-height:1.1;text-align:center;margin:0 auto;padding:0 16px}
+    .slogan-sub{color:var(--muted);text-align:center;margin:14px auto 24px;max-width:820px;padding:0 16px}
+    .cta{display:block;width:max-content;margin:0 auto;background:var(--brand);color:#0b0f14;padding:12px 20px;border-radius:12px;font-weight:700;border:1px solid rgba(255,255,255,.12);text-decoration:none}
 
-    /* Cards placeholder (rest of page can remain simple for now) */
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin:36px auto 80px;max-width:1100px}
-    .card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:18px}
+    /* About */
+    .about{max-width:920px;margin:40px auto 8px;color:var(--muted)}
+    .about h2{color:var(--text)}
+
+    /* Divisions grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin:18px auto 60px;max-width:1100px}
+    .card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px}
+    .card h3{margin:6px 0 6px}
+    .card p{margin:0;color:var(--muted)}
+
+    /* Founder + Contact two-column */
+    .two-col{display:grid;grid-template-columns:1fr;gap:24px;max-width:1100px;margin:20px auto 60px}
+    @media (min-width: 850px){.two-col{grid-template-columns:1fr 1fr}}
+    .founder{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px}
+    .contact{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px}
+    .contact input,.contact textarea{width:100%;background:#0f141b;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;color:var(--text);font-family:inherit;margin-bottom:10px}
+    .contact button{background:var(--brand);color:#0b0f14;border:none;border-radius:12px;padding:12px 18px;font-weight:700}
+
+    /* Footer nav */
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;margin-top:30px}
+    footer .footnav{display:flex;gap:28px;justify-content:center;color:var(--muted)}
 
     /* Hide logo on scroll: when body has .scrolled, fade/slide masthead out */
     body.scrolled .masthead{opacity:0;transform:translateY(-12px);pointer-events:none}
@@ -69,19 +94,75 @@
   <!-- Required gap below the navbar (~0.5 inches) -->
   <div class="nav-gap"></div>
 
-  <!-- Slogan (best guess from your mock: test me!) -->
-  <h1 class="slogan">AI-Driven Efficiency for Real-World Businesses</h1>
-  <p class="slogan-sub">JMODco builds practical systems that simplify daily operations for trades, retailers, and professionals.</p>
+  <!-- Hero -->
+  <section class="section hero">
+    <h1 class="slogan center">AI-Driven Efficiency for Real-World Businesses</h1>
+    <p class="slogan-sub">JMODco builds practical systems that simplify daily operations for trades, retailers, and professionals.</p>
+    <a class="cta" href="#" role="button" aria-label="Explore Solutions">Explore Solutions</a>
+  </section>
 
-  <!-- Rest of the page placeholder content (kept minimal for now) -->
-  <div class="container">
-    <div class="grid">
-      <div class="card"><strong>Jmod Labs</strong><br><span style="color:var(--muted)">AI tool creation & workflow automation</span></div>
-      <div class="card"><strong>Jmod Media</strong><br><span style="color:var(--muted)">Automated content & social scheduling</span></div>
-      <div class="card"><strong>Jmod Ops</strong><br><span style="color:var(--muted)">Dashboards & inventory management</span></div>
-      <div class="card"><strong>Jmod Advisor</strong><br><span style="color:var(--muted)">Compliance-safe assistants for finance & insurance</span></div>
+  <!-- About -->
+  <section class="section">
+    <div class="container about">
+      <h2>About JmodCo</h2>
+      <p>JmodCo is on a mission to harness the power of AI to streamline and enhance business operations. We create practical, effective solutions tailored to the needs of small-to-medium-sized businesses.</p>
     </div>
-  </div>
+  </section>
+
+  <!-- Divisions -->
+  <section class="section">
+    <div class="container">
+      <h2>Our Divisions</h2>
+      <div class="grid">
+        <div class="card">
+          <div>🔗</div>
+          <h3>Jmod Labs</h3>
+          <p>AI tool creation & workflow automation</p>
+        </div>
+        <div class="card">
+          <div>🎬</div>
+          <h3>Jmod Media</h3>
+          <p>Automated content & social scheduling</p>
+        </div>
+        <div class="card">
+          <div>📊</div>
+          <h3>Jmod Ops</h3>
+          <p>Dashboards & inventory management</p>
+        </div>
+        <div class="card">
+          <div>🛡️</div>
+          <h3>Jmod Advisor</h3>
+          <p>Compliance-safe assistants for finance & insurance</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder + Contact -->
+  <section class="section">
+    <div class="container two-col">
+      <div class="founder">
+        <h2>Founder Note / Story</h2>
+        <p>With a background in operations and AI systems, I created JmodCo to deliver real-world automation solutions.</p>
+      </div>
+      <form class="contact" onsubmit="event.preventDefault()">
+        <h2>Contact / Inquiry</h2>
+        <input type="text" placeholder="Name" aria-label="Name" />
+        <input type="email" placeholder="Email" aria-label="Email" />
+        <textarea rows="5" placeholder="Message" aria-label="Message"></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footnav">
+      <span>Jmod Labs</span>
+      <span>Jmod Media</span>
+      <span>Jmod Ops</span>
+      <span>Advisor</span>
+    </div>
+  </footer>
 
   <script>
     // Add or remove the 'scrolled' class to hide the top logo as you scroll
