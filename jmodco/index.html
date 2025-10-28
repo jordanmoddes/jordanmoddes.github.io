@@ -97,15 +97,93 @@
     }
     .mission h3{ margin:0 0 8px }
 
-    /* Divisions */
-    .grid{
-      display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:18px; margin:18px auto 60px; max-width:1100px
-    }
-    @media (max-width:980px){ .grid{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
-    .card{ background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:18px }
-    .card h3{ margin:6px 0 6px }
-    .card p{ margin:0; color:var(--muted) }
+/* === Radial Divisions Map === */
+.divisions-wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+.radial {
+  position: relative;
+  width: min(980px, 95vw);
+  aspect-ratio: 1 / 1;
+  margin: 22px auto 28px;
+  /* orbit size = distance from center to nodes */
+  --orbit: clamp(210px, 40vw, 360px);
+}
+
+/* center hub (your parent logo) */
+.radial .hub {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(240px, 28%);
+  pointer-events: none;
+}
+.radial .hub img {
+  width: 100%; height: auto; display: block; background: transparent;
+}
+
+/* nodes placed on the orbit via rotate → translate → rotate back */
+.radial .node {
+  --angle: 0deg;
+  position: absolute;
+  left: 50%; top: 50%;
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--angle))
+    translateX(var(--orbit))
+    rotate(calc(-1 * var(--angle)));
+  width: 180px; height: 72px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.radial .node:hover {
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.16);
+}
+
+/* subtle connector spokes */
+.radial .spoke {
+  --angle: 0deg;
+  position: absolute;
+  left: 50%; top: 50%;
+  transform-origin: left center;
+  transform: translate(-50%, -50%) rotate(var(--angle));
+  width: calc(var(--orbit) - 96px);   /* stop just before the node */
+  height: 2px;
+  background: rgba(255,255,255,.12);
+  border-radius: 1px;
+}
+
+/* Mobile fallback: grid of 8 */
+.grid8 {
+  display: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin: 14px auto 54px;
+}
+.grid8 .card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Breakpoints */
+@media (max-width: 980px) {
+  .grid8 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 820px) {
+  .radial { display: none; }   /* hide radial on narrow screens */
+  .grid8  { display: grid; }   /* show grid fallback */
+}
 
     /* Founder + Contact – clip/bleed fixes */
     .two-col{
@@ -195,29 +273,58 @@
     </div>
   </section>
 
-  <!-- Divisions (parent logo + 8 cards) -->
-  <section class="section">
-    <div class="container">
-      <h2 class="center">Our Divisions</h2>
+<section class="section" id="divisions">
+  <div class="container divisions-wrap">
+    <h2 class="center">Our Divisions</h2>
 
-      <!-- Parent logo centered above the cards -->
-      <div class="center" style="margin:20px 0 8px">
-        <img src="./assets/ParentLogo_TPCrop.png?v=1" alt="Jmod Co. Parent Logo" style="max-width:320px;width:70%;height:auto;background:transparent;display:inline-block">
-      </div>
-
-      <div class="grid">
-        <div class="card"><h3>Jmod Media</h3><p>Automated content & social scheduling</p></div>
-        <div class="card"><h3>Jmod Labs</h3><p>AI tool creation & workflow automation</p></div>
-        <div class="card"><h3>Jmod Systems</h3><p>Business systems & integrations</p></div>
-        <div class="card"><h3>Jmod Insights</h3><p>Dashboards, analytics & forecasting</p></div>
-
-        <div class="card"><h3>Jmod Legacy</h3><p>Nonprofit & community initiatives</p></div>
-        <div class="card"><h3>Jmod TBD1</h3><p>To be determined</p></div>
-        <div class="card"><h3>Jmod TBD2</h3><p>To be determined</p></div>
-        <div class="card"><h3>Jmod TBD3</h3><p>To be determined</p></div>
-      </div>
+    <!-- Parent logo centered above the map -->
+    <div class="center" style="margin:18px 0 8px">
+      <img src="./assets/ParentLogo_TPCrop.png?v=1" alt="Jmod Co. Parent Logo"
+           style="max-width:320px;width:70%;height:auto;background:transparent;display:inline-block">
     </div>
-  </section>
+
+    <!-- Radial map (desktop/tablet) -->
+    <div class="radial" aria-label="Jmod Co. divisions radial map">
+      <!-- Hub -->
+      <div class="hub">
+        <img src="./assets/ParentLogo_TPCrop.png?v=1" alt="Jmod Co. Hub">
+      </div>
+
+      <!-- Spokes (every 45°) -->
+      <div class="spoke" style="--angle:-90deg"></div>
+      <div class="spoke" style="--angle:-45deg"></div>
+      <div class="spoke" style="--angle:  0deg"></div>
+      <div class="spoke" style="--angle: 45deg"></div>
+      <div class="spoke" style="--angle: 90deg"></div>
+      <div class="spoke" style="--angle:135deg"></div>
+      <div class="spoke" style="--angle:180deg"></div>
+      <div class="spoke" style="--angle:-135deg"></div>
+
+      <!-- Nodes (clickable; wire links later) -->
+      <a class="node" href="#" style="--angle:-90deg">Jmod Media</a>
+      <a class="node" href="#" style="--angle:-45deg">Jmod Labs</a>
+      <a class="node" href="#" style="--angle:  0deg">Jmod Systems</a>
+      <a class="node" href="#" style="--angle: 45deg">Jmod Insights</a>
+      <a class="node" href="#" style="--angle: 90deg">Jmod Legacy</a>
+      <a class="node" href="#" style="--angle:135deg">Jmod TBD1</a>
+      <a class="node" href="#" style="--angle:180deg">Jmod TBD2</a>
+      <a class="node" href="#" style="--angle:-135deg">Jmod TBD3</a>
+    </div>
+
+    <!-- Mobile fallback: same 8 as a grid -->
+    <div class="grid8" aria-label="Jmod Co. divisions list">
+      <div class="card">Jmod Media</div>
+      <div class="card">Jmod Labs</div>
+      <div class="card">Jmod Systems</div>
+      <div class="card">Jmod Insights</div>
+      <div class="card">Jmod Legacy</div>
+      <div class="card">Jmod TBD1</div>
+      <div class="card">Jmod TBD2</div>
+      <div class="card">Jmod TBD3</div>
+    </div>
+  </div>
+</section>
+
 
   <!-- Founder + Contact -->
   <section class="section">
