@@ -13,7 +13,6 @@
        ========================= -->
   <style>
     :root{
-      --bg:#0b0f14;
       --text:#e8eef6;
       --muted:#a7b4c7;
       --brand:#4f86ff;
@@ -29,13 +28,14 @@
       margin:0;
       color:var(--text);
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
-      /* AURORA GLOW — full-viewport, no cutoffs */
+
+      /* AURORA GLOW — full viewport, no seams/cutoffs */
       background:
         radial-gradient(1000px 600px at 20% 15%, rgba(26,79,132,.35) 0%, rgba(26,79,132,0) 60%),
         radial-gradient(900px 550px at 80% 75%, rgba(16,105,133,.30) 0%, rgba(16,105,133,0) 60%),
-        radial-gradient(800px 520px at 95% 8%, rgba(34,45,82,.35) 0%, rgba(34,45,82,0) 55%),
+        radial-gradient(800px 520px at 95% 8%,  rgba(34,45,82,.35) 0%,  rgba(34,45,82,0) 55%),
         #0a0f18;
-      background-attachment: fixed,fixed,fixed,fixed; /* prevents gradient seams */
+      background-attachment: fixed,fixed,fixed,fixed;
       min-height:100vh;
     }
     a{ color:var(--text); text-decoration:none }
@@ -52,10 +52,10 @@
       background:rgba(11,15,20,.7);
       backdrop-filter:saturate(120%) blur(10px);
       border-bottom:1px solid rgba(255,255,255,.06);
-      isolation:isolate; /* contain backdrop filter */
+      isolation:isolate; /* contain backdrop filter bleed */
     }
     .header-inner{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px }
-    .brand .wordmark{ font-weight:500; font-size:1.25rem; letter-spacing:.2px } /* Jmod Co. (not bold) */
+    .brand .wordmark{ font-weight:500; font-size:1.25rem; letter-spacing:.2px } /* Jmod Co. */
 
     /* Nav pills */
     .nav{ display:flex; align-items:center; gap:10px; padding:8px 0; flex-wrap:nowrap }
@@ -71,30 +71,20 @@
 
     .nav-gap{ height:var(--gap) }
 
-    /* HERO: two-column (logo left, headline right) */
+    /* HERO: logo left, headline right */
     .hero-wrap{ max-width:1100px; margin:0 auto; padding:0 24px }
-    .hero-grid{
-      display:grid; grid-template-columns:1.1fr 1.2fr; gap:28px; align-items:center;
-    }
+    .hero-grid{ display:grid; grid-template-columns:1.1fr 1.2fr; gap:28px; align-items:center; }
     .hero-logo{ display:flex; justify-content:center; align-items:center }
-    .hero-logo img{
-      width:100%; max-width:520px; height:auto; background:transparent; display:block;
-    }
-    .hero-text h1{
-      font-size:clamp(32px,6.2vw,64px);
-      font-weight:800; line-height:1.06; margin:0 0 10px;
-    }
-    .hero-under{
-      color:var(--muted); text-align:center;
-      margin:14px auto 18px; max-width:900px; padding:0 8px;
-    }
+    .hero-logo img{ width:100%; max-width:520px; height:auto; background:transparent; display:block }
+    .hero-text h1{ font-size:clamp(32px,6.2vw,64px); font-weight:800; line-height:1.06; margin:0 0 10px }
+    .hero-under{ color:var(--muted); text-align:center; margin:14px auto 18px; max-width:900px; padding:0 8px }
     .cta{
       display:block; width:max-content; margin:0 auto 12px;
       background:var(--brand); color:#0b0f14; padding:12px 20px; border-radius:12px; font-weight:700;
       border:1px solid rgba(255,255,255,.12);
     }
     @media (max-width:900px){
-      .hero-grid{ grid-template-columns:1fr; }
+      .hero-grid{ grid-template-columns:1fr }
       .hero-text h1{ text-align:center }
     }
 
@@ -107,20 +97,17 @@
     }
     .mission h3{ margin:0 0 8px }
 
-    /* Divisions grid */
-    .grid{ 
-      display:grid; 
-      grid-template-columns:repeat(4,minmax(0,1fr)); 
-      gap:18px; 
-      margin:18px auto 60px; 
-      max-width:1100px 
+    /* Divisions */
+    .grid{
+      display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:18px; margin:18px auto 60px; max-width:1100px
     }
-    @media (max-width:980px){ .grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:980px){ .grid{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
     .card{ background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:18px }
     .card h3{ margin:6px 0 6px }
     .card p{ margin:0; color:var(--muted) }
 
-    /* Founder + Contact (clip/bleed fixes) */
+    /* Founder + Contact – clip/bleed fixes */
     .two-col{
       display:grid; grid-template-columns:1fr; gap:24px; max-width:1100px; margin:20px auto 60px;
       background:transparent; overflow:visible; isolation:isolate; contain:paint; position:relative; transform:translateZ(0);
@@ -175,7 +162,7 @@
     <div class="hero-wrap">
       <div class="hero-grid">
         <div class="hero-logo">
-          <!-- Top logo uses the cropped transparent file -->
+          <!-- Top logo (cropped transparent) -->
           <img src="./assets/ParentLogo_TPCrop.png?v=1" alt="Jmod Co. Logo">
         </div>
         <div class="hero-text">
@@ -184,7 +171,7 @@
       </div>
 
       <!-- One-liner under both boxes -->
-      <p class="hero-under">JMODco builds practical systems that simplify daily operations for trades, retailers, and professionals.</p>
+      <p class="hero-under">Jmod Co. builds practical systems that simplify daily operations for trades, retailers, and professionals.</p>
 
       <!-- Button -->
       <a class="cta" href="#" role="button" aria-label="Explore Solutions">Explore Solutions</a>
@@ -194,11 +181,11 @@
   <!-- About + Mission -->
   <section class="section">
     <div class="container about">
-      <h2>About JmodCo</h2>
-      <p>JmodCo is a diversified innovation group committed to empowering small and medium-sized businesses with the same intelligence, precision, and operational structure once reserved for global enterprises.</p>
+      <h2>About Jmod Co.</h2>
+      <p>Jmod Co. is a diversified innovation group committed to empowering small and medium-sized businesses with the same intelligence, precision, and operational structure once reserved for global enterprises.</p>
       <p>We believe every business—regardless of scale—deserves access to Fortune 100-level capabilities: powerful AI, streamlined operations, and strategic insight that drives measurable results.</p>
       <p>What sets us apart is our ability to move beyond traditional consulting. JmodCo not only advises but builds—creating customized, practical systems that blend strategy, automation, and human insight.</p>
-      <p>Through our five specialized divisions—<strong>Labs</strong>, <strong>Media</strong>, <strong>Ops</strong>, <strong>Advisor</strong>, and <strong>Nonprofit</strong>—we deliver end-to-end solutions: from automated content and intelligent tools to operational redesign and compliance-safe business frameworks.</p>
+      <p>Through our five specialized divisions—<strong>Labs</strong>, <strong>Media</strong>, <strong>Systems</strong>, <strong>Insights</strong>, and <strong>Legacy</strong>—we deliver end-to-end solutions: from automated content and intelligent tools to operational redesign and compliance-safe business frameworks.</p>
       <p>Our core mission is simple: to translate the complexity of advanced technology into practical, sustainable, and growth-ready systems that empower everyday businesses to thrive.</p>
 
       <div class="mission">
@@ -237,9 +224,9 @@
     <div class="container two-col">
       <div class="founder">
         <h2>Founder Note / Story</h2>
-        <p>For over a decade, I operated at the highest levels of global logistics—mastering what it truly takes to run a machine as complex as Amazon. I lived and breathed enterprise-grade discipline: clear metrics, precise labor planning, and scalable systems spanning 90+ sites. I saw firsthand the power of process—the ability to turn a six-month backlog into a six-week win, or transform a strategic plan into a $3.6M entitlement.</p>
+        <p>For over a decade, I’ve worked in high-performance operations and logistics—nearly ten of those years with Amazon—where I mastered what it truly takes to run a machine as complex as a global supply network. I lived and breathed enterprise-grade discipline: clear metrics, precise labor planning, and scalable systems spanning 90+ sites. I saw firsthand the power of process—the ability to turn a six-month backlog into a six-week win or transform a strategic plan into a $3.6M entitlement.</p>
         <p>Yet the deeper I went, the more I noticed a gap. The same tools, insights, and automations that drove multi-million-dollar results were locked behind complexity, cost, or corporate scale—out of reach for the small and medium businesses that form the backbone of our economy.</p>
-        <p>That’s why I founded <strong>JmodCo</strong>. My mission isn’t just to find efficiencies—it’s to democratize them. JmodCo builds the operational engine that gives every business a strategic advantage. We take the same AI power and operational rigor I honed over a decade and translate them into remarkably simple, intuitive systems.</p>
+        <p>That’s why I founded <strong>Jmod Co.</strong>. My mission isn’t just to improve efficiency—it’s to make enterprise-grade systems accessible to every business. Jmod Co. builds the operational engine that gives every company a strategic advantage. We take the same AI power and operational rigor I honed over a decade and translate them into remarkably simple, intuitive platforms.</p>
         <p><em>The goal is simple: to help every SMB harness Fortune 100-level capabilities, achieve peak operational efficiency, and compound wins that truly move the needle.</em></p>
       </div>
 
@@ -287,7 +274,7 @@
   <script>
     // Dynamic copyright year
     const year = new Date().getFullYear();
-    document.getElementById('copyright').textContent = `© ${year} JmodCo`;
+    document.getElementById('copyright').textContent = `© ${year} Jmod Co.`;
   </script>
 </body>
 </html>
