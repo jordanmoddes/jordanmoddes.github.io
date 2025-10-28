@@ -28,7 +28,46 @@
       --node-w: 180px;
       --node-h: 72px;
       --hub-offset-y: -20px;               /* nudge hub & spokes UP to center on chip */
-       --hub-offset-x: 2px;               /* nudge hub & spokes UP to center on chip */
+      /* Hub */
+.radial .hub{
+  position:absolute; left:50%; top:50%;
+  transform: translate(calc(-50% + var(--hub-offset-x)),
+                       calc(-50% + var(--hub-offset-y)));
+  width:min(240px,28%);
+  pointer-events:none;
+}
+
+/* Nodes */
+.radial .node{
+  --angle:0deg;
+  position:absolute; left:50%; top:50%;
+  transform:
+    translate(calc(-50% + var(--hub-offset-x)),
+              calc(-50% + var(--hub-offset-y)))
+    rotate(var(--angle))
+    translateX(var(--orbit))
+    rotate(calc(-1 * var(--angle)));
+  width: var(--node-w); height: var(--node-h);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:10px 14px;
+  border-radius:16px; background:var(--card);
+  border:1px solid var(--card-border); font-weight:600; color:var(--text);
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+/* Spokes */
+.radial .spoke{
+  --angle:0deg;
+  position:absolute; left:50%; top:50%;
+  transform-origin:left center;
+  transform: translate(calc(-50% + var(--hub-offset-x)),
+                       calc(-50% + var(--hub-offset-y)))
+             rotate(var(--angle));
+  width: calc(var(--orbit) - (var(--node-w) / 2));
+  height:2px;
+  background: rgba(255,255,255,.12);
+  border-radius:1px;
+
     }
 
     *{ box-sizing:border-box }
