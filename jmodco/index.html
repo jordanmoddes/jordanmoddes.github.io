@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jmod Co. — Preview</title>
   <meta name="description" content="Jmod Co. builds practical AI systems that simplify daily operations for real-world businesses." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- =========================
@@ -12,6 +13,7 @@
        ========================= -->
   <style>
     :root{
+      /* ===== Theme ===== */
       --text:#e8eef6;
       --muted:#a7b4c7;
       --brand:#4f86ff;
@@ -19,14 +21,17 @@
       --card: rgba(255,255,255,.04);
       --card-border: rgba(255,255,255,.08);
 
-      /* header height (used for layout & anchor offset) */
-      --header-h: 72px;
+      /* ===== Layout ===== */
+      --header-h: 72px;               /* fixed header height */
 
-      /* Radial sizing + alignment (you'll tweak these) */
-      --orbit: clamp(260px, 42vw, 420px);     /* distance center → nodes */
-      --node-size: clamp(150px, 18vw, 190px); /* square box for each satellite image */
-      --hub-offset-y: -26px;                  /* nudge hub up a bit */
-      --hub-offset-x: 12px;                   /* tiny x-shift */
+      /* ===== Radial sizing + alignment (TUNE THESE 3 OFTEN) ===== */
+      --orbit: 240px;                 /* distance hub → satellites (smaller = closer) */
+      --node-size: 140px;             /* square box that holds each satellite PNG */
+      --hub-size: 520px;              /* width of the center hub image */
+
+      /* Small nudges (rare) */
+      --hub-offset-y: -14px;          /* move whole wheel up/down (− = up) */
+      --hub-offset-x: 0px;            /* move whole wheel left/right */
     }
 
     *{ box-sizing:border-box }
@@ -36,9 +41,11 @@
       margin:0;
       color:var(--text);
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
-      padding-top: var(--header-h); /* room for fixed header */
 
-      /* Seamless “aurora” background (no hard edges) */
+      /* avoid header overlap */
+      padding-top: var(--header-h);
+
+      /* Seamless “aurora” background */
       background:
         radial-gradient(1000px 600px at 20% 15%, rgba(26,79,132,.35) 0%, rgba(26,79,132,0) 60%),
         radial-gradient(900px 550px at 80% 75%, rgba(16,105,133,.30) 0%, rgba(16,105,133,0) 60%),
@@ -47,17 +54,16 @@
       background-attachment: fixed,fixed,fixed,fixed;
       min-height:100vh;
     }
-
     a{ color:var(--text); text-decoration:none }
 
     /* Utilities */
     .container{ max-width:1100px; margin:0 auto; padding:16px 24px }
     .center{ text-align:center }
-    .section{ padding:32px 0 }
+    .section{ padding:24px 0 }
     h1,h2{ margin:0 0 12px }
     section, header, footer { scroll-margin-top: calc(var(--header-h) + 16px); }
 
-    /* ===== Header (fixed, full-page) ===== */
+    /* ===== Header (fixed, full page) ===== */
     .header{
       position:fixed; left:0; right:0; top:0; z-index:1000;
       height:var(--header-h);
@@ -69,7 +75,7 @@
       height:100%;
       display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
     }
-    .brand .wordmark{ font-weight:500; font-size:1.1rem; letter-spacing:.2px }
+    .brand .wordmark{ font-weight:500; letter-spacing:.2px; font-size:1.1rem }
     .brand a{ opacity:.95 } .brand a:hover{ opacity:1 }
 
     .nav{ display:flex; align-items:center; gap:10px; padding:8px 0; flex-wrap:nowrap }
@@ -84,14 +90,14 @@
     @media (max-width:420px){ .nav .item{padding:5px 8px; font-size:.85rem} }
 
     /* ===== Hero ===== */
-    .hero-wrap{ max-width:1100px; margin:0 auto; padding:0 24px 8px }
-    .hero-grid{ display:grid; grid-template-columns:1.05fr 1.25fr; gap:28px; align-items:center; }
+    .hero-wrap{ max-width:1100px; margin:0 auto; padding:0 24px }
+    .hero-grid{ display:grid; grid-template-columns:1.1fr 1.2fr; gap:28px; align-items:center; }
     .hero-logo{ display:flex; justify-content:center; align-items:center }
     .hero-logo img{ width:100%; max-width:520px; height:auto; background:transparent; display:block }
-    .hero-text h1{ font-size:clamp(34px,6vw,64px); font-weight:800; line-height:1.06; margin:0 0 10px }
+    .hero-text h1{ font-size:clamp(32px,6.2vw,64px); font-weight:800; line-height:1.06; margin:0 0 10px }
     .hero-under{ color:var(--muted); text-align:center; margin:14px auto 18px; max-width:900px; padding:0 8px }
     .cta{
-      display:block; width:max-content; margin:0 auto 4px;
+      display:block; width:max-content; margin:0 auto 12px;
       background:var(--brand); color:#0b0f14; padding:12px 20px; border-radius:12px; font-weight:700;
       border:1px solid rgba(255,255,255,.12);
     }
@@ -101,7 +107,7 @@
     }
 
     /* ===== About + Mission ===== */
-    .about{ max-width:920px; margin:12px auto 8px; color:var(--muted) }
+    .about{ max-width:920px; margin:40px auto 8px; color:var(--muted) }
     .about h2{ color:var(--text) }
     .mission{
       max-width:920px; margin:8px auto 24px; padding:18px;
@@ -123,8 +129,10 @@
       position:absolute; left:50%; top:50%;
       transform: translate(calc(-50% + var(--hub-offset-x)),
                            calc(-50% + var(--hub-offset-y)));
-      width:min(540px, 52%);
+      width: var(--hub-size);
+      max-width: 52%;
       pointer-events:none;
+      filter: drop-shadow(0 8px 40px rgba(0,0,0,.35));
     }
     .radial .hub img{ width:100%; height:auto; display:block; background:transparent }
 
@@ -161,7 +169,7 @@
         rotate(calc(-1 * var(--angle)));
     }
 
-    /* Mobile fallback grid (shows images in a neat grid) */
+    /* Mobile grid fallback (uses the images too) */
     .grid8{ display:none; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:14px auto 54px; }
     .grid8 .card{ background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:16px; text-align:center; font-weight:600 }
     .grid8 .card img{ width:100%; height:auto; display:block; background:transparent; border-radius:12px; margin-bottom:8px }
@@ -170,7 +178,7 @@
 
     /* ===== Founder + Contact ===== */
     .two-col{
-      display:grid; grid-template-columns:1fr; gap:24px; max-width:1100px; margin:22px auto 60px;
+      display:grid; grid-template-columns:1fr; gap:24px; max-width:1100px; margin:20px auto 60px;
     }
     @media (min-width:850px){ .two-col{ grid-template-columns:1fr 1fr } }
     .founder, .contact{
@@ -259,7 +267,7 @@
 
         <!-- Satellites (wrap your image inside .imgnode; set any link you want) -->
 
-        <!-- Top Left -->
+        <!-- Top Left → Resume -->
         <a class="imgnode" style="--angle:-135deg" href="https://www.jordanmoddes.com">
           <img src="./assets/JmodCo_LogoTP.png">
         </a>
@@ -269,18 +277,18 @@
           <img src="./assets/Jmod_LabsTP.png" alt="Jmod Labs">
         </a>
 
-        <!-- Top Right -->
-        <a class="imgnode" style="--angle:-45deg" href="https://www.jordanmoddes.com/dashboard">
+        <!-- Top Right → Jmod Systems -->
+        <a class="imgnode" style="--angle:-45deg" href="#">
           <img src="./assets/JmodCo_LogoTP.png">
         </a>
         
-        <!-- Left Center -->
+        <!-- Left Center → BattleField -->
         <a class="imgnode" style="--angle:180deg" href="https://www.jordanmoddes.com/battlefield">
           <img src="./assets/JmodCo_LogoTP.png">
         </a>
 
-        <!-- Right center → Jmod Systems -->
-        <a class="imgnode" style="--angle:0deg" href="#" rel="noopener">
+        <!-- Right center → dashboard -->
+        <a class="imgnode" style="--angle:0deg" href="https://www.jordanmoddes.com/dashboard" rel="noopener">
           <img src="./assets/Jmod_SystemsTP.png" alt="Jmod Systems">
         </a>
 
@@ -313,11 +321,14 @@
 
       <!-- Mobile fallback grid (same images) -->
       <div class="grid8" aria-label="Jmod Co. divisions list">
+        <a class="card" href="https://www.jordanmoddes.com"><img src="./assets/JmooCo_LogoTP.png" alt="Comming Soon">Coming Soon</a>  
         <a class="card" href="#"><img src="./assets/Jmod_LabsTP.png" alt="Jmod Labs">Jmod Labs</a>
         <a class="card" href="#"><img src="./assets/Jmod_SystemsTP.png" alt="Jmod Systems">Jmod Systems</a>
+        <a class="card" href="https://www.jordanmoddes.com/battlefield"><img src="./assets/JmooCo_LogoTP.png" alt="Comming Soon">Coming Soon</a>     
+        <a class="card" href="https://www.jordanmoddes.com/dashboard"><img src="./assets/JmooCo_LogoTP.png" alt="Comming Soon">Coming Soon</a>
+        <a class="card" href="#"><img src="./assets/Jmod_InsightsTP.png" alt="Jmod Insights">Jmod Insights</a>
         <a class="card" href="#"><img src="./assets/Jmod_MediaTP.png" alt="Jmod Media">Jmod Media</a>
         <a class="card" href="#"><img src="./assets/Jmod_LegacyTP.png" alt="Jmod Legacy">Jmod Legacy</a>
-        <a class="card" href="#"><img src="./assets/Jmod_InsightsTP.png" alt="Jmod Insights">Jmod Insights</a>
       </div>
     </div>
   </section>
