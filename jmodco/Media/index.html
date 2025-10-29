@@ -4,18 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jmod Media — Social Content, Simplified</title>
-  <meta name="description" content="Jmod Media by Jmod Co. helps small businesses plan, create, and publish on-brand posts fast—with AI captions, SEO tags, and hashtags.">
+  <meta name="description" content="Jmod Media helps small businesses plan, create, and publish on-brand posts fast—with AI captions, SEO tags, and hashtags.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    /* ===== design tokens ===== */
     :root{
       --bg:#0b1020; --bg2:#0a0f1e; --panel:#101733;
       --text:#e8ecff; --muted:#a7b0d6;
       --brand:#7b39ff; --brand-2:#22d3ee;
       --chip:#1a2246; --link:#c7d2fe;
-      --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.35);
     }
     [data-theme="light"]{
       --bg:#f6f8ff; --bg2:#eef2ff; --panel:#ffffff;
@@ -28,28 +28,35 @@
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:var(--text);
-      /* Seamless background (no hard line): soft stacked gradients + noise */
+      margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
+      background: linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+      overflow-x:hidden;
+      position:relative; isolation:isolate;
+    }
+    /* Anti-banding + creative media vibe */
+    .bgfx, .bgfx2{
+      position:fixed; inset:-20vmax; pointer-events:none; z-index:-1; filter:blur(60px);
       background:
-        radial-gradient(1000px 600px at 20% -10%, rgba(123,57,255,.18), transparent 60%),
-        radial-gradient(900px 540px at 110% 20%, rgba(34,211,238,.15), transparent 65%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
-      position:relative;
-      isolation:isolate;
+        radial-gradient(35vmax 35vmax at 20% 0%, rgba(123,57,255,.25), transparent 60%),
+        radial-gradient(30vmax 30vmax at 90% 35%, rgba(34,211,238,.18), transparent 65%);
+      animation: float1 22s ease-in-out infinite;
+      opacity:.9;
     }
-    /* subtle noise to kill banding */
-    body::before{
-      content:""; position:fixed; inset:0; pointer-events:none; z-index:-1;
-      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 0.03 0'/></feComponentTransfer></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
-      opacity:.35;
+    .bgfx2{
+      background:
+        radial-gradient(28vmax 28vmax at 10% 85%, rgba(34,211,238,.20), transparent 60%),
+        radial-gradient(24vmax 24vmax at 80% 100%, rgba(123,57,255,.20), transparent 65%);
+      animation: float2 28s ease-in-out infinite reverse;
+      mix-blend-mode:screen; opacity:.5;
     }
+    @keyframes float1{ 0%{transform:translateY(0)} 50%{transform:translateY(-3vmax)} 100%{transform:translateY(0)} }
+    @keyframes float2{ 0%{transform:translateY(0)} 50%{transform:translateY(3vmax)} 100%{transform:translateY(0)} }
 
     a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
 
-    /* shell + nav */
     .shell{max-width:1200px;margin:0 auto;padding:24px}
     .nav{display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:800;font-size:20px}
+    .brand{font-weight:800;font-size:20px}
     nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
     nav a{font-weight:600;color:var(--text);opacity:.9} nav a:hover{opacity:1}
     .cta-nav{display:flex;gap:10px;align-items:center}
@@ -58,15 +65,13 @@
     .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
     [data-theme="light"] .btn.ghost{border-color:#d9e0ff}
 
-    /* ===== hero: full-width band ===== */
+    /* Full-width hero band */
     .hero-wrap{padding:28px 0}
     .hero{
       max-width:1200px;margin:0 auto;padding:0 24px;
       display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;
     }
-    .panel{
-      background:var(--panel); border-radius:24px; padding:28px; box-shadow:var(--shadow);
-    }
+    .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
     .hero-card{display:flex;gap:22px;align-items:center}
     .media-logo{width:min(148px,24vw);flex:0 0 auto;border-radius:14px}
     .title{font-size:clamp(32px,5vw,54px);line-height:1.02;margin:0 0 10px;font-weight:900}
@@ -77,26 +82,28 @@
     .store-badge-wrap{display:inline-block;line-height:0}
     .store-badge:hover{transform:scale(1.03)}
 
-    /* phone preview / new post section */
-    .newpost{max-width:1200px;margin:22px auto 0;padding:0 24px;display:grid;grid-template-columns:.95fr 1.05fr;gap:28px}
+    /* Preview area */
     .phone{background:var(--panel);border-radius:28px;padding:16px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
     [data-theme="light"] .phone{border-color:#eef2ff}
     .phone-screen{border-radius:20px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:16px}
     [data-theme="light"] .phone-screen{background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%)}
     .pill{background:var(--chip);padding:10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
     .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    .mock{
-      background:var(--panel);border-radius:24px;padding:22px;box-shadow:var(--shadow);display:grid;gap:16px
-    }
-    .mock h2{margin:0;font-size:22px}
-    .radial{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-    .bubble{aspect-ratio:1/1;border-radius:999px;background:linear-gradient(180deg, rgba(123,57,255,.18), rgba(34,211,238,.18));border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--text)}
-    .bubble small{opacity:.85}
 
-    /* features grid */
-    .section{max-width:1200px;margin:48px auto 0;padding:0 24px}
+    .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+
+    /* Template cards (replaces bubbles) */
+    .section{max-width:1200px;margin:40px auto 0;padding:0 24px}
     .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 14px;font-weight:900}
     .section p.lead{color:var(--muted);margin:0 0 22px}
+
+    .templates{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .tcard{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+    [data-theme="light"] .tcard{border-color:#eef2ff}
+    .tcard h3{margin:8px 0 6px;font-size:16px}
+    .tcard p{margin:0;color:var(--muted);font-size:14px}
+
+    /* Feature grid */
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
     .card{background:var(--panel);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow)}
     [data-theme="light"] .card{border-color:#eef2ff}
@@ -105,32 +112,30 @@
     .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:var(--chip);padding:6px 8px;border-radius:8px}
 
-    /* small biz band */
     .smb{max-width:1200px;margin:48px auto 0;padding:0 24px}
     .smb .band{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:linear-gradient(90deg, rgba(123,57,255,.22), rgba(34,211,238,.22));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 18px}
 
     footer{margin-top:56px}
 
-    /* responsive */
     @media (max-width:1024px){
       .hero{grid-template-columns:1fr}
-      .newpost{grid-template-columns:1fr}
-      .radial{grid-template-columns:repeat(3,1fr)}
+      .templates,.grid{grid-template-columns:1fr 1fr}
     }
     @media (max-width:640px){
       nav ul{display:none}
-      .grid{grid-template-columns:1fr}
+      .templates,.grid{grid-template-columns:1fr}
       .store-badge{height:52px}
     }
 
-    /* logo swap */
+    /* Logo swap */
     .logo-dark{display:block}.logo-light{display:none}
     [data-theme="light"] .logo-dark{display:none}
     [data-theme="light"] .logo-light{display:block}
   </style>
 </head>
 <body>
-  <!-- header -->
+  <div class="bgfx"></div><div class="bgfx2"></div>
+
   <header class="shell">
     <div class="nav">
       <div class="brand">Jmod Media</div>
@@ -149,19 +154,16 @@
     </div>
   </header>
 
-  <!-- hero full width -->
   <div class="hero-wrap">
     <section class="hero" aria-labelledby="heroTitle">
       <div class="panel hero-card">
-        <!-- logos (relative paths) -->
-        <img class="media-logo logo-dark" src="https://www.jordanmoddes.com/jmodco//assets/Jmod_MediaTP.png" alt="Jmod Media logo (transparent for dark)" loading="lazy" />
-        <img class="media-logo logo-light" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_Media.png" alt="Jmod Media logo (solid for light)" loading="lazy" />
+        <img id="logoDark" class="media-logo logo-dark" alt="Jmod Media logo (transparent for dark)" loading="lazy" />
+        <img id="logoLight" class="media-logo logo-light" alt="Jmod Media logo (solid for light)" loading="lazy" />
         <div>
           <h1 id="heroTitle" class="title">Create once. Publish everywhere.</h1>
           <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
           <div class="badges">
             <span class="soon">Pre-Download (Coming Soon)</span>
-            <!-- official badges, same height -->
             <a class="store-badge-wrap" href="#" aria-label="Download on the App Store (coming soon)">
               <img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" loading="lazy">
             </a>
@@ -172,7 +174,6 @@
         </div>
       </div>
 
-      <!-- phone mock to the right -->
       <aside aria-label="App preview">
         <div class="phone">
           <div class="phone-screen">
@@ -180,11 +181,10 @@
               <div class="pill" style="width:max-content">Jmod Media</div>
               <h4 style="margin:8px 0 0;font-size:18px">New Post</h4>
               <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
-              <!-- Example content inside the mock -->
               <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:10px;margin-top:8px">
                 <div style="font-weight:700;margin-bottom:6px">Caption (AI)</div>
-                <div style="font-size:12px;color:var(--text);opacity:.9">“Congrats to <strong>@Jordan</strong> on the new ride! 🚗✨ Tap to see the build specs.”</div>
-                <div style="margin-top:6px;font-size:12px;opacity:.8">#Austin #CustomAudio #RemoteStart</div>
+                <div style="font-size:12px;color:var(--text);opacity:.9">“Congrats to <strong>@Jordan</strong> on the new remote start! ❄️ Tap for install details.”</div>
+                <div style="margin-top:6px;font-size:12px;opacity:.8">#RoundRock #RemoteStart #CarAudio</div>
               </div>
             </div>
             <div class="dock">
@@ -192,7 +192,7 @@
             </div>
           </div>
         </div>
-        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <div class="preview-ctas">
           <a class="btn" href="#waitlist">Join the Waitlist</a>
           <a class="btn ghost" href="./media/pricing.html">Pricing</a>
         </div>
@@ -200,37 +200,21 @@
     </section>
   </div>
 
-  <!-- New Post examples / radial tiles -->
-  <section class="newpost">
-    <div class="mock">
-      <h2>Quick Templates</h2>
-      <p class="subtitle" style="margin:0">Tap a template and go. Each one pre-fills copy, hashtags, and channel sizes.</p>
-      <div class="radial">
-        <div class="bubble"><small>Congrats<br>Customer</small></div>
-        <div class="bubble"><small>New<br>Product</small></div>
-        <div class="bubble"><small>Weekend<br>Promo</small></div>
-        <div class="bubble"><small>Before /<br>After</small></div>
-        <div class="bubble"><small>How-To</small></div>
-        <div class="bubble"><small>Review</small></div>
-      </div>
-    </div>
-
-    <div class="mock">
-      <h2>What the “New Post” shows</h2>
-      <p class="subtitle" style="margin:0">
-        A live preview of the post you’re building: image/video, AI-assisted caption, and suggested SEO tags/hashtags,
-        per-channel crop, and a “Post everywhere” button.
-      </p>
-      <ul style="margin:8px 0 0 18px;color:var(--muted)">
-        <li>Auto-suggested caption + tone rewrite</li>
-        <li>Per-channel aspect ratios & safe zones</li>
-        <li>Hashtag/SEO recommendations</li>
-        <li>One-tap publish to connected channels</li>
-      </ul>
+  <!-- Template cards -->
+  <section class="section" aria-labelledby="tplTitle">
+    <h2 id="tplTitle">Quick Templates</h2>
+    <p class="lead">Pick a template and go—each pre-fills copy, hashtags, and right-sized images per channel.</p>
+    <div class="templates">
+      <div class="tcard"><h3>Congrats Customer</h3><p>Drop a photo, auto-caption names, and tag your location.</p></div>
+      <div class="tcard"><h3>New Product</h3><p>Specs + price blocks with CTA buttons for web and DM.</p></div>
+      <div class="tcard"><h3>Weekend Promo</h3><p>Time-boxed offers with countdown and auto re-post slot.</p></div>
+      <div class="tcard"><h3>Before/After</h3><p>Side-by-side crop and slider preview for socials.</p></div>
+      <div class="tcard"><h3>How-To</h3><p>Step list + safe area overlays for Reels/Shorts.</p></div>
+      <div class="tcard"><h3>Review</h3><p>Pulls a recent 5★ review and formats it for channels.</p></div>
     </div>
   </section>
 
-  <!-- features -->
+  <!-- Features -->
   <section class="section" aria-labelledby="featTitle">
     <h2 id="featTitle">Everything you need to post in minutes</h2>
     <p class="lead">The Jmod Media phone app (with matching web dashboard) prioritizes speed, consistency, and control.</p>
@@ -239,79 +223,4 @@
       <div class="card"><div class="chip">Calendar</div><h3>Queue & Auto-Schedule</h3><p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p><div class="stack"><span class="mono">Best-time AI</span><span class="mono">Recurring slots</span><span class="mono">Holiday sets</span></div></div>
       <div class="card"><div class="chip">Brand Kit</div><h3>On-Brand, Every Time</h3><p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p><div class="stack"><span class="mono">Logo lockups</span><span class="mono">Tone presets</span><span class="mono">Approval flow</span></div></div>
       <div class="card"><div class="chip">Templates</div><h3>Reusable Post Types</h3><p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p><div class="stack"><span class="mono">Image + Copy</span><span class="mono">Per-channel</span></div></div>
-      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with suggested replies and auto-responders after hours.</p><div class="stack"><span class="mono">QA pairs</span><span class="mono">Auto-DM</span></div></div>
-      <div class="card"><div class="chip">Insights</div><h3>Post-level Analytics</h3><p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p><div class="stack"><span class="mono">Channel score</span><span class="mono">A/B templates</span></div></div>
-    </div>
-  </section>
-
-  <!-- small biz band -->
-  <section class="smb">
-    <div class="band">
-      <strong>Built for small business clarity.</strong>
-      <span style="color:var(--text);opacity:.9">AI helps pick what to post, generates captions, and suggests SEO tags & hashtags—so you show up, consistently.</span>
-      <a class="btn" href="#waitlist">Join the Waitlist</a>
-    </div>
-  </section>
-
-  <!-- waitlist -->
-  <section id="waitlist" class="section" aria-labelledby="wlTitle">
-    <h2 id="wlTitle">Be first to launch with us</h2>
-    <p class="lead">Owner-operators get early access, onboarding help, and founder pricing.</p>
-    <form class="card" style="display:grid;grid-template-columns:1.2fr .8fr auto;gap:12px;align-items:center" onsubmit="event.preventDefault(); alert('Thanks! You’re on the list.');">
-      <input type="text" placeholder="Business name" required
-             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
-      <input type="email" placeholder="Email address" required
-             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
-      <button class="btn" type="submit">Join</button>
-    </form>
-  </section>
-
-  <!-- footer mount (loads partial) -->
-  <footer class="shell" id="footerMount"></footer>
-
-  <script>
-    // copyright helper for the shared footer partial (if it needs it)
-    function setCopyright(container){
-      const el = container.querySelector?.('#copyright');
-      if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-    }
-
-    // Load footer partial from /assets/footer.html
-    (async function loadFooter(){
-      try{
-        const res = await fetch('https://www.jordanmoddes.com/jmodco/assets/footer.html', {cache:'no-cache'});
-        const html = await res.text();
-        const mount = document.getElementById('footerMount');
-        if (mount){ mount.innerHTML = html; setCopyright(mount); }
-      }catch(e){
-        // fallback minimal footer
-        const mount = document.getElementById('footerMount');
-        if (mount) mount.innerHTML = `
-          <div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
-            <div id="copyright"></div>
-            <div>Built for small business clarity.</div>
-          </div>`;
-        setCopyright(mount);
-      }
-    })();
-
-    // theme: auto → dark → light cycle (and keep working after footer load)
-    const root = document.documentElement;
-    const toggle = document.getElementById('themeToggle');
-    function applyAutoTheme(){
-      if (matchMedia('(prefers-color-scheme: light)').matches){ root.setAttribute('data-theme','light'); }
-      else { root.setAttribute('data-theme','dark'); }
-    }
-    if (root.getAttribute('data-theme') === 'auto') applyAutoTheme();
-    matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', e=>{
-      if (root.getAttribute('data-theme')==='auto'){ root.setAttribute('data-theme', e.matches ? 'light':'dark'); }
-    });
-    toggle?.addEventListener('click', ()=>{
-      const cur = root.getAttribute('data-theme');
-      const next = cur==='auto' ? 'dark' : cur==='dark' ? 'light' : 'auto';
-      root.setAttribute('data-theme', next);
-      if (next==='auto') applyAutoTheme();
-    });
-  </script>
-</body>
-</html>
+      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with sugg
