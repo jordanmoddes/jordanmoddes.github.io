@@ -11,160 +11,74 @@
 
   <style>
     :root{
-      --bg: #0b1020;
-      --panel: #101733;
-      --text: #e8ecff;
-      --muted:#a7b0d6;
-      --brand:#7b39ff;
-      --brand-2:#22d3ee;
-      --ok:#10b981;
-      --warn:#f59e0b;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-      --ring: 0 0 0 3px rgba(123,57,255,.25);
-      --link:#c7d2fe;
-      --chip:#1a2246;
+      --bg:#0b1020; --panel:#101733; --text:#e8ecff; --muted:#a7b0d6;
+      --brand:#7b39ff; --brand-2:#22d3ee; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:16px; --link:#c7d2fe; --chip:#1a2246;
       --gradient: radial-gradient(1200px 600px at 20% -10%, rgba(123,57,255,.25), transparent 55%),
                   radial-gradient(1000px 500px at 110% 20%, rgba(34,211,238,.2), transparent 60%),
                   linear-gradient(180deg, #0b1020 0%, #0a0f1e 100%);
     }
-    /* Light theme tokens */
     [data-theme="light"]{
-      --bg:#f6f8ff;
-      --panel:#ffffff;
-      --text:#0b1020;
-      --muted:#5b668a;
-      --brand:#6b2dff;
-      --brand-2:#06b6d4;
-      --shadow: 0 10px 24px rgba(2,6,23,.10);
-      --link:#312e81;
-      --chip:#eef2ff;
+      --bg:#f6f8ff; --panel:#ffffff; --text:#0b1020; --muted:#5b668a;
+      --brand:#6b2dff; --brand-2:#06b6d4; --shadow:0 10px 24px rgba(2,6,23,.10);
+      --link:#312e81; --chip:#eef2ff;
       --gradient: radial-gradient(1200px 600px at 20% -10%, rgba(123,57,255,.10), transparent 55%),
                   radial-gradient(1000px 500px at 110% 20%, rgba(6,182,212,.10), transparent 60%),
                   linear-gradient(180deg, #f6f8ff 0%, #eef2ff 100%);
     }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--gradient)}
+    a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      color:var(--text);
-      background:var(--gradient);
-    }
-    a{color:var(--link);text-decoration:none}
-    a:hover{text-decoration:underline}
-
-    /* ====== Header (shared look) ====== */
     .shell{max-width:1200px;margin:0 auto;padding:24px}
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      background:transparent;border-radius:var(--radius);
-    }
-    .brand{
-      display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;letter-spacing:.2px;
-    }
-    .brand img{width:32px;height:32px;display:block}
+    .nav{display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px}
     nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
-    nav a{font-weight:600;color:var(--text);opacity:.9}
-    nav a:hover{opacity:1}
-    .cta-nav{
-      display:flex;gap:10px;align-items:center;
-    }
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:12px 16px;border-radius:12px;border:1px solid transparent;
-      background:var(--brand);color:white;font-weight:700;box-shadow:var(--shadow);
-      transition:transform .06s ease, box-shadow .2s ease;
-    }
+    nav a{font-weight:600;color:var(--text);opacity:.9} nav a:hover{opacity:1}
+    .cta-nav{display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid transparent;background:var(--brand);color:white;font-weight:700;box-shadow:var(--shadow);transition:transform .06s ease}
     .btn:hover{transform:translateY(-1px)}
     .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
     [data-theme="light"] .btn.ghost{border-color:#d9e0ff}
 
-    /* ====== Hero ====== */
     .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;margin-top:18px}
-    .hero-card{
-      background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow);
-      display:flex;gap:22px;align-items:center;
-    }
-    .hero-card .media-logo{
-      width:min(140px,22vw);flex:0 0 auto;border-radius:14px;
-    }
-    .title{
-      font-size:clamp(28px,4vw,44px);line-height:1.05;margin:0 0 8px;font-weight:900;
-    }
+    .hero-card{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow);display:flex;gap:22px;align-items:center}
+    .hero-card .media-logo{width:min(140px,22vw);flex:0 0 auto;border-radius:14px}
+    .title{font-size:clamp(28px,4vw,44px);line-height:1.05;margin:0 0 8px;font-weight:900}
     .subtitle{font-size:clamp(16px,2.1vw,18px);color:var(--muted);margin:0}
-    .badges{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
-    .store{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:12px 16px;border-radius:12px;background:#000;color:#fff;font-weight:700;border:1px solid rgba(255,255,255,.08)
-    }
-    [data-theme="light"] .store{background:#111;color:#fff}
-    .store svg{width:20px;height:20px}
+    .badges{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;align-items:center}
     .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
+    .store-badge{height:56px;display:block;border-radius:12px;box-shadow:var(--shadow)}
+    .store-badge:hover{transform:scale(1.03)}
+    .store-badge-wrap{display:inline-block;line-height:0}
 
-    /* Phone mock */
-    .phone{
-      width:min(420px,85%);margin:0 auto;background:var(--panel);border-radius:28px;padding:14px;
-      box-shadow:var(--shadow);position:relative;overflow:hidden;
-      border:1px solid rgba(255,255,255,.06)
-    }
+    .phone{width:min(420px,85%);margin:0 auto;background:var(--panel);border-radius:28px;padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
     [data-theme="light"] .phone{border-color:#eef2ff}
-    .phone-screen{
-      border-radius:20px;background:
-       linear-gradient(180deg, rgba(34,211,238,.12), transparent),
-       linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),
-       #0e142b;
-      aspect-ratio:9/19.5;
-      display:flex;flex-direction:column;justify-content:space-between;
-      padding:16px;color:#e6edff
-    }
+    .phone-screen{border-radius:20px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:16px;color:#e6edff}
     [data-theme="light"] .phone-screen{background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%)}
     .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    .pill{
-      background:var(--chip);padding:10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px
-    }
+    .pill{background:var(--chip);padding:10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px}
 
-    /* ====== Feature grid ====== */
     .section{margin:52px 0}
     .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 18px;font-weight:900}
     .section p.lead{color:var(--muted);margin:0 0 22px}
-    .grid{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:16px
-    }
-    .card{
-      background:var(--panel);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.06);
-      box-shadow:var(--shadow)
-    }
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{background:var(--panel);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow)}
     [data-theme="light"] .card{border-color:#eef2ff}
     .card h3{margin:10px 0 8px;font-size:18px}
     .chip{display:inline-flex;align-items:center;gap:8px;background:var(--chip);padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
     .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:var(--chip);padding:6px 8px;border-radius:8px}
 
-    /* ====== Footer (shared) ====== */
     footer{margin-top:64px;padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)}
     [data-theme="light"] footer{border-top-color:#e5e7eb}
-    .foot-inner{
-      display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      color:var(--muted)
-    }
+    .foot-inner{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted)}
 
-    /* ====== Responsive ====== */
-    @media (max-width: 960px){
-      .hero{grid-template-columns:1fr;gap:20px}
-      .hero-card{align-items:flex-start}
-      .grid{grid-template-columns:1fr 1fr}
-    }
-    @media (max-width: 640px){
-      nav ul{display:none}
-      .grid{grid-template-columns:1fr}
-      .cta-nav .btn.ghost{display:none}
-    }
+    @media (max-width:960px){.hero{grid-template-columns:1fr;gap:20px}.hero-card{align-items:flex-start}.grid{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){nav ul{display:none}.grid{grid-template-columns:1fr}.cta-nav .btn.ghost{display:none}}
 
-    /* ====== Logo swap rules ====== */
-    .logo-dark{display:block}
-    .logo-light{display:none}
+    /* Logo swap */
+    .logo-dark{display:block}.logo-light{display:none}
     [data-theme="light"] .logo-dark{display:none}
     [data-theme="light"] .logo-light{display:block}
   </style>
@@ -172,21 +86,16 @@
 <body>
   <header class="shell">
     <div class="nav">
-      <div class="brand">
-        <!-- Page icon could be the Media mark -->
-        <span>Jmod Media</span>
-      </div>
-
+      <div class="brand"><span>Jmod Media</span></div>
       <nav aria-label="Primary">
         <ul>
-          <li><a href="/index.html">Home</a></li>
-          <li><a href="/services.html">Services</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/contact.html">Contact Us</a></li>
-          <li><a href="/jmodco.html">Jmod Co.</a></li>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./services.html">Services</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="./contact.html">Contact Us</a></li>
+          <li><a href="./jmodco.html">Jmod Co.</a></li>
         </ul>
       </nav>
-
       <div class="cta-nav">
         <button id="themeToggle" class="btn" type="button" aria-label="Toggle theme">Toggle Theme</button>
       </div>
@@ -194,29 +103,30 @@
   </header>
 
   <main class="shell">
-    <!-- ===== Hero ===== -->
     <section class="hero" aria-labelledby="heroTitle">
       <div>
         <div class="hero-card">
-          <!-- Auto-swaps per theme: dark uses transparent PNG; light uses solid PNG -->
-          <img class="media-logo logo-dark" src="/assets/Jmod_MediaTP.png" alt="Jmod Media logo (transparent for dark)" />
-          <img class="media-logo logo-light" src="/assets/Jmod_Media.png" alt="Jmod Media logo (solid for light)" />
+          <!-- Use RELATIVE paths so it works from subfolders -->
+          <img class="media-logo logo-dark" src="./assets/Jmod_MediaTP.png" alt="Jmod Media logo (transparent for dark)" loading="lazy" />
+          <img class="media-logo logo-light" src="./assets/Jmod_Media.png" alt="Jmod Media logo (solid for light)" loading="lazy" />
           <div>
             <h1 id="heroTitle" class="title">Create once. Publish everywhere.</h1>
-            <p class="subtitle">
-              Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.
-            </p>
+            <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
             <div class="badges">
               <span class="soon">Pre-Download (Coming Soon)</span>
-              <a class="store" href="#" aria-label="Download on the App Store (coming soon)">
-                <!-- Apple icon -->
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c.04.49-.187 1.01-.55 1.43-.402.47-1.1.84-1.743.79-.07-.48.206-1.01.57-1.44.39-.47 1.128-.83 1.723-.78zm3.03 15.16c-.53 1.23-.78 1.78-1.46 2.88-.95 1.55-2.294 3.49-3.97 3.5-1.485.01-1.87-.95-3.48-.95-1.61 0-2.04.93-3.51.96-1.68.03-2.962-1.69-3.916-3.24-2.14-3.48-3.784-9.82-1.58-14.1 1.1-2.13 3.073-3.49 5.234-3.52 1.63-.03 3.17 1.08 3.49 1.08.34 0 2.4-1.33 4.05-1.14.69.03 2.62.28 3.86 2.11-3.37 1.86-2.82 6.74.29 7.91-.3.86-.66 1.69-1.01 2.53z"/></svg>
-                <span>App Store</span>
+
+              <!-- Official App Store badge -->
+              <a class="store-badge-wrap" href="#" aria-label="Download on the App Store (coming soon)">
+                <img class="store-badge"
+                     src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                     alt="Download on the App Store" loading="lazy">
               </a>
-              <a class="store" href="#" aria-label="Get it on Google Play (coming soon)">
-                <!-- Android/Play icon -->
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1.5 2.75v18.5c0 .66.54 1.25 1.2 1.25.2 0 .43-.06.65-.2l10.93-6.3-12.78-12.1zm13.72 12.67 2.9 1.67c.38.22.83.22 1.2 0l2.56-1.47c.6-.35.6-1.23 0-1.58l-2.56-1.47a1.19 1.19 0 0 0-1.2 0l-2.9 1.67-.99.57.99.61zM4.19 1.72 13.73 7.2l-2.08 1.2-7.46-6.68A1.14 1.14 0 0 1 4.19 1.7zM11.65 15.6 4.13 20.3c-.66.39-1.5-.08-1.5-.86V3.9l9.02 8.54z"/></svg>
-                <span>Google Play</span>
+
+              <!-- Official Google Play badge -->
+              <a class="store-badge-wrap" href="#" aria-label="Get it on Google Play (coming soon)">
+                <img class="store-badge"
+                     src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                     alt="Get it on Google Play" loading="lazy">
               </a>
             </div>
           </div>
@@ -226,69 +136,16 @@
           <h2>Everything you need to post in minutes</h2>
           <p class="lead">The Jmod Media phone app (with matching web dashboard) prioritizes speed, consistency, and control.</p>
           <div class="grid">
-            <div class="card">
-              <div class="chip">Composer</div>
-              <h3>One-tap Post Builder</h3>
-              <p>Drop a photo, pick a template, tweak copy with AI assist, and publish to multiple networks at once.</p>
-              <div class="stack">
-                <span class="mono">Image → Caption → Hashtags</span>
-                <span class="mono">Multi-channel</span>
-                <span class="mono">AI rewrite</span>
-              </div>
-            </div>
-            <div class="card">
-              <div class="chip">Calendar</div>
-              <h3>Queue & Auto-Schedule</h3>
-              <p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p>
-              <div class="stack">
-                <span class="mono">Best-time AI</span>
-                <span class="mono">Recurring slots</span>
-                <span class="mono">Holiday sets</span>
-              </div>
-            </div>
-            <div class="card">
-              <div class="chip">Brand Kit</div>
-              <h3>On-Brand, Every Time</h3>
-              <p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p>
-              <div class="stack">
-                <span class="mono">Logo lockups</span>
-                <span class="mono">Tone presets</span>
-                <span class="mono">Approval flow</span>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="chip">Templates</div>
-              <h3>Reusable Post Types</h3>
-              <p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p>
-              <div class="stack">
-                <span class="mono">Image + Copy</span>
-                <span class="mono">Per-channel</span>
-              </div>
-            </div>
-            <div class="card">
-              <div class="chip">Inbox</div>
-              <h3>Smart Replies</h3>
-              <p>Unified comments & DMs with suggested replies and auto-responders after hours.</p>
-              <div class="stack">
-                <span class="mono">QA pairs</span>
-                <span class="mono">Auto-DM</span>
-              </div>
-            </div>
-            <div class="card">
-              <div class="chip">Insights</div>
-              <h3>Post-level Analytics</h3>
-              <p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p>
-              <div class="stack">
-                <span class="mono">Channel score</span>
-                <span class="mono">A/B templates</span>
-              </div>
-            </div>
+            <div class="card"><div class="chip">Composer</div><h3>One-tap Post Builder</h3><p>Drop a photo, pick a template, tweak copy with AI assist, and publish to multiple networks at once.</p><div class="stack"><span class="mono">Image → Caption → Hashtags</span><span class="mono">Multi-channel</span><span class="mono">AI rewrite</span></div></div>
+            <div class="card"><div class="chip">Calendar</div><h3>Queue & Auto-Schedule</h3><p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p><div class="stack"><span class="mono">Best-time AI</span><span class="mono">Recurring slots</span><span class="mono">Holiday sets</span></div></div>
+            <div class="card"><div class="chip">Brand Kit</div><h3>On-Brand, Every Time</h3><p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p><div class="stack"><span class="mono">Logo lockups</span><span class="mono">Tone presets</span><span class="mono">Approval flow</span></div></div>
+            <div class="card"><div class="chip">Templates</div><h3>Reusable Post Types</h3><p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p><div class="stack"><span class="mono">Image + Copy</span><span class="mono">Per-channel</span></div></div>
+            <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with suggested replies and auto-responders after hours.</p><div class="stack"><span class="mono">QA pairs</span><span class="mono">Auto-DM</span></div></div>
+            <div class="card"><div class="chip">Insights</div><h3>Post-level Analytics</h3><p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p><div class="stack"><span class="mono">Channel score</span><span class="mono">A/B templates</span></div></div>
           </div>
         </div>
       </div>
 
-      <!-- Phone mock (visual anchor) -->
       <aside aria-label="App preview">
         <div class="phone">
           <div class="phone-screen">
@@ -298,21 +155,17 @@
               <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
             </div>
             <div class="dock">
-              <div class="pill">Compose</div>
-              <div class="pill">Calendar</div>
-              <div class="pill">Brand Kit</div>
-              <div class="pill">Analytics</div>
+              <div class="pill">Compose</div><div class="pill">Calendar</div><div class="pill">Brand Kit</div><div class="pill">Analytics</div>
             </div>
           </div>
         </div>
         <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
           <a class="btn" href="#waitlist">Join the Waitlist</a>
-          <a class="btn ghost" href="/media/pricing.html">Pricing</a>
+          <a class="btn ghost" href="./media/pricing.html">Pricing</a>
         </div>
       </aside>
     </section>
 
-    <!-- ===== Connect / Waitlist ===== -->
     <section id="waitlist" class="section" aria-labelledby="wlTitle">
       <h2 id="wlTitle">Be first to launch with us</h2>
       <p class="lead">Owner-operators get early access, onboarding help, and founder pricing.</p>
@@ -326,7 +179,6 @@
     </section>
   </main>
 
-  <!-- ===== Shared Footer ===== -->
   <footer class="shell">
     <div class="foot-inner">
       <div id="copyright"></div>
@@ -335,33 +187,21 @@
   </footer>
 
   <script>
-    // Shared footer copyright
-    (function () {
-      const el = document.getElementById('copyright');
-      if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-    })();
+    // Footer year
+    (function(){ const el = document.getElementById('copyright'); if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`; })();
 
-    // Theme handling:
-    // data-theme = "auto" (default) follows prefers-color-scheme,
-    // the toggle cycles auto → dark → light.
+    // Theme: auto → dark → light cycle
     const html = document.documentElement;
     const toggle = document.getElementById('themeToggle');
-
-    // Apply initial 'auto' preference
     function applyAutoTheme(){
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches){
         html.setAttribute('data-theme','light');
-      } else {
-        html.setAttribute('data-theme','dark');
-      }
+      } else { html.setAttribute('data-theme','dark'); }
     }
     if (html.getAttribute('data-theme') === 'auto') applyAutoTheme();
     window.matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', e=>{
-      if (html.getAttribute('data-theme')==='auto'){
-        html.setAttribute('data-theme', e.matches ? 'light':'dark');
-      }
+      if (html.getAttribute('data-theme')==='auto'){ html.setAttribute('data-theme', e.matches ? 'light':'dark'); }
     });
-
     toggle?.addEventListener('click', ()=>{
       const cur = html.getAttribute('data-theme');
       const next = cur==='auto' ? 'dark' : cur==='dark' ? 'light' : 'auto';
