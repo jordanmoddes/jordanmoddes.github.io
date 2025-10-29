@@ -154,8 +154,8 @@
     <section class="hero" aria-labelledby="heroTitle">
       <div class="panel hero-card">
         <!-- logos (relative paths) -->
-        <img class="media-logo logo-dark" src="./assets/Jmod_MediaTP.png" alt="Jmod Media logo (transparent for dark)" loading="lazy" />
-        <img class="media-logo logo-light" src="./assets/Jmod_Media.png" alt="Jmod Media logo (solid for light)" loading="lazy" />
+        <img class="media-logo logo-dark" src="https://www.jordanmoddes.com/jmodco//assets/Jmod_MediaTP.png" alt="Jmod Media logo (transparent for dark)" loading="lazy" />
+        <img class="media-logo logo-light" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_Media.png" alt="Jmod Media logo (solid for light)" loading="lazy" />
         <div>
           <h1 id="heroTitle" class="title">Create once. Publish everywhere.</h1>
           <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
@@ -279,7 +279,7 @@
     // Load footer partial from /assets/footer.html
     (async function loadFooter(){
       try{
-        const res = await fetch('./assets/footer.html', {cache:'no-cache'});
+        const res = await fetch('https://www.jordanmoddes.com/jmodco/assets/footer.html', {cache:'no-cache'});
         const html = await res.text();
         const mount = document.getElementById('footerMount');
         if (mount){ mount.innerHTML = html; setCopyright(mount); }
