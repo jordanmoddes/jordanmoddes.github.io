@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     :root{
       --bg:#0b1020; --bg2:#0a0f1e; --panel:#101733;
@@ -30,27 +29,30 @@
     body{
       margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
       background: linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
-      overflow-x:hidden;
-      position:relative; isolation:isolate;
+      overflow-x:hidden;position:relative;isolation:isolate;
     }
-    /* Anti-banding + creative media vibe */
-    .bgfx, .bgfx2{
-      position:fixed; inset:-20vmax; pointer-events:none; z-index:-1; filter:blur(60px);
+
+    /* ===== Aurora background ===== */
+    .bgfx,.bgfx2{
+      position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;filter:blur(80px);
+      animation: auroraFloat 26s ease-in-out infinite alternate;opacity:.9;
+    }
+    .bgfx{
       background:
-        radial-gradient(35vmax 35vmax at 20% 0%, rgba(123,57,255,.25), transparent 60%),
-        radial-gradient(30vmax 30vmax at 90% 35%, rgba(34,211,238,.18), transparent 65%);
-      animation: float1 22s ease-in-out infinite;
-      opacity:.9;
+        radial-gradient(30vmax 30vmax at 20% 0%, rgba(123,57,255,.25), transparent 60%),
+        radial-gradient(26vmax 26vmax at 90% 40%, rgba(34,211,238,.2), transparent 65%);
     }
     .bgfx2{
       background:
-        radial-gradient(28vmax 28vmax at 10% 85%, rgba(34,211,238,.20), transparent 60%),
-        radial-gradient(24vmax 24vmax at 80% 100%, rgba(123,57,255,.20), transparent 65%);
-      animation: float2 28s ease-in-out infinite reverse;
-      mix-blend-mode:screen; opacity:.5;
+        radial-gradient(24vmax 24vmax at 10% 85%, rgba(34,211,238,.18), transparent 60%),
+        radial-gradient(22vmax 22vmax at 80% 100%, rgba(123,57,255,.20), transparent 65%);
+      animation-duration:34s;mix-blend-mode:screen;opacity:.5;
     }
-    @keyframes float1{ 0%{transform:translateY(0)} 50%{transform:translateY(-3vmax)} 100%{transform:translateY(0)} }
-    @keyframes float2{ 0%{transform:translateY(0)} 50%{transform:translateY(3vmax)} 100%{transform:translateY(0)} }
+    @keyframes auroraFloat{
+      0%{transform:translate3d(0,0,0) rotate(0)}
+      50%{transform:translate3d(0,-3vmax,0) rotate(6deg)}
+      100%{transform:translate3d(0,0,0) rotate(-4deg)}
+    }
 
     a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
 
@@ -64,238 +66,26 @@
     .btn:hover{transform:translateY(-1px)}
     .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
     [data-theme="light"] .btn.ghost{border-color:#d9e0ff}
+    .btn.ig{background:linear-gradient(135deg,#d6249f,#285AEB)}
+    .btn.ig:hover{transform:translateY(-1px) scale(1.02)}
 
-    /* Full-width hero band */
-    .hero-wrap{padding:28px 0}
-    .hero{
-      max-width:1200px;margin:0 auto;padding:0 24px;
-      display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;
-    }
+    /* Hero section */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
     .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
     .hero-card{display:flex;gap:22px;align-items:center}
-    .media-logo{width:min(350px,250vw);flex:0 0 auto;border-radius:14px}
+    .hero-card .media-logo{
+      width:clamp(200px,26vw,340px);
+      border-radius:12px;
+      transform:scale(1.18);
+      transform-origin:center left;
+    }
     .title{font-size:clamp(32px,5vw,54px);line-height:1.02;margin:0 0 10px;font-weight:900}
     .subtitle{font-size:clamp(16px,2vw,18px);color:var(--muted);margin:0 0 16px}
     .badges{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
     .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
     .store-badge{height:56px;display:block;border-radius:12px;box-shadow:var(--shadow)}
+    .store-badge.store-play{height:84px}
     .store-badge-wrap{display:inline-block;line-height:0}
     .store-badge:hover{transform:scale(1.03)}
 
-    /* Preview area */
-    .phone{background:var(--panel);border-radius:28px;padding:16px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
-    [data-theme="light"] .phone{border-color:#eef2ff}
-    .phone-screen{border-radius:20px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:16px}
-    [data-theme="light"] .phone-screen{background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%)}
-    .pill{background:var(--chip);padding:10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
-    .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-
-    .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
-
-    /* Template cards (replaces bubbles) */
-    .section{max-width:1200px;margin:40px auto 0;padding:0 24px}
-    .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 14px;font-weight:900}
-    .section p.lead{color:var(--muted);margin:0 0 22px}
-
-    .templates{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .tcard{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
-    [data-theme="light"] .tcard{border-color:#eef2ff}
-    .tcard h3{margin:8px 0 6px;font-size:16px}
-    .tcard p{margin:0;color:var(--muted);font-size:14px}
-
-    /* Feature grid */
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .card{background:var(--panel);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow)}
-    [data-theme="light"] .card{border-color:#eef2ff}
-    .card h3{margin:10px 0 8px;font-size:18px}
-    .chip{display:inline-flex;align-items:center;gap:8px;background:var(--chip);padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
-    .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:var(--chip);padding:6px 8px;border-radius:8px}
-
-    .smb{max-width:1200px;margin:48px auto 0;padding:0 24px}
-    .smb .band{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:linear-gradient(90deg, rgba(123,57,255,.22), rgba(34,211,238,.22));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 18px}
-
-    footer{margin-top:56px}
-
-    @media (max-width:1024px){
-      .hero{grid-template-columns:1fr}
-      .templates,.grid{grid-template-columns:1fr 1fr}
-    }
-    @media (max-width:640px){
-      nav ul{display:none}
-      .templates,.grid{grid-template-columns:1fr}
-      .store-badge{height:52px}
-    }
-
-    /* Logo swap */
-    .logo-dark{display:block}.logo-light{display:none}
-    [data-theme="light"] .logo-dark{display:none}
-    [data-theme="light"] .logo-light{display:block}
-  </style>
-</head>
-<body>
-  <div class="bgfx"></div><div class="bgfx2"></div>
-
-  <header class="shell">
-    <div class="nav">
-      <div class="brand">Jmod Media</div>
-      <nav aria-label="Primary">
-        <ul>
-          <li><a href="./index.html">Home</a></li>
-          <li><a href="./services.html">Services</a></li>
-          <li><a href="./about.html">About</a></li>
-          <li><a href="./contact.html">Contact Us</a></li>
-          <li><a href="./jmodco.html">Jmod Co.</a></li>
-        </ul>
-      </nav>
-      <div class="cta-nav">
-        <button id="themeToggle" class="btn" type="button" aria-label="Toggle theme">Toggle Theme</button>
-      </div>
-    </div>
-  </header>
-
-  <div class="hero-wrap">
-    <section class="hero" aria-labelledby="heroTitle">
-      <div class="panel hero-card">
-        <img id="logoDark" class="media-logo logo-dark" alt="Jmod Media logo (transparent for dark)" loading="lazy" />
-        <img id="logoLight" class="media-logo logo-light" alt="Jmod Media logo (solid for light)" loading="lazy" />
-        <div>
-          <h1 id="heroTitle" class="title">Create once. Publish everywhere.</h1>
-          <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
-          <div class="badges">
-            <span class="soon">Pre-Download (Coming Soon)</span>
-            <a class="store-badge-wrap" href="#" aria-label="Download on the App Store (coming soon)">
-              <img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" loading="lazy">
-            </a>
-            <a class="store-badge-wrap" href="#" aria-label="Get it on Google Play (coming soon)">
-              <img class="store-badge" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" loading="lazy">
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <aside aria-label="App preview">
-        <div class="phone">
-          <div class="phone-screen">
-            <div>
-              <div class="pill" style="width:max-content">Jmod Media</div>
-              <h4 style="margin:8px 0 0;font-size:18px">New Post</h4>
-              <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
-              <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:10px;margin-top:8px">
-                <div style="font-weight:700;margin-bottom:6px">Caption (AI)</div>
-                <div style="font-size:12px;color:var(--text);opacity:.9">“Congrats to <strong>@Jordan</strong> on the new remote start! ❄️ Tap for install details.”</div>
-                <div style="margin-top:6px;font-size:12px;opacity:.8">#RoundRock #RemoteStart #CarAudio</div>
-              </div>
-            </div>
-            <div class="dock">
-              <div class="pill">Compose</div><div class="pill">Calendar</div><div class="pill">Brand Kit</div><div class="pill">Analytics</div>
-            </div>
-          </div>
-        </div>
-        <div class="preview-ctas">
-          <a class="btn" href="#waitlist">Join the Waitlist</a>
-          <a class="btn ghost" href="./media/pricing.html">Pricing</a>
-        </div>
-      </aside>
-    </section>
-  </div>
-
-  <!-- Template cards -->
-  <section class="section" aria-labelledby="tplTitle">
-    <h2 id="tplTitle">Quick Templates</h2>
-    <p class="lead">Pick a template and go—each pre-fills copy, hashtags, and right-sized images per channel.</p>
-    <div class="templates">
-      <div class="tcard"><h3>Congrats Customer</h3><p>Drop a photo, auto-caption names, and tag your location.</p></div>
-      <div class="tcard"><h3>New Product</h3><p>Specs + price blocks with CTA buttons for web and DM.</p></div>
-      <div class="tcard"><h3>Weekend Promo</h3><p>Time-boxed offers with countdown and auto re-post slot.</p></div>
-      <div class="tcard"><h3>Before/After</h3><p>Side-by-side crop and slider preview for socials.</p></div>
-      <div class="tcard"><h3>How-To</h3><p>Step list + safe area overlays for Reels/Shorts.</p></div>
-      <div class="tcard"><h3>Review</h3><p>Pulls a recent 5★ review and formats it for channels.</p></div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="section" aria-labelledby="featTitle">
-    <h2 id="featTitle">Everything you need to post in minutes</h2>
-    <p class="lead">The Jmod Media phone app (with matching web dashboard) prioritizes speed, consistency, and control.</p>
-    <div class="grid">
-      <div class="card"><div class="chip">Composer</div><h3>One-tap Post Builder</h3><p>Drop a photo, pick a template, tweak copy with AI assist, and publish to multiple networks at once.</p><div class="stack"><span class="mono">Image → Caption → Hashtags</span><span class="mono">Multi-channel</span><span class="mono">AI rewrite</span></div></div>
-      <div class="card"><div class="chip">Calendar</div><h3>Queue & Auto-Schedule</h3><p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p><div class="stack"><span class="mono">Best-time AI</span><span class="mono">Recurring slots</span><span class="mono">Holiday sets</span></div></div>
-      <div class="card"><div class="chip">Brand Kit</div><h3>On-Brand, Every Time</h3><p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p><div class="stack"><span class="mono">Logo lockups</span><span class="mono">Tone presets</span><span class="mono">Approval flow</span></div></div>
-      <div class="card"><div class="chip">Templates</div><h3>Reusable Post Types</h3><p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p><div class="stack"><span class="mono">Image + Copy</span><span class="mono">Per-channel</span></div></div>
-      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with suggested replies and auto-responders after hours.</p><div class="stack"><span class="mono">QA pairs</span><span class="mono">Auto-DM</span></div></div>
-      <div class="card"><div class="chip">Insights</div><h3>Post-level Analytics</h3><p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p><div class="stack"><span class="mono">Channel score</span><span class="mono">A/B templates</span></div></div>
-    </div>
-  </section>
-
-  <!-- Small business value band -->
-  <section class="smb">
-    <div class="band">
-      <strong>Built for small business clarity.</strong>
-      <span style="color:var(--text);opacity:.9">AI picks what to post, writes captions, and suggests SEO tags & hashtags—so you show up consistently.</span>
-      <a class="btn" href="#waitlist">Join the Waitlist</a>
-    </div>
-  </section>
-
-  <!-- Waitlist -->
-  <section id="waitlist" class="section" aria-labelledby="wlTitle">
-    <h2 id="wlTitle">Be first to launch with us</h2>
-    <p class="lead">Owner-operators get early access, onboarding help, and founder pricing.</p>
-    <form class="card" style="display:grid;grid-template-columns:1.2fr .8fr auto;gap:12px;align-items:center" onsubmit="event.preventDefault(); alert('Thanks! You’re on the list.');">
-      <input type="text" placeholder="Business name" required
-             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
-      <input type="email" placeholder="Email address" required
-             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
-      <button class="btn" type="submit">Join</button>
-    </form>
-  </section>
-
-  <!-- Footer from partial -->
-  <footer class="shell" id="footerMount"></footer>
-
-  <script>
-    // Force-robust asset paths (you can later switch to relative)
-    const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
-    document.getElementById('logoDark').src  = ASSETS_BASE + "Jmod_MediaTP.png";
-    document.getElementById('logoLight').src = ASSETS_BASE + "Jmod_Media.png";
-
-    // Load /assets/footer.html and keep copyright
-    async function loadFooter(){
-      try{
-        const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
-        const html = await res.text();
-        const mount = document.getElementById('footerMount');
-        mount.innerHTML = html;
-        const el = mount.querySelector('#copyright');
-        if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-      }catch(e){
-        // fallback
-        const mount = document.getElementById('footerMount');
-        mount.innerHTML = `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
-          <div id="copyright">© ${new Date().getFullYear()} Jmod Co.</div>
-          <div>Built for small business clarity.</div>
-        </div>`;
-      }
-    }
-    loadFooter();
-
-    // Theme: auto → dark → light cycle
-    const root = document.documentElement;
-    const toggle = document.getElementById('themeToggle');
-    function applyAutoTheme(){
-      if (matchMedia('(prefers-color-scheme: light)').matches){ root.setAttribute('data-theme','light'); }
-      else { root.setAttribute('data-theme','dark'); }
-    }
-    if (root.getAttribute('data-theme')==='auto') applyAutoTheme();
-    matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', e=>{
-      if (root.getAttribute('data-theme')==='auto'){ root.setAttribute('data-theme', e.matches ? 'light':'dark'); }
-    });
-    toggle?.addEventListener('click', ()=>{
-      const cur = root.getAttribute('data-theme');
-      const next = cur==='auto' ? 'dark' : cur==='dark' ? 'light' : 'auto';
-      root.setAttribute('data-theme', next);
-      if (next==='auto') applyAutoTheme();
-    });
-  </script>
-</body>
-</html>
+    .phone{background:var(--panel);border-radius:28px;padding:16px;box-shadow:va
