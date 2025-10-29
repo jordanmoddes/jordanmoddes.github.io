@@ -88,4 +88,122 @@
     .store-badge-wrap{display:inline-block;line-height:0}
     .store-badge:hover{transform:scale(1.03)}
 
-    .phone{background:var(--panel);border-radius:28px;padding:16px;box-shadow:va
+    .phone{background:var(--panel);border-radius:28px;padding:16px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
+    .phone-screen{border-radius:20px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:16px}
+    .pill{background:var(--chip);padding:10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
+    .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+    .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+
+    footer{margin-top:56px}
+
+    @media (max-width:1024px){.hero{grid-template-columns:1fr}}
+    @media (max-width:640px){
+      nav ul{display:none}
+      .store-badge{height:52px}
+    }
+
+    .logo-dark{display:block}.logo-light{display:none}
+    [data-theme="light"] .logo-dark{display:none}
+    [data-theme="light"] .logo-light{display:block}
+  </style>
+</head>
+<body>
+  <div class="bgfx"></div><div class="bgfx2"></div>
+
+  <header class="shell">
+    <div class="nav">
+      <div class="brand">Jmod Media</div>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./services.html">Services</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="./contact.html">Contact Us</a></li>
+          <li><a href="./jmodco.html">Jmod Co.</a></li>
+        </ul>
+      </nav>
+      <div class="cta-nav">
+        <button id="themeToggle" class="btn" type="button">Toggle Theme</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell hero">
+    <div class="panel hero-card">
+      <img id="logoDark" class="media-logo logo-dark" alt="Jmod Media logo dark" loading="lazy" />
+      <img id="logoLight" class="media-logo logo-light" alt="Jmod Media logo light" loading="lazy" />
+      <div>
+        <h1 class="title">Create once. Publish everywhere.</h1>
+        <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
+        <div class="badges">
+          <span class="soon">Pre-Download (Coming Soon)</span>
+          <a class="store-badge-wrap" href="#">
+            <img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
+          </a>
+          <a class="store-badge-wrap" href="#">
+            <img class="store-badge store-play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play">
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="phone">
+        <div class="phone-screen">
+          <div>
+            <div class="pill" style="width:max-content">Jmod Media</div>
+            <h4 style="margin:8px 0 0;font-size:18px">New Post</h4>
+            <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
+            <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:10px;margin-top:8px">
+              <div style="font-weight:700;margin-bottom:6px">Caption (AI)</div>
+              <div style="font-size:12px;color:var(--text);opacity:.9">“Congrats to <strong>@Jordan</strong> on the new remote start! ❄️ Tap for install details.”</div>
+              <div style="margin-top:6px;font-size:12px;opacity:.8">#RoundRock #RemoteStart #CarAudio</div>
+            </div>
+          </div>
+          <div class="dock">
+            <div class="pill">Compose</div><div class="pill">Calendar</div><div class="pill">Brand Kit</div><div class="pill">Analytics</div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-ctas">
+        <a class="btn" href="#waitlist">Join the Waitlist</a>
+        <a class="btn ghost" href="./media/pricing.html">Pricing</a>
+        <a class="btn ig" href="https://www.instagram.com/jmoddes/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.9.3 2.4.6.6.3 1.1.7 1.6 1.2.5.5.9 1 1.2 1.6.3.5.5 1.2.6 2.4.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.3 1.9-.6 2.4-.3.6-.7 1.1-1.2 1.6-.5.5-1 .9-1.6 1.2-.5.3-1.2.5-2.4.6-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.9-.3-2.4-.6-.6-.3-1.1-.7-1.6-1.2a5 5 0 0 1-1.2-1.6c-.3-.5-.5-1.2-.6-2.4C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.3-1.9.6-2.4.3-.6.7-1.1 1.2-1.6.5-.5 1-.9 1.6-1.2.5-.3 1.2-.5 2.4-.6C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.2 0-3.6 0-4.8.1-1 .1-1.5.2-1.9.4-.5.2-.8.4-1.2.8-.4.4-.6.7-.8 1.2-.2.4-.3.9-.4 1.9-.1 1.2-.1 1.6-.1 4.8s0 3.6.1 4.8c.1 1 .2 1.5.4 1.9.2.5.4.8.8 1.2.4.4.7.6 1.2.8.4.2.9.3 1.9.4 1.2.1 1.6.1 4.8.1s3.6 0 4.8-.1c1-.1 1.5-.2 1.9-.4.5-.2.8-.4 1.2-.8.4-.4.6-.7.8-1.2.2-.4.3-.9.4-1.9.1-1.2.1-1.6.1-4.8s0-3.6-.1-4.8c-.1-1-.2-1.5-.4-1.9a3.4 3.4 0 0 0-.8-1.2 3.4 3.4 0 0 0-1.2-.8c-.4-.2-.9-.3-1.9-.4-1.2-.1-1.6-.1-4.8-.1Zm0 3.7a6.3 6.3 0 1 1 0 12.6 6.3 6.3 0 0 1 0-12.6Zm0 1.8a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Zm5-2.1a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Z"/></svg>
+          <span>Instagram</span>
+        </a>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="shell" id="footerMount"></footer>
+
+  <script>
+    const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
+    document.getElementById('logoDark').src  = ASSETS_BASE + "Jmod_MediaTP.png";
+    document.getElementById('logoLight').src = ASSETS_BASE + "Jmod_Media.png";
+
+    async function loadFooter(){
+      try{
+        const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
+        const html = await res.text();
+        const mount = document.getElementById('footerMount');
+        mount.innerHTML = html;
+        const el = mount.querySelector('#copyright');
+        if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+      }catch(e){
+        const mount = document.getElementById('footerMount');
+        mount.innerHTML = `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
+          <div id="copyright">© ${new Date().getFullYear()} Jmod Co.</div>
+          <div>Built for small business clarity.</div>
+        </div>`;
+      }
+    }
+    loadFooter();
+
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    function applyAutoTheme(){
+      if (matchMedia('(prefers-color-scheme: light)').matches){ root.setAttribute('data-theme','light'); }
+      else
