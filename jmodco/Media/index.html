@@ -73,7 +73,7 @@
     }
     .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
     .hero-card{display:flex;gap:22px;align-items:center}
-    .media-logo{width:min(148px,24vw);flex:0 0 auto;border-radius:14px}
+    .media-logo{width:min(350px,250vw);flex:0 0 auto;border-radius:14px}
     .title{font-size:clamp(32px,5vw,54px);line-height:1.02;margin:0 0 10px;font-weight:900}
     .subtitle{font-size:clamp(16px,2vw,18px);color:var(--muted);margin:0 0 16px}
     .badges{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
@@ -223,4 +223,79 @@
       <div class="card"><div class="chip">Calendar</div><h3>Queue & Auto-Schedule</h3><p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p><div class="stack"><span class="mono">Best-time AI</span><span class="mono">Recurring slots</span><span class="mono">Holiday sets</span></div></div>
       <div class="card"><div class="chip">Brand Kit</div><h3>On-Brand, Every Time</h3><p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p><div class="stack"><span class="mono">Logo lockups</span><span class="mono">Tone presets</span><span class="mono">Approval flow</span></div></div>
       <div class="card"><div class="chip">Templates</div><h3>Reusable Post Types</h3><p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p><div class="stack"><span class="mono">Image + Copy</span><span class="mono">Per-channel</span></div></div>
-      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with sugg
+      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with suggested replies and auto-responders after hours.</p><div class="stack"><span class="mono">QA pairs</span><span class="mono">Auto-DM</span></div></div>
+      <div class="card"><div class="chip">Insights</div><h3>Post-level Analytics</h3><p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p><div class="stack"><span class="mono">Channel score</span><span class="mono">A/B templates</span></div></div>
+    </div>
+  </section>
+
+  <!-- Small business value band -->
+  <section class="smb">
+    <div class="band">
+      <strong>Built for small business clarity.</strong>
+      <span style="color:var(--text);opacity:.9">AI picks what to post, writes captions, and suggests SEO tags & hashtags—so you show up consistently.</span>
+      <a class="btn" href="#waitlist">Join the Waitlist</a>
+    </div>
+  </section>
+
+  <!-- Waitlist -->
+  <section id="waitlist" class="section" aria-labelledby="wlTitle">
+    <h2 id="wlTitle">Be first to launch with us</h2>
+    <p class="lead">Owner-operators get early access, onboarding help, and founder pricing.</p>
+    <form class="card" style="display:grid;grid-template-columns:1.2fr .8fr auto;gap:12px;align-items:center" onsubmit="event.preventDefault(); alert('Thanks! You’re on the list.');">
+      <input type="text" placeholder="Business name" required
+             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
+      <input type="email" placeholder="Email address" required
+             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
+      <button class="btn" type="submit">Join</button>
+    </form>
+  </section>
+
+  <!-- Footer from partial -->
+  <footer class="shell" id="footerMount"></footer>
+
+  <script>
+    // Force-robust asset paths (you can later switch to relative)
+    const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
+    document.getElementById('logoDark').src  = ASSETS_BASE + "Jmod_MediaTP.png";
+    document.getElementById('logoLight').src = ASSETS_BASE + "Jmod_Media.png";
+
+    // Load /assets/footer.html and keep copyright
+    async function loadFooter(){
+      try{
+        const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
+        const html = await res.text();
+        const mount = document.getElementById('footerMount');
+        mount.innerHTML = html;
+        const el = mount.querySelector('#copyright');
+        if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+      }catch(e){
+        // fallback
+        const mount = document.getElementById('footerMount');
+        mount.innerHTML = `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
+          <div id="copyright">© ${new Date().getFullYear()} Jmod Co.</div>
+          <div>Built for small business clarity.</div>
+        </div>`;
+      }
+    }
+    loadFooter();
+
+    // Theme: auto → dark → light cycle
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    function applyAutoTheme(){
+      if (matchMedia('(prefers-color-scheme: light)').matches){ root.setAttribute('data-theme','light'); }
+      else { root.setAttribute('data-theme','dark'); }
+    }
+    if (root.getAttribute('data-theme')==='auto') applyAutoTheme();
+    matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', e=>{
+      if (root.getAttribute('data-theme')==='auto'){ root.setAttribute('data-theme', e.matches ? 'light':'dark'); }
+    });
+    toggle?.addEventListener('click', ()=>{
+      const cur = root.getAttribute('data-theme');
+      const next = cur==='auto' ? 'dark' : cur==='dark' ? 'light' : 'auto';
+      root.setAttribute('data-theme', next);
+      if (next==='auto') applyAutoTheme();
+    });
+  </script>
+</body>
+</html>
