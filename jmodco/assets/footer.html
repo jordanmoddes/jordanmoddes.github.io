@@ -1,10 +1,27 @@
 <div class="foot-inner">
-  <div id="copyright"></div>
-  <div>Built for small business clarity.</div>
+  <div style="text-align:center; width:100%;">
+    <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
+      Backed and supported by <strong>GPT-5 Engine</strong>
+    </div>
+
+    <div style="margin-bottom: 0.5rem;">
+      <a href="/jmodco/labs/" style="margin: 0 8px; color: inherit; text-decoration: none;">Jmod Labs</a>
+      <a href="/jmodco/systems/" style="margin: 0 8px; color: inherit; text-decoration: none;">Jmod Systems</a>
+      <a href="/jmodco/media/" style="margin: 0 8px; color: inherit; text-decoration: none;">Jmod Media</a>
+      <a href="/jmodco/legacy/" style="margin: 0 8px; color: inherit; text-decoration: none;">Jmod Legacy</a>
+      <a href="/jmodco/insights/" style="margin: 0 8px; color: inherit; text-decoration: none;">Jmod Insights</a>
+    </div>
+
+    <div id="copyright" style="font-size: 0.9rem; color: var(--muted);"></div>
+  </div>
 </div>
+
 <script>
   (function () {
     const el = document.getElementById('copyright');
-    if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+    if (el) {
+      const year = new Date().getFullYear();
+      el.textContent = `© ${year} Jmod Co. • All rights reserved.`;
+    }
   })();
 </script>
