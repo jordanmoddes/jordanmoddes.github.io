@@ -107,23 +107,13 @@
     }
     .mission h3{ margin:0 0 8px }
 
-   /* ===== Radial Divisions Map (no spokes) ===== */
+/* ===== Radial (uniform node sizing) ===== */
 :root{
-  /* Pull nodes in toward the big hub */
-  --orbit: clamp(140px, 28vw, 260px);
-
-  /* Fine-tune hub centering (x = left/right, y = up/down) */
+  /* spacing + sizes */
+  --orbit: clamp(210px, 40vw, 380px);   /* bump this up/down to declutter */
+  --node-size: clamp(140px, 18vw, 200px);  /* every satellite is this square */
   --hub-offset-x: 12px;
   --hub-offset-y: -26px;
-}
-
-.divisions-wrap { max-width:1100px; margin:0 auto; padding:0 24px; }
-
-.radial{
-  position:relative;
-  width:min(980px,95vw);
-  aspect-ratio:1 / 1;
-  margin:22px auto 28px;
 }
 
 /* Big center chip/logo */
@@ -131,14 +121,12 @@
   position:absolute; left:50%; top:50%;
   transform: translate(calc(-50% + var(--hub-offset-x)),
                        calc(-50% + var(--hub-offset-y)));
-  width:min(520px,50%);   /* was min(300px,32%) */
+  width:min(520px,50%);
   pointer-events:none;
 }
-.radial .hub img{
-  width:100%; height:auto; display:block; background:transparent;
-}
+.radial .hub img{ width:100%; height:auto; display:block; background:transparent }
 
-/* Satellite image nodes placed on the ring */
+/* Satellite node = square container on the orbit */
 .radial .imgnode{
   --angle:0deg;
   position:absolute; left:50%; top:50%;
@@ -148,14 +136,25 @@
     rotate(var(--angle))
     translateX(var(--orbit))
     rotate(calc(-1 * var(--angle)));
-  width:min(240px,24vw);  /* was min(220px,22vw) */
-  height:auto;
+  width: var(--node-size);
+  height: var(--node-size);
+  display:flex; align-items:center; justify-content:center;
   border-radius:18px;
-  display:block;
   background:transparent;
   filter: drop-shadow(0 2px 10px rgba(0,0,0,.25));
   transition: transform .15s ease;
 }
+
+/* The actual PNG scales uniformly inside the square */
+.radial .imgnode > img{
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display:block;
+  background: transparent;
+}
+
 .radial .imgnode:hover{
   transform:
     translate(calc(-50% + var(--hub-offset-x)),
@@ -164,6 +163,9 @@
     translateX(calc(var(--orbit) + 2px))
     rotate(calc(-1 * var(--angle)));
 }
+
+/* (Optional) if you still have old text nodes around, safe to keep/remove */
+.radial .node{ display:none; }
 
 /* (Optional) text nodes kept for fallback, safe to leave or delete */
 .radial .node{
