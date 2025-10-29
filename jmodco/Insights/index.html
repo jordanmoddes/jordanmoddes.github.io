@@ -140,7 +140,7 @@
       <a href="#services">Services</a>
       <a href="#about">About</a>
       <a href="#contact">Contact Us</a>
-      <a href="https://www.jordamoddes.com/jmodco/">Jmod Co.</a>a>
+      <a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a>a>
     </div>
   </nav>
 
@@ -239,35 +239,46 @@
     </div>
   </section>
 
-  <footer>
-    <div class="foot-inner">
-      <div>© 2025 Jmod Co. — Insights</div>
-      <div>Built for small business clarity.</div>
-    </div>
-  </footer>
+<!-- FOOTER (auto-loaded from /jmodco/assets/footer.html) -->
+<footer id="site-footer"></footer>
 
-  <script>
-    // Mobile menu toggle
-    const menuBtn = document.querySelector('.menu-btn');
-    const menu    = document.getElementById('menu');
-    menuBtn?.addEventListener('click', () => {
-      const open = menu.classList.toggle('show');
-      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-
-    // Auto-choose the correct logo based on theme
-    function setLogo(){
-      const theme = document.documentElement.getAttribute('data-theme') || 'light';
-      const logo  = document.getElementById('logo');
-      // Light background => opaque logo; Dark background => transparent (TP) logo
-      logo.src = theme === 'dark'
-        ? '../assets/images/Jmod_InsightsTP.png'
-        : '../assets/images/Jmod_Insights.png';
+<script>
+  // Load shared footer
+  (async () => {
+    try {
+      const res = await fetch('../assets/footer.html');
+      if (!res.ok) throw new Error('Footer failed to load');
+      document.getElementById('site-footer').innerHTML = await res.text();
+    } catch (err) {
+      console.warn(err);
+      // fallback (minimal inline)
+      document.getElementById('site-footer').innerHTML =
+        `<div class="foot-inner">
+          <div>© ${new Date().getFullYear()} Jmod Co.</div>
+          <div>Built for small business clarity.</div>
+        </div>`;
     }
-    setLogo();
+  })();
 
-    // OPTIONAL: if you later add a theme toggle, call setLogo() after switching:
-    // document.documentElement.setAttribute('data-theme','dark'); setLogo();
-  </script>
+  // Mobile menu toggle
+  const menuBtn = document.querySelector('.menu-btn');
+  const menu = document.getElementById('menu');
+  menuBtn?.addEventListener('click', () => {
+    const open = menu.classList.toggle('show');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  // Auto-choose the correct logo based on theme
+  function setLogo() {
+    const theme = document.documentElement.getAttribute('data-theme') || 'light';
+    const logo = document.getElementById('logo');
+    logo.src =
+      theme === 'dark'
+        ? '../assets/Jmod_InsightsTP.png'
+        : '../assets/Jmod_Insights.png';
+  }
+  setLogo();
+</script>
+
 </body>
 </html>
