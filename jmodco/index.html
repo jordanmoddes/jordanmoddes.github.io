@@ -107,86 +107,89 @@
     }
     .mission h3{ margin:0 0 8px }
 
-    /* ===== Radial Divisions Map ===== */
-    .divisions-wrap { max-width:1100px; margin:0 auto; padding:0 24px; }
-    .radial {
-      position:relative;
-      width:min(980px,95vw);
-      aspect-ratio:1 / 1;
-      margin:22px auto 28px;
-    }
+   /* ===== Radial Divisions Map (no spokes) ===== */
+:root{
+  /* Pull nodes in toward the big hub */
+  --orbit: clamp(140px, 28vw, 260px);
 
-    /* Hub (bigger than nodes) */
-    .radial .hub{
-      position:absolute; left:50%; top:50%;
-      transform: translate(calc(-50% + var(--hub-offset-x)),
-                           calc(-50% + var(--hub-offset-y)));
-      width:min(300px,32%); /* bigger hub */
-      pointer-events:none;
-    }
-    .radial .hub img{ width:100%; height:auto; display:block; background:transparent }
+  /* Fine-tune hub centering (x = left/right, y = up/down) */
+  --hub-offset-x: 12px;
+  --hub-offset-y: -26px;
+}
 
-    /* Image nodes */
-    .radial .imgnode{
-      --angle:0deg;
-      position:absolute; left:50%; top:50%;
-      transform:
-        translate(calc(-50% + var(--hub-offset-x)),
-                  calc(-50% + var(--hub-offset-y)))
-        rotate(var(--angle))
-        translateX(var(--orbit))
-        rotate(calc(-1 * var(--angle)));
-      width:min(220px,22vw);   /* node image size */
-      height:auto;
-      border-radius:18px;
-      display:block;
-      background:transparent;
-      filter: drop-shadow(0 2px 10px rgba(0,0,0,.25));
-      transition: transform .15s ease;
-    }
-    .radial .imgnode:hover{ transform:
-        translate(calc(-50% + var(--hub-offset-x)),
-                  calc(-50% + var(--hub-offset-y)))
-        rotate(var(--angle))
-        translateX(calc(var(--orbit) + 2px))
-        rotate(calc(-1 * var(--angle))); }
+.divisions-wrap { max-width:1100px; margin:0 auto; padding:0 24px; }
 
-    /* (Text nodes kept for fallback if you ever want them) */
-    .radial .node{
-      --angle:0deg;
-      position:absolute; left:50%; top:50%;
-      transform:
-        translate(calc(-50% + var(--hub-offset-x)),
-                  calc(-50% + var(--hub-offset-y)))
-        rotate(var(--angle))
-        translateX(var(--orbit))
-        rotate(calc(-1 * var(--angle)));
-      width:var(--node-w); height:var(--node-h);
-      display:flex; align-items:center; justify-content:center;
-      text-align:center; padding:10px 14px;
-      border-radius:16px; background:var(--card);
-      border:1px solid var(--card-border);
-      font-weight:600; color:var(--text);
-    }
+.radial{
+  position:relative;
+  width:min(980px,95vw);
+  aspect-ratio:1 / 1;
+  margin:22px auto 28px;
+}
 
-    /* Spokes (keep all eight so the map reads as a circle) */
-    .radial .spoke{
-      --angle:0deg;
-      position:absolute; left:50%; top:50%;
-      transform-origin:left center;
-      transform: translate(calc(-50% + var(--hub-offset-x)),
-                           calc(-50% + var(--hub-offset-y)))
-                 rotate(var(--angle));
-      width: calc(var(--orbit) - (min(220px,22vw)/2) - var(--spoke-trim));
-      height:2px; background:rgba(255,255,255,.12); border-radius:1px;
-    }
+/* Big center chip/logo */
+.radial .hub{
+  position:absolute; left:50%; top:50%;
+  transform: translate(calc(-50% + var(--hub-offset-x)),
+                       calc(-50% + var(--hub-offset-y)));
+  width:min(520px,50%);   /* was min(300px,32%) */
+  pointer-events:none;
+}
+.radial .hub img{
+  width:100%; height:auto; display:block; background:transparent;
+}
 
-    /* Mobile grid fallback (use the images there too) */
-    .grid8{ display:none; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:14px auto 54px; }
-    .grid8 .card{ background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:16px; text-align:center; font-weight:600 }
-    .grid8 .card img{ width:100%; height:auto; display:block; background:transparent; border-radius:12px; margin-bottom:8px }
-    @media (min-width:860px){ .grid8{ grid-template-columns:repeat(4,minmax(0,1fr)) } }
-    @media (max-width:820px){ .radial{ display:none } .grid8{ display:grid } }
+/* Satellite image nodes placed on the ring */
+.radial .imgnode{
+  --angle:0deg;
+  position:absolute; left:50%; top:50%;
+  transform:
+    translate(calc(-50% + var(--hub-offset-x)),
+              calc(-50% + var(--hub-offset-y)))
+    rotate(var(--angle))
+    translateX(var(--orbit))
+    rotate(calc(-1 * var(--angle)));
+  width:min(240px,24vw);  /* was min(220px,22vw) */
+  height:auto;
+  border-radius:18px;
+  display:block;
+  background:transparent;
+  filter: drop-shadow(0 2px 10px rgba(0,0,0,.25));
+  transition: transform .15s ease;
+}
+.radial .imgnode:hover{
+  transform:
+    translate(calc(-50% + var(--hub-offset-x)),
+              calc(-50% + var(--hub-offset-y)))
+    rotate(var(--angle))
+    translateX(calc(var(--orbit) + 2px))
+    rotate(calc(-1 * var(--angle)));
+}
+
+/* (Optional) text nodes kept for fallback, safe to leave or delete */
+.radial .node{
+  --angle:0deg;
+  position:absolute; left:50%; top:50%;
+  transform:
+    translate(calc(-50% + var(--hub-offset-x)),
+              calc(-50% + var(--hub-offset-y)))
+    rotate(var(--angle))
+    translateX(var(--orbit))
+    rotate(calc(-1 * var(--angle)));
+  width:var(--node-w); height:var(--node-h);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:10px 14px;
+  border-radius:16px; background:var(--card);
+  border:1px solid var(--card-border);
+  font-weight:600; color:var(--text);
+}
+
+/* Mobile grid fallback */
+.grid8{ display:none; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:14px auto 54px; }
+.grid8 .card{ background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:16px; text-align:center; font-weight:600 }
+.grid8 .card img{ width:100%; height:auto; display:block; background:transparent; border-radius:12px; margin-bottom:8px }
+@media (min-width:860px){ .grid8{ grid-template-columns:repeat(4,minmax(0,1fr)) } }
+@media (max-width:820px){ .radial{ display:none } .grid8{ display:grid } }
+
 
     /* ===== Founder + Contact ===== */
     .two-col{
