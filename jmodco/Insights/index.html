@@ -88,21 +88,91 @@
       .menu-btn{ display:inline-flex; }
     }
 
-    /* Hero content */
-    .container{ width:min(1100px,92vw); margin:0 auto; }
-    .hero h1{ font-size: clamp(2.0rem, 3.6vw, 3rem); margin: 0 0 .75rem; }
-    .hero p.lead{ color:var(--muted); font-size: clamp(1rem, 1.4vw, 1.125rem); margin:0 0 1.25rem; max-width: 60ch;}
-    .cta{ display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1rem; }
-    .btn{
-      appearance:none; border:0; border-radius:14px; padding:.85rem 1rem; font-weight:700; cursor:pointer;
+/* Hero — new two-column layout like main Jmod Co. */
+.hero-has-grid {
+  padding-top: calc(72px + 4rem);
+  padding-bottom: 4rem;
+}
+.container {
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: clamp(24px, 4vw, 48px);
+  align-items: center;
+}
+.hero-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-logo {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,.18));
+}
+.hero-copy {
+  max-width: 780px;
+}
+.hero-title {
+  margin: 0 0 .5rem;
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  line-height: 1.05; /* tight like Jmod Co main */
+  letter-spacing: -0.02em;
+  color: var(--text);
+  font-weight: 800;
+}
+.hero-sub {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.5;
+}
+.cta {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 14px;
+  padding: .85rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--brand);
+  color: white;
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid color-mix(in oklab, var(--brand) 30%, transparent);
+}
+.trust {
+  margin-top: 1.25rem;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+/* Stack on small screens */
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+  .hero-logo-wrap {
+    justify-content: flex-start;
     }
-    .btn-primary{ background:var(--brand); color:white; }
-    .btn-outline{
-      background:transparent; color:var(--text); border:1px solid color-mix(in oklab, var(--brand) 30%, transparent);
+    .hero-logo {
+      max-width: 200px;
     }
-    .trust{
-      margin-top:1.25rem; color:var(--muted); font-size:.9rem;
-    }
+  }
 
     /* Sections */
     section{ padding: 4rem 1.25rem; }
@@ -129,7 +199,6 @@
   <!-- Floating Navbar -->
   <nav class="nav" role="navigation" aria-label="Primary">
     <div class="brand">
-      <img id="logo" src="../assets/Jmod_Insights.png" alt="Jmod Co. Insights logo" />
       <span class="title">Insights</span>
     </div>
 
@@ -145,18 +214,21 @@
   </nav>
 
   <!-- HERO -->
-  <header id="home" class="hero">
-    <div class="container">
-      <h1>Make smarter decisions with an analytics hub built for small business.</h1>
-      <p class="lead">
-        Insights by Jmod Co. turns your quotes, invoices, and operations into clear, friendly dashboards.
-        Less guessing. More doing.
-      </p>
-      <div class="cta">
-        <a class="btn btn-primary" href="#contact">Get a Free Consult</a>
-        <a class="btn btn-outline" href="#services">See Services</a>
+  <header id="home" class="hero hero-has-grid">
+    <div class="container hero-grid">
+      <div class="hero-logo-wrap">
+        <img class="hero-logo" src="../assets/Jmod_Insights.png" alt="Jmod Co. Insights logo">
       </div>
-      <div class="trust">Trusted by owner-operators who want speed, clarity, and control.</div>
+
+      <div class="hero-copy">
+        <h1 class="hero-title">AI-Driven Efficiency for Real-World Businesses</h1>
+        <p class="hero-sub">Insights by Jmod Co. turns quotes, invoices, and operations into clear dashboards so you act faster with confidence.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#contact">Get a Free Consult</a>
+          <a class="btn btn-outline" href="#services">See Services</a>
+        </div>
+        <div class="trust">Trusted by owner-operators who want speed, clarity, and control.</div>
+      </div>
     </div>
   </header>
 
