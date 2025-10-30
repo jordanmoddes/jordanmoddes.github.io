@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" id="top">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,35 +7,57 @@
 <meta name="color-scheme" content="dark light" />
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  :root { --card: rgba(17,17,17,.6); --stroke: rgba(255,255,255,.08); }
-  .wrap { max-width: 1100px; }
-  .card { background: var(--card); border:1px solid var(--stroke); border-radius:20px; padding:16px; }
-  .pill { border:1px solid var(--stroke); border-radius:999px; padding:6px 10px; font-size:.8rem; }
-  .tile { border:1px solid var(--stroke); border-radius:16px; padding:14px; display:flex; align-items:center; justify-content:space-between; }
-  .k { font-weight:700; font-size:1.9rem; letter-spacing:.2px; }
-  .sub { opacity:.7; font-size:.85rem; }
-  .btn { border:1px solid var(--stroke); padding:6px 10px; border-radius:12px; font-size:.8rem; }
+  :root {
+    --card: rgba(18,18,22,.60);
+    --stroke: rgba(255,255,255,.08);
+    --ring: rgba(120,119,198,.25);
+  }
+  html { scroll-behavior:smooth; }
+  body {
+    /* subtle dark gradient, not pure black */
+    background:
+      radial-gradient(1200px 800px at 10% -10%, rgba(34,35,60,.25), transparent 40%),
+      radial-gradient(900px 600px at 90% 10%, rgba(232,121,249,.08), transparent 55%),
+      linear-gradient(180deg, #0b0b0f, #0f1015 25%, #101117 60%, #0e0f14 100%);
+    color: #eef0f6;
+  }
+  .wrap    { max-width: 1100px; }
+  .card    { background: var(--card); border:1px solid var(--stroke); border-radius:20px; padding:16px; }
+  .pill    { border:1px solid var(--stroke); border-radius:999px; padding:6px 10px; font-size:.8rem; }
+  .tile    { border:1px solid var(--stroke); border-radius:14px; padding:12px; }
+  .tile-sm { display:flex; align-items:center; justify-content:space-between; min-height:70px; }
+  .k       { font-weight:700; font-size:1.9rem; letter-spacing:.2px; }
+  .sub     { opacity:.75; font-size:.85rem; }
+  .btn     { border:1px solid var(--stroke); padding:6px 10px; border-radius:12px; font-size:.8rem; }
   .hourchip { border:1px solid var(--stroke); border-radius:12px; padding:10px; width:72px; text-align:center; }
+  .good { color:#16a34a; } .bad { color:#ef4444; }
   .table { width:100%; border-collapse: collapse; }
   .table th,.table td { border-top:1px solid var(--stroke); padding:8px; font-size:.9rem; }
-  .good { color:#16a34a; } .bad { color:#ef4444; }
-  html { scroll-behavior:smooth; }
+
+  /* header */
+  .hdr { background: rgba(10,10,14,.75); border-bottom:1px solid var(--stroke); backdrop-filter: blur(8px); }
+
+  /* focus rings */
+  .btn:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+  /* small screen helpers */
+  @media (max-width: 640px){
+    .k { font-size: 1.6rem; }
+  }
 </style>
 </head>
-<body class="bg-neutral-950 text-neutral-100">
-<header class="sticky top-0 z-50 bg-neutral-950/80 backdrop-blur border-b border-neutral-800">
+<body>
+
+<!-- NAV -->
+<header class="hdr sticky top-0 z-50">
   <nav class="wrap mx-auto flex items-center justify-between px-3 py-2">
-    <div class="flex items-center gap-3">
-      <span class="font-semibold">Jmod Co. — Dashboard</span>
-      <span id="nav-msg" class="pill hidden sm:inline">Welcome — iterate & ship</span>
-    </div>
+    <a href="#top" class="font-semibold">Jmod Co. — Dashboard</a>
     <ul class="flex items-center gap-3 text-sm">
-      <li><a class="pill" href="/index.html">🏠 Resume</a></li>
+      <li><a class="pill" href="/index.html">Resume</a></li>
       <li><a class="pill" href="#events">Local Events</a></li>
       <li><a class="pill" href="#traffic">Traffic</a></li>
       <li><a class="pill" href="#stocks">Stocks</a></li>
       <li><a class="pill" href="#conversions">Conversions</a></li>
-      <li><a class="pill" href="#scratchpad">Scratchpad</a></li>
     </ul>
   </nav>
 </header>
@@ -45,13 +67,28 @@
   <!-- Welcome -->
   <section class="card">
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-semibold">Welcome</h1>
-      <span id="today-pill" class="pill"></span>
+      <div>
+        <h1 class="text-2xl font-semibold">Welcome</h1>
+        <p class="sub mt-1">Tinkering, learning, shipping. Explore anything on display.</p>
+      </div>
+      <div class="flex gap-2">
+        <span id="today-pill" class="pill"></span>
+        <span class="pill hidden sm:inline">Live</span>
+      </div>
     </div>
-    <p class="sub mt-2">Welcome to my private dashboard. I’m tinkering, learning, and having fun—feel free to explore anything on display.</p>
+    <div class="mt-3 flex flex-wrap gap-2">
+      <a class="pill" href="#weather">Weather</a>
+      <a class="pill" href="#events">Events</a>
+      <a class="pill" href="#traffic">Traffic</a>
+      <a class="pill" href="#stocks">Stocks</a>
+      <a class="pill" href="#crypto">Crypto</a>
+      <a class="pill" href="#pelosi">Pelosi</a>
+      <a class="pill" href="#conversions">Conversions</a>
+      <a class="pill" href="#scratchpad">Scratchpad</a>
+    </div>
   </section>
 
-  <!-- Weather (multi-city) -->
+  <!-- Weather -->
   <section id="weather" class="card space-y-4">
     <div class="flex items-center justify-between">
       <h2 class="text-xl font-semibold">Weather</h2>
@@ -68,48 +105,53 @@
     </div>
   </section>
 
-  <!-- Verse of the Day -->
-  <section id="verse" class="card">
-    <div class="flex items-center justify-between">
-      <h2 class="text-xl font-semibold">Verse of the Day</h2>
-      <button id="v-refresh" class="btn">Refresh</button>
-    </div>
-    <div id="v-status" class="sub mt-1">Loading…</div>
-    <div class="mt-3">
-      <div class="pill inline-block mb-2">Verse of the Day</div>
-      <blockquote id="v-text" class="text-xl leading-8"></blockquote>
-      <div id="v-ref" class="sub mt-2"></div>
-    </div>
+  <!-- Verse + Events side-by-side -->
+  <section class="grid gap-4 md:grid-cols-2">
+    <!-- Verse -->
+    <section id="verse" class="card">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold">Verse of the Day</h2>
+        <button id="v-refresh" class="btn">Refresh</button>
+      </div>
+      <div id="v-status" class="sub mt-1">Loading…</div>
+      <div class="mt-3">
+        <div class="pill inline-block mb-2">Verse of the Day</div>
+        <blockquote id="v-text" class="text-xl leading-8"></blockquote>
+        <div id="v-ref" class="sub mt-2"></div>
+      </div>
+    </section>
+
+    <!-- Local Events -->
+    <section id="events" class="card">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold">Local Events</h2>
+        <span class="pill">next 7–14 days</span>
+      </div>
+      <div id="events-list" class="mt-3 space-y-3"></div>
+      <div class="sub mt-2">Demo feed now; we can swap to Ticketmaster/SeatGeek later.</div>
+    </section>
   </section>
 
-  <!-- Local Events -->
-  <section id="events" class="card">
-    <div class="flex items-center justify-between">
-      <h2 class="text-xl font-semibold">Local Events</h2>
-      <span class="pill">next 7–14 days</span>
-    </div>
-    <div id="events-list" class="mt-3 space-y-3"></div>
-    <div class="sub mt-2">Source: demo feed. I can wire Ticketmaster/SeatGeek with your key to match your old data exactly.</div>
-  </section>
-
-  <!-- Traffic -->
+  <!-- Traffic side-by-side -->
   <section id="traffic" class="card space-y-4">
     <h2 class="text-xl font-semibold">Traffic</h2>
-    <div>
-      <div class="font-medium mb-2">To Work</div>
-      <div class="rounded-2xl overflow-hidden border border-neutral-800 aspect-video">
-        <iframe id="map-work" class="w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="grid gap-4 md:grid-cols-2">
+      <div>
+        <div class="font-medium mb-2">To Work</div>
+        <div class="rounded-2xl overflow-hidden border border-neutral-800 aspect-video">
+          <iframe id="map-work" class="w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="font-medium mb-2">To Home</div>
-      <div class="rounded-2xl overflow-hidden border border-neutral-800 aspect-video">
-        <iframe id="map-home" class="w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div>
+        <div class="font-medium mb-2">To Home</div>
+        <div class="rounded-2xl overflow-hidden border border-neutral-800 aspect-video">
+          <iframe id="map-home" class="w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Stocks -->
+  <!-- Stocks compact tiles -->
   <section id="stocks" class="card">
     <div class="flex items-center justify-between mb-2">
       <h2 class="text-xl font-semibold">Stocks</h2>
@@ -118,21 +160,21 @@
         <button id="s-refresh" class="btn">Refresh</button>
       </div>
     </div>
-    <div id="s-list" class="space-y-3"></div>
-    <div class="sub mt-2">Source: stooq (keyless). If you want exact prior quotes source, I’ll swap APIs.</div>
+    <div id="s-grid" class="grid gap-3 grid-cols-2 md:grid-cols-4"></div>
+    <div id="s-status" class="sub mt-2"></div>
   </section>
 
-  <!-- Crypto (not in nav) -->
+  <!-- Crypto compact tiles -->
   <section id="crypto" class="card">
     <div class="flex items-center justify-between mb-2">
       <h2 class="text-xl font-semibold">Crypto</h2>
       <button id="c-refresh" class="btn">Refresh</button>
     </div>
-    <div id="c-list" class="space-y-3"></div>
-    <div class="sub mt-2">Source: CoinGecko Simple Price.</div>
+    <div id="c-grid" class="grid gap-3 grid-cols-2 md:grid-cols-4"></div>
+    <div id="c-status" class="sub mt-2"></div>
   </section>
 
-  <!-- Pelosi (not in nav) -->
+  <!-- Pelosi -->
   <section id="pelosi" class="card">
     <h2 class="text-xl font-semibold mb-2">Nancy Pelosi — Disclosed Trades (latest 50)</h2>
     <div id="p-status" class="sub mb-2">Loading…</div>
@@ -192,14 +234,13 @@
   </section>
 
   <!-- Footer -->
-  <footer class="py-8 text-center">
-    <a href="#top" class="btn">Top</a>
-    <div class="sub mt-3">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
+  <footer class="py-8 text-center sub">
+    ✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦
   </footer>
 </main>
 
 <script>
-/* ====== CONFIG you can edit ====== */
+/* ====== CONFIG (edit) ====== */
 const HOME_ADDR = "411 W Main St, Round Rock, TX";
 const WORK_ADDR = "2670 S A.W. Grimes Blvd, Round Rock, TX";
 const CITIES = [
@@ -215,19 +256,32 @@ const COINS = [
   { id:"solana", symbol:"SOL" },
   { id:"dogecoin", symbol:"DOGE" }
 ];
-/* ================================= */
+/* =========================== */
 
 /* meta */
 document.getElementById('today-pill').textContent = new Date().toLocaleDateString();
-document.getElementById('nav-msg').classList.remove('hidden');
 
 /* ---------- Weather (Open-Meteo) ---------- */
 function codeToText(code){
   const m = {0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',95:'Thunderstorm'};
   return m[code] || '—';
 }
+function codeToIcon(code){
+  // inline SVGs (no external assets)
+  const sun = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="#fde047"/><g stroke="#fde047" stroke-width="2"><path d="M12 1v3"/><path d="M12 20v3"/><path d="M1 12h3"/><path d="M20 12h3"/><path d="M4.2 4.2l2.2 2.2"/><path d="M17.6 17.6l2.2 2.2"/><path d="M4.2 19.8l2.2-2.2"/><path d="M17.6 6.4l2.2-2.2"/></g></svg>';
+  const cloud = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 18h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/></svg>';
+  const rain = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 16h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><g stroke="#60a5fa" stroke-width="2"><path d="M9 18v3"/><path d="M12 18v3"/><path d="M15 18v3"/></g></svg>';
+  const snow = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 16h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><g stroke="#e5e7eb" stroke-width="2"><path d="M9 18l-1 3"/><path d="M12 18l-1 3"/><path d="M15 18l-1 3"/></g></svg>';
+  const storm = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 15h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><path d="M12 14l-3 6 5-4h-3l3-4" fill="#f59e0b"/></svg>';
+  if ([0,1].includes(code)) return sun;
+  if ([2,3,45,48].includes(code)) return cloud;
+  if ([61,63,65,51,53,55].includes(code)) return rain;
+  if ([71,73,75].includes(code)) return snow;
+  if ([95].includes(code)) return storm;
+  return cloud;
+}
 async function getWeather(lat, lon){
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m&temperature_unit=fahrenheit&windspeed_unit=mph&forecast_days=1`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&temperature_unit=fahrenheit&windspeed_unit=mph&forecast_days=1&timezone=auto`;
   const r = await fetch(url, {mode:'cors'}); if(!r.ok) throw new Error(r.status);
   return r.json();
 }
@@ -242,25 +296,38 @@ async function renderWeather(){
     try{
       const data = await getWeather(city.lat, city.lon);
       const c = data.current||{};
-      const hourly = (data.hourly?.temperature_2m||[]).slice(13,18); // next 4-5 hours heuristic by index
-      const hours = hourly.map((t,i)=>({temp:Math.round(t), label: (13+i)+":00"}));
+      // pick next 5 hour slots by index (starting at next hour)
+      const htemps = data.hourly?.temperature_2m||[];
+      const hcode  = data.hourly?.weather_code||[];
+      const nowH = new Date().getHours();
+      const chips = [];
+      for (let k=1;k<=5;k++){
+        const idx = nowH + k;
+        const t = htemps[idx]; const code = hcode[idx];
+        if (t===undefined) break;
+        chips.push({label: (nowH+k).toString().padStart(2,'0')+":00", temp: Math.round(t), code});
+      }
+      const minT = Math.round(Math.min(...htemps));
+      const maxT = Math.round(Math.max(...htemps));
       const card = document.createElement('div'); card.className="card";
       card.innerHTML = `
         <div class="flex items-center justify-between">
           <div class="text-lg font-semibold">${city.name}</div>
           <div class="sub">${Math.round(c.wind_speed_10m||0)} mph wind</div>
         </div>
-        <div class="k mt-1">${Math.round(c.temperature_2m||0)}°F / ${Math.round(((c.temperature_2m-32)*5/9)||0)}°C</div>
-        <div class="sub">Feels ${Math.round(c.apparent_temperature||0)}°F · Today ${Math.round(Math.min(...(data.hourly?.temperature_2m||[])))}°F — ${Math.round(Math.max(...(data.hourly?.temperature_2m||[])))}°F</div>
-        <div class="flex gap-2 mt-3 flex-wrap" id="h-${city.name.replace(/\W+/g,'')}"></div>
+        <div class="k mt-1 flex items-center gap-2">
+          <span>${Math.round(c.temperature_2m||0)}°F / ${Math.round(((c.temperature_2m-32)*5/9)||0)}°C</span>
+          <span class="inline-flex items-center justify-center" aria-hidden="true">${codeToIcon(c.weather_code||0)}</span>
+        </div>
+        <div class="sub">Feels ${Math.round(c.apparent_temperature||0)}°F · Today ${minT}°F — ${maxT}°F</div>
+        <div class="flex gap-2 mt-3 flex-wrap">${chips.map(h=>`
+          <div class="hourchip">
+            <div class="sub">${h.label}</div>
+            <div class="font-semibold">${h.temp}°F</div>
+          </div>`).join('')}
+        </div>
       `;
       host.appendChild(card);
-      const hwrap = card.querySelector(`[id^="h-"]`);
-      hours.forEach(h=>{
-        const chip = document.createElement('div'); chip.className="hourchip";
-        chip.innerHTML = `<div class="sub">${h.label}</div><div class="font-semibold">${h.temp}°F</div>`;
-        hwrap.appendChild(chip);
-      });
     }catch(e){
       const err = document.createElement('div'); err.className="sub";
       err.textContent = `Could not load ${city.name} (${e.message})`;
@@ -270,7 +337,7 @@ async function renderWeather(){
   // sunrise/sunset for first city
   try{
     const s = await getSun(CITIES[0].lat, CITIES[0].lon);
-    const sr = new Date(s.results.sunrise).toLocaleTimeString(); 
+    const sr = new Date(s.results.sunrise).toLocaleTimeString();
     const ss = new Date(s.results.sunset).toLocaleTimeString();
     document.getElementById('sun-date').textContent = new Date().toLocaleDateString();
     document.getElementById('sun-times').textContent = `Sunrise ${sr} · Sunset ${ss}`;
@@ -296,7 +363,7 @@ async function loadVerse(){
 loadVerse();
 document.getElementById('v-refresh').addEventListener('click', loadVerse);
 
-/* ---------- Events (demo list; replace with API later) ---------- */
+/* ---------- Events (demo list) ---------- */
 const demoEvents = [
   {title:"2010 DTE Energy Music Theatre Royal Deposit", when:"2024-12-31T05:00:00Z", where:"", url:"#"},
   {title:"Megaplex Deposit", when:"2024-12-31T08:00:00Z", where:"Salt Lake Cty UT", url:"#"},
@@ -307,7 +374,7 @@ const demoEvents = [
 function renderEvents(){
   const host = document.getElementById('events-list'); host.innerHTML="";
   demoEvents.forEach(ev=>{
-    const row = document.createElement('div'); row.className="tile";
+    const row = document.createElement('div'); row.className="tile tile-sm";
     row.innerHTML = `
       <div>
         <div class="font-semibold">${ev.title}</div>
@@ -342,26 +409,28 @@ async function fetchStooq(t){
 }
 let stockTimer = null;
 async function renderStocks(){
-  const host = document.getElementById('s-list'); host.innerHTML="";
-  for (const t of STOCKS){
-    const row = document.createElement('div'); row.className="tile"; row.innerHTML = `<div class="font-semibold">${t}</div><div class="sub">Loading…</div>`;
-    host.appendChild(row);
-    try {
-      const d = await fetchStooq(t);
-      if(!d){ row.innerHTML = `<div class="font-semibold">${t}</div><div class="sub">No data</div>`; continue; }
+  const grid = document.getElementById('s-grid'); grid.innerHTML="";
+  const status = document.getElementById('s-status');
+  try{
+    const rows = await Promise.all(STOCKS.map(fetchStooq));
+    let ok=0;
+    for (const d of rows){
+      const div = document.createElement('div'); div.className="tile tile-sm";
+      if (!d){ div.innerHTML = `<div class="font-semibold">N/A</div><div class="sub">No data</div>`; grid.appendChild(div); continue; }
+      ok++;
       const price = isFinite(d.price) ? d.price.toLocaleString(undefined,{style:'currency',currency:'USD'}) : '—';
       const pct = (d.pct==null) ? '—' : ((d.pct>=0?'+':'')+d.pct.toFixed(2)+'%');
       const cls = (d.pct==null) ? '' : (d.pct>=0?'good':'bad');
-      row.innerHTML = `
+      div.innerHTML = `
         <div>
-          <div class="font-semibold">${t} <span class="sub">${t}</span></div>
-          <div class="k">${price}</div>
+          <div class="font-semibold">${d.t} <span class="sub">${d.t}</span></div>
+          <div class="text-xl font-bold">${price}</div>
         </div>
-        <div class="k ${cls}" style="font-size:1rem">${pct}</div>`;
-    } catch(e){
-      row.innerHTML = `<div class="font-semibold">${t}</div><div class="sub">Error</div>`;
+        <div class="font-semibold ${cls}">${pct}</div>`;
+      grid.appendChild(div);
     }
-  }
+    status.textContent = ok ? 'Live via stooq (keyless). If a tile shows N/A due to CORS, we can swap APIs.' : 'No data returned.';
+  }catch(e){ status.textContent = 'Could not load stocks ('+e.message+').'; }
 }
 renderStocks();
 document.getElementById('s-refresh').addEventListener('click', renderStocks);
@@ -372,22 +441,22 @@ document.getElementById('s-auto').addEventListener('click', ()=>{
 
 /* ---------- Crypto (CoinGecko) ---------- */
 async function renderCrypto(){
-  const host = document.getElementById('c-list'); host.innerHTML="";
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${COINS.map(c=>c.id).join(',')}&vs_currencies=usd&include_24hr_change=true`;
+  const grid = document.getElementById('c-grid'); grid.innerHTML="";
+  const status = document.getElementById('c-status');
   try{
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${COINS.map(c=>c.id).join(',')}&vs_currencies=usd&include_24hr_change=true`;
     const r = await fetch(url,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
     const j = await r.json();
     for (const c of COINS){
       const d = j[c.id]; if(!d) continue;
       const price = (d.usd??0).toLocaleString(undefined,{style:'currency',currency:'USD'});
       const pct = d.usd_24h_change??0; const cls = pct>=0?'good':'bad';
-      const row = document.createElement('div'); row.className="tile";
-      row.innerHTML = `<div class="font-semibold">${c.symbol}</div><div class="k">${price}</div><div class="${cls} font-semibold">${(pct>=0?'+':'')+pct.toFixed(2)}%</div>`;
-      host.appendChild(row);
+      const div = document.createElement('div'); div.className="tile tile-sm";
+      div.innerHTML = `<div class="font-semibold">${c.symbol}</div><div class="text-xl font-bold">${price}</div><div class="font-semibold ${cls}">${(pct>=0?'+':'')+pct.toFixed(2)}%</div>`;
+      grid.appendChild(div);
     }
-  }catch(e){
-    host.innerHTML = `<div class="sub">Could not load crypto.</div>`;
-  }
+    status.textContent = 'Live via CoinGecko';
+  }catch(e){ status.textContent='Could not load crypto.'; }
 }
 renderCrypto();
 document.getElementById('c-refresh').addEventListener('click', renderCrypto);
@@ -410,19 +479,21 @@ async function renderPelosi(){
       tb.appendChild(tr);
     });
     st.textContent = rows.length ? 'Loaded.' : 'No trades found.';
-  }catch(e){ st.textContent='Could not load.';}
+  }catch(e){
+    st.textContent='Could not load (CORS or network). If this persists, I’ll proxy via a tiny Worker.';
+  }
 }
 renderPelosi();
 
 /* ---------- Converters ---------- */
 document.querySelectorAll('[data-x]').forEach(b=>b.addEventListener('click',()=>{
   const a=b.dataset.x;
-  if(a==='mg2g'){ const v=parseFloat(document.getElementById('mg').value||'0'); document.getElementById('mass-out').textContent=`${v} mg = ${(v/1000).toFixed(6)} g`; }
-  if(a==='mg2kg'){ const v=parseFloat(document.getElementById('mg').value||'0'); document.getElementById('mass-out').textContent=`${v} mg = ${(v/1e6).toFixed(9)} kg`; }
-  if(a==='in2cm'){ const v=parseFloat(document.getElementById('inch').value||'0'); document.getElementById('len-out').textContent=`${v} in = ${(v*2.54).toFixed(4)} cm`; }
-  if(a==='cm2in'){ const v=parseFloat(document.getElementById('cm').value||'0'); document.getElementById('len-out').textContent=`${v} cm = ${(v/2.54).toFixed(4)} in`; }
-  if(a==='f2c'){ const v=parseFloat(document.getElementById('f').value||'0'); document.getElementById('temp-out').textContent=`${v} °F = ${((v-32)*5/9).toFixed(2)} °C`; }
-  if(a==='c2f'){ const v=parseFloat(document.getElementById('c').value||'0'); document.getElementById('temp-out').textContent=`${v} °C = ${(v*9/5+32).toFixed(2)} °F`; }
+  if(a==='mg2g'){ const v=parseFloat(mg.value||'0'); mass-out.textContent=`${v} mg = ${(v/1000).toFixed(6)} g`; }
+  if(a==='mg2kg'){ const v=parseFloat(mg.value||'0'); mass-out.textContent=`${v} mg = ${(v/1e6).toFixed(9)} kg`; }
+  if(a==='in2cm'){ const v=parseFloat(inch.value||'0'); len-out.textContent=`${v} in = ${(v*2.54).toFixed(4)} cm`; }
+  if(a==='cm2in'){ const v=parseFloat(cm.value||'0'); len-out.textContent=`${v} cm = ${(v/2.54).toFixed(4)} in`; }
+  if(a==='f2c'){ const v=parseFloat(f.value||'0'); temp-out.textContent=`${v} °F = ${((v-32)*5/9).toFixed(2)} °C`; }
+  if(a==='c2f'){ const v=parseFloat(c.value||'0'); temp-out.textContent=`${v} °C = ${(v*9/5+32).toFixed(2)} °F`; }
 }));
 
 /* ---------- Scratchpad ---------- */
@@ -430,7 +501,6 @@ const pad = document.getElementById('pad');
 pad.value = localStorage.getItem('dash_pad') || "";
 pad.addEventListener('input',()=> localStorage.setItem('dash_pad', pad.value));
 document.getElementById('pad-clear').addEventListener('click',()=>{ pad.value=""; localStorage.removeItem('dash_pad'); });
-
 </script>
 </body>
 </html>
