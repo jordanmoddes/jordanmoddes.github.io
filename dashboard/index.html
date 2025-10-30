@@ -1,494 +1,436 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jmod Co. — Dashboard</title>
-  <meta name="color-scheme" content="light dark" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .card { @apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur rounded-2xl shadow p-4 md:p-6; }
-    .kpi  { @apply text-2xl md:text-3xl font-semibold; }
-    .sub  { @apply text-xs opacity-70; }
-    .table { @apply w-full text-sm border-collapse; }
-    .table th, .table td { @apply border border-zinc-200 dark:border-zinc-800 p-2; }
-    html { scroll-behavior: smooth; }
-    a.link { @apply text-blue-600 dark:text-blue-400 underline; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jmod Co. — Dashboard</title>
+<meta name="color-scheme" content="dark light" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root { --card: rgba(17,17,17,.6); --stroke: rgba(255,255,255,.08); }
+  .wrap { max-width: 1100px; }
+  .card { background: var(--card); border:1px solid var(--stroke); border-radius:20px; padding:16px; }
+  .pill { border:1px solid var(--stroke); border-radius:999px; padding:6px 10px; font-size:.8rem; }
+  .tile { border:1px solid var(--stroke); border-radius:16px; padding:14px; display:flex; align-items:center; justify-content:space-between; }
+  .k { font-weight:700; font-size:1.9rem; letter-spacing:.2px; }
+  .sub { opacity:.7; font-size:.85rem; }
+  .btn { border:1px solid var(--stroke); padding:6px 10px; border-radius:12px; font-size:.8rem; }
+  .hourchip { border:1px solid var(--stroke); border-radius:12px; padding:10px; width:72px; text-align:center; }
+  .table { width:100%; border-collapse: collapse; }
+  .table th,.table td { border-top:1px solid var(--stroke); padding:8px; font-size:.9rem; }
+  .good { color:#16a34a; } .bad { color:#ef4444; }
+  html { scroll-behavior:smooth; }
+</style>
 </head>
-<body class="bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen">
+<body class="bg-neutral-950 text-neutral-100">
+<header class="sticky top-0 z-50 bg-neutral-950/80 backdrop-blur border-b border-neutral-800">
+  <nav class="wrap mx-auto flex items-center justify-between px-3 py-2">
+    <div class="flex items-center gap-3">
+      <span class="font-semibold">Jmod Co. — Dashboard</span>
+      <span id="nav-msg" class="pill hidden sm:inline">Welcome — iterate & ship</span>
+    </div>
+    <ul class="flex items-center gap-3 text-sm">
+      <li><a class="pill" href="/index.html">🏠 Resume</a></li>
+      <li><a class="pill" href="#events">Local Events</a></li>
+      <li><a class="pill" href="#traffic">Traffic</a></li>
+      <li><a class="pill" href="#stocks">Stocks</a></li>
+      <li><a class="pill" href="#conversions">Conversions</a></li>
+      <li><a class="pill" href="#scratchpad">Scratchpad</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <!-- NAV -->
-  <header class="sticky top-0 z-50 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur">
-    <nav class="max-w-6xl mx-auto flex items-center justify-between px-3 py-2">
-      <!-- Left: Brand + initial message -->
-      <div class="flex items-center gap-3">
-        <span class="font-bold tracking-tight">Jmod Co. Dashboard</span>
-        <span id="initial-msg" class="text-xs md:text-sm px-2 py-1 rounded bg-zinc-200/60 dark:bg-zinc-800/60"></span>
-      </div>
-      <!-- Right: Nav links (only the ones you requested) -->
-      <ul class="flex items-center gap-4 text-sm">
-        <li><a href="#overview"     class="hover:underline">Overview</a></li>
-        <li><a href="#weather"      class="hover:underline">Weather</a></li>
-        <li><a href="#stocks"       class="hover:underline">Stocks</a></li>
-        <li><a href="#maps"         class="hover:underline">Maps</a></li>
-        <li><a href="#conversions"  class="hover:underline">Conversions</a></li>
-      </ul>
-    </nav>
-  </header>
+<main class="wrap mx-auto px-3 py-5 space-y-6">
 
-  <main class="max-w-6xl mx-auto px-3 py-6 space-y-6">
+  <!-- Welcome -->
+  <section class="card">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold">Welcome</h1>
+      <span id="today-pill" class="pill"></span>
+    </div>
+    <p class="sub mt-2">Welcome to my private dashboard. I’m tinkering, learning, and having fun—feel free to explore anything on display.</p>
+  </section>
 
-    <!-- OVERVIEW -->
-    <section id="overview" class="grid md:grid-cols-3 gap-4">
-      <div class="card">
-        <div class="sub">Last updated</div>
-        <div id="last-updated" class="kpi">—</div>
-      </div>
-      <div class="card">
-        <div class="sub">Tracked Crypto</div>
-        <div id="kpi-crypto" class="kpi">—</div>
-      </div>
-      <div class="card">
-        <div class="sub">Pelosi Rows Loaded</div>
-        <div id="kpi-pelosi" class="kpi">—</div>
-      </div>
-    </section>
+  <!-- Weather (multi-city) -->
+  <section id="weather" class="card space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Weather</h2>
+      <button id="wx-refresh" class="btn">Refresh</button>
+    </div>
+    <div id="wx-cards" class="grid gap-4 md:grid-cols-2"></div>
 
-    <!-- WEATHER -->
-    <section id="weather" class="card">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xl font-semibold">Weather</h2>
-        <button id="refresh-weather" class="text-sm px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900">Refresh</button>
+    <div class="card">
+      <div class="flex items-center justify-between">
+        <div class="text-lg font-semibold">Sunrise • Sunset</div>
+        <span id="sun-date" class="pill"></span>
       </div>
-      <div id="weather-status" class="sub mb-2">Loading…</div>
-      <div class="grid md:grid-cols-3 gap-3">
-        <div>
-          <div class="sub">Location</div>
-          <div id="w-city" class="kpi text-xl">—</div>
-        </div>
-        <div>
-          <div class="sub">Temperature</div>
-          <div id="w-temp" class="kpi">—</div>
-        </div>
-        <div>
-          <div class="sub">Conditions</div>
-          <div id="w-cond" class="kpi text-xl">—</div>
-        </div>
-      </div>
-      <p class="sub mt-2">Source: Open-Meteo (no key). Uses browser location; falls back to Round Rock, TX.</p>
-    </section>
+      <div id="sun-times" class="sub mt-2">Loading…</div>
+    </div>
+  </section>
 
-    <!-- STOCKS (live; uses Stooq CSV as a keyless fallback) -->
-    <section id="stocks" class="card">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xl font-semibold">Stocks</h2>
-        <div class="flex items-center gap-2 text-xs">
-          <input id="stocks-input" class="w-56 rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-1" placeholder="Tickers (comma sep, e.g., AAPL,MSFT,NVDA)">
-          <button id="apply-stocks" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">Apply</button>
-          <button id="refresh-stocks" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">Refresh</button>
-        </div>
+  <!-- Verse of the Day -->
+  <section id="verse" class="card">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Verse of the Day</h2>
+      <button id="v-refresh" class="btn">Refresh</button>
+    </div>
+    <div id="v-status" class="sub mt-1">Loading…</div>
+    <div class="mt-3">
+      <div class="pill inline-block mb-2">Verse of the Day</div>
+      <blockquote id="v-text" class="text-xl leading-8"></blockquote>
+      <div id="v-ref" class="sub mt-2"></div>
+    </div>
+  </section>
+
+  <!-- Local Events -->
+  <section id="events" class="card">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Local Events</h2>
+      <span class="pill">next 7–14 days</span>
+    </div>
+    <div id="events-list" class="mt-3 space-y-3"></div>
+    <div class="sub mt-2">Source: demo feed. I can wire Ticketmaster/SeatGeek with your key to match your old data exactly.</div>
+  </section>
+
+  <!-- Traffic -->
+  <section id="traffic" class="card space-y-4">
+    <h2 class="text-xl font-semibold">Traffic</h2>
+    <div>
+      <div class="font-medium mb-2">To Work</div>
+      <div class="rounded-2xl overflow-hidden border border-neutral-800 aspect-video">
+        <iframe id="map-work" class="w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
-      <div id="stocks-status" class="sub mb-2">Loading…</div>
-      <table class="table" id="stocks-table">
-        <thead><tr><th>Ticker</th><th>Price (USD)</th><th>Δ%</th></tr></thead>
+    </div>
+    <div>
+      <div class="font-medium mb-2">To Home</div>
+      <div class="rounded-2xl overflow-hidden border border-neutral-800 aspect-video">
+        <iframe id="map-home" class="w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stocks -->
+  <section id="stocks" class="card">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-xl font-semibold">Stocks</h2>
+      <div class="flex items-center gap-2">
+        <button id="s-auto" class="btn">auto refresh</button>
+        <button id="s-refresh" class="btn">Refresh</button>
+      </div>
+    </div>
+    <div id="s-list" class="space-y-3"></div>
+    <div class="sub mt-2">Source: stooq (keyless). If you want exact prior quotes source, I’ll swap APIs.</div>
+  </section>
+
+  <!-- Crypto (not in nav) -->
+  <section id="crypto" class="card">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-xl font-semibold">Crypto</h2>
+      <button id="c-refresh" class="btn">Refresh</button>
+    </div>
+    <div id="c-list" class="space-y-3"></div>
+    <div class="sub mt-2">Source: CoinGecko Simple Price.</div>
+  </section>
+
+  <!-- Pelosi (not in nav) -->
+  <section id="pelosi" class="card">
+    <h2 class="text-xl font-semibold mb-2">Nancy Pelosi — Disclosed Trades (latest 50)</h2>
+    <div id="p-status" class="sub mb-2">Loading…</div>
+    <div class="overflow-auto">
+      <table class="table" id="p-table">
+        <thead><tr><th>Disclosed</th><th>Traded</th><th>Ticker / Asset</th><th>Type</th><th>Amount</th><th>PTR</th></tr></thead>
         <tbody></tbody>
       </table>
-      <p class="sub mt-2">Source: stooq.com (keyless). If your browser blocks CORS or a ticker isn’t available, we can switch to a proper API (Polygon/Alpha Vantage/Finnhub) with a key.</p>
-    </section>
+    </div>
+  </section>
 
-    <!-- CRYPTO (not in nav) -->
-    <section id="crypto" class="card">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xl font-semibold">Crypto</h2>
-        <button id="refresh-crypto" class="text-sm px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900">Refresh</button>
-      </div>
-      <div id="crypto-status" class="sub mb-2">Loading…</div>
-      <table class="table" id="crypto-table">
-        <thead><tr><th>Ticker</th><th>Price (USD)</th><th>24h Δ%</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <p class="sub mt-2">Source: CoinGecko (keyless). Auto-refreshes every 5 minutes.</p>
-    </section>
-
-    <!-- PELOSI TRADES (not in nav) -->
-    <section id="pelosi" class="card">
-      <h2 class="text-xl font-semibold mb-3">Nancy Pelosi — Disclosed Trades (latest 50)</h2>
-      <div id="pelosi-status" class="sub mb-2">Loading…</div>
-      <div class="overflow-auto">
-        <table id="pelosi-table" class="table hidden">
-          <thead><tr><th>Disclosed</th><th>Traded</th><th>Ticker / Asset</th><th>Type</th><th>Amount (range)</th><th>Link</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <p class="sub mt-2">Data via House Stock Watcher. Reports are in ranges and may be delayed up to 45 days.</p>
-    </section>
-
-    <!-- CONVERSIONS (in nav) -->
-    <section id="conversions" class="card">
-      <h2 class="text-xl font-semibold mb-4">Conversions — Quick Cheat Sheet</h2>
-      <div class="grid md:grid-cols-3 gap-4 mb-6">
-        <!-- Mass -->
-        <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-          <div class="font-medium mb-2">Mass (mg ↔ g ↔ kg)</div>
-          <div class="space-y-2 text-sm">
-            <label class="block">mg
-              <input id="mg" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="mg">
-            </label>
-            <div class="flex gap-2">
-              <button data-action="mg2g" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">To g</button>
-              <button data-action="mg2kg" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">To kg</button>
-            </div>
-            <div id="mass-out" class="sub"></div>
-          </div>
-          <div class="mt-3 text-xs opacity-75">1 g = 1000 mg · 1 kg = 1000 g</div>
+  <!-- Conversions -->
+  <section id="conversions" class="card">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Conversions</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-4 mt-3">
+      <div class="card">
+        <div class="font-medium mb-2">Mass (mg ↔ g ↔ kg)</div>
+        <input id="mg" type="number" step="any" placeholder="mg" class="w-full bg-transparent border border-neutral-800 rounded-xl p-2">
+        <div class="flex gap-2 mt-2">
+          <button class="btn" data-x="mg2g">To g</button>
+          <button class="btn" data-x="mg2kg">To kg</button>
         </div>
-        <!-- Length -->
-        <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-          <div class="font-medium mb-2">Length (in ↔ cm)</div>
-          <div class="space-y-2 text-sm">
-            <label class="block">inches
-              <input id="inch" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="in">
-            </label>
-            <div class="flex gap-2">
-              <button data-action="in2cm" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">To cm</button>
-              <button data-action="cm2in" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">cm → in</button>
-            </div>
-            <label class="block mt-2">centimeters
-              <input id="cm" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="cm">
-            </label>
-            <div id="len-out" class="sub"></div>
-          </div>
-          <div class="mt-3 text-xs opacity-75">1 in = 2.54 cm</div>
+        <div id="mass-out" class="sub mt-2"></div>
+      </div>
+      <div class="card">
+        <div class="font-medium mb-2">Length (in ↔ cm)</div>
+        <input id="inch" type="number" step="any" placeholder="inches" class="w-full bg-transparent border border-neutral-800 rounded-xl p-2">
+        <input id="cm" type="number" step="any" placeholder="centimeters" class="w-full bg-transparent border border-neutral-800 rounded-xl p-2 mt-2">
+        <div class="flex gap-2 mt-2">
+          <button class="btn" data-x="in2cm">To cm</button>
+          <button class="btn" data-x="cm2in">cm → in</button>
         </div>
-        <!-- Temperature -->
-        <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-          <div class="font-medium mb-2">Temperature (°F ↔ °C)</div>
-          <div class="space-y-2 text-sm">
-            <label class="block">°F
-              <input id="f" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="F">
-            </label>
-            <div class="flex gap-2">
-              <button data-action="f2c" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">To °C</button>
-              <button data-action="c2f" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">°C → °F</button>
-            </div>
-            <label class="block mt-2">°C
-              <input id="c" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="C">
-            </label>
-            <div id="temp-out" class="sub"></div>
-          </div>
-          <div class="mt-3 text-xs opacity-75">°C = (°F − 32) × 5/9 · °F = (°C × 9/5) + 32</div>
+        <div id="len-out" class="sub mt-2"></div>
+      </div>
+      <div class="card">
+        <div class="font-medium mb-2">Temperature (°F ↔ °C)</div>
+        <input id="f" type="number" step="any" placeholder="°F" class="w-full bg-transparent border border-neutral-800 rounded-xl p-2">
+        <input id="c" type="number" step="any" placeholder="°C" class="w-full bg-transparent border border-neutral-800 rounded-xl p-2 mt-2">
+        <div class="flex gap-2 mt-2">
+          <button class="btn" data-x="f2c">To °C</button>
+          <button class="btn" data-x="c2f">°C → °F</button>
         </div>
+        <div id="temp-out" class="sub mt-2"></div>
       </div>
-      <!-- static sheet -->
-      <div class="overflow-auto">
-        <table class="table">
-          <thead><tr><th>Category</th><th>Rule / Factor</th><th>Notes</th></tr></thead>
-        <tbody>
-          <tr><td>Mass</td><td>1 g = 1000 mg · 1 kg = 1000 g</td><td>mg → g ÷1000; g → mg ×1000</td></tr>
-          <tr><td>Length</td><td>1 in = 2.54 cm</td><td>cm → in = cm / 2.54</td></tr>
-          <tr><td>Volume</td><td>1 L = 33.814 fl oz (US)</td><td>1 gal (US) = 3.785 L</td></tr>
-          <tr><td>Weight</td><td>1 lb = 16 oz</td><td>kg ≈ lb / 2.20462</td></tr>
-          <tr><td>Temperature</td><td>°C = (°F − 32) × 5/9</td><td>°F = (°C × 9/5) + 32</td></tr>
-        </tbody>
-        </table>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- SCRATCHPAD (not in nav) -->
-    <section id="scratchpad" class="card">
-      <h2 class="text-xl font-semibold mb-3">Scratchpad</h2>
-      <textarea class="w-full h-64 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent p-3" placeholder="Jot notes here…"></textarea>
-      <div class="mt-3 sub">Tip: local-only unless you wire storage.</div>
-    </section>
+  <!-- Scratchpad -->
+  <section id="scratchpad" class="card">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Scratchpad</h2>
+      <button id="pad-clear" class="btn">Clear</button>
+    </div>
+    <textarea id="pad" class="w-full h-40 bg-neutral-900 border border-neutral-800 rounded-2xl p-3 mt-2" placeholder="Jot quick notes…"></textarea>
+  </section>
 
-    <!-- VERSE (not in nav) -->
-    <section id="verse" class="card">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xl font-semibold">Verse of the Day</h2>
-        <button id="refresh-verse" class="text-sm px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900">Refresh</button>
-      </div>
-      <div id="verse-status" class="sub mb-2">Loading…</div>
-      <blockquote id="verse-text" class="text-lg leading-relaxed"></blockquote>
-      <div id="verse-ref" class="sub mt-2"></div>
-      <p class="sub mt-2">YouVersion blocks direct client calls; this uses a public fallback (NET VOTD). If you want YouVersion exact, we’ll add a tiny Cloudflare proxy later.</p>
-    </section>
+  <!-- Footer -->
+  <footer class="py-8 text-center">
+    <a href="#top" class="btn">Top</a>
+    <div class="sub mt-3">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
+  </footer>
+</main>
 
-    <!-- MAPS -->
-    <section id="maps" class="card">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xl font-semibold">Google Maps</h2>
-        <div class="flex gap-2 text-xs">
-          <input id="map-q" class="w-64 rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-1" placeholder="Search place or address">
-          <button id="map-search" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">Search</button>
-          <button id="map-mypos" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">Use my location</button>
+<script>
+/* ====== CONFIG you can edit ====== */
+const HOME_ADDR = "411 W Main St, Round Rock, TX";
+const WORK_ADDR = "2670 S A.W. Grimes Blvd, Round Rock, TX";
+const CITIES = [
+  { name:"Round Rock, TX", lat:30.5083, lon:-97.6789 },
+  { name:"Pleasant Prairie, WI", lat:42.5531, lon:-87.9334 },
+  { name:"Grayslake, IL", lat:42.3445, lon:-88.0417 },
+  { name:"Cleveland, OH", lat:41.4993, lon:-81.6944 },
+];
+const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
+const COINS = [
+  { id:"bitcoin", symbol:"BTC" },
+  { id:"ethereum", symbol:"ETH" },
+  { id:"solana", symbol:"SOL" },
+  { id:"dogecoin", symbol:"DOGE" }
+];
+/* ================================= */
+
+/* meta */
+document.getElementById('today-pill').textContent = new Date().toLocaleDateString();
+document.getElementById('nav-msg').classList.remove('hidden');
+
+/* ---------- Weather (Open-Meteo) ---------- */
+function codeToText(code){
+  const m = {0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',95:'Thunderstorm'};
+  return m[code] || '—';
+}
+async function getWeather(lat, lon){
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m&temperature_unit=fahrenheit&windspeed_unit=mph&forecast_days=1`;
+  const r = await fetch(url, {mode:'cors'}); if(!r.ok) throw new Error(r.status);
+  return r.json();
+}
+async function getSun(lat, lon){
+  const u = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&formatted=0`;
+  const r = await fetch(u, {mode:'cors'}); if(!r.ok) throw new Error(r.status);
+  return r.json();
+}
+async function renderWeather(){
+  const host = document.getElementById('wx-cards'); host.innerHTML="";
+  for (const city of CITIES){
+    try{
+      const data = await getWeather(city.lat, city.lon);
+      const c = data.current||{};
+      const hourly = (data.hourly?.temperature_2m||[]).slice(13,18); // next 4-5 hours heuristic by index
+      const hours = hourly.map((t,i)=>({temp:Math.round(t), label: (13+i)+":00"}));
+      const card = document.createElement('div'); card.className="card";
+      card.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="text-lg font-semibold">${city.name}</div>
+          <div class="sub">${Math.round(c.wind_speed_10m||0)} mph wind</div>
         </div>
-      </div>
-      <div class="aspect-video rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
-        <iframe id="map-frame" class="w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps?q=Round%20Rock%2C%20TX&output=embed">
-        </iframe>
-      </div>
-      <p class="sub mt-2">This uses Google’s free embed (no API key). Search updates the embed URL client-side.</p>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="py-10 text-center opacity-70">
-      <div id="copyright"></div>
-      <div>Built for small business clarity.</div>
-    </footer>
-  </main>
-
-  <script>
-    // ===== Initial message in nav (edit this string anytime)
-    const INITIAL_MESSAGE = "Welcome back, Jordan — ship it.";
-    document.getElementById('initial-msg').textContent = INITIAL_MESSAGE;
-
-    // ===== Meta
-    (function initMeta(){
-      const now = new Date();
-      document.getElementById('last-updated').textContent = now.toLocaleString();
-      const copy = document.getElementById('copyright');
-      if (copy) copy.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-    })();
-
-    // ===== Weather (Open-Meteo)
-    async function fetchWeather(lat, lon){
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`;
-      const r = await fetch(url, { mode:'cors' });
-      if (!r.ok) throw new Error('HTTP '+r.status);
-      return r.json();
-    }
-    function codeToText(code){
-      const m = {0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',95:'Thunderstorm'};
-      return m[code] || '—';
-    }
-    async function loadWeather(){
-      const status = document.getElementById('weather-status');
-      const set = (id, val)=> document.getElementById(id).textContent = val;
-      status.textContent = 'Loading…';
-      let lat = 30.5083, lon = -97.6789; // Round Rock fallback
-      let label = 'Round Rock, TX (fallback)';
-      try {
-        if (navigator.geolocation) {
-          await new Promise((res) => {
-            navigator.geolocation.getCurrentPosition(
-              p => { lat=p.coords.latitude; lon=p.coords.longitude; label='Your location'; res(); },
-              _ => res(), { maximumAge: 600000, timeout: 5000 }
-            );
-          });
-        }
-        const data = await fetchWeather(lat, lon);
-        const temp = data?.current?.temperature_2m;
-        const code = data?.current?.weather_code;
-        set('w-city', label);
-        set('w-temp', (temp!=null ? `${Math.round(temp)} °F` : '—'));
-        set('w-cond', codeToText(code));
-        status.textContent = 'Live via Open-Meteo';
-      } catch(e){
-        status.textContent = 'Could not load weather ('+e.message+').';
-      }
-    }
-    loadWeather();
-    document.getElementById('refresh-weather').addEventListener('click', loadWeather);
-
-    // ===== Stocks (stooq keyless fallback)
-    // Helper to fetch a single ticker from stooq and parse CSV.
-    async function fetchStooq(ticker){
-      // stooq uses .us suffix for US tickers
-      const sym = `${ticker.toLowerCase()}.us`;
-      const url = `https://stooq.com/q/l/?s=${encodeURIComponent(sym)}&f=sd2t2ohlcvn&h&e=csv`;
-      const r = await fetch(url, { mode:'cors' });
-      if (!r.ok) throw new Error('HTTP '+r.status);
-      const text = await r.text();
-      // Parse the first data line
-      const lines = text.trim().split('\n');
-      if (lines.length < 2) return null;
-      const cols = lines[1].split(',');
-      // Columns: Symbol,Date,Time,Open,High,Low,Close,Volume,Name
-      const close = parseFloat(cols[6]); 
-      const open  = parseFloat(cols[3]);
-      const pct   = (isFinite(close) && isFinite(open) && open>0) ? ((close-open)/open*100) : null;
-      return { ticker: ticker.toUpperCase(), price: close, pct };
-    }
-
-    const DEFAULT_STOCKS = ['AAPL','MSFT','NVDA'];
-    function getTickers(){
-      const raw = (localStorage.getItem('dash_stocks') || '').trim();
-      if (raw) return raw.split(',').map(s=>s.trim().toUpperCase()).filter(Boolean);
-      return DEFAULT_STOCKS;
-    }
-    async function loadStocks(){
-      const tbody  = document.querySelector('#stocks-table tbody');
-      const status = document.getElementById('stocks-status');
-      const tickers = getTickers();
-      document.getElementById('stocks-input').value = tickers.join(',');
-      tbody.innerHTML = '';
-      status.textContent = 'Loading…';
-      try {
-        const rows = await Promise.all(tickers.map(fetchStooq));
-        let ok = 0;
-        for (const r of rows) {
-          if (!r) continue;
-          ok++;
-          const price = isFinite(r.price) ? r.price.toLocaleString(undefined,{ style:'currency', currency:'USD' }) : '—';
-          const pct   = (r.pct==null) ? '—' : ((r.pct>=0?'+':'')+r.pct.toFixed(2)+'%');
-          const pctClass = (r.pct==null) ? '' : (r.pct>=0 ? 'text-green-600' : 'text-red-600');
-          tbody.insertAdjacentHTML('beforeend', `
-            <tr>
-              <td>${r.ticker}</td>
-              <td>${price}</td>
-              <td class="${pctClass}">${pct}</td>
-            </tr>
-          `);
-        }
-        status.textContent = ok ? 'Live via stooq' : 'No data returned. If blocked by CORS, we’ll swap to a key-based API.';
-      } catch(e){
-        status.textContent = 'Could not load stocks ('+e.message+').';
-      }
-    }
-    loadStocks();
-    document.getElementById('refresh-stocks').addEventListener('click', loadStocks);
-    document.getElementById('apply-stocks').addEventListener('click', ()=>{
-      const val = document.getElementById('stocks-input').value.trim();
-      localStorage.setItem('dash_stocks', val);
-      loadStocks();
-    });
-
-    // ===== Crypto (CoinGecko)
-    const CRYPTO = [
-      { id: 'bitcoin',   symbol: 'BTC' },
-      { id: 'ethereum',  symbol: 'ETH' },
-      { id: 'solana',    symbol: 'SOL' },
-      { id: 'dogecoin',  symbol: 'DOGE' },
-    ];
-    const cgUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${CRYPTO.map(c=>c.id).join(',')}&vs_currencies=usd&include_24hr_change=true`;
-    async function loadCrypto(){
-      const status = document.getElementById('crypto-status');
-      const tbody  = document.querySelector('#crypto-table tbody');
-      try {
-        status.textContent = 'Loading…';
-        const r = await fetch(cgUrl, { mode: 'cors' });
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        const data = await r.json();
-        tbody.innerHTML = '';
-        let count = 0;
-        for (const c of CRYPTO) {
-          const row = data[c.id];
-          if (!row) continue;
-          count++;
-          const price = row.usd?.toLocaleString(undefined, { style:'currency', currency:'USD' }) ?? '—';
-          const chg   = (row.usd_24h_change ?? 0);
-          const chgFmt = (chg>=0?'+':'') + chg.toFixed(2) + '%';
-          const chgClass = chg>=0 ? 'text-green-600' : 'text-red-600';
-          tbody.insertAdjacentHTML('beforeend', `
-            <tr>
-              <td>${c.symbol}</td>
-              <td>${price}</td>
-              <td class="${chgClass}">${chgFmt}</td>
-            </tr>
-          `);
-        }
-        document.getElementById('kpi-crypto').textContent = count.toString();
-        status.textContent = 'Live via CoinGecko';
-      } catch (e) {
-        status.textContent = 'Could not load crypto (' + e.message + ').';
-      }
-    }
-    loadCrypto();
-    document.getElementById('refresh-crypto').addEventListener('click', loadCrypto);
-    setInterval(loadCrypto, 5 * 60 * 1000);
-
-    // ===== Pelosi trades
-    (async () => {
-      const status = document.getElementById('pelosi-status');
-      const table  = document.getElementById('pelosi-table');
-      const tbody  = table.querySelector('tbody');
-      const SRC = 'https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json';
-      try {
-        status.textContent = 'Loading…';
-        const resp = await fetch(SRC, { mode: 'cors' });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const all = await resp.json();
-        const rows = all
-          .filter(r => r.representative && r.representative.includes('Nancy Pelosi'))
-          .sort((a, b) => new Date(b.disclosure_date) - new Date(a.disclosure_date))
-          .slice(0, 50);
-
-        document.getElementById('kpi-pelosi').textContent = rows.length.toString();
-
-        if (!rows.length) { status.textContent = 'No Pelosi trades found.'; return; }
-
-        tbody.innerHTML = rows.map(r => `
-          <tr>
-            <td>${r.disclosure_date || ''}</td>
-            <td>${r.transaction_date || ''}</td>
-            <td>${r.ticker || r.asset_description || ''}</td>
-            <td>${r.type || ''}</td>
-            <td>${r.amount || ''}</td>
-            <td>${r.ptr_link ? `<a class="link" href="${r.ptr_link}" target="_blank" rel="noopener">PTR</a>` : ''}</td>
-          </tr>
-        `).join('');
-        table.classList.remove('hidden');
-        status.textContent = 'Loaded.';
-      } catch (err) {
-        status.textContent = `Couldn’t load data (${err.message}).`;
-      }
-    })();
-
-    // ===== Mini converters
-    function sel(id){ return document.getElementById(id); }
-    document.querySelectorAll('[data-action]').forEach(btn=>{
-      btn.addEventListener('click', () => {
-        const a = btn.getAttribute('data-action');
-        if (a === 'mg2g') { const mg = parseFloat(sel('mg').value || '0'); sel('mass-out').textContent = `${mg} mg = ${(mg/1000).toFixed(6)} g`; }
-        if (a === 'mg2kg'){ const mg = parseFloat(sel('mg').value || '0'); sel('mass-out').textContent = `${mg} mg = ${(mg/1e6).toFixed(9)} kg`; }
-        if (a === 'in2cm'){ const inch = parseFloat(sel('inch').value || '0'); sel('len-out').textContent = `${inch} in = ${(inch*2.54).toFixed(4)} cm`; }
-        if (a === 'cm2in'){ const cm = parseFloat(sel('cm').value || '0'); sel('len-out').textContent = `${cm} cm = ${(cm/2.54).toFixed(4)} in`; }
-        if (a === 'f2c')  { const f = parseFloat(sel('f').value || '0'); sel('temp-out').textContent = `${f} °F = ${((f-32)*5/9).toFixed(2)} °C`; }
-        if (a === 'c2f')  { const c = parseFloat(sel('c').value || '0'); sel('temp-out').textContent = `${c} °C = ${(c*9/5+32).toFixed(2)} °F`; }
+        <div class="k mt-1">${Math.round(c.temperature_2m||0)}°F / ${Math.round(((c.temperature_2m-32)*5/9)||0)}°C</div>
+        <div class="sub">Feels ${Math.round(c.apparent_temperature||0)}°F · Today ${Math.round(Math.min(...(data.hourly?.temperature_2m||[])))}°F — ${Math.round(Math.max(...(data.hourly?.temperature_2m||[])))}°F</div>
+        <div class="flex gap-2 mt-3 flex-wrap" id="h-${city.name.replace(/\W+/g,'')}"></div>
+      `;
+      host.appendChild(card);
+      const hwrap = card.querySelector(`[id^="h-"]`);
+      hours.forEach(h=>{
+        const chip = document.createElement('div'); chip.className="hourchip";
+        chip.innerHTML = `<div class="sub">${h.label}</div><div class="font-semibold">${h.temp}°F</div>`;
+        hwrap.appendChild(chip);
       });
-    });
-
-    // ===== Verse (public fallback)
-    async function loadVerse(){
-      const status = document.getElementById('verse-status');
-      const textEl = document.getElementById('verse-text');
-      const refEl  = document.getElementById('verse-ref');
-      try {
-        status.textContent = 'Loading…';
-        const r = await fetch('https://labs.bible.org/api/?passage=votd&formatting=plain', { mode:'cors' });
-        if (!r.ok) throw new Error('HTTP '+r.status);
-        const t = await r.text();
-        const idx = t.lastIndexOf('—');
-        if (idx > 0) { textEl.textContent = t.slice(0, idx).trim(); refEl.textContent  = t.slice(idx+1).trim(); }
-        else { textEl.textContent = t.trim(); refEl.textContent  = 'NET Bible — Verse of the Day'; }
-        status.textContent = 'Loaded.';
-      } catch(e){
-        status.textContent = 'Could not load verse ('+e.message+').';
-        textEl.textContent = ''; refEl.textContent  = '';
-      }
+    }catch(e){
+      const err = document.createElement('div'); err.className="sub";
+      err.textContent = `Could not load ${city.name} (${e.message})`;
+      host.appendChild(err);
     }
-    loadVerse();
-    document.getElementById('refresh-verse').addEventListener('click', loadVerse);
+  }
+  // sunrise/sunset for first city
+  try{
+    const s = await getSun(CITIES[0].lat, CITIES[0].lon);
+    const sr = new Date(s.results.sunrise).toLocaleTimeString(); 
+    const ss = new Date(s.results.sunset).toLocaleTimeString();
+    document.getElementById('sun-date').textContent = new Date().toLocaleDateString();
+    document.getElementById('sun-times').textContent = `Sunrise ${sr} · Sunset ${ss}`;
+  }catch(e){ document.getElementById('sun-times').textContent = 'Could not load.'; }
+}
+renderWeather();
+document.getElementById('wx-refresh').addEventListener('click', renderWeather);
 
-    // ===== Maps embed controls
-    function setMapQuery(q){
-      const src = `https://www.google.com/maps?q=${encodeURIComponent(q)}&output=embed`;
-      document.getElementById('map-frame').src = src;
+/* ---------- Verse (public fallback) ---------- */
+async function loadVerse(){
+  const st = document.getElementById('v-status');
+  try{
+    st.textContent='Loading…';
+    const r = await fetch('https://labs.bible.org/api/?passage=votd&formatting=plain', {mode:'cors'});
+    if(!r.ok) throw new Error(r.status);
+    const t = await r.text();
+    const i = t.lastIndexOf('—');
+    document.getElementById('v-text').textContent = i>0 ? t.slice(0,i).trim() : t.trim();
+    document.getElementById('v-ref').textContent  = i>0 ? t.slice(i+1).trim() : 'NET Bible — Verse of the Day';
+    st.textContent=' ';
+  }catch(e){ st.textContent='Could not load.';}
+}
+loadVerse();
+document.getElementById('v-refresh').addEventListener('click', loadVerse);
+
+/* ---------- Events (demo list; replace with API later) ---------- */
+const demoEvents = [
+  {title:"2010 DTE Energy Music Theatre Royal Deposit", when:"2024-12-31T05:00:00Z", where:"", url:"#"},
+  {title:"Megaplex Deposit", when:"2024-12-31T08:00:00Z", where:"Salt Lake Cty UT", url:"#"},
+  {title:"2025 Baseball Season Ticket Deposit", when:"2024-12-31T23:30:00Z", where:"Gainesville FL", url:"#"},
+  {title:"Sudbury Wolves vs. Sault Ste. Marie Greyhounds", when:"2025-10-29T14:30:00Z", where:"Sudbury ON", url:"#"},
+  {title:"Ottawa 67's vs. Brampton Steelheads", when:"2025-10-29T14:30:00Z", where:"Ottawa ON", url:"#"}
+];
+function renderEvents(){
+  const host = document.getElementById('events-list'); host.innerHTML="";
+  demoEvents.forEach(ev=>{
+    const row = document.createElement('div'); row.className="tile";
+    row.innerHTML = `
+      <div>
+        <div class="font-semibold">${ev.title}</div>
+        <div class="sub">${ev.when}</div>
+      </div>
+      <div class="text-right">
+        <div class="sub">${ev.where||""}</div>
+        <a href="${ev.url}" class="btn">Details</a>
+      </div>`;
+    host.appendChild(row);
+  });
+}
+renderEvents();
+
+/* ---------- Traffic (Google embeds) ---------- */
+function dirURL(from,to){
+  return `https://www.google.com/maps?saddr=${encodeURIComponent(from)}&daddr=${encodeURIComponent(to)}&output=embed`;
+}
+document.getElementById('map-work').src = dirURL(HOME_ADDR, WORK_ADDR);
+document.getElementById('map-home').src = dirURL(WORK_ADDR, HOME_ADDR);
+
+/* ---------- Stocks (stooq) ---------- */
+async function fetchStooq(t){
+  const sym = `${t.toLowerCase()}.us`;
+  const url = `https://stooq.com/q/l/?s=${encodeURIComponent(sym)}&f=sd2t2ohlcvn&h&e=csv`;
+  const r = await fetch(url,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
+  const text = await r.text(); const lines = text.trim().split('\n');
+  if(lines.length<2) return null; const c = lines[1].split(',');
+  const open = parseFloat(c[3]); const close = parseFloat(c[6]);
+  const pct = (isFinite(open)&&open>0) ? ((close-open)/open*100) : null;
+  return {t:t.toUpperCase(), price: close, pct};
+}
+let stockTimer = null;
+async function renderStocks(){
+  const host = document.getElementById('s-list'); host.innerHTML="";
+  for (const t of STOCKS){
+    const row = document.createElement('div'); row.className="tile"; row.innerHTML = `<div class="font-semibold">${t}</div><div class="sub">Loading…</div>`;
+    host.appendChild(row);
+    try {
+      const d = await fetchStooq(t);
+      if(!d){ row.innerHTML = `<div class="font-semibold">${t}</div><div class="sub">No data</div>`; continue; }
+      const price = isFinite(d.price) ? d.price.toLocaleString(undefined,{style:'currency',currency:'USD'}) : '—';
+      const pct = (d.pct==null) ? '—' : ((d.pct>=0?'+':'')+d.pct.toFixed(2)+'%');
+      const cls = (d.pct==null) ? '' : (d.pct>=0?'good':'bad');
+      row.innerHTML = `
+        <div>
+          <div class="font-semibold">${t} <span class="sub">${t}</span></div>
+          <div class="k">${price}</div>
+        </div>
+        <div class="k ${cls}" style="font-size:1rem">${pct}</div>`;
+    } catch(e){
+      row.innerHTML = `<div class="font-semibold">${t}</div><div class="sub">Error</div>`;
     }
-    document.getElementById('map-search').addEventListener('click', ()=>{
-      const q = document.getElementById('map-q').value.trim();
-      if (q) setMapQuery(q);
+  }
+}
+renderStocks();
+document.getElementById('s-refresh').addEventListener('click', renderStocks);
+document.getElementById('s-auto').addEventListener('click', ()=>{
+  if (stockTimer){ clearInterval(stockTimer); stockTimer=null; alert('Auto refresh OFF'); }
+  else { stockTimer = setInterval(renderStocks, 60*1000); alert('Auto refresh ON (60s)'); }
+});
+
+/* ---------- Crypto (CoinGecko) ---------- */
+async function renderCrypto(){
+  const host = document.getElementById('c-list'); host.innerHTML="";
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${COINS.map(c=>c.id).join(',')}&vs_currencies=usd&include_24hr_change=true`;
+  try{
+    const r = await fetch(url,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    for (const c of COINS){
+      const d = j[c.id]; if(!d) continue;
+      const price = (d.usd??0).toLocaleString(undefined,{style:'currency',currency:'USD'});
+      const pct = d.usd_24h_change??0; const cls = pct>=0?'good':'bad';
+      const row = document.createElement('div'); row.className="tile";
+      row.innerHTML = `<div class="font-semibold">${c.symbol}</div><div class="k">${price}</div><div class="${cls} font-semibold">${(pct>=0?'+':'')+pct.toFixed(2)}%</div>`;
+      host.appendChild(row);
+    }
+  }catch(e){
+    host.innerHTML = `<div class="sub">Could not load crypto.</div>`;
+  }
+}
+renderCrypto();
+document.getElementById('c-refresh').addEventListener('click', renderCrypto);
+
+/* ---------- Pelosi trades (House Stock Watcher) ---------- */
+async function renderPelosi(){
+  const st = document.getElementById('p-status');
+  const tb = document.querySelector('#p-table tbody'); tb.innerHTML="";
+  try{
+    st.textContent='Loading…';
+    const src = 'https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json';
+    const r = await fetch(src,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
+    const all = await r.json();
+    const rows = all.filter(x=>x.representative?.includes('Nancy Pelosi'))
+                    .sort((a,b)=> new Date(b.disclosure_date)-new Date(a.disclosure_date))
+                    .slice(0,50);
+    rows.forEach(r=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.disclosure_date||''}</td><td>${r.transaction_date||''}</td><td>${r.ticker||r.asset_description||''}</td><td>${r.type||''}</td><td>${r.amount||''}</td><td>${r.ptr_link?`<a class="underline" target="_blank" href="${r.ptr_link}">PTR</a>`:''}</td>`;
+      tb.appendChild(tr);
     });
-    document.getElementById('map-mypos').addEventListener('click', ()=>{
-      if (!navigator.geolocation) return;
-      navigator.geolocation.getCurrentPosition(
-        p => setMapQuery(`${p.coords.latitude},${p.coords.longitude}`),
-        _ => setMapQuery('Round Rock, TX'),
-        { maximumAge: 600000, timeout: 5000 }
-      );
-    });
-  </script>
+    st.textContent = rows.length ? 'Loaded.' : 'No trades found.';
+  }catch(e){ st.textContent='Could not load.';}
+}
+renderPelosi();
+
+/* ---------- Converters ---------- */
+document.querySelectorAll('[data-x]').forEach(b=>b.addEventListener('click',()=>{
+  const a=b.dataset.x;
+  if(a==='mg2g'){ const v=parseFloat(document.getElementById('mg').value||'0'); document.getElementById('mass-out').textContent=`${v} mg = ${(v/1000).toFixed(6)} g`; }
+  if(a==='mg2kg'){ const v=parseFloat(document.getElementById('mg').value||'0'); document.getElementById('mass-out').textContent=`${v} mg = ${(v/1e6).toFixed(9)} kg`; }
+  if(a==='in2cm'){ const v=parseFloat(document.getElementById('inch').value||'0'); document.getElementById('len-out').textContent=`${v} in = ${(v*2.54).toFixed(4)} cm`; }
+  if(a==='cm2in'){ const v=parseFloat(document.getElementById('cm').value||'0'); document.getElementById('len-out').textContent=`${v} cm = ${(v/2.54).toFixed(4)} in`; }
+  if(a==='f2c'){ const v=parseFloat(document.getElementById('f').value||'0'); document.getElementById('temp-out').textContent=`${v} °F = ${((v-32)*5/9).toFixed(2)} °C`; }
+  if(a==='c2f'){ const v=parseFloat(document.getElementById('c').value||'0'); document.getElementById('temp-out').textContent=`${v} °C = ${(v*9/5+32).toFixed(2)} °F`; }
+}));
+
+/* ---------- Scratchpad ---------- */
+const pad = document.getElementById('pad');
+pad.value = localStorage.getItem('dash_pad') || "";
+pad.addEventListener('input',()=> localStorage.setItem('dash_pad', pad.value));
+document.getElementById('pad-clear').addEventListener('click',()=>{ pad.value=""; localStorage.removeItem('dash_pad'); });
+
+</script>
 </body>
 </html>
