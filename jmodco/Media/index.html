@@ -164,9 +164,48 @@
     .logo-dark{display:block}.logo-light{display:none}
     [data-theme="light"] .logo-dark{display:none}
     [data-theme="light"] .logo-light{display:block}
+
+    /* ===== Phone size cap & layout ===== */
+:root{
+  /* Tweak this one value if you want it a bit larger/smaller */
+  --phone-max: 360px;  /* hard max width for desktop */
+}
+
+/* keep the phone narrow and centered under the hero */
+.phone-section{ display:flex; justify-content:center; }
+.phone{
+  width:clamp(260px, 30vw, var(--phone-max));
+  margin: 0 auto;
+  padding:12px;             /* a bit tighter padding so frame stays slim */
+}
+
+/* keep the screen proportions but avoid tall overflow */
+.phone-screen{ aspect-ratio: 9 / 19.5; }
+.ig-slot{
+  max-height: min(52vh, 520px);
+  overflow:auto;
+}
+
+/* on tablets, allow a touch wider than mobile but still compact */
+@media (max-width: 1024px){
+  :root{ --phone-max: 340px; }
+}
+
+/* on small phones, use nearly the full width but still comfy */
+@media (max-width: 640px){
+  .phone{ width:min(92vw, 360px); }
+  .ig-slot{ max-height: 48vh; }
+}
+
+    
   </style>
 </head>
-<body>
+
+  
+  
+  
+  <!--HTML CODE-->
+  <body>
   <canvas id="bg3d" aria-hidden="true"></canvas>
   <div class="bg-vignette" aria-hidden="true"></div>
 
