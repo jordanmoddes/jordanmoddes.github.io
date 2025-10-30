@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --bg:#0b1020; --bg2:#0a0f1e; --panel:#101733;
@@ -15,6 +16,7 @@
       --brand:#7b39ff; --brand-2:#22d3ee;
       --chip:#1a2246; --link:#c7d2fe;
       --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --lime:#32CD32;
     }
     [data-theme="light"]{
       --bg:#f6f8ff; --bg2:#eef2ff; --panel:#ffffff;
@@ -32,7 +34,7 @@
       overflow-x:hidden;position:relative;isolation:isolate;
     }
 
-    /* WebGL canvas background + vignette */
+    /* ===== 3D background ===== */
     #bg3d{position:fixed;inset:0;z-index:-2;width:100vw;height:100vh;display:block;background:
       radial-gradient(1200px 600px at 15% -10%, rgba(123,57,255,.18), transparent 60%),
       radial-gradient(1000px 520px at 115% 20%, rgba(34,211,238,.14), transparent 65%),
@@ -43,51 +45,117 @@
     a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
     .shell{max-width:1200px;margin:0 auto;padding:24px}
 
-    .nav{display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:800;font-size:20px}
-    nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
-    nav a{font-weight:600;color:var(--text);opacity:.9} nav a:hover{opacity:1}
-    .cta-nav{display:flex;gap:10px;align-items:center}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid transparent;background:var(--brand);color:#fff;font-weight:700;box-shadow:var(--shadow);transition:transform .06s ease}
+    /* ===== Insights-style floating nav ===== */
+    .nav-wrap{position:sticky; top:12px; z-index:60;}
+    .navbar{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 14px; border-radius:16px;
+      background:color-mix(in oklab, var(--panel) 82%, transparent);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+    }
+    .nav-brand{font-weight:800; letter-spacing:.2px; color:var(--text); text-decoration:none; white-space:nowrap;}
+    .nav-links{display:flex; gap:18px; align-items:center;}
+    .nav-links a{
+      position:relative; font-weight:600; color:var(--text); opacity:.9; text-decoration:none; padding:8px 6px; border-radius:10px;
+    }
+    .nav-links a:hover{opacity:1;}
+    .nav-links a.is-active{
+      background:color-mix(in oklab, var(--chip) 70%, transparent);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .nav-cta{display:flex; gap:8px; align-items:center;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 14px;border-radius:10px;border:1px solid transparent;
+      background:var(--brand);color:#fff;font-weight:700;box-shadow:var(--shadow);
+      transition:transform .06s ease
+    }
     .btn:hover{transform:translateY(-1px)}
     .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
     [data-theme="light"] .btn.ghost{border-color:#d9e0ff}
+    .btn-small{padding:8px 12px}
 
-    /* Hero */
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;margin-top:6px}
-    .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
-    .hero-card{display:grid;grid-template-columns:minmax(280px, 480px) 1fr;gap:22px;align-items:center}
+    .hamburger{display:none; background:transparent; border:0; padding:8px 10px; border-radius:10px; color:var(--text); font-size:18px;}
+
+    .mobile-menu{
+      display:none; margin-top:8px; border-radius:14px; overflow:hidden;
+      background:color-mix(in oklab, var(--panel) 88%, transparent);
+      backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,.10);
+    }
+    .mobile-menu a{
+      display:block; padding:12px 14px; color:var(--text); text-decoration:none; font-weight:600;
+    }
+    .mobile-menu a + a{border-top:1px dashed rgba(255,255,255,.12);}
+
+    /* ===== Hero ===== */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;margin-top:16px}
+    .panel{background:var(--panel);border-radius:24px;padding:24px;box-shadow:var(--shadow)}
+    .hero-card{display:grid;grid-template-columns:minmax(260px, 460px) 1fr;gap:18px;align-items:center}
     .logo-wrap{display:grid;place-items:center}
     .media-logo{
-      width:100%; max-width:480px; aspect-ratio:3/4; object-fit:contain;
-      transform:translateX(-10px) scale(1.75); /* nudge center + fill */
+      width:100%; max-width:460px; aspect-ratio:3/4; object-fit:contain;
+      transform:translateX(-6px) scale(1.06); /* visually center + fill */
     }
-    .title{font-size:clamp(32px,5vw,54px);line-height:1.02;margin:0 0 10px;font-weight:900}
+    .title{font-size:clamp(30px,5vw,54px);line-height:1.02;margin:0 0 8px;font-weight:900}
     .subtitle{font-size:clamp(16px,2vw,18px);color:var(--muted);margin:0 0 16px}
-    .badges{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+    .badges{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
     .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
     .store-badge{height:45px;display:block;border-radius:12px;box-shadow:var(--shadow)}   /* Apple 45px */
     .store-badge.store-play{height:60px} /* Google 60px */
     .store-badge-wrap{display:inline-block;line-height:0}
     .store-badge:hover{transform:scale(1.03)}
 
-    /* Phone + IG embed */
-    .phone{background:var(--panel);border-radius:28px;padding:16px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
-    [data-theme="light"] .phone{border-color:#eef2ff}
-    .phone-screen{border-radius:20px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden}
-    [data-theme="light"] .phone-screen{background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%)}
-    .pill{background:var(--chip);padding:10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
-    .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+    /* ===== Phone mock (updated) ===== */
+    .phone{
+      position:relative;
+      background:linear-gradient(180deg, #0a0f1e 0%, #060a16 100%);
+      border-radius:32px;
+      padding:16px;
+      box-shadow: 0 30px 60px rgba(0,0,0,.55), inset 0 0 0 3px var(--lime);
+      border:1px solid rgba(255,255,255,.06);
+    }
+    /* depth ridge + side buttons */
+    .phone::before{
+      content:""; position:absolute; inset:-2px;
+      border-radius:34px;
+      box-shadow: inset 0 0 22px rgba(50,205,50,.25), inset 0 0 0 2px rgba(50,205,50,.35);
+      pointer-events:none;
+    }
+    .phone::after{
+      content:""; position:absolute; right:-6px; top:52px; width:3px; height:48px; border-radius:3px;
+      background:var(--lime); filter:drop-shadow(0 0 6px rgba(50,205,50,.6));
+    }
+    .phone-screen{
+      border-radius:22px;
+      background:#000;              /* blacker bezel area */
+      aspect-ratio:9/19.5;
+      display:flex; flex-direction:column; justify-content:space-between;
+      padding:12px; overflow:hidden;
+      box-shadow: inset 0 0 24px rgba(0,0,0,.8);
+    }
+    /* inner app stage (the “screen” content) */
+    .screen-stage{
+      background:linear-gradient(180deg, rgba(34,211,238,.10), transparent 50%),linear-gradient(180deg, rgba(123,57,255,.10), transparent 35%), #0e142b;
+      border-radius:16px; padding:12px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .pill{background:var(--chip);padding:8px 10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
+    .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .dock .pill{
+      background:transparent; border:1px solid rgba(255,255,255,.85); color:#fff;
+      text-shadow:0 0 4px rgba(255,255,255,.35);
+    }
     .ig-slot{margin-top:8px;background:rgba(255,255,255,.06);border-radius:12px;padding:8px;overflow:auto;max-height:50vh}
     .instagram-media{margin:0 !important;width:100% !important}
     .instagram-media iframe{max-width:100% !important}
 
-    /* ===== Original FEATURES section (your screenshot) ===== */
-    .section{max-width:1200px;margin:42px auto 0;padding:0 24px}
+    /* ===== Features ===== */
+    .section{max-width:1200px;margin:40px auto 0;padding:0 24px}
     .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 14px;font-weight:900}
     .section p.lead{color:var(--muted);margin:0 0 22px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
     .card{background:var(--panel);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow)}
     [data-theme="light"] .card{border-color:#eef2ff}
     .card h3{margin:10px 0 8px;font-size:18px}
@@ -96,18 +164,31 @@
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:var(--chip);padding:6px 8px;border-radius:8px}
 
     /* Small-biz band + waitlist */
-    .smb{max-width:1200px;margin:42px auto 0;padding:0 24px}
+    .smb{max-width:1200px;margin:40px auto 0;padding:0 24px}
     .band{
       display:flex;gap:16px;align-items:center;justify-content:flex-start;flex-wrap:wrap;
-      background:rgba(16,23,51,.78);border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow);
+      background:rgba(16,23,51,.78);border:1px solid rgba(255,255,255,.10);box-shadow:var(--shadow);
       padding:14px 16px;border-radius:16px;
     }
     #waitlist form.card{background:var(--panel)}
 
     footer{margin-top:56px}
 
-    @media (max-width:1024px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
-    @media (max-width:640px){nav ul{display:none}.grid{grid-template-columns:1fr}.store-badge{height:42px}.store-badge.store-play{height:56px}}
+    /* ===== Responsive ===== */
+    @media (max-width:1024px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:900px){
+      .nav-links{display:none}
+      .hamburger{display:inline-flex}
+    }
+    @media (max-width:720px){
+      .grid{grid-template-columns:1fr}
+      .panel{padding:18px}
+      .hero-card{grid-template-columns:1fr}
+      .media-logo{max-width:420px; transform:translateX(0) scale(1.02)}
+    }
 
     .logo-dark{display:block}.logo-light{display:none}
     [data-theme="light"] .logo-dark{display:none}
@@ -119,22 +200,32 @@
   <canvas id="bg3d" aria-hidden="true"></canvas>
   <div class="bg-vignette" aria-hidden="true"></div>
 
-  <!-- Header -->
-  <header class="shell">
-    <div class="nav">
-      <div class="brand">Jmod Media</div>
-      <nav aria-label="Primary">
-        <ul>
-          <li><a href="./index.html">Home</a></li>
-          <li><a href="./services.html">Services</a></li>
-          <li><a href="./about.html">About</a></li>
-          <li><a href="./contact.html">Contact Us</a></li>
-          <li><a href="./jmodco.html">Jmod Co.</a></li>
-        </ul>
+  <!-- Floating/Sticky Header (Insights-style) -->
+  <header class="shell nav-wrap">
+    <div class="navbar">
+      <a class="nav-brand" href="./index.html">Jmod Media</a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="./index.html">Home</a>
+        <a href="./services.html">Services</a>
+        <a href="./about.html">About</a>
+        <a href="./contact.html">Contact Us</a>
+        <a href="./jmodco.html">Jmod Co.</a>
       </nav>
-      <div class="cta-nav">
-        <button id="themeToggle" class="btn" type="button">Toggle Theme</button>
+
+      <div class="nav-cta">
+        <button id="themeToggle" class="btn btn-small" type="button">Toggle Theme</button>
+        <button id="navToggle" class="hamburger" aria-label="Open menu" aria-expanded="false">☰</button>
       </div>
+    </div>
+
+    <!-- Mobile slide-down -->
+    <div class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+      <a href="./index.html">Home</a>
+      <a href="./services.html">Services</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact Us</a>
+      <a href="./jmodco.html">Jmod Co.</a>
     </div>
   </header>
 
@@ -159,11 +250,12 @@
     <aside>
       <div class="phone">
         <div class="phone-screen">
-          <div>
+          <div class="screen-stage">
             <div class="pill" style="width:max-content">Jmod Media</div>
             <h4 style="margin:8px 0 0;font-size:18px">New Post (Instagram)</h4>
             <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
             <div class="ig-slot">
+              <!-- Your IG post -->
               <blockquote class="instagram-media"
                 data-instgrm-permalink="https://www.instagram.com/p/DQU-7RWjGXz/"
                 data-instgrm-version="14"
@@ -176,7 +268,7 @@
           </div>
         </div>
       </div>
-      <div class="preview-ctas">
+      <div class="preview-ctas" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px">
         <a class="btn" href="#waitlist">Join the Waitlist</a>
         <a class="btn ghost" href="./media/pricing.html">Pricing</a>
       </div>
@@ -227,7 +319,9 @@
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 
   <script>
+    // Use absolute asset path to avoid relative path pitfalls
     const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
+
     document.addEventListener('DOMContentLoaded', () => {
       const d = document.getElementById('logoDark');
       const l = document.getElementById('logoLight');
@@ -235,7 +329,7 @@
       if (l) l.src = ASSETS_BASE + "Jmod_Media.png";
     });
 
-    // Footer
+    // Inject shared footer
     (async function loadFooter(){
       try{
         const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
@@ -245,15 +339,15 @@
         const y = mount.querySelector('#copyright');
         if (y) y.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
       }catch(e){
-        const mount = document.getElementById('footerMount');
-        mount.innerHTML = `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
-          <div id="copyright">© ${new Date().getFullYear()} Jmod Co.</div>
-          <div>Built for small business clarity.</div>
-        </div>`;
+        document.getElementById('footerMount').innerHTML =
+          `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
+            <div id="copyright">© ${new Date().getFullYear()} Jmod Co.</div>
+            <div>Built for small business clarity.</div>
+          </div>`;
       }
     })();
 
-    // Theme toggle
+    // Theme toggle + mobile menu
     const root = document.documentElement;
     const toggle = document.getElementById('themeToggle');
     function applyAutoTheme(){
@@ -271,107 +365,108 @@
       if (next==='auto') applyAutoTheme();
     });
 
-    /* ========= 3D BACKGROUND: Floating Social Logos =========
-       - Uses Simple Icons (CC0) SVGs via jsDelivr.
-       - Renders each SVG into a colored canvas, then into a THREE.Sprite.
-       - Each sprite fades in, drifts, fades out, and respawns.
-    */
-    const BRANDS = [
-      {slug:'linkedin',     hex:'#0A66C2'},
-      {slug:'tiktok',       hex:'#000000'},
-      {slug:'facebook',     hex:'#1877F2'},
-      {slug:'instagram',    hex:'#E4405F'},
-      {slug:'snapchat',     hex:'#FFFC00'},
-      {slug:'youtube',      hex:'#FF0000'},
-      {slug:'pinterest',    hex:'#E60023'},
-      {slug:'x',            hex:'#000000'},   // Twitter/X
-      {slug:'wechat',       hex:'#7BB32E'},
-      {slug:'whatsapp',     hex:'#25D366'},
-      {slug:'reddit',       hex:'#FF4500'},
-      {slug:'telegram',     hex:'#26A5E4'},
-      {slug:'qq',           hex:'#EB1923'},
-      {slug:'kuaishou',     hex:'#FF4906'},
-      {slug:'threads',      hex:'#000000'},
-      {slug:'sinaweibo',    hex:'#E6162D'},   // Weibo
-      {slug:'discord',      hex:'#5865F2'},
-      {slug:'twitch',       hex:'#9146FF'},
-      {slug:'tumblr',       hex:'#36465D'},
-      {slug:'viber',        hex:'#7360F2'},
-      {slug:'flickr',       hex:'#0063DC'}
+    // Active link + mobile nav
+    (function markActive(){
+      const here = location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('.nav-links a, #mobileMenu a').forEach(a=>{
+        const target = a.getAttribute('href');
+        if ((target && here === target) || (here === '' && target.endsWith('index.html'))){
+          a.classList.add('is-active');
+        }
+      });
+    })();
+    (function mobileNav(){
+      const btn = document.getElementById('navToggle');
+      const menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', ()=>{
+        const open = menu.style.display === 'block';
+        menu.style.display = open ? 'none' : 'block';
+        btn.setAttribute('aria-expanded', String(!open));
+        btn.textContent = open ? '☰' : '✕';
+      });
+      menu.addEventListener('click', e=>{
+        if (e.target.tagName === 'A'){
+          menu.style.display = 'none';
+          btn.setAttribute('aria-expanded','false');
+          btn.textContent = '☰';
+        }
+      });
+    })();
+
+    /* ========= 3D BACKGROUND: Floating Social Icons with Glow ========= */
+    const ICONS = [
+      "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo_2023.png",
+      "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg",
+      "https://upload.wikimedia.org/wikipedia/en/0/0a/TikTok_logo.svg",
+      "https://upload.wikimedia.org/wikipedia/en/a/ad/Snapchat_logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png",
+      "https://upload.wikimedia.org/wikipedia/commons/3/3f/Twitch_logo_Purple.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png",
+      "https://upload.wikimedia.org/wikipedia/en/8/82/Reddit_logo_and_wordmark.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/9/95/X_logo_2023.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/9/9a/Threads_%28app%29_logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png",
+      "https://upload.wikimedia.org/wikipedia/commons/f/f3/Kick.com_logo.png",
+      "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/7/7c/Rumble_Logo_2022.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/e/e4/Kik_Messenger_logo.svg"
     ];
 
     function init3D(){
       const canvas = document.getElementById('bg3d');
-      const renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance', alpha:true});
+      const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:'high-performance'});
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
       renderer.setSize(window.innerWidth, window.innerHeight);
+
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 200);
       camera.position.set(0, 1.6, 8);
 
-      const amb = new THREE.AmbientLight(0xffffff, 0.65);
-      scene.add(amb);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+      const loader = new THREE.TextureLoader(); loader.setCrossOrigin('anonymous');
 
-      // helpers
       const sprites = [];
-      let lowPower = false;
-      const MAX = /Mobi|Android/i.test(navigator.userAgent) ? 12 : 26;
+      const MAX = /Mobi|Android/i.test(navigator.userAgent) ? 10 : 22;
 
-      // fetch svg -> canvas -> texture
-      async function svgToTexture(slug, hex){
-        const url = `https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/${slug}.svg`;
-        const svgTxt = await fetch(url).then(r=>r.text());
-        // recolor to white path over brand-colored circle; scale to 256
-        const size = 256;
-        const cnv = document.createElement('canvas'); cnv.width = cnv.height = size;
-        const ctx = cnv.getContext('2d');
-        // background circle
-        ctx.beginPath(); ctx.arc(size/2, size/2, size*0.48, 0, Math.PI*2); ctx.fillStyle = hex; ctx.fill();
-        // draw svg path as image
-        const colored = svgTxt.replace('currentColor','white').replace(/fill="[^"]*"/g,'fill="white"');
-        const blob = new Blob([colored], {type:'image/svg+xml'});
-        const img = new Image(); img.src = URL.createObjectURL(blob);
-        await img.decode();
-        const pad = size*0.20; // logo inset inside circle
-        ctx.drawImage(img, pad, pad, size-2*pad, size-2*pad);
-        const tex = new THREE.Texture(cnv); tex.needsUpdate = true;
-        return tex;
-      }
+      function spawnOne(tex){
+        const baseMat = new THREE.SpriteMaterial({map: tex, transparent:true, opacity:0});
+        const base = new THREE.Sprite(baseMat);
+        const glowMat = new THREE.SpriteMaterial({map: tex, color:0xffffff, blending:THREE.AdditiveBlending, transparent:true, opacity:0});
+        const glow = new THREE.Sprite(glowMat);
 
-      // spawn a sprite
-      async function spawn(){
-        const pick = BRANDS[Math.floor(Math.random()*BRANDS.length)];
-        const tex = await svgToTexture(pick.slug, pick.hex);
-        const mat = new THREE.SpriteMaterial({map: tex, transparent:true, opacity:0.0});
-        const sp = new THREE.Sprite(mat);
-        const s = THREE.MathUtils.randFloat(0.6, 1.4);
-        sp.scale.set(s, s, 1);
-        resetPosition(sp, true);
-        sp.userData = {
-          life: 0, max: THREE.MathUtils.randFloat(4.5, 8.0), // seconds
-          phase: 'in' // in -> hold -> out
-        };
-        scene.add(sp);
-        sprites.push(sp);
-      }
+        const s = THREE.MathUtils.randFloat(0.7, 1.5);
+        base.scale.set(s, s, 1);
+        glow.scale.set(s*1.8, s*1.8, 1);
 
-      function resetPosition(sp, first=false){
-        sp.position.set(
-          (Math.random()-0.5)*28,
-          (Math.random()-0.5)*16,
-          - (Math.random()*30 + 5)
-        );
-        if (!first){
-          // slightly different scale on respawn
-          const s = THREE.MathUtils.randFloat(0.6, 1.4);
-          sp.scale.set(s, s, 1);
+        function reset(first=false){
+          const x = (Math.random()-0.5)*28;
+          const y = (Math.random()-0.5)*16;
+          const z = - (Math.random()*30 + 6);
+          base.position.set(x,y,z);
+          glow.position.copy(base.position);
+          base.material.opacity = glow.material.opacity = 0;
+          base.userData = {life:0, max:THREE.MathUtils.randFloat(4.5,8.0), phase:'in'};
+          if (!first){
+            const ns = THREE.MathUtils.randFloat(0.7,1.5);
+            base.scale.set(ns,ns,1);
+            glow.scale.set(ns*1.8,ns*1.8,1);
+          }
         }
+        reset(true);
+
+        scene.add(glow); scene.add(base);
+        sprites.push({base, glow, reset});
       }
 
-      // initial population
-      (async () => { for (let i=0;i<MAX;i++) await spawn(); })();
+      Promise.allSettled(ICONS.map(src => new Promise((res)=>{ loader.load(src, t=>res(t), undefined, _=>res(null)); })))
+        .then(results=>{
+          const textures = results.map(r=>r.value).filter(Boolean);
+          if (!textures.length) return;
+          for (let i=0;i<MAX;i++){ spawnOne(textures[i % textures.length]); }
+        });
 
-      // parallax
       let targetRX=0, targetRY=0;
       window.addEventListener('mousemove', (e)=>{
         const nx = (e.clientX / window.innerWidth) * 2 - 1;
@@ -383,47 +478,48 @@
       function onResize(){ camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }
       window.addEventListener('resize', onResize);
 
-      // perf guardrails
-      let last=performance.now(), frames=0;
+      let last=performance.now(), frames=0, low=false;
       function guard(now){
         frames++;
-        if (now - last > 1500){
-          const fps = frames / ((now-last)/1000);
-          if (fps < 35 && !lowPower){ lowPower = true; /* simply reduce opacity speed later */ }
-          last = now; frames = 0;
+        if (now-last>1500){
+          const fps = frames/((now-last)/1000);
+          if (fps<35 && !low) low = true;
+          last = now; frames=0;
         }
+        return low;
       }
       document.addEventListener('visibilitychange', ()=>{ if (document.hidden) renderer.setAnimationLoop(null); else renderer.setAnimationLoop(tick); });
 
       function tick(now=0){
-        guard(now);
-        camera.rotation.x += (targetRX - camera.rotation.x) * 0.05;
-        camera.rotation.y += (targetRY - camera.rotation.y) * 0.05;
+        const low = guard(now);
+        camera.rotation.x += (targetRX - camera.rotation.x)*0.05;
+        camera.rotation.y += (targetRY - camera.rotation.y)*0.05;
 
-        // animate sprites
-        for (const sp of sprites){
-          const ud = sp.userData;
+        for (const s of sprites){
+          const {base, glow, reset} = s;
+          const ud = base.userData;
           const dt = 0.016;
           ud.life += dt;
 
-          // gentle drift
-          sp.position.z += 0.01;
-          sp.position.x += Math.sin(now*0.0003 + sp.id)*0.0012;
-          sp.position.y += Math.cos(now*0.00025 + sp.id)*0.0009;
+          const speed = (low?0.007:0.01);
+          base.position.z += speed; glow.position.z += speed;
+          base.position.x += Math.sin(now*0.0003 + base.id)*0.0012;
+          base.position.y += Math.cos(now*0.00025 + base.id)*0.0009;
+          glow.position.x = base.position.x; glow.position.y = base.position.y;
 
-          // fade logic
-          const fadeSpeed = lowPower ? 0.015 : 0.025;
-          if (ud.phase === 'in'){
-            sp.material.opacity = Math.min(1, sp.material.opacity + fadeSpeed);
-            if (sp.material.opacity >= 0.98) ud.phase = 'hold';
-          } else if (ud.phase === 'hold'){
-            if (ud.life > ud.max*0.6) ud.phase = 'out';
+          const f = low ? 0.015 : 0.028;
+          if (ud.phase==='in'){
+            base.material.opacity = Math.min(1, base.material.opacity + f);
+            glow.material.opacity = Math.min(0.35, glow.material.opacity + f*0.8);
+            if (base.material.opacity>=0.98) ud.phase='hold';
+          } else if (ud.phase==='hold'){
+            if (ud.life > ud.max*0.6) ud.phase='out';
           } else {
-            sp.material.opacity = Math.max(0, sp.material.opacity - fadeSpeed);
-            if (sp.material.opacity <= 0.02 || sp.position.z > -1.5){
-              // respawn
-              ud.life = 0; ud.max = THREE.MathUtils.randFloat(4.5,8.0); ud.phase='in';
-              sp.material.opacity = 0.0; resetPosition(sp);
+            base.material.opacity = Math.max(0, base.material.opacity - f);
+            glow.material.opacity = Math.max(0, glow.material.opacity - f*0.8);
+            if (base.material.opacity<=0.02 || base.position.z>-1.5){
+              ud.life=0; ud.max=THREE.MathUtils.randFloat(4.5,8.0); ud.phase='in';
+              reset();
             }
           }
         }
