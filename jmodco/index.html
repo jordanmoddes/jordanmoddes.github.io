@@ -1,3 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jmod Media — Social Content, Simplified</title>
+  <meta name="description" content="Jmod Media helps small businesses plan, create, and publish on-brand posts fast—with AI captions, SEO tags, and hashtags.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b1020; --bg2:#0a0f1e; --panel:#101733;
+      --text:#e8ecff; --muted:#a7b0d6;
+      --brand:#7b39ff; --brand-2:#22d3ee;
+      --chip:#1a2246; --link:#c7d2fe;
+      --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    [data-theme="light"]{
+      --bg:#f6f8ff; --bg2:#eef2ff; --panel:#ffffff;
+      --text:#0b1020; --muted:#5b668a;
+      --brand:#6b2dff; --brand-2:#06b6d4;
+      --chip:#eef2ff; --link:#312e81;
+      --shadow:0 10px 24px rgba(2,6,23,.10);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
+      background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+      overflow-x:hidden;position:relative;isolation:isolate;
+    }
+
+    /* ===== 3D background ===== */
+    #bg3d{position:fixed;inset:0;z-index:-2;width:100vw;height:100vh;display:block;background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(123,57,255,.18), transparent 60%),
+      radial-gradient(1000px 520px at 115% 20%, rgba(34,211,238,.14), transparent 65%),
+      linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
+    }
+    .bg-vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(80% 70% at 50% 20%, transparent 60%, rgba(0,0,0,.35) 100%)}
+
+    a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
+    .shell{max-width:1200px;margin:0 auto;padding:24px}
+
+    /* ===== Floating / sticky nav (mobile-friendly) ===== */
+    .nav-wrap{
+      position:sticky; top:12px; z-index:50; /* stays in view */
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      background:color-mix(in oklab, var(--panel) 82%, transparent);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);
+      border-radius:16px; padding:10px 14px;
+    }
+    .brand{font-weight:800;font-size:18px;white-space:nowrap}
+    nav ul{display:flex;gap:20px;list-style:none;margin:0;padding:0}
+    nav a{font-weight:600;color:var(--text);opacity:.9} nav a:hover{opacity:1}
+    .cta-nav{display:flex;gap:8px;align-items:center}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 14px;border-radius:10px;border:1px solid transparent;
+      background:var(--brand);color:#fff;font-weight:700;box-shadow:var(--shadow);
+      transition:transform .06s ease
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
+    [data-theme="light"] .btn.ghost{border-color:#d9e0ff}
+
+    /* Mobile nav */
+    .hamburger{
+      display:none; background:transparent; border:0; padding:8px; border-radius:8px;
+      color:var(--text); font-weight:800;
+    }
+    .mobile-menu{
+      display:none; background:color-mix(in oklab, var(--panel) 88%, transparent);
+      backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,.10);
+      border-radius:12px; margin-top:8px; padding:10px;
+    }
+    .mobile-menu a{display:block; padding:10px 8px; color:var(--text); text-decoration:none}
+    .mobile-menu a + a{border-top:1px dashed rgba(255,255,255,.12)}
+
+    /* ===== Hero ===== */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;margin-top:16px}
+    .panel{background:var(--panel);border-radius:24px;padding:24px;box-shadow:var(--shadow)}
+    .hero-card{display:grid;grid-template-columns:minmax(260px, 460px) 1fr;gap:18px;align-items:center}
+    .logo-wrap{display:grid;place-items:center}
+    .media-logo{
+      width:100%; max-width:460px; aspect-ratio:3/4; object-fit:contain;
+      transform:translateX(-6px) scale(1.06); /* visually center + fill */
+    }
+    .title{font-size:clamp(30px,5vw,54px);line-height:1.02;margin:0 0 8px;font-weight:900}
+    .subtitle{font-size:clamp(16px,2vw,18px);color:var(--muted);margin:0 0 16px}
+    .badges{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
+    .store-badge{height:45px;display:block;border-radius:12px;box-shadow:var(--shadow)}   /* Apple 45px */
+    .store-badge.store-play{height:60px} /* Google 60px */
+    .store-badge-wrap{display:inline-block;line-height:0}
+    .store-badge:hover{transform:scale(1.03)}
+
+    /* Phone + IG embed */
+    .phone{background:var(--panel);border-radius:24px;padding:14px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
+    [data-theme="light"] .phone{border-color:#eef2ff}
+    .phone-screen{border-radius:18px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:14px;overflow:hidden}
+    [data-theme="light"] .phone-screen{background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%)}
+    .pill{background:var(--chip);padding:8px 10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
+    .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+    .ig-slot{margin-top:8px;background:rgba(255,255,255,.06);border-radius:12px;padding:8px;overflow:auto;max-height:50vh}
+    .instagram-media{margin:0 !important;width:100% !important}
+    .instagram-media iframe{max-width:100% !important}
+
+    /* ===== Original FEATURES section ===== */
+    .section{max-width:1200px;margin:40px auto 0;padding:0 24px}
+    .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 14px;font-weight:900}
+    .section p.lead{color:var(--muted);margin:0 0 22px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{background:var(--panel);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow)}
+    [data-theme="light"] .card{border-color:#eef2ff}
+    .card h3{margin:10px 0 8px;font-size:18px}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:var(--chip);padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:var(--chip);padding:6px 8px;border-radius:8px}
+
+    /* Small-biz band + waitlist */
+    .smb{max-width:1200px;margin:40px auto 0;padding:0 24px}
+    .band{
+      display:flex;gap:16px;align-items:center;justify-content:flex-start;flex-wrap:wrap;
+      background:rgba(16,23,51,.78);border:1px solid rgba(255,255,255,.10);box-shadow:var(--shadow);
+      padding:14px 16px;border-radius:16px;
+    }
+    #waitlist form.card{background:var(--panel)}
+
+    footer{margin-top:56px}
+
+    /* ===== Responsive ===== */
+    @media (max-width:1024px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:720px){
+      nav ul{display:none}
+      .hamburger{display:inline-flex}
+      .grid{grid-template-columns:1fr}
+      .panel{padding:18px}
+      .hero-card{grid-template-columns:1fr}
+      .media-logo{max-width:420px; transform:translateX(0) scale(1.02)}
+    }
+
+    .logo-dark{display:block}.logo-light{display:none}
+    [data-theme="light"] .logo-dark{display:none}
+    [data-theme="light"] .logo-light{display:block}
+  </style>
+</head>
+<body>
+  <!-- 3D background -->
+  <canvas id="bg3d" aria-hidden="true"></canvas>
+  <div class="bg-vignette" aria-hidden="true"></div>
+
+  <!-- Floating/Sticky Header -->
+  <header class="shell nav-wrap">
+    <div class="nav">
+      <div class="brand">Jmod Media</div>
+
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./services.html">Services</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="./contact.html">Contact Us</a></li>
+          <li><a href="./jmodco.html">Jmod Co.</a></li>
+        </ul>
+      </nav>
+
+      <div class="cta-nav">
+        <button class="hamburger" id="navToggle" aria-label="Open menu">☰</button>
+        <button id="themeToggle" class="btn" type="button">Toggle Theme</button>
+      </div>
+    </div>
+
+    <!-- Mobile slide-down -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="./index.html">Home</a>
+      <a href="./services.html">Services</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact Us</a>
+      <a href="./jmodco.html">Jmod Co.</a>
+    </div>
+  </header>
+
+  <!-- Hero & Phone -->
+  <main class="shell hero">
+    <div class="panel hero-card">
+      <div class="logo-wrap">
+        <img id="logoDark" class="media-logo logo-dark" alt="Jmod Media logo dark" loading="lazy" />
+        <img id="logoLight" class="media-logo logo-light" alt="Jmod Media logo light" loading="lazy" />
+      </div>
+      <div>
+        <h1 class="title">Create once. Publish everywhere.</h1>
+        <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
+        <div class="badges">
+          <span class="soon">Pre-Download (Coming Soon)</span>
+          <a class="store-badge-wrap" href="#"><img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+          <a class="store-badge-wrap" href="#"><img class="store-badge store-play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="phone">
+        <div class="phone-screen">
+          <div>
+            <div class="pill" style="width:max-content">Jmod Media</div>
+            <h4 style="margin:8px 0 0;font-size:18px">New Post (Instagram)</h4>
+            <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
+            <div class="ig-slot">
+              <!-- Your IG post -->
+              <blockquote class="instagram-media"
+                data-instgrm-permalink="https://www.instagram.com/p/DQU-7RWjGXz/"
+                data-instgrm-version="14"
+                style="background:#FFF;border:0;border-radius:12px;box-shadow:none;margin:0;padding:0;">
+              </blockquote>
+            </div>
+          </div>
+          <div class="dock">
+            <div class="pill">Compose</div><div class="pill">Calendar</div><div class="pill">Brand Kit</div><div class="pill">Analytics</div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-ctas">
+        <a class="btn" href="#waitlist">Join the Waitlist</a>
+        <a class="btn ghost" href="./media/pricing.html">Pricing</a>
+      </div>
+    </aside>
+  </main>
+
+  <!-- FEATURES (original) -->
+  <section class="section" aria-labelledby="featTitle">
+    <h2 id="featTitle">Everything you need to post in minutes</h2>
+    <p class="lead">The Jmod Media phone app (with matching web dashboard) prioritizes speed, consistency, and control.</p>
+    <div class="grid">
+      <div class="card"><div class="chip">Composer</div><h3>One-tap Post Builder</h3><p>Drop a photo, pick a template, tweak copy with AI assist, and publish to multiple networks at once.</p><div class="stack"><span class="mono">Image → Caption → Hashtags</span><span class="mono">Multi-channel</span><span class="mono">AI rewrite</span></div></div>
+      <div class="card"><div class="chip">Calendar</div><h3>Queue & Auto-Schedule</h3><p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p><div class="stack"><span class="mono">Best-time AI</span><span class="mono">Recurring slots</span><span class="mono">Holiday sets</span></div></div>
+      <div class="card"><div class="chip">Brand Kit</div><h3>On-Brand, Every Time</h3><p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p><div class="stack"><span class="mono">Logo lockups</span><span class="mono">Tone presets</span><span class="mono">Approval flow</span></div></div>
+      <div class="card"><div class="chip">Templates</div><h3>Reusable Post Types</h3><p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p><div class="stack"><span class="mono">Image + Copy</span><span class="mono">Per-channel</span></div></div>
+      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with suggested replies and auto-responders after hours.</p><div class="stack"><span class="mono">QA pairs</span><span class="mono">Auto-DM</span></div></div>
+      <div class="card"><div class="chip">Insights</div><h3>Post-level Analytics</h3><p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p><div class="stack"><span class="mono">Channel score</span><span class="mono">A/B templates</span></div></div>
+    </div>
+  </section>
+
+  <!-- small biz band -->
+  <section class="smb">
+    <div class="band">
+      <strong>Built for small business clarity.</strong>
+      <span style="color:var(--text);opacity:.9">AI helps pick what to post, generates captions, and suggests SEO tags & hashtags—so you show up, consistently.</span>
+      <a class="btn" href="#waitlist">Join the Waitlist</a>
+    </div>
+  </section>
+
+  <!-- waitlist -->
+  <section id="waitlist" class="section" aria-labelledby="wlTitle">
+    <h2 id="wlTitle">Be first to launch with us</h2>
+    <p class="lead">Owner-operators get early access, onboarding help, and founder pricing.</p>
+    <form class="card" style="display:grid;grid-template-columns:1.2fr .8fr auto;gap:12px;align-items:center" onsubmit="event.preventDefault(); alert('Thanks! You’re on the list.');">
+      <input type="text" placeholder="Business name" required
+             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
+      <input type="email" placeholder="Email address" required
+             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
+      <button class="btn" type="submit">Join</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer class="shell" id="footerMount"></footer>
+
+  <!-- Libraries -->
+  <script async src="https://www.instagram.com/embed.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+  <script>
+    const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
+
+    // Swap logos per theme using absolute paths
+    document.addEventListener('DOMContentLoaded', () => {
+      const d = document.getElementById('logoDark');
+      const l = document.getElementById('logoLight');
+      if (d) d.src = ASSETS_BASE + "Jmod_MediaTP.png";
+      if (l) l.src = ASSETS_BASE + "Jmod_Media.png";
+    });
+
+    // Load shared footer
+    (async function loadFooter(){
+      try{
+        const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
+        const html = await res.text();
+        const mount = document.getElementById('footerMount');
+        mount.innerHTML = html;
+        const y = mount.querySelector('#copyright');
+        if (y) y.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+      }catch(e){
+        const mount = document.getElementById('footerMount');
+        mount.innerHTML = `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
+          <div id="copyright">© ${new Date().getFullYear()} Jmod Co.</div>
+          <div>Built for small business clarity.</div>
+        </div>`;
+      }
+    })();
+
+    // Theme + mobile menu
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    function applyAutoTheme(){
+      if (matchMedia('(prefers-color-scheme: light)').matches){ root.setAttribute('data-theme','light'); }
+      else { root.setAttribute('data-theme','dark'); }
+    }
+    if (root.getAttribute('data-theme') === 'auto') applyAutoTheme();
+    matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', e=>{
+      if (root.getAttribute('data-theme')==='auto'){ root.setAttribute('data-theme', e.matches ? 'light':'dark'); }
+    });
+    toggle?.addEventListener('click', ()=>{
+      const cur = root.getAttribute('data-theme');
+      const next = cur==='auto' ? 'dark' : cur==='dark' ? 'light' : 'auto';
+      root.setAttribute('data-theme', next);
+      if (next==='auto') applyAutoTheme();
+    });
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    navToggle?.addEventListener('click', ()=>{
+      const open = mobileMenu.style.display === 'block';
+      mobileMenu.style.display = open ? 'none' : 'block';
+      navToggle.textContent = open ? '☰' : '✕';
+    });
+
+    /* ========= 3D BACKGROUND: Floating Social Icons (with glow) ========= */
+    const ICONS = [
+      // YouTube, Facebook, Instagram, TikTok, Snapchat, LinkedIn, Twitch, Pinterest,
+      // Reddit, X, Threads, WhatsApp, Kick, Discord, Rumble, Kik
+      "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo_2023.png",
+      "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg",
+      "https://upload.wikimedia.org/wikipedia/en/0/0a/TikTok_logo.svg",
+      "https://upload.wikimedia.org/wikipedia/en/a/ad/Snapchat_logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png",
+      "https://upload.wikimedia.org/wikipedia/commons/3/3f/Twitch_logo_Purple.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png",
+      "https://upload.wikimedia.org/wikipedia/en/8/82/Reddit_logo_and_wordmark.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/9/95/X_logo_2023.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/9/9a/Threads_%28app%29_logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png",
+      "https://upload.wikimedia.org/wikipedia/commons/f/f3/Kick.com_logo.png",
+      "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/7/7c/Rumble_Logo_2022.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/e/e4/Kik_Messenger_logo.svg"
+    ];
+
+    function init3D(){
+      const canvas = document.getElementById('bg3d');
+      const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:'high-performance'});
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 200);
+      camera.position.set(0, 1.6, 8);
+
+      // Ambient so sprites are visible even without lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+
+      // Loader that works cross-origin
+      const loader = new THREE.TextureLoader(); loader.setCrossOrigin('anonymous');
+
+      const sprites = [];
+      const MAX = /Mobi|Android/i.test(navigator.userAgent) ? 10 : 22;
+
+      function spawnOne(tex){
+        // Base sprite (icon)
+        const baseMat = new THREE.SpriteMaterial({map: tex, transparent:true, opacity:0});
+        const base = new THREE.Sprite(baseMat);
+        // Glow sprite (same texture, bigger, additive, low opacity)
+        const glowMat = new THREE.SpriteMaterial({map: tex, color:0xffffff, blending:THREE.AdditiveBlending, transparent:true, opacity:0});
+        const glow = new THREE.Sprite(glowMat);
+
+        const s = THREE.MathUtils.randFloat(0.7, 1.5); // size factor
+        base.scale.set(s, s, 1);
+        glow.scale.set(s*1.8, s*1.8, 1);
+
+        function reset(first=false){
+          const x = (Math.random()-0.5)*28;
+          const y = (Math.random()-0.5)*16;
+          const z = - (Math.random()*30 + 6);
+          base.position.set(x,y,z);
+          glow.position.copy(base.position);
+          base.material.opacity = glow.material.opacity = 0;
+          base.userData = {life:0, max:THREE.MathUtils.randFloat(4.5,8.0), phase:'in'};
+          if (!first){
+            const ns = THREE.MathUtils.randFloat(0.7,1.5);
+            base.scale.set(ns,ns,1);
+            glow.scale.set(ns*1.8,ns*1.8,1);
+          }
+        }
+        reset(true);
+
+        scene.add(glow); scene.add(base);
+        sprites.push({base, glow, reset});
+      }
+
+      // Preload all icons then populate
+      Promise.allSettled(ICONS.map(src => new Promise((res,rej)=>{
+        loader.load(src, tex=>res(tex), undefined, err=>res(null)); // resolve null on error to keep going
+      }))).then(results=>{
+        const textures = results.map(r=>r.value).filter(Boolean);
+        for (let i=0;i<MAX;i++){
+          spawnOne(textures[i % textures.length]);
+        }
+      });
+
+      // Parallax
+      let targetRX=0, targetRY=0;
+      window.addEventListener('mousemove', (e)=>{
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;
+        const ny = (e.clientY / window.innerHeight) * 2 - 1;
+        targetRY = nx * 0.25;
+        targetRX = ny * 0.12;
+      });
+
+      function onResize(){ camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }
+      window.addEventListener('resize', onResize);
+
+      // Perf guard
+      let last=performance.now(), frames=0, low=false;
+      function guard(now){
+        frames++;
+        if (now-last>1500){
+          const fps = frames/((now-last)/1000);
+          if (fps<35 && !low) low = true;
+          last = now; frames=0;
+        }
+        return low;
+      }
+      document.addEventListener('visibilitychange', ()=>{ if (document.hidden) renderer.setAnimationLoop(null); else renderer.setAnimationLoop(tick); });
+
+      function tick(now=0){
+        const low = guard(now);
+        camera.rotation.x += (targetRX - camera.rotation.x)*0.05;
+        camera.rotation.y += (targetRY - camera.rotation.y)*0.05;
+
+        for (const s of sprites){
+          const {base, glow, reset} = s;
+          const ud = base.userData;
+          const dt = 0.016;
+          ud.life += dt;
+
+          // Drift forward + slight horizontal/vertical wobble
+          const speed = (low?0.007:0.01);
+          base.position.z += speed; glow.position.z += speed;
+          base.position.x += Math.sin(now*0.0003 + base.id)*0.0012;
+          base.position.y += Math.cos(now*0.00025 + base.id)*0.0009;
+          glow.position.x = base.position.x; glow.position.y = base.position.y;
+
+          // Fade in/out
+          const f = low ? 0.015 : 0.028;
+          if (ud.phase==='in'){
+            base.material.opacity = Math.min(1, base.material.opacity + f);
+            glow.material.opacity = Math.min(0.35, glow.material.opacity + f*0.8);
+            if (base.material.opacity>=0.98) ud.phase='hold';
+          } else if (ud.phase==='hold'){
+            if (ud.life > ud.max*0.6) ud.phase='out';
+          } else {
+            base.material.opacity = Math.max(0, base.material.opacity - f);
+            glow.material.opacity = Math.max(0, glow.material.opacity - f*0.8);
+            if (base.material.opacity<=0.02 || base.position.z>-1.5){
+              ud.life=0; ud.max=THREE.MathUtils.randFloat(4.5,8.0); ud.phase='in';
+              reset();
+            }
+          }
+        }
+
+        renderer.render(scene, camera);
+      }
+      renderer.setAnimationLoop(tick);
+    }
+
+    try { init3D(); } catch(e){ console.warn('3D background disabled:', e); }
+  </script>
+</body>
+</html>
 <!doctype html>
 <html lang="en" id="top">
 <head>
