@@ -28,11 +28,11 @@
     html,body{height:100%}
     body{
       margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
-      background: linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+      background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
       overflow-x:hidden;position:relative;isolation:isolate;
     }
 
-    /* ===== Aurora background ===== */
+    /* Aurora background (seamless) */
     .bgfx,.bgfx2{
       position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;filter:blur(80px);
       animation: auroraFloat 26s ease-in-out infinite alternate;opacity:.9;
@@ -66,15 +66,13 @@
     .btn:hover{transform:translateY(-1px)}
     .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
     [data-theme="light"] .btn.ghost{border-color:#d9e0ff}
-    .btn.ig{background:linear-gradient(135deg,#d6249f,#285AEB)}
-    .btn.ig:hover{transform:translateY(-1px) scale(1.02)}
 
-    /* Hero section */
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;margin-top:6px}
     .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
     .hero-card{display:flex;gap:22px;align-items:center}
     .hero-card .media-logo{
-      width:clamp(200px,26vw,340px);
+      width:clamp(220px,28vw,360px);
       border-radius:12px;
       transform:scale(1.18);
       transform-origin:center left;
@@ -84,24 +82,49 @@
     .badges{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
     .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
     .store-badge{height:56px;display:block;border-radius:12px;box-shadow:var(--shadow)}
-    .store-badge.store-play{height:84px}
+    .store-badge.store-play{height:84px} /* 1.5x larger than Apple */
     .store-badge-wrap{display:inline-block;line-height:0}
     .store-badge:hover{transform:scale(1.03)}
 
+    /* Phone preview with IG embed */
     .phone{background:var(--panel);border-radius:28px;padding:16px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
-    .phone-screen{border-radius:20px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:16px}
+    [data-theme="light"] .phone{border-color:#eef2ff}
+    .phone-screen{border-radius:20px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden}
+    [data-theme="light"] .phone-screen{background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%)}
     .pill{background:var(--chip);padding:10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
     .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 
     .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
 
+    /* Make Instagram embed fit nicely in the phone */
+    .ig-slot{
+      margin-top:8px;
+      background:rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:8px;
+      overflow:auto;
+      max-height:50vh;   /* keep within the “screen” */
+    }
+    /* Instagram responsive helpers */
+    .instagram-media{margin:0 !important; width:100% !important;}
+    .instagram-media iframe{max-width:100% !important;}
+
+    /* Features */
+    .section{max-width:1200px;margin:42px auto 0;padding:0 24px}
+    .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 14px;font-weight:900}
+    .section p.lead{color:var(--muted);margin:0 0 22px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--panel);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow)}
+    [data-theme="light"] .card{border-color:#eef2ff}
+    .card h3{margin:10px 0 8px;font-size:18px}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:var(--chip);padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:var(--chip);padding:6px 8px;border-radius:8px}
+
     footer{margin-top:56px}
 
-    @media (max-width:1024px){.hero{grid-template-columns:1fr}}
-    @media (max-width:640px){
-      nav ul{display:none}
-      .store-badge{height:52px}
-    }
+    @media (max-width:1024px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){nav ul{display:none}.grid{grid-template-columns:1fr}.store-badge{height:52px}}
 
     .logo-dark{display:block}.logo-light{display:none}
     [data-theme="light"] .logo-dark{display:none}
@@ -111,6 +134,7 @@
 <body>
   <div class="bgfx"></div><div class="bgfx2"></div>
 
+  <!-- Header -->
   <header class="shell">
     <div class="nav">
       <div class="brand">Jmod Media</div>
@@ -129,8 +153,10 @@
     </div>
   </header>
 
+  <!-- Hero & Phone -->
   <main class="shell hero">
     <div class="panel hero-card">
+      <!-- Logos loaded via JS to absolute assets path -->
       <img id="logoDark" class="media-logo logo-dark" alt="Jmod Media logo dark" loading="lazy" />
       <img id="logoLight" class="media-logo logo-light" alt="Jmod Media logo light" loading="lazy" />
       <div>
@@ -138,12 +164,8 @@
         <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
         <div class="badges">
           <span class="soon">Pre-Download (Coming Soon)</span>
-          <a class="store-badge-wrap" href="#">
-            <img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
-          </a>
-          <a class="store-badge-wrap" href="#">
-            <img class="store-badge store-play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play">
-          </a>
+          <a class="store-badge-wrap" href="#"><img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+          <a class="store-badge-wrap" href="#"><img class="store-badge store-play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
         </div>
       </div>
     </div>
@@ -153,12 +175,15 @@
         <div class="phone-screen">
           <div>
             <div class="pill" style="width:max-content">Jmod Media</div>
-            <h4 style="margin:8px 0 0;font-size:18px">New Post</h4>
+            <h4 style="margin:8px 0 0;font-size:18px">New Post (Instagram)</h4>
             <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
-            <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:10px;margin-top:8px">
-              <div style="font-weight:700;margin-bottom:6px">Caption (AI)</div>
-              <div style="font-size:12px;color:var(--text);opacity:.9">“Congrats to <strong>@Jordan</strong> on the new remote start! ❄️ Tap for install details.”</div>
-              <div style="margin-top:6px;font-size:12px;opacity:.8">#RoundRock #RemoteStart #CarAudio</div>
+            <!-- IG embed lives here -->
+            <div class="ig-slot">
+              <!-- Replace the permalink with any PUBLIC post from https://instagram.com/jmoddes/ -->
+              <blockquote class="instagram-media"
+                data-instgrm-permalink="https://www.instagram.com/p/POST_URL_HERE/"
+                data-instgrm-version="14"
+                style="background:#FFF; border:0; border-radius:12px; box-shadow:none; margin:0; padding:0;"></blockquote>
             </div>
           </div>
           <div class="dock">
@@ -169,29 +194,45 @@
       <div class="preview-ctas">
         <a class="btn" href="#waitlist">Join the Waitlist</a>
         <a class="btn ghost" href="./media/pricing.html">Pricing</a>
-        <a class="btn ig" href="https://www.instagram.com/jmoddes/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.9.3 2.4.6.6.3 1.1.7 1.6 1.2.5.5.9 1 1.2 1.6.3.5.5 1.2.6 2.4.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.3 1.9-.6 2.4-.3.6-.7 1.1-1.2 1.6-.5.5-1 .9-1.6 1.2-.5.3-1.2.5-2.4.6-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.9-.3-2.4-.6-.6-.3-1.1-.7-1.6-1.2a5 5 0 0 1-1.2-1.6c-.3-.5-.5-1.2-.6-2.4C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.3-1.9.6-2.4.3-.6.7-1.1 1.2-1.6.5-.5 1-.9 1.6-1.2.5-.3 1.2-.5 2.4-.6C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.2 0-3.6 0-4.8.1-1 .1-1.5.2-1.9.4-.5.2-.8.4-1.2.8-.4.4-.6.7-.8 1.2-.2.4-.3.9-.4 1.9-.1 1.2-.1 1.6-.1 4.8s0 3.6.1 4.8c.1 1 .2 1.5.4 1.9.2.5.4.8.8 1.2.4.4.7.6 1.2.8.4.2.9.3 1.9.4 1.2.1 1.6.1 4.8.1s3.6 0 4.8-.1c1-.1 1.5-.2 1.9-.4.5-.2.8-.4 1.2-.8.4-.4.6-.7.8-1.2.2-.4.3-.9.4-1.9.1-1.2.1-1.6.1-4.8s0-3.6-.1-4.8c-.1-1-.2-1.5-.4-1.9a3.4 3.4 0 0 0-.8-1.2 3.4 3.4 0 0 0-1.2-.8c-.4-.2-.9-.3-1.9-.4-1.2-.1-1.6-.1-4.8-.1Zm0 3.7a6.3 6.3 0 1 1 0 12.6 6.3 6.3 0 0 1 0-12.6Zm0 1.8a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Zm5-2.1a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Z"/></svg>
-          <span>Instagram</span>
-        </a>
       </div>
     </aside>
   </main>
 
+  <!-- Features section is back -->
+  <section class="section" aria-labelledby="featTitle">
+    <h2 id="featTitle">Everything you need to post in minutes</h2>
+    <p class="lead">The Jmod Media phone app (with matching web dashboard) prioritizes speed, consistency, and control.</p>
+    <div class="grid">
+      <div class="card"><div class="chip">Composer</div><h3>One-tap Post Builder</h3><p>Drop a photo, pick a template, tweak copy with AI assist, and publish to multiple networks at once.</p><div class="stack"><span class="mono">Image → Caption → Hashtags</span><span class="mono">Multi-channel</span><span class="mono">AI rewrite</span></div></div>
+      <div class="card"><div class="chip">Calendar</div><h3>Queue & Auto-Schedule</h3><p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p><div class="stack"><span class="mono">Best-time AI</span><span class="mono">Recurring slots</span><span class="mono">Holiday sets</span></div></div>
+      <div class="card"><div class="chip">Brand Kit</div><h3>On-Brand, Every Time</h3><p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p><div class="stack"><span class="mono">Logo lockups</span><span class="mono">Tone presets</span><span class="mono">Approval flow</span></div></div>
+      <div class="card"><div class="chip">Templates</div><h3>Reusable Post Types</h3><p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p><div class="stack"><span class="mono">Image + Copy</span><span class="mono">Per-channel</span></div></div>
+      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with suggested replies and auto-responders after hours.</p><div class="stack"><span class="mono">QA pairs</span><span class="mono">Auto-DM</span></div></div>
+      <div class="card"><div class="chip">Insights</div><h3>Post-level Analytics</h3><p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p><div class="stack"><span class="mono">Channel score</span><span class="mono">A/B templates</span></div></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="shell" id="footerMount"></footer>
+
+  <!-- Instagram embed script (must be after the blockquote) -->
+  <script async src="//www.instagram.com/embed.js"></script>
 
   <script>
     const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
+    // media logos
     document.getElementById('logoDark').src  = ASSETS_BASE + "Jmod_MediaTP.png";
     document.getElementById('logoLight').src = ASSETS_BASE + "Jmod_Media.png";
 
-    async function loadFooter(){
+    // load shared footer
+    (async function loadFooter(){
       try{
         const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
         const html = await res.text();
         const mount = document.getElementById('footerMount');
         mount.innerHTML = html;
-        const el = mount.querySelector('#copyright');
-        if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+        const y = mount.querySelector('#copyright');
+        if (y) y.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
       }catch(e){
         const mount = document.getElementById('footerMount');
         mount.innerHTML = `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
@@ -199,11 +240,25 @@
           <div>Built for small business clarity.</div>
         </div>`;
       }
-    }
-    loadFooter();
+    })();
 
+    // theme toggle (auto → dark → light)
     const root = document.documentElement;
     const toggle = document.getElementById('themeToggle');
     function applyAutoTheme(){
       if (matchMedia('(prefers-color-scheme: light)').matches){ root.setAttribute('data-theme','light'); }
-      else
+      else { root.setAttribute('data-theme','dark'); }
+    }
+    if (root.getAttribute('data-theme') === 'auto') applyAutoTheme();
+    matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', e=>{
+      if (root.getAttribute('data-theme')==='auto'){ root.setAttribute('data-theme', e.matches ? 'light':'dark'); }
+    });
+    toggle?.addEventListener('click', ()=>{
+      const cur = root.getAttribute('data-theme');
+      const next = cur==='auto' ? 'dark' : cur==='dark' ? 'light' : 'auto';
+      root.setAttribute('data-theme', next);
+      if (next==='auto') applyAutoTheme();
+    });
+  </script>
+</body>
+</html>
