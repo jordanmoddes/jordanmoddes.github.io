@@ -70,19 +70,22 @@
     /* Hero */
     .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;margin-top:6px}
     .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
-    .hero-card{display:flex;gap:22px;align-items:center}
+    .hero-card{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
     .hero-card .media-logo{
-      width:clamp(220px,28vw,360px);
+      width:clamp(280px,34vw,440px);
       border-radius:12px;
-      transform:scale(1.18);
+      transform:translateX(-18px) scale(1.22); /* compensate left transparent padding + enlarge */
       transform-origin:center left;
+    }
+    @media (max-width:820px){
+      .hero-card .media-logo{transform:translateX(-10px) scale(1.12);width:clamp(220px,42vw,360px)}
     }
     .title{font-size:clamp(32px,5vw,54px);line-height:1.02;margin:0 0 10px;font-weight:900}
     .subtitle{font-size:clamp(16px,2vw,18px);color:var(--muted);margin:0 0 16px}
     .badges{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
     .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
     .store-badge{height:56px;display:block;border-radius:12px;box-shadow:var(--shadow)}
-    .store-badge.store-play{height:84px} /* 1.5x larger than Apple */
+    .store-badge.store-play{height:64px} /* ~15% larger than Apple */
     .store-badge-wrap{display:inline-block;line-height:0}
     .store-badge:hover{transform:scale(1.03)}
 
@@ -96,18 +99,12 @@
 
     .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
 
-    /* Make Instagram embed fit nicely in the phone */
     .ig-slot{
-      margin-top:8px;
-      background:rgba(255,255,255,.06);
-      border-radius:12px;
-      padding:8px;
-      overflow:auto;
-      max-height:50vh;   /* keep within the “screen” */
+      margin-top:8px;background:rgba(255,255,255,.06);border-radius:12px;padding:8px;
+      overflow:auto;max-height:50vh;
     }
-    /* Instagram responsive helpers */
-    .instagram-media{margin:0 !important; width:100% !important;}
-    .instagram-media iframe{max-width:100% !important;}
+    .instagram-media{margin:0 !important;width:100% !important}
+    .instagram-media iframe{max-width:100% !important}
 
     /* Features */
     .section{max-width:1200px;margin:42px auto 0;padding:0 24px}
@@ -124,7 +121,7 @@
     footer{margin-top:56px}
 
     @media (max-width:1024px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
-    @media (max-width:640px){nav ul{display:none}.grid{grid-template-columns:1fr}.store-badge{height:52px}}
+    @media (max-width:640px){nav ul{display:none}.grid{grid-template-columns:1fr}.store-badge{height:52px}.store-badge.store-play{height:60px}}
 
     .logo-dark{display:block}.logo-light{display:none}
     [data-theme="light"] .logo-dark{display:none}
@@ -177,13 +174,13 @@
             <div class="pill" style="width:max-content">Jmod Media</div>
             <h4 style="margin:8px 0 0;font-size:18px">New Post (Instagram)</h4>
             <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
-            <!-- IG embed lives here -->
             <div class="ig-slot">
-              <!-- Replace the permalink with any PUBLIC post from https://instagram.com/jmoddes/ -->
+              <!-- Your public post (with trailing slash) -->
               <blockquote class="instagram-media"
                 data-instgrm-permalink="https://www.instagram.com/p/DQKaZKJD8_8/"
                 data-instgrm-version="14"
-                style="background:#FFF; border:0; border-radius:12px; box-shadow:none; margin:0; padding:0;"></blockquote>
+                style="background:#FFF;border:0;border-radius:12px;box-shadow:none;margin:0;padding:0;">
+              </blockquote>
             </div>
           </div>
           <div class="dock">
@@ -198,7 +195,7 @@
     </aside>
   </main>
 
-  <!-- Features section is back -->
+  <!-- Features -->
   <section class="section" aria-labelledby="featTitle">
     <h2 id="featTitle">Everything you need to post in minutes</h2>
     <p class="lead">The Jmod Media phone app (with matching web dashboard) prioritizes speed, consistency, and control.</p>
@@ -215,16 +212,14 @@
   <!-- Footer -->
   <footer class="shell" id="footerMount"></footer>
 
-  <!-- Instagram embed script (must be after the blockquote) -->
-  <script async src="//www.instagram.com/embed.js"></script>
+  <!-- Instagram embed -->
+  <script async src="https://www.instagram.com/embed.js"></script>
 
   <script>
     const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
-    // media logos
     document.getElementById('logoDark').src  = ASSETS_BASE + "Jmod_MediaTP.png";
     document.getElementById('logoLight').src = ASSETS_BASE + "Jmod_Media.png";
 
-    // load shared footer
     (async function loadFooter(){
       try{
         const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
