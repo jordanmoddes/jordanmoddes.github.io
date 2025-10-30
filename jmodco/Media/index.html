@@ -9,13 +9,43 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
-
-/* =========================================================
-   Jmod Media — Full CSS
-   ========================================================= */
   <style>
-/* ---------- Design Tokens ---------- */
+/* =========================================================
+   Jmod Media — Full CSS (drop-in replacement)
+   Where to edit sizes: see "SIZE KNOBS — EDIT ANYTIME" below.
+   ========================================================= */
+
+/* ---------- SIZE KNOBS — EDIT ANYTIME ---------- */
 :root{
+  /* Layout */
+  --shell: 1180px;    /* page content max-width */
+  --pad: 24px;
+
+  /* HERO */
+  --logo-size: 360px; /* size of the big Media logo */
+  --hero-gap: 28px;
+
+  /* PHONE PREVIEW */
+  --phone-h: 800px;   /* total phone height */
+  --phone-w: 360px;   /* total phone width */
+  --copy-max-h: 120px;/* max height of description box above IG */
+  --dock-font: 11px;  /* font size for the 4 dock pills */
+  --dock-gap: 8px;    /* spacing between dock pills */
+  --dock-pill-py: 8px;/* vertical padding inside each pill */
+
+  /* STORE BADGES */
+  --badge-h: 46px;       /* badge height (Apple/Google) */
+  --badge-radius: 12px;  /* corner radius */
+  --badge-icon-h: 22px;  /* inner icon height */
+  --badge-gap: 12px;     /* space between the two badges */
+
+  /* FLOATING ICONS (background) */
+  --float-min: 40px;     /* smallest icon size */
+  --float-max: 72px;     /* largest icon size */
+  --float-duration: 8s;  /* each icon flight duration */
+  --float-stagger: .6s;  /* delay between each of first 13 */
+
+  /* Colors / tokens */
   --bg: #0b1020;
   --panel: #101733;
   --text: #e8ecff;
@@ -32,18 +62,7 @@
   --radius: 16px;
   --neon:#33ff66;
 
-  /* Layout knobs */
-  --shell: 1180px;
-  --pad: 24px;
-
-  /* Hero logo size knob */
-  --logo-size: 360px;
-
-  /* Phone knobs */
-  --phone-h: 800px;    /* ← change height as you like */
-  --phone-w: 360px;    /* ← change width if needed */
-
-  /* BG gradient (no bands) */
+  /* Background gradient (no banding) */
   --gradient:
     radial-gradient(1400px 700px at 15% -10%, rgba(123,57,255,.22), transparent 60%),
     radial-gradient(1200px 600px at 110% 10%, rgba(34,211,238,.18), transparent 62%),
@@ -98,9 +117,7 @@ a:hover{ text-decoration:underline }
   display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
   gap:12px;
 }
-.nav .brand{
-  font-weight:900; letter-spacing:.2px; font-size:18px;
-}
+.nav .brand{ font-weight:900; letter-spacing:.2px; font-size:18px }
 .nav .center ul{
   display:flex; gap:20px; list-style:none; margin:0; padding:0; justify-content:center;
 }
@@ -117,7 +134,7 @@ html[data-theme="light"] .btn{ border-color:#d9e0ff }
 /* ---------- Hero ---------- */
 .hero{ padding:34px 0 12px }
 .hero-grid{
-  display:grid; grid-template-columns: 0.9fr 1.1fr; gap:28px; align-items:center;
+  display:grid; grid-template-columns: 0.9fr 1.1fr; gap:var(--hero-gap); align-items:center;
 }
 .hero-logo{
   width:var(--logo-size); max-width:100%; height:auto; display:block;
@@ -130,16 +147,16 @@ html[data-theme="light"] .btn{ border-color:#d9e0ff }
 }
 .hero p{ margin:0 0 18px; color:var(--muted) }
 
-/* Store badges (consistent) */
-.store-badges{ display:flex; gap:12px; flex-wrap:wrap }
+/* Store badges (use size knobs above) */
+.store-badges{ display:flex; gap:var(--badge-gap); flex-wrap:wrap }
 .store-badge{
   display:inline-flex; align-items:center; justify-content:center;
-  height:46px; padding:0 14px;
-  background:#000; color:#fff; border-radius:12px;
+  height:var(--badge-h); padding:0 14px;
+  background:#000; color:#fff; border-radius:var(--badge-radius);
   border:1px solid rgba(255,255,255,.12); box-shadow:var(--shadow);
 }
 html[data-theme="light"] .store-badge{ background:#111; color:#fff }
-.store-badge img{ height:22px; width:auto; display:block }
+.store-badge img{ height:var(--badge-icon-h); width:auto; display:block }
 .store-badge span{ font-weight:800; font-size:14px }
 
 /* ---------- Floating Social Icons ---------- */
@@ -149,7 +166,7 @@ html[data-theme="light"] .store-badge{ background:#111; color:#fff }
   transform: translate(-50%,-50%) scale(.75);
   opacity:0;
   filter: drop-shadow(0 6px 16px rgba(0,0,0,.35));
-  animation: driftOut 8s ease-in-out infinite;
+  animation: driftOut var(--float-duration) ease-in-out infinite;
 }
 @keyframes driftOut{
   0%   { opacity:0; transform:translate(-50%,-50%) scale(.4) }
@@ -158,19 +175,19 @@ html[data-theme="light"] .store-badge{ background:#111; color:#fff }
   100% { opacity:0; transform:translate(var(--dx2), var(--dy2)) scale(1.1) }
 }
 /* subtle stagger support (first 13) */
-.icon:nth-child(1){ animation-delay:0s }
-.icon:nth-child(2){ animation-delay:.6s }
-.icon:nth-child(3){ animation-delay:1.2s }
-.icon:nth-child(4){ animation-delay:1.8s }
-.icon:nth-child(5){ animation-delay:2.4s }
-.icon:nth-child(6){ animation-delay:3.0s }
-.icon:nth-child(7){ animation-delay:3.6s }
-.icon:nth-child(8){ animation-delay:4.2s }
-.icon:nth-child(9){ animation-delay:4.8s }
-.icon:nth-child(10){ animation-delay:5.4s }
-.icon:nth-child(11){ animation-delay:6.0s }
-.icon:nth-child(12){ animation-delay:6.6s }
-.icon:nth-child(13){ animation-delay:7.2s }
+.icon:nth-child(1){ animation-delay:calc(var(--float-stagger) * 0) }
+.icon:nth-child(2){ animation-delay:calc(var(--float-stagger) * 1) }
+.icon:nth-child(3){ animation-delay:calc(var(--float-stagger) * 2) }
+.icon:nth-child(4){ animation-delay:calc(var(--float-stagger) * 3) }
+.icon:nth-child(5){ animation-delay:calc(var(--float-stagger) * 4) }
+.icon:nth-child(6){ animation-delay:calc(var(--float-stagger) * 5) }
+.icon:nth-child(7){ animation-delay:calc(var(--float-stagger) * 6) }
+.icon:nth-child(8){ animation-delay:calc(var(--float-stagger) * 7) }
+.icon:nth-child(9){ animation-delay:calc(var(--float-stagger) * 8) }
+.icon:nth-child(10){ animation-delay:calc(var(--float-stagger) * 9) }
+.icon:nth-child(11){ animation-delay:calc(var(--float-stagger) * 10) }
+.icon:nth-child(12){ animation-delay:calc(var(--float-stagger) * 11) }
+.icon:nth-child(13){ animation-delay:calc(var(--float-stagger) * 12) }
 
 /* ---------- Phone Preview (fixed height + filling IG) ---------- */
 .phone-wrap{ display:flex; justify-content:center; margin-top:18px }
@@ -213,23 +230,23 @@ html[data-theme="light"] .screen{
   background:rgba(255,255,255,.08); color:#dfe5ff;
   border-radius:12px; padding:10px 12px;
   font-size:13px; line-height:1.35;
-  max-height:120px; overflow:auto;
+  max-height:var(--copy-max-h); overflow:auto;
 }
 .ig{
   width:92%;
-  flex:1 1 auto; min-height:0; /* let flex shrink if needed */
+  flex:1 1 auto; min-height:0; /* fill the gap between copy and dock */
   display:block; border:0; border-radius:12px; background:#000;
   margin:0 auto;
 }
 .dock{
   width:92%; margin:10px auto 0; flex:0 0 auto;
-  display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:var(--dock-gap);
   align-items:center; justify-items:stretch;
 }
 .pill{
   background:transparent; color:var(--text);
-  padding:8px 0; border-radius:12px; text-align:center;
-  font-weight:800; font-size:11px; letter-spacing:.2px;
+  padding:var(--dock-pill-py) 0; border-radius:12px; text-align:center;
+  font-weight:800; font-size:var(--dock-font); letter-spacing:.2px;
   border:1px solid rgba(255,255,255,.65);
 }
 
@@ -283,11 +300,13 @@ html[data-theme="light"] footer{ border-top-color:#e5e7eb }
   .nav{ grid-template-columns:1fr auto 1fr }
   .center ul{ gap:14px }
   .grid{ grid-template-columns:1fr }
-  .store-badge{ height:44px }
-  .store-badge img{ height:20px }
-  :root{ --logo-size: 240px; --phone-w: 340px; }
+  :root{
+    --logo-size: 240px;
+    --phone-w: 340px;
+    --badge-h: 44px;
+    --badge-icon-h: 20px;
+  }
 }
-
   </style>
 </head>
 
