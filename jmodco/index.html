@@ -5,217 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jmod Co. — Preview</title>
   <meta name="description" content="Jmod Co. builds practical AI systems that simplify daily operations for real-world businesses." />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- =========================
-       CSS SECTION
+       CSS SECTION (FULL)
        ========================= -->
   <style>
+    :root{
+      --text:#e8eef6;
+      --muted:#a7b4c7;
+      --brand:#4f86ff;
+      --radius:18px;
+      --card: rgba(255,255,255,.04);
+      --card-border: rgba(255,255,255,.08);
 
-:root{
-  /* Theme */
-  --text:#e8eef6;
-  --muted:#a7b4c7;
-  --brand:#4f86ff;
-  --radius:18px;
-  --card: rgba(255,255,255,.04);
-  --card-border: rgba(255,255,255,.08);
+      --header-h: 72px;
 
-  /* Header height (anchors offset against this) */
-  --header-h: 72px;
+      /* Radial sizing (tweak these three if you want) */
+      --orbit: 210px;       /* closer/farther from center */
+      --node-size: 160px;   /* satellite logos */
+      --hub-size: 540px;    /* center logo */
+      --hub-offset-y: -8px; /* micro vertical nudge */
+      --hub-offset-x: 0px;  /* micro horizontal nudge */
+    }
 
-  /* --- Radial sizing + alignment --- */
-  --orbit: 220px;         /* distance center → satellites (lower = closer) */
-  --node-size: 168px;     /* satellite logo size */
-  --hub-size: 560px;      /* center logo size */
-  --hub-offset-y: -10px;  /* micro vertical nudge of entire radial */
-  --hub-offset-x: 0px;    /* micro horizontal nudge of entire radial */
-}
+    *{ box-sizing:border-box }
+    html,body{ height:100% }
+    html{ scroll-behavior:smooth }
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      padding-top: var(--header-h);
 
-/* Base / reset */
-*{ box-sizing:border-box }
-html,body{ height:100% }
-html{ scroll-behavior:smooth }
-body{
-  margin:0;
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      /* Seamless background */
+      background:
+        radial-gradient(1000px 600px at 20% 15%, rgba(26,79,132,.35) 0%, rgba(26,79,132,0) 60%),
+        radial-gradient(900px 550px at 80% 75%, rgba(16,105,133,.30) 0%, rgba(16,105,133,0) 60%),
+        radial-gradient(800px 520px at 95% 8%,  rgba(34,45,82,.35) 0%,  rgba(34,45,82,0) 55%),
+        #0a0f18;
+      background-attachment: fixed,fixed,fixed,fixed;
+      min-height:100vh;
+    }
+    a{ color:var(--text); text-decoration:none }
 
-  /* Keep content clear of fixed header */
-  padding-top: var(--header-h);
+    .container{ max-width:1100px; margin:0 auto; padding:16px 24px }
+    .center{ text-align:center }
+    .section{ padding:24px 0 } /* default; we’ll tighten on specific sections */
+    h1,h2{ margin:0 0 12px }
+    section,header,footer{ scroll-margin-top: calc(var(--header-h) + 16px) }
 
-  /* Seamless “aurora” background */
-  background:
-    radial-gradient(1000px 600px at 20% 15%, rgba(26,79,132,.35) 0%, rgba(26,79,132,0) 60%),
-    radial-gradient(900px 550px at 80% 75%, rgba(16,105,133,.30) 0%, rgba(16,105,133,0) 60%),
-    radial-gradient(800px 520px at 95% 8%,  rgba(34,45,82,.35) 0%,  rgba(34,45,82,0) 55%),
-    #0a0f18;
-  background-attachment: fixed,fixed,fixed,fixed;
-  min-height:100vh;
-}
-a{ color:var(--text); text-decoration:none }
+    /* ===== Header ===== */
+    .header{
+      position:fixed; left:0; right:0; top:0; z-index:1000;
+      height:var(--header-h);
+      background:rgba(11,15,20,.7);
+      backdrop-filter:saturate(120%) blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .header-inner{
+      height:100%;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+    }
+    .brand .wordmark{ font-weight:500; font-size:1.25rem; letter-spacing:.2px }
+    .brand a{ opacity:.95 } .brand a:hover{ opacity:1 }
+    .nav{ display:flex; align-items:center; gap:10px; padding:8px 0; flex-wrap:nowrap }
+    .nav .item{
+      display:inline-block; padding:8px 14px;
+      border-radius:999px; border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      font-weight:600; letter-spacing:.2px; opacity:.95; transition:.15s ease; white-space:nowrap
+    }
+    .nav .item:hover{ opacity:1; background:rgba(255,255,255,.08) }
+    @media (max-width:560px){ .nav{gap:6px} .nav .item{padding:6px 10px; font-size:.9rem} }
+    @media (max-width:420px){ .nav .item{padding:5px 8px; font-size:.85rem} }
 
-/* Utilities */
-.container{ max-width:1100px; margin:0 auto; padding:16px 24px }
-.center{ text-align:center }
-.section{ padding:24px 0 }
-h1,h2{ margin:0 0 12px }
-section,header,footer{ scroll-margin-top: calc(var(--header-h) + 16px) }
+    /* ===== Hero ===== */
+    .hero-wrap{ max-width:1100px; margin:0 auto; padding:0 24px }
+    .hero-grid{ display:grid; grid-template-columns:1.1fr 1.2fr; gap:28px; align-items:center }
+    .hero-logo{ display:flex; justify-content:center; align-items:center }
+    .hero-logo img{ width:100%; max-width:520px; height:auto; background:transparent; display:block }
+    .hero-text h1{ font-size:clamp(32px,6.2vw,64px); font-weight:800; line-height:1.06; margin:0 0 10px }
+    .hero-under{ color:var(--muted); text-align:center; margin:14px auto 18px; max-width:900px; padding:0 8px }
+    .cta{
+      display:block; width:max-content; margin:0 auto 12px;
+      background:var(--brand); color:#0b0f14; padding:12px 20px; border-radius:12px; font-weight:700;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    @media (max-width:900px){
+      .hero-grid{ grid-template-columns:1fr }
+      .hero-text h1{ text-align:center }
+    }
 
-/* ===== Header (fixed, spans whole page) ===== */
-.header{
-  position:fixed; left:0; right:0; top:0; z-index:1000;
-  height:var(--header-h);
-  background:rgba(11,15,20,.7);
-  backdrop-filter:saturate(120%) blur(10px);
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-.header-inner{
-  height:100%;
-  display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
-}
-.brand .wordmark{ font-weight:500; font-size:1.25rem; letter-spacing:.2px }
-.brand a{ opacity:.95 } .brand a:hover{ opacity:1 }
-.nav{ display:flex; align-items:center; gap:10px; padding:8px 0; flex-wrap:nowrap }
-.nav .item{
-  display:inline-block; padding:8px 14px;
-  border-radius:999px; border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.03);
-  font-weight:600; letter-spacing:.2px; opacity:.95; transition:.15s ease; white-space:nowrap
-}
-.nav .item:hover{ opacity:1; background:rgba(255,255,255,.08) }
-@media (max-width:560px){ .nav{gap:6px} .nav .item{padding:6px 10px; font-size:.9rem} }
-@media (max-width:420px){ .nav .item{padding:5px 8px; font-size:.85rem} }
+    /* ===== About + Mission ===== */
+    .about{ max-width:920px; margin:40px auto 8px; color:var(--muted) }
+    .about h2{ color:var(--text) }
+    .mission{
+      max-width:920px; margin:8px auto 24px; padding:18px;
+      border:1px solid var(--card-border); background:var(--card); border-radius:var(--radius)
+    }
+    .mission h3{ margin:0 0 8px }
 
-/* ===== Hero ===== */
-.hero-wrap{ max-width:1100px; margin:0 auto; padding:0 24px }
-.hero-grid{ display:grid; grid-template-columns:1.1fr 1.2fr; gap:28px; align-items:center }
-.hero-logo{ display:flex; justify-content:center; align-items:center }
-.hero-logo img{ width:100%; max-width:520px; height:auto; background:transparent; display:block }
-.hero-text h1{ font-size:clamp(32px,6.2vw,64px); font-weight:800; line-height:1.06; margin:0 0 10px }
-.hero-under{ color:var(--muted); text-align:center; margin:14px auto 18px; max-width:900px; padding:0 8px }
-.cta{
-  display:block; width:max-content; margin:0 auto 12px;
-  background:var(--brand); color:#0b0f14; padding:12px 20px; border-radius:12px; font-weight:700;
-  border:1px solid rgba(255,255,255,.12);
-}
-@media (max-width:900px){
-  .hero-grid{ grid-template-columns:1fr }
-  .hero-text h1{ text-align:center }
-}
+    /* ===== Our Divisions (tight spacing) ===== */
+    #divisions.section{ padding: 12px 0 }               /* ~2 lines total padding */
+    #divisions h2{ margin-bottom: 8px }                 /* small gap to radial */
 
-/* ===== About + Mission ===== */
-.about{ max-width:920px; margin:40px auto 8px; color:var(--muted) }
-.about h2{ color:var(--text) }
-.mission{
-  max-width:920px; margin:8px auto 24px; padding:18px;
-  border:1px solid var(--card-border); background:var(--card); border-radius:var(--radius)
-}
-.mission h3{ margin:0 0 8px }
+    /* ===== Radial Divisions Map (image nodes) ===== */
+    .divisions-wrap{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:10px;                                          /* tiny gap under h2 */
+    }
+    .radial{
+      position:relative;
+      width:min(980px,95vw);
+      aspect-ratio:1 / 1;
+      margin: 10px auto 12px;                            /* small top/bottom */
+    }
 
-/* ===== Radial Divisions Map (image nodes) ===== */
-.divisions-wrap{
-  /* centers the whole radial between the header and next section */
-  min-height: 68vh;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:14px;
-}
-.radial{
-  position:relative;
-  width:min(980px,95vw);
-  aspect-ratio:1 / 1;
-  margin:18px auto 10px;
-}
+    /* Center hub image */
+    .radial .hub{
+      position:absolute; left:50%; top:50%;
+      transform: translate(calc(-50% + var(--hub-offset-x)),
+                           calc(-50% + var(--hub-offset-y)));
+      width: min(var(--hub-size), 52%);
+      pointer-events:none;
+    }
+    .radial .hub img{ width:100%; height:auto; display:block; background:transparent }
 
-/* Center hub image (bigger than satellites) */
-.radial .hub{
-  position:absolute; left:50%; top:50%;
-  transform: translate(calc(-50% + var(--hub-offset-x)),
-                       calc(-50% + var(--hub-offset-y)));
-  width: min(var(--hub-size), 52%);
-  pointer-events:none;
-}
-.radial .hub img{ width:100%; height:auto; display:block; background:transparent }
+    /* Satellite nodes */
+    .radial .imgnode{
+      --angle:0deg;
+      --_base:
+        translate(calc(-50% + var(--hub-offset-x)),
+                  calc(-50% + var(--hub-offset-y)))
+        rotate(var(--angle));
 
-/* Satellite nodes (PNG sits inside square box, scales uniformly) */
-.radial .imgnode{
-  --angle:0deg;
+      position:absolute; left:50%; top:50%;
+      transform: var(--_base) translateX(var(--orbit)) rotate(calc(-1 * var(--angle)));
+      width: var(--node-size);
+      height: var(--node-size);
+      display:flex; align-items:center; justify-content:center;
+      border-radius:18px; background:transparent;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,.25));
+      transition: transform .3s ease;
+      transform-style: preserve-3d;
+    }
+    .radial .imgnode > img{
+      max-width:100%; max-height:100%;
+      width:auto; height:auto; display:block; background:transparent;
+    }
+    /* Hover: flip and move outward more noticeably */
+    .radial .imgnode:hover{
+      transform: var(--_base)
+                 rotateY(360deg)
+                 translateX(calc(var(--orbit) + 28px))
+                 rotate(calc(-1 * var(--angle)));
+    }
 
-  /* Base transform (reused by animation) */
-  --_base:
-    translate(calc(-50% + var(--hub-offset-x)),
-              calc(-50% + var(--hub-offset-y)))
-    rotate(var(--angle));
+    /* Founder/Contact section spacing tightened */
+    #contact.section{ padding: 12px 0 20px }            /* ~2 lines above this section */
 
-  position:absolute; left:50%; top:50%;
-  transform: var(--_base)
-             translateX(var(--orbit))
-             rotate(calc(-1 * var(--angle)));
+    /* Founder + Contact */
+    .two-col{
+      display:grid; grid-template-columns:1fr; gap:24px; max-width:1100px; margin:12px auto 40px;
+    }
+    @media (min-width:850px){ .two-col{ grid-template-columns:1fr 1fr } }
+    .founder,.contact{
+      background:var(--card); border:1px solid var(--card-border);
+      border-radius:var(--radius); padding:18px; overflow:hidden;
+    }
+    .contact .field{ display:flex; flex-direction:column; margin-bottom:12px }
+    .contact label{ font-size:.9rem; color:var(--muted); margin-bottom:6px }
+    .contact input,.contact textarea{
+      width:100%; background:#111825; border:1px solid rgba(255,255,255,.09); border-radius:12px;
+      padding:12px 14px; color:var(--text); font-family:inherit; box-shadow:inset 0 1px 0 rgba(255,255,255,.03)
+    }
+    .contact textarea{ resize:vertical }
+    .contact .actions{ display:flex; justify-content:flex-end }
+    .contact button{ background:var(--brand); color:#0b0f14; border:none; border-radius:12px; padding:12px 18px; font-weight:700 }
+    .contact input:focus,.contact textarea:focus{ outline:2px solid var(--brand); box-shadow:none }
 
-  width: var(--node-size);
-  height: var(--node-size);
-  display:flex; align-items:center; justify-content:center;
-  border-radius:18px; background:transparent;
-  filter: drop-shadow(0 2px 10px rgba(0,0,0,.25));
-  transition: transform .15s ease;
-}
-.radial .imgnode > img{
-  max-width:100%; max-height:100%;
-  width:auto; height:auto; display:block; background:transparent;
-}
-
-/* Hover micro-nudge */
-.radial .imgnode:hover{
-  transform: var(--_base)
-             translateX(calc(var(--orbit) + 2px))
-             rotate(calc(-1 * var(--angle)));
-}
-
-/* Flip + outward nudge (one-time intro) */
-@keyframes flipOutward {
-  0%   { transform: var(--_base) rotateY(0deg) translateX(var(--orbit)) rotate(calc(-1 * var(--angle))); }
-  50%  { transform: var(--_base) rotateY(180deg) translateX(calc(var(--orbit) + 24px)) rotate(calc(-1 * var(--angle))); }
-  100% { transform: var(--_base) rotateY(360deg) translateX(calc(var(--orbit) + 24px)) rotate(calc(-1 * var(--angle))); }
-}
-.radial .imgnode.animate{
-  animation: flipOutward .9s ease both;
-}
-
-/* Mobile fallback grid (if you keep it) */
-.grid8{ display:none; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:14px auto 54px }
-.grid8 .card{
-  background:var(--card); border:1px solid var(--card-border);
-  border-radius:16px; padding:16px; text-align:center; font-weight:600
-}
-.grid8 .card img{ width:100%; height:auto; display:block; background:transparent; border-radius:12px; margin-bottom:8px }
-@media (min-width:860px){ .grid8{ grid-template-columns:repeat(4,minmax(0,1fr)) } }
-@media (max-width:820px){ .radial{ display:none } .grid8{ display:grid } }
-
-/* ===== Founder + Contact (no clipping) ===== */
-.two-col{
-  display:grid; grid-template-columns:1fr; gap:24px; max-width:1100px; margin:20px auto 60px;
-}
-@media (min-width:850px){ .two-col{ grid-template-columns:1fr 1fr } }
-.founder,.contact{
-  background:var(--card); border:1px solid var(--card-border);
-  border-radius:var(--radius); padding:18px; overflow:hidden;  /* prevent input bleed */
-}
-.contact .field{ display:flex; flex-direction:column; margin-bottom:12px }
-.contact label{ font-size:.9rem; color:var(--muted); margin-bottom:6px }
-.contact input,.contact textarea{
-  width:100%; background:#111825; border:1px solid rgba(255,255,255,.09); border-radius:12px;
-  padding:12px 14px; color:var(--text); font-family:inherit; box-shadow:inset 0 1px 0 rgba(255,255,255,.03)
-}
-.contact textarea{ resize:vertical }
-.contact .actions{ display:flex; justify-content:flex-end }
-.contact button{ background:var(--brand); color:#0b0f14; border:none; border-radius:12px; padding:12px 18px; font-weight:700 }
-.contact input:focus,.contact textarea:focus{ outline:2px solid var(--brand); box-shadow:none }
-
-/* Footer */
-footer{ border-top:1px solid rgba(255,255,255,.08); padding:18px 0; margin-top:30px }
-footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--muted) }
-
+    /* Footer */
+    footer{ border-top:1px solid rgba(255,255,255,.08); padding:18px 0; margin-top:30px }
+    footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--muted) }
   </style>
 </head>
 <body>
@@ -224,11 +196,10 @@ footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--mut
        HTML SECTION
        ========================= -->
 
-  <!-- Header (fixed) -->
+  <!-- Header -->
   <header class="header">
     <div class="container header-inner">
       <div class="brand" aria-label="Jmod Co.">
-        <!-- Easter egg: wordmark goes to your main site -->
         <a class="wordmark" href="https://www.jordanmoddes.com">Jmod Co.</a>
       </div>
       <nav class="nav" aria-label="Primary">
@@ -245,7 +216,7 @@ footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--mut
     <div class="hero-wrap">
       <div class="hero-grid">
         <div class="hero-logo">
-          <img src="./assets/JmodCo_LogoTP.png" alt="Jmod Co. Logo">
+          <img src="./assets/ParentLogo_TPCrop.png?v=1" alt="Jmod Co. Logo">
         </div>
         <div class="hero-text">
           <h1>AI-Driven Efficiency for Real-World Businesses</h1>
@@ -256,23 +227,18 @@ footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--mut
     </div>
   </section>
 
-  <!-- About + Mission -->
+  <!-- About -->
   <section class="section" id="about">
     <div class="container about">
       <h2>About Jmod Co.</h2>
       <p>Jmod Co. is a diversified innovation group committed to empowering small and medium-sized businesses with the same intelligence, precision, and operational structure once reserved for global enterprises.</p>
       <p>We believe every business—regardless of scale—deserves access to Fortune 100-level capabilities: powerful AI, streamlined operations, and strategic insight that drives measurable results.</p>
       <p>What sets us apart is our ability to move beyond traditional consulting. Jmod Co. not only advises but builds—creating customized, practical systems that blend strategy, automation, and human insight.</p>
-      <p>Through our specialized divisions we deliver end-to-end solutions: from automated content and intelligent tools to operational redesign and compliance-safe business frameworks.</p>
-
-      <div class="mission">
-        <h3>Mission Statement</h3>
-        <p>Jmod Co. builds the operational engine for the next generation of business. We combine advanced AI, data-driven design, and hands-on expertise to deliver Fortune 100-level efficiency—packaged into intuitive, accessible platforms that empower growing companies to do more with less.</p>
-      </div>
+      <p>Through our divisions we deliver end-to-end solutions: from automated content and intelligent tools to operational redesign and compliance-safe business frameworks.</p>
     </div>
   </section>
 
-  <!-- Our Divisions (radial with image nodes) -->
+  <!-- Our Divisions -->
   <section class="section" id="divisions">
     <div class="container divisions-wrap">
       <h2 class="center">Our Divisions</h2>
@@ -283,13 +249,13 @@ footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--mut
           <img src="./assets/JmodLogoIconTP.png" alt="Jmod Co. Hub">
         </div>
 
-        <!-- Satellites (wrap your image inside .imgnode; set any link you want) -->
+        <!-- Satellites (YOUR LINKS & ANGLES KEPT) -->
 
         <!-- Top Left → Resume -->
         <a class="imgnode" style="--angle:-135deg" href="https://www.jordanmoddes.com" rel="noopener">
-          <img src="./assets/JmodCo_LogoTP.png">
+          <img src="./assets/JmodCo_LogoTP.png" alt="Jmod Co.">
         </a>
-        
+
         <!-- Top center → Jmod Labs -->
         <a class="imgnode" style="--angle:-90deg" href="#" rel="noopener">
           <img src="./assets/Jmod_LabsTP.png" alt="Jmod Labs">
@@ -299,15 +265,15 @@ footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--mut
         <a class="imgnode" style="--angle:-45deg" href="https://www.jordanmoddes.com/jmodco/Systems" rel="noopener">
           <img src="./assets/Jmod_SystemsTP.png" alt="Jmod Systems">
         </a>
-        
+
         <!-- Left Center → BattleField -->
         <a class="imgnode" style="--angle:180deg" href="https://www.jordanmoddes.com/battlefield" rel="noopener">
-          <img src="./assets/JmodCo_LogoTP.png">
+          <img src="./assets/JmodCo_LogoTP.png" alt="Battlefield">
         </a>
 
         <!-- Right center → dashboard -->
         <a class="imgnode" style="--angle:0deg" href="https://www.jordanmoddes.com/dashboard" rel="noopener">
-          <img src="./assets/JmodCo_LogoTP.png">
+          <img src="./assets/JmodCo_LogoTP.png" alt="Dashboard">
         </a>
 
         <!-- Bottom-left → Jmod Insights -->
@@ -315,34 +281,23 @@ footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--mut
           <img src="./assets/Jmod_InsightsTP.png" alt="Jmod Insights">
         </a>
 
-        <!-- Bottom center → Jmod Legacy -->
-        <a class="imgnode" style="--angle:90deg" href="#" rel="https://www.jordanmoddes.com/jmodco/Legacy" rel="noopener">
+        <!-- Bottom center → Jmod Legacy (fixed href) -->
+        <a class="imgnode" style="--angle:90deg" href="https://www.jordanmoddes.com/jmodco/Legacy" rel="noopener">
           <img src="./assets/Jmod_LegacyTP.png" alt="Jmod Legacy">
         </a>
 
-          <!-- Bottom-right → Jmod Media -->
+        <!-- Bottom-right → Jmod Media -->
         <a class="imgnode" style="--angle:45deg" href="https://www.jordanmoddes.com/jmodco/Media" rel="noopener">
           <img src="./assets/Jmod_MediaTP.png" alt="Jmod Media">
         </a>
-
-
-        <!-- Example Easter eggs (uncomment if/when you want) -->
-        <!--
-        <a class="imgnode" style="--angle:180deg" href="https://www.jordanmoddes.com/dashboard" rel="noopener">
-          <img src="./assets/JmodCo_LogoTP.png" alt="Easter Egg 1">
-        </a>
-        <a class="imgnode" style="--angle:-135deg" href="https://www.jordanmoddes.com/battlefield" rel="noopener">
-          <img src="./assets/JmodCo_LogoTP.png" alt="Easter Egg 2">
-        </a>
-        -->
       </div>
 
-      <!-- Mobile fallback grid (same images) -->
+      <!-- Mobile fallback grid -->
       <div class="grid8" aria-label="Jmod Co. divisions list">
-        <a class="card" href="https://www.jordanmoddes.com"><img src="./assets/JmodCo_LogoTP.png" alt="Coming Soon">Coming Soon</a>  
+        <a class="card" href="https://www.jordanmoddes.com"><img src="./assets/JmodCo_LogoTP.png" alt="Coming Soon">Coming Soon</a>
         <a class="card" href="./jmodco/Labs"><img src="./assets/Jmod_LabsTP.png" alt="Jmod Labs">Jmod Labs</a>
         <a class="card" href="./jmodco/Systems"><img src="./assets/Jmod_SystemsTP.png" alt="Jmod Systems">Jmod Systems</a>
-        <a class="card" href="https://www.jordanmoddes.com/battlefield"><img src="./assets/JmodCo_LogoTP.png" alt="Coming Soon">Coming Soon</a>     
+        <a class="card" href="https://www.jordanmoddes.com/battlefield"><img src="./assets/JmodCo_LogoTP.png" alt="Coming Soon">Coming Soon</a>
         <a class="card" href="https://www.jordanmoddes.com/dashboard"><img src="./assets/JmodCo_LogoTP.png" alt="Coming Soon">Coming Soon</a>
         <a class="card" href="./jmodco/Insights"><img src="./assets/Jmod_InsightsTP.png" alt="Jmod Insights">Jmod Insights</a>
         <a class="card" href="./jmodco/Media"><img src="./assets/Jmod_MediaTP.png" alt="Jmod Media">Jmod Media</a>
@@ -388,15 +343,13 @@ footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--mut
     <div class="container" style="display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center">
       <div style="font-size:.9rem;color:var(--muted)">Backed and supported by <strong>GPT-5 Engine</strong></div>
       <div class="footnav" style="margin:4px 0 8px">
+        <span>Jmod Media</span>
         <span>Jmod Labs</span>
         <span>Jmod Systems</span>
-        <span>Jmod Media</span>
-        <span>Jmod Legacy</span>
         <span>Jmod Insights</span>
       </div>
       <div style="font-size:.9rem;color:var(--muted)">
-        <span id="copyright"></span>
-        <span> · All rights reserved.</span>
+        © <span id="year"></span> Jmod Co. · All rights reserved.
       </div>
     </div>
   </footer>
@@ -405,26 +358,7 @@ footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--mut
        JS SECTION
        ========================= -->
   <script>
-  // Staggered one-time flip on load
-  window.addEventListener('load', () => {
-    const nodes = document.querySelectorAll('.radial .imgnode');
-    nodes.forEach((el, i) => {
-      setTimeout(() => el.classList.add('animate'), 120 + i * 90);
-    });
-    // Remove the class after it runs so hover/other transforms stay crisp
-    setTimeout(() => nodes.forEach(el => el.classList.remove('animate')), 1800);
-  });
-
-  // (Optional) if you ever tweak sizes dynamically, force a reflow
-  window.addEventListener('resize', () => {
-    document.documentElement.style.setProperty('--_ts', Date.now());
-  });
-</script>
-
-  <script>
-    // Copyright year
-    document.getElementById('copyright').textContent =
-      `© ${new Date().getFullYear()} Jmod Co.`;
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
