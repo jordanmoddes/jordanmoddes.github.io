@@ -21,18 +21,18 @@
   <!-- NAV -->
   <header class="sticky top-0 z-50 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur">
     <nav class="max-w-6xl mx-auto flex items-center justify-between px-3 py-2">
-      <div class="flex items-center gap-2">
+      <!-- Left: Brand + initial message -->
+      <div class="flex items-center gap-3">
         <span class="font-bold tracking-tight">Jmod Co. Dashboard</span>
+        <span id="initial-msg" class="text-xs md:text-sm px-2 py-1 rounded bg-zinc-200/60 dark:bg-zinc-800/60"></span>
       </div>
+      <!-- Right: Nav links (only the ones you requested) -->
       <ul class="flex items-center gap-4 text-sm">
         <li><a href="#overview"     class="hover:underline">Overview</a></li>
         <li><a href="#weather"      class="hover:underline">Weather</a></li>
         <li><a href="#stocks"       class="hover:underline">Stocks</a></li>
-        <li><a href="#crypto"       class="hover:underline">Crypto</a></li>
-        <li><a href="#pelosi"       class="hover:underline">Pelosi</a></li>
+        <li><a href="#maps"         class="hover:underline">Maps</a></li>
         <li><a href="#conversions"  class="hover:underline">Conversions</a></li>
-        <li><a href="#scratchpad"   class="hover:underline">Scratchpad</a></li>
-        <li><a href="#verse"        class="hover:underline">Verse</a></li>
       </ul>
     </nav>
   </header>
@@ -76,70 +76,57 @@
           <div id="w-cond" class="kpi text-xl">—</div>
         </div>
       </div>
-      <p class="sub mt-2">Source: Open-Meteo (no key). Uses your browser location; falls back to Round Rock, TX.</p>
+      <p class="sub mt-2">Source: Open-Meteo (no key). Uses browser location; falls back to Round Rock, TX.</p>
     </section>
 
-    <!-- STOCKS (placeholder for now) -->
+    <!-- STOCKS (live; uses Stooq CSV as a keyless fallback) -->
     <section id="stocks" class="card">
-      <h2 class="text-xl font-semibold mb-3">Stocks</h2>
-      <p class="text-sm opacity-75 mb-3">Your equity tickers go here. We can wire Polygon/Alpha Vantage later. Placeholder table included for layout continuity.</p>
-      <table class="table">
-        <thead><tr><th>Ticker</th><th>Price</th><th>Δ%</th></tr></thead>
-        <tbody>
-          <tr><td>AAPL</td><td>—</td><td>—</td></tr>
-          <tr><td>MSFT</td><td>—</td><td>—</td></tr>
-          <tr><td>NVDA</td><td>—</td><td>—</td></tr>
-        </tbody>
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-xl font-semibold">Stocks</h2>
+        <div class="flex items-center gap-2 text-xs">
+          <input id="stocks-input" class="w-56 rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-1" placeholder="Tickers (comma sep, e.g., AAPL,MSFT,NVDA)">
+          <button id="apply-stocks" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">Apply</button>
+          <button id="refresh-stocks" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">Refresh</button>
+        </div>
+      </div>
+      <div id="stocks-status" class="sub mb-2">Loading…</div>
+      <table class="table" id="stocks-table">
+        <thead><tr><th>Ticker</th><th>Price (USD)</th><th>Δ%</th></tr></thead>
+        <tbody></tbody>
       </table>
+      <p class="sub mt-2">Source: stooq.com (keyless). If your browser blocks CORS or a ticker isn’t available, we can switch to a proper API (Polygon/Alpha Vantage/Finnhub) with a key.</p>
     </section>
 
-    <!-- CRYPTO -->
+    <!-- CRYPTO (not in nav) -->
     <section id="crypto" class="card">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xl font-semibold">Crypto (live)</h2>
+        <h2 class="text-xl font-semibold">Crypto</h2>
         <button id="refresh-crypto" class="text-sm px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900">Refresh</button>
       </div>
       <div id="crypto-status" class="sub mb-2">Loading…</div>
       <table class="table" id="crypto-table">
-        <thead>
-          <tr>
-            <th>Ticker</th>
-            <th>Price (USD)</th>
-            <th>24h Δ%</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Ticker</th><th>Price (USD)</th><th>24h Δ%</th></tr></thead>
         <tbody></tbody>
       </table>
-      <p class="sub mt-2">Source: CoinGecko Simple Price API. Auto-refreshes every 5 minutes.</p>
+      <p class="sub mt-2">Source: CoinGecko (keyless). Auto-refreshes every 5 minutes.</p>
     </section>
 
-    <!-- PELOSI TRADES -->
+    <!-- PELOSI TRADES (not in nav) -->
     <section id="pelosi" class="card">
-      <h2 class="text-xl font-semibold mb-3">Nancy Pelosi Disclosed Trades (latest 50)</h2>
+      <h2 class="text-xl font-semibold mb-3">Nancy Pelosi — Disclosed Trades (latest 50)</h2>
       <div id="pelosi-status" class="sub mb-2">Loading…</div>
       <div class="overflow-auto">
         <table id="pelosi-table" class="table hidden">
-          <thead>
-            <tr>
-              <th>Disclosed</th>
-              <th>Traded</th>
-              <th>Ticker / Asset</th>
-              <th>Type</th>
-              <th>Amount (range)</th>
-              <th>Link</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Disclosed</th><th>Traded</th><th>Ticker / Asset</th><th>Type</th><th>Amount (range)</th><th>Link</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
-      <p class="sub mt-2">Data via House Stock Watcher (values are ranges; reports can be delayed up to 45 days).</p>
+      <p class="sub mt-2">Data via House Stock Watcher. Reports are in ranges and may be delayed up to 45 days.</p>
     </section>
 
-    <!-- CONVERSIONS CHEAT SHEET (above scratchpad) -->
+    <!-- CONVERSIONS (in nav) -->
     <section id="conversions" class="card">
       <h2 class="text-xl font-semibold mb-4">Conversions — Quick Cheat Sheet</h2>
-
-      <!-- mini calculators -->
       <div class="grid md:grid-cols-3 gap-4 mb-6">
         <!-- Mass -->
         <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
@@ -156,7 +143,6 @@
           </div>
           <div class="mt-3 text-xs opacity-75">1 g = 1000 mg · 1 kg = 1000 g</div>
         </div>
-
         <!-- Length -->
         <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
           <div class="font-medium mb-2">Length (in ↔ cm)</div>
@@ -175,7 +161,6 @@
           </div>
           <div class="mt-3 text-xs opacity-75">1 in = 2.54 cm</div>
         </div>
-
         <!-- Temperature -->
         <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
           <div class="font-medium mb-2">Temperature (°F ↔ °C)</div>
@@ -195,30 +180,29 @@
           <div class="mt-3 text-xs opacity-75">°C = (°F − 32) × 5/9 · °F = (°C × 9/5) + 32</div>
         </div>
       </div>
-
-      <!-- static cheat sheet -->
+      <!-- static sheet -->
       <div class="overflow-auto">
         <table class="table">
           <thead><tr><th>Category</th><th>Rule / Factor</th><th>Notes</th></tr></thead>
-          <tbody>
-            <tr><td>Mass</td><td>1 g = 1000 mg · 1 kg = 1000 g</td><td>mg → g ÷1000; g → mg ×1000</td></tr>
-            <tr><td>Length</td><td>1 in = 2.54 cm</td><td>cm → in = cm / 2.54</td></tr>
-            <tr><td>Volume</td><td>1 L = 33.814 fl oz (US)</td><td>1 gal (US) = 3.785 L</td></tr>
-            <tr><td>Weight</td><td>1 lb = 16 oz</td><td>kg ≈ lb / 2.20462</td></tr>
-            <tr><td>Temperature</td><td>°C = (°F − 32) × 5/9</td><td>°F = (°C × 9/5) + 32</td></tr>
-          </tbody>
+        <tbody>
+          <tr><td>Mass</td><td>1 g = 1000 mg · 1 kg = 1000 g</td><td>mg → g ÷1000; g → mg ×1000</td></tr>
+          <tr><td>Length</td><td>1 in = 2.54 cm</td><td>cm → in = cm / 2.54</td></tr>
+          <tr><td>Volume</td><td>1 L = 33.814 fl oz (US)</td><td>1 gal (US) = 3.785 L</td></tr>
+          <tr><td>Weight</td><td>1 lb = 16 oz</td><td>kg ≈ lb / 2.20462</td></tr>
+          <tr><td>Temperature</td><td>°C = (°F − 32) × 5/9</td><td>°F = (°C × 9/5) + 32</td></tr>
+        </tbody>
         </table>
       </div>
     </section>
 
-    <!-- SCRATCHPAD -->
+    <!-- SCRATCHPAD (not in nav) -->
     <section id="scratchpad" class="card">
       <h2 class="text-xl font-semibold mb-3">Scratchpad</h2>
       <textarea class="w-full h-64 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent p-3" placeholder="Jot notes here…"></textarea>
-      <div class="mt-3 sub">Tip: this is local-only unless you wire it to storage.</div>
+      <div class="mt-3 sub">Tip: local-only unless you wire storage.</div>
     </section>
 
-    <!-- VERSE -->
+    <!-- VERSE (not in nav) -->
     <section id="verse" class="card">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-xl font-semibold">Verse of the Day</h2>
@@ -227,10 +211,25 @@
       <div id="verse-status" class="sub mb-2">Loading…</div>
       <blockquote id="verse-text" class="text-lg leading-relaxed"></blockquote>
       <div id="verse-ref" class="sub mt-2"></div>
-      <p class="sub mt-2">
-        Note: YouVersion blocks direct client-side API access. This uses a public fallback (NET Bible VOTD). 
-        If you want strict YouVersion, we can add a tiny Cloudflare Worker proxy later.
-      </p>
+      <p class="sub mt-2">YouVersion blocks direct client calls; this uses a public fallback (NET VOTD). If you want YouVersion exact, we’ll add a tiny Cloudflare proxy later.</p>
+    </section>
+
+    <!-- MAPS -->
+    <section id="maps" class="card">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-xl font-semibold">Google Maps</h2>
+        <div class="flex gap-2 text-xs">
+          <input id="map-q" class="w-64 rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-1" placeholder="Search place or address">
+          <button id="map-search" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">Search</button>
+          <button id="map-mypos" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">Use my location</button>
+        </div>
+      </div>
+      <div class="aspect-video rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+        <iframe id="map-frame" class="w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Round%20Rock%2C%20TX&output=embed">
+        </iframe>
+      </div>
+      <p class="sub mt-2">This uses Google’s free embed (no API key). Search updates the embed URL client-side.</p>
     </section>
 
     <!-- FOOTER -->
@@ -241,7 +240,11 @@
   </main>
 
   <script>
-    // ===== Basics
+    // ===== Initial message in nav (edit this string anytime)
+    const INITIAL_MESSAGE = "Welcome back, Jordan — ship it.";
+    document.getElementById('initial-msg').textContent = INITIAL_MESSAGE;
+
+    // ===== Meta
     (function initMeta(){
       const now = new Date();
       document.getElementById('last-updated').textContent = now.toLocaleString();
@@ -257,15 +260,7 @@
       return r.json();
     }
     function codeToText(code){
-      // simple mapping for a few common codes
-      const m = {
-        0:'Clear', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast',
-        45:'Fog', 48:'Rime fog',
-        51:'Light drizzle', 53:'Drizzle', 55:'Heavy drizzle',
-        61:'Light rain', 63:'Rain', 65:'Heavy rain',
-        71:'Light snow', 73:'Snow', 75:'Heavy snow',
-        95:'Thunderstorm'
-      };
+      const m = {0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',95:'Thunderstorm'};
       return m[code] || '—';
     }
     async function loadWeather(){
@@ -274,10 +269,9 @@
       status.textContent = 'Loading…';
       let lat = 30.5083, lon = -97.6789; // Round Rock fallback
       let label = 'Round Rock, TX (fallback)';
-
       try {
         if (navigator.geolocation) {
-          await new Promise((res, rej) => {
+          await new Promise((res) => {
             navigator.geolocation.getCurrentPosition(
               p => { lat=p.coords.latitude; lon=p.coords.longitude; label='Your location'; res(); },
               _ => res(), { maximumAge: 600000, timeout: 5000 }
@@ -297,6 +291,69 @@
     }
     loadWeather();
     document.getElementById('refresh-weather').addEventListener('click', loadWeather);
+
+    // ===== Stocks (stooq keyless fallback)
+    // Helper to fetch a single ticker from stooq and parse CSV.
+    async function fetchStooq(ticker){
+      // stooq uses .us suffix for US tickers
+      const sym = `${ticker.toLowerCase()}.us`;
+      const url = `https://stooq.com/q/l/?s=${encodeURIComponent(sym)}&f=sd2t2ohlcvn&h&e=csv`;
+      const r = await fetch(url, { mode:'cors' });
+      if (!r.ok) throw new Error('HTTP '+r.status);
+      const text = await r.text();
+      // Parse the first data line
+      const lines = text.trim().split('\n');
+      if (lines.length < 2) return null;
+      const cols = lines[1].split(',');
+      // Columns: Symbol,Date,Time,Open,High,Low,Close,Volume,Name
+      const close = parseFloat(cols[6]); 
+      const open  = parseFloat(cols[3]);
+      const pct   = (isFinite(close) && isFinite(open) && open>0) ? ((close-open)/open*100) : null;
+      return { ticker: ticker.toUpperCase(), price: close, pct };
+    }
+
+    const DEFAULT_STOCKS = ['AAPL','MSFT','NVDA'];
+    function getTickers(){
+      const raw = (localStorage.getItem('dash_stocks') || '').trim();
+      if (raw) return raw.split(',').map(s=>s.trim().toUpperCase()).filter(Boolean);
+      return DEFAULT_STOCKS;
+    }
+    async function loadStocks(){
+      const tbody  = document.querySelector('#stocks-table tbody');
+      const status = document.getElementById('stocks-status');
+      const tickers = getTickers();
+      document.getElementById('stocks-input').value = tickers.join(',');
+      tbody.innerHTML = '';
+      status.textContent = 'Loading…';
+      try {
+        const rows = await Promise.all(tickers.map(fetchStooq));
+        let ok = 0;
+        for (const r of rows) {
+          if (!r) continue;
+          ok++;
+          const price = isFinite(r.price) ? r.price.toLocaleString(undefined,{ style:'currency', currency:'USD' }) : '—';
+          const pct   = (r.pct==null) ? '—' : ((r.pct>=0?'+':'')+r.pct.toFixed(2)+'%');
+          const pctClass = (r.pct==null) ? '' : (r.pct>=0 ? 'text-green-600' : 'text-red-600');
+          tbody.insertAdjacentHTML('beforeend', `
+            <tr>
+              <td>${r.ticker}</td>
+              <td>${price}</td>
+              <td class="${pctClass}">${pct}</td>
+            </tr>
+          `);
+        }
+        status.textContent = ok ? 'Live via stooq' : 'No data returned. If blocked by CORS, we’ll swap to a key-based API.';
+      } catch(e){
+        status.textContent = 'Could not load stocks ('+e.message+').';
+      }
+    }
+    loadStocks();
+    document.getElementById('refresh-stocks').addEventListener('click', loadStocks);
+    document.getElementById('apply-stocks').addEventListener('click', ()=>{
+      const val = document.getElementById('stocks-input').value.trim();
+      localStorage.setItem('dash_stocks', val);
+      loadStocks();
+    });
 
     // ===== Crypto (CoinGecko)
     const CRYPTO = [
@@ -342,19 +399,17 @@
     document.getElementById('refresh-crypto').addEventListener('click', loadCrypto);
     setInterval(loadCrypto, 5 * 60 * 1000);
 
-    // ===== Pelosi trades (House Stock Watcher)
+    // ===== Pelosi trades
     (async () => {
       const status = document.getElementById('pelosi-status');
       const table  = document.getElementById('pelosi-table');
       const tbody  = table.querySelector('tbody');
       const SRC = 'https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json';
-
       try {
         status.textContent = 'Loading…';
         const resp = await fetch(SRC, { mode: 'cors' });
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const all = await resp.json();
-
         const rows = all
           .filter(r => r.representative && r.representative.includes('Nancy Pelosi'))
           .sort((a, b) => new Date(b.disclosure_date) - new Date(a.disclosure_date))
@@ -362,10 +417,7 @@
 
         document.getElementById('kpi-pelosi').textContent = rows.length.toString();
 
-        if (!rows.length) {
-          status.textContent = 'No Pelosi trades found in this feed.';
-          return;
-        }
+        if (!rows.length) { status.textContent = 'No Pelosi trades found.'; return; }
 
         tbody.innerHTML = rows.map(r => `
           <tr>
@@ -377,7 +429,6 @@
             <td>${r.ptr_link ? `<a class="link" href="${r.ptr_link}" target="_blank" rel="noopener">PTR</a>` : ''}</td>
           </tr>
         `).join('');
-
         table.classList.remove('hidden');
         status.textContent = 'Loaded.';
       } catch (err) {
@@ -390,63 +441,54 @@
     document.querySelectorAll('[data-action]').forEach(btn=>{
       btn.addEventListener('click', () => {
         const a = btn.getAttribute('data-action');
-        if (a === 'mg2g') {
-          const mg = parseFloat(sel('mg').value || '0');
-          sel('mass-out').textContent = `${mg} mg = ${(mg/1000).toFixed(6)} g`;
-        }
-        if (a === 'mg2kg') {
-          const mg = parseFloat(sel('mg').value || '0');
-          sel('mass-out').textContent = `${mg} mg = ${(mg/1e6).toFixed(9)} kg`;
-        }
-        if (a === 'in2cm') {
-          const inch = parseFloat(sel('inch').value || '0');
-          sel('len-out').textContent = `${inch} in = ${(inch*2.54).toFixed(4)} cm`;
-        }
-        if (a === 'cm2in') {
-          const cm = parseFloat(sel('cm').value || '0');
-          sel('len-out').textContent = `${cm} cm = ${(cm/2.54).toFixed(4)} in`;
-        }
-        if (a === 'f2c') {
-          const f = parseFloat(sel('f').value || '0');
-          sel('temp-out').textContent = `${f} °F = ${((f-32)*5/9).toFixed(2)} °C`;
-        }
-        if (a === 'c2f') {
-          const c = parseFloat(sel('c').value || '0');
-          sel('temp-out').textContent = `${c} °C = ${(c*9/5+32).toFixed(2)} °F`;
-        }
+        if (a === 'mg2g') { const mg = parseFloat(sel('mg').value || '0'); sel('mass-out').textContent = `${mg} mg = ${(mg/1000).toFixed(6)} g`; }
+        if (a === 'mg2kg'){ const mg = parseFloat(sel('mg').value || '0'); sel('mass-out').textContent = `${mg} mg = ${(mg/1e6).toFixed(9)} kg`; }
+        if (a === 'in2cm'){ const inch = parseFloat(sel('inch').value || '0'); sel('len-out').textContent = `${inch} in = ${(inch*2.54).toFixed(4)} cm`; }
+        if (a === 'cm2in'){ const cm = parseFloat(sel('cm').value || '0'); sel('len-out').textContent = `${cm} cm = ${(cm/2.54).toFixed(4)} in`; }
+        if (a === 'f2c')  { const f = parseFloat(sel('f').value || '0'); sel('temp-out').textContent = `${f} °F = ${((f-32)*5/9).toFixed(2)} °C`; }
+        if (a === 'c2f')  { const c = parseFloat(sel('c').value || '0'); sel('temp-out').textContent = `${c} °C = ${(c*9/5+32).toFixed(2)} °F`; }
       });
     });
 
-    // ===== Verse (public fallback to VOTD)
+    // ===== Verse (public fallback)
     async function loadVerse(){
       const status = document.getElementById('verse-status');
       const textEl = document.getElementById('verse-text');
       const refEl  = document.getElementById('verse-ref');
       try {
         status.textContent = 'Loading…';
-        // labs.bible.org VOTD returns plain text; we fetch twice to get text and reference separately
-        // Example returns like: "But God demonstrates..." —Romans 5:8
         const r = await fetch('https://labs.bible.org/api/?passage=votd&formatting=plain', { mode:'cors' });
         if (!r.ok) throw new Error('HTTP '+r.status);
         const t = await r.text();
-        // naive split for last " —" separator if present
         const idx = t.lastIndexOf('—');
-        if (idx > 0) {
-          textEl.textContent = t.slice(0, idx).trim();
-          refEl.textContent  = t.slice(idx+1).trim();
-        } else {
-          textEl.textContent = t.trim();
-          refEl.textContent  = 'NET Bible — Verse of the Day';
-        }
+        if (idx > 0) { textEl.textContent = t.slice(0, idx).trim(); refEl.textContent  = t.slice(idx+1).trim(); }
+        else { textEl.textContent = t.trim(); refEl.textContent  = 'NET Bible — Verse of the Day'; }
         status.textContent = 'Loaded.';
       } catch(e){
         status.textContent = 'Could not load verse ('+e.message+').';
-        textEl.textContent = '';
-        refEl.textContent  = '';
+        textEl.textContent = ''; refEl.textContent  = '';
       }
     }
     loadVerse();
     document.getElementById('refresh-verse').addEventListener('click', loadVerse);
+
+    // ===== Maps embed controls
+    function setMapQuery(q){
+      const src = `https://www.google.com/maps?q=${encodeURIComponent(q)}&output=embed`;
+      document.getElementById('map-frame').src = src;
+    }
+    document.getElementById('map-search').addEventListener('click', ()=>{
+      const q = document.getElementById('map-q').value.trim();
+      if (q) setMapQuery(q);
+    });
+    document.getElementById('map-mypos').addEventListener('click', ()=>{
+      if (!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(
+        p => setMapQuery(`${p.coords.latitude},${p.coords.longitude}`),
+        _ => setMapQuery('Round Rock, TX'),
+        { maximumAge: 600000, timeout: 5000 }
+      );
+    });
   </script>
 </body>
 </html>
