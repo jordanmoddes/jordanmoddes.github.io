@@ -97,6 +97,34 @@
     .preview-ctas{display:flex;justify-content:center;gap:12px;width:100%;}
     .preview-ctas .btn{min-width:180px;}
 
+    /* ===== Slightly larger phone (¼" wider/taller) ===== */
+      :root {
+        --phone-max: 400px;       /* was 360px — about +¼ inch wider */
+        --embed-max: 360px;       /* match to keep post centered */
+      }
+      
+      /* Adjust aspect ratio for slightly taller screen */
+      .phone-screen {
+        aspect-ratio: 9 / 18;     /* previously 9 / 19.5 — taller look */
+      }
+      
+      /* Keep it balanced visually */
+      .phone {
+        padding: 14px;
+        border-radius: 34px;
+      }
+      
+      .phone::before {
+        border-radius: 36px;
+      }
+      
+      .phone::after {
+        right: -6px;
+        top: 64px;
+        height: 52px;
+      }
+
+
     /* ===== Modules ===== */
     .modules{max-width:1200px;margin:48px auto 0;padding:0 24px}
     .mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
