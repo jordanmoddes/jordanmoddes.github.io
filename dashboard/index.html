@@ -28,12 +28,20 @@
   .k       { font-weight:700; font-size:1.9rem; letter-spacing:.2px; }
   .sub     { opacity:.75; font-size:.85rem; }
   .btn     { border:1px solid var(--stroke); padding:6px 10px; border-radius:12px; font-size:.8rem; }
-  .hourchip { border:1px solid var(--stroke); border-radius:12px; padding:10px; width:72px; text-align:center; }
+  .hourchip { border:1px solid var(--stroke); border-radius:12px; padding:10px; width:78px; text-align:center; }
+  .hourchip .ico { display:block; margin:6px auto 2px; }
   .good { color:#16a34a; } .bad { color:#ef4444; }
   .table { width:100%; border-collapse: collapse; }
   .table th,.table td { border-top:1px solid var(--stroke); padding:8px; font-size:.9rem; }
   .hdr { background: rgba(10,10,14,.75); border-bottom:1px solid var(--stroke); backdrop-filter: blur(8px); }
   .btn:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .verse-panel {
+    background: linear-gradient(180deg, rgba(35,38,45,.9), rgba(20,22,28,.9));
+    border:1px solid var(--stroke);
+    border-radius:16px;
+    padding:16px;
+    box-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 0 0 1px rgba(0,0,0,.3);
+  }
   @media (max-width: 640px){ .k { font-size: 1.6rem; } }
 </style>
 </head>
@@ -95,9 +103,12 @@
         <button id="v-refresh" class="btn">Refresh</button>
       </div>
       <div id="v-status" class="sub mt-1">Loading…</div>
-      <div class="mt-3">
-        <div class="pill inline-block mb-2">Verse of the Day</div>
-        <blockquote id="v-text" class="text-xl leading-8"></blockquote>
+      <div class="mt-3 verse-panel">
+        <div class="flex items-center justify-between">
+          <div class="pill inline-block">Verse of the Day</div>
+          <div id="v-date" class="sub"></div>
+        </div>
+        <blockquote id="v-text" class="text-xl leading-8 mt-3"></blockquote>
         <div id="v-ref" class="sub mt-2"></div>
       </div>
     </section>
@@ -246,11 +257,11 @@ $('today-pill').textContent = new Date().toLocaleDateString();
 
 /* ---------- Weather ---------- */
 function codeToIcon(code){
-  const sun = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="#fde047"/><g stroke="#fde047" stroke-width="2"><path d="M12 1v3"/><path d="M12 20v3"/><path d="M1 12h3"/><path d="M20 12h3"/><path d="M4.2 4.2l2.2 2.2"/><path d="M17.6 17.6l2.2 2.2"/><path d="M4.2 19.8l2.2-2.2"/><path d="M17.6 6.4l2.2-2.2"/></g></svg>';
-  const cloud = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 18h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/></svg>';
-  const rain = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 16h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><g stroke="#60a5fa" stroke-width="2"><path d="M9 18v3"/><path d="M12 18v3"/><path d="M15 18v3"/></g></svg>';
-  const snow = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 16h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><g stroke="#e5e7eb" stroke-width="2"><path d="M9 18l-1 3"/><path d="M12 18l-1 3"/><path d="M15 18l-1 3"/></g></svg>';
-  const storm = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 15h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><path d="M12 14l-3 6 5-4h-3l3-4" fill="#f59e0b"/></svg>';
+  const sun = '<svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="#fde047"/><g stroke="#fde047" stroke-width="2"><path d="M12 1v3"/><path d="M12 20v3"/><path d="M1 12h3"/><path d="M20 12h3"/><path d="M4.2 4.2l2.2 2.2"/><path d="M17.6 17.6l2.2 2.2"/><path d="M4.2 19.8l2.2-2.2"/><path d="M17.6 6.4l2.2-2.2"/></g></svg>';
+  const cloud = '<svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 18h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/></svg>';
+  const rain = '<svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 16h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><g stroke="#60a5fa" stroke-width="2"><path d="M9 18v3"/><path d="M12 18v3"/><path d="M15 18v3"/></g></svg>';
+  const snow = '<svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 16h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><g stroke="#e5e7eb" stroke-width="2"><path d="M9 18l-1 3"/><path d="M12 18l-1 3"/><path d="M15 18l-1 3"/></g></svg>';
+  const storm = '<svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 15h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><path d="M12 14l-3 6 5-4h-3l3-4" fill="#f59e0b"/></svg>';
   if ([0,1].includes(code)) return sun;
   if ([2,3,45,48].includes(code)) return cloud;
   if ([61,63,65,51,53,55].includes(code)) return rain;
@@ -297,11 +308,12 @@ async function renderWeather(){
           <span aria-hidden="true">${codeToIcon(c.weather_code||0)}</span>
         </div>
         <div class="sub">Feels ${Math.round(c.apparent_temperature||0)}°F · Today ${minT}°F — ${maxT}°F</div>
-        <div class="flex gap-2 mt-3 flex-wrap">${chips.map(h=>`
-          <div class="hourchip">
-            <div class="sub">${h.label}</div>
-            <div class="font-semibold">${h.temp}°F</div>
-          </div>`).join('')}
+        <div class="flex gap-2 mt-3 flex-wrap">
+          ${chips.map(h=>`<div class="hourchip">
+             <div class="sub">${h.label}</div>
+             ${codeToIcon(h.code)}
+             <div class="font-semibold">${h.temp}°F</div>
+           </div>`).join('')}
         </div>`;
       host.appendChild(card);
     }catch(e){
@@ -330,6 +342,7 @@ async function loadVerse(){
     const i = t.lastIndexOf('—');
     $('v-text').textContent = i>0 ? t.slice(0,i).trim() : t.trim();
     $('v-ref').textContent  = i>0 ? t.slice(i+1).trim() : 'NET Bible — Verse of the Day';
+    $('v-date').textContent = new Date().toLocaleDateString();
     st.textContent=' ';
   }catch(e){ st.textContent='Could not load.';}
 }
@@ -367,40 +380,82 @@ function dirURL(from,to){ return `https://www.google.com/maps?saddr=${encodeURIC
 $('map-work').src = dirURL(HOME_ADDR, WORK_ADDR);
 $('map-home').src = dirURL(WORK_ADDR, HOME_ADDR);
 
-/* ---------- Stocks (stooq) ---------- */
-async function fetchStooq(t){
-  const sym = `${t.toLowerCase()}.us`;
-  const url = `https://stooq.com/q/l/?s=${encodeURIComponent(sym)}&f=sd2t2ohlcvn&h&e=csv`;
+/* ---------- Stocks (Stooq primary, Yahoo fallback via proxy) ---------- */
+function stooqSymbol(t){
+  // most US tickers work as ticker.us; leave special ones as-is + .us
+  return `${t.toLowerCase()}.us`;
+}
+async function fetchStooqOne(t){
+  const url = `https://stooq.com/q/l/?s=${encodeURIComponent(stooqSymbol(t))}&f=sd2t2ohlcvn&h&e=csv`;
   const r = await fetch(url,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
   const text = await r.text(); const lines = text.trim().split('\n');
   if(lines.length<2) return null; const c = lines[1].split(',');
   const open = parseFloat(c[3]); const close = parseFloat(c[6]);
   const pct = (isFinite(open)&&open>0) ? ((close-open)/open*100) : null;
+  if (!isFinite(close)) return null;
   return {t:t.toUpperCase(), price: close, pct};
+}
+async function fetchYahooBatch(tickers){
+  const yurl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(tickers.join(','))}`;
+  const url = `https://api.allorigins.win/raw?url=${encodeURIComponent(yurl)}`;
+  const r = await fetch(url,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
+  const j = await r.json();
+  const out = {};
+  (j.quoteResponse?.result||[]).forEach(q=>{
+    const t = q.symbol?.toUpperCase(); if(!t) return;
+    out[t] = {
+      t,
+      price: q.regularMarketPrice,
+      pct:   q.regularMarketChangePercent
+    };
+  });
+  return out;
 }
 let stockTimer = null;
 async function renderStocks(){
   const grid = $('s-grid'); grid.innerHTML="";
-  const status = $('s-status');
+  const status = $('s-status'); status.textContent='Loading…';
   try{
-    const rows = await Promise.all(STOCKS.map(fetchStooq));
+    // Try Stooq per ticker first
+    const entries = await Promise.all(STOCKS.map(async t=>{
+      try { return await fetchStooqOne(t); } catch { return null; }
+    }));
+    const missing = [];
+    entries.forEach((d,i)=>{ if(!d) missing.push(STOCKS[i]); });
+
+    // Yahoo fallback for missing
+    if (missing.length){
+      try{
+        const ymap = await fetchYahooBatch(missing);
+        missing.forEach(t=>{
+          const y = ymap[t.toUpperCase()];
+          const idx = STOCKS.indexOf(t);
+          if (y && isFinite(y.price)) entries[idx] = {t:y.t, price:y.price, pct:y.pct};
+        });
+      }catch(_e){}
+    }
+
     let ok=0;
-    for (const d of rows){
+    entries.forEach((d, i)=>{
       const div = document.createElement('div'); div.className="tile tile-sm";
-      if (!d){ div.innerHTML = `<div class="font-semibold">N/A</div><div class="sub">No data</div>`; grid.appendChild(div); continue; }
+      const label = STOCKS[i].toUpperCase();
+      if (!d){
+        div.innerHTML = `<div class="font-semibold">${label}</div><div class="sub">N/A</div>`;
+        grid.appendChild(div); return;
+      }
       ok++;
       const price = isFinite(d.price) ? d.price.toLocaleString(undefined,{style:'currency',currency:'USD'}) : '—';
-      const pct = (d.pct==null) ? '—' : ((d.pct>=0?'+':'')+d.pct.toFixed(2)+'%');
+      const pct = (d.pct==null) ? '—' : ((d.pct>=0?'+':'')+Number(d.pct).toFixed(2)+'%');
       const cls = (d.pct==null) ? '' : (d.pct>=0?'good':'bad');
       div.innerHTML = `
         <div>
-          <div class="font-semibold">${d.t} <span class="sub">${d.t}</span></div>
+          <div class="font-semibold">${label} <span class="sub">${label}</span></div>
           <div class="text-xl font-bold">${price}</div>
         </div>
         <div class="font-semibold ${cls}">${pct}</div>`;
       grid.appendChild(div);
-    }
-    status.textContent = ok ? 'Live via stooq (keyless). If a tile shows N/A due to CORS, we can swap APIs.' : 'No data returned.';
+    });
+    status.textContent = ok ? 'Live (Stooq + Yahoo fallback)' : 'No data returned.';
   }catch(e){ status.textContent = 'Could not load stocks ('+e.message+').'; }
 }
 renderStocks();
@@ -432,14 +487,15 @@ async function renderCrypto(){
 renderCrypto();
 $('c-refresh').addEventListener('click', renderCrypto);
 
-/* ---------- Pelosi trades ---------- */
+/* ---------- Pelosi trades (proxied to avoid CORS) ---------- */
 async function renderPelosi(){
   const st = $('p-status');
   const tb = document.querySelector('#p-table tbody'); tb.innerHTML="";
   try{
     st.textContent='Loading…';
     const src = 'https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json';
-    const r = await fetch(src,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
+    const url = `https://api.allorigins.win/raw?url=${encodeURIComponent(src)}`;
+    const r = await fetch(url,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
     const all = await r.json();
     const rows = all.filter(x=>x.representative?.includes('Nancy Pelosi'))
                     .sort((a,b)=> new Date(b.disclosure_date)-new Date(a.disclosure_date))
@@ -451,12 +507,12 @@ async function renderPelosi(){
     });
     st.textContent = rows.length ? 'Loaded.' : 'No trades found.';
   }catch(e){
-    st.textContent='Could not load (CORS or network). If this persists, I can proxy via a tiny Worker.';
+    st.textContent='Could not load (network).';
   }
 }
 renderPelosi();
 
-/* ---------- Converters (fixed) ---------- */
+/* ---------- Converters ---------- */
 document.querySelectorAll('[data-x]').forEach((btn) => {
   btn.addEventListener('click', () => {
     const a = btn.dataset.x;
