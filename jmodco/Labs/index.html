@@ -7,49 +7,50 @@
   <meta name="color-scheme" content="dark light" />
   <style>
     :root{
-      --bg:#0a0b0f;
-      --bg2:#0e1017;
-      --card:#11131c;
-      --ink:#e6ecff;
-      --muted:#9aa4c3;
-      --cyan:#57e6ff;
-      --mag:#ff3df2;
-      --silver:#c9d0dd;              /* NEW silver accent */
-      --chip:#1a1f2d;
-      --ring:rgba(87,230,255,.35);
-      --ring2:rgba(255,61,242,.25);
-      --glass:rgba(255,255,255,.06);
-      --border:rgba(201,208,221,.14); /* softened with silver */
+      --bg:#0a0b0f; --bg2:#0e1017;
+      --card:#11131c; --ink:#e6ecff; --muted:#9aa4c3;
+      --cyan:#57e6ff; --mag:#ff3df2; --silver:#c9d0dd;
+      --glass:rgba(255,255,255,.06); --border:rgba(201,208,221,.14);
       --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
-      --radius:18px;
-      --radius-sm:12px;
-      --gap:18px;
-      --maxw:1200px;
+      --radius:18px; --radius-sm:12px; --gap:18px; --maxw:1200px;
+      /* Optional background image slot (leave empty or set to a file) */
+      --bgimg: ;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0; font:16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       color:var(--ink);
+      /* Layered background: image -> circuit grid -> vignettes */
       background:
+        var(--bgimg) no-repeat center/cover,
+        /* Circuit traces (animated) */
+        repeating-linear-gradient(90deg, rgba(87,230,255,.05) 0 2px, transparent 2px 40px),
+        repeating-linear-gradient(0deg, rgba(255,61,242,.05) 0 2px, transparent 2px 40px),
         radial-gradient(1200px 800px at 20% -10%, rgba(255,61,242,.07), transparent 60%),
         radial-gradient(1200px 800px at 120% 10%, rgba(87,230,255,.08), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
       overflow-x:hidden;
+      position:relative;
+      isolation:isolate;
     }
 
-    /* Canvas background (neural grid) */
-    #neural{
-      position:fixed; inset:0; z-index:-1;
-      filter: drop-shadow(0 0 6px rgba(87,230,255,.35)); opacity:.55;
+    /* Moving “scan” highlight over the grid */
+    body::before{
+      content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+      background:linear-gradient(180deg, transparent 0%, rgba(201,208,221,.08) 50%, transparent 100%);
+      mix-blend-mode:screen; animation:scanMove 6s linear infinite;
     }
+    @keyframes scanMove{0%{transform:translateY(-40%)}100%{transform:translateY(40%)}}
+
+    /* Neural mesh canvas (beneath content, above bg) */
+    #neural{position:fixed; inset:0; z-index:1; filter:drop-shadow(0 0 6px rgba(87,230,255,.35)); opacity:.55}
 
     a{color:var(--cyan); text-decoration:none}
     a:hover{text-decoration:underline}
-    .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px; position:relative; z-index:2}
 
-    /* Header */
-    header{position:sticky; top:0; z-index:30; backdrop-filter:blur(10px);
+    header{position:sticky; top:0; z-index:10; backdrop-filter:blur(10px);
       background:linear-gradient(180deg, rgba(10,11,15,.75), rgba(10,11,15,.35) 70%, transparent);
       border-bottom:1px solid var(--border)}
     .brand{display:flex; align-items:center; gap:12px}
@@ -61,7 +62,7 @@
     /* HERO */
     .hero{
       display:grid; grid-template-columns: 1fr 1.2fr; gap:32px; align-items:center;
-      padding:56px 20px 24px; margin: 0 auto; max-width:var(--maxw);
+      padding:56px 20px 24px; margin: 0 auto; max-width:var(--maxw); position:relative; z-index:2;
     }
     .hero-card{
       background:linear-gradient(180deg, var(--glass), transparent 70%);
@@ -70,28 +71,29 @@
     }
     .hero-left{display:flex; align-items:center; justify-content:center; padding:40px}
     .hero-logo{max-width:340px; width:100%; height:auto; object-fit:contain; filter: drop-shadow(0 0 20px rgba(255,61,242,.5))}
-
-    /* NEW: pulsing aura behind logo */
     .hero-left::before{
-      content:""; position:absolute; inset:auto; width:420px; height:420px;
-      border-radius:50%; pointer-events:none;
+      content:""; position:absolute; width:420px; height:420px; border-radius:50%;
       background: radial-gradient(closest-side, rgba(201,208,221,.18), transparent 70%),
                   radial-gradient(closest-side, rgba(87,230,255,.16), transparent 72%),
                   radial-gradient(closest-side, rgba(255,61,242,.12), transparent 75%);
-      filter: blur(6px);
-      animation:pulse 5.5s ease-in-out infinite;
+      filter: blur(6px); animation:pulse 5.5s ease-in-out infinite;
     }
-    @keyframes pulse{
-      0%,100%{transform:scale(.96); opacity:.55}
-      50%{transform:scale(1.06); opacity:.9}
-    }
+    @keyframes pulse{0%,100%{transform:scale(.96); opacity:.55} 50%{transform:scale(1.06); opacity:.9}}
 
     .hero-right h1{font-size:clamp(28px, 4vw, 44px); margin:0 0 8px}
     .tag{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
       background:linear-gradient(90deg, rgba(255,61,242,.12), rgba(87,230,255,.12));
       border:1px solid var(--border); font-size:.85rem; color:var(--muted); margin-bottom:12px}
     .hero-right p{color:var(--muted); margin:8px 0 18px}
-    .cta-row{display:flex; gap:12px; flex-wrap:wrap}
+    .scan{position:relative; padding-top:6px; margin-top:6px}
+    .scan::before{
+      content:""; position:absolute; left:-10%; right:-10%; top:-2px; height:1px;
+      background:linear-gradient(90deg, transparent, var(--silver), transparent);
+      animation:scan 3.6s linear infinite; opacity:.7;
+    }
+    @keyframes scan{0%{transform:translateX(-30%)}100%{transform:translateX(30%)}}
+
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center} /* CENTERED */
     .btn{
       display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; border:1px solid var(--border);
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
@@ -102,22 +104,7 @@
       radial-gradient(300px 120px at 20% 20%, rgba(255,61,242,.25), transparent 60%),
       radial-gradient(300px 120px at 80% 20%, rgba(87,230,255,.25), transparent 60%),
       linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
-      border-color:rgba(201,208,221,.35) /* touch of silver */
-    }
-
-    /* NEW: AI scan sweep line under hero paragraph */
-    .scan{
-      position:relative; padding-top:6px; margin-top:6px;
-    }
-    .scan::before{
-      content:""; position:absolute; left:-10%; right:-10%; top:-2px; height:1px;
-      background:linear-gradient(90deg, transparent, var(--silver), transparent);
-      animation:scan 3.6s linear infinite;
-      opacity:.7;
-    }
-    @keyframes scan{
-      0%{transform:translateX(-30%)}
-      100%{transform:translateX(30%)}
+      border-color:rgba(201,208,221,.35)
     }
 
     /* Sections */
@@ -126,7 +113,7 @@
     .section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
     .muted{color:var(--muted)}
 
-    /* Cards */
+    /* Grid + Cards */
     .grid{max-width:var(--maxw); margin:0 auto; display:grid; gap:var(--gap); grid-template-columns: repeat(12, 1fr)}
     .card{
       grid-column: span 12;
@@ -141,12 +128,13 @@
     }
     .card h3{margin:0 0 4px; font-size:1.1rem}
     .chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
-    .chip{font-size:.75rem; background:var(--chip); border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:var(--muted)}
-    .status{border-color:transparent}
-    .status.proto{background: linear-gradient(90deg, rgba(255,61,242,.18), rgba(255,61,242,.08))}
+    .chip{font-size:.75rem; background:#1a1f2d; border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:var(--muted)}
     .status.beta{background: linear-gradient(90deg, rgba(87,230,255,.18), rgba(87,230,255,.08))}
-    .status.handoff{background: linear-gradient(90deg, rgba(144,238,144,.22), rgba(144,238,144,.08))}
-    .status.soon{background: linear-gradient(90deg, rgba(201,208,221,.22), rgba(201,208,221,.08)); color:#dfe6f3} /* silver */
+    .status.soon{background: linear-gradient(90deg, rgba(201,208,221,.22), rgba(201,208,221,.08)); color:#dfe6f3}
+    .redact{position:relative; color:transparent; text-shadow:none}
+    .redact::after{
+      content:"████████████"; letter-spacing:.08em; color:#e6e6e6; background:#000; padding:0 .25rem; border-radius:4px;
+    }
     .card p{color:var(--muted); margin:8px 0 12px}
     .card .actions{display:flex; gap:10px; flex-wrap:wrap}
 
@@ -159,7 +147,7 @@
     /* Tech strip */
     .tech{max-width:var(--maxw); margin:0 auto; display:flex; gap:14px; flex-wrap:wrap}
     .pill{border:1px solid var(--border); background:var(--glass); border-radius:999px; padding:8px 12px; color:var(--muted); font-size:.9rem}
-    .pill.silver{border-color:rgba(201,208,221,.35); color:#e3e8f3} /* silver accent pill */
+    .pill.silver{border-color:rgba(201,208,221,.35); color:#e3e8f3}
 
     /* Modal */
     dialog{border:none; border-radius:16px; padding:0; width:min(560px, 92vw);
@@ -173,18 +161,19 @@
     .field input{background:#0c0f1d; border:1px solid var(--border); color:var(--ink); padding:12px 12px; border-radius:10px}
     .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:0 22px 22px}
 
-    /* Footer */
     footer{border-top:1px solid var(--border); margin-top:40px; background:linear-gradient(180deg, rgba(255,61,242,.05), transparent)}
     .foot-inner{max-width:var(--maxw); margin:0 auto; padding:18px 20px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; align-items:center}
     .foot-inner #copyright{color:var(--muted)}
   </style>
 </head>
 <body>
+  <!-- Neural mesh -->
   <canvas id="neural"></canvas>
 
   <header>
     <div class="wrap bar">
       <div class="brand">
+        <img src="/jmodco/assets/Jmod_LabsTP.png" alt="Jmod Labs logo" />
         <div class="t1">Jmod Labs</div>
       </div>
       <nav>
@@ -198,17 +187,13 @@
 
   <!-- HERO -->
   <section class="hero" aria-label="Hero">
-    <!-- Left: Logo -->
     <div class="hero-card hero-left">
-      <img class="hero-logo" src="./assets/Jmod_LabsTP.svg" alt="Jmod Labs" />
+      <img class="hero-logo" src="/jmodco/assets/Jmod_LabsTP.png" alt="Jmod Labs" />
     </div>
-    <!-- Right: Text -->
     <div class="hero-card hero-right">
       <div class="tag">The Innovation Core of <strong>Jmod Co.</strong></div>
       <h1>Where every Jmod idea is born.</h1>
-      <p class="scan">Jmod Labs researches, prototypes, and transfers systems to Jmod divisions.
-         Public can explore highlights; deeper access requires sign-in. All divisions
-         leverage the Labs knowledge base — continuously learning, forever improving.</p>
+      <p class="scan">Explore public highlights. Deeper demos and docs require sign-in. All divisions leverage the Labs knowledge base — continuously learning and improving.</p>
       <div class="cta-row">
         <button class="btn primary" onclick="document.getElementById('signin').showModal()">Sign in for access</button>
         <a class="btn" href="#experiments">View active experiments</a>
@@ -220,48 +205,48 @@
   <section id="experiments">
     <div class="section-title wrap">
       <h2>Active Experiments</h2>
-      <div class="muted">Public preview → deeper docs gated by sign-in</div>
+      <div class="muted">Client identities are protected. Names are always redacted.</div>
     </div>
     <div class="grid">
-      <!-- 1) Quote Builder (pilot for Lisnup) -->
+      <!-- 1) Quote Builder (pilot for installers) -->
       <article class="card sm-4">
         <div class="chips">
-          <span class="chip status.beta">Pilot</span>
+          <span class="chip status beta">Pilot</span>
           <span class="chip">Labs → Insights</span>
+          <span class="chip">Client: <span class="redact">Lisnup Installations</span></span>
         </div>
         <h3>AI Quote Builder (Installations)</h3>
         <p>Automates quoting for remote starts, tint, and electronics. Parts lookup, pricing rules,
-           and clean PDF outputs. Designed for Lisnup — expandable to other trades.</p>
+           and clean PDF outputs. Built for installers; expandable to other trades.</p>
         <div class="actions">
           <a class="btn" href="#" onclick="gate()">Preview</a>
           <a class="btn" href="#" onclick="gate()">Docs</a>
         </div>
       </article>
 
-      <!-- 2) Media App (Coming Soon) -->
+      <!-- 2) Media App -->
       <article class="card sm-4">
         <div class="chips">
           <span class="chip status soon">Coming Soon</span>
           <span class="chip">Labs → Media</span>
         </div>
         <h3>Jmod Media App</h3>
-        <p>AI-driven content planner and automation. Plan → generate → schedule. Feedback loop
-           improves tone and performance over time.</p>
+        <p>AI-driven planner + automation: plan → generate → schedule. Feedback improves tone and performance.</p>
         <div class="actions">
           <a class="btn" href="#" onclick="gate()">Roadmap</a>
           <a class="btn" href="#" onclick="gate()">Beta Waitlist</a>
         </div>
       </article>
 
-      <!-- 3) Legacy/Haven (Coming Soon) -->
+      <!-- 3) Legacy/Haven -->
       <article class="card sm-4">
         <div class="chips">
           <span class="chip status soon">Coming Soon</span>
           <span class="chip">Labs → Legacy</span>
         </div>
         <h3>Legacy / Haven App</h3>
-        <p>Engagement & well-being for seniors: daily prompts, family touchpoints, and positive
-           habit loops. Potential licensing to care centers.</p>
+        <p>Engagement & well-being for seniors: daily prompts, family touchpoints, and positive habit loops.
+           Potential licensing to care centers.</p>
         <div class="actions">
           <a class="btn" href="#" onclick="gate()">Concept Brief</a>
           <a class="btn" href="#" onclick="gate()">Partner Interest</a>
@@ -271,15 +256,15 @@
       <!-- Metrics + Flow -->
       <article class="card sm-6">
         <div class="chips">
-          <span class="chip">Metric</span>
-          <span class="chip" style="border-color:rgba(201,208,221,.35);color:#e3e8f3">Silver Accents</span>
+          <span class="chip">Metrics</span>
+          <span id="sampleFlag" class="chip" style="display:none">sample</span>
         </div>
         <h3>Pipeline Stats</h3>
-        <p class="muted">Real-time counters (placeholders now; wire to analytics later).</p>
+        <p class="muted">Counts load from <code>/internal/metrics.json</code> if present; otherwise sample values are shown.</p>
         <div class="actions">
-          <span class="btn" id="expCount">Active Experiments: 3</span>
-          <span class="btn" id="toolsCount">Tools Built: 12</span>
-          <span class="btn" id="xferCount">Transfers: 5</span>
+          <span class="btn" id="expCount">Active Experiments: –</span>
+          <span class="btn" id="toolsCount">Tools Built: –</span>
+          <span class="btn" id="xferCount">Transfers: –</span>
         </div>
       </article>
 
@@ -317,8 +302,8 @@
   <!-- TECH -->
   <section id="tech">
     <div class="section-title wrap">
-      <h2>Tech & Infra</h2>
-      <div class="muted">Stack evolves as Labs learns</div>
+      <h2>Current Tech Stack</h2>
+      <div class="muted">We update tools as Labs evolves.</div>
     </div>
     <div class="tech">
       <span class="pill">JavaScript/TypeScript</span>
@@ -342,7 +327,7 @@
       <article class="card sm-12">
         <p>We’ll soon enable concept submissions and private partner access. For now,
            sign in to register interest and unlock deeper docs.</p>
-        <div class="actions">
+        <div class="actions" style="justify-content:center">
           <button class="btn primary" onclick="document.getElementById('signin').showModal()">Sign in / Request access</button>
         </div>
       </article>
@@ -357,7 +342,7 @@
     </div>
   </footer>
 
-  <!-- Sign-in modal (stub for gating) -->
+  <!-- Sign-in modal (stub) -->
   <dialog id="signin">
     <div class="modal">
       <h3>Sign in to Jmod Labs</h3>
@@ -380,25 +365,36 @@
   </dialog>
 
   <script>
-    // Footer year — keep exact Jmod Co. styling
-    (function(){
-      const el = document.getElementById('copyright');
-      if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-    })();
+    // Footer year
+    (function(){ const el = document.getElementById('copyright');
+      if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`; })();
 
-    // Gating stub for deeper links
     function gate(){ document.getElementById('signin').showModal(); }
 
-    // Light counters (feel alive)
-    const bump = (elId, base)=> {
-      const el = document.getElementById(elId);
-      if(!el) return;
-      let n = base;
-      setInterval(()=>{ n += (Math.random()>.7?1:0);
-        el.textContent = el.textContent.split(':')[0] + ': ' + n;
-      }, 4000);
-    }
-    bump('expCount', 3); bump('toolsCount', 12); bump('xferCount', 5);
+    // PIPELINE STATS: tries real metrics first, otherwise sample
+    (async function(){
+      const exp = document.getElementById('expCount');
+      const tools = document.getElementById('toolsCount');
+      const xfer = document.getElementById('xferCount');
+      const sampleFlag = document.getElementById('sampleFlag');
+
+      try{
+        const res = await fetch('/internal/metrics.json', {cache:'no-store'});
+        if(!res.ok) throw new Error('no metrics');
+        const m = await res.json(); // {experiments:3, tools:12, transfers:5}
+        exp.textContent = `Active Experiments: ${m.experiments ?? '–'}`;
+        tools.textContent = `Tools Built: ${m.tools ?? '–'}`;
+        xfer.textContent = `Transfers: ${m.transfers ?? '–'}`;
+      }catch(e){
+        sampleFlag.style.display='inline-block';
+        exp.textContent = 'Active Experiments: 3';
+        tools.textContent = 'Tools Built: 12';
+        xfer.textContent = 'Transfers: 5';
+      }
+    })();
+
+    // Optional: set a background image by uncommenting below and pointing to your file
+    // document.documentElement.style.setProperty('--bgimg',"url('/jmodco/assets/labs-bg.jpg')");
 
     // Neural mesh background (performant canvas)
     (function(){
@@ -417,7 +413,6 @@
         for(let i=0;i<count;i++){
           pts.push({x:RAND(0,w), y:RAND(0,h), vx:RAND(-.08,.08)*dpr, vy:RAND(-.08,.08)*dpr});
         }
-        // Precompute neighbor links
         for(let i=0;i<pts.length;i++){
           for(let j=i+1;j<pts.length;j++){
             if (Math.random()>.985) links.push([i,j]);
@@ -426,9 +421,7 @@
       };
       const step = ()=>{
         ctx.clearRect(0,0,w,h);
-        // glow
         ctx.shadowBlur = 12*dpr; ctx.shadowColor = 'rgba(87,230,255,.35)';
-        // lines
         ctx.lineWidth = 0.6*dpr;
         for(const [a,b] of links){
           const p=pts[a], q=pts[b];
@@ -439,7 +432,6 @@
             ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke();
           }
         }
-        // points
         for(const p of pts){
           p.x+=p.vx; p.y+=p.vy;
           if(p.x<0||p.x>w) p.vx*=-1;
