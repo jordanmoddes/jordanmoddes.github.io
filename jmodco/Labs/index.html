@@ -7,15 +7,17 @@
   <meta name="color-scheme" content="dark light" />
   <style>
     :root{
-      /* === GLOBAL SIZE KNOBS ===
-         Adjust the hero logo once, everywhere else stays intact.        */
-      --hero-logo-scale: 0.90;     /* 0.60–1.10 typical */
+      /* === Size knobs === */
+      --hero-logo-scale: 0.90;      /* 0.60–1.10 typical */
+
+      /* Readability (higher = less transparent) */
+      --panel-opacity: .85;          /* .70 subtle … 1.00 solid */
 
       /* Theme */
       --bg:#0a0b0f; --bg2:#0e1017;
       --card:#11131c; --ink:#e6ecff; --muted:#9aa4c3;
       --cyan:#57e6ff; --mag:#ff3df2; --silver:#c9d0dd;
-      --glass:rgba(255,255,255,.06); --border:rgba(201,208,221,.14);
+      --border:rgba(201,208,221,.18);
       --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
       --radius:18px; --radius-sm:12px; --gap:18px; --maxw:1200px;
 
@@ -37,7 +39,7 @@
       overflow-x:hidden; position:relative; isolation:isolate;
     }
 
-    /* ===== Animated Neural/Circuit Background (fixed for parallax) ===== */
+    /* ===== Parallax Background ===== */
     #labs-bg{position:fixed; inset:0; z-index:-1; overflow:hidden;
       background: radial-gradient(1200px 800px at 50% -10%, rgba(120,170,255,.06), transparent 60%),
                   linear-gradient(180deg, #071026, #0a142f 35%, #0b1638 65%, #0a142f);}
@@ -62,10 +64,11 @@
     .icon{fill:none; stroke:#cfe9ff; stroke-width:1.2; opacity:.9; filter:drop-shadow(0 0 6px rgba(200,240,255,.35))}
     .brand-weave{fill:url(#brandGrad); font:700 18px/1.1 "Inter", ui-sans-serif, system-ui; letter-spacing:.4px;
       filter:drop-shadow(0 0 8px rgba(120,200,255,.35))}
+    .projectile{ fill:#ffffff; filter: drop-shadow(0 0 6px rgba(200,240,255,.9)); }
 
-    /* Header (no logo in nav) */
+    /* Header */
     header{position:sticky; top:0; z-index:5; backdrop-filter:blur(10px);
-      background:linear-gradient(180deg, rgba(10,11,15,.75), rgba(10,11,15,.35) 70%, transparent);
+      background:linear-gradient(180deg, rgba(10,11,15,.78), rgba(10,11,15,.42) 70%, transparent);
       border-bottom:1px solid var(--border)}
     .bar{display:flex; align-items:center; justify-content:space-between; gap:20px}
     .brand{display:flex; align-items:center; gap:12px}
@@ -75,60 +78,64 @@
     a:hover{text-decoration:underline}
     .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px; position:relative; z-index:2}
 
-    /* HERO */
-    .hero{display:grid; grid-template-columns: 1fr 1.2fr; gap:32px; align-items:center;
+    /* HERO — equal columns so cards match size */
+    .hero{display:grid; grid-template-columns: 1fr 1fr; gap:32px; align-items:center;
       padding:56px 20px 24px; margin:0 auto; max-width:var(--maxw); position:relative; z-index:2}
-    .hero-card{background:linear-gradient(180deg, var(--glass), transparent 70%);
-      border:1px solid var(--border); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow); position:relative; overflow:hidden}
+    .hero-card{
+      background:rgba(17,19,28,var(--panel-opacity));
+      border:1px solid var(--border); border-radius:var(--radius);
+      padding:28px; box-shadow:var(--shadow); position:relative; overflow:hidden
+    }
     .hero-left{display:flex; align-items:center; justify-content:center; padding:24px}
-    /* UNIVERSAL IMAGE SLOT — set --img-scale to control any image’s width */
+    /* UNIVERSAL IMAGE SLOT */
     .img-slot{width:100%; display:flex; justify-content:center}
     .img-slot > img{width:calc(var(--img-scale,1) * 100%); max-width:none; height:auto; object-fit:contain; transition:width .25s ease}
-    /* Hero logo uses global knob */
     #heroLogo{--img-scale: var(--hero-logo-scale); filter: drop-shadow(0 0 26px rgba(87,230,255,.45))}
     .hero-right h1{font-size:clamp(28px, 4vw, 46px); margin:0 0 10px}
     .tag{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
-      background:linear-gradient(90deg, rgba(255,61,242,.12), rgba(87,230,255,.12));
-      border:1px solid var(--border); font-size:.85rem; color:var(--muted); margin-bottom:12px}
-    .hero-right p{color:var(--muted); margin:10px 0 18px}
+      background:linear-gradient(90deg, rgba(255,61,242,.20), rgba(87,230,255,.20));
+      border:1px solid var(--border); font-size:.85rem; color:#d8e2ff; margin-bottom:12px}
+    .hero-right p{color:#d2dcf4; margin:10px 0 18px}
     .cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
     .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; border:1px solid var(--border);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); color:var(--ink); box-shadow:var(--shadow);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); color:var(--ink); box-shadow:var(--shadow);
       cursor:pointer; transition:transform .2s ease, box-shadow .2s ease}
-    .btn:hover{transform:translateY(-1px); box-shadow:0 18px 40px rgba(87,230,255,.12)}
+    .btn:hover{transform:translateY(-1px); box-shadow:0 18px 40px rgba(87,230,255,.18)}
     .btn.primary{background:
-      radial-gradient(300px 120px at 20% 20%, rgba(255,61,242,.25), transparent 60%),
-      radial-gradient(300px 120px at 80% 20%, rgba(87,230,255,.25), transparent 60%),
-      linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
+      radial-gradient(300px 120px at 20% 20%, rgba(255,61,242,.33), transparent 60%),
+      radial-gradient(300px 120px at 80% 20%, rgba(87,230,255,.33), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
       border-color:rgba(201,208,221,.35)}
 
     /* Sections */
     section{padding:36px 20px}
     .section-title{max-width:var(--maxw); margin:0 auto 16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px}
     .section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
-    .muted{color:var(--muted)}
+    .muted{color:#d2dcf4}
     .grid{max-width:var(--maxw); margin:0 auto; display:grid; gap:var(--gap); grid-template-columns: repeat(12, 1fr)}
-    .card{grid-column: span 12; background:linear-gradient(180deg, var(--glass), transparent 60%);
-      border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); position:relative; overflow:hidden}
-    @media (min-width:720px){.card.sm-6{grid-column:span 6} .card.sm-4{grid-column:span 4} .card.sm-3{grid-column:span 3}}
+    .card{
+      grid-column: span 12;
+      background:rgba(17,19,28,var(--panel-opacity));
+      border:1px solid var(--border); border-radius:var(--radius); padding:18px;
+      box-shadow:var(--shadow); position:relative; overflow:hidden; color:#e7eeff
+    }
+    @media (min-width:720px){.card.sm-6{grid-column: span 6} .card.sm-4{grid-column: span 4} .card.sm-3{grid-column: span 3}}
     .card h3{margin:0 0 4px; font-size:1.1rem}
     .chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
-    .chip{font-size:.75rem; background:#1a1f2d; border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:var(--muted)}
-    .status.beta{background:linear-gradient(90deg, rgba(87,230,255,.18), rgba(87,230,255,.08))}
-    .status.soon{background:linear-gradient(90deg, rgba(201,208,221,.22), rgba(201,208,221,.08)); color:#dfe6f3}
+    .chip{font-size:.75rem; background:#1a1f2d; border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:#d2dcf4}
+    .status.beta{background: linear-gradient(90deg, rgba(87,230,255,.18), rgba(87,230,255,.08))}
+    .status.soon{background: linear-gradient(90deg, rgba(201,208,221,.22), rgba(201,208,221,.08)); color:#dfe6f3}
     .redact{position:relative; color:transparent; text-shadow:none}
     .redact::after{content:"████████████"; letter-spacing:.08em; color:#e6e6e6; background:#000; padding:0 .25rem; border-radius:4px}
-    .card p{color:var(--muted); margin:8px 0 12px}
+    .card p{color:#d2dcf4; margin:8px 0 12px}
     .card .actions{display:flex; gap:10px; flex-wrap:wrap}
 
-    /* Process / Tech */
     .process{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); max-width:var(--maxw); margin:0 auto}
-    .step{background:linear-gradient(180deg, var(--glass), transparent 60%); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; box-shadow:var(--shadow)}
+    .step{background:rgba(17,19,28,var(--panel-opacity)); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; box-shadow:var(--shadow)}
     .tech{max-width:var(--maxw); margin:0 auto; display:flex; gap:14px; flex-wrap:wrap}
-    .pill{border:1px solid var(--border); background:var(--glass); border-radius:999px; padding:8px 12px; color:var(--muted); font-size:.9rem}
-    .pill.silver{border-color:rgba(201,208,221,.35); color:#e3e8f3}
+    .pill{border:1px solid var(--border); background:rgba(255,255,255,.06); border-radius:999px; padding:8px 12px; color:#e3e8f3; font-size:.9rem}
+    .pill.silver{border-color:rgba(201,208,221,.35); color:#f0f4ff}
 
-    /* Modal + Footer */
     dialog{border:none; border-radius:16px; padding:0; width:min(560px, 92vw);
       background:linear-gradient(180deg, #131628, #0f1222); color:var(--ink); box-shadow:0 30px 80px rgba(0,0,0,.55)}
     dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,255,.2), rgba(0,0,0,.6))}
@@ -138,7 +145,7 @@
     .field input{background:#0c0f1d; border:1px solid var(--border); color:var(--ink); padding:12px 12px; border-radius:10px}
     .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:0 22px 22px}
     footer{border-top:1px solid var(--border); margin-top:40px; background:linear-gradient(180deg, rgba(255,61,242,.05), transparent)}
-    .foot-inner{max-width:var(--maxw); margin:0 auto; padding:18px 20px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .foot-inner{max-width:var(--maxw); margin:0 auto; padding:18px 20px; color:#d2dcf4; display:flex; gap:12px; flex-wrap:wrap; align-items:center}
   </style>
 </head>
 <body>
@@ -162,6 +169,7 @@
       </g>
       <g id="links"></g>
       <g id="nodes"></g>
+      <g id="projectiles"></g>
       <text id="brand-text" class="brand-weave" x="645" y="430">Jmod Labs</text>
       <g opacity=".9">
         <g transform="translate(250 170) scale(1.3)"><use href="#ai-cloud" class="icon"/></g>
@@ -204,7 +212,7 @@
     </div>
   </section>
 
-  <!-- MANDATE (Core Identity / Primary Role / Focus Areas) -->
+  <!-- MANDATE -->
   <section id="mandate">
     <div class="section-title wrap">
       <h2>R&amp;D Mandate</h2>
@@ -355,21 +363,24 @@
   </dialog>
 
   <script>
-    // Footer year (Jmod Co.)
+    // Footer © year
     (function(){ const el = document.getElementById('copyright');
       if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`; })();
 
     function gate(){ document.getElementById('signin').showModal(); }
 
-    /* ===== Build the pulsing network links/nodes for the background ===== */
+    /* ===== Background network ===== */
     (function(){
       const svg   = document.getElementById('labs-svg');
       const gLinks= document.getElementById('links');
       const gNodes= document.getElementById('nodes');
+      const gProj = document.getElementById('projectiles');
+
       const W=1200, H=800, COLS=20, ROWS=14, jitter=16;
       const density = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--density')) || 0.75;
       const speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pulse-speed')) || 4200;
 
+      // Build nodes
       const nodes = [];
       for (let r=0; r<=ROWS; r++){
         for (let c=0; c<=COLS; c++){
@@ -380,6 +391,7 @@
           }
         }
       }
+      // Render nodes
       nodes.forEach(({x,y})=>{
         const halo = document.createElementNS('http://www.w3.org/2000/svg','circle');
         halo.setAttribute('class','halo'); halo.setAttribute('cx',x); halo.setAttribute('cy',y); halo.setAttribute('r',3.8);
@@ -388,68 +400,68 @@
         dot.setAttribute('class','node'); dot.setAttribute('cx',x); dot.setAttribute('cy',y); dot.setAttribute('r',1.6);
         gNodes.appendChild(dot);
       });
-      function link(a,b){
-        const p = document.createElementNS('http://www.w3.org/2000/svg','path');
-        p.setAttribute('class','link');
-        p.setAttribute('d',`M${a.x} ${a.y} L${b.x} ${b.y}`);
-        p.style.animationDelay = (Math.random()*speed)+'ms';
-        gLinks.appendChild(p);
-      }
+      // Links
       for (let i=0;i<nodes.length;i++){
         for (let j=i+1;j<nodes.length;j++){
           const a=nodes[i], b=nodes[j]; const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
-          if (d<120 && Math.random() < (density * (120-d)/120)*0.22){ link(a,b); }
+          if (d<120 && Math.random() < (density * (120-d)/120)*0.22){
+            const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+            p.setAttribute('class','link'); p.setAttribute('d',`M${a.x} ${a.y} L${b.x} ${b.y}`);
+            p.style.animationDelay = (Math.random()*speed)+'ms';
+            gLinks.appendChild(p);
+          }
         }
       }
-      const icons = ['#ai-cloud','#ai-shield','#ai-graph','#ai-gear']; const iconCount=10;
-      for (let i=0;i<iconCount;i++){
-        const use = document.createElementNS('http://www.w3.org/2000/svg','use');
-        use.setAttribute('href', icons[i%icons.length]); use.setAttribute('class','icon');
-        const x = 80 + Math.random()*(W-160); const y = 80 + Math.random()*(H-160); const s = 0.9 + Math.random()*0.8;
-        use.setAttribute('transform', `translate(${x} ${y}) scale(${s})`); svg.appendChild(use);
-      }
-      // gentle shimmer for "Jmod Labs" woven text
+      // Gentle shimmer on woven text
       const brand = document.getElementById('brand-text'); let t=0;
       (function tick(){ t+=0.02; brand.setAttribute('opacity', 0.75 + Math.sin(t)*0.15); requestAnimationFrame(tick); })();
-    })();
 
-    /* ===== Auto metrics: reads 3 JSON lists if present =====
-       /internal/experiments.json  -> [{ id, status: active|paused|archived }, ...]
-       /internal/tools.json        -> [{ id }, ...]
-       /internal/transfers.json    -> [{ experiment, to, date }, ...]
-       Definitions:
-         Active Experiments = count of items not 'archived'
-         Tools Built        = length of tools list
-         Transfers          = length of transfers list (formal hand-offs)
-    ====================================================================== */
-    (async function(){
-      const expEl=document.getElementById('expCount'), toolsEl=document.getElementById('toolsCount'),
-            xferEl=document.getElementById('xferCount'), sampleFlag=document.getElementById('sampleFlag');
+      // ===== Projectiles: little dots shooting between random nodes =====
+      const PROJECTILES_PER_SEC = 5;       // how many to spawn per second
+      const PROJECTILE_SPEED_MS = 1600;    // travel time per projectile
+      const PROJECTILE_LIMIT    = 40;      // cap to keep FPS smooth
 
-      async function safeJson(path){
-        try{ const r=await fetch(path,{cache:'no-store'}); if(!r.ok) throw 0; return await r.json(); }
-        catch(e){ return null; }
+      const active = new Set();
+
+      function spawnProjectile(){
+        if (active.size >= PROJECTILE_LIMIT) return;
+        const from = nodes[(Math.random()*nodes.length)|0];
+        let to = from;
+        while (to === from){ to = nodes[(Math.random()*nodes.length)|0]; }
+
+        const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        c.setAttribute('class','projectile');
+        c.setAttribute('r', 1.6);
+        c.setAttribute('cx', from.x);
+        c.setAttribute('cy', from.y);
+        gProj.appendChild(c);
+
+        const id = Symbol(); active.add(id);
+        const start = performance.now();
+        const dur = PROJECTILE_SPEED_MS * (0.7 + Math.random()*0.6); // slight variance
+
+        function move(now){
+          const tNorm = Math.min(1, (now - start)/dur);
+          // ease in-out cubic
+          const t = tNorm<.5 ? 4*tNorm*tNorm*tNorm : 1 - Math.pow(-2*tNorm + 2, 3)/2;
+          const x = from.x + (to.x - from.x)*t;
+          const y = from.y + (to.y - from.y)*t;
+          c.setAttribute('cx', x);
+          c.setAttribute('cy', y);
+          c.setAttribute('opacity', 0.9 - 0.6*t);
+          if (tNorm < 1){
+            requestAnimationFrame(move);
+          } else {
+            gProj.removeChild(c);
+            active.delete(id);
+          }
+        }
+        requestAnimationFrame(move);
       }
 
-      const [exps, tools, xfers] = await Promise.all([
-        safeJson('/internal/experiments.json'),
-        safeJson('/internal/tools.json'),
-        safeJson('/internal/transfers.json')
-      ]);
-
-      if(exps || tools || xfers){
-        const activeCount = Array.isArray(exps) ? exps.filter(e => (e.status||'active').toLowerCase() !== 'archived').length : 0;
-        const toolsCount  = Array.isArray(tools) ? tools.length : 0;
-        const xferCount   = Array.isArray(xfers) ? xfers.length : 0;
-        expEl.textContent=`Active Experiments: ${activeCount}`;
-        toolsEl.textContent=`Tools Built: ${toolsCount}`;
-        xferEl.textContent=`Transfers: ${xferCount}`;
-      } else {
-        if(sampleFlag) sampleFlag.style.display='inline-block';
-        expEl.textContent='Active Experiments: 3';
-        toolsEl.textContent='Tools Built: 12';
-        xferEl.textContent='Transfers: 5';
-      }
+      setInterval(()=>{
+        for (let i=0;i<PROJECTILES_PER_SEC;i++) spawnProjectile();
+      }, 1000);
     })();
   </script>
 </body>
