@@ -7,6 +7,9 @@
   <meta name="color-scheme" content="dark light" />
   <style>
     :root{
+      /* === Tweak this to resize the hero logo globally (0.60 = 60%, 0.90 = 90%) === */
+      --hero-logo-scale: 0.90;
+
       --bg:#0a0b0f; --bg2:#0e1017;
       --card:#11131c; --ink:#e6ecff; --muted:#9aa4c3;
       --cyan:#57e6ff; --mag:#ff3df2; --silver:#c9d0dd;
@@ -26,35 +29,26 @@
       overflow-x:hidden; position:relative; isolation:isolate;
     }
 
-    /* === Animated Circuit Core (SVG) === */
-    .core-bg{
-      position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.9;
-    }
-    /* ring glow */
+    /* === Animated Circuit Core (SVG background) === */
+    .core-bg{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.9; }
     .glow{ filter:url(#g); }
-    /* rotate outer rings */
     .ring-slow{ animation:spin 60s linear infinite; transform-origin:50% 50%; }
     .ring-fast{ animation:spin 30s linear infinite reverse; transform-origin:50% 50%; }
     @keyframes spin{ to{ transform:rotate(360deg); } }
-    /* outward electric pulse through spokes */
     .spoke{
-      stroke:#9fe8ff; stroke-width:1.2; stroke-linecap:round;
-      filter:url(#g);
+      stroke:#9fe8ff; stroke-width:1.2; stroke-linecap:round; filter:url(#g);
       stroke-dasharray:4 120; stroke-dashoffset:0;
       animation:pulse 3.8s cubic-bezier(.2,.6,.2,1) infinite;
     }
     @keyframes pulse{
-      0%   { stroke:#ffffff; stroke-width:1.7; stroke-dashoffset:0; opacity:.95 }
-      55%  { stroke:#57e6ff; stroke-width:1.1; stroke-dashoffset:-124; opacity:.7 }
-      100% { stroke:#a7f1ff; stroke-width:1.0; stroke-dashoffset:-248; opacity:.35 }
+      0%   { stroke:#ffffff;    stroke-width:1.7; stroke-dashoffset:0;     opacity:.95 }
+      55%  { stroke:#57e6ff;    stroke-width:1.1; stroke-dashoffset:-124;  opacity:.7 }
+      100% { stroke:#a7f1ff;    stroke-width:1.0; stroke-dashoffset:-248;  opacity:.35 }
     }
-    /* soft scan wash */
-    .wash{
-      animation:washmove 7s linear infinite; mix-blend-mode:screen; opacity:.25;
-    }
+    .wash{ animation:washmove 7s linear infinite; mix-blend-mode:screen; opacity:.25; }
     @keyframes washmove{ 0%{transform:translateY(-20%)} 100%{transform:translateY(20%)} }
 
-    /* Header (logo removed) */
+    /* Header (no logo in nav) */
     header{position:sticky; top:0; z-index:5; backdrop-filter:blur(10px);
       background:linear-gradient(180deg, rgba(10,11,15,.75), rgba(10,11,15,.35) 70%, transparent);
       border-bottom:1px solid var(--border)}
@@ -76,8 +70,14 @@
       border:1px solid var(--border); border-radius:var(--radius);
       padding:28px; box-shadow:var(--shadow); position:relative; overflow:hidden;
     }
-    .hero-left{display:flex; align-items:center; justify-content:center; padding:24px}
-    .hero-logo{width:90%; max-width:none; height:auto; object-fit:contain; filter: drop-shadow(0 0 26px rgba(87,230,255,.45))}
+    .hero-left{display:flex; align-items:center; justify-content:center; padding:10px}
+    /* Adjust logo size by changing --hero-logo-scale (0.60–1.10 typical) */
+    .hero-logo{
+      width:calc(var(--hero-logo-scale) * 100%);
+      max-width:none; height:auto; object-fit:contain;
+      filter: drop-shadow(0 0 26px rgba(87,230,255,.45));
+      transition:width .25s ease;
+    }
     .hero-right h1{font-size:clamp(28px, 4vw, 46px); margin:0 0 10px}
     .tag{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
       background:linear-gradient(90deg, rgba(255,61,242,.12), rgba(87,230,255,.12));
@@ -124,14 +124,13 @@
     .card p{color:var(--muted); margin:8px 0 12px}
     .card .actions{display:flex; gap:10px; flex-wrap:wrap}
 
-    /* Process/Tech */
     .process{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); max-width:var(--maxw); margin:0 auto}
     .step{background:linear-gradient(180deg, var(--glass), transparent 60%); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; box-shadow:var(--shadow)}
+
     .tech{max-width:var(--maxw); margin:0 auto; display:flex; gap:14px; flex-wrap:wrap}
     .pill{border:1px solid var(--border); background:var(--glass); border-radius:999px; padding:8px 12px; color:var(--muted); font-size:.9rem}
     .pill.silver{border-color:rgba(201,208,221,.35); color:#e3e8f3}
 
-    /* Modal + Footer */
     dialog{border:none; border-radius:16px; padding:0; width:min(560px, 92vw);
       background:linear-gradient(180deg, #131628, #0f1222); color:var(--ink); box-shadow:0 30px 80px rgba(0,0,0,.55)}
     dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,255,.2), rgba(0,0,0,.6))}
@@ -140,6 +139,7 @@
     .field{display:grid; gap:6px}
     .field input{background:#0c0f1d; border:1px solid var(--border); color:var(--ink); padding:12px 12px; border-radius:10px}
     .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:0 22px 22px}
+
     footer{border-top:1px solid var(--border); margin-top:40px; background:linear-gradient(180deg, rgba(255,61,242,.05), transparent)}
     .foot-inner{max-width:var(--maxw); margin:0 auto; padding:18px 20px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; align-items:center}
   </style>
@@ -147,9 +147,8 @@
 <body>
 
   <!-- Animated circuit core background -->
-  <svg class="core-bg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+  <svg class="core-bg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
-      <!-- soft blue/white glow -->
       <filter id="g" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b1"/>
         <feColorMatrix in="b1" type="matrix" values="0 0 0 0 0.8  0 0 0 0 0.95  0 0 0 0 1  0 0 0 1 0"/>
@@ -164,33 +163,17 @@
 
     <!-- faint grid -->
     <g opacity=".15" stroke="#7abfff">
-      <g class="wash">
-        <path d="M0 500 H1000" />
-      </g>
+      <g class="wash"><path d="M0 500 H1000" /></g>
       <g>
-        <!-- vertical lines -->
         <g>
-          <path d="M100 0 V1000" />
-          <path d="M200 0 V1000" />
-          <path d="M300 0 V1000" />
-          <path d="M400 0 V1000" />
-          <path d="M500 0 V1000" />
-          <path d="M600 0 V1000" />
-          <path d="M700 0 V1000" />
-          <path d="M800 0 V1000" />
-          <path d="M900 0 V1000" />
+          <path d="M100 0 V1000" /><path d="M200 0 V1000" /><path d="M300 0 V1000" />
+          <path d="M400 0 V1000" /><path d="M500 0 V1000" /><path d="M600 0 V1000" />
+          <path d="M700 0 V1000" /><path d="M800 0 V1000" /><path d="M900 0 V1000" />
         </g>
-        <!-- horizontal lines -->
         <g>
-          <path d="M0 100 H1000" />
-          <path d="M0 200 H1000" />
-          <path d="M0 300 H1000" />
-          <path d="M0 400 H1000" />
-          <path d="M0 500 H1000" />
-          <path d="M0 600 H1000" />
-          <path d="M0 700 H1000" />
-          <path d="M0 800 H1000" />
-          <path d="M0 900 H1000" />
+          <path d="M0 100 H1000" /><path d="M0 200 H1000" /><path d="M0 300 H1000" />
+          <path d="M0 400 H1000" /><path d="M0 500 H1000" /><path d="M0 600 H1000" />
+          <path d="M0 700 H1000" /><path d="M0 800 H1000" /><path d="M0 900 H1000" />
         </g>
       </g>
     </g>
@@ -239,9 +222,7 @@
 
   <header>
     <div class="wrap bar">
-      <div class="brand">
-        <div class="t1">Jmod Labs</div> <!-- logo removed from header -->
-      </div>
+      <div class="brand"><div class="t1">Jmod Labs</div></div>
       <nav>
         <a href="#experiments">Experiments</a>
         <a href="#process">Process</a>
@@ -274,6 +255,7 @@
       <div class="muted">Client identities are protected. Names are always redacted.</div>
     </div>
     <div class="grid">
+      <!-- Example cards; keep redaction -->
       <article class="card sm-4">
         <div class="chips">
           <span class="chip status beta">Pilot</span>
@@ -314,13 +296,17 @@
         </div>
       </article>
 
+      <!-- Metrics + Flow -->
       <article class="card sm-6">
         <div class="chips">
           <span class="chip">Metrics</span>
           <span id="sampleFlag" class="chip" style="display:none">sample</span>
         </div>
         <h3>Pipeline Stats</h3>
-        <p class="muted">Counts load from <code>/internal/metrics.json</code> if present; otherwise sample values are shown.</p>
+        <p class="muted">
+          Auto-computed from <code>/internal/experiments.json</code>, <code>/internal/tools.json</code>, and <code>/internal/transfers.json</code> if present.
+          Otherwise, sample values are shown.
+        </p>
         <div class="actions">
           <span class="btn" id="expCount">Active Experiments: –</span>
           <span class="btn" id="toolsCount">Tools Built: –</span>
@@ -331,7 +317,7 @@
       <article class="card sm-6">
         <div class="chips"><span class="chip">How it works</span></div>
         <h3>Internal Licensing Flow</h3>
-        <p>Labs validates → small internal transfer price to child company → child company licenses to external customers (monthly). Labs receives learning data back to improve models.</p>
+        <p>“Transfers” = completed hand-offs from Labs to a Jmod division (e.g., Labs → Media). After transfer, the division licenses to customers; Labs continues learning via feedback.</p>
       </article>
     </div>
   </section>
@@ -391,9 +377,9 @@
   </footer>
 
   <!-- Sign-in modal (stub) -->
-  <dialog id="signin">
+  <dialog id="signin" aria-labelledby="signin-title">
     <div class="modal">
-      <h3>Sign in to Jmod Labs</h3>
+      <h3 id="signin-title">Sign in to Jmod Labs</h3>
       <p>Public can browse; detailed docs & demos require an account.</p>
     </div>
     <form class="modal-body" method="dialog" onsubmit="return false;">
@@ -408,31 +394,61 @@
 
   <script>
     // Footer year
-    (function(){ const el = document.getElementById('copyright');
-      if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`; })();
+    (function(){
+      const el = document.getElementById('copyright');
+      if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+    })();
 
     function gate(){ document.getElementById('signin').showModal(); }
 
-    // Load metrics (live if /internal/metrics.json exists)
+    // === AUTO METRICS LOADER ===============================================
+    // Provide any of these files for auto-counting:
+    //   /internal/experiments.json  -> [{ "id":"quote-builder", "status":"active" | "paused" | "archived" }, ...]
+    //   /internal/tools.json        -> [{ "id":"kpi-glassboard" }, ...]
+    //   /internal/transfers.json    -> [{ "experiment":"quote-builder", "to":"Jmod Media", "date":"2025-10-10" }, ...]
+    //
+    // Definitions:
+    //   Active Experiments = experiments with status !== 'archived'
+    //   Tools Built        = number of entries in tools.json
+    //   Transfers          = number of entries in transfers.json (each is a completed hand-off Labs -> Division)
+    //
     (async function(){
-      const exp = document.getElementById('expCount');
-      const tools = document.getElementById('toolsCount');
-      const xfer = document.getElementById('xferCount');
+      const expEl = document.getElementById('expCount');
+      const toolsEl = document.getElementById('toolsCount');
+      const xferEl = document.getElementById('xferCount');
       const sampleFlag = document.getElementById('sampleFlag');
-      try{
-        const res = await fetch('/internal/metrics.json', {cache:'no-store'});
-        if(!res.ok) throw new Error('no metrics');
-        const m = await res.json();
-        exp.textContent = `Active Experiments: ${m.experiments ?? '–'}`;
-        tools.textContent = `Tools Built: ${m.tools ?? '–'}`;
-        xfer.textContent = `Transfers: ${m.transfers ?? '–'}`;
-      }catch(e){
-        sampleFlag.style.display='inline-block';
-        exp.textContent = 'Active Experiments: 3';
-        tools.textContent = 'Tools Built: 12';
-        xfer.textContent = 'Transfers: 5';
+
+      async function safeJson(path){
+        try{
+          const r = await fetch(path, {cache:'no-store'});
+          if(!r.ok) throw new Error(path + ' not found');
+          return await r.json();
+        }catch(e){ return null; }
+      }
+
+      const [exps, tools, xfers] = await Promise.all([
+        safeJson('/internal/experiments.json'),
+        safeJson('/internal/tools.json'),
+        safeJson('/internal/transfers.json')
+      ]);
+
+      if(exps || tools || xfers){
+        const activeCount = Array.isArray(exps) ? exps.filter(e => (e.status||'active').toLowerCase() !== 'archived').length : 0;
+        const toolsCount  = Array.isArray(tools) ? tools.length : 0;
+        const xferCount   = Array.isArray(xfers) ? xfers.length : 0;
+
+        expEl.textContent   = `Active Experiments: ${activeCount}`;
+        toolsEl.textContent = `Tools Built: ${toolsCount}`;
+        xferEl.textContent  = `Transfers: ${xferCount}`;
+      } else {
+        // No files present: show samples (clearly marked)
+        if(sampleFlag) sampleFlag.style.display='inline-block';
+        expEl.textContent   = 'Active Experiments: 3';
+        toolsEl.textContent = 'Tools Built: 12';
+        xferEl.textContent  = 'Transfers: 5';
       }
     })();
+    // =======================================================================
   </script>
 </body>
 </html>
