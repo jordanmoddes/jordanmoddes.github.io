@@ -1,35 +1,571 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming Soon</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jmod Systems — Automation. Connectivity. Control.</title>
+  <meta name="color-scheme" content="dark light" />
+  <meta name="description" content="Jmod Systems builds the digital nervous system of Jmod Co. — system integration, data pipelines, and automation via the MODDES™ Core Engine." />
+
   <style>
-    body {
-      background-color: #0d0d0d;
-      color: #f2f2f2;
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      margin: 0;
+    /* ===============================
+       JMOD SYSTEMS THEME TOKENS
+       Adjust these to re-skin quickly
+       =============================== */
+    :root{
+      --bg:#0a0e13;               /* Page background */
+      --panel:#0f141b;            /* Cards / surfaces */
+      --ink:#e6eef6;              /* Primary text */
+      --muted:#9fb1c1;            /* Secondary text */
+      --line:#13202c;             /* Dividers */
+      --accent:#00bcd4;           /* Tech blue (data lines) */
+      --accent-2:#ff4081;         /* Magenta link/button to tie brand */
+      --glow:0 0 24px rgba(0,188,212,.35);
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --hero-height: 72vh;        /* HERO SIZE CONTROL */
+      --maxw: 1200px;             /* CONTENT WIDTH */
+      --grid-gap: 18px;
+      --pipe-stroke: 2.5;         /* SVG line thickness */
+      --packet-size: 7px;         /* moving dot size */
+      --logo-size: 40px;          /* top-left logo size */
+      --icon-size: 22px;          /* small inline icon size */
     }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font: 16px/1.55 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-    p {
-      font-size: 1.1rem;
-      color: #aaa;
+    a{color:var(--accent-2); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:20px}
+
+    /* ===============================
+       NAV
+       =============================== */
+    header{
+      position:sticky; top:0; z-index:20;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background:linear-gradient(to bottom, rgba(10,14,19,.78), rgba(10,14,19,.35) 60%, rgba(10,14,19,0));
+      border-bottom:1px solid var(--line);
     }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      height:64px; gap:16px;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand img{width:var(--logo-size); height:var(--logo-size); object-fit:contain; filter:drop-shadow(var(--glow))}
+    .brand .tt{font-weight:700; letter-spacing:.3px}
+    .navlinks{display:flex; gap:18px; flex-wrap:wrap}
+    .navlinks a{color:var(--ink); opacity:.9}
+    .cta{
+      background:linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      border:none; color:white; padding:10px 14px; border-radius:12px; box-shadow:var(--glow); cursor:pointer;
+    }
+
+    /* ===============================
+       HERO with DATA PIPELINES
+       =============================== */
+    .hero{
+      position:relative; height:var(--hero-height); overflow:hidden;
+      display:grid; place-items:center;
+      background:
+        radial-gradient(1200px 400px at 50% 120%, rgba(0,188,212,.06), transparent 60%),
+        radial-gradient(900px 400px at 10% -20%, rgba(255,64,129,.05), transparent 60%);
+      border-bottom:1px solid var(--line);
+    }
+    /* IMG_PLACEHOLDER: hero watermark/logo */
+    .hero::after{
+      content:""; position:absolute; inset:0;
+      background-image:url('assets/systems-hero-watermark.png'); /* Replace with your watermark or remove */
+      background-repeat:no-repeat; background-position:center; background-size: 900px auto;
+      opacity:.03; pointer-events:none;
+    }
+    .hero-inner{position:relative; z-index:1; text-align:center; padding:16px}
+    .eyebrow{color:var(--muted); text-transform:uppercase; letter-spacing:.2em; font-size:.8rem}
+    h1{margin:.35rem 0 0; font-size:clamp(28px, 4vw, 48px); line-height:1.1}
+    .sub{margin:.75rem auto 1.25rem; max-width:720px; color:var(--muted)}
+    .hero-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    .ghost{background:transparent; border:1px solid var(--line); color:var(--ink); padding:10px 14px; border-radius:12px}
+    .primary{background:var(--accent-2); color:#fff; border:none; padding:10px 14px; border-radius:12px; box-shadow:var(--glow)}
+
+    /* DATA PIPELINES CANVAS AREA */
+    .pipes{
+      position:absolute; inset:0; pointer-events:none;
+    }
+    svg{width:100%; height:100%}
+    .pipe{stroke:var(--accent); stroke-width:var(--pipe-stroke); fill:none; opacity:.8; filter:drop-shadow(var(--glow))}
+    .packet{fill:var(--accent-2); filter:drop-shadow(0 0 10px rgba(255,64,129,.6))}
+
+    /* ===============================
+       SECTIONS
+       =============================== */
+    section{padding:64px 0}
+    .grid{
+      display:grid; gap:var(--grid-gap);
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+    .card{
+      background:var(--panel); border:1px solid var(--line);
+      border-radius:var(--radius); box-shadow:var(--shadow); padding:18px;
+    }
+    .muted{color:var(--muted)}
+    hr.rule{border:none; border-top:1px solid var(--line); margin:18px 0}
+
+    /* ABOUT + KPIs */
+    .kpis{grid-column: span 12}
+    @media (min-width:900px){
+      .about{grid-column: span 7}
+      .kpis{grid-column: span 5}
+    }
+    .kpi-list{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+    .kpi{background:rgba(19,32,44,.5); border:1px dashed var(--line); border-radius:14px; padding:14px; text-align:center}
+    .kpi .val{font-size:1.8rem; font-weight:700}
+    .kpi .lab{font-size:.85rem; color:var(--muted)}
+
+    /* FRAMEWORKS (ACCORDION) */
+    .accordion{display:grid; gap:12px}
+    .acc-item{border:1px solid var(--line); border-radius:14px; overflow:hidden; background:rgba(19,32,44,.4)}
+    .acc-h{
+      display:flex; align-items:center; gap:12px;
+      padding:14px 16px; cursor:pointer; user-select:none;
+    }
+    .acc-h .chev{transition:transform .25s ease}
+    .acc-h.open .chev{transform:rotate(90deg)}
+    .acc-b{max-height:0; overflow:hidden; transition:max-height .35s ease}
+    .acc-b.in{padding:0 16px 16px}
+    .tag{display:inline-block; padding:4px 8px; border-radius:999px; font-size:.75rem; background:rgba(0,188,212,.08); border:1px solid rgba(0,188,212,.25); color:var(--accent)}
+
+    /* ORCHESTRATOR CONSOLE */
+    .console{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:#0b1016}
+    .log{height:240px; overflow:auto; background:#071018; border:1px solid var(--line); border-radius:10px; padding:10px}
+    .log p{margin:0 0 6px; white-space:pre-wrap}
+    .ok{color:#7fffd4}
+    .warn{color:#ffd166}
+    .err{color:#ff6b6b}
+
+    /* REVEAL ANIMATIONS */
+    .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1; transform:none}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--line); padding:28px 0 56px; color:var(--muted)}
+    .foot{display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center}
+    .foot .right{display:flex; gap:14px; align-items:center}
+    /* Global footer text injection matches your pattern */
   </style>
 </head>
 <body>
-  <div>
-    <h1>Hi.</h1>
-    <p>Not quite done yet... check it out later!</p>
-  </div>
+
+  <!-- ===============================
+       NAV
+       =============================== -->
+  <header>
+    <div class="wrap nav">
+      <div class="brand">
+        <!-- IMG_PLACEHOLDER: top-left brand mark -->
+        <img src="assets/JmodSystems_Icon.png" alt="Jmod Systems" />
+        <div class="tt">Jmod Systems</div>
+      </div>
+      <nav class="navlinks">
+        <a href="#solutions">Solutions</a>
+        <a href="#frameworks">Frameworks</a>
+        <a href="#integration">Integration</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request Assessment</button>
+    </div>
+  </header>
+
+  <!-- ===============================
+       HERO with DATA PIPELINES
+       =============================== -->
+  <section class="hero">
+    <div class="pipes" aria-hidden="true">
+      <svg viewBox="0 0 1600 800" preserveAspectRatio="none" id="pipes-svg">
+        <!-- LEFT INPUT PATHS -->
+        <path id="pipe1" class="pipe" d="M 50 200 C 350 200, 500 350, 800 400 S 1250 450, 1550 320" />
+        <path id="pipe2" class="pipe" d="M 50 500 C 300 520, 520 520, 800 420 S 1250 380, 1550 500" />
+        <!-- CENTER CORE OUTLINE (for vibe) -->
+        <circle cx="800" cy="400" r="110" stroke="rgba(255,255,255,.08)" stroke-width="1.5" fill="rgba(0,188,212,.06)"/>
+        <!-- RIGHT OUTPUT PATHS -->
+        <path id="pipe3" class="pipe" d="M 1550 200 C 1250 250, 1100 350, 800 400 S 350 430, 50 320" />
+        <!-- PACKETS (animated via JS along paths) -->
+        <circle class="packet" id="pkt1" r="7"/>
+        <circle class="packet" id="pkt2" r="7"/>
+        <circle class="packet" id="pkt3" r="7"/>
+      </svg>
+    </div>
+
+    <div class="hero-inner">
+      <div class="eyebrow">Automation • Connectivity • Control</div>
+      <h1 id="typed">Building the digital nervous system of Jmod Co.</h1>
+      <p class="sub">Jmod Systems integrates ERPs, APIs, and data pipelines into a controllable, observable network — powered by the MODDES™ Core Engine.</p>
+      <div class="hero-actions">
+        <button class="primary" onclick="document.getElementById('frameworks').scrollIntoView({behavior:'smooth'})">Explore MODDES™</button>
+        <a class="ghost" href="#integration">See Integrations</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       ABOUT + KPIs
+       =============================== -->
+  <section id="solutions">
+    <div class="wrap grid reveal">
+      <div class="about card">
+        <h2>About Systems</h2>
+        <p class="muted">We connect every layer — from <strong>schema discovery</strong> to <strong>semantic mapping</strong>, dynamic translation, routing, and audit. Systems is the engine room that makes data move with intent.</p>
+        <hr class="rule" />
+        <ul>
+          <li>System integration &amp; optimization (ERP/MRP/CRM)</li>
+          <li>Data synchronization pipelines &amp; workflow automation</li>
+          <li>API orchestration with real-time observability</li>
+          <li>Blueprints &amp; rollout for cross-system initiatives</li>
+        </ul>
+      </div>
+
+      <div class="kpis card">
+        <h3 style="margin-top:0">Live Signals</h3>
+        <div class="kpi-list">
+          <div class="kpi">
+            <div class="val" data-kpi="rpm">0</div>
+            <div class="lab">Requests / min</div>
+          </div>
+          <div class="kpi">
+            <div class="val" data-kpi="okrate">0%</div>
+            <div class="lab">Success Rate</div>
+          </div>
+          <div class="kpi">
+            <div class="val" data-kpi="p95">—</div>
+            <div class="lab">Latency p95 (ms)</div>
+          </div>
+        </div>
+        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
+          <button class="cta" id="runSim">Run Simulation</button>
+          <button class="ghost" id="clearLog">Clear Logs</button>
+        </div>
+        <div class="console card" style="margin-top:12px">
+          <div class="log" id="log"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       FRAMEWORKS (ACCORDION)
+       =============================== -->
+  <section id="frameworks">
+    <div class="wrap reveal">
+      <h2>MODDES™ Core Engine</h2>
+      <p class="muted">A modular engine that transforms fragmented operations into a unified, auditable flow.</p>
+      <div class="accordion" id="acc">
+        <!-- 102 -->
+        <div class="acc-item">
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>102 — Schema-Discovery Engine</strong>
+            <span class="tag">ingest</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Automatically inspects source systems to detect tables, fields, and constraints; emits structured “source maps” for downstream translation.
+            </div>
+          </div>
+        </div>
+        <!-- 104 -->
+        <div class="acc-item">
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>104 — Semantic-Mapping Engine (AI Core)</strong>
+            <span class="tag">align</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Uses embeddings and ontologies to align semantically equivalent fields across vendors and versions; builds canonical references.
+            </div>
+          </div>
+        </div>
+        <!-- 106 -->
+        <div class="acc-item">
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>106 — Dynamic Translation Layer</strong>
+            <span class="tag">transform</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Produces standardized transaction objects decoupled from vendor syntax, enabling plug-and-play across integrations.
+            </div>
+          </div>
+        </div>
+        <!-- 108 -->
+        <div class="acc-item">
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>108 — Routing &amp; Optimization Module</strong>
+            <span class="tag">route</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Computes target systems using fulfillment scores and business rules; supports retries, backoff, and circuit breaking.
+            </div>
+          </div>
+        </div>
+        <!-- 110 -->
+        <div class="acc-item">
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>110 — Feedback Learning Module</strong>
+            <span class="tag">learn</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Captures performance and reconciliation feedback to fine-tune mappings, routing thresholds, and validation rules.
+            </div>
+          </div>
+        </div>
+        <!-- 112 -->
+        <div class="acc-item">
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>112 — Finance &amp; Audit Layer</strong>
+            <span class="tag">audit</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Ensures double-entry integrity across updates; emits immutable audit trails and variance alerts to a parent ledger.
+            </div>
+          </div>
+        </div>
+        <!-- 114 -->
+        <div class="acc-item">
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>114 — ERP Systems (Input)</strong>
+            <span class="tag">sources</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Inbound events from ERPs/MRPs/CRMs and operational apps; adapters provide normalization and health checks.
+            </div>
+          </div>
+        </div>
+        <!-- 116 -->
+        <div class="acc-item">
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>116 — Parent Ledger (Output)</strong>
+            <span class="tag">destinations</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Central financial record updated after reconciliation; exports evidence to BI and compliance systems.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       INTEGRATION SHOWCASE
+       =============================== -->
+  <section id="integration">
+    <div class="wrap grid reveal">
+      <div class="card" style="grid-column: span 12">
+        <h2>Integration Patterns</h2>
+        <p class="muted">Examples of how Systems bridges <strong>Labs</strong> prototypes into <strong>operational flows</strong>, with observability for <strong>Insights</strong> and distribution to <strong>Media</strong>.</p>
+        <div class="grid" style="margin-top:12px">
+          <div class="card" style="grid-column: span 12; background:rgba(0,188,212,.06); border-color:rgba(0,188,212,.25)">
+            <strong>Pattern A — ETL + Orchestration</strong>
+            <p class="muted">Extract from ERP → Canonicalize via 104/106 → Route via 108 → Audit 112 → Emit to ledger 116</p>
+          </div>
+          <div class="card" style="grid-column: span 12; background:rgba(255,64,129,.06); border-color:rgba(255,64,129,.25)">
+            <strong>Pattern B — Event Mesh</strong>
+            <p class="muted">Event-driven adapters with backpressure, retries, and dead-letter queues; live metrics and alerts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       CONTACT
+       =============================== -->
+  <section id="contact">
+    <div class="wrap grid reveal">
+      <div class="card" style="grid-column: span 12">
+        <h2>Request a Systems Integration Assessment</h2>
+        <p class="muted">Tell us what systems you use and the outcomes you want — we’ll map a path.</p>
+        <form onsubmit="event.preventDefault(); alert('Thanks! We will reach out shortly.');">
+          <div class="grid" style="margin-top:10px">
+            <label class="card" style="grid-column: span 6">
+              <div>Company</div>
+              <input required placeholder="Company name" style="width:100%; padding:10px; border-radius:8px; background:#0b1016; border:1px solid var(--line); color:var(--ink)"/>
+            </label>
+            <label class="card" style="grid-column: span 6">
+              <div>Email</div>
+              <input required type="email" placeholder="you@company.com" style="width:100%; padding:10px; border-radius:8px; background:#0b1016; border:1px solid var(--line); color:var(--ink)"/>
+            </label>
+            <label class="card" style="grid-column: span 12">
+              <div>Current Systems</div>
+              <textarea rows="4" placeholder="ERP / CRM / Data lakes / Apps ..." style="width:100%; padding:10px; border-radius:8px; background:#0b1016; border:1px solid var(--line); color:var(--ink)"></textarea>
+            </label>
+            <label class="card" style="grid-column: span 12">
+              <div>Desired Outcomes</div>
+              <textarea rows="4" placeholder="Reduce manual entry, reconcile faster, unify inventory..." style="width:100%; padding:10px; border-radius:8px; background:#0b1016; border:1px solid var(--line); color:var(--ink)"></textarea>
+            </label>
+          </div>
+          <button class="cta" style="margin-top:12px">Send</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       FOOTER (Shared Pattern Ready)
+       =============================== -->
+  <footer>
+    <div class="wrap foot">
+      <div id="copyright">© Jmod Co.</div>
+      <div class="right">
+        <span>Built for operational clarity.</span>
+        <!-- IMG_PLACEHOLDER: small footer mark (optional) -->
+        <img src="assets/JmodSystems_IconSmall.png" alt="" style="width:18px; height:18px; opacity:.6">
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ============================================
+       UTIL: typewriter headline (subtle)
+       ============================================ */
+    (function typewriter(){
+      const el = document.getElementById('typed');
+      const txt = el.textContent.trim();
+      el.textContent = '';
+      let i=0;
+      const tick=()=>{ if(i<=txt.length){ el.textContent = txt.slice(0,i++); setTimeout(tick, 12); } };
+      tick();
+    })();
+
+    /* ============================================
+       SECTION REVEALS
+       ============================================ */
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add('in');
+      });
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    /* ============================================
+       DATA PIPELINES: animate packets along paths
+       ============================================ */
+    function moveAlong(pathId, dotId, speedMs){
+      const path = document.getElementById(pathId);
+      const dot = document.getElementById(dotId);
+      const len = path.getTotalLength();
+      let t = 0;
+      function step(){
+        t = (t + 1) % len;
+        const pt = path.getPointAtLength(t);
+        dot.setAttribute('cx', pt.x);
+        dot.setAttribute('cy', pt.y);
+        requestAnimationFrame(step);
+      }
+      step();
+    }
+    moveAlong('pipe1','pkt1', 5000);
+    moveAlong('pipe2','pkt2', 6500);
+    moveAlong('pipe3','pkt3', 5600);
+
+    /* ============================================
+       ACCORDION
+       ============================================ */
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      const head = item.querySelector('.acc-h');
+      const body = item.querySelector('.acc-b');
+      head.addEventListener('click', ()=>{
+        const open = head.classList.toggle('open');
+        if(open){
+          body.classList.add('in');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        } else {
+          body.style.maxHeight = '0';
+          body.addEventListener('transitionend', ()=>body.classList.remove('in'), {once:true});
+        }
+      });
+    });
+
+    /* ============================================
+       KPI COUNTERS + ORCHESTRATOR SIM
+       ============================================ */
+    const elRPM   = document.querySelector('[data-kpi="rpm"]');
+    const elOK    = document.querySelector('[data-kpi="okrate"]');
+    const elP95   = document.querySelector('[data-kpi="p95"]');
+    const log     = document.getElementById('log');
+
+    let total=0, ok=0, latencies=[];
+
+    function renderKPIs(){
+      // RPM as simple function of last burst
+      const rpm = Math.min(600, Math.round(total * (0.6 + Math.random()*0.4)));
+      const okrate = total ? Math.round((ok/total)*100) : 0;
+      const p95 = latencies.length ? percentile(latencies, 0.95) : '—';
+      elRPM.textContent = rpm.toLocaleString();
+      elOK.textContent  = okrate + '%';
+      elP95.textContent = (p95==='—'?'—':Math.round(p95));
+    }
+    function percentile(arr, p){
+      const a = [...arr].sort((x,y)=>x-y);
+      const i = Math.floor(p * (a.length-1));
+      return a[i] ?? 0;
+    }
+    function appendLog(msg, cls=''){
+      const p = document.createElement('p');
+      if(cls) p.className = cls;
+      p.textContent = msg;
+      log.appendChild(p);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    async function simulateBurst(count=25){
+      const ids = Array.from({length:count}, (_,i)=>`job_${Date.now()}_${i}`);
+      appendLog(`▶ Orchestrator: dispatching ${count} jobs...`, 'warn');
+
+      const tasks = ids.map(async id=>{
+        const latency = 80 + Math.random()*420; // 80-500ms
+        await new Promise(r=>setTimeout(r, latency));
+        const success = Math.random() > 0.08;   // ~92% success
+        total++; latencies.push(latency);
+        if(success){ ok++; appendLog(`✓ ${id} completed in ${Math.round(latency)}ms`, 'ok'); }
+        else{ appendLog(`✗ ${id} failed after ${Math.round(latency)}ms (retry queued)`, 'err'); }
+      });
+
+      await Promise.all(tasks);
+      renderKPIs();
+      appendLog(`■ Burst complete. Total=${total} OK=${ok} Fail=${total-ok}`);
+    }
+
+    document.getElementById('runSim').addEventListener('click', ()=>simulateBurst(30 + Math.floor(Math.random()*30)));
+    document.getElementById('clearLog').addEventListener('click', ()=>{
+      log.innerHTML=''; total=0; ok=0; latencies.length=0; renderKPIs();
+    });
+
+    // Initialize KPIs with a tiny idle tick
+    renderKPIs();
+
+    /* ============================================
+       FOOTER YEAR INJECTION (shared pattern)
+       ============================================ */
+    (function(){
+      const el = document.getElementById('copyright');
+      if(el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+    })();
+  </script>
 </body>
 </html>
