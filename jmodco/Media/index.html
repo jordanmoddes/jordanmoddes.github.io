@@ -32,7 +32,7 @@
       overflow-x:hidden;position:relative;isolation:isolate;
     }
 
-    /* 3D background canvas + vignette */
+    /* WebGL canvas background + vignette */
     #bg3d{position:fixed;inset:0;z-index:-2;width:100vw;height:100vh;display:block;background:
       radial-gradient(1200px 600px at 15% -10%, rgba(123,57,255,.18), transparent 60%),
       radial-gradient(1000px 520px at 115% 20%, rgba(34,211,238,.14), transparent 65%),
@@ -60,14 +60,14 @@
     .logo-wrap{display:grid;place-items:center}
     .media-logo{
       width:100%; max-width:480px; aspect-ratio:3/4; object-fit:contain;
-      transform:translateX(-10px) scale(1.06); /* nudge to visually center */
+      transform:translateX(-10px) scale(1.75); /* nudge center + fill */
     }
     .title{font-size:clamp(32px,5vw,54px);line-height:1.02;margin:0 0 10px;font-weight:900}
     .subtitle{font-size:clamp(16px,2vw,18px);color:var(--muted);margin:0 0 16px}
     .badges{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
     .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
-    .store-badge{height:45px;display:block;border-radius:12px;box-shadow:var(--shadow)}   /* Apple */
-    .store-badge.store-play{height:60px} /* Google */
+    .store-badge{height:45px;display:block;border-radius:12px;box-shadow:var(--shadow)}   /* Apple 45px */
+    .store-badge.store-play{height:60px} /* Google 60px */
     .store-badge-wrap{display:inline-block;line-height:0}
     .store-badge:hover{transform:scale(1.03)}
 
@@ -83,7 +83,7 @@
     .instagram-media{margin:0 !important;width:100% !important}
     .instagram-media iframe{max-width:100% !important}
 
-    /* Social Platforms grid */
+    /* ===== Original FEATURES section (your screenshot) ===== */
     .section{max-width:1200px;margin:42px auto 0;padding:0 24px}
     .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 14px;font-weight:900}
     .section p.lead{color:var(--muted);margin:0 0 22px}
@@ -95,7 +95,7 @@
     .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:var(--chip);padding:6px 8px;border-radius:8px}
 
-    /* Small-business band + waitlist (as your screenshot) */
+    /* Small-biz band + waitlist */
     .smb{max-width:1200px;margin:42px auto 0;padding:0 24px}
     .band{
       display:flex;gap:16px;align-items:center;justify-content:flex-start;flex-wrap:wrap;
@@ -115,6 +115,7 @@
   </style>
 </head>
 <body>
+  <!-- 3D background -->
   <canvas id="bg3d" aria-hidden="true"></canvas>
   <div class="bg-vignette" aria-hidden="true"></div>
 
@@ -163,7 +164,6 @@
             <h4 style="margin:8px 0 0;font-size:18px">New Post (Instagram)</h4>
             <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
             <div class="ig-slot">
-              <!-- your post (query removed) -->
               <blockquote class="instagram-media"
                 data-instgrm-permalink="https://www.instagram.com/p/DQU-7RWjGXz/"
                 data-instgrm-version="14"
@@ -183,41 +183,17 @@
     </aside>
   </main>
 
-  <!-- Social platforms -->
-  <section class="section" aria-labelledby="platTitle">
-    <h2 id="platTitle">Post everywhere—one workflow</h2>
-    <p class="lead">Channels supported at launch and in roadmap. Details may vary by platform API.</p>
-
+  <!-- FEATURES (original) -->
+  <section class="section" aria-labelledby="featTitle">
+    <h2 id="featTitle">Everything you need to post in minutes</h2>
+    <p class="lead">The Jmod Media phone app (with matching web dashboard) prioritizes speed, consistency, and control.</p>
     <div class="grid">
-      <!-- Helper: each card keeps same structure; no trademarks required -->
-      <!-- 1 -->
-      <div class="card"><div class="chip">Instagram</div><h3>Instagram</h3><p>Feed posts, Reels, and scheduling with caption + hashtags.</p><div class="stack"><span class="mono">Feed/Reels</span><span class="mono">Scheduling</span><span class="mono">DM roadmap</span></div></div>
-      <div class="card"><div class="chip">Facebook</div><h3>Facebook</h3><p>Pages posting, carousels, and cross-post from IG templates.</p><div class="stack"><span class="mono">Pages</span><span class="mono">Carousels</span><span class="mono">Queue</span></div></div>
-      <div class="card"><div class="chip">TikTok</div><h3>TikTok</h3><p>Short-form video pipeline with auto-captions and cover text.</p><div class="stack"><span class="mono">Video</span><span class="mono">Cover</span><span class="mono">Best-time</span></div></div>
-
-      <div class="card"><div class="chip">LinkedIn</div><h3>LinkedIn</h3><p>Company page updates, link posts, and PDF carousels.</p><div class="stack"><span class="mono">Pages</span><span class="mono">Links</span><span class="mono">PDF</span></div></div>
-      <div class="card"><div class="chip">Twitter/X</div><h3>Twitter / X</h3><p>Text + image posts with threaded templates and UTM tags.</p><div class="stack"><span class="mono">Threads</span><span class="mono">Images</span><span class="mono">UTM</span></div></div>
-      <div class="card"><div class="chip">YouTube</div><h3>YouTube</h3><p>Shorts pipeline from templates; publish and track CTR.</p><div class="stack"><span class="mono">Shorts</span><span class="mono">Thumbnails</span><span class="mono">Analytics</span></div></div>
-
-      <div class="card"><div class="chip">Snapchat</div><h3>Snapchat</h3><p>Story-first templates; export + publish on device.</p><div class="stack"><span class="mono">Stories</span><span class="mono">AR-safe margins</span></div></div>
-      <div class="card"><div class="chip">Pinterest</div><h3>Pinterest</h3><p>Idea Pins and static Pins with branded overlays.</p><div class="stack"><span class="mono">Pins</span><span class="mono">Idea Pins</span><span class="mono">Queue</span></div></div>
-      <div class="card"><div class="chip">Reddit</div><h3>Reddit</h3><p>Community posts with flair-aware formatting.</p><div class="stack"><span class="mono">Text</span><span class="mono">Images</span><span class="mono">Scheduling</span></div></div>
-
-      <div class="card"><div class="chip">Threads</div><h3>Threads</h3><p>Cross-post from IG captions; keep tone presets aligned.</p><div class="stack"><span class="mono">Text</span><span class="mono">Images</span><span class="mono">Queue</span></div></div>
-      <div class="card"><div class="chip">Discord</div><h3>Discord</h3><p>Announcements to channels with attachments.</p><div class="stack"><span class="mono">Channels</span><span class="mono">Embeds</span></div></div>
-      <div class="card"><div class="chip">Twitch</div><h3>Twitch</h3><p>Go-live posts + highlight snippets to Shorts/Reels.</p><div class="stack"><span class="mono">Go-live</span><span class="mono">Clips</span></div></div>
-
-      <div class="card"><div class="chip">Tumblr</div><h3>Tumblr</h3><p>Image, text, and link posts with brand kit applied.</p><div class="stack"><span class="mono">Images</span><span class="mono">Links</span></div></div>
-      <div class="card"><div class="chip">Viber</div><h3>Rakuten Viber</h3><p>Channel posts and promo images.</p><div class="stack"><span class="mono">Channels</span><span class="mono">Promo</span></div></div>
-      <div class="card"><div class="chip">Flickr</div><h3>Flickr</h3><p>Album uploads from brand templates.</p><div class="stack"><span class="mono">Albums</span><span class="mono">Titles</span></div></div>
-
-      <div class="card"><div class="chip">WeChat</div><h3>WeChat</h3><p>Official Accounts (export + manual post at launch).</p><div class="stack"><span class="mono">Export</span><span class="mono">Brand kit</span></div></div>
-      <div class="card"><div class="chip">WhatsApp</div><h3>WhatsApp</h3><p>Business Catalog assets & status posts (export).</p><div class="stack"><span class="mono">Status</span><span class="mono">Catalog</span></div></div>
-      <div class="card"><div class="chip">Telegram</div><h3>Telegram</h3><p>Channel posts with inline images and links.</p><div class="stack"><span class="mono">Channels</span><span class="mono">Links</span></div></div>
-
-      <div class="card"><div class="chip">QQ</div><h3>QQ</h3><p>Image/link posts (export + manual at launch).</p><div class="stack"><span class="mono">Export</span><span class="mono">UTM</span></div></div>
-      <div class="card"><div class="chip">Kuaishou</div><h3>Kuaishou</h3><p>Short-video export pipeline.</p><div class="stack"><span class="mono">Video</span><span class="mono">Captions</span></div></div>
-      <div class="card"><div class="chip">Weibo</div><h3>Weibo</h3><p>Text + media posts with UTM appends (export).</p><div class="stack"><span class="mono">Text</span><span class="mono">Images</span></div></div>
+      <div class="card"><div class="chip">Composer</div><h3>One-tap Post Builder</h3><p>Drop a photo, pick a template, tweak copy with AI assist, and publish to multiple networks at once.</p><div class="stack"><span class="mono">Image → Caption → Hashtags</span><span class="mono">Multi-channel</span><span class="mono">AI rewrite</span></div></div>
+      <div class="card"><div class="chip">Calendar</div><h3>Queue & Auto-Schedule</h3><p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p><div class="stack"><span class="mono">Best-time AI</span><span class="mono">Recurring slots</span><span class="mono">Holiday sets</span></div></div>
+      <div class="card"><div class="chip">Brand Kit</div><h3>On-Brand, Every Time</h3><p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p><div class="stack"><span class="mono">Logo lockups</span><span class="mono">Tone presets</span><span class="mono">Approval flow</span></div></div>
+      <div class="card"><div class="chip">Templates</div><h3>Reusable Post Types</h3><p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p><div class="stack"><span class="mono">Image + Copy</span><span class="mono">Per-channel</span></div></div>
+      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with suggested replies and auto-responders after hours.</p><div class="stack"><span class="mono">QA pairs</span><span class="mono">Auto-DM</span></div></div>
+      <div class="card"><div class="chip">Insights</div><h3>Post-level Analytics</h3><p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p><div class="stack"><span class="mono">Channel score</span><span class="mono">A/B templates</span></div></div>
     </div>
   </section>
 
@@ -295,71 +271,167 @@
       if (next==='auto') applyAutoTheme();
     });
 
-    /* 3D BACKGROUND (Three.js) */
+    /* ========= 3D BACKGROUND: Floating Social Logos =========
+       - Uses Simple Icons (CC0) SVGs via jsDelivr.
+       - Renders each SVG into a colored canvas, then into a THREE.Sprite.
+       - Each sprite fades in, drifts, fades out, and respawns.
+    */
+    const BRANDS = [
+      {slug:'linkedin',     hex:'#0A66C2'},
+      {slug:'tiktok',       hex:'#000000'},
+      {slug:'facebook',     hex:'#1877F2'},
+      {slug:'instagram',    hex:'#E4405F'},
+      {slug:'snapchat',     hex:'#FFFC00'},
+      {slug:'youtube',      hex:'#FF0000'},
+      {slug:'pinterest',    hex:'#E60023'},
+      {slug:'x',            hex:'#000000'},   // Twitter/X
+      {slug:'wechat',       hex:'#7BB32E'},
+      {slug:'whatsapp',     hex:'#25D366'},
+      {slug:'reddit',       hex:'#FF4500'},
+      {slug:'telegram',     hex:'#26A5E4'},
+      {slug:'qq',           hex:'#EB1923'},
+      {slug:'kuaishou',     hex:'#FF4906'},
+      {slug:'threads',      hex:'#000000'},
+      {slug:'sinaweibo',    hex:'#E6162D'},   // Weibo
+      {slug:'discord',      hex:'#5865F2'},
+      {slug:'twitch',       hex:'#9146FF'},
+      {slug:'tumblr',       hex:'#36465D'},
+      {slug:'viber',        hex:'#7360F2'},
+      {slug:'flickr',       hex:'#0063DC'}
+    ];
+
     function init3D(){
       const canvas = document.getElementById('bg3d');
-      const renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'});
+      const renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance', alpha:true});
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(0x000000, 0);
-
       const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x030512, 0.035);
-
       const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 200);
-      camera.position.set(0, 1.8, 8);
+      camera.position.set(0, 1.6, 8);
 
-      const amb = new THREE.AmbientLight(0x99bbff, 0.55);
-      const key = new THREE.PointLight(0x7b39ff, 1.0, 40); key.position.set(-4, 5, 3);
-      const rim = new THREE.PointLight(0x22d3ee, 0.9, 40); rim.position.set(6, -2, -2);
-      scene.add(amb, key, rim);
+      const amb = new THREE.AmbientLight(0xffffff, 0.65);
+      scene.add(amb);
 
-      const cardGeo = new THREE.BoxGeometry(1.6, 0.95, 0.06);
-      const cardMat = new THREE.MeshStandardMaterial({color:0x101733, emissive:0x1a2a66, emissiveIntensity:0.45, metalness:0.2, roughness:0.6});
-      const cardCount = 85;
-      const cards = new THREE.InstancedMesh(cardGeo, cardMat, cardCount);
-      const tmp = new THREE.Object3D();
-      for (let i=0;i<cardCount;i++){
-        tmp.position.set((Math.random()-0.5)*28, (Math.random()-0.5)*16, - (Math.random()*20 + 2));
-        tmp.rotation.set((Math.random()*0.6-0.3),(Math.random()*1.2-0.6),(Math.random()*0.3-0.15));
-        const s = 0.8 + Math.random()*0.8; tmp.scale.set(s, s, 1);
-        tmp.updateMatrix(); cards.setMatrixAt(i, tmp.matrix);
+      // helpers
+      const sprites = [];
+      let lowPower = false;
+      const MAX = /Mobi|Android/i.test(navigator.userAgent) ? 12 : 26;
+
+      // fetch svg -> canvas -> texture
+      async function svgToTexture(slug, hex){
+        const url = `https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/${slug}.svg`;
+        const svgTxt = await fetch(url).then(r=>r.text());
+        // recolor to white path over brand-colored circle; scale to 256
+        const size = 256;
+        const cnv = document.createElement('canvas'); cnv.width = cnv.height = size;
+        const ctx = cnv.getContext('2d');
+        // background circle
+        ctx.beginPath(); ctx.arc(size/2, size/2, size*0.48, 0, Math.PI*2); ctx.fillStyle = hex; ctx.fill();
+        // draw svg path as image
+        const colored = svgTxt.replace('currentColor','white').replace(/fill="[^"]*"/g,'fill="white"');
+        const blob = new Blob([colored], {type:'image/svg+xml'});
+        const img = new Image(); img.src = URL.createObjectURL(blob);
+        await img.decode();
+        const pad = size*0.20; // logo inset inside circle
+        ctx.drawImage(img, pad, pad, size-2*pad, size-2*pad);
+        const tex = new THREE.Texture(cnv); tex.needsUpdate = true;
+        return tex;
       }
-      scene.add(cards);
 
-      const pGeo = new THREE.BufferGeometry();
-      const pCount = 1200; const pos = new Float32Array(pCount*3);
-      for (let i=0;i<pCount;i++){ pos[i*3+0]=(Math.random()-0.5)*70; pos[i*3+1]=(Math.random()-0.5)*40; pos[i*3+2]=-(Math.random()*60 + 2); }
-      pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      const pMat = new THREE.PointsMaterial({color:0x7b9dff, size:0.025, transparent:true, opacity:0.7});
-      const points = new THREE.Points(pGeo, pMat); scene.add(points);
+      // spawn a sprite
+      async function spawn(){
+        const pick = BRANDS[Math.floor(Math.random()*BRANDS.length)];
+        const tex = await svgToTexture(pick.slug, pick.hex);
+        const mat = new THREE.SpriteMaterial({map: tex, transparent:true, opacity:0.0});
+        const sp = new THREE.Sprite(mat);
+        const s = THREE.MathUtils.randFloat(0.6, 1.4);
+        sp.scale.set(s, s, 1);
+        resetPosition(sp, true);
+        sp.userData = {
+          life: 0, max: THREE.MathUtils.randFloat(4.5, 8.0), // seconds
+          phase: 'in' // in -> hold -> out
+        };
+        scene.add(sp);
+        sprites.push(sp);
+      }
 
+      function resetPosition(sp, first=false){
+        sp.position.set(
+          (Math.random()-0.5)*28,
+          (Math.random()-0.5)*16,
+          - (Math.random()*30 + 5)
+        );
+        if (!first){
+          // slightly different scale on respawn
+          const s = THREE.MathUtils.randFloat(0.6, 1.4);
+          sp.scale.set(s, s, 1);
+        }
+      }
+
+      // initial population
+      (async () => { for (let i=0;i<MAX;i++) await spawn(); })();
+
+      // parallax
       let targetRX=0, targetRY=0;
-      window.addEventListener('mousemove', (e)=>{ const nx=e.clientX/window.innerWidth*2-1, ny=e.clientY/window.innerHeight*2-1; targetRY=nx*0.25; targetRX=ny*0.12; });
+      window.addEventListener('mousemove', (e)=>{
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;
+        const ny = (e.clientY / window.innerHeight) * 2 - 1;
+        targetRY = nx * 0.25;
+        targetRX = ny * 0.12;
+      });
 
-      function onResize(){ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }
+      function onResize(){ camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }
       window.addEventListener('resize', onResize);
 
-      let last=performance.now(), frames=0, lowPower=false;
-      function guard(now){ frames++; if (now-last>1500){ const fps = frames/((now-last)/1000); if (fps<35 && !lowPower){ lowPower=true; points.material.opacity=0.5; cards.material.emissiveIntensity=0.32; } last=now; frames=0; } }
+      // perf guardrails
+      let last=performance.now(), frames=0;
+      function guard(now){
+        frames++;
+        if (now - last > 1500){
+          const fps = frames / ((now-last)/1000);
+          if (fps < 35 && !lowPower){ lowPower = true; /* simply reduce opacity speed later */ }
+          last = now; frames = 0;
+        }
+      }
       document.addEventListener('visibilitychange', ()=>{ if (document.hidden) renderer.setAnimationLoop(null); else renderer.setAnimationLoop(tick); });
 
       function tick(now=0){
         guard(now);
-        camera.rotation.x += (targetRX - camera.rotation.x)*0.05;
-        camera.rotation.y += (targetRY - camera.rotation.y)*0.05;
-        for (let i=0;i<cardCount;i++){
-          cards.getMatrixAt(i, tmp.matrix); tmp.matrix.decompose(tmp.position,tmp.quaternion,tmp.scale);
-          tmp.position.z += 0.008 + (i%5)*0.0008; tmp.position.x += Math.sin(now*0.0002+i)*0.0009;
-          if (tmp.position.z > -1.5){ tmp.position.z = - (Math.random()*20 + 18); tmp.position.x=(Math.random()-0.5)*28; tmp.position.y=(Math.random()-0.5)*16; }
-          tmp.updateMatrix(); cards.setMatrixAt(i, tmp.matrix);
+        camera.rotation.x += (targetRX - camera.rotation.x) * 0.05;
+        camera.rotation.y += (targetRY - camera.rotation.y) * 0.05;
+
+        // animate sprites
+        for (const sp of sprites){
+          const ud = sp.userData;
+          const dt = 0.016;
+          ud.life += dt;
+
+          // gentle drift
+          sp.position.z += 0.01;
+          sp.position.x += Math.sin(now*0.0003 + sp.id)*0.0012;
+          sp.position.y += Math.cos(now*0.00025 + sp.id)*0.0009;
+
+          // fade logic
+          const fadeSpeed = lowPower ? 0.015 : 0.025;
+          if (ud.phase === 'in'){
+            sp.material.opacity = Math.min(1, sp.material.opacity + fadeSpeed);
+            if (sp.material.opacity >= 0.98) ud.phase = 'hold';
+          } else if (ud.phase === 'hold'){
+            if (ud.life > ud.max*0.6) ud.phase = 'out';
+          } else {
+            sp.material.opacity = Math.max(0, sp.material.opacity - fadeSpeed);
+            if (sp.material.opacity <= 0.02 || sp.position.z > -1.5){
+              // respawn
+              ud.life = 0; ud.max = THREE.MathUtils.randFloat(4.5,8.0); ud.phase='in';
+              sp.material.opacity = 0.0; resetPosition(sp);
+            }
+          }
         }
-        cards.instanceMatrix.needsUpdate = true;
-        points.rotation.z += 0.0003;
         renderer.render(scene, camera);
       }
       renderer.setAnimationLoop(tick);
     }
+
     try { init3D(); } catch(e){ console.warn('3D background disabled:', e); }
   </script>
 </body>
