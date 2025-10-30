@@ -25,7 +25,7 @@
 
       /* PHONE: tweak sizes together */
       --phone-w: 360px;
-      --phone-h: 760px;
+      --phone-h: 800px;
       --ig-w:    92%;
       --ig-h:    420px; /* lowered so copy block fits */
 
@@ -191,9 +191,25 @@
 
     /* ===== Responsive ===== */
     @media (max-width: 980px){
-      .hero-grid{ grid-template-columns:1fr; text-align:center }
-      :root{ --logo-size: 280px } /* responsive logo */
-    }
+  :root{ --logo-size: 280px }
+
+  .hero-grid{
+    grid-template-columns:1fr;
+    text-align:center;
+    justify-items:center;       /* centers logo horizontally */
+    align-items:center;         /* vertical balance */
+  }
+
+  .hero-logo{
+    margin:0 auto 16px auto;    /* centers and adds bottom spacing */
+    display:block;
+  }
+
+  .hero h1, .hero p{
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
     @media (max-width: 720px){
       :root{ --phone-w: 330px; --phone-h: 640px; --ig-h: 400px }
       .grid{ grid-template-columns: 1fr 1fr }
