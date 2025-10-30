@@ -1,10 +1,9 @@
 <!-- =========================================================
-=  JMOD MEDIA — SINGLE-FILE BUILD (HTML + CSS + JS)         =
-=  Copy/paste into /Media/index.html                         =
-=  Notes: all tweakable sizes are labeled with  🔧 in CSS     =
+=  JMOD MEDIA — SINGLE FILE (HTML + CSS + JS)               =
+=  With labeled sections + tweakable size tokens (🔧)        =
 ========================================================= -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,20 +17,29 @@
 <style>
 /* =========================================================
 =  CSS SECTION                                              =
-=  Theme + Layout + Animations                              =
-=  🔧 tweak sizes at the variables block below              =
+=  Theme + Layout + Animations (🔧 sizes are here)          =
 ========================================================= */
-:root{
-  /* --------- 🔧 SIZE TOKENS (easy edits) --------- */
-  --logo-size: 260px;           /* 🔧 hero logo width */
-  --store-badge-h: 46px;        /* 🔧 app store badges height */
-  --phone-w: 360px;             /* 🔧 phone outer width */
-  --phone-h: 660px;             /* 🔧 phone outer height */
-  --ig-w:    90%;               /* 🔧 IG embed width (percent of phone inner) */
-  --ig-h:    470px;             /* 🔧 IG embed height to show full post */
-  --nav-h:   60px;              /* 🔧 navbar height */
 
-  /* --------- Colors / Effects --------- */
+/* ---------- 🔧 SIZE TOKENS ---------- */
+:root{
+  --shell-max: 1100px;          /* 🔧 max content width */
+  --shell-pad: 24px;            /* 🔧 side padding inside shell */
+  --nav-h: 64px;                /* 🔧 navbar height */
+
+  --logo-size: 220px;           /* 🔧 hero logo width */
+  --headline-size: clamp(30px,3.2vw,44px); /* 🔧 H1 size */
+
+  --store-h: 44px;              /* 🔧 app badges height */
+
+  --phone-w: 360px;             /* 🔧 phone width */
+  --phone-h: 660px;             /* 🔧 phone height */
+  --ig-w:    90%;               /* 🔧 IG iframe width % of phone inner */
+  --ig-h:    470px;             /* 🔧 IG iframe height */
+
+  --burst-sec: 8s;              /* 🔧 each icon's lifetime from center */
+  --burst-count: 12;            /* 🔧 target concurrent icons (>=10) */
+
+  /* Theme colors */
   --bg: #0b0f1a;
   --panel: #101733;
   --text: #e8ecff;
@@ -40,14 +48,23 @@
   --brand2:#22d3ee;
   --neon:#33ff66;
 
+  --glass: rgba(11,15,26,.7);
   --shadow: 0 10px 40px rgba(0,0,0,.35);
-  --glass: rgba(11,15,26,.72);
 
-  /* Background gradient */
   --gradient:
-    radial-gradient(1100px 600px at 20% -10%, rgba(123,57,255,.22), transparent 55%),
-    radial-gradient(900px 480px at 110% 20%, rgba(34,211,238,.18), transparent 60%),
+    radial-gradient(1100px 600px at 20% -10%, rgba(123,57,255,.18), transparent 55%),
+    radial-gradient(900px 480px at 110% 20%, rgba(34,211,238,.14), transparent 60%),
     linear-gradient(180deg,#0b1020 0%,#0a0f1e 100%);
+}
+
+/* Light theme tokens */
+html[data-theme="light"]{
+  --bg:#f6f8ff; --panel:#ffffff; --text:#0b1020; --muted:#5b668a;
+  --glass: rgba(255,255,255,.72);
+  --gradient:
+    radial-gradient(1100px 600px at 20% -10%, rgba(123,57,255,.10), transparent 55%),
+    radial-gradient(900px 480px at 110% 20%, rgba(6,182,212,.10), transparent 60%),
+    linear-gradient(180deg,#f6f8ff 0%, #eef2ff 100%);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -59,260 +76,239 @@ body{
   overflow-x:hidden;
 }
 
-/* ===================== NAV ===================== */
+/* Shared shell to keep margins tighter and sides open */
+.shell{max-width:var(--shell-max); margin:0 auto; padding:0 var(--shell-pad)}
+
+/* ===================== NAV (brand left, links center, toggle right) ===================== */
 .nav{
   position:fixed; inset:0 0 auto 0; height:var(--nav-h);
-  display:flex; gap:28px; align-items:center; justify-content:center;
+  display:grid; grid-template-columns: 1fr auto 1fr; align-items:center;
   background:var(--glass); backdrop-filter: blur(8px);
-  border-bottom:1px solid rgba(255,255,255,.08);
-  z-index:50;
+  border-bottom:1px solid rgba(255,255,255,.08); z-index:50;
 }
-.nav a{
-  color:var(--text); font-weight:700; text-decoration:none; opacity:.92;
-}
-.nav a:hover{ color:var(--brand2); }
+.nav .left, .nav .center, .nav .right{ display:flex; align-items:center }
+.nav .left{ gap:10px; padding-left:var(--shell-pad) }
+.nav .brand{ font-weight:900; letter-spacing:.2px }
+.nav .brand img{ height:28px }
+.logo-dark{ display:block } .logo-light{ display:none }
+html[data-theme="light"] .logo-dark{ display:none } 
+html[data-theme="light"] .logo-light{ display:block }
 
-/* =============== FLOATING BG ICONS =============== */
-#bg{
-  position:fixed; inset:0; z-index:-1; overflow:hidden;
+.nav .center{ justify-content:center; gap:26px }
+.nav a{ color:var(--text); text-decoration:none; font-weight:700; opacity:.92 }
+.nav a:hover{ color:var(--brand2) }
+.nav .right{ justify-content:flex-end; padding-right:var(--shell-pad) }
+.toggle{
+  background:transparent; border:1px solid rgba(255,255,255,.25);
+  padding:8px 12px; border-radius:10px; color:var(--text); font-weight:800;
 }
-.bg-icon{
+
+/* ===================== BACKGROUND FIELD (center-origin bursts) ===================== */
+#bg{ position:fixed; inset:0; z-index:-1; overflow:hidden; }
+.burst{
   position:absolute; left:50%; top:50%;
-  transform: translate(-50%,-50%);
-  opacity:.75;
+  transform: translate(-50%,-50%) scale(.35);
+  opacity:0;
   filter: drop-shadow(0 0 8px rgba(255,255,255,.35)); /* slight glow */
-  animation: drift var(--dur,18s) linear infinite;
+  animation: burst var(--burst-sec) ease-in-out forwards;
 }
-@keyframes drift{
-  0%   { transform: translate(calc(-50% + var(--ox,0px)), calc(-50% + var(--oy,0px))) scale(.95); opacity:.55; }
-  50%  { transform: translate(calc(-50% + calc(var(--ox) * 1.4)), calc(-50% + calc(var(--oy) * 1.4))) scale(1.05); opacity:.9; }
-  100% { transform: translate(calc(-50% + var(--ox,0px)), calc(-50% + var(--oy,0px))) scale(.95); opacity:.55; }
+@keyframes burst{
+  0%   { opacity:0; transform:translate(-50%,-50%) scale(.35) }
+  10%  { opacity:.85 }
+  85%  { opacity:.85; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1) }
+  100% { opacity:0;  transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.05) }
 }
 
-/* ===================== HERO ===================== */
-.hero{
-  min-height: 100svh;
-  display:grid; grid-template-columns: 1fr 1.2fr; gap:36px;
-  align-items:center; justify-content:center;
-  padding: calc(var(--nav-h) + 56px) 6vw 40px;
-}
-.hero-logo{ width:var(--logo-size); height:auto; display:block; margin-inline:auto; }
-.hero h1{
-  font-size: clamp(32px,3.4vw,48px);
-  line-height:1.05; font-weight:900; margin-bottom:10px;
-}
-.hero p{ color:var(--muted); font-size:1.05rem; max-width:620px }
-.app-badges{ display:flex; gap:14px; flex-wrap:wrap; margin-top:18px }
+/* ===================== HERO (logo left, text right; compact margins) ===================== */
+.hero{ padding-top:calc(var(--nav-h) + 48px); padding-bottom:30px }
+.hero-grid{ display:grid; grid-template-columns: 1fr 1.2fr; gap:28px; align-items:center }
+.hero-logo{ width:var(--logo-size); height:auto; display:block; margin-inline:auto }
+.hero h1{ font-size:var(--headline-size); line-height:1.05; font-weight:900; margin-bottom:8px }
+.hero p{ color:var(--muted); max-width:640px }
+.badges{ display:flex; gap:14px; flex-wrap:wrap; margin-top:16px }
 .badge{
-  height:var(--store-badge-h); padding:10px 14px; border-radius:12px;
+  height:var(--store-h); padding:8px 14px; border-radius:12px;
   display:inline-flex; align-items:center; gap:10px; background:#000; color:#fff;
-  text-decoration:none; font-weight:800; box-shadow:var(--shadow);
+  text-decoration:none; font-weight:800; box-shadow:var(--shadow)
 }
-.badge svg{ width:22px; height:22px }
+html[data-theme="light"] .badge{ background:#111; color:#fff }
+.badge svg{ width:20px; height:20px }
 
-/* ===================== PHONE ===================== */
-.phone-wrap{ display:flex; justify-content:center; padding: 18px 6vw 56px }
+/* ===================== PHONE PREVIEW ===================== */
+.phone-wrap{ padding: 10px 0 38px }
 .phone{
   width:var(--phone-w); height:var(--phone-h);
-  background:var(--panel); border:2px solid var(--neon); border-radius:30px; position:relative;
+  margin: 0 auto;
+  background:var(--panel); border:2px solid var(--neon); border-radius:28px;
   box-shadow: 0 0 22px rgba(51,255,102,.25);
-  display:flex; flex-direction:column; align-items:center; padding:12px;
+  position:relative; display:flex; flex-direction:column; align-items:center; padding:12px;
 }
-.phone::after{ /* little side button */
-  content:""; position:absolute; right:-5px; top:74px; width:4px; height:54px;
-  background:var(--neon); border-radius:2px; opacity:.8;
-}
-.phone-screen{
+.phone::after{ content:""; position:absolute; right:-5px; top:74px; width:4px; height:56px; background:var(--neon); border-radius:2px; opacity:.8 }
+.screen{
   width:100%; flex:1; background:#0b0d18; border-radius:22px; overflow:hidden;
   display:flex; flex-direction:column; align-items:center; padding:10px 0 8px;
 }
-.phone-top{
-  width:92%; height:28px; border-radius:999px; background:rgba(255,255,255,.06);
-  display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:700; color:#b8c2ff;
-  margin-bottom:8px;
-}
-.ig-embed{
-  width:var(--ig-w); height:var(--ig-h); border:0; border-radius:12px; background:#000; /* iframe */
-}
-.phone-dock{
-  width:92%; margin-top:10px; display:flex; gap:8px; justify-content:space-between;
-}
+.bar{ width:92%; height:28px; border-radius:999px; background:rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:center; color:#b8c2ff; font-weight:800; font-size:.8rem; margin-bottom:8px }
+.ig{ width:var(--ig-w); height:var(--ig-h); border:0; border-radius:12px; background:#000 }
+.dock{ width:92%; margin-top:10px; display:flex; gap:8px; justify-content:space-between }
 .pill{
   flex:1 1 auto; text-align:center; padding:8px 8px; border-radius:12px;
-  border:1px solid #fff; color:#fff; font-weight:700; font-size:.78rem; background:transparent;
+  border:1px solid #fff; color:#fff; font-weight:800; font-size:.78rem; background:transparent;
 }
 
 /* ===================== FEATURES ===================== */
-.section{ padding: 54px 6vw }
-.section h2{
-  font-size: clamp(26px,2.6vw,36px); font-weight:900; text-align:center; margin-bottom:18px;
-}
-.section p.lead{ color:var(--muted); text-align:center; margin:0 auto 20px; max-width:780px }
-.grid{
-  display:grid; grid-template-columns: repeat(3,1fr); gap:16px; margin-top:10px;
-}
-.card{
-  background:var(--panel); border:1px solid rgba(255,255,255,.07);
-  border-radius:18px; padding:18px; box-shadow:var(--shadow);
-}
-.card h3{ margin-bottom:8px; font-size:1.08rem }
-.card p{ color:var(--muted); font-size:.98rem }
+.section{ padding: 34px 0 }
+.section h2{ font-size:clamp(24px,2.4vw,34px); font-weight:900; text-align:center; margin-bottom:14px }
+.section p.lead{ color:var(--muted); text-align:center; margin:0 auto 16px; max-width:760px }
+.grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-top:8px }
+.card{ background:var(--panel); border:1px solid rgba(255,255,255,.07); border-radius:16px; padding:16px; box-shadow:var(--shadow) }
+.card h3{ margin-bottom:6px; font-size:1.02rem }
+.card p{ color:var(--muted); font-size:.96rem }
 
-/* ===================== WAITLIST ===================== */
-.wait{ text-align:center; padding: 54px 6vw }
-.wait form{
-  display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin-top:14px;
-}
-.wait input{
-  padding:12px 14px; border-radius:12px; border:1px solid #cbd5e1;
-  background:#151e3e; color:var(--text);
-}
-.btn{
-  background:var(--brand); color:#fff; border:0; border-radius:12px; padding:12px 18px; font-weight:800;
-}
-
-/* ===================== FOOTER ===================== */
-footer{ text-align:center; padding:40px 6vw; color:var(--muted) }
+/* ===================== WAITLIST & FOOTER ===================== */
+.wait{ text-align:center; padding: 34px 0 }
+.wait form{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin-top:10px }
+.wait input{ padding:12px 14px; border-radius:12px; border:1px solid #cbd5e1; background:#151e3e; color:var(--text) }
+.btn{ background:var(--brand); color:#fff; border:0; border-radius:12px; padding:12px 18px; font-weight:900 }
+footer{ text-align:center; padding:30px 0; color:var(--muted) }
 footer .small{ font-size:.92rem }
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 980px){
-  .hero{ grid-template-columns:1fr; text-align:center }
-  .hero-right{ margin-inline:auto }
+  .hero-grid{ grid-template-columns:1fr; text-align:center }
 }
 @media (max-width: 720px){
   :root{ --logo-size: 200px; --phone-w: 330px; --phone-h: 640px; --ig-h: 440px }
-  .grid{ grid-template-columns:1fr 1fr }
+  .grid{ grid-template-columns: 1fr 1fr }
 }
 @media (max-width: 520px){
-  .grid{ grid-template-columns:1fr }
-  .badge{ height:calc(var(--store-badge-h) - 6px) }
+  .grid{ grid-template-columns: 1fr }
+  .badge{ height:calc(var(--store-h) - 6px) }
 }
 </style>
 </head>
-<body id="top">
+<body>
 
-<!-- =========================================================
-=  HTML SECTION                                              =
-========================================================= -->
+<!-- ===================== NAV ===================== -->
+<header class="nav">
+  <!-- Left: brand (auto-swap logo by theme) -->
+  <div class="left">
+    <img class="logo-dark"  src="https://www.jordanmoddes.com/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media logo (dark)">
+    <img class="logo-light" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_Media.png"  alt="Jmod Media logo (light)">
+    <span class="brand">Jmod Media</span>
+  </div>
 
-<!-- Floating, center-origin icon field -->
+  <!-- Center: links -->
+  <nav class="center" aria-label="Primary">
+    <a href="#top">Home</a>
+    <a href="#features">Services</a>
+    <a href="#waitlist">Waitlist</a>
+    <a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a>
+  </nav>
+
+  <!-- Right: theme toggle -->
+  <div class="right"><button id="themeToggle" class="toggle" type="button">Toggle</button></div>
+</header>
+
+<!-- Center-origin floating field (kept separate from content shell) -->
 <div id="bg" aria-hidden="true"></div>
 
-<!-- Sticky nav (Insights-style) -->
-<nav class="nav">
-  <a href="#top">Home</a>
-  <a href="#features">Services</a>
-  <a href="#waitlist">Waitlist</a>
-  <a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a>
-</nav>
+<!-- ===================== HERO ===================== -->
+<main id="top" class="hero">
+  <div class="shell">
+    <div class="hero-grid">
+      <img class="hero-logo" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media mark">
+      <div>
+        <h1>Create smarter. Post faster. Grow everywhere.</h1>
+        <p>Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms — powered by Jmod Labs’ adaptive AI that learns your tone and what performs.</p>
 
-<!-- HERO -->
-<section class="hero" aria-labelledby="heroTitle">
-  <div>
-    <img class="hero-logo" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media logo" />
-  </div>
-  <div class="hero-right">
-    <h1 id="heroTitle">Create smarter. Post faster. Grow everywhere.</h1>
-    <p>Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms — powered by Jmod Labs’ adaptive AI that learns your tone and what performs.</p>
-
-    <div class="app-badges">
-      <!-- Apple badge -->
-      <a class="badge" href="#" aria-label="Download on the App Store">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c.04.49-.187 1.01-.55 1.43-.402.47-1.1.84-1.743.79-.07-.48.206-1.01.57-1.44.39-.47 1.128-.83 1.723-.78zM19.395 16.59c-.53 1.23-.78 1.78-1.46 2.88-.95 1.55-2.294 3.49-3.97 3.5-1.485.01-1.87-.95-3.48-.95-1.61 0-2.04.93-3.51.96-1.68.03-2.962-1.69-3.916-3.24-2.14-3.48-3.784-9.82-1.58-14.1 1.1-2.13 3.073-3.49 5.234-3.52 1.63-.03 3.17 1.08 3.49 1.08.34 0 2.4-1.33 4.05-1.14.69.03 2.62.28 3.86 2.11-3.37 1.86-2.82 6.74.29 7.91-.3.86-.66 1.69-1.01 2.53z"/></svg>
-        App Store
-      </a>
-      <!-- Google Play badge -->
-      <a class="badge" href="#" aria-label="Get it on Google Play">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1.5 2.75v18.5c0 .66.54 1.25 1.2 1.25.2 0 .43-.06.65-.2l10.93-6.3-12.78-12.1zm13.72 12.67 2.9 1.67c.38.22.83.22 1.2 0l2.56-1.47c.6-.35.6-1.23 0-1.58l-2.56-1.47a1.19 1.19 0 0 0-1.2 0l-2.9 1.67-.99.57.99.61zM4.19 1.72 13.73 7.2l-2.08 1.2-7.46-6.68A1.14 1.14 0 0 1 4.19 1.7zM11.65 15.6 4.13 20.3c-.66.39-1.5-.08-1.5-.86V3.9l9.02 8.54z"/></svg>
-        Google Play
-      </a>
+        <div class="badges">
+          <a class="badge" href="#" aria-label="App Store">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c.04.49-.187 1.01-.55 1.43-.402.47-1.1.84-1.743.79-.07-.48.206-1.01.57-1.44.39-.47 1.128-.83 1.723-.78zM19.395 16.59c-.53 1.23-.78 1.78-1.46 2.88-.95 1.55-2.294 3.49-3.97 3.5-1.485.01-1.87-.95-3.48-.95-1.61 0-2.04.93-3.51.96-1.68.03-2.962-1.69-3.916-3.24-2.14-3.48-3.784-9.82-1.58-14.1 1.1-2.13 3.073-3.49 5.234-3.52 1.63-.03 3.17 1.08 3.49 1.08.34 0 2.4-1.33 4.05-1.14.69.03 2.62.28 3.86 2.11-3.37 1.86-2.82 6.74.29 7.91-.3.86-.66 1.69-1.01 2.53z"/></svg>
+            App Store
+          </a>
+          <a class="badge" href="#" aria-label="Google Play">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 2.75v18.5c0 .66.54 1.25 1.2 1.25.2 0 .43-.06.65-.2l10.93-6.3-12.78-12.1zm13.72 12.67 2.9 1.67c.38.22.83.22 1.2 0l2.56-1.47c.6-.35.6-1.23 0-1.58l-2.56-1.47a1.19 1.19 0 0 0-1.2 0l-2.9 1.67-.99.57.99.61zM4.19 1.72 13.73 7.2l-2.08 1.2-7.46-6.68A1.14 1.14 0 0 1 4.19 1.7zM11.65 15.6 4.13 20.3c-.66.39-1.5-.08-1.5-.86V3.9l9.02 8.54z"/></svg>
+            Google Play
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</main>
 
-<!-- PHONE PREVIEW -->
-<section class="phone-wrap" aria-label="App preview">
-  <div class="phone">
-    <div class="phone-screen">
-      <div class="phone-top">Jmod Media</div>
-      <!-- Full Instagram preview centered within the screen -->
-      <iframe
-        class="ig-embed"
-        src="https://www.instagram.com/p/CwLvMC2p0Fu/embed"
-        allowtransparency="true"
-        frameborder="0"
-        scrolling="no"
-        title="Instagram post preview"
-      ></iframe>
-
-      <div class="phone-dock">
-        <div class="pill">Compose</div>
-        <div class="pill">Calendar</div>
-        <div class="pill">Brand Kit</div>
-        <div class="pill">Analytics</div>
+<!-- ===================== PHONE PREVIEW ===================== -->
+<section class="phone-wrap">
+  <div class="shell">
+    <div class="phone">
+      <div class="screen">
+        <div class="bar">Jmod Media</div>
+        <iframe
+          class="ig"
+          src="https://www.instagram.com/p/CwLvMC2p0Fu/embed"
+          allowtransparency="true"
+          frameborder="0"
+          scrolling="no"
+          title="Instagram post preview"
+        ></iframe>
+        <div class="dock">
+          <div class="pill">Compose</div>
+          <div class="pill">Calendar</div>
+          <div class="pill">Brand Kit</div>
+          <div class="pill">Analytics</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section id="features" class="section" aria-labelledby="featTitle">
-  <h2 id="featTitle">Everything you need to post smarter</h2>
-  <p class="lead">Speed, consistency, and clarity — built for owner-operators. Jmod Media is your AI teammate for social.</p>
+<!-- ===================== FEATURES ===================== -->
+<section id="features" class="section">
+  <div class="shell">
+    <h2>Everything you need to post smarter</h2>
+    <p class="lead">Speed, consistency, and clarity — built for owner-operators. Jmod Media is your AI teammate for social.</p>
 
-  <div class="grid">
-    <div class="card">
-      <h3>AI Caption Builder</h3>
-      <p>Drop a photo and get a caption that matches your voice — with hashtags tuned to your audience and trends.</p>
-    </div>
-    <div class="card">
-      <h3>Smart Scheduling</h3>
-      <p>Auto-schedule posts across networks at the best times. Premium tiers unlock unlimited queued posts.</p>
-    </div>
-    <div class="card">
-      <h3>Auto Watermark</h3>
-      <p>Upload your logo once — AI places a subtle brand mark that never blocks the subject.</p>
-    </div>
-    <div class="card">
-      <h3>Preset Templates</h3>
-      <p>“Product Launch”, “Customer Congrats”, “Weekend Promo” — save and reuse in a tap.</p>
-    </div>
-    <div class="card">
-      <h3>Adaptive Tone</h3>
-      <p>Every edit teaches the model your style so suggestions get better the more you post.</p>
-    </div>
-    <div class="card">
-      <h3>Insights that Learn</h3>
-      <p>See what performs and why. Jmod highlights repeat-worthy content and fades what underperforms.</p>
+    <div class="grid">
+      <div class="card"><h3>AI Caption Builder</h3><p>Drop a photo and get a caption that matches your voice — with hashtags tuned to trends and your audience.</p></div>
+      <div class="card"><h3>Smart Scheduling</h3><p>Auto-schedule posts across networks at the best times. Premium unlocks unlimited queues.</p></div>
+      <div class="card"><h3>Auto Watermark</h3><p>Upload your logo once — AI places a subtle mark that never blocks your subject.</p></div>
+      <div class="card"><h3>Preset Templates</h3><p>“Product Launch”, “Customer Congrats”, “Weekend Promo” — save and reuse in a tap.</p></div>
+      <div class="card"><h3>Adaptive Tone</h3><p>Every edit teaches the model your style so suggestions get better the more you post.</p></div>
+      <div class="card"><h3>Insights that Learn</h3><p>See what performs and why. Jmod highlights repeat-worthy content and fades what underperforms.</p></div>
     </div>
   </div>
 </section>
 
-<!-- WAITLIST -->
-<section id="waitlist" class="wait" aria-labelledby="wlTitle">
-  <h2 id="wlTitle">Be first to launch with us</h2>
-  <p class="lead">Early signups get onboarding help and founder pricing.</p>
-  <form onsubmit="event.preventDefault(); alert('Thanks! You’re on the waitlist.');">
-    <input type="text" placeholder="Business name" required>
-    <input type="email" placeholder="Email address" required>
-    <button class="btn" type="submit">Join</button>
-  </form>
+<!-- ===================== WAITLIST ===================== -->
+<section id="waitlist" class="wait">
+  <div class="shell">
+    <h2>Be first to launch with us</h2>
+    <p class="lead">Early signups get onboarding help and founder pricing.</p>
+    <form onsubmit="event.preventDefault(); alert('Thanks! You’re on the waitlist.');">
+      <input type="text" placeholder="Business name" required>
+      <input type="email" placeholder="Email address" required>
+      <button class="btn" type="submit">Join</button>
+    </form>
+  </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ===================== FOOTER ===================== -->
 <footer>
-  <p class="small">Backed and supported by <strong>GPT-5 Engine</strong></p>
-  <p class="small">Jmod Labs · Jmod Systems · Jmod Media · Jmod Legacy · Jmod Insights</p>
-  <p class="small">© 2025 Jmod Co. — Built for small business clarity.</p>
+  <div class="shell">
+    <p class="small">Backed and supported by <strong>GPT-5 Engine</strong></p>
+    <p class="small">Jmod Labs · Jmod Systems · Jmod Media · Jmod Legacy · Jmod Insights</p>
+    <p class="small">© 2025 Jmod Co. — Built for small business clarity.</p>
+  </div>
 </footer>
 
 <!-- =========================================================
 =  JS SECTION                                                =
-=  Center-origin floating icons w/ slight glow               =
+=  1) Floating bursts (center → edge, 8s)                    =
+=  2) Theme toggle + auto logo swap                          =
 ========================================================= -->
 <script>
-/* ----- ICON SOURCES (16) ----- */
+/* ---------- ICON SOURCES (16) ---------- */
 const ICONS = [
   "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg",
   "https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo_2023.png",
@@ -332,37 +328,76 @@ const ICONS = [
   "https://upload.wikimedia.org/wikipedia/commons/e/e4/Kik_Messenger_logo.svg"
 ];
 
-(function initFloatingIcons(){
-  const bg = document.getElementById('bg');
-  const TOTAL = ICONS.length;               // 16 icons, one each
-  const radiusMin = 140;                    // px distance from center (start)
-  const radiusMax = 420;                    // px distance (outer)
-  const degToRad = d => d*Math.PI/180;
+/* ---------- Center-origin burst engine ---------- */
+(function burstField(){
+  const field = document.getElementById('bg');
+  const TARGET = Math.max(12, parseInt(getComputedStyle(document.documentElement).getPropertyValue('--burst-count')) || 12);
+  const LIFETIME = 8000; // 8s
+  const MIN_STAGGER = 500; // ms between spawns
+  let alive = 0;
 
-  for(let i=0;i<TOTAL;i++){
+  function spawn(){
+    // keep stream continuous
+    if (alive >= TARGET) return;
+
     const img = document.createElement('img');
-    img.src = ICONS[i];
+    img.className = 'burst';
+    img.src = ICONS[Math.floor(Math.random()*ICONS.length)];
     img.alt = "";
-    img.className = 'bg-icon';
 
-    const angle = (360 / TOTAL) * i + Math.random()*10;  // spread around circle
-    const r     = radiusMin + Math.random()*(radiusMax-radiusMin);
+    // random angle + radius distance towards edge
+    const angle = Math.random() * 360;
+    const r = 140 + Math.random() * 480; // px distance from center
+    const rad = angle * Math.PI / 180;
+    const tx = Math.cos(rad) * r;
+    const ty = Math.sin(rad) * r;
 
-    // base offset from center
-    const ox = Math.cos(degToRad(angle)) * r;
-    const oy = Math.sin(degToRad(angle)) * r;
+    // write per-instance vector + size + duration
+    img.style.setProperty('--tx', tx + 'px');
+    img.style.setProperty('--ty', ty + 'px');
+    img.style.width = (36 + Math.random()*46) + 'px';
+    img.style.animationDuration = (LIFETIME/1000) + 's';
 
-    // write custom props for the animation to use
-    img.style.setProperty('--ox', ox + 'px');
-    img.style.setProperty('--oy', oy + 'px');
+    alive++;
+    img.addEventListener('animationend', () => { alive--; img.remove(); setTimeout(spawn, MIN_STAGGER * Math.random()); });
+    field.appendChild(img);
 
-    // size + speed
-    const size = 42 + Math.random()*40;     // px
-    img.style.width = size + 'px';
-    img.style.setProperty('--dur', (18 + Math.random()*12) + 's');
-
-    bg.appendChild(img);
+    // schedule next spawn to maintain the stream
+    setTimeout(spawn, MIN_STAGGER + Math.random()*MIN_STAGGER);
   }
+
+  // prime the field
+  for(let i=0;i<TARGET;i++){
+    setTimeout(spawn, i * (MIN_STAGGER*0.6));
+  }
+})();
+
+/* ---------- Theme toggle (auto + manual cycle) ---------- */
+(function theme(){
+  const html = document.documentElement;
+  const btn  = document.getElementById('themeToggle');
+
+  // Start in auto based on prefers color
+  function applyAuto(){
+    if (window.matchMedia('(prefers-color-scheme: light)').matches){
+      html.setAttribute('data-theme','light');
+    } else {
+      html.setAttribute('data-theme','dark');
+    }
+  }
+  applyAuto();
+  window.matchMedia('(prefers-color-scheme: light)')
+        .addEventListener?.('change', e=>{
+          if (html.dataset.locked !== 'true') html.setAttribute('data-theme', e.matches ? 'light':'dark');
+        });
+
+  // Toggle cycles: dark → light → auto
+  btn.addEventListener('click', ()=>{
+    const cur = html.getAttribute('data-theme') || 'dark';
+    const next = cur==='dark' ? 'light' : cur==='light' ? 'auto' : 'dark';
+    if (next==='auto'){ html.dataset.locked = 'false'; applyAuto(); }
+    else { html.dataset.locked = 'true'; html.setAttribute('data-theme', next); }
+  });
 })();
 </script>
 </body>
