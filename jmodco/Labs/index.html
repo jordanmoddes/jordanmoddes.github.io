@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jmod Labs — The Innovation Core of Jmod Co.</title>
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg:#0a0b0f;
+      --bg2:#0e1017;
+      --card:#11131c;
+      --ink:#e6ecff;
+      --muted:#9aa4c3;
+      --cyan:#57e6ff;
+      --mag:#ff3df2;
+      --silver:#c9d0dd;              /* NEW silver accent */
+      --chip:#1a1f2d;
+      --ring:rgba(87,230,255,.35);
+      --ring2:rgba(255,61,242,.25);
+      --glass:rgba(255,255,255,.06);
+      --border:rgba(201,208,221,.14); /* softened with silver */
+      --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
+      --radius:18px;
+      --radius-sm:12px;
+      --gap:18px;
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font:16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(255,61,242,.07), transparent 60%),
+        radial-gradient(1200px 800px at 120% 10%, rgba(87,230,255,.08), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* Canvas background (neural grid) */
+    #neural{
+      position:fixed; inset:0; z-index:-1;
+      filter: drop-shadow(0 0 6px rgba(87,230,255,.35)); opacity:.55;
+    }
+
+    a{color:var(--cyan); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px}
+
+    /* Header */
+    header{position:sticky; top:0; z-index:30; backdrop-filter:blur(10px);
+      background:linear-gradient(180deg, rgba(10,11,15,.75), rgba(10,11,15,.35) 70%, transparent);
+      border-bottom:1px solid var(--border)}
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand img{width:40px; height:40px; object-fit:contain; filter:drop-shadow(0 0 10px rgba(255,61,242,.4))}
+    .brand .t1{font-weight:700; letter-spacing:.3px}
+    nav{display:flex; gap:18px}
+    .bar{display:flex; align-items:center; justify-content:space-between; gap:20px}
+
+    /* HERO */
+    .hero{
+      display:grid; grid-template-columns: 1fr 1.2fr; gap:32px; align-items:center;
+      padding:56px 20px 24px; margin: 0 auto; max-width:var(--maxw);
+    }
+    .hero-card{
+      background:linear-gradient(180deg, var(--glass), transparent 70%);
+      border:1px solid var(--border); border-radius:var(--radius);
+      padding:28px; box-shadow:var(--shadow); position:relative; overflow:hidden;
+    }
+    .hero-left{display:flex; align-items:center; justify-content:center; padding:40px}
+    .hero-logo{max-width:340px; width:100%; height:auto; object-fit:contain; filter: drop-shadow(0 0 20px rgba(255,61,242,.5))}
+
+    /* NEW: pulsing aura behind logo */
+    .hero-left::before{
+      content:""; position:absolute; inset:auto; width:420px; height:420px;
+      border-radius:50%; pointer-events:none;
+      background: radial-gradient(closest-side, rgba(201,208,221,.18), transparent 70%),
+                  radial-gradient(closest-side, rgba(87,230,255,.16), transparent 72%),
+                  radial-gradient(closest-side, rgba(255,61,242,.12), transparent 75%);
+      filter: blur(6px);
+      animation:pulse 5.5s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{transform:scale(.96); opacity:.55}
+      50%{transform:scale(1.06); opacity:.9}
+    }
+
+    .hero-right h1{font-size:clamp(28px, 4vw, 44px); margin:0 0 8px}
+    .tag{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,61,242,.12), rgba(87,230,255,.12));
+      border:1px solid var(--border); font-size:.85rem; color:var(--muted); margin-bottom:12px}
+    .hero-right p{color:var(--muted); margin:8px 0 18px}
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      color:var(--ink); box-shadow:var(--shadow); cursor:pointer; transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover{transform:translateY(-1px); box-shadow:0 18px 40px rgba(87,230,255,.12)}
+    .btn.primary{background:
+      radial-gradient(300px 120px at 20% 20%, rgba(255,61,242,.25), transparent 60%),
+      radial-gradient(300px 120px at 80% 20%, rgba(87,230,255,.25), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
+      border-color:rgba(201,208,221,.35) /* touch of silver */
+    }
+
+    /* NEW: AI scan sweep line under hero paragraph */
+    .scan{
+      position:relative; padding-top:6px; margin-top:6px;
+    }
+    .scan::before{
+      content:""; position:absolute; left:-10%; right:-10%; top:-2px; height:1px;
+      background:linear-gradient(90deg, transparent, var(--silver), transparent);
+      animation:scan 3.6s linear infinite;
+      opacity:.7;
+    }
+    @keyframes scan{
+      0%{transform:translateX(-30%)}
+      100%{transform:translateX(30%)}
+    }
+
+    /* Sections */
+    section{padding:36px 20px}
+    .section-title{max-width:var(--maxw); margin:0 auto 16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px}
+    .section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
+    .muted{color:var(--muted)}
+
+    /* Cards */
+    .grid{max-width:var(--maxw); margin:0 auto; display:grid; gap:var(--gap); grid-template-columns: repeat(12, 1fr)}
+    .card{
+      grid-column: span 12;
+      background:linear-gradient(180deg, var(--glass), transparent 60%);
+      border:1px solid var(--border); border-radius:var(--radius); padding:18px;
+      box-shadow:var(--shadow); position:relative; overflow:hidden;
+    }
+    @media (min-width:720px){
+      .card.sm-6{grid-column: span 6}
+      .card.sm-4{grid-column: span 4}
+      .card.sm-3{grid-column: span 3}
+    }
+    .card h3{margin:0 0 4px; font-size:1.1rem}
+    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+    .chip{font-size:.75rem; background:var(--chip); border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:var(--muted)}
+    .status{border-color:transparent}
+    .status.proto{background: linear-gradient(90deg, rgba(255,61,242,.18), rgba(255,61,242,.08))}
+    .status.beta{background: linear-gradient(90deg, rgba(87,230,255,.18), rgba(87,230,255,.08))}
+    .status.handoff{background: linear-gradient(90deg, rgba(144,238,144,.22), rgba(144,238,144,.08))}
+    .status.soon{background: linear-gradient(90deg, rgba(201,208,221,.22), rgba(201,208,221,.08)); color:#dfe6f3} /* silver */
+    .card p{color:var(--muted); margin:8px 0 12px}
+    .card .actions{display:flex; gap:10px; flex-wrap:wrap}
+
+    /* Process Row */
+    .process{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); max-width:var(--maxw); margin:0 auto}
+    .step{background:linear-gradient(180deg, var(--glass), transparent 60%); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; box-shadow:var(--shadow)}
+    .step h4{margin:0 0 6px}
+    .step p{margin:0; color:var(--muted)}
+
+    /* Tech strip */
+    .tech{max-width:var(--maxw); margin:0 auto; display:flex; gap:14px; flex-wrap:wrap}
+    .pill{border:1px solid var(--border); background:var(--glass); border-radius:999px; padding:8px 12px; color:var(--muted); font-size:.9rem}
+    .pill.silver{border-color:rgba(201,208,221,.35); color:#e3e8f3} /* silver accent pill */
+
+    /* Modal */
+    dialog{border:none; border-radius:16px; padding:0; width:min(560px, 92vw);
+      background:linear-gradient(180deg, #131628, #0f1222); color:var(--ink); box-shadow:0 30px 80px rgba(0,0,0,.55)}
+    dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,255,.2), rgba(0,0,0,.6))}
+    .modal{padding:22px; border-bottom:1px solid var(--border)}
+    .modal h3{margin:0 0 8px}
+    .modal p{color:var(--muted); margin:0}
+    .modal-body{padding:18px 22px; display:grid; gap:12px}
+    .field{display:grid; gap:6px}
+    .field input{background:#0c0f1d; border:1px solid var(--border); color:var(--ink); padding:12px 12px; border-radius:10px}
+    .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:0 22px 22px}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border); margin-top:40px; background:linear-gradient(180deg, rgba(255,61,242,.05), transparent)}
+    .foot-inner{max-width:var(--maxw); margin:0 auto; padding:18px 20px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .foot-inner #copyright{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <canvas id="neural"></canvas>
+
+  <header>
+    <div class="wrap bar">
+      <div class="brand">
+        <div class="t1">Jmod Labs</div>
+      </div>
+      <nav>
+        <a href="#experiments">Experiments</a>
+        <a href="#process">Process</a>
+        <a href="#tech">Tech</a>
+        <a href="#join">Join</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Hero">
+    <!-- Left: Logo -->
+    <div class="hero-card hero-left">
+      <img class="hero-logo" src="./assets/Jmod_LabsTP.svg" alt="Jmod Labs" />
+    </div>
+    <!-- Right: Text -->
+    <div class="hero-card hero-right">
+      <div class="tag">The Innovation Core of <strong>Jmod Co.</strong></div>
+      <h1>Where every Jmod idea is born.</h1>
+      <p class="scan">Jmod Labs researches, prototypes, and transfers systems to Jmod divisions.
+         Public can explore highlights; deeper access requires sign-in. All divisions
+         leverage the Labs knowledge base — continuously learning, forever improving.</p>
+      <div class="cta-row">
+        <button class="btn primary" onclick="document.getElementById('signin').showModal()">Sign in for access</button>
+        <a class="btn" href="#experiments">View active experiments</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIMENTS -->
+  <section id="experiments">
+    <div class="section-title wrap">
+      <h2>Active Experiments</h2>
+      <div class="muted">Public preview → deeper docs gated by sign-in</div>
+    </div>
+    <div class="grid">
+      <!-- 1) Quote Builder (pilot for Lisnup) -->
+      <article class="card sm-4">
+        <div class="chips">
+          <span class="chip status.beta">Pilot</span>
+          <span class="chip">Labs → Insights</span>
+        </div>
+        <h3>AI Quote Builder (Installations)</h3>
+        <p>Automates quoting for remote starts, tint, and electronics. Parts lookup, pricing rules,
+           and clean PDF outputs. Designed for Lisnup — expandable to other trades.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="gate()">Preview</a>
+          <a class="btn" href="#" onclick="gate()">Docs</a>
+        </div>
+      </article>
+
+      <!-- 2) Media App (Coming Soon) -->
+      <article class="card sm-4">
+        <div class="chips">
+          <span class="chip status soon">Coming Soon</span>
+          <span class="chip">Labs → Media</span>
+        </div>
+        <h3>Jmod Media App</h3>
+        <p>AI-driven content planner and automation. Plan → generate → schedule. Feedback loop
+           improves tone and performance over time.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="gate()">Roadmap</a>
+          <a class="btn" href="#" onclick="gate()">Beta Waitlist</a>
+        </div>
+      </article>
+
+      <!-- 3) Legacy/Haven (Coming Soon) -->
+      <article class="card sm-4">
+        <div class="chips">
+          <span class="chip status soon">Coming Soon</span>
+          <span class="chip">Labs → Legacy</span>
+        </div>
+        <h3>Legacy / Haven App</h3>
+        <p>Engagement & well-being for seniors: daily prompts, family touchpoints, and positive
+           habit loops. Potential licensing to care centers.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="gate()">Concept Brief</a>
+          <a class="btn" href="#" onclick="gate()">Partner Interest</a>
+        </div>
+      </article>
+
+      <!-- Metrics + Flow -->
+      <article class="card sm-6">
+        <div class="chips">
+          <span class="chip">Metric</span>
+          <span class="chip" style="border-color:rgba(201,208,221,.35);color:#e3e8f3">Silver Accents</span>
+        </div>
+        <h3>Pipeline Stats</h3>
+        <p class="muted">Real-time counters (placeholders now; wire to analytics later).</p>
+        <div class="actions">
+          <span class="btn" id="expCount">Active Experiments: 3</span>
+          <span class="btn" id="toolsCount">Tools Built: 12</span>
+          <span class="btn" id="xferCount">Transfers: 5</span>
+        </div>
+      </article>
+
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">How it works</span></div>
+        <h3>Internal Licensing Flow</h3>
+        <p>Labs validates → small internal transfer price to child company →
+           child company licenses to external customers (monthly).
+           Labs receives learning data back to improve models.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="section-title wrap">
+      <h2>From Spark → System</h2><div></div>
+    </div>
+    <div class="process">
+      <div class="step">
+        <h4>1) Idea Genesis</h4>
+        <p>We collect problems from the field and convert them into experiment briefs.</p>
+      </div>
+      <div class="step">
+        <h4>2) Prototype & Validate</h4>
+        <p>Rapid builds, AI-assisted research, and tight feedback loops.</p>
+      </div>
+      <div class="step">
+        <h4>3) Transfer & License</h4>
+        <p>Packaged to a Jmod division with docs, SLAs, and support handoff.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH -->
+  <section id="tech">
+    <div class="section-title wrap">
+      <h2>Tech & Infra</h2>
+      <div class="muted">Stack evolves as Labs learns</div>
+    </div>
+    <div class="tech">
+      <span class="pill">JavaScript/TypeScript</span>
+      <span class="pill">Python</span>
+      <span class="pill">Cloudflare Workers</span>
+      <span class="pill">GitHub Pages</span>
+      <span class="pill pill silver">AI Embeddings & Vectors</span>
+      <span class="pill">Postgres/SQLite</span>
+      <span class="pill">Excel/VBA bridges</span>
+      <span class="pill">REST & Webhooks</span>
+    </div>
+  </section>
+
+  <!-- JOIN -->
+  <section id="join">
+    <div class="section-title wrap">
+      <h2>Collaborate with Labs</h2>
+      <div class="muted">Concept submissions open soon</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-12">
+        <p>We’ll soon enable concept submissions and private partner access. For now,
+           sign in to register interest and unlock deeper docs.</p>
+        <div class="actions">
+          <button class="btn primary" onclick="document.getElementById('signin').showModal()">Sign in / Request access</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-inner">
+      <div id="copyright"></div>
+      <div>Built for small business clarity.</div>
+    </div>
+  </footer>
+
+  <!-- Sign-in modal (stub for gating) -->
+  <dialog id="signin">
+    <div class="modal">
+      <h3>Sign in to Jmod Labs</h3>
+      <p>Public can browse; detailed docs & demos require an account.</p>
+    </div>
+    <form class="modal-body" method="dialog" onsubmit="return false;">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" placeholder="you@email.com" required />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••" required />
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="document.getElementById('signin').close()">Cancel</button>
+        <button class="btn primary" onclick="alert('Stub — wire to auth later')">Sign in</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    // Footer year — keep exact Jmod Co. styling
+    (function(){
+      const el = document.getElementById('copyright');
+      if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+    })();
+
+    // Gating stub for deeper links
+    function gate(){ document.getElementById('signin').showModal(); }
+
+    // Light counters (feel alive)
+    const bump = (elId, base)=> {
+      const el = document.getElementById(elId);
+      if(!el) return;
+      let n = base;
+      setInterval(()=>{ n += (Math.random()>.7?1:0);
+        el.textContent = el.textContent.split(':')[0] + ': ' + n;
+      }, 4000);
+    }
+    bump('expCount', 3); bump('toolsCount', 12); bump('xferCount', 5);
+
+    // Neural mesh background (performant canvas)
+    (function(){
+      const c = document.getElementById('neural'); const ctx = c.getContext('2d');
+      let w, h, dpr, pts=[], links=[];
+      const RAND = (a,b)=> a + Math.random()*(b-a);
+      const resize = ()=>{
+        dpr = Math.min(window.devicePixelRatio||1, 2);
+        w = c.width = innerWidth*dpr; h = c.height = innerHeight*dpr;
+        c.style.width = innerWidth+'px'; c.style.height = innerHeight+'px';
+        spawn();
+      };
+      const spawn = ()=>{
+        pts.length=0; links.length=0;
+        const count = Math.floor((innerWidth*innerHeight)/18000);
+        for(let i=0;i<count;i++){
+          pts.push({x:RAND(0,w), y:RAND(0,h), vx:RAND(-.08,.08)*dpr, vy:RAND(-.08,.08)*dpr});
+        }
+        // Precompute neighbor links
+        for(let i=0;i<pts.length;i++){
+          for(let j=i+1;j<pts.length;j++){
+            if (Math.random()>.985) links.push([i,j]);
+          }
+        }
+      };
+      const step = ()=>{
+        ctx.clearRect(0,0,w,h);
+        // glow
+        ctx.shadowBlur = 12*dpr; ctx.shadowColor = 'rgba(87,230,255,.35)';
+        // lines
+        ctx.lineWidth = 0.6*dpr;
+        for(const [a,b] of links){
+          const p=pts[a], q=pts[b];
+          const dx=p.x-q.x, dy=p.y-q.y, dist=Math.hypot(dx,dy);
+          if(dist<180*dpr){
+            const alpha = 1 - (dist/(180*dpr));
+            ctx.strokeStyle = `rgba(87,230,255,${alpha*.35})`;
+            ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke();
+          }
+        }
+        // points
+        for(const p of pts){
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.x<0||p.x>w) p.vx*=-1;
+          if(p.y<0||p.y>h) p.vy*=-1;
+          ctx.fillStyle='rgba(255,61,242,.55)';
+          ctx.beginPath(); ctx.arc(p.x,p.y,1.2*dpr,0,Math.PI*2); ctx.fill();
+        }
+        requestAnimationFrame(step);
+      };
+      addEventListener('resize', resize, {passive:true});
+      resize(); step();
+    })();
+  </script>
+</body>
+</html>
