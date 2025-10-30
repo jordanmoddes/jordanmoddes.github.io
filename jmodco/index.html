@@ -21,12 +21,12 @@
 
       --header-h: 72px;
 
-      /* Radial sizing (tweak these three if you want) */
-      --orbit: 250px;       /* closer/farther from center */
-      --node-size: 200px;   /* satellite logos */
-      --hub-size: 640px;    /* center logo */
-      --hub-offset-y: -40px; /* micro vertical nudge */
-      --hub-offset-x: 0px;  /* micro horizontal nudge */
+      /* Radial sizing */
+      --orbit: 210px;        /* closer/farther from center */
+      --node-size: 160px;    /* satellite logos */
+      --hub-size: 540px;     /* center logo */
+      --hub-offset-y: -8px;  /* tiny vertical nudge */
+      --hub-offset-x: 0px;   /* tiny horizontal nudge */
     }
 
     *{ box-sizing:border-box }
@@ -51,7 +51,7 @@
 
     .container{ max-width:1100px; margin:0 auto; padding:16px 24px }
     .center{ text-align:center }
-    .section{ padding:12px 0 } /* default; we’ll tighten on specific sections */
+    .section{ padding:24px 0 }
     h1,h2{ margin:0 0 12px }
     section,header,footer{ scroll-margin-top: calc(var(--header-h) + 16px) }
 
@@ -97,32 +97,26 @@
       .hero-text h1{ text-align:center }
     }
 
-    /* ===== About + Mission ===== */
+    /* ===== About ===== */
     .about{ max-width:920px; margin:40px auto 8px; color:var(--muted) }
     .about h2{ color:var(--text) }
-    .mission{
-      max-width:920px; margin:8px auto 24px; padding:18px;
-      border:1px solid var(--card-border); background:var(--card); border-radius:var(--radius)
-    }
-    .mission h3{ margin:0 0 8px }
 
-    /* ===== Our Divisions (tight spacing) ===== */
-    #divisions.section{ padding: 12px 0 }               /* ~2 lines total padding */
-    #divisions h2{ margin-bottom: 8px }                 /* small gap to radial */
+    /* ===== Divisions (tight spacing) ===== */
+    #divisions.section{ padding: 12px 0 }       /* tighten section */
+    #divisions h2{ margin-bottom: 8px }
 
-    /* ===== Radial Divisions Map (image nodes) ===== */
+    /* Radial map */
     .divisions-wrap{
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap:10px;                                          /* tiny gap under h2 */
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
     }
     .radial{
       position:relative;
       width:min(980px,95vw);
       aspect-ratio:1 / 1;
-      margin: 10px auto 12px;                            /* small top/bottom */
+      margin:10px auto 12px;
     }
 
-    /* Center hub image */
+    /* Hub */
     .radial .hub{
       position:absolute; left:50%; top:50%;
       transform: translate(calc(-50% + var(--hub-offset-x)),
@@ -132,7 +126,7 @@
     }
     .radial .hub img{ width:100%; height:auto; display:block; background:transparent }
 
-    /* Satellite nodes */
+    /* Satellites */
     .radial .imgnode{
       --angle:0deg;
       --_base:
@@ -154,7 +148,7 @@
       max-width:100%; max-height:100%;
       width:auto; height:auto; display:block; background:transparent;
     }
-    /* Hover: flip and move outward more noticeably */
+    /* Hover only (no auto animation on load) */
     .radial .imgnode:hover{
       transform: var(--_base)
                  rotateY(360deg)
@@ -162,10 +156,22 @@
                  rotate(calc(-1 * var(--angle)));
     }
 
-    /* Founder/Contact section spacing tightened */
-    #contact.section{ padding: 12px 0 20px }            /* ~2 lines above this section */
+    /* Mobile grid fallback — hidden on desktop, forced visible on small screens */
+    .grid8{ display:none !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:14px auto 54px; width:100% }
+    .grid8 .card{
+      background:var(--card); border:1px solid var(--card-border); border-radius:16px;
+      padding:16px; text-align:center; font-weight:600; display:flex; flex-direction:column; gap:8px
+    }
+    .grid8 .card img{ width:100%; height:auto; display:block; background:transparent; border-radius:12px }
+    @media (min-width:860px){ .grid8{ grid-template-columns:repeat(4,minmax(0,1fr)) } }
+    @media (max-width:820px){
+      .radial{ display:none !important; }
+      .grid8{ display:grid !important; }
+    }
 
-    /* Founder + Contact */
+    /* Founder + Contact (tight spacing above) */
+    #contact.section{ padding: 12px 0 20px }
+
     .two-col{
       display:grid; grid-template-columns:1fr; gap:24px; max-width:1100px; margin:12px auto 40px;
     }
@@ -191,10 +197,6 @@
   </style>
 </head>
 <body>
-
-  <!-- =========================
-       HTML SECTION
-       ========================= -->
 
   <!-- Header -->
   <header class="header">
@@ -249,50 +251,41 @@
           <img src="./assets/JmodLogoIconTP.png" alt="Jmod Co. Hub">
         </div>
 
-        <!-- Satellites (YOUR LINKS & ANGLES KEPT) -->
-
-        <!-- Top Left → Resume -->
+        <!-- Satellites (your links & angles preserved) -->
         <a class="imgnode" style="--angle:-135deg" href="https://www.jordanmoddes.com" rel="noopener">
           <img src="./assets/JmodCo_LogoTP.png" alt="Jmod Co.">
         </a>
 
-        <!-- Top center → Jmod Labs -->
         <a class="imgnode" style="--angle:-90deg" href="#" rel="noopener">
           <img src="./assets/Jmod_LabsTP.png" alt="Jmod Labs">
         </a>
 
-        <!-- Top Right → Jmod Systems -->
         <a class="imgnode" style="--angle:-45deg" href="https://www.jordanmoddes.com/jmodco/Systems" rel="noopener">
           <img src="./assets/Jmod_SystemsTP.png" alt="Jmod Systems">
         </a>
 
-        <!-- Left Center → BattleField -->
         <a class="imgnode" style="--angle:180deg" href="https://www.jordanmoddes.com/battlefield" rel="noopener">
           <img src="./assets/JmodCo_LogoTP.png" alt="Battlefield">
         </a>
 
-        <!-- Right center → dashboard -->
         <a class="imgnode" style="--angle:0deg" href="https://www.jordanmoddes.com/dashboard" rel="noopener">
           <img src="./assets/JmodCo_LogoTP.png" alt="Dashboard">
         </a>
 
-        <!-- Bottom-left → Jmod Insights -->
         <a class="imgnode" style="--angle:135deg" href="https://www.jordanmoddes.com/jmodco/Insights" rel="noopener">
           <img src="./assets/Jmod_InsightsTP.png" alt="Jmod Insights">
         </a>
 
-        <!-- Bottom center → Jmod Legacy (fixed href) -->
         <a class="imgnode" style="--angle:90deg" href="https://www.jordanmoddes.com/jmodco/Legacy" rel="noopener">
           <img src="./assets/Jmod_LegacyTP.png" alt="Jmod Legacy">
         </a>
 
-        <!-- Bottom-right → Jmod Media -->
         <a class="imgnode" style="--angle:45deg" href="https://www.jordanmoddes.com/jmodco/Media" rel="noopener">
           <img src="./assets/Jmod_MediaTP.png" alt="Jmod Media">
         </a>
       </div>
 
-      <!-- Mobile fallback grid -->
+      <!-- Mobile fallback grid (hidden on desktop via !important above) -->
       <div class="grid8" aria-label="Jmod Co. divisions list">
         <a class="card" href="https://www.jordanmoddes.com"><img src="./assets/JmodCo_LogoTP.png" alt="Coming Soon">Coming Soon</a>
         <a class="card" href="./jmodco/Labs"><img src="./assets/Jmod_LabsTP.png" alt="Jmod Labs">Jmod Labs</a>
@@ -354,11 +347,7 @@
     </div>
   </footer>
 
-  <!-- =========================
-       JS SECTION
-       ========================= -->
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <!-- JS -->
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
