@@ -11,28 +11,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================================================
-       TWEAKABLE SIZE TOKENS  🔧
-    ========================================================= */
     :root{
-      --shell-max: 1000px;        /* 🔧 content width */
-      --shell-pad: 20px;          /* 🔧 side padding */
-      --nav-h: 64px;              /* 🔧 navbar height */
+      /* layout */
+      --shell-max: 1000px;
+      --shell-pad: 20px;
+      --nav-h: 64px;
 
-      --logo-size: 220px;         /* 🔧 hero logo width */
-      --headline-size: clamp(30px,3.2vw,44px); /* 🔧 H1 */
+      /* hero */
+      --logo-size: 220px;
+      --headline-size: clamp(30px,3.2vw,44px);
 
-      --store-h: 44px;            /* 🔧 app badge height */
+      /* badges */
+      --store-h: 46px;
 
-      --phone-w: 360px;           /* 🔧 phone width */
-      --phone-h: 660px;           /* 🔧 phone height */
-      --ig-w:    92%;             /* 🔧 IG iframe width (inside phone) */
-      --ig-h:    470px;           /* 🔧 IG iframe height */
+      /* phone */
+      --phone-w: 360px;
+      --phone-h: 660px;
+      --ig-w:    92%;
+      --ig-h:    470px;
 
-      --burst-sec: 8s;            /* 🔧 each icon life */
-      --burst-target: 13;         /* 🔧 icons on screen (max) */
+      /* burst */
+      --burst-sec: 8s;
+      --burst-target: 13;
 
-      /* Theme colors */
+      /* theme */
       --bg: #0b0f1a;
       --panel: #101733;
       --text: #e8ecff;
@@ -40,107 +42,81 @@
       --brand:#7b39ff;
       --brand2:#22d3ee;
       --neon:#33ff66;
-
       --chip:#1a2246;
       --glass: rgba(11,15,26,.7);
       --shadow: 0 10px 40px rgba(0,0,0,.35);
 
+      /* infinite backdrop (no seams) */
       --gradient:
         radial-gradient(1100px 600px at 20% -10%, rgba(123,57,255,.18), transparent 55%),
         radial-gradient(900px 480px at 110% 20%, rgba(34,211,238,.14), transparent 60%),
         linear-gradient(180deg,#0b1020 0%,#0a0f1e 100%);
     }
 
-    /* Light theme */
-    html[data-theme="light"]{
-      --bg:#f6f8ff; --panel:#ffffff; --text:#0b1020; --muted:#5b668a;
-      --glass: rgba(255,255,255,.72);
-      --chip:#eef2ff;
-      --gradient:
-        radial-gradient(1100px 600px at 20% -10%, rgba(123,57,255,.10), transparent 55%),
-        radial-gradient(900px 480px at 110% 20%, rgba(6,182,212,.10), transparent 60%),
-        linear-gradient(180deg,#f6f8ff 0%, #eef2ff 100%);
-    }
-
-    /* Base */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      font-family: Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--text);
       overflow-x:hidden;
-      padding-top: var(--nav-h); /* keep content clear of fixed nav */
+      padding-top:var(--nav-h);
+      background:transparent;
     }
-    img{max-width:100%; height:auto}
-
-    /* ===== Infinite background (no seams) ===== */
-    html, body { background: transparent; }
+    /* single fixed backdrop – prevents lines/bands */
     body::before{
-      content:"";
-      position:fixed; inset:0; z-index:-2;
-      background: var(--gradient);
-      transform: translateZ(0);
-      will-change: transform;
+      content:""; position:fixed; inset:0; z-index:-2;
+      background:var(--gradient);
+      transform:translateZ(0);
     }
     #bg{ position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none; }
-    .hero, .phone-wrap, .section, .wait, footer { background:transparent; border:0; box-shadow:none; }
-    * { -webkit-transform: translateZ(0); transform: translateZ(0); } /* belt & suspenders for seam-free */
 
     .shell{max-width:var(--shell-max); margin:0 auto; padding:0 var(--shell-pad)}
 
-    /* ===================== NAV ===================== */
+    /* ===== NAV ===== */
     .nav{
-      position: fixed; top:0; left:0; right:0; height:var(--nav-h);
-      background: var(--glass); backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      z-index: 100;
+      position:fixed; inset:0 0 auto 0; height:var(--nav-h);
+      background:var(--glass); backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      z-index:100;
     }
     .nav-inner{
       height:100%; max-width:var(--shell-max); margin:0 auto; padding:0 var(--shell-pad);
-      display:grid; grid-template-columns: 1fr auto 1fr; align-items:center;
+      display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
     }
-    .nav .left,.nav .center,.nav .right{display:flex; align-items:center}
-    .nav .left{gap:10px}
-    .nav .brand{font-weight:900; letter-spacing:.2px}
-    .nav .center{justify-content:center; gap:26px}
-    .nav a{color:var(--text); text-decoration:none; font-weight:700; opacity:.92}
-    .nav a:hover{color:var(--brand2)}
-    .nav .right{justify-content:flex-end}
+    .left, .center, .right{display:flex; align-items:center}
+    .left .brand{font-weight:900; letter-spacing:.2px}
+    .center{justify-content:center; gap:26px}
+    .center a{color:var(--text); text-decoration:none; font-weight:700; opacity:.92}
+    .center a:hover{color:var(--brand2)}
+    .right{justify-content:flex-end}
     .toggle{
       background:transparent; border:1px solid rgba(255,255,255,.25);
       padding:8px 12px; border-radius:10px; color:var(--text); font-weight:800;
     }
-    .logo-dark{display:block} .logo-light{display:none}
-    html[data-theme="light"] .logo-dark{display:none}
-    html[data-theme="light"] .logo-light{display:block}
 
-    /* ===================== HERO ===================== */
-    .hero{ padding: 48px 0 30px }
-    .hero-grid{ display:grid; grid-template-columns: 1fr 1.2fr; gap:28px; align-items:center }
+    /* ===== HERO ===== */
+    .hero{ padding:48px 0 28px }
+    .hero-grid{ display:grid; grid-template-columns:1fr 1.2fr; gap:28px; align-items:center }
     .hero-logo{ width:var(--logo-size); display:block; margin-inline:auto }
     .hero h1{ font-size:var(--headline-size); line-height:1.05; font-weight:900; margin-bottom:8px }
     .hero p{ color:var(--muted); max-width:640px }
-    .badges{ display:flex; gap:14px; flex-wrap:wrap; margin-top:16px }
-    .badge{
-      height:var(--store-h); padding:8px 14px; border-radius:12px;
-      display:inline-flex; align-items:center; gap:10px; background:#000; color:#fff;
-      text-decoration:none; font-weight:800; box-shadow:var(--shadow)
+    .badges{ display:flex; gap:12px; flex-wrap:wrap; margin-top:16px }
+    .badge-img{
+      height:var(--store-h); display:block; border-radius:12px;
+      box-shadow:var(--shadow); background:#000;
     }
-    html[data-theme="light"] .badge{ background:#111; color:#fff }
-    .badge svg{ width:20px; height:20px }
 
-    /* ===================== PHONE PREVIEW ===================== */
-    .phone-wrap{ padding: 10px 0 38px }
+    /* ===== PHONE ===== */
+    .phone-wrap{ padding: 10px 0 34px }
     .phone{
       width:var(--phone-w); height:var(--phone-h); margin:0 auto;
       background:var(--panel); border:2px solid var(--neon); border-radius:28px;
-      box-shadow: 0 0 22px rgba(51,255,102,.25);
+      box-shadow:0 0 22px rgba(51,255,102,.25);
       position:relative; display:flex; flex-direction:column; align-items:center; padding:16px;
     }
     .phone::after{ content:""; position:absolute; right:-5px; top:74px; width:4px; height:56px; background:var(--neon); border-radius:2px; opacity:.8 }
     .screen{
-      width:100%; flex:1;
-      border-radius:20px;
+      width:100%; flex:1; border-radius:20px;
       background:
         linear-gradient(180deg, rgba(34,211,238,.12), transparent),
         linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),
@@ -148,9 +124,6 @@
       aspect-ratio:9/19.5;
       display:flex; flex-direction:column; justify-content:space-between; align-items:center;
       padding:16px; overflow:hidden;
-    }
-    html[data-theme="light"] .screen{
-      background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%);
     }
     .bar{ width:92%; height:28px; border-radius:999px; background:rgba(255,255,255,.08);
       display:flex; align-items:center; justify-content:center; color:#b8c2ff; font-weight:800; font-size:.8rem; margin-bottom:8px }
@@ -161,8 +134,8 @@
     }
     .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:92%;margin-top:10px}
 
-    /* ===================== FEATURES ===================== */
-    .section{ padding: 34px 0 }
+    /* ===== FEATURES ===== */
+    .section{ padding:32px 0; background:transparent }
     .section h2{ font-size:clamp(24px,2.4vw,34px); font-weight:900; text-align:center; margin-bottom:14px }
     .section p.lead{ color:var(--muted); text-align:center; margin:0 auto 16px; max-width:760px }
     .grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-top:8px }
@@ -170,22 +143,21 @@
     .card h3{ margin-bottom:6px; font-size:1.02rem }
     .card p{ color:var(--muted); font-size:.96rem }
 
-    /* ===================== WAITLIST & FOOTER ===================== */
-    .wait{ text-align:center; padding: 34px 0 }
+    /* ===== WAITLIST / FOOTER ===== */
+    .wait{ text-align:center; padding:34px 0; background:transparent }
     .wait form{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin-top:10px }
-    .wait input{ padding:12px 14px; border-radius:12px; border:1px solid #cbd5e1; background:#151e3e; color:var(--text) }
+    .wait input{ padding:12px 14px; border-radius:12px; border:1px solid #2a335a; background:#151e3e; color:var(--text) }
     .btn{ background:var(--brand); color:#fff; border:0; border-radius:12px; padding:12px 18px; font-weight:900 }
-    footer{ text-align:center; padding:30px 0; color:var(--muted) }
+    footer{ text-align:center; padding:30px 0; color:var(--muted); background:transparent }
     footer .small{ font-size:.92rem }
 
-    /* ===================== BURST ICONS ===================== */
+    /* ===== FLOATING ICONS ===== */
     .burst{
       position:absolute; left:50%; top:50%;
       transform: translate(-50%,-50%) scale(.35);
       opacity:0; pointer-events:none;
-      image-rendering:auto;
-      backface-visibility:hidden;
-      filter: drop-shadow(0 0 8px rgba(255,255,255,.28)); /* slight glow */
+      image-rendering:auto; backface-visibility:hidden;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,.28));
       animation: burst var(--burst-sec, 8s) ease-in-out forwards;
     }
     @keyframes burst{
@@ -195,7 +167,7 @@
       100% { opacity:0;  transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.05) }
     }
 
-    /* ===================== RESPONSIVE ===================== */
+    /* ===== Responsive ===== */
     @media (max-width: 980px){
       .hero-grid{ grid-template-columns:1fr; text-align:center }
     }
@@ -205,36 +177,32 @@
     }
     @media (max-width: 520px){
       .grid{ grid-template-columns: 1fr }
-      .badge{ height:calc(var(--store-h) - 6px) }
+      .badge-img{ height:40px }
     }
   </style>
 </head>
 <body>
 
-  <!-- ===================== NAV ===================== -->
+  <!-- NAV -->
   <header class="nav">
     <div class="nav-inner">
-      <div class="left">
-        <span class="brand">Jmod Media</span>
-      </div>
-
+      <div class="left"><span class="brand">Jmod Media</span></div>
       <nav class="center" aria-label="Primary">
         <a href="#top">Home</a>
         <a href="#features">Services</a>
         <a href="#waitlist">Waitlist</a>
         <a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a>
       </nav>
-
       <div class="right">
         <button id="themeToggle" class="toggle" type="button">Toggle</button>
       </div>
     </div>
   </header>
 
-  <!-- Center-origin floating field -->
+  <!-- Floating field -->
   <div id="bg" aria-hidden="true"></div>
 
-  <!-- ===================== HERO ===================== -->
+  <!-- HERO -->
   <main id="top" class="hero">
     <div class="shell">
       <div class="hero-grid">
@@ -242,15 +210,14 @@
         <div>
           <h1>Create smarter. Post faster. Grow everywhere.</h1>
           <p>Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms — powered by Jmod Labs’ adaptive AI that learns your tone and what performs.</p>
-
           <div class="badges">
-            <a class="badge" href="#" aria-label="App Store">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c.04.49-.187 1.01-.55 1.43-.402.47-1.1.84-1.743.79-.07-.48.206-1.01.57-1.44.39-.47 1.128-.83 1.723-.78zM19.395 16.59c-.53 1.23-.78 1.78-1.46 2.88-.95 1.55-2.294 3.49-3.97 3.5-1.485.01-1.87-.95-3.48-.95-1.61 0-2.04.93-3.51.96-1.68.03-2.962-1.69-3.916-3.24-2.14-3.48-3.784-9.82-1.58-14.1 1.1-2.13 3.073-3.49 5.234-3.52 1.63-.03 3.17 1.08 3.49 1.08.34 0 2.4-1.33 4.05-1.14.69.03 2.62.28 3.86 2.11-3.37 1.86-2.82 6.74.29 7.91-.3.86-.66 1.69-1.01 2.53z"/></svg>
-              App Store
+            <!-- Official Apple badge SVG -->
+            <a href="#" aria-label="Download on the App Store">
+              <img class="badge-img" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
             </a>
-            <a class="badge" href="#" aria-label="Google Play">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 2.75v18.5c0 .66.54 1.25 1.2 1.25.2 0 .43-.06.65-.2l10.93-6.3-12.78-12.1zm13.72 12.67 2.9 1.67c.38.22.83.22 1.2 0l2.56-1.47c.6-.35.6-1.23 0-1.58l-2.56-1.47a1.19 1.19 0 0 0-1.2 0l-2.9 1.67-.99.57.99.61zM4.19 1.72 13.73 7.2l-2.08 1.2-7.46-6.68A1.14 1.14 0 0 1 4.19 1.7zM11.65 15.6 4.13 20.3c-.66.39-1.5-.08-1.5-.86V3.9l9.02 8.54z"/></svg>
-              Google Play
+            <!-- Official Google Play badge SVG -->
+            <a href="#" aria-label="Get it on Google Play">
+              <img class="badge-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.svg" alt="Get it on Google Play">
             </a>
           </div>
         </div>
@@ -258,20 +225,13 @@
     </div>
   </main>
 
-  <!-- ===================== PHONE PREVIEW ===================== -->
+  <!-- PHONE PREVIEW -->
   <section class="phone-wrap">
     <div class="shell">
       <div class="phone">
         <div class="screen">
           <div class="bar">Jmod Media</div>
-          <iframe
-            class="ig"
-            src="https://www.instagram.com/p/CwLvMC2p0Fu/embed"
-            allowtransparency="true"
-            frameborder="0"
-            scrolling="no"
-            title="Instagram post preview"
-          ></iframe>
+          <iframe class="ig" src="https://www.instagram.com/p/CwLvMC2p0Fu/embed" allowtransparency="true" frameborder="0" scrolling="no" title="Instagram post preview"></iframe>
           <div class="dock">
             <div class="pill">Compose</div>
             <div class="pill">Calendar</div>
@@ -283,7 +243,7 @@
     </div>
   </section>
 
-  <!-- ===================== FEATURES ===================== -->
+  <!-- FEATURES -->
   <section id="features" class="section">
     <div class="shell">
       <h2>Everything you need to post smarter</h2>
@@ -300,7 +260,7 @@
     </div>
   </section>
 
-  <!-- ===================== WAITLIST ===================== -->
+  <!-- WAITLIST -->
   <section id="waitlist" class="wait">
     <div class="shell">
       <h2>Be first to launch with us</h2>
@@ -313,7 +273,7 @@
     </div>
   </section>
 
-  <!-- ===================== FOOTER ===================== -->
+  <!-- FOOTER -->
   <footer>
     <div class="shell">
       <p class="small">Backed and supported by <strong>GPT-5 Engine</strong></p>
@@ -322,12 +282,8 @@
     </div>
   </footer>
 
-  <!-- =========================================================
-       JS — Floating icons (cycled, random timing, ≤13 alive) +
-       Theme toggle
-  ========================================================= -->
   <script>
-    /* --- ICON SOURCES (Simple Icons SVGs = crisp) --- */
+    /* Crisp SVG social icons */
     const ICONS = [
       "https://cdn.simpleicons.org/youtube/FF0000",
       "https://cdn.simpleicons.org/facebook/1877F2",
@@ -347,21 +303,26 @@
       "https://cdn.simpleicons.org/kik/82BC23"
     ];
 
-    /* --- Center-origin burst engine (cycled, random timing, ≤13 alive) --- */
+    /* Staggered spawns + randomized cycle; ≤ 13 alive */
     (() => {
       const field = document.getElementById('bg');
       const MAX_ALIVE = 13;
       const LIFE_MS   = 8000;
-      const MIN_STAG  = 350;
-      const MAX_STAG  = 950;
 
-      let alive = 0;
-      let idx = 0;
+      // first wave staggered evenly
+      const FIRST_COUNT = MAX_ALIVE;
+      const FIRST_SPREAD = 400; // ms between the first batch
 
-      function nextIcon(){ const src = ICONS[idx]; idx = (idx + 1) % ICONS.length; return src; }
+      let alive = 0, cursor = 0;
+
+      function nextIcon(){
+        const src = ICONS[cursor];
+        cursor = (cursor + 1) % ICONS.length;
+        return src;
+      }
 
       function spawn(){
-        if (alive >= MAX_ALIVE) { schedule(); return; }
+        if (alive >= MAX_ALIVE) return;
 
         const img = document.createElement('img');
         img.className = 'burst';
@@ -376,44 +337,31 @@
         img.style.animationDuration = (LIFE_MS/1000) + 's';
 
         alive++;
-        img.addEventListener('animationend', () => { alive--; img.remove(); schedule(); });
+        img.addEventListener('animationend', () => { alive--; img.remove(); cycle(); });
         field.appendChild(img);
-        schedule();
       }
 
-      function schedule(){
-        const delay = MIN_STAG + Math.random()*(MAX_STAG - MIN_STAG);
-        setTimeout(spawn, delay);
+      // after first wave, keep cycling with random gaps
+      function cycle(){
+        const gap = 350 + Math.random()*900; // randomized stagger for ongoing cycle
+        setTimeout(() => { spawn(); cycle(); }, gap);
       }
 
-      for (let i=0;i<MAX_ALIVE;i++){
-        setTimeout(spawn, i*90 + Math.random()*120);
+      // initial staggered wave
+      for (let i=0;i<FIRST_COUNT;i++){
+        setTimeout(spawn, i*FIRST_SPREAD);
       }
+      // start cycling after the first wave is in motion
+      setTimeout(cycle, FIRST_COUNT*FIRST_SPREAD + 300);
     })();
 
-    /* --- Theme toggle (dark → light → auto) --- */
-    (function theme(){
+    // Theme toggle (locks to dark/light; default dark)
+    (function(){
       const html = document.documentElement;
       const btn  = document.getElementById('themeToggle');
-
-      function applyAuto(){
-        if (window.matchMedia('(prefers-color-scheme: light)').matches){
-          html.setAttribute('data-theme','light');
-        } else {
-          html.setAttribute('data-theme','dark');
-        }
-      }
-      applyAuto();
-      window.matchMedia('(prefers-color-scheme: light)')
-            .addEventListener?.('change', e=>{
-              if (html.dataset.locked !== 'true') html.setAttribute('data-theme', e.matches ? 'light':'dark');
-            });
-
       btn.addEventListener('click', ()=>{
         const cur = html.getAttribute('data-theme') || 'dark';
-        const next = cur==='dark' ? 'light' : cur==='light' ? 'auto' : 'dark';
-        if (next==='auto'){ html.dataset.locked = 'false'; applyAuto(); }
-        else { html.dataset.locked = 'true'; html.setAttribute('data-theme', next); }
+        html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
       });
     })();
   </script>
