@@ -83,12 +83,12 @@
 
     /* ===== Phone ===== */
     .phone-section{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:22px;}
-    .phone{width:clamp(260px,30vw,var(--phone-max));margin:0 auto;padding:12px;background:linear-gradient(180deg,#0a0f1e 0%,#060a16 100%);border-radius:32px;box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 0 3px var(--lime);border:1px solid rgba(255,255,255,.06);position:relative;}
+    .phone{width:clamp(280px,50vw,var(--phone-max));margin:0 auto;padding:12px;background:linear-gradient(180deg,#0a0f1e 0%,#060a16 100%);border-radius:32px;box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 0 3px var(--lime);border:1px solid rgba(255,255,255,.06);position:relative;}
     .phone::before{content:"";position:absolute;inset:-2px;border-radius:34px;box-shadow:inset 0 0 22px rgba(50,205,50,.25),inset 0 0 0 2px rgba(50,205,50,.35);}
     .phone::after{content:"";position:absolute;right:-6px;top:52px;width:3px;height:48px;border-radius:3px;background:var(--lime);filter:drop-shadow(0 0 6px rgba(50,205,50,.6));}
-    .phone-screen{border-radius:22px;background:#000;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:12px;overflow:hidden;}
+    .phone-screen{border-radius:22px;background:#000;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:8px;overflow:hidden;}
     .screen-stage{background:#0e142b;border-radius:16px;padding:12px;border:1px solid rgba(255,255,255,.08);}
-    .pill{background:var(--chip);padding:8px 10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
+    .pill{background:var(--chip);padding:8px 10px;border-radius:12px;text-align:center;font-weight:700;font-size:10px;color:var(--text)}
     .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
     .dock .pill{background:transparent;border:1px solid rgba(255,255,255,.85);color:#fff;}
     .ig-slot{display:flex;justify-content:center;align-items:flex-start;max-height:min(52vh,520px);overflow:auto;}
