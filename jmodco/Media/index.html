@@ -5,36 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jmod Media — AI Social Posting for Small Business</title>
   <meta name="description" content="Create smarter, post faster, grow everywhere. Jmod Media uses AI to craft captions, hashtags, watermarks, and schedules—powered by Jmod Labs." />
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* layout */
       --shell-max: 1000px;
       --shell-pad: 20px;
       --nav-h: 64px;
 
-      /* hero */
       --logo-size: 220px;
       --headline-size: clamp(30px,3.2vw,44px);
 
-      /* badges */
-      --store-h: 46px;
+      --store-h: 46px;        /* << change badge height here */
 
-      /* phone */
-      --phone-w: 360px;
-      --phone-h: 660px;
-      --ig-w:    92%;
-      --ig-h:    470px;
+      --phone-w: 360px;       /* << phone width */
+      --phone-h: 660px;       /* << phone height */
+      --ig-w:    92%;         /* << IG embed width % of screen */
+      --ig-h:    470px;       /* << IG embed height */
 
-      /* burst */
       --burst-sec: 8s;
       --burst-target: 13;
 
-      /* theme */
       --bg: #0b0f1a;
       --panel: #101733;
       --text: #e8ecff;
@@ -46,7 +39,6 @@
       --glass: rgba(11,15,26,.7);
       --shadow: 0 10px 40px rgba(0,0,0,.35);
 
-      /* infinite backdrop (no seams) */
       --gradient:
         radial-gradient(1100px 600px at 20% -10%, rgba(123,57,255,.18), transparent 55%),
         radial-gradient(900px 480px at 110% 20%, rgba(34,211,238,.14), transparent 60%),
@@ -62,7 +54,7 @@
       padding-top:var(--nav-h);
       background:transparent;
     }
-    /* single fixed backdrop – prevents lines/bands */
+    /* Seamless backdrop */
     body::before{
       content:""; position:fixed; inset:0; z-index:-2;
       background:var(--gradient);
@@ -122,17 +114,23 @@
         linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),
         #0e142b;
       aspect-ratio:9/19.5;
-      display:flex; flex-direction:column; justify-content:space-between; align-items:center;
-      padding:16px; overflow:hidden;
+      display:flex; flex-direction:column; justify-content:flex-start; align-items:center;
+      padding:14px 0 10px; overflow:hidden;
     }
     .bar{ width:92%; height:28px; border-radius:999px; background:rgba(255,255,255,.08);
       display:flex; align-items:center; justify-content:center; color:#b8c2ff; font-weight:800; font-size:.8rem; margin-bottom:8px }
-    .ig{ width:var(--ig-w); height:var(--ig-h); border:0; border-radius:12px; background:#000 }
-    .pill{
-      background:var(--chip); padding:10px; border-radius:12px; text-align:center;
-      font-weight:700; font-size:12px; color:var(--text);
+    .ig{ width:var(--ig-w); height:var(--ig-h); border:0; border-radius:12px; background:#000; display:block; margin:0 auto }
+    .dock{
+      width:92%; margin:10px auto 0;
+      display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+      align-items:center; justify-items:stretch;
     }
-    .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:92%;margin-top:10px}
+    .pill{
+      background:transparent;
+      padding:8px 0; border-radius:12px;
+      text-align:center; font-weight:800; font-size:11px; letter-spacing:.2px;
+      color:var(--text); border:1px solid rgba(255,255,255,.65);
+    }
 
     /* ===== FEATURES ===== */
     .section{ padding:32px 0; background:transparent }
@@ -210,14 +208,15 @@
         <div>
           <h1>Create smarter. Post faster. Grow everywhere.</h1>
           <p>Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms — powered by Jmod Labs’ adaptive AI that learns your tone and what performs.</p>
+
           <div class="badges">
-            <!-- Official Apple badge SVG -->
+            <!-- Apple (stable SVG) -->
             <a href="#" aria-label="Download on the App Store">
-              <img class="badge-img" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+              <img class="badge-img" src="https://upload.wikimedia.org/wikipedia/commons/9/96/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store">
             </a>
-            <!-- Official Google Play badge SVG -->
+            <!-- Google Play (stable SVG) -->
             <a href="#" aria-label="Get it on Google Play">
-              <img class="badge-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.svg" alt="Get it on Google Play">
+              <img class="badge-img" src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play">
             </a>
           </div>
         </div>
@@ -283,7 +282,7 @@
   </footer>
 
   <script>
-    /* Crisp SVG social icons */
+    /* Social icons (SVG via SimpleIcons for sharpness) */
     const ICONS = [
       "https://cdn.simpleicons.org/youtube/FF0000",
       "https://cdn.simpleicons.org/facebook/1877F2",
@@ -309,7 +308,6 @@
       const MAX_ALIVE = 13;
       const LIFE_MS   = 8000;
 
-      // first wave staggered evenly
       const FIRST_COUNT = MAX_ALIVE;
       const FIRST_SPREAD = 400; // ms between the first batch
 
@@ -341,21 +339,18 @@
         field.appendChild(img);
       }
 
-      // after first wave, keep cycling with random gaps
       function cycle(){
-        const gap = 350 + Math.random()*900; // randomized stagger for ongoing cycle
+        const gap = 350 + Math.random()*900; // randomized stagger after first wave
         setTimeout(() => { spawn(); cycle(); }, gap);
       }
 
-      // initial staggered wave
       for (let i=0;i<FIRST_COUNT;i++){
         setTimeout(spawn, i*FIRST_SPREAD);
       }
-      // start cycling after the first wave is in motion
       setTimeout(cycle, FIRST_COUNT*FIRST_SPREAD + 300);
     })();
 
-    // Theme toggle (locks to dark/light; default dark)
+    // Theme toggle
     (function(){
       const html = document.documentElement;
       const btn  = document.getElementById('themeToggle');
