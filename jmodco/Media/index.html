@@ -1,259 +1,304 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="auto">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jmod Media — Social Content, Simplified</title>
-  <meta name="description" content="Jmod Media helps small businesses plan, create, and publish on-brand posts fast—with AI captions, SEO tags, and hashtags.">
+  <title>Jmod Media — AI-Driven Social Posting for Small Business</title>
+  <meta name="description" content="AI-driven captions, smart scheduling, watermarking, and brand consistency across every platform — all in one app by Jmod Co.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --bg:#0b1020; --bg2:#0a0f1e; --panel:#101733;
-      --text:#e8ecff; --muted:#a7b0d6;
-      --brand:#7b39ff; --brand-2:#22d3ee;
-      --chip:#1a2246; --link:#c7d2fe;
-      --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.35);
-      --lime:#32CD32;
-      --phone-max:360px;
-      --embed-max:320px;
-    }
-    [data-theme="light"]{
-      --bg:#f6f8ff; --bg2:#eef2ff; --panel:#ffffff;
-      --text:#0b1020; --muted:#5b668a;
-      --brand:#6b2dff; --brand-2:#06b6d4;
-      --chip:#eef2ff; --link:#312e81;
-      --shadow:0 10px 24px rgba(2,6,23,.10);
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
-      background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
-      overflow-x:hidden;position:relative;isolation:isolate;
+    :root {
+      --bg: #0b1020;
+      --panel: #101733;
+      --text: #e8ecff;
+      --muted: #a7b0d6;
+      --brand: #7b39ff;
+      --brand2: #22d3ee;
+      --radius: 18px;
+      --shadow: 0 10px 40px rgba(0,0,0,.35);
+      --chip: #1a2246;
+      --gradient: radial-gradient(1200px 600px at 20% -10%, rgba(123,57,255,.25), transparent 55%),
+                  radial-gradient(1000px 500px at 110% 20%, rgba(34,211,238,.2), transparent 60%),
+                  linear-gradient(180deg,#0b1020 0%,#0a0f1e 100%);
     }
 
-    /* ===== 3D background ===== */
-    #bg3d{position:fixed;inset:0;z-index:-2;width:100vw;height:100vh;display:block;background:
-      radial-gradient(1200px 600px at 15% -10%, rgba(123,57,255,.18), transparent 60%),
-      radial-gradient(1000px 520px at 115% 20%, rgba(34,211,238,.14), transparent 65%),
-      linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
+    *{box-sizing:border-box;margin:0;padding:0}
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--text);
+      background: var(--gradient);
+      overflow-x: hidden;
     }
-    .bg-vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(80% 70% at 50% 20%, transparent 60%, rgba(0,0,0,.35) 100%)}
 
-    a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
-    .shell{max-width:1200px;margin:0 auto;padding:24px}
-
-    /* ===== Floating nav ===== */
-    .nav-wrap{position:sticky; top:12px; z-index:60;}
-    .navbar{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 14px; border-radius:16px;
-      background:color-mix(in oklab, var(--panel) 82%, transparent);
+    /* Floating navbar */
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 5vw;
       backdrop-filter: blur(10px);
-      border:1px solid rgba(255,255,255,.10);
+      background: rgba(10,15,30,0.6);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    header .brand { font-weight: 900; font-size: 1.2rem; letter-spacing:.2px; }
+    nav ul { display: flex; list-style: none; gap: 24px; }
+    nav a { color: var(--text); opacity:.9; font-weight: 600; }
+    nav a:hover { opacity:1; color:var(--brand2); }
+    .btn-small {
+      background: var(--brand);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-weight: 700;
+    }
+
+    /* Hero section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 80px;
+    }
+    .hero img { width: 240px; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(2.2rem,5vw,3.6rem); font-weight: 900; margin-bottom: 12px; }
+    .hero p { color: var(--muted); max-width: 640px; font-size: 1.1rem; }
+    .badges { display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap; justify-content:center; }
+    .store { display: inline-flex; align-items:center; gap:10px; background:#000; border-radius:10px; padding:10px 18px; color:#fff; font-weight:700; }
+    .store svg { width:24px;height:24px }
+
+    /* Phone mock */
+    .phone {
+      background: var(--panel);
+      border-radius: 40px;
+      width: min(440px, 92vw);
+      margin: 60px auto;
+      padding: 18px;
+      box-shadow: 0 0 24px rgba(0,255,90,.25);
+      border: 2px solid #39ff14;
+    }
+    .phone-screen {
+      background: #0b0d18;
+      border-radius: 30px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .ig-slot {
+      width: 100%;
+      max-width: 370px;
+      overflow: visible;
+      min-height: 640px;
+    }
+    .dock {
+      display: flex;
+      justify-content: space-around;
+      background: #000;
+      border-radius: 18px;
+      padding: 10px;
+      margin-top: 12px;
+    }
+    .pill {
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: .8rem;
+      font-weight: 600;
+    }
+
+    /* Floating social icons background */
+    .floating-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .icon {
+      position: absolute;
+      opacity: 0.25;
+      animation: float 18s linear infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes float {
+      0% { transform: translateY(110vh) scale(0.9); opacity: .2; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: .5; }
+    }
+
+    /* Features */
+    .section {
+      padding: 80px 5vw;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .section h2 {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--panel);
+      border-radius: 20px;
+      padding: 24px;
       box-shadow: var(--shadow);
     }
-    .nav-brand{font-weight:800; color:var(--text); text-decoration:none;}
-    .nav-links{display:flex; gap:18px; align-items:center;}
-    .nav-links a{font-weight:600; color:var(--text); opacity:.9;}
-    .nav-links a:hover{opacity:1;}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:10px 14px;border-radius:10px;border:1px solid transparent;
-      background:var(--brand);color:#fff;font-weight:700;box-shadow:var(--shadow);
+    .card h3 { margin: 10px 0; font-size: 1.2rem; }
+    .card p { color: var(--muted); font-size: .95rem; }
+
+    /* Waitlist */
+    .waitlist {
+      text-align: center;
+      margin-top: 60px;
     }
-    .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
-    .btn-small{padding:8px 12px}
-    .hamburger{display:none; background:transparent; border:0; padding:8px 10px; border-radius:10px; color:var(--text);}
-    .mobile-menu{display:none;margin-top:8px;border-radius:14px;overflow:hidden;background:color-mix(in oklab, var(--panel) 88%, transparent);backdrop-filter:blur(8px);}
-    .mobile-menu a{display:block;padding:12px 14px;color:var(--text);font-weight:600;}
+    .waitlist form {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .waitlist input {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      background: var(--chip);
+      color: var(--text);
+    }
+    .waitlist button {
+      background: var(--brand);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 700;
+      padding: 12px 20px;
+    }
 
-    /* ===== Hero ===== */
-    .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
-    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
-    .media-logo{width:100%;max-width:520px;}
-    .title{font-size:clamp(34px,6vw,64px);margin:0 0 8px;font-weight:900}
-    .subtitle{font-size:clamp(16px,2vw,20px);color:var(--muted);margin:0 0 18px}
-    .badges{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .store-badge{height:45px;display:block;border-radius:12px;box-shadow:var(--shadow)}
-    .store-badge.store-play{height:60px}
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--muted);
+      font-size: .9rem;
+    }
 
-    /* ===== Phone ===== */
-    .phone-section{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:22px;}
-    .phone{width:clamp(280px,50vw,var(--phone-max));margin:0 auto;padding:12px;background:linear-gradient(180deg,#0a0f1e 0%,#060a16 100%);border-radius:32px;box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 0 3px var(--lime);border:1px solid rgba(255,255,255,.06);position:relative;}
-    .phone::before{content:"";position:absolute;inset:-2px;border-radius:34px;box-shadow:inset 0 0 22px rgba(50,205,50,.25),inset 0 0 0 2px rgba(50,205,50,.35);}
-    .phone::after{content:"";position:absolute;right:-6px;top:52px;width:3px;height:48px;border-radius:3px;background:var(--lime);filter:drop-shadow(0 0 6px rgba(50,205,50,.6));}
-    .phone-screen{border-radius:22px;background:#000;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:8px;overflow:hidden;}
-    .screen-stage{background:#0e142b;border-radius:16px;padding:12px;border:1px solid rgba(255,255,255,.08);}
-    .pill{background:var(--chip);padding:8px 10px;border-radius:12px;text-align:center;font-weight:700;font-size:10px;color:var(--text)}
-    .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-    .dock .pill{background:transparent;border:1px solid rgba(255,255,255,.85);color:#fff;}
-    .ig-slot{display:flex;justify-content:center;align-items:flex-start;max-height:min(52vh,520px);overflow:auto;}
-    .instagram-media{width:100%!important;max-width:var(--embed-max)!important;}
-
-    .preview-ctas{display:flex;justify-content:center;gap:12px;width:100%;}
-    .preview-ctas .btn{min-width:180px;}
-
-    /* ===== Slightly larger phone (¼" wider/taller) ===== */
-      :root {
-        --phone-max: 500px;       /* was 360px — about +¼ inch wider */
-        --embed-max: 400px;       /* match to keep post centered */
-      }
-      
-      /* Adjust aspect ratio for slightly taller screen */
-      .phone-screen {
-        aspect-ratio: 9 / 18;     /* previously 9 / 19.5 — taller look */
-      }
-      
-      /* Keep it balanced visually */
-      .phone {
-        padding: 14px;
-        border-radius: 34px;
-      }
-      
-      .phone::before {
-        border-radius: 36px;
-      }
-      
-      .phone::after {
-        right: -6px;
-        top: 64px;
-        height: 52px;
-      }
-
-
-    /* ===== Modules ===== */
-    .modules{max-width:1200px;margin:48px auto 0;padding:0 24px}
-    .mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    @media(max-width:1024px){.mod-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:640px){.mod-grid{grid-template-columns:1fr}}
-    .mod{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;box-shadow:var(--shadow);transition:transform .15s}
-    .mod:hover{transform:translateY(-2px);border-color:rgba(123,57,255,.35)}
-
-    /* ===== Small Biz Band + Waitlist ===== */
-    .smb{max-width:1200px;margin:40px auto 0;padding:0 24px}
-    .band{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:rgba(16,23,51,.78);border:1px solid rgba(255,255,255,.10);padding:14px 16px;border-radius:16px}
-    footer{margin-top:56px}
-
-    /* ===== Responsive Nav ===== */
-    @media(max-width:900px){.nav-links{display:none}.hamburger{display:inline-flex}}
+    @media (max-width: 640px) {
+      nav ul { display: none; }
+      .hero img { width: 180px; }
+      .phone { width: 90%; }
+    }
   </style>
 </head>
 <body>
-  <canvas id="bg3d"></canvas>
-  <div class="bg-vignette"></div>
 
-  <!-- NAV -->
-  <header class="shell nav-wrap">
-    <div class="navbar">
-      <a class="nav-brand" href="#top">Jmod Media</a>
-      <nav class="nav-links">
-        <a href="#top">Home</a>
-        <a href="#features">Services</a>
-        <a href="#waitlist">Waitlist</a>
-        <a href="/jmodco/">Jmod Co.</a>
-      </nav>
-      <button id="navToggle" class="hamburger">☰</button>
-    </div>
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#top">Home</a>
-      <a href="#features">Services</a>
-      <a href="#waitlist">Waitlist</a>
-      <a href="/jmodco/">Jmod Co.</a>
-    </div>
+  <div class="floating-bg" id="bg"></div>
+
+  <header>
+    <div class="brand">Jmod Media</div>
+    <nav>
+      <ul>
+        <li><a href="#top">Home</a></li>
+        <li><a href="#features">Services</a></li>
+        <li><a href="#waitlist">Waitlist</a></li>
+        <li><a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a></li>
+      </ul>
+    </nav>
+    <button class="btn-small" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join</button>
   </header>
 
-  <!-- HERO -->
-  <main id="top" class="shell hero-wide">
-    <section class="panel">
-      <div class="hero-grid">
-        <div><img class="media-logo" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media"></div>
-        <div>
-          <h1 class="title">Create once.<br>Publish everywhere.</h1>
-          <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
-          <div class="badges">
-            <span class="pill">Pre-Download (Coming Soon)</span>
-            <a href="#"><img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"></a>
-            <a href="#"><img class="store-badge store-play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PHONE -->
-    <section class="phone-section">
-      <div class="phone">
-        <div class="phone-screen">
-          <div class="screen-stage">
-            <div class="pill">Jmod Media</div>
-            <h4 style="margin:8px 0 0">New Post (Instagram)</h4>
-            <p style="margin:6px 0;color:var(--muted)">Drop photo • Choose template • Publish</p>
-            <div class="ig-slot">
-              <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/CwLvMC2p0Fu/" data-instgrm-version="14"></blockquote>
-            </div>
-          </div>
-          <div class="dock">
-            <div class="pill">Compose</div><div class="pill">Calendar</div><div class="pill">Brand Kit</div><div class="pill">Analytics</div>
-          </div>
-        </div>
-      </div>
-      <div class="preview-ctas">
-        <a class="btn" href="#waitlist">Join the Waitlist</a>
-        <a class="btn ghost" href="/jmodco/media/pricing.html">Pricing</a>
-      </div>
-    </section>
-  </main>
-
-  <!-- FEATURES -->
-  <section id="features" class="modules">
-    <h2>Everything you need to post in minutes</h2>
-    <p class="lead">Six core tools — from idea to publish — built for small business speed and consistency.</p>
-    <div class="mod-grid">
-      <div class="mod"><h3>One-Tap Post Builder</h3><p>Drop a photo → AI writes caption & hashtags → publish.</p></div>
-      <div class="mod"><h3>Queue & Auto-Schedule</h3><p>Drag into a queue that posts at peak times.</p></div>
-      <div class="mod"><h3>On-Brand, Every Time</h3><p>Lock in logos, colors, fonts, and tone.</p></div>
-      <div class="mod"><h3>Reusable Post Types</h3><p>“Congrats Customer”, “Weekend Promo”, and more.</p></div>
-      <div class="mod"><h3>Smart Replies</h3><p>Suggested responses & auto-DM after hours.</p></div>
-      <div class="mod"><h3>Post-level Analytics</h3><p>See what to repeat — and what to retire.</p></div>
+  <section class="hero" id="top">
+    <img src="https://www.jordanmoddes.com/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media logo">
+    <h1>AI-Driven Efficiency<br>for Real-World Businesses</h1>
+    <p>Jmod Media helps brands post faster, smarter, and more consistently.  
+       Generate captions, hashtags, and tone-perfect content — powered by Jmod Labs’ adaptive AI.</p>
+    <div class="badges">
+      <a class="store" href="#"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M16.365 1.43c.04.49-.187 1.01-.55 1.43-.402.47-1.1.84-1.743.79-.07-.48.206-1.01.57-1.44.39-.47 1.128-.83 1.723-.78zM19.395 16.59c-.53 1.23-.78 1.78-1.46 2.88-.95 1.55-2.294 3.49-3.97 3.5-1.485.01-1.87-.95-3.48-.95-1.61 0-2.04.93-3.51.96-1.68.03-2.962-1.69-3.916-3.24-2.14-3.48-3.784-9.82-1.58-14.1 1.1-2.13 3.073-3.49 5.234-3.52 1.63-.03 3.17 1.08 3.49 1.08.34 0 2.4-1.33 4.05-1.14.69.03 2.62.28 3.86 2.11-3.37 1.86-2.82 6.74.29 7.91-.3.86-.66 1.69-1.01 2.53z"/></svg>App Store</a>
+      <a class="store" href="#"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M1.5 2.75v18.5c0 .66.54 1.25 1.2 1.25.2 0 .43-.06.65-.2l10.93-6.3-12.78-12.1zm13.72 12.67 2.9 1.67c.38.22.83.22 1.2 0l2.56-1.47c.6-.35.6-1.23 0-1.58l-2.56-1.47a1.19 1.19 0 0 0-1.2 0l-2.9 1.67-.99.57.99.61z"/></svg>Google Play</a>
     </div>
   </section>
 
-  <!-- Small Biz -->
-  <section class="smb">
-    <div class="band">
-      <strong>Built for small business clarity.</strong>
-      <span>AI helps pick what to post, generates captions, and suggests SEO tags & hashtags—so you show up, consistently.</span>
-      <a class="btn" href="#waitlist">Join the Waitlist</a>
+  <div class="phone">
+    <div class="phone-screen">
+      <div class="ig-slot">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/CwLvMC2p0Fu/" data-instgrm-version="14"></blockquote>
+      </div>
+    </div>
+    <div class="dock">
+      <div class="pill">Compose</div>
+      <div class="pill">Calendar</div>
+      <div class="pill">Brand Kit</div>
+      <div class="pill">Analytics</div>
+    </div>
+  </div>
+
+  <section id="features" class="section">
+    <h2>What Makes Jmod Media Different</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>AI Caption Builder</h3>
+        <p>Upload a photo and our AI generates captions and hashtags that match your brand’s tone, trending keywords, and audience interests.</p>
+      </div>
+      <div class="card">
+        <h3>Cross-Platform Scheduling</h3>
+        <p>Schedule posts across multiple networks at once. Premium plans allow unlimited automation and posting frequency.</p>
+      </div>
+      <div class="card">
+        <h3>Automatic Watermarking</h3>
+        <p>Add your brand logo to photos and videos automatically. Jmod’s watermark AI ensures placement never covers key visual content.</p>
+      </div>
+      <div class="card">
+        <h3>Preset Templates</h3>
+        <p>Save message styles — “Product Launch”, “Customer Congrats”, “Weekend Promo” — and reuse instantly.</p>
+      </div>
+      <div class="card">
+        <h3>Smart Hashtag Engine</h3>
+        <p>Generate hashtag sets that evolve as your engagement changes. The system learns which topics drive clicks for your brand.</p>
+      </div>
+      <div class="card">
+        <h3>Adaptive Tone Learning</h3>
+        <p>Every caption you edit teaches Jmod Media how you write, improving your future suggestions automatically.</p>
+      </div>
+    </div>
+
+    <div class="waitlist" id="waitlist">
+      <h2>Be first to launch with us</h2>
+      <p>Owner-operators get early access, onboarding help, and founder pricing.</p>
+      <form onsubmit="event.preventDefault(); alert('Thanks! You’re on the waitlist!');">
+        <input type="text" placeholder="Business name" required>
+        <input type="email" placeholder="Email address" required>
+        <button type="submit">Join</button>
+      </form>
     </div>
   </section>
 
-  <!-- Waitlist -->
-  <section id="waitlist" class="modules">
-    <h2>Be first to launch with us</h2>
-    <p class="lead">Owner-operators get early access, onboarding help, and founder pricing.</p>
-    <form class="panel" style="display:grid;grid-template-columns:1.2fr .8fr auto;gap:12px;align-items:center" onsubmit="event.preventDefault(); alert('Thanks! You’re on the list.');">
-      <input type="text" placeholder="Business name" required style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
-      <input type="email" placeholder="Email address" required style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
-      <button class="btn" type="submit">Join</button>
-    </form>
-  </section>
-
-  <footer class="shell" id="footerMount"></footer>
+  <footer>
+    <p>Backed and supported by <strong>GPT-5 Engine</strong><br>
+    Jmod Labs · Jmod Systems · Jmod Media · Jmod Legacy · Jmod Insights<br>
+    © 2025 Jmod Co. — Built for small business clarity.</p>
+  </footer>
 
   <script async src="https://www.instagram.com/embed.js"></script>
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-
   <script>
-    // mobile nav
-    const btn=document.getElementById('navToggle'),menu=document.getElementById('mobileMenu');
-    btn?.addEventListener('click',()=>{menu.style.display=menu.style.display==='block'?'none':'block';});
-    menu?.addEventListener('click',e=>{if(e.target.tagName==='A'){menu.style.display='none';}});
-
+    const container = document.getElementById("bg");
+    const icons = [
     /* === 3D social icon float === */
-    const ICONS=[
       "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
       "https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo_2023.png",
       "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg",
@@ -271,37 +316,17 @@
       "https://upload.wikimedia.org/wikipedia/commons/7/7c/Rumble_Logo_2022.svg",
       "https://upload.wikimedia.org/wikipedia/commons/e/e4/Kik_Messenger_logo.svg"
     ];
-    function init3D(){
-      const canvas=document.getElementById('bg3d');
-      const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-      renderer.setSize(window.innerWidth,window.innerHeight);
-      const scene=new THREE.Scene();
-      const cam=new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,0.1,200);
-      cam.position.set(0,1.6,8);
-      scene.add(new THREE.AmbientLight(0xffffff,0.9));
-      const loader=new THREE.TextureLoader();loader.setCrossOrigin('anonymous');
-      const sprites=[];const MAX=16;
-      function spawn(tex){
-        const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,opacity:0}));
-        const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,color:0xffffff,blending:THREE.AdditiveBlending,transparent:true,opacity:0}));
-        function reset(){s.position.set((Math.random()-0.5)*28,(Math.random()-0.5)*16,-(Math.random()*30+6));glow.position.copy(s.position);s.material.opacity=0;glow.material.opacity=0;}
-        reset();scene.add(s);scene.add(glow);sprites.push({s,glow,reset});
-      }
-      Promise.allSettled(ICONS.map(src=>new Promise(res=>{loader.load(src,t=>res(t),undefined,_=>res(null));}))).then(r=>{
-        const tex=r.map(x=>x.value).filter(Boolean);if(!tex.length)return;
-        for(let i=0;i<MAX;i++)spawn(tex[i%tex.length]);
-      });
-      function anim(){
-        sprites.forEach(o=>{
-          o.s.position.z+=0.01;o.glow.position.z=o.s.position.z;
-          o.s.material.opacity=Math.min(1,o.s.material.opacity+0.02);
-          if(o.s.position.z>-1.5){o.reset();}
-        });
-        renderer.render(scene,cam);requestAnimationFrame(anim);
-      }
-      anim();
+
+    for (let i = 0; i < 18; i++) {
+      const img = document.createElement("img");
+      img.src = icons[Math.floor(Math.random() * icons.length)];
+      img.className = "icon";
+      img.style.width = Math.random() * 60 + 40 + "px";
+      img.style.left = Math.random() * 100 + "%";
+      img.style.animationDuration = 14 + Math.random() * 12 + "s";
+      img.style.animationDelay = Math.random() * -20 + "s";
+      container.appendChild(img);
     }
-    init3D();
   </script>
 </body>
 </html>
