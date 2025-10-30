@@ -1,431 +1,337 @@
-<!DOCTYPE html>
-<html lang="en" id="top">
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>JMOD’s Dashboard</title>
-  <meta name="color-scheme" content="dark light" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jmod Co. — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{
-      --bg:#0b0c10;--card:#13151b;--ink:#e8ebf4;--muted:#a2a8b6;--border:#222631;
-      --accent:#4da3ff;--good:#17e5a1;--bad:#ff7b7b
-    }
-    html,body{height:100%}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:linear-gradient(180deg,#0b0c10,#0e1218);color:var(--ink);
-         font:14px/1.45 system-ui,Segoe UI,Inter,Arial,sans-serif}
-    a{color:inherit;text-decoration:none}
-
-    .wrap{max-width:1200px;margin:0 auto;padding:0 14px 48px}
-
-    /* Nav */
-    .nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);
-         border-bottom:1px solid var(--border)}
-    .navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;
-           justify-content:center;padding:12px}
-    .nav a{color:#f1f3f7;font-weight:600}
-    .nav a:hover{opacity:.85}
-
-    /* Ticker */
-    .ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
-    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
-    .ticker:hover .ticker-inner{animation-play-state:paused}
-    .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
-    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-    /* Cards / layout */
-    h1{font-size:22px;margin:16px 0}
-    .grid{display:grid;gap:16px}
-    @media(min-width:900px){.grid.cols-2{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;
-          box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    .card .hd{padding:12px 14px;border-bottom:1px solid var(--border);
-              display:flex;justify-content:space-between;align-items:center}
-    .card .bd{padding:14px}
-    .pill{font-size:12px;background:#0f1420;border:1px solid #1f2a43;color:#a9c8ff;
-          padding:5px 10px;border-radius:999px}
-    .mini{font-size:12px;color:#cbd5e1}
-    .muted{color:var(--muted)}
-    .section{scroll-margin-top:72px}
-    iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
-
-    /* Weather chips */
-    .symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-    .sym{border:1px solid var(--border);border-radius:12px;padding:10px}
-    .sym .top{display:flex;justify-content:space-between;gap:8px}
-    .sym .price{font-size:20px;font-weight:800;margin-top:4px}
-    .hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .hchip{display:flex;flex-direction:column;align-items:center;justify-content:center;
-           border:1px solid var(--border);background:#0f1218;border-radius:10px;padding:6px 8px;min-width:52px}
-    .hchip .ico{font-size:18px;line-height:1}
-    .hchip .t{font-weight:700;margin-top:2px}
-    .chg.up{color:var(--good)} .chg.down{color:var(--bad)}
-
-    /* Notes */
-    textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;
-             color:var(--ink);border-radius:12px;padding:10px}
-
-    /* “Top” + footer */
-    .btm{display:flex;justify-content:center;margin:28px 0}
-    .btn-top{background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;
-             border-radius:999px;font-weight:600}
-    .btn-top:hover{opacity:.9}
-    .footer{color:#9aa3b6;text-align:center;padding-bottom:24px}
-
-    /* ---------- Verse of the Day POP ---------- */
-    .votd-card{
-      position:relative;border:1px solid var(--border);border-left:4px solid var(--accent);
-      background:radial-gradient(1200px 400px at -10% -40%, rgba(77,163,255,.12), transparent 40%),
-                 linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.06));
-      border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25)
-    }
-    .votd-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .votd-badge{font-size:12px;font-weight:700;letter-spacing:.04em;color:#cfe0ff;
-      background:#0f1420;border:1px solid #1f2a43;border-radius:999px;padding:4px 10px}
-    .votd-date{font-size:12px;color:var(--muted)}
-    .votd-quote{margin:4px 0 10px;font-size:clamp(18px,2.2vw,22px);line-height:1.5;font-weight:600;color:var(--ink);position:relative}
-    .votd-quote::before{content:"“";position:absolute;left:-14px;top:-6px;font-size:28px;line-height:1;opacity:.25}
-    .votd-quote::after{content:"”";margin-left:4px;opacity:.25}
-    .votd-bottom{display:flex;justify-content:flex-end}
-    .votd-ref{font-size:13px;color:#a9c8ff;font-weight:700}
+    /* Basic helpers */
+    .card { @apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur rounded-2xl shadow p-4 md:p-6; }
+    .kpi  { @apply text-2xl md:text-3xl font-semibold; }
+    .sub  { @apply text-xs opacity-70; }
+    .table { @apply w-full text-sm border-collapse; }
+    .table th, .table td { @apply border border-zinc-200 dark:border-zinc-800 p-2; }
+    html { scroll-behavior: smooth; }
   </style>
 </head>
-<body>
+<body class="bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen">
 
   <!-- NAV -->
-  <div class="nav">
-    <div class="navin">
-      <a href="/">🏠 Resume</a>
-      <a href="#events">Local Events</a>
-      <a href="#traffic">Traffic</a>
-      <a href="#stocks">Stocks</a>
-      <a href="#notes">Scratchpad</a>
-    </div>
-  </div>
-
-  <!-- SPORTS TICKER -->
-  <div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
-
-  <div class="wrap">
-    <h1 class="section" id="welcome">Welcome</h1>
-
-    <!-- WELCOME COPY -->
-    <div class="card">
-      <div class="hd">
-        <div>Welcome</div>
-        <span id="todayBadge" class="pill"></span>
+  <header class="sticky top-0 z-50 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between px-3 py-2">
+      <div class="flex items-center gap-2">
+        <span class="font-bold tracking-tight">Jmod Co. Dashboard</span>
       </div>
-      <div class="bd">
-        <div class="mini muted" style="margin-bottom:8px">
-          Welcome to my private dashboard. I’m tinkering, learning, and having fun—feel free to explore anything on display.
-        </div>
-      </div>
-    </div>
+      <ul class="flex items-center gap-4 text-sm">
+        <li><a href="#overview"   class="hover:underline">Overview</a></li>
+        <li><a href="#stocks"     class="hover:underline">Stocks</a></li>
+        <li><a href="#crypto"     class="hover:underline">Crypto</a></li>
+        <li><a href="#pelosi"     class="hover:underline">Pelosi</a></li>
+        <li><a href="#conversions" class="hover:underline">Conversions</a></li>
+        <li><a href="#scratchpad" class="hover:underline">Scratchpad</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- WEATHER -->
-    <div class="card section" id="weather" style="margin-top:16px">
-      <div class="hd"><div>Weather</div></div>
-      <div class="bd"><div id="weatherList" class="symbols"></div></div>
-    </div>
+  <main class="max-w-6xl mx-auto px-3 py-6 space-y-6">
 
-    <!-- SUNRISE / SUNSET -->
-    <div class="card section" id="sun" style="margin-top:16px">
-      <div class="hd"><div>Sunrise • Sunset</div><span id="sunDate" class="pill"></span></div>
-      <div class="bd"><div id="sunLine" class="mini"></div></div>
-    </div>
-
-    <!-- VOTD + EVENTS -->
-    <div class="grid cols-2 section" id="events" style="margin-top:16px">
+    <!-- OVERVIEW -->
+    <section id="overview" class="grid md:grid-cols-3 gap-4">
       <div class="card">
-        <div class="hd"><div>Verse of the Day</div></div>
-        <div class="bd">
-          <div class="votd-card">
-            <div class="votd-top">
-              <span class="votd-badge">Verse of the Day</span>
-              <span id="votdDate" class="votd-date"></span>
+        <div class="sub">Last updated</div>
+        <div id="last-updated" class="kpi">—</div>
+      </div>
+      <div class="card">
+        <div class="sub">Tracked Crypto</div>
+        <div id="kpi-crypto" class="kpi">—</div>
+      </div>
+      <div class="card">
+        <div class="sub">Pelosi Rows Loaded</div>
+        <div id="kpi-pelosi" class="kpi">—</div>
+      </div>
+    </section>
+
+    <!-- STOCKS (placeholder, in case you wire later) -->
+    <section id="stocks" class="card">
+      <h2 class="text-xl font-semibold mb-3">Stocks</h2>
+      <p class="text-sm opacity-75">Placeholder for your equity tickers. We can wire a quotes API later (e.g., Alpha Vantage, Polygon).</p>
+    </section>
+
+    <!-- CRYPTO -->
+    <section id="crypto" class="card">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-xl font-semibold">Crypto (live)</h2>
+        <button id="refresh-crypto" class="text-sm px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900">
+          Refresh
+        </button>
+      </div>
+      <div id="crypto-status" class="sub mb-2">Loading…</div>
+      <table class="table" id="crypto-table">
+        <thead>
+          <tr>
+            <th>Ticker</th>
+            <th>Price (USD)</th>
+            <th>24h Δ%</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p class="sub mt-2">Source: CoinGecko Simple Price API. Auto-refreshes every 5 minutes.</p>
+    </section>
+
+    <!-- PELOSI TRADES -->
+    <section id="pelosi" class="card">
+      <h2 class="text-xl font-semibold mb-3">Nancy Pelosi Disclosed Trades (latest 50)</h2>
+      <div id="pelosi-status" class="sub mb-2">Loading…</div>
+      <div class="overflow-auto">
+        <table id="pelosi-table" class="table hidden">
+          <thead>
+            <tr>
+              <th>Disclosed</th>
+              <th>Traded</th>
+              <th>Ticker / Asset</th>
+              <th>Type</th>
+              <th>Amount (range)</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="sub mt-2">Data via House Stock Watcher (values reported in ranges and can be delayed up to 45 days).</p>
+    </section>
+
+    <!-- CONVERSIONS CHEAT SHEET (above scratchpad) -->
+    <section id="conversions" class="card">
+      <h2 class="text-xl font-semibold mb-4">Conversions — Quick Cheat Sheet</h2>
+
+      <!-- mini calculators -->
+      <div class="grid md:grid-cols-3 gap-4 mb-6">
+        <!-- Mass -->
+        <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <div class="font-medium mb-2">Mass (mg ↔ g ↔ kg)</div>
+          <div class="space-y-2 text-sm">
+            <label class="block">mg → g
+              <input id="mg" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="mg">
+            </label>
+            <div class="flex gap-2">
+              <button data-action="mg2g" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">To g</button>
+              <button data-action="mg2kg" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">To kg</button>
             </div>
-            <blockquote id="votdText" class="votd-quote">Loading…</blockquote>
-            <div class="votd-bottom"><span id="votdRef" class="votd-ref"></span></div>
+            <div id="mass-out" class="sub"></div>
+          </div>
+          <div class="mt-3 text-xs opacity-75">
+            1 g = 1000 mg · 1 kg = 1000 g
+          </div>
+        </div>
+
+        <!-- Length -->
+        <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <div class="font-medium mb-2">Length (in ↔ cm)</div>
+          <div class="space-y-2 text-sm">
+            <label class="block">inches
+              <input id="inch" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="in">
+            </label>
+            <div class="flex gap-2">
+              <button data-action="in2cm" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">To cm</button>
+              <button data-action="cm2in" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">cm → in</button>
+            </div>
+            <label class="block mt-2">centimeters
+              <input id="cm" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="cm">
+            </label>
+            <div id="len-out" class="sub"></div>
+          </div>
+          <div class="mt-3 text-xs opacity-75">
+            1 in = 2.54 cm
+          </div>
+        </div>
+
+        <!-- Temperature -->
+        <div class="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <div class="font-medium mb-2">Temperature (°F ↔ °C)</div>
+          <div class="space-y-2 text-sm">
+            <label class="block">°F
+              <input id="f" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="F">
+            </label>
+            <div class="flex gap-2">
+              <button data-action="f2c" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">To °C</button>
+              <button data-action="c2f" class="px-3 py-1 rounded border border-zinc-300 dark:border-zinc-700">°C → °F</button>
+            </div>
+            <label class="block mt-2">°C
+              <input id="c" type="number" step="any" class="mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 bg-transparent p-2" placeholder="C">
+            </label>
+            <div id="temp-out" class="sub"></div>
+          </div>
+          <div class="mt-3 text-xs opacity-75">
+            °C = (°F − 32) × 5/9 · °F = (°C × 9/5) + 32
           </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="hd"><div>Local Events</div><span class="pill">next 7–14 days</span></div>
-        <div class="bd"><div id="eventsList" class="symbols"></div></div>
+      <!-- static cheat sheet -->
+      <div class="overflow-auto">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Category</th><th>Rule / Factor</th><th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Mass</td><td>1 g = 1000 mg · 1 kg = 1000 g</td><td>To convert mg → g, divide by 1000</td></tr>
+            <tr><td>Length</td><td>1 in = 2.54 cm</td><td>cm → in = cm / 2.54</td></tr>
+            <tr><td>Volume</td><td>1 L = 33.814 fl oz (US)</td><td>1 gal (US) = 3.785 L</td></tr>
+            <tr><td>Weight</td><td>1 lb = 16 oz</td><td>kg ≈ lb / 2.20462</td></tr>
+            <tr><td>Temperature</td><td>°C = (°F − 32) × 5/9</td><td>°F = (°C × 9/5) + 32</td></tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-
-    <!-- TRAFFIC -->
-    <h1 class="section" id="traffic">Traffic</h1>
-    <div class="grid cols-2">
-      <div class="card">
-        <div class="hd"><div>To Work</div></div>
-        <iframe id="map1" title="route1"></iframe>
-      </div>
-      <div class="card">
-        <div class="hd"><div>To Home</div></div>
-        <iframe id="map2" title="route2"></iframe>
-      </div>
-    </div>
-
-    <!-- STOCKS -->
-    <div class="card section" id="stocks" style="margin-top:16px">
-      <div class="hd"><div>Stocks</div><span class="pill">auto refresh</span></div>
-      <div class="bd"><div id="stocksList" class="symbols"></div></div>
-    </div>
+    </section>
 
     <!-- SCRATCHPAD -->
-    <div class="card section" id="notes" style="margin-top:16px">
-      <div class="hd"><div>Scratchpad</div><button id="clearNotes" class="pill">Clear</button></div>
-      <div class="bd"><textarea id="notesBox" placeholder="Jot quick notes…"></textarea></div>
-    </div>
+    <section id="scratchpad" class="card">
+      <h2 class="text-xl font-semibold mb-3">Scratchpad</h2>
+      <textarea class="w-full h-64 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent p-3" placeholder="Jot notes here…"></textarea>
+      <div class="mt-3 sub">Tip: this is local-only unless you wire it to storage.</div>
+    </section>
 
-    <div class="btm"><a class="btn-top" href="#top">Top</a></div>
-    <div class="footer">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
-  </div>
+    <!-- FOOTER -->
+    <footer class="py-10 text-center opacity-70">
+      <div id="copyright"></div>
+      <div>Built for small business clarity.</div>
+    </footer>
 
-<script>
-  /* =========================
-     CONFIG
-  ========================== */
-  const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
-  const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
+  </main>
 
-  const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
-  const B = "411 W Main St, Round Rock, TX 78664";
+  <script>
+    // ————— General
+    (function setTimeAndCopyright(){
+      const now = new Date();
+      document.getElementById('last-updated').textContent = now.toLocaleString();
+      const copy = document.getElementById('copyright');
+      if (copy) copy.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+    })();
 
-  const WEATHER_ZIPS = ["78664","53158","60030","44115"]; // RR, Pleasant Prairie, Grayslake, Cleveland
-  const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
-  const EVENTS_ZIP = "78664"; // change if you want events for another base ZIP
+    // ————— Crypto (CoinGecko)
+    const CRYPTO = [
+      { id: 'bitcoin',   symbol: 'BTC' },
+      { id: 'ethereum',  symbol: 'ETH' },
+      { id: 'solana',    symbol: 'SOL' },
+      { id: 'dogecoin',  symbol: 'DOGE' },
+    ];
+    const cgUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${CRYPTO.map(c=>c.id).join(',')}&vs_currencies=usd&include_24hr_change=true`;
 
-  /* =========================
-     HELPERS
-  ========================== */
-  const $ = s => document.querySelector(s);
-  const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
-  const toF = c => (c*9/5)+32;
-  const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code] || "🌡️");
-  const todayMMDDYYYY = () => {
-    const d = new Date(); const mm=String(d.getMonth()+1).padStart(2,"0");
-    const dd=String(d.getDate()).padStart(2,"0"); const yy=d.getFullYear();
-    return `${mm}/${dd}/${yy}`;
-  };
-
-  /* =========================
-     TICKER
-  ========================== */
-  async function loadTicker(){
-    try{
-      const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
-      const items = await r.json();
-      const twice = items.concat(items);
-      $("#ticker").innerHTML = twice.map(x=>`<span class="tick-item">• ${x.title}</span>`).join("");
-    }catch{
-      $("#ticker").innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
-    }
-  }
-
-  /* =========================
-     TRAFFIC
-  ========================== */
-  const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
-  function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
-
-  /* =========================
-     WEATHER
-  ========================== */
-  // Prefer Worker proxy /wx (caches) and /geo fallback; direct Open-Meteo if needed.
-  async function wx(lat,lon){
-    const u = `${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`;
-    const r = await fetch(u);
-    if (r.ok) return r.json();
-    // fallback direct
-    const url = new URL("https://api.open-meteo.com/v1/forecast");
-    url.search = new URLSearchParams({
-      latitude: lat, longitude: lon, timezone:"auto", wind_speed_unit:"mph",
-      current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
-      daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
-      hourly:"temperature_2m,weather_code"
-    }).toString();
-    const r2 = await fetch(url); return r2.json();
-  }
-  async function geo(zip){
-    const r = await fetch(`${WORKER_BASE}/geo?zip=${zip}`);
-    if (!r.ok) throw new Error("geo");
-    return r.json();
-  }
-  async function loadWeather(){
-    const host = $("#weatherList"); host.innerHTML = "";
-    for (const zip of WEATHER_ZIPS){
-      try{
-        const g = await geo(zip);
-        const data = await wx(g.lat, g.lon);
-        const cur = data.current;
-        const minC = data.daily.temperature_2m_min[0];
-        const maxC = data.daily.temperature_2m_max[0];
-
-        // next 5 hours
-        const times = data.hourly.time.map(t=>new Date(t));
-        let i = times.findIndex(t=>t>=new Date()); if (i<0) i=0;
-        const hrs = [];
-        for(let k=0;k<5 && i+k<times.length;k++){
-          hrs.push({
-            h: times[i+k].getHours().toString().padStart(2,"0"),
-            t: data.hourly.temperature_2m[i+k],
-            c: data.hourly.weather_code[i+k]
-          });
+    async function loadCrypto(){
+      const status = document.getElementById('crypto-status');
+      const tbody  = document.querySelector('#crypto-table tbody');
+      try {
+        status.textContent = 'Loading…';
+        const r = await fetch(cgUrl, { mode: 'cors' });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const data = await r.json();
+        tbody.innerHTML = '';
+        let count = 0;
+        for (const c of CRYPTO) {
+          const row = data[c.id];
+          if (!row) continue;
+          count++;
+          const price = row.usd?.toLocaleString(undefined, { style:'currency', currency:'USD' }) ?? '—';
+          const chg   = (row.usd_24h_change ?? 0);
+          const chgFmt = (chg>=0?'+':'') + chg.toFixed(2) + '%';
+          const chgClass = chg>=0 ? 'text-green-600' : 'text-red-600';
+          tbody.insertAdjacentHTML('beforeend', `
+            <tr>
+              <td>${c.symbol}</td>
+              <td>${price}</td>
+              <td class="${chgClass}">${chgFmt}</td>
+            </tr>
+          `);
         }
-
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `
-          <div class="top">
-            <div><strong>${g.name || zip}</strong></div>
-            <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
-          </div>
-          <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
-          <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F</div>
-          <div class="hrow">
-            ${hrs.map(h=>`
-            <div class="hchip">
-              <div class="ico">${iconFor(h.c)}</div>
-              <div class="t mini">${Math.round(toF(h.t))}°F</div>
-              <div class="mini muted">${h.h}:00</div>
-            </div>`).join("")}
-          </div>`;
-        host.appendChild(div);
-      }catch(e){
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
-        host.appendChild(div);
+        document.getElementById('kpi-crypto').textContent = count.toString();
+        status.textContent = 'Live via CoinGecko';
+      } catch (e) {
+        status.textContent = 'Could not load crypto (' + e.message + ').';
       }
     }
-  }
+    loadCrypto();
+    document.getElementById('refresh-crypto').addEventListener('click', loadCrypto);
+    // Auto-refresh every 5 minutes
+    setInterval(loadCrypto, 5 * 60 * 1000);
 
-  /* =========================
-     SUNRISE / SUNSET
-  ========================== */
-  async function loadSun(){
-    $("#sunDate").textContent = todayMMDDYYYY();
-    try{
-      // use first ZIP for sun line
-      const g = await geo(WEATHER_ZIPS[0]);
-      const u = new URL("https://api.sunrisesunset.io/json");
-      u.search = new URLSearchParams({ lat:g.lat, lng:g.lon, timezone:"auto" }).toString();
-      const r = await fetch(u); const j = await r.json();
-      const s = j?.results;
-      if (s?.sunrise && s?.sunset){
-        $("#sunLine").textContent = `Sunrise ${s.sunrise} · Sunset ${s.sunset}`;
-        return;
-      }
-    }catch{}
-    $("#sunLine").textContent = "Unavailable";
-  }
+    // ————— Pelosi trades (House Stock Watcher)
+    (async () => {
+      const status = document.getElementById('pelosi-status');
+      const table  = document.getElementById('pelosi-table');
+      const tbody  = table.querySelector('tbody');
 
-  /* =========================
-     VERSE OF THE DAY (pop card)
-  ========================== */
-  async function loadVOTD(){
-    $("#votdDate").textContent = todayMMDDYYYY();
-    // First try your worker (caches + fallback to yesterday), then direct Labs if needed
-    try{
-      const r = await fetch(`${WORKER_BASE}/votd`);
-      if (r.ok){
-        const j = await r.json();
-        if (j?.text){
-          $("#votdText").textContent = j.text;
-          $("#votdRef").textContent  = j.ref || "";
+      const SRC = 'https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json';
+      try {
+        status.textContent = 'Loading…';
+        const resp = await fetch(SRC, { mode: 'cors' });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const all = await resp.json();
+
+        const rows = all
+          .filter(r => r.representative && r.representative.includes('Nancy Pelosi'))
+          .sort((a, b) => new Date(b.disclosure_date) - new Date(a.disclosure_date))
+          .slice(0, 50);
+
+        document.getElementById('kpi-pelosi').textContent = rows.length.toString();
+
+        if (!rows.length) {
+          status.textContent = 'No Pelosi trades found in this feed.';
           return;
         }
-      }
-    }catch{}
-    try{
-      const r = await fetch("https://labs.bible.org/api/?passage=votd&type=json");
-      const j = await r.json();
-      const v = j?.[0];
-      if (v){
-        $("#votdText").textContent = v.text;
-        $("#votdRef").textContent  = `${v.bookname} ${v.chapter}:${v.verse}`;
-        return;
-      }
-    }catch{}
-    $("#votdText").textContent = "Verse unavailable."; $("#votdRef").textContent = "";
-  }
 
-  /* =========================
-     LOCAL EVENTS (Ticketmaster via Worker)
-  ========================== */
-  async function loadEvents(){
-    const host = $("#eventsList"); host.innerHTML = "";
-    try{
-      const r = await fetch(`${WORKER_BASE}/events?postalCode=${encodeURIComponent(EVENTS_ZIP)}`);
-      const j = await r.json();
-      if (Array.isArray(j) && j.length){
-        j.slice(0,8).forEach(ev=>{
-          const d = document.createElement("div"); d.className="sym";
-          d.innerHTML = `
-            <div class="top"><div><strong>${ev.name||"Event"}</strong></div>
-            <div class="mini muted">${ev.city||""} ${ev.state||""}</div></div>
-            <div class="mini">${ev.date||""}</div>
-            <div class="mini"><a class="pill" href="${ev.url||"#"}" target="_blank" rel="noopener">Details</a></div>`;
-          host.appendChild(d);
-        });
-        return;
-      }
-      host.innerHTML = `<div class="mini muted">No events or missing TM_KEY on Worker.</div>`;
-    }catch{
-      host.innerHTML = `<div class="mini muted">Events unavailable.</div>`;
-    }
-  }
+        tbody.innerHTML = rows.map(r => `
+          <tr>
+            <td>${r.disclosure_date || ''}</td>
+            <td>${r.transaction_date || ''}</td>
+            <td>${r.ticker || r.asset_description || ''}</td>
+            <td>${r.type || ''}</td>
+            <td>${r.amount || ''}</td>
+            <td>${r.ptr_link ? `<a class="text-blue-600 underline" href="${r.ptr_link}" target="_blank" rel="noopener">PTR</a>` : ''}</td>
+          </tr>
+        `).join('');
 
-  /* =========================
-     STOCKS
-  ========================== */
-  function mapYahoo(sym){return sym.replace("BRK.A","BRK-A").replace("BRK.B","BRK-B");}
-  async function loadStocks(){
-    const host = $("#stocksList"); host.innerHTML = "";
-    try{
-      const url = `${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(","))}`;
-      const r = await fetch(url); const rows = await r.json();
-      if (!Array.isArray(rows) || !rows.length){
-        host.innerHTML = `<div class="mini muted">Quotes unavailable.</div>`; return;
+        table.classList.remove('hidden');
+        status.textContent = 'Loaded.';
+      } catch (err) {
+        status.textContent = `Couldn’t load data (${err.message}).`;
       }
-      rows.forEach(q=>{
-        const chg = q.changePercent; const badge = chg==null ? "muted" : (chg>=0?"chg up":"chg down");
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `
-          <div class="top">
-            <div><strong>${q.symbol}</strong> <span class="mini muted">${q.name||""}</span></div>
-            <div class="mini ${badge}">${chg==null?"—":`${chg>=0?"+":""}${chg.toFixed(2)}%`}</div>
-          </div>
-          <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-        host.appendChild(div);
+    })();
+
+    // ————— Mini converters
+    function sel(id){ return document.getElementById(id); }
+    document.querySelectorAll('[data-action]').forEach(btn=>{
+      btn.addEventListener('click', () => {
+        const a = btn.getAttribute('data-action');
+        if (a === 'mg2g') {
+          const mg = parseFloat(sel('mg').value || '0');
+          sel('mass-out').textContent = `${mg} mg = ${(mg/1000).toFixed(6)} g`;
+        }
+        if (a === 'mg2kg') {
+          const mg = parseFloat(sel('mg').value || '0');
+          sel('mass-out').textContent = `${mg} mg = ${(mg/1e6).toFixed(9)} kg`;
+        }
+        if (a === 'in2cm') {
+          const inch = parseFloat(sel('inch').value || '0');
+          sel('len-out').textContent = `${inch} in = ${(inch*2.54).toFixed(4)} cm`;
+        }
+        if (a === 'cm2in') {
+          const cm = parseFloat(sel('cm').value || '0');
+          sel('len-out').textContent = `${cm} cm = ${(cm/2.54).toFixed(4)} in`;
+        }
+        if (a === 'f2c') {
+          const f = parseFloat(sel('f').value || '0');
+          sel('temp-out').textContent = `${f} °F = ${((f-32)*5/9).toFixed(2)} °C`;
+        }
+        if (a === 'c2f') {
+          const c = parseFloat(sel('c').value || '0');
+          sel('temp-out').textContent = `${c} °C = ${(c*9/5+32).toFixed(2)} °F`;
+        }
       });
-    }catch{
-      host.innerHTML = `<div class="mini muted">Quotes unavailable.</div>`;
-    }
-  }
-
-  /* =========================
-     NOTES + TODAY BADGES
-  ========================== */
-  $("#todayBadge").textContent = todayMMDDYYYY();
-  $("#votdDate").textContent  = todayMMDDYYYY();
-  $("#clearNotes").onclick = ()=>{ const t=$("#notesBox"); t.value=""; localStorage.removeItem("dashboard-notes"); };
-  const tSaved = localStorage.getItem("dashboard-notes")||""; $("#notesBox").value = tSaved;
-  $("#notesBox").addEventListener("input", e=>localStorage.setItem("dashboard-notes", e.target.value));
-
-  /* =========================
-     INIT
-  ========================== */
-  loadTicker();
-  updateTraffic(); setInterval(updateTraffic, 120000);
-  loadWeather();
-  loadSun();
-  loadVOTD(); setInterval(loadVOTD, 30*60*1000); // refresh every 30 min
-  loadEvents();
-  loadStocks(); setInterval(loadStocks, 60000);
-</script>
+    });
+  </script>
 </body>
 </html>
