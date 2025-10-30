@@ -1,404 +1,438 @@
-<!-- =========================================================
-=  JMOD MEDIA — SINGLE FILE (HTML + CSS + JS)               =
-=  With labeled sections + tweakable size tokens (🔧)        =
-========================================================= -->
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="auto">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Jmod Media — AI Social Posting for Small Business</title>
-<meta name="description" content="Create smarter, post faster, grow everywhere. Jmod Media uses AI to craft captions, hashtags, watermarks, and schedules across platforms — powered by Jmod Labs." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jmod Media — Social Content, Simplified</title>
+  <meta name="description" content="Jmod Media helps small businesses plan, create, and publish on-brand posts fast—with AI captions, SEO tags, and hashtags.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020; --bg2:#0a0f1e; --panel:#101733;
+      --text:#e8ecff; --muted:#a7b0d6;
+      --brand:#7b39ff; --brand-2:#22d3ee;
+      --chip:#1a2246; --link:#c7d2fe;
+      --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    [data-theme="light"]{
+      --bg:#f6f8ff; --bg2:#eef2ff; --panel:#ffffff;
+      --text:#0b1020; --muted:#5b668a;
+      --brand:#6b2dff; --brand-2:#06b6d4;
+      --chip:#eef2ff; --link:#312e81;
+      --shadow:0 10px 24px rgba(2,6,23,.10);
+    }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
+      background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+      overflow-x:hidden;position:relative;isolation:isolate;
+    }
 
-<style>
-/* =========================================================
-=  CSS SECTION                                              =
-=  Theme + Layout + Animations (🔧 sizes are here)          =
-========================================================= */
+    /* WebGL canvas background + vignette */
+    #bg3d{position:fixed;inset:0;z-index:-2;width:100vw;height:100vh;display:block;background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(123,57,255,.18), transparent 60%),
+      radial-gradient(1000px 520px at 115% 20%, rgba(34,211,238,.14), transparent 65%),
+      linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
+    }
+    .bg-vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(80% 70% at 50% 20%, transparent 60%, rgba(0,0,0,.35) 100%)}
 
-/* ---------- 🔧 SIZE TOKENS ---------- */
-:root{
-  --shell-max: 1100px;          /* 🔧 max content width */
-  --shell-pad: 24px;            /* 🔧 side padding inside shell */
-  --nav-h: 64px;                /* 🔧 navbar height */
+    a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
+    .shell{max-width:1200px;margin:0 auto;padding:24px}
 
-  --logo-size: 220px;           /* 🔧 hero logo width */
-  --headline-size: clamp(30px,3.2vw,44px); /* 🔧 H1 size */
+    .nav{display:flex;align-items:center;justify-content:space-between}
+    .brand{font-weight:800;font-size:20px}
+    nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+    nav a{font-weight:600;color:var(--text);opacity:.9} nav a:hover{opacity:1}
+    .cta-nav{display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid transparent;background:var(--brand);color:#fff;font-weight:700;box-shadow:var(--shadow);transition:transform .06s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
+    [data-theme="light"] .btn.ghost{border-color:#d9e0ff}
 
-  --store-h: 44px;              /* 🔧 app badges height */
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;margin-top:6px}
+    .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
+    .hero-card{display:grid;grid-template-columns:minmax(280px, 480px) 1fr;gap:22px;align-items:center}
+    .logo-wrap{display:grid;place-items:center}
+    .media-logo{
+      width:100%; max-width:480px; aspect-ratio:3/4; object-fit:contain;
+      transform:translateX(-10px) scale(1.75); /* nudge center + fill */
+    }
+    .title{font-size:clamp(32px,5vw,54px);line-height:1.02;margin:0 0 10px;font-weight:900}
+    .subtitle{font-size:clamp(16px,2vw,18px);color:var(--muted);margin:0 0 16px}
+    .badges{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+    .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
+    .store-badge{height:45px;display:block;border-radius:12px;box-shadow:var(--shadow)}   /* Apple 45px */
+    .store-badge.store-play{height:60px} /* Google 60px */
+    .store-badge-wrap{display:inline-block;line-height:0}
+    .store-badge:hover{transform:scale(1.03)}
 
-  --phone-w: 360px;             /* 🔧 phone width */
-  --phone-h: 660px;             /* 🔧 phone height */
-  --ig-w:    90%;               /* 🔧 IG iframe width % of phone inner */
-  --ig-h:    470px;             /* 🔧 IG iframe height */
+    /* Phone + IG embed */
+    .phone{background:var(--panel);border-radius:28px;padding:16px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
+    [data-theme="light"] .phone{border-color:#eef2ff}
+    .phone-screen{border-radius:20px;background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),#0e142b;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden}
+    [data-theme="light"] .phone-screen{background:linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%)}
+    .pill{background:var(--chip);padding:10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
+    .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+    .ig-slot{margin-top:8px;background:rgba(255,255,255,.06);border-radius:12px;padding:8px;overflow:auto;max-height:50vh}
+    .instagram-media{margin:0 !important;width:100% !important}
+    .instagram-media iframe{max-width:100% !important}
 
-  --burst-sec: 8s;              /* 🔧 each icon's lifetime from center */
-  --burst-count: 12;            /* 🔧 target concurrent icons (>=10) */
+    /* ===== Original FEATURES section (your screenshot) ===== */
+    .section{max-width:1200px;margin:42px auto 0;padding:0 24px}
+    .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 14px;font-weight:900}
+    .section p.lead{color:var(--muted);margin:0 0 22px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--panel);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow)}
+    [data-theme="light"] .card{border-color:#eef2ff}
+    .card h3{margin:10px 0 8px;font-size:18px}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:var(--chip);padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:var(--chip);padding:6px 8px;border-radius:8px}
 
-  /* Theme colors */
-  --bg: #0b0f1a;
-  --panel: #101733;
-  --text: #e8ecff;
-  --muted:#a7b0d6;
-  --brand:#7b39ff;
-  --brand2:#22d3ee;
-  --neon:#33ff66;
+    /* Small-biz band + waitlist */
+    .smb{max-width:1200px;margin:42px auto 0;padding:0 24px}
+    .band{
+      display:flex;gap:16px;align-items:center;justify-content:flex-start;flex-wrap:wrap;
+      background:rgba(16,23,51,.78);border:1px solid rgba(255,255,255,.06);box-shadow:var(--shadow);
+      padding:14px 16px;border-radius:16px;
+    }
+    #waitlist form.card{background:var(--panel)}
 
-  --glass: rgba(11,15,26,.7);
-  --shadow: 0 10px 40px rgba(0,0,0,.35);
+    footer{margin-top:56px}
 
-  --gradient:
-    radial-gradient(1100px 600px at 20% -10%, rgba(123,57,255,.18), transparent 55%),
-    radial-gradient(900px 480px at 110% 20%, rgba(34,211,238,.14), transparent 60%),
-    linear-gradient(180deg,#0b1020 0%,#0a0f1e 100%);
-}
+    @media (max-width:1024px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){nav ul{display:none}.grid{grid-template-columns:1fr}.store-badge{height:42px}.store-badge.store-play{height:56px}}
 
-/* Light theme tokens */
-html[data-theme="light"]{
-  --bg:#f6f8ff; --panel:#ffffff; --text:#0b1020; --muted:#5b668a;
-  --glass: rgba(255,255,255,.72);
-  --gradient:
-    radial-gradient(1100px 600px at 20% -10%, rgba(123,57,255,.10), transparent 55%),
-    radial-gradient(900px 480px at 110% 20%, rgba(6,182,212,.10), transparent 60%),
-    linear-gradient(180deg,#f6f8ff 0%, #eef2ff 100%);
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{
-  font-family: Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  color:var(--text);
-  background:var(--gradient);
-  overflow-x:hidden;
-}
-
-/* Shared shell to keep margins tighter and sides open */
-.shell{max-width:var(--shell-max); margin:0 auto; padding:0 var(--shell-pad)}
-
-/* ===================== NAV (brand left, links center, toggle right) ===================== */
-.nav{
-  position:fixed; inset:0 0 auto 0; height:var(--nav-h);
-  display:grid; grid-template-columns: 1fr auto 1fr; align-items:center;
-  background:var(--glass); backdrop-filter: blur(8px);
-  border-bottom:1px solid rgba(255,255,255,.08); z-index:50;
-}
-.nav .left, .nav .center, .nav .right{ display:flex; align-items:center }
-.nav .left{ gap:10px; padding-left:var(--shell-pad) }
-.nav .brand{ font-weight:900; letter-spacing:.2px }
-.nav .brand img{ height:28px }
-.logo-dark{ display:block } .logo-light{ display:none }
-html[data-theme="light"] .logo-dark{ display:none } 
-html[data-theme="light"] .logo-light{ display:block }
-
-.nav .center{ justify-content:center; gap:26px }
-.nav a{ color:var(--text); text-decoration:none; font-weight:700; opacity:.92 }
-.nav a:hover{ color:var(--brand2) }
-.nav .right{ justify-content:flex-end; padding-right:var(--shell-pad) }
-.toggle{
-  background:transparent; border:1px solid rgba(255,255,255,.25);
-  padding:8px 12px; border-radius:10px; color:var(--text); font-weight:800;
-}
-
-/* ===================== BACKGROUND FIELD (center-origin bursts) ===================== */
-#bg{ position:fixed; inset:0; z-index:-1; overflow:hidden; }
-.burst{
-  position:absolute; left:50%; top:50%;
-  transform: translate(-50%,-50%) scale(.35);
-  opacity:0;
-  filter: drop-shadow(0 0 8px rgba(255,255,255,.35)); /* slight glow */
-  animation: burst var(--burst-sec) ease-in-out forwards;
-}
-@keyframes burst{
-  0%   { opacity:0; transform:translate(-50%,-50%) scale(.35) }
-  10%  { opacity:.85 }
-  85%  { opacity:.85; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1) }
-  100% { opacity:0;  transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.05) }
-}
-
-/* ===================== HERO (logo left, text right; compact margins) ===================== */
-.hero{ padding-top:calc(var(--nav-h) + 48px); padding-bottom:30px }
-.hero-grid{ display:grid; grid-template-columns: 1fr 1.2fr; gap:28px; align-items:center }
-.hero-logo{ width:var(--logo-size); height:auto; display:block; margin-inline:auto }
-.hero h1{ font-size:var(--headline-size); line-height:1.05; font-weight:900; margin-bottom:8px }
-.hero p{ color:var(--muted); max-width:640px }
-.badges{ display:flex; gap:14px; flex-wrap:wrap; margin-top:16px }
-.badge{
-  height:var(--store-h); padding:8px 14px; border-radius:12px;
-  display:inline-flex; align-items:center; gap:10px; background:#000; color:#fff;
-  text-decoration:none; font-weight:800; box-shadow:var(--shadow)
-}
-html[data-theme="light"] .badge{ background:#111; color:#fff }
-.badge svg{ width:20px; height:20px }
-
-/* ===================== PHONE PREVIEW ===================== */
-.phone-wrap{ padding: 10px 0 38px }
-.phone{
-  width:var(--phone-w); height:var(--phone-h);
-  margin: 0 auto;
-  background:var(--panel); border:2px solid var(--neon); border-radius:28px;
-  box-shadow: 0 0 22px rgba(51,255,102,.25);
-  position:relative; display:flex; flex-direction:column; align-items:center; padding:12px;
-}
-.phone::after{ content:""; position:absolute; right:-5px; top:74px; width:4px; height:56px; background:var(--neon); border-radius:2px; opacity:.8 }
-.screen{
-  width:100%; flex:1; background:#0b0d18; border-radius:22px; overflow:hidden;
-  display:flex; flex-direction:column; align-items:center; padding:10px 0 8px;
-}
-.bar{ width:92%; height:28px; border-radius:999px; background:rgba(255,255,255,.08);
-  display:flex; align-items:center; justify-content:center; color:#b8c2ff; font-weight:800; font-size:.8rem; margin-bottom:8px }
-.ig{ width:var(--ig-w); height:var(--ig-h); border:0; border-radius:12px; background:#000 }
-.dock{ width:92%; margin-top:10px; display:flex; gap:8px; justify-content:space-between }
-.pill{
-  flex:1 1 auto; text-align:center; padding:8px 8px; border-radius:12px;
-  border:1px solid #fff; color:#fff; font-weight:800; font-size:.78rem; background:transparent;
-}
-
-/* ===================== FEATURES ===================== */
-.section{ padding: 34px 0 }
-.section h2{ font-size:clamp(24px,2.4vw,34px); font-weight:900; text-align:center; margin-bottom:14px }
-.section p.lead{ color:var(--muted); text-align:center; margin:0 auto 16px; max-width:760px }
-.grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-top:8px }
-.card{ background:var(--panel); border:1px solid rgba(255,255,255,.07); border-radius:16px; padding:16px; box-shadow:var(--shadow) }
-.card h3{ margin-bottom:6px; font-size:1.02rem }
-.card p{ color:var(--muted); font-size:.96rem }
-
-/* ===================== WAITLIST & FOOTER ===================== */
-.wait{ text-align:center; padding: 34px 0 }
-.wait form{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin-top:10px }
-.wait input{ padding:12px 14px; border-radius:12px; border:1px solid #cbd5e1; background:#151e3e; color:var(--text) }
-.btn{ background:var(--brand); color:#fff; border:0; border-radius:12px; padding:12px 18px; font-weight:900 }
-footer{ text-align:center; padding:30px 0; color:var(--muted) }
-footer .small{ font-size:.92rem }
-
-/* ===================== RESPONSIVE ===================== */
-@media (max-width: 980px){
-  .hero-grid{ grid-template-columns:1fr; text-align:center }
-}
-@media (max-width: 720px){
-  :root{ --logo-size: 200px; --phone-w: 330px; --phone-h: 640px; --ig-h: 440px }
-  .grid{ grid-template-columns: 1fr 1fr }
-}
-@media (max-width: 520px){
-  .grid{ grid-template-columns: 1fr }
-  .badge{ height:calc(var(--store-h) - 6px) }
-}
-</style>
+    .logo-dark{display:block}.logo-light{display:none}
+    [data-theme="light"] .logo-dark{display:none}
+    [data-theme="light"] .logo-light{display:block}
+  </style>
 </head>
 <body>
+  <!-- 3D background -->
+  <canvas id="bg3d" aria-hidden="true"></canvas>
+  <div class="bg-vignette" aria-hidden="true"></div>
 
-<!-- ===================== NAV ===================== -->
-<header class="nav">
-  <!-- Left: brand (auto-swap logo by theme) -->
-  <div class="left">
-    <img class="logo-dark"  src="https://www.jordanmoddes.com/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media logo (dark)">
-    <img class="logo-light" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_Media.png"  alt="Jmod Media logo (light)">
-    <span class="brand">Jmod Media</span>
-  </div>
+  <!-- Header -->
+  <header class="shell">
+    <div class="nav">
+      <div class="brand">Jmod Media</div>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./services.html">Services</a></li>
+          <li><a href="./about.html">About</a></li>
+          <li><a href="./contact.html">Contact Us</a></li>
+          <li><a href="./jmodco.html">Jmod Co.</a></li>
+        </ul>
+      </nav>
+      <div class="cta-nav">
+        <button id="themeToggle" class="btn" type="button">Toggle Theme</button>
+      </div>
+    </div>
+  </header>
 
-  <!-- Center: links -->
-  <nav class="center" aria-label="Primary">
-    <a href="#top">Home</a>
-    <a href="#features">Services</a>
-    <a href="#waitlist">Waitlist</a>
-    <a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a>
-  </nav>
-
-  <!-- Right: theme toggle -->
-  <div class="right"><button id="themeToggle" class="toggle" type="button">Toggle</button></div>
-</header>
-
-<!-- Center-origin floating field (kept separate from content shell) -->
-<div id="bg" aria-hidden="true"></div>
-
-<!-- ===================== HERO ===================== -->
-<main id="top" class="hero">
-  <div class="shell">
-    <div class="hero-grid">
-      <img class="hero-logo" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media mark">
+  <!-- Hero & Phone -->
+  <main class="shell hero">
+    <div class="panel hero-card">
+      <div class="logo-wrap">
+        <img id="logoDark" class="media-logo logo-dark" alt="Jmod Media logo dark" loading="lazy" />
+        <img id="logoLight" class="media-logo logo-light" alt="Jmod Media logo light" loading="lazy" />
+      </div>
       <div>
-        <h1>Create smarter. Post faster. Grow everywhere.</h1>
-        <p>Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms — powered by Jmod Labs’ adaptive AI that learns your tone and what performs.</p>
-
+        <h1 class="title">Create once. Publish everywhere.</h1>
+        <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
         <div class="badges">
-          <a class="badge" href="#" aria-label="App Store">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c.04.49-.187 1.01-.55 1.43-.402.47-1.1.84-1.743.79-.07-.48.206-1.01.57-1.44.39-.47 1.128-.83 1.723-.78zM19.395 16.59c-.53 1.23-.78 1.78-1.46 2.88-.95 1.55-2.294 3.49-3.97 3.5-1.485.01-1.87-.95-3.48-.95-1.61 0-2.04.93-3.51.96-1.68.03-2.962-1.69-3.916-3.24-2.14-3.48-3.784-9.82-1.58-14.1 1.1-2.13 3.073-3.49 5.234-3.52 1.63-.03 3.17 1.08 3.49 1.08.34 0 2.4-1.33 4.05-1.14.69.03 2.62.28 3.86 2.11-3.37 1.86-2.82 6.74.29 7.91-.3.86-.66 1.69-1.01 2.53z"/></svg>
-            App Store
-          </a>
-          <a class="badge" href="#" aria-label="Google Play">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 2.75v18.5c0 .66.54 1.25 1.2 1.25.2 0 .43-.06.65-.2l10.93-6.3-12.78-12.1zm13.72 12.67 2.9 1.67c.38.22.83.22 1.2 0l2.56-1.47c.6-.35.6-1.23 0-1.58l-2.56-1.47a1.19 1.19 0 0 0-1.2 0l-2.9 1.67-.99.57.99.61zM4.19 1.72 13.73 7.2l-2.08 1.2-7.46-6.68A1.14 1.14 0 0 1 4.19 1.7zM11.65 15.6 4.13 20.3c-.66.39-1.5-.08-1.5-.86V3.9l9.02 8.54z"/></svg>
-            Google Play
-          </a>
+          <span class="soon">Pre-Download (Coming Soon)</span>
+          <a class="store-badge-wrap" href="#"><img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+          <a class="store-badge-wrap" href="#"><img class="store-badge store-play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
         </div>
       </div>
     </div>
-  </div>
-</main>
 
-<!-- ===================== PHONE PREVIEW ===================== -->
-<section class="phone-wrap">
-  <div class="shell">
-    <div class="phone">
-      <div class="screen">
-        <div class="bar">Jmod Media</div>
-        <iframe
-          class="ig"
-          src="https://www.instagram.com/p/CwLvMC2p0Fu/embed"
-          allowtransparency="true"
-          frameborder="0"
-          scrolling="no"
-          title="Instagram post preview"
-        ></iframe>
-        <div class="dock">
-          <div class="pill">Compose</div>
-          <div class="pill">Calendar</div>
-          <div class="pill">Brand Kit</div>
-          <div class="pill">Analytics</div>
+    <aside>
+      <div class="phone">
+        <div class="phone-screen">
+          <div>
+            <div class="pill" style="width:max-content">Jmod Media</div>
+            <h4 style="margin:8px 0 0;font-size:18px">New Post (Instagram)</h4>
+            <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
+            <div class="ig-slot">
+              <blockquote class="instagram-media"
+                data-instgrm-permalink="https://www.instagram.com/p/DQU-7RWjGXz/"
+                data-instgrm-version="14"
+                style="background:#FFF;border:0;border-radius:12px;box-shadow:none;margin:0;padding:0;">
+              </blockquote>
+            </div>
+          </div>
+          <div class="dock">
+            <div class="pill">Compose</div><div class="pill">Calendar</div><div class="pill">Brand Kit</div><div class="pill">Analytics</div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+      <div class="preview-ctas">
+        <a class="btn" href="#waitlist">Join the Waitlist</a>
+        <a class="btn ghost" href="./media/pricing.html">Pricing</a>
+      </div>
+    </aside>
+  </main>
 
-<!-- ===================== FEATURES ===================== -->
-<section id="features" class="section">
-  <div class="shell">
-    <h2>Everything you need to post smarter</h2>
-    <p class="lead">Speed, consistency, and clarity — built for owner-operators. Jmod Media is your AI teammate for social.</p>
-
+  <!-- FEATURES (original) -->
+  <section class="section" aria-labelledby="featTitle">
+    <h2 id="featTitle">Everything you need to post in minutes</h2>
+    <p class="lead">The Jmod Media phone app (with matching web dashboard) prioritizes speed, consistency, and control.</p>
     <div class="grid">
-      <div class="card"><h3>AI Caption Builder</h3><p>Drop a photo and get a caption that matches your voice — with hashtags tuned to trends and your audience.</p></div>
-      <div class="card"><h3>Smart Scheduling</h3><p>Auto-schedule posts across networks at the best times. Premium unlocks unlimited queues.</p></div>
-      <div class="card"><h3>Auto Watermark</h3><p>Upload your logo once — AI places a subtle mark that never blocks your subject.</p></div>
-      <div class="card"><h3>Preset Templates</h3><p>“Product Launch”, “Customer Congrats”, “Weekend Promo” — save and reuse in a tap.</p></div>
-      <div class="card"><h3>Adaptive Tone</h3><p>Every edit teaches the model your style so suggestions get better the more you post.</p></div>
-      <div class="card"><h3>Insights that Learn</h3><p>See what performs and why. Jmod highlights repeat-worthy content and fades what underperforms.</p></div>
+      <div class="card"><div class="chip">Composer</div><h3>One-tap Post Builder</h3><p>Drop a photo, pick a template, tweak copy with AI assist, and publish to multiple networks at once.</p><div class="stack"><span class="mono">Image → Caption → Hashtags</span><span class="mono">Multi-channel</span><span class="mono">AI rewrite</span></div></div>
+      <div class="card"><div class="chip">Calendar</div><h3>Queue & Auto-Schedule</h3><p>Drag-and-drop your content into a smart queue that posts at peak times for your audience.</p><div class="stack"><span class="mono">Best-time AI</span><span class="mono">Recurring slots</span><span class="mono">Holiday sets</span></div></div>
+      <div class="card"><div class="chip">Brand Kit</div><h3>On-Brand, Every Time</h3><p>Save logos, colors, fonts, and tone so posts stay consistent—no matter who’s posting.</p><div class="stack"><span class="mono">Logo lockups</span><span class="mono">Tone presets</span><span class="mono">Approval flow</span></div></div>
+      <div class="card"><div class="chip">Templates</div><h3>Reusable Post Types</h3><p>“New Product”, “Congrats Customer”, “Promo Weekend”—tap a template and go.</p><div class="stack"><span class="mono">Image + Copy</span><span class="mono">Per-channel</span></div></div>
+      <div class="card"><div class="chip">Inbox</div><h3>Smart Replies</h3><p>Unified comments & DMs with suggested replies and auto-responders after hours.</p><div class="stack"><span class="mono">QA pairs</span><span class="mono">Auto-DM</span></div></div>
+      <div class="card"><div class="chip">Insights</div><h3>Post-level Analytics</h3><p>Track reach, clicks, and conversions. See what to repeat—and what to retire.</p><div class="stack"><span class="mono">Channel score</span><span class="mono">A/B templates</span></div></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ===================== WAITLIST ===================== -->
-<section id="waitlist" class="wait">
-  <div class="shell">
-    <h2>Be first to launch with us</h2>
-    <p class="lead">Early signups get onboarding help and founder pricing.</p>
-    <form onsubmit="event.preventDefault(); alert('Thanks! You’re on the waitlist.');">
-      <input type="text" placeholder="Business name" required>
-      <input type="email" placeholder="Email address" required>
+  <!-- small biz band -->
+  <section class="smb">
+    <div class="band">
+      <strong>Built for small business clarity.</strong>
+      <span style="color:var(--text);opacity:.9">AI helps pick what to post, generates captions, and suggests SEO tags & hashtags—so you show up, consistently.</span>
+      <a class="btn" href="#waitlist">Join the Waitlist</a>
+    </div>
+  </section>
+
+  <!-- waitlist -->
+  <section id="waitlist" class="section" aria-labelledby="wlTitle">
+    <h2 id="wlTitle">Be first to launch with us</h2>
+    <p class="lead">Owner-operators get early access, onboarding help, and founder pricing.</p>
+    <form class="card" style="display:grid;grid-template-columns:1.2fr .8fr auto;gap:12px;align-items:center" onsubmit="event.preventDefault(); alert('Thanks! You’re on the list.');">
+      <input type="text" placeholder="Business name" required
+             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
+      <input type="email" placeholder="Email address" required
+             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
       <button class="btn" type="submit">Join</button>
     </form>
-  </div>
-</section>
+  </section>
 
-<!-- ===================== FOOTER ===================== -->
-<footer>
-  <div class="shell">
-    <p class="small">Backed and supported by <strong>GPT-5 Engine</strong></p>
-    <p class="small">Jmod Labs · Jmod Systems · Jmod Media · Jmod Legacy · Jmod Insights</p>
-    <p class="small">© 2025 Jmod Co. — Built for small business clarity.</p>
-  </div>
-</footer>
+  <!-- Footer -->
+  <footer class="shell" id="footerMount"></footer>
 
-<!-- =========================================================
-=  JS SECTION                                                =
-=  1) Floating bursts (center → edge, 8s)                    =
-=  2) Theme toggle + auto logo swap                          =
-========================================================= -->
-<script>
-/* ---------- ICON SOURCES (16) ---------- */
-const ICONS = [
-  "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo_2023.png",
-  "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg",
-  "https://upload.wikimedia.org/wikipedia/en/0/0a/TikTok_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/en/a/ad/Snapchat_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png",
-  "https://upload.wikimedia.org/wikipedia/commons/3/3f/Twitch_logo_Purple.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png",
-  "https://upload.wikimedia.org/wikipedia/en/8/82/Reddit_logo_and_wordmark.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/9/95/X_logo_2023.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/9/9a/Threads_%28app%29_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png",
-  "https://upload.wikimedia.org/wikipedia/commons/f/f3/Kick.com_logo.png",
-  "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/7/7c/Rumble_Logo_2022.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/e/e4/Kik_Messenger_logo.svg"
-];
+  <!-- Libraries -->
+  <script async src="https://www.instagram.com/embed.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 
-/* ---------- Center-origin burst engine ---------- */
-(function burstField(){
-  const field = document.getElementById('bg');
-  const TARGET = Math.max(12, parseInt(getComputedStyle(document.documentElement).getPropertyValue('--burst-count')) || 12);
-  const LIFETIME = 8000; // 8s
-  const MIN_STAGGER = 500; // ms between spawns
-  let alive = 0;
+  <script>
+    const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
+    document.addEventListener('DOMContentLoaded', () => {
+      const d = document.getElementById('logoDark');
+      const l = document.getElementById('logoLight');
+      if (d) d.src = ASSETS_BASE + "Jmod_MediaTP.png";
+      if (l) l.src = ASSETS_BASE + "Jmod_Media.png";
+    });
 
-  function spawn(){
-    // keep stream continuous
-    if (alive >= TARGET) return;
+    // Footer
+    (async function loadFooter(){
+      try{
+        const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
+        const html = await res.text();
+        const mount = document.getElementById('footerMount');
+        mount.innerHTML = html;
+        const y = mount.querySelector('#copyright');
+        if (y) y.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+      }catch(e){
+        const mount = document.getElementById('footerMount');
+        mount.innerHTML = `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
+          <div id="copyright">© ${new Date().getFullYear()} Jmod Co.</div>
+          <div>Built for small business clarity.</div>
+        </div>`;
+      }
+    })();
 
-    const img = document.createElement('img');
-    img.className = 'burst';
-    img.src = ICONS[Math.floor(Math.random()*ICONS.length)];
-    img.alt = "";
-
-    // random angle + radius distance towards edge
-    const angle = Math.random() * 360;
-    const r = 140 + Math.random() * 480; // px distance from center
-    const rad = angle * Math.PI / 180;
-    const tx = Math.cos(rad) * r;
-    const ty = Math.sin(rad) * r;
-
-    // write per-instance vector + size + duration
-    img.style.setProperty('--tx', tx + 'px');
-    img.style.setProperty('--ty', ty + 'px');
-    img.style.width = (36 + Math.random()*46) + 'px';
-    img.style.animationDuration = (LIFETIME/1000) + 's';
-
-    alive++;
-    img.addEventListener('animationend', () => { alive--; img.remove(); setTimeout(spawn, MIN_STAGGER * Math.random()); });
-    field.appendChild(img);
-
-    // schedule next spawn to maintain the stream
-    setTimeout(spawn, MIN_STAGGER + Math.random()*MIN_STAGGER);
-  }
-
-  // prime the field
-  for(let i=0;i<TARGET;i++){
-    setTimeout(spawn, i * (MIN_STAGGER*0.6));
-  }
-})();
-
-/* ---------- Theme toggle (auto + manual cycle) ---------- */
-(function theme(){
-  const html = document.documentElement;
-  const btn  = document.getElementById('themeToggle');
-
-  // Start in auto based on prefers color
-  function applyAuto(){
-    if (window.matchMedia('(prefers-color-scheme: light)').matches){
-      html.setAttribute('data-theme','light');
-    } else {
-      html.setAttribute('data-theme','dark');
+    // Theme toggle
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    function applyAutoTheme(){
+      if (matchMedia('(prefers-color-scheme: light)').matches){ root.setAttribute('data-theme','light'); }
+      else { root.setAttribute('data-theme','dark'); }
     }
-  }
-  applyAuto();
-  window.matchMedia('(prefers-color-scheme: light)')
-        .addEventListener?.('change', e=>{
-          if (html.dataset.locked !== 'true') html.setAttribute('data-theme', e.matches ? 'light':'dark');
-        });
+    if (root.getAttribute('data-theme') === 'auto') applyAutoTheme();
+    matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', e=>{
+      if (root.getAttribute('data-theme')==='auto'){ root.setAttribute('data-theme', e.matches ? 'light':'dark'); }
+    });
+    toggle?.addEventListener('click', ()=>{
+      const cur = root.getAttribute('data-theme');
+      const next = cur==='auto' ? 'dark' : cur==='dark' ? 'light' : 'auto';
+      root.setAttribute('data-theme', next);
+      if (next==='auto') applyAutoTheme();
+    });
 
-  // Toggle cycles: dark → light → auto
-  btn.addEventListener('click', ()=>{
-    const cur = html.getAttribute('data-theme') || 'dark';
-    const next = cur==='dark' ? 'light' : cur==='light' ? 'auto' : 'dark';
-    if (next==='auto'){ html.dataset.locked = 'false'; applyAuto(); }
-    else { html.dataset.locked = 'true'; html.setAttribute('data-theme', next); }
-  });
-})();
-</script>
+    /* ========= 3D BACKGROUND: Floating Social Logos =========
+       - Uses Simple Icons (CC0) SVGs via jsDelivr.
+       - Renders each SVG into a colored canvas, then into a THREE.Sprite.
+       - Each sprite fades in, drifts, fades out, and respawns.
+    */
+    const BRANDS = [
+      {slug:'linkedin',     hex:'#0A66C2'},
+      {slug:'tiktok',       hex:'#000000'},
+      {slug:'facebook',     hex:'#1877F2'},
+      {slug:'instagram',    hex:'#E4405F'},
+      {slug:'snapchat',     hex:'#FFFC00'},
+      {slug:'youtube',      hex:'#FF0000'},
+      {slug:'pinterest',    hex:'#E60023'},
+      {slug:'x',            hex:'#000000'},   // Twitter/X
+      {slug:'wechat',       hex:'#7BB32E'},
+      {slug:'whatsapp',     hex:'#25D366'},
+      {slug:'reddit',       hex:'#FF4500'},
+      {slug:'telegram',     hex:'#26A5E4'},
+      {slug:'qq',           hex:'#EB1923'},
+      {slug:'kuaishou',     hex:'#FF4906'},
+      {slug:'threads',      hex:'#000000'},
+      {slug:'sinaweibo',    hex:'#E6162D'},   // Weibo
+      {slug:'discord',      hex:'#5865F2'},
+      {slug:'twitch',       hex:'#9146FF'},
+      {slug:'tumblr',       hex:'#36465D'},
+      {slug:'viber',        hex:'#7360F2'},
+      {slug:'flickr',       hex:'#0063DC'}
+    ];
+
+    function init3D(){
+      const canvas = document.getElementById('bg3d');
+      const renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance', alpha:true});
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 200);
+      camera.position.set(0, 1.6, 8);
+
+      const amb = new THREE.AmbientLight(0xffffff, 0.65);
+      scene.add(amb);
+
+      // helpers
+      const sprites = [];
+      let lowPower = false;
+      const MAX = /Mobi|Android/i.test(navigator.userAgent) ? 12 : 26;
+
+      // fetch svg -> canvas -> texture
+      async function svgToTexture(slug, hex){
+        const url = `https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/${slug}.svg`;
+        const svgTxt = await fetch(url).then(r=>r.text());
+        // recolor to white path over brand-colored circle; scale to 256
+        const size = 256;
+        const cnv = document.createElement('canvas'); cnv.width = cnv.height = size;
+        const ctx = cnv.getContext('2d');
+        // background circle
+        ctx.beginPath(); ctx.arc(size/2, size/2, size*0.48, 0, Math.PI*2); ctx.fillStyle = hex; ctx.fill();
+        // draw svg path as image
+        const colored = svgTxt.replace('currentColor','white').replace(/fill="[^"]*"/g,'fill="white"');
+        const blob = new Blob([colored], {type:'image/svg+xml'});
+        const img = new Image(); img.src = URL.createObjectURL(blob);
+        await img.decode();
+        const pad = size*0.20; // logo inset inside circle
+        ctx.drawImage(img, pad, pad, size-2*pad, size-2*pad);
+        const tex = new THREE.Texture(cnv); tex.needsUpdate = true;
+        return tex;
+      }
+
+      // spawn a sprite
+      async function spawn(){
+        const pick = BRANDS[Math.floor(Math.random()*BRANDS.length)];
+        const tex = await svgToTexture(pick.slug, pick.hex);
+        const mat = new THREE.SpriteMaterial({map: tex, transparent:true, opacity:0.0});
+        const sp = new THREE.Sprite(mat);
+        const s = THREE.MathUtils.randFloat(0.6, 1.4);
+        sp.scale.set(s, s, 1);
+        resetPosition(sp, true);
+        sp.userData = {
+          life: 0, max: THREE.MathUtils.randFloat(4.5, 8.0), // seconds
+          phase: 'in' // in -> hold -> out
+        };
+        scene.add(sp);
+        sprites.push(sp);
+      }
+
+      function resetPosition(sp, first=false){
+        sp.position.set(
+          (Math.random()-0.5)*28,
+          (Math.random()-0.5)*16,
+          - (Math.random()*30 + 5)
+        );
+        if (!first){
+          // slightly different scale on respawn
+          const s = THREE.MathUtils.randFloat(0.6, 1.4);
+          sp.scale.set(s, s, 1);
+        }
+      }
+
+      // initial population
+      (async () => { for (let i=0;i<MAX;i++) await spawn(); })();
+
+      // parallax
+      let targetRX=0, targetRY=0;
+      window.addEventListener('mousemove', (e)=>{
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;
+        const ny = (e.clientY / window.innerHeight) * 2 - 1;
+        targetRY = nx * 0.25;
+        targetRX = ny * 0.12;
+      });
+
+      function onResize(){ camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }
+      window.addEventListener('resize', onResize);
+
+      // perf guardrails
+      let last=performance.now(), frames=0;
+      function guard(now){
+        frames++;
+        if (now - last > 1500){
+          const fps = frames / ((now-last)/1000);
+          if (fps < 35 && !lowPower){ lowPower = true; /* simply reduce opacity speed later */ }
+          last = now; frames = 0;
+        }
+      }
+      document.addEventListener('visibilitychange', ()=>{ if (document.hidden) renderer.setAnimationLoop(null); else renderer.setAnimationLoop(tick); });
+
+      function tick(now=0){
+        guard(now);
+        camera.rotation.x += (targetRX - camera.rotation.x) * 0.05;
+        camera.rotation.y += (targetRY - camera.rotation.y) * 0.05;
+
+        // animate sprites
+        for (const sp of sprites){
+          const ud = sp.userData;
+          const dt = 0.016;
+          ud.life += dt;
+
+          // gentle drift
+          sp.position.z += 0.01;
+          sp.position.x += Math.sin(now*0.0003 + sp.id)*0.0012;
+          sp.position.y += Math.cos(now*0.00025 + sp.id)*0.0009;
+
+          // fade logic
+          const fadeSpeed = lowPower ? 0.015 : 0.025;
+          if (ud.phase === 'in'){
+            sp.material.opacity = Math.min(1, sp.material.opacity + fadeSpeed);
+            if (sp.material.opacity >= 0.98) ud.phase = 'hold';
+          } else if (ud.phase === 'hold'){
+            if (ud.life > ud.max*0.6) ud.phase = 'out';
+          } else {
+            sp.material.opacity = Math.max(0, sp.material.opacity - fadeSpeed);
+            if (sp.material.opacity <= 0.02 || sp.position.z > -1.5){
+              // respawn
+              ud.life = 0; ud.max = THREE.MathUtils.randFloat(4.5,8.0); ud.phase='in';
+              sp.material.opacity = 0.0; resetPosition(sp);
+            }
+          }
+        }
+        renderer.render(scene, camera);
+      }
+      renderer.setAnimationLoop(tick);
+    }
+
+    try { init3D(); } catch(e){ console.warn('3D background disabled:', e); }
+  </script>
 </body>
 </html>
