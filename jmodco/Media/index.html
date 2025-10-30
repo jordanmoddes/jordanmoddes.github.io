@@ -17,6 +17,8 @@
       --chip:#1a2246; --link:#c7d2fe;
       --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.35);
       --lime:#32CD32;
+      --phone-max:360px;
+      --embed-max:320px;
     }
     [data-theme="light"]{
       --bg:#f6f8ff; --bg2:#eef2ff; --panel:#ffffff;
@@ -25,9 +27,7 @@
       --chip:#eef2ff; --link:#312e81;
       --shadow:0 10px 24px rgba(2,6,23,.10);
     }
-
     *{box-sizing:border-box}
-    html,body{height:100%}
     html{scroll-behavior:smooth}
     body{
       margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
@@ -46,7 +46,7 @@
     a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
     .shell{max-width:1200px;margin:0 auto;padding:24px}
 
-    /* ===== Floating nav (Insights style) ===== */
+    /* ===== Floating nav ===== */
     .nav-wrap{position:sticky; top:12px; z-index:60;}
     .navbar{
       display:flex; align-items:center; justify-content:space-between;
@@ -56,175 +56,81 @@
       border:1px solid rgba(255,255,255,.10);
       box-shadow: var(--shadow);
     }
-    .nav-brand{font-weight:800; letter-spacing:.2px; color:var(--text); text-decoration:none; white-space:nowrap;}
+    .nav-brand{font-weight:800; color:var(--text); text-decoration:none;}
     .nav-links{display:flex; gap:18px; align-items:center;}
-    .nav-links a{
-      position:relative; font-weight:600; color:var(--text); opacity:.9; text-decoration:none; padding:8px 6px; border-radius:10px;
-    }
+    .nav-links a{font-weight:600; color:var(--text); opacity:.9;}
     .nav-links a:hover{opacity:1;}
-    .nav-cta{display:flex; gap:8px; align-items:center;}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
       padding:10px 14px;border-radius:10px;border:1px solid transparent;
       background:var(--brand);color:#fff;font-weight:700;box-shadow:var(--shadow);
-      transition:transform .06s ease
     }
-    .btn:hover{transform:translateY(-1px)}
     .btn.ghost{background:transparent;color:var(--text);border-color:rgba(255,255,255,.12)}
-    [data-theme="light"] .btn.ghost{border-color:#d9e0ff}
     .btn-small{padding:8px 12px}
-    .hamburger{display:none; background:transparent; border:0; padding:8px 10px; border-radius:10px; color:var(--text); font-size:18px;}
-    .mobile-menu{
-      display:none; margin-top:8px; border-radius:14px; overflow:hidden;
-      background:color-mix(in oklab, var(--panel) 88%, transparent);
-      backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,.10);
-    }
-    .mobile-menu a{
-      display:block; padding:12px 14px; color:var(--text); text-decoration:none; font-weight:600;
-    }
-    .mobile-menu a + a{border-top:1px dashed rgba(255,255,255,.12);}
+    .hamburger{display:none; background:transparent; border:0; padding:8px 10px; border-radius:10px; color:var(--text);}
+    .mobile-menu{display:none;margin-top:8px;border-radius:14px;overflow:hidden;background:color-mix(in oklab, var(--panel) 88%, transparent);backdrop-filter:blur(8px);}
+    .mobile-menu a{display:block;padding:12px 14px;color:var(--text);font-weight:600;}
 
-    /* ===== Sections ===== */
+    /* ===== Hero ===== */
     .panel{background:var(--panel);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
-    /* Full-width hero */
-    .hero-wide{margin-top:16px}
     .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
-    .hero-grid .logo-col{display:grid;place-items:center}
-    .media-logo{width:100%;max-width:520px;aspect-ratio:3/4;object-fit:contain}
-    .title{font-size:clamp(34px,6vw,64px);line-height:1.02;margin:0 0 8px;font-weight:900}
+    .media-logo{width:100%;max-width:520px;}
+    .title{font-size:clamp(34px,6vw,64px);margin:0 0 8px;font-weight:900}
     .subtitle{font-size:clamp(16px,2vw,20px);color:var(--muted);margin:0 0 18px}
     .badges{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .soon{font-weight:800;background:var(--chip);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px}
     .store-badge{height:45px;display:block;border-radius:12px;box-shadow:var(--shadow)}
     .store-badge.store-play{height:60px}
 
-    /* Phone preview (under hero) */
-    .phone-section{margin-top:22px}
-    .phone{
-      position:relative;
-      background:linear-gradient(180deg, #0a0f1e 0%, #060a16 100%);
-      border-radius:32px;
-      padding:16px;
-      box-shadow: 0 30px 60px rgba(0,0,0,.55), inset 0 0 0 3px var(--lime);
-      border:1px solid rgba(255,255,255,.06);
-    }
-    .phone::before{
-      content:""; position:absolute; inset:-2px;
-      border-radius:34px;
-      box-shadow: inset 0 0 22px rgba(50,205,50,.25), inset 0 0 0 2px rgba(50,205,50,.35);
-      pointer-events:none;
-    }
-    .phone::after{
-      content:""; position:absolute; right:-6px; top:52px; width:3px; height:48px; border-radius:3px;
-      background:var(--lime); filter:drop-shadow(0 0 6px rgba(50,205,50,.6));
-    }
-    .phone-screen{
-      border-radius:22px;background:#000;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:12px;overflow:hidden;box-shadow: inset 0 0 24px rgba(0,0,0,.8);
-    }
-    .screen-stage{
-      background:linear-gradient(180deg, rgba(34,211,238,.10), transparent 50%),linear-gradient(180deg, rgba(123,57,255,.10), transparent 35%), #0e142b;
-      border-radius:16px; padding:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
-    }
+    /* ===== Phone ===== */
+    .phone-section{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:22px;}
+    .phone{width:clamp(260px,30vw,var(--phone-max));margin:0 auto;padding:12px;background:linear-gradient(180deg,#0a0f1e 0%,#060a16 100%);border-radius:32px;box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 0 3px var(--lime);border:1px solid rgba(255,255,255,.06);position:relative;}
+    .phone::before{content:"";position:absolute;inset:-2px;border-radius:34px;box-shadow:inset 0 0 22px rgba(50,205,50,.25),inset 0 0 0 2px rgba(50,205,50,.35);}
+    .phone::after{content:"";position:absolute;right:-6px;top:52px;width:3px;height:48px;border-radius:3px;background:var(--lime);filter:drop-shadow(0 0 6px rgba(50,205,50,.6));}
+    .phone-screen{border-radius:22px;background:#000;aspect-ratio:9/19.5;display:flex;flex-direction:column;justify-content:space-between;padding:12px;overflow:hidden;}
+    .screen-stage{background:#0e142b;border-radius:16px;padding:12px;border:1px solid rgba(255,255,255,.08);}
     .pill{background:var(--chip);padding:8px 10px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;color:var(--text)}
     .dock{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-    .dock .pill{background:transparent;border:1px solid rgba(255,255,255,.85);color:#fff;text-shadow:0 0 4px rgba(255,255,255,.35)}
-    .ig-slot{margin-top:8px;background:rgba(255,255,255,.06);border-radius:12px;padding:8px;overflow:auto;max-height:50vh}
-    .instagram-media{margin:0 !important;width:100% !important}
-    .instagram-media iframe{max-width:100% !important}
-    .preview-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+    .dock .pill{background:transparent;border:1px solid rgba(255,255,255,.85);color:#fff;}
+    .ig-slot{display:flex;justify-content:center;align-items:flex-start;max-height:min(52vh,520px);overflow:auto;}
+    .instagram-media{width:100%!important;max-width:var(--embed-max)!important;}
 
-    /* Modules (replaces old features grid) */
-    .modules {max-width:1200px;margin:48px auto 0;padding:0 24px}
-    .modules h2{font-size:clamp(24px,3.4vw,36px);margin:0 0 10px;font-weight:900}
-    .modules p.lead{color:var(--muted);margin:0 0 20px}
+    .preview-ctas{display:flex;justify-content:center;gap:12px;width:100%;}
+    .preview-ctas .btn{min-width:180px;}
+
+    /* ===== Modules ===== */
+    .modules{max-width:1200px;margin:48px auto 0;padding:0 24px}
     .mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    @media (max-width:1024px){ .mod-grid{grid-template-columns:1fr 1fr} }
-    @media (max-width:640px){ .mod-grid{grid-template-columns:1fr} }
-    .mod{position:relative;background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;box-shadow:var(--shadow);overflow:hidden;transition:transform .15s ease, box-shadow .2s ease, border-color .2s ease}
-    .mod:hover{ transform:translateY(-2px); border-color:rgba(123,57,255,.35); box-shadow:0 12px 36px rgba(123,57,255,.15) }
-    .mod-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:10px;background:linear-gradient(180deg, rgba(123,57,255,.22), rgba(34,211,238,.18));border:1px solid rgba(255,255,255,.12)}
-    .mod-icon svg{width:22px;height:22px;opacity:.95;color:#e8ecff}
-    .mod h3{margin:4px 0 6px;font-size:18px}
-    .mod .tagline{color:var(--muted);margin:0 0 10px}
-    .mod .chips{display:flex;flex-wrap:wrap;gap:8px}
-    .mod .chip{font-size:12px;font-weight:700;background:var(--chip);padding:6px 10px;border-radius:999px}
-    .mod details{margin-top:12px}
-    .mod summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--link);font-weight:700;padding:4px 0}
-    .mod summary::-webkit-details-marker{display:none}
-    .mod details p{margin:10px 0 0;color:var(--text)}
+    @media(max-width:1024px){.mod-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:640px){.mod-grid{grid-template-columns:1fr}}
+    .mod{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;box-shadow:var(--shadow);transition:transform .15s}
+    .mod:hover{transform:translateY(-2px);border-color:rgba(123,57,255,.35)}
 
-    /* Small-biz band + waitlist */
+    /* ===== Small Biz Band + Waitlist ===== */
     .smb{max-width:1200px;margin:40px auto 0;padding:0 24px}
-    .band{display:flex;gap:16px;align-items:center;justify-content:flex-start;flex-wrap:wrap;background:rgba(16,23,51,.78);border:1px solid rgba(255,255,255,.10);box-shadow:var(--shadow);padding:14px 16px;border-radius:16px}
-    #waitlist form.card{background:var(--panel)}
+    .band{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:rgba(16,23,51,.78);border:1px solid rgba(255,255,255,.10);padding:14px 16px;border-radius:16px}
     footer{margin-top:56px}
 
-    /* Responsive */
-    @media (max-width:900px){ .nav-links{display:none} .hamburger{display:inline-flex} }
-    .logo-dark{display:block}.logo-light{display:none}
-    [data-theme="light"] .logo-dark{display:none}
-    [data-theme="light"] .logo-light{display:block}
-
-    /* ===== Phone size cap & layout ===== */
-:root{
-  /* Tweak this one value if you want it a bit larger/smaller */
-  --phone-max: 360px;  /* hard max width for desktop */
-}
-
-/* keep the phone narrow and centered under the hero */
-.phone-section{ display:flex; justify-content:center; }
-.phone{
-  width:clamp(260px, 30vw, var(--phone-max));
-  margin: 0 auto;
-  padding:12px;             /* a bit tighter padding so frame stays slim */
-}
-
-/* keep the screen proportions but avoid tall overflow */
-.phone-screen{ aspect-ratio: 9 / 19.5; }
-.ig-slot{
-  max-height: min(52vh, 520px);
-  overflow:auto;
-}
-
-/* on tablets, allow a touch wider than mobile but still compact */
-@media (max-width: 1024px){
-  :root{ --phone-max: 340px; }
-}
-
-/* on small phones, use nearly the full width but still comfy */
-@media (max-width: 640px){
-  .phone{ width:min(92vw, 360px); }
-  .ig-slot{ max-height: 48vh; }
-}
-
-    
+    /* ===== Responsive Nav ===== */
+    @media(max-width:900px){.nav-links{display:none}.hamburger{display:inline-flex}}
   </style>
 </head>
+<body>
+  <canvas id="bg3d"></canvas>
+  <div class="bg-vignette"></div>
 
-  
-  
-  
-  <!--HTML CODE-->
-  <body>
-  <canvas id="bg3d" aria-hidden="true"></canvas>
-  <div class="bg-vignette" aria-hidden="true"></div>
-
-  <!-- Floating Header -->
+  <!-- NAV -->
   <header class="shell nav-wrap">
     <div class="navbar">
       <a class="nav-brand" href="#top">Jmod Media</a>
-      <nav class="nav-links" aria-label="Primary">
+      <nav class="nav-links">
         <a href="#top">Home</a>
         <a href="#features">Services</a>
         <a href="#waitlist">Waitlist</a>
         <a href="/jmodco/">Jmod Co.</a>
       </nav>
-      <div class="nav-cta">
-        <button id="themeToggle" class="btn btn-small" type="button">Toggle Theme</button>
-        <button id="navToggle" class="hamburger" aria-label="Open menu" aria-expanded="false">☰</button>
-      </div>
+      <button id="navToggle" class="hamburger">☰</button>
     </div>
-    <div class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+    <div class="mobile-menu" id="mobileMenu">
       <a href="#top">Home</a>
       <a href="#features">Services</a>
       <a href="#waitlist">Waitlist</a>
@@ -232,40 +138,33 @@
     </div>
   </header>
 
-  <!-- HERO (full width) -->
+  <!-- HERO -->
   <main id="top" class="shell hero-wide">
     <section class="panel">
       <div class="hero-grid">
-        <div class="logo-col">
-          <img id="logoDark" class="media-logo logo-dark" alt="Jmod Media logo dark" loading="lazy" />
-          <img id="logoLight" class="media-logo logo-light" alt="Jmod Media logo light" loading="lazy" />
-        </div>
+        <div><img class="media-logo" src="https://www.jordanmoddes.com/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media"></div>
         <div>
           <h1 class="title">Create once.<br>Publish everywhere.</h1>
           <p class="subtitle">Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.</p>
           <div class="badges">
-            <span class="soon">Pre-Download (Coming Soon)</span>
-            <a class="store-badge-wrap" href="#"><img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
-            <a class="store-badge-wrap" href="#"><img class="store-badge store-play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
+            <span class="pill">Pre-Download (Coming Soon)</span>
+            <a href="#"><img class="store-badge" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"></a>
+            <a href="#"><img class="store-badge store-play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"></a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Phone (under hero) -->
+    <!-- PHONE -->
     <section class="phone-section">
       <div class="phone">
         <div class="phone-screen">
           <div class="screen-stage">
-            <div class="pill" style="width:max-content">Jmod Media</div>
-            <h4 style="margin:8px 0 0;font-size:18px">New Post (Instagram)</h4>
-            <p style="margin:6px 0;color:var(--muted)">Drop photo · Choose template · Publish</p>
+            <div class="pill">Jmod Media</div>
+            <h4 style="margin:8px 0 0">New Post (Instagram)</h4>
+            <p style="margin:6px 0;color:var(--muted)">Drop photo • Choose template • Publish</p>
             <div class="ig-slot">
-              <blockquote class="instagram-media"
-                data-instgrm-permalink="https://www.instagram.com/p/DQU-7RWjGXz/"
-                data-instgrm-version="14"
-                style="background:#FFF;border:0;border-radius:12px;box-shadow:none;margin:0;padding:0;">
-              </blockquote>
+              <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DQU-7RWjGXz/" data-instgrm-version="14"></blockquote>
             </div>
           </div>
           <div class="dock">
@@ -280,105 +179,54 @@
     </section>
   </main>
 
-  <!-- MODULES (Services) -->
-  <section id="features" class="modules" aria-labelledby="modsTitle">
-    <h2 id="modsTitle">Everything you need to post in minutes</h2>
+  <!-- FEATURES -->
+  <section id="features" class="modules">
+    <h2>Everything you need to post in minutes</h2>
     <p class="lead">Six core tools — from idea to publish — built for small business speed and consistency.</p>
     <div class="mod-grid">
-      <article class="mod"><div class="mod-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 3l1.5 2H14l1.5-2H18a3 3 0 013 3v11a3 3 0 01-3 3H6a3 3 0 01-3-3V6a3 3 0 013-3h3zM12 18a5 5 0 100-10 5 5 0 000 10zm0-2.2a2.8 2.8 0 110-5.6 2.8 2.8 0 010 5.6z"/></svg></div><h3>One-Tap Post Builder</h3><p class="tagline">Drop a photo → AI writes caption & hashtags → publish.</p><div class="chips"><span class="chip">Image → Caption</span><span class="chip">Multi-channel</span><span class="chip">AI rewrite</span></div><details><summary>How it works</summary><p>Upload or snap a photo, pick a template, and Jmod Media generates on-brand copy with hashtags. Review and post to multiple channels at once.</p></details></article>
-      <article class="mod"><div class="mod-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h2v3H7V2zm8 0h2v3h-2V2zM4 6h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2zm1 5h5v4H5v-4zm7 0h7v2h-7v-2z"/></svg></div><h3>Queue & Auto-Schedule</h3><p class="tagline">Drag into a queue that posts at peak times.</p><div class="chips"><span class="chip">Best-time AI</span><span class="chip">Recurring slots</span><span class="chip">Holiday sets</span></div><details><summary>How it works</summary><p>We analyze your audience and auto-pick posting windows. Set once, keep filling the queue — we’ll publish for you.</p></details></article>
-      <article class="mod"><div class="mod-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 00-9 9 7 7 0 007 7h3a4 4 0 004-4c0-1.1.9-2 2-2a3 3 0 000-6h-1a9 9 0 00-6-4zM7 12a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm4-2a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm4 2a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg></div><h3>On-Brand, Every Time</h3><p class="tagline">Lock in logos, colors, fonts, and tone.</p><div class="chips"><span class="chip">Logo lockups</span><span class="chip">Tone presets</span><span class="chip">Approvals</span></div><details><summary>How it works</summary><p>Save your brand kit once. Every template and AI output uses your style by default, so anyone on your team can post consistently.</p></details></article>
-      <article class="mod"><div class="mod-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H4V4zm2 2v8h12V6H6zm-2 12h16v2H4v-2z"/></svg></div><h3>Reusable Post Types</h3><p class="tagline">“Congrats Customer”, “Weekend Promo”, and more.</p><div class="chips"><span class="chip">Image + Copy</span><span class="chip">Per-channel</span></div><details><summary>How it works</summary><p>Pick a template and go. Each one pre-fills the right copy, hashtags, and channel sizes for faster posting.</p></details></article>
-      <article class="mod"><div class="mod-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5a3 3 0 013-3h12a3 3 0 013 3v7a3 3 0 01-3 3H9l-4 4v-4H6a3 3 0 01-3-3V5z"/></svg></div><h3>Smart Replies</h3><p class="tagline">Suggested responses & auto-DM after hours.</p><div class="chips"><span class="chip">Q&A pairs</span><span class="chip">Auto-DM</span></div><details><summary>How it works</summary><p>All your comments & DMs in one inbox. We propose on-brand replies you can send in one tap, or schedule auto-responses at night.</p></details></article>
-      <article class="mod"><div class="mod-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 19h16v2H4v-2zM6 11h3v6H6v-6zm5-4h3v10h-3V7zm5 6h3v4h-3v-4z"/></svg></div><h3>Post-level Analytics</h3><p class="tagline">See what to repeat — and what to retire.</p><div class="chips"><span class="chip">Channel score</span><span class="chip">A/B templates</span></div><details><summary>How it works</summary><p>Track reach, clicks, and conversions per post. Compare templates and get recommendations to double-down on what wins.</p></details></article>
+      <div class="mod"><h3>One-Tap Post Builder</h3><p>Drop a photo → AI writes caption & hashtags → publish.</p></div>
+      <div class="mod"><h3>Queue & Auto-Schedule</h3><p>Drag into a queue that posts at peak times.</p></div>
+      <div class="mod"><h3>On-Brand, Every Time</h3><p>Lock in logos, colors, fonts, and tone.</p></div>
+      <div class="mod"><h3>Reusable Post Types</h3><p>“Congrats Customer”, “Weekend Promo”, and more.</p></div>
+      <div class="mod"><h3>Smart Replies</h3><p>Suggested responses & auto-DM after hours.</p></div>
+      <div class="mod"><h3>Post-level Analytics</h3><p>See what to repeat — and what to retire.</p></div>
     </div>
   </section>
 
-  <!-- Small-biz band -->
+  <!-- Small Biz -->
   <section class="smb">
     <div class="band">
       <strong>Built for small business clarity.</strong>
-      <span style="color:var(--text);opacity:.9">AI helps pick what to post, generates captions, and suggests SEO tags & hashtags—so you show up, consistently.</span>
+      <span>AI helps pick what to post, generates captions, and suggests SEO tags & hashtags—so you show up, consistently.</span>
       <a class="btn" href="#waitlist">Join the Waitlist</a>
     </div>
   </section>
 
   <!-- Waitlist -->
-  <section id="waitlist" class="modules" aria-labelledby="wlTitle">
-    <h2 id="wlTitle">Be first to launch with us</h2>
+  <section id="waitlist" class="modules">
+    <h2>Be first to launch with us</h2>
     <p class="lead">Owner-operators get early access, onboarding help, and founder pricing.</p>
     <form class="panel" style="display:grid;grid-template-columns:1.2fr .8fr auto;gap:12px;align-items:center" onsubmit="event.preventDefault(); alert('Thanks! You’re on the list.');">
-      <input type="text" placeholder="Business name" required
-             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
-      <input type="email" placeholder="Email address" required
-             style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
+      <input type="text" placeholder="Business name" required style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
+      <input type="email" placeholder="Email address" required style="padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:var(--chip);color:var(--text)">
       <button class="btn" type="submit">Join</button>
     </form>
   </section>
 
-  <!-- Footer -->
   <footer class="shell" id="footerMount"></footer>
 
-  <!-- Libraries -->
   <script async src="https://www.instagram.com/embed.js"></script>
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 
   <script>
-    const ASSETS_BASE = "https://www.jordanmoddes.com/jmodco/assets/";
+    // mobile nav
+    const btn=document.getElementById('navToggle'),menu=document.getElementById('mobileMenu');
+    btn?.addEventListener('click',()=>{menu.style.display=menu.style.display==='block'?'none':'block';});
+    menu?.addEventListener('click',e=>{if(e.target.tagName==='A'){menu.style.display='none';}});
 
-    // Logo swap (absolute path so it works anywhere)
-    document.addEventListener('DOMContentLoaded', () => {
-      const d = document.getElementById('logoDark');
-      const l = document.getElementById('logoLight');
-      if (d) d.src = ASSETS_BASE + "Jmod_MediaTP.png";
-      if (l) l.src = ASSETS_BASE + "Jmod_Media.png";
-    });
-
-    // Load shared footer
-    (async function loadFooter(){
-      try{
-        const res = await fetch(ASSETS_BASE + "footer.html", {cache:"no-cache"});
-        const html = await res.text();
-        const mount = document.getElementById('footerMount');
-        mount.innerHTML = html;
-        const y = mount.querySelector('#copyright');
-        if (y) y.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-      }catch(e){
-        document.getElementById('footerMount').innerHTML =
-          `<div class="foot-inner" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--muted);padding:24px 0;border-top:1px dashed rgba(255,255,255,.12)">
-            <div id="copyright">© ${new Date().getFullYear()} Jmod Co.</div>
-            <div>Built for small business clarity.</div>
-          </div>`;
-      }
-    })();
-
-    // Theme toggle
-    const root = document.documentElement;
-    const toggle = document.getElementById('themeToggle');
-    function applyAutoTheme(){ if (matchMedia('(prefers-color-scheme: light)').matches) root.setAttribute('data-theme','light'); else root.setAttribute('data-theme','dark'); }
-    if (root.getAttribute('data-theme') === 'auto') applyAutoTheme();
-    matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', e=>{ if (root.getAttribute('data-theme')==='auto'){ root.setAttribute('data-theme', e.matches ? 'light':'dark'); } });
-    toggle?.addEventListener('click', ()=>{ const cur=root.getAttribute('data-theme'); const next=cur==='auto'?'dark':cur==='dark'?'light':'auto'; root.setAttribute('data-theme',next); if(next==='auto') applyAutoTheme(); });
-
-    // Mobile menu
-    (function mobileNav(){
-      const btn = document.getElementById('navToggle');
-      const menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
-      btn.addEventListener('click', ()=>{
-        const open = menu.style.display === 'block';
-        menu.style.display = open ? 'none' : 'block';
-        btn.setAttribute('aria-expanded', String(!open));
-        btn.textContent = open ? '☰' : '✕';
-      });
-      menu.addEventListener('click', e=>{
-        if (e.target.tagName === 'A'){ menu.style.display='none'; btn.setAttribute('aria-expanded','false'); btn.textContent='☰'; }
-      });
-    })();
-
-    /* ===== 3D Floating Social Icons (with glow) ===== */
-    const ICONS = [
-      "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg",
+    /* === 3D social icon float === */
+    const ICONS=[
+      "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
       "https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo_2023.png",
       "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg",
       "https://upload.wikimedia.org/wikipedia/en/0/0a/TikTok_logo.svg",
@@ -395,92 +243,37 @@
       "https://upload.wikimedia.org/wikipedia/commons/7/7c/Rumble_Logo_2022.svg",
       "https://upload.wikimedia.org/wikipedia/commons/e/e4/Kik_Messenger_logo.svg"
     ];
-
     function init3D(){
-      const canvas = document.getElementById('bg3d');
-      const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:'high-performance'});
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
-      renderer.setSize(window.innerWidth, window.innerHeight);
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 200);
-      camera.position.set(0, 1.6, 8);
-      scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-
-      const loader = new THREE.TextureLoader(); loader.setCrossOrigin('anonymous');
-      const sprites = [];
-      const MAX = /Mobi|Android/i.test(navigator.userAgent) ? 10 : 22;
-
-      function spawnOne(tex){
-        const baseMat = new THREE.SpriteMaterial({map: tex, transparent:true, opacity:0});
-        const base = new THREE.Sprite(baseMat);
-        const glowMat = new THREE.SpriteMaterial({map: tex, color:0xffffff, blending:THREE.AdditiveBlending, transparent:true, opacity:0});
-        const glow = new THREE.Sprite(glowMat);
-        const s = THREE.MathUtils.randFloat(0.7, 1.5);
-        base.scale.set(s, s, 1); glow.scale.set(s*1.8, s*1.8, 1);
-
-        function reset(first=false){
-          const x = (Math.random()-0.5)*28;
-          const y = (Math.random()-0.5)*16;
-          const z = - (Math.random()*30 + 6);
-          base.position.set(x,y,z); glow.position.copy(base.position);
-          base.material.opacity = glow.material.opacity = 0;
-          base.userData = {life:0, max:THREE.MathUtils.randFloat(4.5,8.0), phase:'in'};
-          if (!first){
-            const ns = THREE.MathUtils.randFloat(0.7,1.5);
-            base.scale.set(ns,ns,1); glow.scale.set(ns*1.8,ns*1.8,1);
-          }
-        }
-        reset(true);
-        scene.add(glow); scene.add(base);
-        sprites.push({base, glow, reset});
+      const canvas=document.getElementById('bg3d');
+      const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+      renderer.setSize(window.innerWidth,window.innerHeight);
+      const scene=new THREE.Scene();
+      const cam=new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,0.1,200);
+      cam.position.set(0,1.6,8);
+      scene.add(new THREE.AmbientLight(0xffffff,0.9));
+      const loader=new THREE.TextureLoader();loader.setCrossOrigin('anonymous');
+      const sprites=[];const MAX=16;
+      function spawn(tex){
+        const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,opacity:0}));
+        const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,color:0xffffff,blending:THREE.AdditiveBlending,transparent:true,opacity:0}));
+        function reset(){s.position.set((Math.random()-0.5)*28,(Math.random()-0.5)*16,-(Math.random()*30+6));glow.position.copy(s.position);s.material.opacity=0;glow.material.opacity=0;}
+        reset();scene.add(s);scene.add(glow);sprites.push({s,glow,reset});
       }
-
-      Promise.allSettled(ICONS.map(src => new Promise((res)=>{ loader.load(src, t=>res(t), undefined, _=>res(null)); })))
-        .then(results=>{
-          const textures = results.map(r=>r.value).filter(Boolean);
-          if (!textures.length) return;
-          for (let i=0;i<MAX;i++){ spawnOne(textures[i % textures.length]); }
-        });
-
-      let targetRX=0, targetRY=0;
-      window.addEventListener('mousemove', (e)=>{
-        const nx = (e.clientX / window.innerWidth) * 2 - 1;
-        const ny = (e.clientY / window.innerHeight) * 2 - 1;
-        targetRY = nx * 0.25; targetRX = ny * 0.12;
+      Promise.allSettled(ICONS.map(src=>new Promise(res=>{loader.load(src,t=>res(t),undefined,_=>res(null));}))).then(r=>{
+        const tex=r.map(x=>x.value).filter(Boolean);if(!tex.length)return;
+        for(let i=0;i<MAX;i++)spawn(tex[i%tex.length]);
       });
-
-      function onResize(){ camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }
-      window.addEventListener('resize', onResize);
-
-      let last=performance.now(), frames=0, low=false;
-      function guard(now){ frames++; if (now-last>1500){ const fps = frames/((now-last)/1000); if (fps<35 && !low) low = true; last = now; frames=0; } return low; }
-      document.addEventListener('visibilitychange', ()=>{ if (document.hidden) renderer.setAnimationLoop(null); else renderer.setAnimationLoop(tick); });
-
-      function tick(now=0){
-        const low = guard(now);
-        camera.rotation.x += (targetRX - camera.rotation.x)*0.05;
-        camera.rotation.y += (targetRY - camera.rotation.y)*0.05;
-
-        for (const s of sprites){
-          const {base, glow, reset} = s;
-          const ud = base.userData; ud.life += 0.016;
-          const speed = (low?0.007:0.01);
-          base.position.z += speed; glow.position.z += speed;
-          base.position.x += Math.sin(now*0.0003 + base.id)*0.0012;
-          base.position.y += Math.cos(now*0.00025 + base.id)*0.0009;
-          glow.position.x = base.position.x; glow.position.y = base.position.y;
-
-          const f = low ? 0.015 : 0.028;
-          if (ud.phase==='in'){ base.material.opacity = Math.min(1, base.material.opacity + f); glow.material.opacity = Math.min(0.35, glow.material.opacity + f*0.8); if (base.material.opacity>=0.98) ud.phase='hold'; }
-          else if (ud.phase==='hold'){ if (ud.life > ud.max*0.6) ud.phase='out'; }
-          else { base.material.opacity = Math.max(0, base.material.opacity - f); glow.material.opacity = Math.max(0, glow.material.opacity - f*0.8); if (base.material.opacity<=0.02 || base.position.z>-1.5){ ud.life=0; ud.max=THREE.MathUtils.randFloat(4.5,8.0); ud.phase='in'; reset(); } }
-        }
-        renderer.render(scene, camera);
+      function anim(){
+        sprites.forEach(o=>{
+          o.s.position.z+=0.01;o.glow.position.z=o.s.position.z;
+          o.s.material.opacity=Math.min(1,o.s.material.opacity+0.02);
+          if(o.s.position.z>-1.5){o.reset();}
+        });
+        renderer.render(scene,cam);requestAnimationFrame(anim);
       }
-      renderer.setAnimationLoop(tick);
+      anim();
     }
-    try { init3D(); } catch(e){ console.warn('3D background disabled:', e); }
+    init3D();
   </script>
 </body>
 </html>
