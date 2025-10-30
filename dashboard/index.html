@@ -14,7 +14,6 @@
   }
   html { scroll-behavior:smooth; }
   body {
-    /* subtle dark gradient, not pure black */
     background:
       radial-gradient(1200px 800px at 10% -10%, rgba(34,35,60,.25), transparent 40%),
       radial-gradient(900px 600px at 90% 10%, rgba(232,121,249,.08), transparent 55%),
@@ -33,17 +32,9 @@
   .good { color:#16a34a; } .bad { color:#ef4444; }
   .table { width:100%; border-collapse: collapse; }
   .table th,.table td { border-top:1px solid var(--stroke); padding:8px; font-size:.9rem; }
-
-  /* header */
   .hdr { background: rgba(10,10,14,.75); border-bottom:1px solid var(--stroke); backdrop-filter: blur(8px); }
-
-  /* focus rings */
   .btn:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
-
-  /* small screen helpers */
-  @media (max-width: 640px){
-    .k { font-size: 1.6rem; }
-  }
+  @media (max-width: 640px){ .k { font-size: 1.6rem; } }
 </style>
 </head>
 <body>
@@ -75,16 +66,6 @@
         <span id="today-pill" class="pill"></span>
         <span class="pill hidden sm:inline">Live</span>
       </div>
-    </div>
-    <div class="mt-3 flex flex-wrap gap-2">
-      <a class="pill" href="#weather">Weather</a>
-      <a class="pill" href="#events">Events</a>
-      <a class="pill" href="#traffic">Traffic</a>
-      <a class="pill" href="#stocks">Stocks</a>
-      <a class="pill" href="#crypto">Crypto</a>
-      <a class="pill" href="#pelosi">Pelosi</a>
-      <a class="pill" href="#conversions">Conversions</a>
-      <a class="pill" href="#scratchpad">Scratchpad</a>
     </div>
   </section>
 
@@ -258,16 +239,13 @@ const COINS = [
 ];
 /* =========================== */
 
-/* meta */
-document.getElementById('today-pill').textContent = new Date().toLocaleDateString();
+const $ = (id) => document.getElementById(id);
 
-/* ---------- Weather (Open-Meteo) ---------- */
-function codeToText(code){
-  const m = {0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',95:'Thunderstorm'};
-  return m[code] || '—';
-}
+/* meta */
+$('today-pill').textContent = new Date().toLocaleDateString();
+
+/* ---------- Weather ---------- */
 function codeToIcon(code){
-  // inline SVGs (no external assets)
   const sun = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="#fde047"/><g stroke="#fde047" stroke-width="2"><path d="M12 1v3"/><path d="M12 20v3"/><path d="M1 12h3"/><path d="M20 12h3"/><path d="M4.2 4.2l2.2 2.2"/><path d="M17.6 17.6l2.2 2.2"/><path d="M4.2 19.8l2.2-2.2"/><path d="M17.6 6.4l2.2-2.2"/></g></svg>';
   const cloud = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 18h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/></svg>';
   const rain = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 16h9a4 4 0 0 0 0-8 6 6 0 0 0-11.5 2" fill="#94a3b8"/><g stroke="#60a5fa" stroke-width="2"><path d="M9 18v3"/><path d="M12 18v3"/><path d="M15 18v3"/></g></svg>';
@@ -291,12 +269,11 @@ async function getSun(lat, lon){
   return r.json();
 }
 async function renderWeather(){
-  const host = document.getElementById('wx-cards'); host.innerHTML="";
+  const host = $('wx-cards'); host.innerHTML="";
   for (const city of CITIES){
     try{
       const data = await getWeather(city.lat, city.lon);
       const c = data.current||{};
-      // pick next 5 hour slots by index (starting at next hour)
       const htemps = data.hourly?.temperature_2m||[];
       const hcode  = data.hourly?.weather_code||[];
       const nowH = new Date().getHours();
@@ -317,7 +294,7 @@ async function renderWeather(){
         </div>
         <div class="k mt-1 flex items-center gap-2">
           <span>${Math.round(c.temperature_2m||0)}°F / ${Math.round(((c.temperature_2m-32)*5/9)||0)}°C</span>
-          <span class="inline-flex items-center justify-center" aria-hidden="true">${codeToIcon(c.weather_code||0)}</span>
+          <span aria-hidden="true">${codeToIcon(c.weather_code||0)}</span>
         </div>
         <div class="sub">Feels ${Math.round(c.apparent_temperature||0)}°F · Today ${minT}°F — ${maxT}°F</div>
         <div class="flex gap-2 mt-3 flex-wrap">${chips.map(h=>`
@@ -325,8 +302,7 @@ async function renderWeather(){
             <div class="sub">${h.label}</div>
             <div class="font-semibold">${h.temp}°F</div>
           </div>`).join('')}
-        </div>
-      `;
+        </div>`;
       host.appendChild(card);
     }catch(e){
       const err = document.createElement('div'); err.className="sub";
@@ -334,36 +310,33 @@ async function renderWeather(){
       host.appendChild(err);
     }
   }
-  // sunrise/sunset for first city
   try{
     const s = await getSun(CITIES[0].lat, CITIES[0].lon);
-    const sr = new Date(s.results.sunrise).toLocaleTimeString();
-    const ss = new Date(s.results.sunset).toLocaleTimeString();
-    document.getElementById('sun-date').textContent = new Date().toLocaleDateString();
-    document.getElementById('sun-times').textContent = `Sunrise ${sr} · Sunset ${ss}`;
-  }catch(e){ document.getElementById('sun-times').textContent = 'Could not load.'; }
+    $('sun-date').textContent = new Date().toLocaleDateString();
+    $('sun-times').textContent = `Sunrise ${new Date(s.results.sunrise).toLocaleTimeString()} · Sunset ${new Date(s.results.sunset).toLocaleTimeString()}`;
+  }catch(e){ $('sun-times').textContent = 'Could not load.'; }
 }
 renderWeather();
-document.getElementById('wx-refresh').addEventListener('click', renderWeather);
+$('wx-refresh').addEventListener('click', renderWeather);
 
-/* ---------- Verse (public fallback) ---------- */
+/* ---------- Verse ---------- */
 async function loadVerse(){
-  const st = document.getElementById('v-status');
+  const st = $('v-status');
   try{
     st.textContent='Loading…';
     const r = await fetch('https://labs.bible.org/api/?passage=votd&formatting=plain', {mode:'cors'});
     if(!r.ok) throw new Error(r.status);
     const t = await r.text();
     const i = t.lastIndexOf('—');
-    document.getElementById('v-text').textContent = i>0 ? t.slice(0,i).trim() : t.trim();
-    document.getElementById('v-ref').textContent  = i>0 ? t.slice(i+1).trim() : 'NET Bible — Verse of the Day';
+    $('v-text').textContent = i>0 ? t.slice(0,i).trim() : t.trim();
+    $('v-ref').textContent  = i>0 ? t.slice(i+1).trim() : 'NET Bible — Verse of the Day';
     st.textContent=' ';
   }catch(e){ st.textContent='Could not load.';}
 }
 loadVerse();
-document.getElementById('v-refresh').addEventListener('click', loadVerse);
+$('v-refresh').addEventListener('click', loadVerse);
 
-/* ---------- Events (demo list) ---------- */
+/* ---------- Events (demo) ---------- */
 const demoEvents = [
   {title:"2010 DTE Energy Music Theatre Royal Deposit", when:"2024-12-31T05:00:00Z", where:"", url:"#"},
   {title:"Megaplex Deposit", when:"2024-12-31T08:00:00Z", where:"Salt Lake Cty UT", url:"#"},
@@ -372,7 +345,7 @@ const demoEvents = [
   {title:"Ottawa 67's vs. Brampton Steelheads", when:"2025-10-29T14:30:00Z", where:"Ottawa ON", url:"#"}
 ];
 function renderEvents(){
-  const host = document.getElementById('events-list'); host.innerHTML="";
+  const host = $('events-list'); host.innerHTML="";
   demoEvents.forEach(ev=>{
     const row = document.createElement('div'); row.className="tile tile-sm";
     row.innerHTML = `
@@ -389,12 +362,10 @@ function renderEvents(){
 }
 renderEvents();
 
-/* ---------- Traffic (Google embeds) ---------- */
-function dirURL(from,to){
-  return `https://www.google.com/maps?saddr=${encodeURIComponent(from)}&daddr=${encodeURIComponent(to)}&output=embed`;
-}
-document.getElementById('map-work').src = dirURL(HOME_ADDR, WORK_ADDR);
-document.getElementById('map-home').src = dirURL(WORK_ADDR, HOME_ADDR);
+/* ---------- Traffic (embeds) ---------- */
+function dirURL(from,to){ return `https://www.google.com/maps?saddr=${encodeURIComponent(from)}&daddr=${encodeURIComponent(to)}&output=embed`; }
+$('map-work').src = dirURL(HOME_ADDR, WORK_ADDR);
+$('map-home').src = dirURL(WORK_ADDR, HOME_ADDR);
 
 /* ---------- Stocks (stooq) ---------- */
 async function fetchStooq(t){
@@ -409,8 +380,8 @@ async function fetchStooq(t){
 }
 let stockTimer = null;
 async function renderStocks(){
-  const grid = document.getElementById('s-grid'); grid.innerHTML="";
-  const status = document.getElementById('s-status');
+  const grid = $('s-grid'); grid.innerHTML="";
+  const status = $('s-status');
   try{
     const rows = await Promise.all(STOCKS.map(fetchStooq));
     let ok=0;
@@ -433,16 +404,16 @@ async function renderStocks(){
   }catch(e){ status.textContent = 'Could not load stocks ('+e.message+').'; }
 }
 renderStocks();
-document.getElementById('s-refresh').addEventListener('click', renderStocks);
-document.getElementById('s-auto').addEventListener('click', ()=>{
+$('s-refresh').addEventListener('click', renderStocks);
+$('s-auto').addEventListener('click', ()=>{
   if (stockTimer){ clearInterval(stockTimer); stockTimer=null; alert('Auto refresh OFF'); }
   else { stockTimer = setInterval(renderStocks, 60*1000); alert('Auto refresh ON (60s)'); }
 });
 
 /* ---------- Crypto (CoinGecko) ---------- */
 async function renderCrypto(){
-  const grid = document.getElementById('c-grid'); grid.innerHTML="";
-  const status = document.getElementById('c-status');
+  const grid = $('c-grid'); grid.innerHTML="";
+  const status = $('c-status');
   try{
     const url = `https://api.coingecko.com/api/v3/simple/price?ids=${COINS.map(c=>c.id).join(',')}&vs_currencies=usd&include_24hr_change=true`;
     const r = await fetch(url,{mode:'cors'}); if(!r.ok) throw new Error(r.status);
@@ -459,11 +430,11 @@ async function renderCrypto(){
   }catch(e){ status.textContent='Could not load crypto.'; }
 }
 renderCrypto();
-document.getElementById('c-refresh').addEventListener('click', renderCrypto);
+$('c-refresh').addEventListener('click', renderCrypto);
 
-/* ---------- Pelosi trades (House Stock Watcher) ---------- */
+/* ---------- Pelosi trades ---------- */
 async function renderPelosi(){
-  const st = document.getElementById('p-status');
+  const st = $('p-status');
   const tb = document.querySelector('#p-table tbody'); tb.innerHTML="";
   try{
     st.textContent='Loading…';
@@ -480,27 +451,35 @@ async function renderPelosi(){
     });
     st.textContent = rows.length ? 'Loaded.' : 'No trades found.';
   }catch(e){
-    st.textContent='Could not load (CORS or network). If this persists, I’ll proxy via a tiny Worker.';
+    st.textContent='Could not load (CORS or network). If this persists, I can proxy via a tiny Worker.';
   }
 }
 renderPelosi();
 
-/* ---------- Converters ---------- */
-document.querySelectorAll('[data-x]').forEach(b=>b.addEventListener('click',()=>{
-  const a=b.dataset.x;
-  if(a==='mg2g'){ const v=parseFloat(mg.value||'0'); mass-out.textContent=`${v} mg = ${(v/1000).toFixed(6)} g`; }
-  if(a==='mg2kg'){ const v=parseFloat(mg.value||'0'); mass-out.textContent=`${v} mg = ${(v/1e6).toFixed(9)} kg`; }
-  if(a==='in2cm'){ const v=parseFloat(inch.value||'0'); len-out.textContent=`${v} in = ${(v*2.54).toFixed(4)} cm`; }
-  if(a==='cm2in'){ const v=parseFloat(cm.value||'0'); len-out.textContent=`${v} cm = ${(v/2.54).toFixed(4)} in`; }
-  if(a==='f2c'){ const v=parseFloat(f.value||'0'); temp-out.textContent=`${v} °F = ${((v-32)*5/9).toFixed(2)} °C`; }
-  if(a==='c2f'){ const v=parseFloat(c.value||'0'); temp-out.textContent=`${v} °C = ${(v*9/5+32).toFixed(2)} °F`; }
-}));
+/* ---------- Converters (fixed) ---------- */
+document.querySelectorAll('[data-x]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const a = btn.dataset.x;
+    const mgVal = parseFloat(($('mg')?.value ?? '0')) || 0;
+    const inVal = parseFloat(($('inch')?.value ?? '0')) || 0;
+    const cmVal = parseFloat(($('cm')?.value ?? '0')) || 0;
+    const fVal  = parseFloat(($('f')?.value ?? '0')) || 0;
+    const cVal  = parseFloat(($('c')?.value ?? '0')) || 0;
+
+    if (a === 'mg2g')  { $('mass-out').textContent = `${mgVal} mg = ${(mgVal/1000).toFixed(6)} g`; }
+    if (a === 'mg2kg') { $('mass-out').textContent = `${mgVal} mg = ${(mgVal/1e6).toFixed(9)} kg`; }
+    if (a === 'in2cm') { $('len-out').textContent  = `${inVal} in = ${(inVal*2.54).toFixed(4)} cm`; }
+    if (a === 'cm2in') { $('len-out').textContent  = `${cmVal} cm = ${(cmVal/2.54).toFixed(4)} in`; }
+    if (a === 'f2c')   { $('temp-out').textContent = `${fVal} °F = ${((fVal-32)*5/9).toFixed(2)} °C`; }
+    if (a === 'c2f')   { $('temp-out').textContent = `${cVal} °C = ${(cVal*9/5+32).toFixed(2)} °F`; }
+  });
+});
 
 /* ---------- Scratchpad ---------- */
-const pad = document.getElementById('pad');
+const pad = $('pad');
 pad.value = localStorage.getItem('dash_pad') || "";
 pad.addEventListener('input',()=> localStorage.setItem('dash_pad', pad.value));
-document.getElementById('pad-clear').addEventListener('click',()=>{ pad.value=""; localStorage.removeItem('dash_pad'); });
+$('pad-clear').addEventListener('click',()=>{ pad.value=""; localStorage.removeItem('dash_pad'); });
 </script>
 </body>
 </html>
