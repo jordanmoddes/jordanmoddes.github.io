@@ -1,35 +1,433 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming Soon</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Jmod Legacy — Gentle Daily Purpose</title>
+  <meta name="description" content="A simple daily app to help retired citizens move, share, and feel connected. Photo check-ins, gentle challenges, and story sharing." />
+  <meta name="color-scheme" content="dark light" />
+
+  <!-- FONTS (optional; keep text large and readable) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   <style>
-    body {
-      background-color: #0d0d0d;
-      color: #f2f2f2;
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      margin: 0;
+    :root{
+      --bg:#0b0c10;
+      --card:#171923;
+      --ink:#eef2ff;
+      --muted:#b5c0d0;
+      --accent:#ff2e8c; /* Jmod magenta */
+      --accent-soft: rgba(255,46,140,0.15);
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --err:#ef4444;
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,0.35);
+      --maxw:840px;
+      --gap:16px;
     }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(255,46,140,0.10), transparent 60%),
+        radial-gradient(1200px 800px at 120% 10%, rgba(255,190,0,0.10), transparent 60%),
+        var(--bg);
+      color:var(--ink); line-height:1.4;
     }
-    p {
-      font-size: 1.1rem;
-      color: #aaa;
+
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:20px}
+    header{
+      text-align:center; padding:28px 12px 12px;
     }
+    .brand{
+      display:flex; align-items:center; justify-content:center; gap:12px;
+    }
+    .brand img{
+      width:42px; height:42px; border-radius:10px; background:var(--accent-soft); padding:6px;
+    }
+    h1{margin:8px 0 0; font-size:1.6rem}
+    .tagline{color:var(--muted); margin-top:6px}
+
+    .grid{
+      display:grid; gap:var(--gap); margin-top:20px;
+    }
+    @media(min-width:740px){
+      .grid{grid-template-columns: 1fr 1fr;}
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+    .card h2{font-size:1.2rem; margin:0 0 6px}
+    .card p{color:var(--muted); margin:0 0 12px}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap}
+    button, .btn{
+      appearance:none; border:none; cursor:pointer;
+      background:var(--accent); color:white; font-weight:700;
+      padding:12px 14px; border-radius:12px;
+      transition:transform .05s ease, opacity .2s ease;
+    }
+    button.secondary, .btn.secondary{
+      background:transparent; color:var(--ink);
+      border:1px solid rgba(255,255,255,0.14);
+    }
+    button:active{transform:translateY(1px)}
+    .hint{font-size:.95rem; color:var(--muted)}
+
+    .photo-zone{
+      display:grid; grid-template-columns: 84px 1fr; gap:12px; align-items:center;
+    }
+    .thumb{
+      width:84px; height:84px; border-radius:12px; border:1px dashed rgba(255,255,255,0.18);
+      background:#0f1117; display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+    .thumb img{width:100%; height:100%; object-fit:cover}
+
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+    .streak{
+      display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px;
+      background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.35); color:#bbf7d0; font-weight:700;
+    }
+
+    textarea, input[type="text"], input[type="email"]{
+      width:100%; background:#0f1117; color:var(--ink); border:1px solid rgba(255,255,255,0.14);
+      border-radius:12px; padding:12px; font-size:1rem;
+    }
+
+    .badge{
+      display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,0.14);
+      font-size:.9rem; color:var(--muted); margin-right:6px;
+    }
+
+    footer{
+      margin:28px 0 12px;
+    }
+
+    /* ACCESIBILITY QUICK SIZE TOGGLE */
+    .size-toggle{position:fixed; right:14px; bottom:14px; z-index:3}
   </style>
 </head>
 <body>
-  <div>
-    <h1>Hi.</h1>
-    <p>Not quite done yet... check it out later!</p>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <!-- Replace with your Jmod Legacy logo if desired -->
+        <img src="/jmodco/asset/legacy/logo-legacy.svg" alt="Jmod Legacy Logo" onerror="this.style.display='none'">
+        <div>
+          <h1>Jmod Legacy</h1>
+          <div class="tagline">Gentle daily purpose for seniors & retirees.</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PROGRESS BAR / STREAK -->
+    <div class="row" style="justify-content:center; margin-top:6px">
+      <div id="streak" class="streak" title="Challenge streak">🔥 <span id="streakDays">0</span> day streak</div>
+      <span class="badge" id="lastDoneLabel">Last done: —</span>
+    </div>
+
+    <main class="grid">
+
+      <!-- CARD 1: PHOTO CHECK-IN -->
+      <section class="card" aria-labelledby="checkin-title">
+        <h2 id="checkin-title">Photo Check-In</h2>
+        <p>Take a quick photo when you’re out and about — a porch, a park, or a smile. It counts!</p>
+
+        <div class="photo-zone">
+          <div class="thumb" id="thumb"><span class="hint">No photo yet</span></div>
+          <div>
+            <input id="photoInput" type="file" accept="image/*" capture="environment" aria-label="Take a photo" />
+            <div class="hint" style="margin-top:6px">Tip: This opens your camera on most phones.</div>
+          </div>
+        </div>
+
+        <div class="actions" style="margin-top:12px">
+          <button id="savePhoto">Save Today’s Check-In</button>
+          <button class="secondary" id="clearPhoto">Clear</button>
+        </div>
+      </section>
+
+      <!-- CARD 2: TODAY'S CHALLENGE -->
+      <section class="card" aria-labelledby="challenge-title">
+        <h2 id="challenge-title">Today’s Challenge</h2>
+        <p id="challengeText">Loading a gentle prompt…</p>
+        <div class="actions">
+          <button id="markDone">I did it ✅</button>
+          <button class="secondary" id="newChallenge">New idea</button>
+        </div>
+        <p class="hint" style="margin-top:10px" id="challengeHint">Small steps count. You’ve got this. 💪</p>
+      </section>
+
+      <!-- CARD 3: SHARE A STORY -->
+      <section class="card" aria-labelledby="story-title">
+        <h2 id="story-title">Share a Story</h2>
+        <p>Write a memory or record thoughts. Then email it to family.</p>
+
+        <label class="hint" for="storyTo">Family email (optional)</label>
+        <input id="storyTo" type="email" placeholder="grandkid@example.com" inputmode="email" />
+
+        <label class="hint" for="storyText" style="margin-top:10px; display:block">Your story</label>
+        <textarea id="storyText" rows="6" placeholder="Tell us about that fishing trip, your first job, or a favorite holiday."></textarea>
+
+        <div class="actions" style="margin-top:12px">
+          <button id="emailStory">Email Story</button>
+          <button class="secondary" id="saveStory">Save Draft</button>
+        </div>
+        <div class="hint" id="storySaved" style="margin-top:10px; display:none;">Draft saved locally.</div>
+      </section>
+
+      <!-- CARD 4: FEEL-GOOD PROGRESS -->
+      <section class="card" aria-labelledby="progress-title">
+        <h2 id="progress-title">Feel-Good Progress</h2>
+        <p>Keep going! Your little wins add up.</p>
+        <div class="row">
+          <span class="badge">✅ Check-ins: <span id="checkinCount">0</span></span>
+          <span class="badge">🏅 Challenges done: <span id="doneCount">0</span></span>
+          <span class="badge">📬 Stories sent: <span id="sentCount">0</span></span>
+        </div>
+        <p class="hint" style="margin-top:10px">Badges unlock as you build your streak. We’re cheering for you. 🎉</p>
+      </section>
+
+    </main>
+
+    <!-- FOOTER: LOADED FROM /jmodco/assets/footer.html -->
+    <footer id="footer">
+      <!-- Will be injected. Fallback below if fetch fails. -->
+    </footer>
   </div>
+
+  <!-- QUICK ACCESSIBILITY: TEXT SIZE TOGGLE -->
+  <div class="size-toggle">
+    <button class="secondary" id="sizeBtn" title="Toggle larger text">A⇵</button>
+  </div>
+
+  <script>
+    // ========= UTILITIES =========
+    const $ = (sel) => document.querySelector(sel);
+    const fmtDate = (d) => new Date(d).toLocaleDateString(undefined, {year:"numeric", month:"short", day:"numeric"});
+
+    // ========= STATE (LOCAL) =========
+    const store = {
+      get(k, fallback){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; }catch{return fallback} },
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+    // Keys
+    const K = {
+      PHOTO_DATA: "legacy.photo.dataurl",
+      PHOTO_DATE: "legacy.photo.date",
+      CHECKIN_COUNT: "legacy.checkins",
+      DONE_COUNT: "legacy.challenges.done",
+      SENT_COUNT: "legacy.stories.sent",
+      STREAK_DAYS: "legacy.streak.days",
+      STREAK_LASTDAY: "legacy.streak.lastday",
+      STORY_TO: "legacy.story.to",
+      STORY_TEXT: "legacy.story.text",
+      TEXT_SIZE: "legacy.text.size"
+    };
+
+    // ========= FOOTER INCLUDE =========
+    (async function loadFooter(){
+      try{
+        const res = await fetch("/jmodco/assets/footer.html", {cache:"no-store"});
+        if(!res.ok) throw new Error("Footer fetch failed");
+        const html = await res.text();
+        document.getElementById("footer").innerHTML = html;
+      }catch(e){
+        // Fallback footer (keeps pages usable if fetch fails)
+        document.getElementById("footer").innerHTML =
+          '<div style="opacity:.8;text-align:center;padding:12px 10px;border-top:1px solid rgba(255,255,255,0.08)">© '
+          + new Date().getFullYear() + ' Jmod Co. — Built for Generational Continuity.</div>';
+      }
+    })();
+
+    // ========= CHALLENGES =========
+    const CHALLENGES = [
+      "Step outside and take one fresh-air breath. Snap a photo.",
+      "Text or call a friend or family member to say hello.",
+      "Drink a glass of water and stretch for 30 seconds.",
+      "Look for something that makes you smile and photograph it.",
+      "Write two sentences about a favorite memory.",
+      "Walk to the mailbox or the end of your driveway.",
+      "Sit by a window and count three sounds you hear.",
+      "Name one thing you’re grateful for today.",
+      "Flip through an old photo and write who’s in it.",
+      "Water a plant or step onto the porch for 1 minute."
+    ];
+    function randomChallenge(){
+      return CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
+    }
+
+    // ========= UI BINDINGS =========
+    const thumb = $("#thumb");
+    const photoInput = $("#photoInput");
+    const savePhotoBtn = $("#savePhoto");
+    const clearPhotoBtn = $("#clearPhoto");
+    const challengeText = $("#challengeText");
+    const markDoneBtn = $("#markDone");
+    const newChallengeBtn = $("#newChallenge");
+    const challengeHint = $("#challengeHint");
+    const storyTo = $("#storyTo");
+    const storyText = $("#storyText");
+    const emailStoryBtn = $("#emailStory");
+    const saveStoryBtn = $("#saveStory");
+    const storySaved = $("#storySaved");
+    const streakDaysEl = $("#streakDays");
+    const lastDoneLabel = $("#lastDoneLabel");
+    const checkinCountEl = $("#checkinCount");
+    const doneCountEl = $("#doneCount");
+    const sentCountEl = $("#sentCount");
+    const sizeBtn = $("#sizeBtn");
+
+    // ========= INIT =========
+    function init(){
+      // Restore photo
+      const dataUrl = store.get(K.PHOTO_DATA, null);
+      if(dataUrl){
+        thumb.innerHTML = '<img alt="Latest check-in photo" src="'+dataUrl+'">';
+      }
+
+      // Restore counters
+      checkinCountEl.textContent = store.get(K.CHECKIN_COUNT, 0);
+      doneCountEl.textContent = store.get(K.DONE_COUNT, 0);
+      sentCountEl.textContent = store.get(K.SENT_COUNT, 0);
+
+      // Streaks
+      const days = store.get(K.STREAK_DAYS, 0);
+      const lastDay = store.get(K.STREAK_LASTDAY, null);
+      streakDaysEl.textContent = days;
+      lastDoneLabel.textContent = lastDay ? ("Last done: " + fmtDate(lastDay)) : "Last done: —";
+
+      // Story fields
+      storyTo.value = store.get(K.STORY_TO, "");
+      storyText.value = store.get(K.STORY_TEXT, "");
+
+      // Challenge
+      challengeText.textContent = randomChallenge();
+
+      // Text size
+      const sz = store.get(K.TEXT_SIZE, "normal");
+      applyTextSize(sz);
+    }
+
+    // ========= TEXT SIZE =========
+    function applyTextSize(mode){
+      if(mode === "large"){
+        document.documentElement.style.setProperty("font-size", "18px");
+      }else{
+        document.documentElement.style.setProperty("font-size", "16px");
+      }
+    }
+    sizeBtn.addEventListener("click", ()=>{
+      const current = store.get(K.TEXT_SIZE, "normal");
+      const next = current === "normal" ? "large" : "normal";
+      store.set(K.TEXT_SIZE, next);
+      applyTextSize(next);
+    });
+
+    // ========= PHOTO HANDLING =========
+    photoInput.addEventListener("change", async (e)=>{
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        thumb.innerHTML = '<img alt="Check-in photo preview" src="'+reader.result+'">';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    savePhotoBtn.addEventListener("click", ()=>{
+      const img = thumb.querySelector("img");
+      if(!img){ alert("Please take or choose a photo first."); return; }
+      store.set(K.PHOTO_DATA, img.src);
+      store.set(K.PHOTO_DATE, new Date().toISOString());
+      // Increment check-in count
+      const cnt = store.get(K.CHECKIN_COUNT, 0) + 1;
+      store.set(K.CHECKIN_COUNT, cnt);
+      checkinCountEl.textContent = cnt;
+      // Update streak (counts with "done" action too, but check-ins can also keep momentum)
+      bumpStreak();
+      alert("Check-in saved. Nice work!");
+    });
+
+    clearPhotoBtn.addEventListener("click", ()=>{
+      thumb.innerHTML = '<span class="hint">No photo yet</span>';
+      store.set(K.PHOTO_DATA, null);
+      store.set(K.PHOTO_DATE, null);
+    });
+
+    // ========= CHALLENGES =========
+    newChallengeBtn.addEventListener("click", ()=>{
+      challengeText.textContent = randomChallenge();
+      challengeHint.textContent = "New prompt loaded. Pick the easiest step.";
+    });
+
+    function bumpStreak(){
+      const today = new Date(); today.setHours(0,0,0,0);
+      const last = store.get(K.STREAK_LASTDAY, null);
+      let days = store.get(K.STREAK_DAYS, 0);
+
+      if(!last){
+        days = 1;
+      } else {
+        const lastDate = new Date(last); lastDate.setHours(0,0,0,0);
+        const diff = (today - lastDate) / (1000*60*60*24);
+        if(diff === 0){
+          // already counted today: do nothing
+        }else if(diff === 1){
+          days += 1; // consecutive day
+        }else if(diff > 1){
+          days = 1; // streak reset
+        }
+      }
+      store.set(K.STREAK_DAYS, days);
+      store.set(K.STREAK_LASTDAY, today.toISOString());
+      streakDaysEl.textContent = days;
+      lastDoneLabel.textContent = "Last done: " + fmtDate(today);
+    }
+
+    markDoneBtn.addEventListener("click", ()=>{
+      // increment done count
+      const d = store.get(K.DONE_COUNT, 0) + 1;
+      store.set(K.DONE_COUNT, d);
+      doneCountEl.textContent = d;
+      bumpStreak();
+      challengeHint.textContent = "Great job! Small steps add up. 🎉";
+    });
+
+    // ========= STORY SHARE =========
+    saveStoryBtn.addEventListener("click", ()=>{
+      store.set(K.STORY_TO, storyTo.value.trim());
+      store.set(K.STORY_TEXT, storyText.value);
+      storySaved.style.display = "block";
+      setTimeout(()=> storySaved.style.display = "none", 1400);
+    });
+
+    emailStoryBtn.addEventListener("click", ()=>{
+      const to = storyTo.value.trim();
+      const body = encodeURIComponent(storyText.value.trim() || "(Your story here)");
+      const subject = encodeURIComponent("A Story from Jmod Legacy");
+      const href = "mailto:" + (to || "") + "?subject=" + subject + "&body=" + body;
+      window.location.href = href;
+
+      // Count send
+      const s = store.get(K.SENT_COUNT, 0) + 1;
+      store.set(K.SENT_COUNT, s);
+      sentCountEl.textContent = s;
+    });
+
+    init();
+  </script>
 </body>
 </html>
