@@ -8,45 +8,53 @@
 
   <style>
 /* =========================
-   JMOD LABS — GLOBAL STYLES
+   JMOD LABS — TUNING KNOBS
    ========================= */
 :root{
-  /* quick knobs */
+  /* ===== assets ===== */
+  /* >>> Change this to your final path if different <<< */
+  --bg-img: url("/jmodco/assets/labs_brain_bg.jpg");
+
+  /* ===== layout ===== */
   --hero-card-pad: 28px;
   --hero-card-pad-m: 18px;
-  --hero-logo-scale: 1;
+  --hero-logo-scale: 1;   /* desktop fine-tune (multiplier) */
   --panel-opacity: .88;
   --header-h: 60px;
 
-  /* palette */
+  /* ===== color & glow ===== */
   --bg:#091019; --bg2:#0b1122;
   --ink:#e8f0ff; --muted:#c7d3ea;
   --border:rgba(201,208,221,.20);
   --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
   --radius:18px; --radius-sm:12px; --gap:18px; --maxw:1200px;
 
-  /* glow colors */
-  --pulse:#e8fcff;
-  --cyan:#6ee8ff;
-  --vio:#b066ff;
-
-  /* background tuning */
+  /* background */
   --grid-gap: 48px;
-  --flow-speed: 5400ms;
+  --bloom: 0.55;         /* 0–1: background bloom overlay strength */
+  --darken: 0.35;        /* 0–.6: vignette/darken overlay strength */
+  --parallax: 12px;      /* how much the bg moves on scroll */
+
+  /* pulse hotspot (where the chip under the brain sits) */
+  --hot-x: 50%;          /* % of viewport width */
+  --hot-y: 65%;          /* % of viewport height */
+
+  /* animation speeds */
+  --flow-speed: 5200ms;
+  --pulse-speed: 4200ms;
   --neuron-speed: 8s;
-  --brain-pulse: 4200ms;
 }
 
+/* =========================
+   GLOBAL
+   ========================= */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 html,body{height:100%}
 body{
   margin:0; font:16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color:var(--ink);
-  background:
-    radial-gradient(1400px 900px at 15% -10%, rgba(176,102,255,.08), transparent 60%),
-    radial-gradient(1400px 900px at 115% 8%, rgba(110,232,255,.08), transparent 60%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
+  background: linear-gradient(180deg, var(--bg), var(--bg2));
   overflow-x:hidden; position:relative; isolation:isolate;
   padding-top: var(--header-h);
 }
@@ -55,20 +63,57 @@ a{color:#6ee8ff; text-decoration:none}
 a:hover{text-decoration:underline}
 
 /* =========================
-   FIXED, PARALLAX BACKGROUND
+   FIXED BACKGROUND STACK
    ========================= */
-#brain-bg{position:fixed; inset:0; z-index:-2; overflow:hidden}
-.bg-grid{position:absolute; inset:0; z-index:0;
-  background:
-   repeating-linear-gradient(0deg, rgba(150,190,255,.10) 0 1px, transparent 1px var(--grid-gap)),
-   repeating-linear-gradient(90deg,rgba(150,190,255,.10) 0 1px, transparent 1px var(--grid-gap));
-  mask-image: radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.95), rgba(255,255,255,.3) 55%, transparent 80%);
+#bg-stack{position:fixed; inset:0; z-index:-3; overflow:hidden}
+
+/* Layer 1 — the brain image (with subtle parallax) */
+.bg-img{
+  position:absolute; inset:-2% -2% -2% -2%;
+  background-image: var(--bg-img);
+  background-size: cover; background-position: center;
+  transform: translate3d(0, calc(var(--parallax) * -1), 0);
+  will-change: transform;
+}
+@media (prefers-reduced-motion:no-preference){
+  /* gentle scroll parallax */
+  body:has(#bg-stack) .bg-img{ animation:parallaxY 50s linear infinite alternate }
+}
+@keyframes parallaxY{
+  from{ transform: translate3d(0, calc(var(--parallax) * -1), 0) }
+  to  { transform: translate3d(0, calc(var(--parallax) *  1), 0) }
 }
 
-/* SVG sits on top of the grid */
-#brain-svg{position:absolute; inset:0; width:100%; height:100%; z-index:1; display:block}
+/* Layer 2 — soft bloom to make highlights pop */
+.bg-bloom{
+  position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(1200px 800px at 50% 40%, rgba(110,232,255,.35), transparent 60%);
+  mix-blend-mode: screen; opacity: var(--bloom);
+  filter: blur(8px);
+}
 
-/* animated data “highways” */
+/* Layer 3 — darken + vignette for text readability */
+.bg-mask{
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(1200px 800px at 50% 45%, rgba(0,0,0,0), rgba(0,0,0,.25) 55%, rgba(0,0,0,.5) 85%),
+    linear-gradient(180deg, rgba(0,0,0,calc(var(--darken)*.85)), rgba(0,0,0,calc(var(--darken)*.65)) 40%, rgba(0,0,0,calc(var(--darken)*.85)));
+}
+
+/* Layer 4 — a subtle grid on top */
+.bg-grid{
+  position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+   repeating-linear-gradient(0deg, rgba(150,190,255,.12) 0 1px, transparent 1px var(--grid-gap)),
+   repeating-linear-gradient(90deg,rgba(150,190,255,.12) 0 1px, transparent 1px var(--grid-gap));
+  mask-image: radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.95), rgba(255,255,255,.3) 55%, transparent 80%);
+  mix-blend-mode: overlay;
+}
+
+/* Layer 5 — SVG effects (flows + pulse rings + neurons) */
+#fx{position:absolute; inset:0; z-index:1; display:block; pointer-events:none;}
+
+/* animated “data highways” */
 .flow{stroke:rgba(150,220,255,.35); stroke-width:1.1; stroke-linecap:round;
   stroke-dasharray:2 120; animation:flow var(--flow-speed) cubic-bezier(.25,.6,.2,1) infinite}
 @keyframes flow{
@@ -77,43 +122,25 @@ a:hover{text-decoration:underline}
   100%{stroke:#7ed8ff; stroke-width:1.0; stroke-dashoffset:-260; opacity:.35}
 }
 
-/* neuron nodes and halo */
+/* neurons & halos */
 .neuron{fill:#9ddfff}
 .halo{fill:none; stroke:rgba(110,232,255,.35); stroke-width:6; filter:blur(2px)}
-.neuronPulse{
-  animation:neuron var(--neuron-speed) ease-in-out infinite;
-  transform-origin:center;
-}
-@keyframes neuron{
-  0%,100%{opacity:.9; transform:scale(1)}
-  50%{opacity:.35; transform:scale(.72)}
-}
+.neuronPulse{ animation:neuron var(--neuron-speed) ease-in-out infinite; transform-origin:center; }
+@keyframes neuron{ 0%,100%{opacity:.9; transform:scale(1)} 50%{opacity:.35; transform:scale(.72)} }
 
-/* the brain silhouette glow */
-#brainGlow{filter: drop-shadow(0 0 28px rgba(110,232,255,.45)) drop-shadow(0 0 70px rgba(176,102,255,.35));}
-#brainCore{
-  fill:url(#brainGrad);
-  filter: drop-shadow(0 0 16px rgba(255,255,255,.6));
+/* pulse rings blasting from the chip under the brain */
+.pulseRing{
+  fill:none; stroke:rgba(255,255,255,.28); stroke-width:1.2; opacity:.85;
+  transform-origin: var(--hot-x) var(--hot-y);
+  animation: ring var(--pulse-speed) ease-out infinite;
 }
-.brainOutline{
-  fill:none; stroke:rgba(200,235,255,.65); stroke-width:1.2; opacity:.85;
-  filter: drop-shadow(0 0 8px rgba(170,230,255,.5));
+.pulseRing:nth-child(2){ animation-delay:.8s }
+.pulseRing:nth-child(3){ animation-delay:1.6s }
+@keyframes ring{
+  0%{ transform: translate(-50%,-50%) scale(.6); opacity:.85 }
+  70%{ transform: translate(-50%,-50%) scale(1.25); opacity:.15 }
+  100%{ transform: translate(-50%,-50%) scale(1.35); opacity:0 }
 }
-
-/* concentric brain pulse */
-.pulseRing{ fill:none; stroke:rgba(255,255,255,.25); stroke-width:1.2; opacity:.85;
-  transform-origin:50% 50%; animation:brainPulse var(--brain-pulse) ease-out infinite; }
-.pulseRing:nth-child(2){ animation-delay:.9s }
-.pulseRing:nth-child(3){ animation-delay:1.8s }
-@keyframes brainPulse{
-  0%{ transform:scale(.6); opacity:.85 }
-  70%{ transform:scale(1.22); opacity:.15 }
-  100%{ transform:scale(1.34); opacity:0 }
-}
-
-/* woven brand text inside brain */
-.brandText{ fill:url(#brandGrad); font:800 22px/1 "Inter", ui-sans-serif; letter-spacing:.6px;
-  filter: drop-shadow(0 0 10px rgba(120,200,255,.5)); }
 
 /* =========================
    HEADER + NAV (responsive)
@@ -129,11 +156,7 @@ header{
   display:flex; align-items:center; justify-content:space-between; gap:12px}
 .brand{display:flex; align-items:center; gap:10px}
 .brand .t1{font-weight:700; letter-spacing:.3px}
-
-/* desktop nav */
 nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
-
-/* mobile nav toggle */
 .nav-toggle{
   display:none; width:38px; height:38px; border-radius:10px; border:1px solid var(--border);
   background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
@@ -154,10 +177,9 @@ nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
 .nav-panel.open{display:block}
 
 /* =========================
-   LAYOUT + HERO
+   HERO
    ========================= */
 .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px; position:relative; z-index:2}
-
 .hero{
   display:grid; grid-template-columns: 1fr 1fr; gap:32px;
   align-items:stretch; padding:56px 20px 24px; margin:0 auto; max-width:var(--maxw);
@@ -171,7 +193,6 @@ nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
 }
 .hero-left{display:flex; align-items:center; justify-content:center;}
 .hero-right{display:flex; flex-direction:column; justify-content:center}
-
 .img-slot{flex:1; display:flex; align-items:center; justify-content:center; height:100%;}
 .img-slot > img{
   height:100%; width:auto; max-height:100%; max-width:100%; object-fit:contain;
@@ -195,7 +216,7 @@ nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
   linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
   border-color:rgba(201,208,221,.35)}
 
-/* sections */
+/* sections, cards */
 section{padding:36px 20px}
 .section-title{max-width:var(--maxw); margin:0 auto 16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px}
 .section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
@@ -213,7 +234,9 @@ section{padding:36px 20px}
 .card p{color:#d2dcf4; margin:8px 0 12px}
 .card .actions{display:flex; gap:10px; flex-wrap:wrap}
 
-/* ====== MOBILE ====== */
+/* =========================
+   MOBILE
+   ========================= */
 @media (max-width: 860px){
   :root{ --header-h: 56px; }
   nav{ display:none; }
@@ -235,119 +258,52 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(110,232
 .modal{padding:22px; border-bottom:1px solid var(--border)}
 .modal-body{padding:18px 22px; display:grid; gap:12px}
 .field{display:grid; gap:6px}
-.field input{background:#0b1020; border:1px solid var(--border); color:var(--ink); padding:12px 12px; border-radius:10px}
+.field input{background:#0b1020; border:1px solid var(--border); color:#fff; padding:12px 12px; border-radius:10px}
 .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:0 22px 22px}
   </style>
 </head>
 <body>
 
   <!-- =========================
-       BACKGROUND: GLOWING BRAIN
+       BACKGROUND (image + effects)
        ========================= -->
-  <div id="brain-bg" aria-hidden="true">
+  <div id="bg-stack" aria-hidden="true">
+    <div class="bg-img"></div>
+    <div class="bg-bloom"></div>
+    <div class="bg-mask"></div>
     <div class="bg-grid"></div>
 
-    <svg id="brain-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <!-- gradients -->
-        <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#e9f7ff"/><stop offset="100%" stop-color="#7bdcff"/>
-        </linearGradient>
-        <radialGradient id="brainGrad" cx="50%" cy="45%" r="60%">
-          <stop offset="0%"  stop-color="#ffffff" stop-opacity=".95"/>
-          <stop offset="35%" stop-color="#b7f1ff" stop-opacity=".9"/>
-          <stop offset="75%" stop-color="#6ee8ff" stop-opacity=".45"/>
-          <stop offset="100%" stop-color="#6ee8ff" stop-opacity="0"/>
-        </radialGradient>
-        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="10" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-
-      <!-- flowing data lines across canvas -->
+    <!-- Effects overlay -->
+    <svg id="fx" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+      <!-- flowing data lines (aligned to PCB traces) -->
       <g opacity=".55">
-        <!-- vertical “buses” -->
-        <path class="flow" d="M200,-50V850" />
-        <path class="flow" d="M450,-50V850" />
+        <path class="flow" d="M180,-50V850" />
+        <path class="flow" d="M430,-50V850" />
         <path class="flow" d="M750,-50V850" />
-        <path class="flow" d="M980,-50V850" />
-        <!-- arcs that sweep behind content -->
+        <path class="flow" d="M1010,-50V850" />
         <path class="flow" d="M-50,560 C320,420 880,420 1250,560" />
         <path class="flow" d="M-50,620 C300,480 900,480 1250,620" />
       </g>
 
-      <!-- Brain group centered -->
-      <g id="brainGlow" transform="translate(600 380)">
-        <!-- pulse rings -->
-        <circle class="pulseRing" r="180" />
-        <circle class="pulseRing" r="260" />
-        <circle class="pulseRing" r="330" />
+      <!-- pulse rings from chip under brain -->
+      <g>
+        <circle class="pulseRing" cx="600" cy="520" r="160"/>
+        <circle class="pulseRing" cx="600" cy="520" r="240"/>
+        <circle class="pulseRing" cx="600" cy="520" r="320"/>
       </g>
 
-      <!-- Brain silhouette & core -->
-      <g id="brain" transform="translate(600 380)">
-        <!-- soft inner light -->
-        <ellipse id="brainCore" rx="210" ry="155"></ellipse>
-
-        <!-- outline path (stylized brain) -->
-        <path class="brainOutline" d="
-          M -160,-40
-          q 10,-70 90,-90
-          q 60,-15 115,20
-          q 45,-18 95,0
-          q 60,22 70,80
-          q 55,10 70,60
-          q 10,40 -20,70
-          q 30,65 -55,95
-          q -30,70 -130,65
-          q -50,30 -110,10
-          q -70,15 -110,-25
-          q -55,-10 -75,-55
-          q -25,-45 10,-85
-          q -35,-55 25,-100
-          z" />
-
-        <!-- woven brand text inside brain -->
-        <text class="brandText" text-anchor="middle" y="10">Jmod Labs</text>
-      </g>
-
-      <!-- neurons + halos sprinkled inside the brain -->
-      <g id="neurons" transform="translate(600 380)">
-        <g class="neuronPulse">
-          <circle class="halo"   cx="-90" cy="-30" r="6"/>
-          <circle class="neuron" cx="-90" cy="-30" r="2.1"/>
-        </g>
-        <g class="neuronPulse" style="animation-delay:.6s">
-          <circle class="halo"   cx="40" cy="-60" r="6"/>
-          <circle class="neuron" cx="40" cy="-60" r="2.1"/>
-        </g>
-        <g class="neuronPulse" style="animation-delay:1.1s">
-          <circle class="halo"   cx="95" cy="10" r="6"/>
-          <circle class="neuron" cx="95" cy="10" r="2.1"/>
-        </g>
-        <g class="neuronPulse" style="animation-delay:1.6s">
-          <circle class="halo"   cx="-40" cy="50" r="6"/>
-          <circle class="neuron" cx="-40" cy="50" r="2.1"/>
-        </g>
-        <g class="neuronPulse" style="animation-delay:2.1s">
-          <circle class="halo"   cx="-130" cy="35" r="6"/>
-          <circle class="neuron" cx="-130" cy="35" r="2.1"/>
-        </g>
-      </g>
-
-      <!-- animated connections (small pulses) -->
-      <g id="synapses" transform="translate(600 380)" filter="url(#softGlow)">
-        <path class="flow" d="M -90 -30 Q -20 -10 40 -60" />
-        <path class="flow" d="M 40 -60 Q 68 -30 95 10" />
-        <path class="flow" d="M -130 35 Q -60 20 -40 50" />
-        <path class="flow" d="M -90 -30 Q -70 10 -40 50" />
+      <!-- small neurons inside the brain area -->
+      <g>
+        <g class="neuronPulse" style="animation-delay:.1s"><circle class="halo" cx="520" cy="280" r="6"/><circle class="neuron" cx="520" cy="280" r="2.1"/></g>
+        <g class="neuronPulse" style="animation-delay:.6s"><circle class="halo" cx="650" cy="260" r="6"/><circle class="neuron" cx="650" cy="260" r="2.1"/></g>
+        <g class="neuronPulse" style="animation-delay:1.1s"><circle class="halo" cx="700" cy="330" r="6"/><circle class="neuron" cx="700" cy="330" r="2.1"/></g>
+        <g class="neuronPulse" style="animation-delay:1.6s"><circle class="halo" cx="560" cy="350" r="6"/><circle class="neuron" cx="560" cy="350" r="2.1"/></g>
       </g>
     </svg>
   </div>
 
   <!-- =========================
-       HEADER (desktop + mobile)
+       HEADER
        ========================= -->
   <header>
     <div class="bar">
@@ -403,7 +359,7 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(110,232
   </section>
 
   <!-- =========================
-       CONTENT SECTIONS
+       CONTENT SECTIONS (same as before)
        ========================= -->
   <section id="mandate">
     <div class="section-title wrap">
@@ -524,154 +480,4 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(110,232
       <h2>How the AI learns</h2>
       <div class="muted">Feedback → signals → better outcomes</div>
     </div>
-    <div class="grid">
-      <article class="card sm-6">
-        <div class="chips"><span class="chip">Signals</span></div>
-        <h3>Usage, outcomes, corrections</h3>
-        <p>Anonymized task results, user edits, and timing become training signals to improve prompts, rules, and routing.</p>
-      </article>
-      <article class="card sm-6">
-        <div class="chips"><span class="chip">Knowledge</span></div>
-        <h3>Structured & searchable</h3>
-        <p>Docs and patterns live in the Labs knowledge base. Everything is vector-searchable and versioned for reuse.</p>
-      </article>
-    </div>
-  </section>
-
-  <section id="smb">
-    <div class="section-title wrap">
-      <h2>Built for Small & Medium Businesses</h2>
-      <div class="muted">Automate busywork. Focus on revenue.</div>
-    </div>
-    <div class="grid">
-      <article class="card sm-4">
-        <div class="chips"><span class="chip">Quoting</span></div>
-        <h3>Instant, accurate quotes</h3>
-        <p>Price rules, parts lookup, and clean PDFs. Less time building quotes, more time closing.</p>
-      </article>
-      <article class="card sm-4">
-        <div class="chips"><span class="chip">Content</span></div>
-        <h3>Marketing on autopilot</h3>
-        <p>Plan → generate → schedule. Keep posts flowing while you’re on jobs.</p>
-      </article>
-      <article class="card sm-4">
-        <div class="chips"><span class="chip">Ops</span></div>
-        <h3>From clipboard to dashboard</h3>
-        <p>Digitize intake, reconcile inventory, push status updates. No more hunting through texts and spreadsheets.</p>
-      </article>
-    </div>
-  </section>
-
-  <section id="tech">
-    <div class="section-title wrap">
-      <h2>Current Tech Stack</h2>
-      <div class="muted">We update tools as Labs evolves.</div>
-    </div>
-    <div class="tech">
-      <span class="pill">JavaScript/TypeScript</span>
-      <span class="pill">Python</span>
-      <span class="pill">Cloudflare Workers</span>
-      <span class="pill">GitHub Pages</span>
-      <span class="pill pill silver">AI Embeddings & Vectors</span>
-      <span class="pill">Postgres/SQLite</span>
-      <span class="pill">Excel/VBA bridges</span>
-      <span class="pill">REST & Webhooks</span>
-    </div>
-  </section>
-
-  <section id="join">
-    <div class="section-title wrap">
-      <h2>Collaborate with Labs</h2>
-      <div class="muted">Concept submissions open soon</div>
-    </div>
-    <div class="grid">
-      <article class="card sm-12">
-        <p>We’ll soon enable concept submissions and private partner access. For now, sign in to register interest and unlock deeper docs.</p>
-        <div class="actions" style="justify-content:center">
-          <button class="btn primary" onclick="document.getElementById('signin').showModal()">Sign in / Request access</button>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- footer mount -->
-  <div id="footerMount"></div>
-
-  <!-- sign-in dialog -->
-  <dialog id="signin" aria-labelledby="signin-title">
-    <div class="modal">
-      <h3 id="signin-title">Sign in to Jmod Labs</h3>
-      <p>Public can browse; detailed demos & docs require an account.</p>
-    </div>
-    <form class="modal-body" method="dialog" onsubmit="return false;">
-      <div class="field"><label>Email</label><input type="email" placeholder="you@email.com" required /></div>
-      <div class="field"><label>Password</label><input type="password" placeholder="••••••••" required /></div>
-      <div class="modal-actions">
-        <button class="btn" onclick="document.getElementById('signin').close()">Cancel</button>
-        <button class="btn primary" onclick="alert('Stub — wire to auth later')">Sign in</button>
-      </div>
-    </form>
-  </dialog>
-
-  <script>
-    // mobile nav
-    const toggle = document.querySelector('.nav-toggle');
-    const panel  = document.getElementById('mnav');
-    toggle?.addEventListener('click', () => {
-      const open = panel.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
-    });
-    panel?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      panel.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); panel.setAttribute('aria-hidden','true');
-    }));
-    function gate(){ document.getElementById('signin').showModal(); }
-
-    // shared footer
-    (async function mountFooter(){
-      const mount = document.getElementById('footerMount');
-      try{
-        const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
-        if(!r.ok) throw 0;
-        mount.innerHTML = await r.text();
-      }catch(e){
-        mount.innerHTML = `
-          <footer style="border-top:1px solid rgba(201,208,221,.18); background:linear-gradient(180deg, rgba(176,102,255,.08), transparent)">
-            <div style="max-width:1200px;margin:0 auto;padding:22px 20px;display:flex;gap:12px;flex-wrap:wrap;color:#d2dcf4;">
-              <div>© ${new Date().getFullYear()} Jmod Co.</div>
-              <div>Built for small business clarity.</div>
-            </div>
-          </footer>`;
-      }
-    })();
-
-    // metrics auto-load
-    (async function(){
-      const expEl=document.getElementById('expCount'), toolsEl=document.getElementById('toolsCount'),
-            xferEl=document.getElementById('xferCount'), sampleFlag=document.getElementById('sampleFlag');
-      async function safeJson(path){
-        try{ const r=await fetch(path,{cache:'no-store'}); if(!r.ok) throw 0; return await r.json(); }
-        catch(e){ return null; }
-      }
-      const [exps, tools, xfers] = await Promise.all([
-        safeJson('/internal/experiments.json'),
-        safeJson('/internal/tools.json'),
-        safeJson('/internal/transfers.json')
-      ]);
-      if(exps || tools || xfers){
-        const active = Array.isArray(exps) ? exps.filter(e => (e.status||'active').toLowerCase()!=='archived').length : 0;
-        const tcount = Array.isArray(tools) ? tools.length : 0;
-        const xcount = Array.isArray(xfers) ? xfers.length : 0;
-        expEl.textContent=`Active Experiments: ${active}`;
-        toolsEl.textContent=`Tools Built: ${tcount}`;
-        xferEl.textContent=`Transfers: ${xcount}`;
-      } else {
-        if(sampleFlag) sampleFlag.style.display='inline-block';
-        expEl.textContent='Active Experiments: 3';
-        toolsEl.textContent='Tools Built: 12';
-        xferEl.textContent='Transfers: 5';
-      }
-    })();
-  </script>
-</body>
-</html>
+    <div
