@@ -12,29 +12,23 @@
    ========================= */
 :root{
   /* ===== quick knobs ===== */
-  --hero-card-pad: 28px;       /* padding for BOTH hero cards */
-  --hero-logo-scale: 1;        /* optional extra scale (1 = off) */
+  --hero-card-pad: 28px;       /* desktop padding for BOTH hero cards */
+  --hero-card-pad-m: 18px;     /* mobile padding for hero cards */
+  --hero-logo-scale: 1;        /* desktop fine-tune (1 = off) */
   --panel-opacity: .85;        /* .70 subtle … 1.00 solid */
-  --header-h: 68px;            /* header height for offsets */
+  --header-h: 60px;            /* header height for offsets (mobile a bit shorter) */
 
-  /* reactor palette */
-  --reactor-core:#aef2ff;
-  --reactor-cyan:#57e6ff;
-  --reactor-white:#ffffff;
-
-  /* site palette */
-  --bg:#0a0b0f; --bg2:#0e1017;
-  --ink:#e6ecff; --muted:#c8d2ea;
+  /* palette */
+  --reactor-core:#aef2ff; --reactor-cyan:#57e6ff; --reactor-white:#ffffff;
+  --bg:#0a0b0f; --bg2:#0e1017; --ink:#e6ecff; --muted:#c8d2ea;
   --border:rgba(201,208,221,.18);
   --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
   --radius:18px; --radius-sm:12px; --gap:18px; --maxw:1200px;
 
   /* background tuning */
-  --pulse-speed: 4200ms;
-  --ring-speed: 55s;
-  --density: 0.75;
-  --blur: 0.6px;
+  --pulse-speed: 4200ms; --ring-speed: 55s; --density: 0.75; --blur: 0.6px;
 }
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 html,body{height:100%}
@@ -67,51 +61,69 @@ a:hover{text-decoration:underline}
 .orbit.slow{animation:spin var(--ring-speed) linear infinite; transform-origin:50% 50%}
 .orbit.fast{animation:spin calc(var(--ring-speed)/2) linear infinite reverse; transform-origin:50% 50%}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .link{stroke:rgba(135,220,255,.40); stroke-width:1; stroke-linecap:round; filter:blur(var(--blur));
   stroke-dasharray:3 120; animation:pulse var(--pulse-speed) cubic-bezier(.25,.6,.2,1) infinite}
 @keyframes pulse{0%{stroke:#eaf9ff;stroke-width:1.5;stroke-dashoffset:0;opacity:.95}
   60%{stroke:#57e6ff;stroke-width:1;stroke-dashoffset:-130;opacity:.55}
   100%{stroke:#7dd9ff;stroke-width:.9;stroke-dashoffset:-260;opacity:.35}}
-
 .node{fill:#89d8ff}
 .halo{fill:none; stroke:rgba(130,210,255,.35); stroke-width:6; filter:blur(2px)}
 .icon{fill:none; stroke:#cfe9ff; stroke-width:1.2; opacity:.9; filter:drop-shadow(0 0 6px rgba(200,240,255,.35))}
 .brand-weave{fill:url(#brandGrad); font:800 22px/1 "Inter", ui-sans-serif; letter-spacing:.6px;
   filter:drop-shadow(0 0 10px rgba(120,200,255,.5))}
 .projectile{ fill:#ffffff; filter: drop-shadow(0 0 6px rgba(200,240,255,.9)); }
-
-.core-crystal{ fill:url(#coreGrad); stroke:rgba(255,255,255,.45); stroke-width:.8;
-  filter: drop-shadow(0 0 22px rgba(120,240,255,.45)); }
+.core-crystal{ fill:url(#coreGrad); stroke:rgba(255,255,255,.45); stroke-width:.8; filter: drop-shadow(0 0 22px rgba(120,240,255,.45)); }
 .beam{ stroke:url(#beamGrad); stroke-width:1.2; stroke-linecap:round; opacity:.55; }
 .core-ring{ fill:none; stroke:rgba(120,240,255,.25); stroke-width:1.5; }
 .pulse-ring{ fill:none; stroke:rgba(255,255,255,.28); stroke-width:1.2; opacity:.8; animation:expand 3.8s ease-out infinite; transform-origin:50% 50%; }
 .pulse-ring:nth-child(2){ animation-delay:.9s }
 .pulse-ring:nth-child(3){ animation-delay:1.8s }
-@keyframes expand{
-  0%{ transform:scale(.4); opacity:.9 }
-  70%{ transform:scale(1.1); opacity:.15 }
-  100%{ transform:scale(1.3); opacity:0 }
-}
+@keyframes expand{ 0%{ transform:scale(.4); opacity:.9 } 70%{ transform:scale(1.1); opacity:.15 } 100%{ transform:scale(1.3); opacity:0 } }
 
-/* ===== Fixed Header ===== */
+/* ===== Fixed Header (responsive) ===== */
 header{
-  position:fixed; top:0; left:0; right:0; height:var(--header-h); z-index:5;
+  position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:50;
   display:flex; align-items:center;
   backdrop-filter:blur(10px);
-  background:linear-gradient(180deg, rgba(10,11,15,.85), rgba(10,11,15,.55) 70%, transparent);
+  background:linear-gradient(180deg, rgba(10,11,15,.88), rgba(10,11,15,.60) 70%, transparent);
   border-bottom:1px solid var(--border)
 }
-.bar{max-width:var(--maxw); margin:0 auto; width:100%; padding:0 20px;
-  display:flex; align-items:center; justify-content:space-between; gap:20px}
-.brand{display:flex; align-items:center; gap:12px}
+.bar{max-width:var(--maxw); margin:0 auto; width:100%; padding:0 14px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px}
+.brand{display:flex; align-items:center; gap:10px}
 .brand .t1{font-weight:700; letter-spacing:.3px}
+
+/* desktop nav */
 nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+
+/* mobile nav toggle */
+.nav-toggle{
+  display:none; width:38px; height:38px; border-radius:10px; border:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  align-items:center; justify-content:center; cursor:pointer;
+}
+.nav-toggle span{
+  width:18px; height:2px; background:#dfe8ff; position:relative; display:block;
+}
+.nav-toggle span::before,.nav-toggle span::after{
+  content:""; position:absolute; left:0; width:18px; height:2px; background:#dfe8ff;
+}
+.nav-toggle span::before{ top:-6px } .nav-toggle span::after{ top:6px }
+
+/* mobile menu panel */
+.nav-panel{
+  display:none; position:fixed; top:var(--header-h); left:0; right:0; z-index:45;
+  background:linear-gradient(180deg, #0b1020, #0a0e1b); border-bottom:1px solid var(--border);
+  padding:12px 16px; box-shadow:0 16px 40px rgba(0,0,0,.45);
+}
+.nav-panel a{display:block; padding:10px 4px; border-radius:8px}
+.nav-panel a:active{background:rgba(255,255,255,.06)}
+.nav-panel.open{display:block}
 
 /* layout containers */
 .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px; position:relative; z-index:2}
 
-/* ===== HERO (equal columns, equal height; logo fills left card height) ===== */
+/* ===== HERO (desktop: equal columns & heights) ===== */
 .hero{
   display:grid; grid-template-columns: 1fr 1fr; gap:32px;
   align-items:stretch;            /* equalize heights */
@@ -127,13 +139,13 @@ nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
 .hero-left{display:flex; align-items:center; justify-content:center;}
 .hero-right{display:flex; flex-direction:column; justify-content:center}
 
-/* make logo fill the inner height of the left card.
-   result: top and bottom of the logo align with the right card edges */
+/* Make logo fill the inner height of the left card on desktop
+   so its top/bottom align with the right card */
 .img-slot{flex:1; display:flex; align-items:center; justify-content:center; height:100%;}
 .img-slot > img{
-  height: 100%;              /* fills vertically */
+  height: 100%;
   max-height: 100%;
-  width: auto;               /* keep aspect ratio */
+  width: auto;
   max-width: 100%;
   object-fit: contain;
   transform: scale(var(--hero-logo-scale));
@@ -144,7 +156,7 @@ nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
 .tag{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
   background:linear-gradient(90deg, rgba(255,61,242,.20), rgba(87,230,255,.20));
   border:1px solid var(--border); font-size:.85rem; color:#d8e2ff; margin-bottom:12px}
-.hero-right h1{font-size:clamp(28px, 4vw, 46px); margin:0 0 10px}
+.hero-right h1{font-size:clamp(28px, 5vw, 46px); margin:0 0 10px}
 .hero-right p{color:var(--muted); margin:10px 0 18px}
 .cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
 .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; border:1px solid var(--border);
@@ -157,19 +169,17 @@ nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
   linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
   border-color:rgba(201,208,221,.35)}
 
-/* ===== Sections ===== */
+/* ===== Sections / cards ===== */
 section{padding:36px 20px}
 .section-title{max-width:var(--maxw); margin:0 auto 16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px}
 .section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
 .muted{color:var(--muted)}
 .grid{max-width:var(--maxw); margin:0 auto; display:grid; gap:var(--gap); grid-template-columns: repeat(12, 1fr)}
-.card{
-  grid-column: span 12;
-  background:rgba(17,19,28,var(--panel-opacity));
-  border:1px solid var(--border); border-radius:var(--radius); padding:18px;
-  box-shadow:var(--shadow); position:relative; overflow:hidden; color:#e7eeff
+.card{grid-column: span 12; background:rgba(17,19,28,var(--panel-opacity)); border:1px solid var(--border);
+  border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); position:relative; overflow:hidden; color:#e7eeff}
+@media (min-width:720px){
+  .card.sm-6{grid-column: span 6} .card.sm-4{grid-column: span 4} .card.sm-3{grid-column: span 3}
 }
-@media (min-width:720px){.card.sm-6{grid-column: span 6} .card.sm-4{grid-column: span 4} .card.sm-3{grid-column: span 3}}
 .chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
 .chip{font-size:.75rem; background:#1a1f2d; border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:#d2dcf4}
 .status.beta{background: linear-gradient(90deg, rgba(87,230,255,.18), rgba(87,230,255,.08))}
@@ -178,18 +188,46 @@ section{padding:36px 20px}
 .redact::after{content:"████████████"; letter-spacing:.08em; color:#e6e6e6; background:#000; padding:0 .25rem; border-radius:4px}
 .card p{color:#d2dcf4; margin:8px 0 12px}
 .card .actions{display:flex; gap:10px; flex-wrap:wrap}
-.process{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); max-width:var(--maxw); margin:0 auto}
-.step{background:rgba(17,19,28,var(--panel-opacity)); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; box-shadow:var(--shadow)}
-.tech{max-width:var(--maxw); margin:0 auto; display:flex; gap:14px; flex-wrap:wrap}
-.pill{border:1px solid var(--border); background:rgba(255,255,255,.06); border-radius:999px; padding:8px 12px; color:#e3e8f3; font-size:.9rem}
-.pill.silver{border-color:rgba(201,208,221,.35); color:#f0f4ff}
+
+/* ====== MOBILE LAYOUT FIXES ====== */
+@media (max-width: 860px){
+  /* header */
+  :root{ --header-h: 56px; }
+  nav{ display:none; }                /* hide desktop nav */
+  .nav-toggle{ display:flex; }        /* show hamburger */
+  .bar{ padding:0 10px; }
+
+  /* hero stacks neatly */
+  .hero{
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px 14px 10px;
+  }
+  .hero-card{
+    padding: var(--hero-card-pad-m);
+    height:auto;                      /* no forced equal height on mobile */
+  }
+  .hero-left{ padding-bottom: 6px; }
+
+  /* logo scales by width on mobile (prevents tall/squish) */
+  .img-slot{ height:auto; }
+  .img-slot > img{
+    height:auto; width: 88vw; max-width: 520px;   /* clean, predictable sizing */
+    transform: none;                               /* ignore desktop scale */
+  }
+
+  .hero-right h1{ font-size: clamp(24px, 7vw, 34px); }
+  .cta-row{ justify-content:flex-start; }
+}
+
+/* ===== Dialog ===== */
 dialog{border:none; border-radius:16px; padding:0; width:min(560px, 92vw);
   background:linear-gradient(180deg, #131628, #0f1222); color:var(--ink); box-shadow:0 30px 80px rgba(0,0,0,.55)}
 dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,255,.2), rgba(0,0,0,.6))}
 .modal{padding:22px; border-bottom:1px solid var(--border)}
 .modal-body{padding:18px 22px; display:grid; gap:12px}
 .field{display:grid; gap:6px}
-.field input{background:#0c0f1d; border:1px solid var(--border); color:#var(--ink); padding:12px 12px; border-radius:10px}
+.field input{background:#0c0f1d; border:1px solid var(--border); color:var(--ink); padding:12px 12px; border-radius:10px}
 .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:0 22px 22px}
   </style>
 </head>
@@ -220,10 +258,8 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
         <circle class="orbit fast" cx="600" cy="400" r="380"/>
       </g>
 
-      <!-- dynamic links & nodes are added by JS -->
-      <g id="links"></g>
-      <g id="nodes"></g>
-      <g id="projectiles"></g>
+      <!-- dynamic links & nodes (added by JS) -->
+      <g id="links"></g><g id="nodes"></g><g id="projectiles"></g>
 
       <!-- reactor core -->
       <g id="reactor" transform="translate(600 400)">
@@ -242,11 +278,13 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
     </svg>
   </div>
 
-  <!-- ===== Fixed Header ===== -->
+  <!-- ===== Header ===== -->
   <header>
     <div class="bar">
       <div class="brand"><div class="t1">Jmod Labs</div></div>
-      <nav>
+
+      <!-- desktop nav -->
+      <nav aria-label="Primary">
         <a href="#experiments">Experiments</a>
         <a href="#mandate">Mandate</a>
         <a href="#build">Build</a>
@@ -255,6 +293,22 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
         <a href="#tech">Tech</a>
         <a href="#join">Join</a>
       </nav>
+
+      <!-- mobile toggle -->
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mnav">
+        <span></span>
+      </button>
+    </div>
+
+    <!-- mobile panel -->
+    <div id="mnav" class="nav-panel" aria-hidden="true">
+      <a href="#experiments">Experiments</a>
+      <a href="#mandate">Mandate</a>
+      <a href="#build">Build</a>
+      <a href="#learn">AI Learning</a>
+      <a href="#smb">SMB Value</a>
+      <a href="#tech">Tech</a>
+      <a href="#join">Join</a>
     </div>
   </header>
 
@@ -417,7 +471,7 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
   <section id="smb">
     <div class="section-title wrap">
       <h2>Built for Small & Medium Businesses</h2>
-      <div class="muted">Automate busywork. Focus on revenue.</div>
+    <div class="muted">Automate busywork. Focus on revenue.</div>
     </div>
     <div class="grid">
       <article class="card sm-4">
@@ -492,6 +546,18 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
   </dialog>
 
   <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-toggle');
+    const panel  = document.getElementById('mnav');
+    toggle?.addEventListener('click', () => {
+      const open = panel.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    });
+    panel?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      panel.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); panel.setAttribute('aria-hidden','true');
+    }));
+
     function gate(){ document.getElementById('signin').showModal(); }
 
     // Load shared footer with graceful fallback
