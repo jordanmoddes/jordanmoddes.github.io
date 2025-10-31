@@ -24,8 +24,10 @@
       --grid-gap:18px;
       --pipe-stroke:2.5;
       --packet-size:7px;
-      --wm-opacity:.08;   /* background logo strength */
-      --wm-size:70vw;     /* background logo size */
+
+      /* Watermark controls */
+      --wm-opacity:.10;  /* adjust visibility */
+      --wm-size:70vw;    /* scale */
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -39,17 +41,17 @@
     a:hover{text-decoration:underline}
     .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:20px}
 
-    /* Faint site-wide background logo (appears after hero) */
+    /* ===== Background watermark (shows after hero) ===== */
     #bg-logo{
       position:fixed;inset:0;z-index:-1;
-      background:url('/jmodco/assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat; /*Page Background*/
+      background:url('/jmodco/assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat;
       opacity:0;transition:opacity .8s ease;pointer-events:none;
       filter:drop-shadow(0 0 40px rgba(0,188,212,.22)) brightness(1.15);
       /* Parallax option: background-attachment: fixed; */
     }
     #bg-logo.visible{opacity:var(--wm-opacity);}
 
-    /* Header / fixed nav */
+    /* ===== Header (fixed) ===== */
     header{
       position:fixed;top:0;left:0;width:100%;z-index:50;
       backdrop-filter:saturate(1.2) blur(10px);
@@ -72,7 +74,7 @@
     }
     .spacer{height:64px;} /* pushes content below fixed header */
 
-    /* Hero */
+    /* ===== Hero ===== */
     .hero{
       position:relative;height:var(--hero-height);overflow:hidden;
       display:grid;place-items:center;
@@ -83,9 +85,9 @@
     }
     .hero::after{
       content:"";position:absolute;inset:0;
-      background-image:url('/jmodco/assets/Jmod_SystemsTP.png'); /* optional */
+      background-image:url('/jmodco/assets/systems-hero-watermark.png'); /* optional subtle hero mark */
       background-repeat:no-repeat;background-position:center;background-size:880px auto;
-      opacity:0.15;pointer-events:none; /*Page Background*/
+      opacity:.03;pointer-events:none;
     }
     .hero-inner{position:relative;z-index:1;text-align:center;padding:16px}
     .eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:.2em;font-size:.8rem}
@@ -95,13 +97,13 @@
     .ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px}
     .primary{background:var(--accent-2);color:#fff;border:none;padding:10px 14px;border-radius:12px;box-shadow:var(--glow)}
 
-    /* Animated pipelines */
+    /* ===== Animated pipelines ===== */
     .pipes{position:absolute;inset:0;pointer-events:none;}
     svg{width:100%;height:100%}
     .pipe{stroke:var(--accent);stroke-width:var(--pipe-stroke);fill:none;opacity:.8;filter:drop-shadow(var(--glow))}
     .packet{fill:var(--accent-2);filter:drop-shadow(0 0 10px rgba(255,64,129,.6))}
 
-    /* Sections / cards */
+    /* ===== Sections / cards ===== */
     section{padding:64px 0}
     .grid{display:grid;gap:var(--grid-gap);grid-template-columns:repeat(12,minmax(0,1fr));}
     .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;}
@@ -110,16 +112,25 @@
     .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
     .reveal.in{opacity:1;transform:none}
 
-    /* Layout specifics */
-    .kpis{grid-column: span 12}
-    @media (min-width:900px){
-      .about{grid-column: span 7}
-      .kpis{grid-column: span 5}
-    }
+    /* ===== About card polish (left box) ===== */
+    .about.card{padding:22px 22px 20px;}
+    .about h2{margin:0 0 8px;}
+    .about .muted{line-height:1.6;}
+    .about hr.rule{margin:14px 0;border-top-color:rgba(255,255,255,.05);}
+    .about ul{margin:0;padding-left:1.25rem;list-style:disc outside;}
+    .about li{margin:6px 0;line-height:1.55;}
+    .about li::marker{color:#9fb1c1;font-size:.9em;}
+
+    /* Match heights of About + Live Signals */
+    #solutions .grid{align-items:stretch;}
+    #solutions .card{height:100%;}
+
+    /* ===== KPIs / Accordion details ===== */
     .kpi-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
     .kpi{background:rgba(19,32,44,.5);border:1px dashed var(--line);border-radius:14px;padding:14px;text-align:center}
     .kpi .val{font-size:1.8rem;font-weight:700}
     .kpi .lab{font-size:.85rem;color:var(--muted)}
+
     .accordion{display:grid;gap:12px}
     .acc-item{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(19,32,44,.4)}
     .acc-h{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
@@ -134,7 +145,7 @@
   <!-- Background watermark -->
   <div id="bg-logo"></div>
 
-  <!-- Fixed header -->
+  <!-- Header -->
   <header>
     <div class="wrap nav">
       <div class="brand">Jmod Systems</div>
@@ -177,7 +188,7 @@
   <!-- About + KPIs -->
   <section id="solutions">
     <div class="wrap grid reveal">
-      <div class="about card">
+      <div class="about card" style="grid-column:span 12;@media(min-width:900px){grid-column:span 7;}">
         <h2>About Systems</h2>
         <p class="muted">We connect every layer — from <strong>schema discovery</strong> to <strong>semantic mapping</strong>, dynamic translation, routing, and audit. Systems is the engine room that makes data move with intent.</p>
         <hr class="rule" />
@@ -189,7 +200,7 @@
         </ul>
       </div>
 
-      <div class="kpis card">
+      <div class="kpis card" style="grid-column:span 12;@media(min-width:900px){grid-column:span 5;}">
         <h3 style="margin-top:0">Live Signals</h3>
         <div class="kpi-list">
           <div class="kpi">
@@ -355,7 +366,7 @@
     </div>
   </section>
 
-  <!-- Footer slot (loads shared /jmodco/assets/footer.html) -->
+  <!-- Footer slot (shared footer) -->
   <div id="footer-slot"></div>
 
   <script>
@@ -449,7 +460,7 @@
         const slot = document.getElementById('footer-slot');
         slot.innerHTML = html;
 
-        // Ensure © year is current (in case footer.html lacks/blocks script execution)
+        // Ensure © year is current (in case footer.html script doesn't run)
         const c = slot.querySelector('#copyright');
         if(c) c.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
       }catch(e){
@@ -459,7 +470,7 @@
   </script>
 
   <style>
-    /* console colors (kept inline for simplicity) */
+    /* console colors (inline for simplicity) */
     .ok{color:#7fffd4}
     .warn{color:#ffd166}
     .err{color:#ff6b6b}
