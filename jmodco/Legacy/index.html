@@ -15,25 +15,22 @@
       --panel:#161923;
       --ink:#e8ecff;
       --muted:#aab3c9;
-      --accent:#ff2e8c;
-      --accent2:#61e7ff;
+      --accent:#ff2e8c;   /* magenta */
+      --accent2:#61e7ff;  /* cyan */
       --ring:rgba(255,255,255,.08);
       --maxw:1120px;
       --radius:18px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
     }
-    *{box-sizing:border-box;scroll-behavior:smooth;}
+    *{box-sizing:border-box;scroll-behavior:smooth}
     html,body{height:100%}
     body{
       margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      background:
-        radial-gradient(1200px 800px at -10% 0%, rgba(255,46,140,.08), transparent 60%),
-        radial-gradient(1200px 800px at 110% 10%, rgba(97,231,255,.08), transparent 60%),
-        var(--bg);
+      background:var(--bg);
       color:var(--ink); line-height:1.45;
     }
 
-    /* NAVBAR — fixed and follows scroll */
+    /* ===== Fixed NAV (brand scrolls to top) ===== */
     .nav{
       position:fixed; top:0; left:0; width:100%; z-index:50;
       backdrop-filter:saturate(140%) blur(10px);
@@ -44,23 +41,31 @@
       max-width:var(--maxw); margin:0 auto; padding:12px 16px;
       display:flex; align-items:center; justify-content:space-between; gap:14px;
     }
-    .brand-word{
-      font-weight:800; letter-spacing:.2px; color:var(--ink);
-      text-decoration:none; cursor:pointer;
-    }
-    .brand-word .co{opacity:.8; font-weight:600}
+    .brand-word{font-weight:800; letter-spacing:.2px; color:var(--ink); text-decoration:none}
+    .brand-word .co{opacity:.85; font-weight:600}
     .nav a{
       color:var(--ink); text-decoration:none; opacity:.9;
       padding:8px 10px; border-radius:10px; border:1px solid transparent;
     }
     .nav a:hover{border-color:var(--ring); opacity:1}
     .nav-right{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+    .spacer{height:64px} /* offsets fixed nav */
 
-    .spacer{height:64px;} /* space to offset fixed nav */
+    /* ===== Background SVG layer ===== */
+    .bg-scene{
+      position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.45;
+      background:
+        radial-gradient(1200px 800px at -10% 0%, rgba(255,46,140,.10), transparent 60%),
+        radial-gradient(1200px 800px at 110% 10%, rgba(97,231,255,.10), transparent 60%);
+    }
+    .bg-scene svg{width:100%; height:100%; display:block}
+    .pulse path.flow{stroke-dasharray:4 10; animation:dash 7s linear infinite}
+    @keyframes dash{to{stroke-dashoffset:-140}}
 
+    /* ===== Layout ===== */
     .wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px}
 
-    /* HERO */
+    /* HERO (logo left, text right) */
     .hero{
       display:grid; grid-template-columns:1fr; gap:24px;
       align-items:center; padding:48px 0 16px;
@@ -68,38 +73,76 @@
     @media(min-width:880px){
       .hero{grid-template-columns:520px 1fr; gap:40px; padding:64px 0 24px;}
     }
-    .hero-logo{display:flex; align-items:center; justify-content:center;}
-    .hero-logo img{width:100%;max-width:520px;height:auto;display:block;}
-    .hero-text h1{margin:0 0 10px;font-size:clamp(1.8rem,3.6vw + .6rem,3.2rem);line-height:1.05;}
-    .hero-text p{color:var(--muted);margin:0 0 18px;font-size:1.05rem}
-    .cta-row{display:flex;gap:10px;flex-wrap:wrap}
+    .hero-logo{display:flex; align-items:center; justify-content:center}
+    .hero-logo img{width:100%; max-width:520px; height:auto; display:block}
+    .hero-text h1{margin:0 0 10px; font-size:clamp(1.8rem,3.6vw + .6rem,3.2rem); line-height:1.05}
+    .hero-text p{color:var(--muted); margin:0 0 18px; font-size:1.05rem}
+    .cta-row{display:flex; gap:10px; flex-wrap:wrap}
     .btn{
-      appearance:none;border:none;cursor:pointer;
-      background:var(--accent);color:#fff;font-weight:800;
-      padding:13px 16px;border-radius:14px;box-shadow:var(--shadow);
-      text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+      appearance:none; border:none; cursor:pointer;
+      background:var(--accent); color:#fff; font-weight:800;
+      padding:13px 16px; border-radius:14px; box-shadow:var(--shadow);
+      text-decoration:none; display:inline-flex; align-items:center; gap:8px;
     }
-    .btn.secondary{background:transparent;border:1px solid var(--ring);color:var(--ink);box-shadow:none}
+    .btn.secondary{background:transparent; border:1px solid var(--ring); color:var(--ink); box-shadow:none}
 
+    /* Sections */
     section{padding:36px 0}
     .panel{
       background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
-      border:1px solid var(--ring);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);
+      border:1px solid var(--ring); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
     }
-    .grid-2{display:grid;gap:16px}
+    .grid-2{display:grid; gap:16px}
     @media(min-width:860px){.grid-2{grid-template-columns:1fr 1fr}}
-    .kicker{color:var(--accent2);font-weight:800;letter-spacing:.25px;margin-bottom:6px}
-    h2{margin:0 0 8px;font-size:1.7rem}
-    p.lead{color:var(--muted);font-size:1.05rem;margin:0 0 10px}
-    .features{display:grid;gap:14px}
+    .kicker{color:var(--accent2); font-weight:800; letter-spacing:.25px; margin-bottom:6px}
+    h2{margin:0 0 8px; font-size:1.7rem}
+    p.lead{color:var(--muted); font-size:1.05rem; margin:0 0 10px}
+    .features{display:grid; gap:14px}
     @media(min-width:720px){.features{grid-template-columns:repeat(3,1fr)}}
-    .card{background:var(--panel);border:1px solid var(--ring);border-radius:16px;padding:16px}
-    .card h3{margin:0 0 6px;font-size:1.1rem}
-    .card p{margin:0;color:var(--muted)}
+    .card{background:var(--panel); border:1px solid var(--ring); border-radius:16px; padding:16px}
+    .card h3{margin:0 0 6px; font-size:1.1rem}
+    .card p{margin:0; color:var(--muted)}
     footer{margin:32px 0 12px}
   </style>
 </head>
 <body>
+  <!-- Subtle animated background (AI head + family nodes) -->
+  <div class="bg-scene">
+    <svg viewBox="0 0 1200 800" class="pulse" aria-hidden="true">
+      <!-- Head silhouette -->
+      <defs>
+        <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#61e7ff" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#ff2e8c" stop-opacity="0.6"/>
+        </linearGradient>
+      </defs>
+      <path d="M350,170
+               c120,-40 250,30 280,150
+               c20,80 -10,140 -40,190
+               c-20,35 -25,70 -20,110
+               l-140,0
+               c-20,0 -35,-15 -35,-35
+               v-40
+               c-90,-10 -160,-110 -150,-210
+               c10,-100 60,-145 105,-165z"
+            fill="none" stroke="url(#g1)" stroke-width="2.5" opacity="0.85"/>
+      <!-- Data lines from head to families -->
+      <g stroke="#61e7ff" stroke-width="2" opacity="0.9">
+        <path class="flow" d="M530,330 C700,260 880,220 1020,260" fill="none"/>
+        <path class="flow" d="M520,360 C690,340 920,380 1080,420" fill="none"/>
+        <path class="flow" d="M500,390 C680,430 900,520 1060,560" fill="none"/>
+      </g>
+      <!-- Family nodes -->
+      <g fill="#61e7ff" opacity="0.9">
+        <circle cx="1020" cy="260" r="5"/><circle cx="1080" cy="420" r="5"/><circle cx="1060" cy="560" r="5"/>
+      </g>
+      <!-- Magenta highlights -->
+      <g fill="#ff2e8c" opacity="0.9">
+        <circle cx="1048" cy="248" r="3.5"/><circle cx="1100" cy="416" r="3.5"/><circle cx="1084" cy="548" r="3.5"/>
+      </g>
+    </svg>
+  </div>
+
   <!-- NAV -->
   <nav class="nav" aria-label="Main">
     <div class="nav-inner">
@@ -113,19 +156,24 @@
       </div>
     </div>
   </nav>
-
-  <!-- Spacer below fixed nav -->
   <div class="spacer"></div>
 
   <!-- HERO -->
   <header class="wrap hero" role="banner">
     <div class="hero-logo">
-      <img src="/jmodco/asset/legacy/logo-legacy.svg" alt="Jmod Legacy" onerror="this.src='/jmodco/asset/JmodCo_LogoTP.png'">
+      <!-- Robust image loader:
+           1) /jmodco/asset/legacy/logo-legacy.svg
+           2) /jmodco/asset/legacy/logo-legacy.png
+           3) /jmodco/asset/JmodCo_LogoTP.png (known good) -->
+      <img id="legacyLogo" alt="Jmod Legacy">
     </div>
     <div class="hero-text">
       <div class="kicker">Human-Centered AI for Purpose</div>
       <h1>Help your loved one<br>rediscover drive, safely.</h1>
-      <p class="lead">Retirement can feel like a cliff. We’re a nonprofit helping families guide seniors back to daily purpose—using approachable AI and gentle routines—so no one gets left behind by technology.</p>
+      <p class="lead">
+        Retirement can feel like a cliff. We help families guide seniors back to daily purpose—
+        using approachable AI and gentle routines—so no one gets left behind by technology.
+      </p>
       <div class="cta-row">
         <a class="btn" href="#demo">Try the Daily Companion</a>
         <a class="btn secondary" href="#how">See how it works</a>
@@ -199,30 +247,65 @@
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer id="footer"></footer>
 
   <script>
-    // Footer loader
+    // ----- Robust logo loader (tries multiple known paths) -----
+    (function(){
+      const el = document.getElementById('legacyLogo');
+      const candidates = [
+        "/jmodco/asset/legacy/logo-legacy.svg",
+        "/jmodco/asset/legacy/logo-legacy.png",
+        "/jmodco/asset/JmodCo_LogoTP.png"
+      ];
+      let i = 0;
+      function tryNext(){
+        if(i >= candidates.length){ el.style.display='none'; return; }
+        const src = candidates[i++];
+        const img = new Image();
+        img.onload = ()=>{ el.src = src; };
+        img.onerror = tryNext;
+        img.src = src;
+      }
+      tryNext();
+    })();
+
+    // ----- Footer include -----
     (async()=>{
       try{
         const r=await fetch("/jmodco/assets/footer.html",{cache:"no-store"});
-        if(!r.ok)throw 0;
-        document.getElementById("footer").innerHTML=await r.text();
+        if(!r.ok) throw 0;
+        document.getElementById("footer").innerHTML = await r.text();
       }catch{
-        document.getElementById("footer").innerHTML='<div style="opacity:.85;text-align:center;padding:12px 10px;border-top:1px solid rgba(255,255,255,.12)">© '+new Date().getFullYear()+' Jmod Co. — Built for Generational Continuity.</div>';
+        document.getElementById("footer").innerHTML =
+          '<div style="opacity:.85;text-align:center;padding:12px 10px;border-top:1px solid rgba(255,255,255,.12)">© '+new Date().getFullYear()+' Jmod Co. — Built for Generational Continuity.</div>';
       }
     })();
 
-    // Simple demo for streaks/challenges
-    const CH=["Take a photo outside.","Text a friend hello.","Stretch for 30 seconds.","Water a plant.","Share a short memory."];
+    // ----- Tiny demo (streaks + challenges, local only) -----
+    const CH=["Step outside and breathe once.","Text a family member hello.","Stretch for 30 seconds.","Water a plant.","Write two sentences of a memory."];
     const $=s=>document.querySelector(s);
-    const st=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
     function rand(){return CH[Math.floor(Math.random()*CH.length)]}
-    function load(){ $("#challengeText").textContent=rand(); $("#streakDays").textContent=localStorage.getItem("legacy.streak")||0; }
-    function bump(){const today=st();const last=localStorage.getItem("legacy.last");let s=Number(localStorage.getItem("legacy.streak")||0);if(!last)s=1;else{const d=(today-new Date(last))/(1e3*60*60*24);if(d===1)s++;else if(d>1)s=1;}localStorage.setItem("legacy.streak",s);localStorage.setItem("legacy.last",today);$("#streakDays").textContent=s;}
-    $("#markDone").onclick=()=>{bump();};
+    function today0(){const d=new Date(); d.setHours(0,0,0,0); return d}
+    function loadDemo(){
+      $("#challengeText").textContent = rand();
+      $("#streakDays").textContent = localStorage.getItem("legacy.streak") || 0;
+    }
+    function bump(){
+      const t=today0(), last=localStorage.getItem("legacy.last");
+      let s=Number(localStorage.getItem("legacy.streak")||0);
+      if(!last) s=1; else{
+        const diff=(t - new Date(last))/(864e5);
+        if(diff===1) s++; else if(diff>1) s=1;
+      }
+      localStorage.setItem("legacy.streak", s);
+      localStorage.setItem("legacy.last", t);
+      $("#streakDays").textContent = s;
+    }
+    $("#markDone").onclick=()=>bump();
     $("#newChallenge").onclick=()=>$("#challengeText").textContent=rand();
-    load();
+    loadDemo();
   </script>
 </body>
 </html>
