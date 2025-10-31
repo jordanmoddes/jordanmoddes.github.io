@@ -5,166 +5,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jmod Systems — Automation. Connectivity. Control.</title>
   <meta name="color-scheme" content="dark light" />
-  <meta name="description" content="Jmod Systems builds the digital nervous system of Jmod Co. — system integration, data pipelines, and automation via the MODDES™ Core Engine." />
+  <meta name="description" content="Jmod Systems builds the digital nervous system of Jmod Co. — integration, automation, and data control powered by the MODDES™ Core Engine." />
 
   <style>
-    /* ===============================
-       SIZE_TOKENS — tweak quickly
-       =============================== */
     :root{
-      --bg:#0a0e13;               /* Page background */
-      --panel:#0f141b;            /* Cards / surfaces */
-      --ink:#e6eef6;              /* Primary text */
-      --muted:#9fb1c1;            /* Secondary text */
-      --line:#13202c;             /* Dividers */
-      --accent:#00bcd4;           /* Tech blue (data lines) */
-      --accent-2:#ff4081;         /* Magenta link/button (Jmod Co. accent) */
+      --bg:#0a0e13;
+      --panel:#0f141b;
+      --ink:#e6eef6;
+      --muted:#9fb1c1;
+      --line:#13202c;
+      --accent:#00bcd4;
+      --accent-2:#ff4081;
       --glow:0 0 24px rgba(0,188,212,.35);
       --radius:18px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
-      --hero-height: 72vh;        /* HERO SIZE CONTROL */
-      --maxw: 1200px;             /* CONTENT WIDTH */
-      --grid-gap: 18px;
-      --pipe-stroke: 2.5;         /* SVG line thickness */
-      --packet-size: 7px;         /* moving dot size */
-      --icon-size: 22px;          /* inline icon size */
-
-      /* Watermark controls */
-      --wm-opacity: .08;          /* background logo intensity */
-      --wm-size: 70vw;            /* background logo scale */
+      --hero-height:72vh;
+      --maxw:1200px;
+      --grid-gap:18px;
+      --pipe-stroke:2.5;
+      --packet-size:7px;
+      --wm-opacity:.08;   /* background logo strength */
+      --wm-size:70vw;     /* background logo size */
     }
 
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      margin:0; background:var(--bg); color:var(--ink);
-      font: 16px/1.55 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.55 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     }
-    a{color:var(--accent-2); text-decoration:none}
+    a{color:var(--accent-2);text-decoration:none}
     a:hover{text-decoration:underline}
-    .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:20px}
+    .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:20px}
 
-    /* ===============================
-       BACKGROUND WATERMARK (appears after hero)
-       =============================== */
+    /* Faint site-wide background logo (appears after hero) */
     #bg-logo{
-      position:fixed; inset:0; z-index:-1;
-      /* IMG_PLACEHOLDER: faint site-wide watermark */
+      position:fixed;inset:0;z-index:-1;
       background:url('/jmodco/assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat;
-      opacity:0; transition:opacity .8s ease; pointer-events:none;
+      opacity:0;transition:opacity .8s ease;pointer-events:none;
       filter:drop-shadow(0 0 40px rgba(0,188,212,.22)) brightness(1.05);
-      /* Uncomment for parallax feel: background-attachment: fixed; */
+      /* Parallax option: background-attachment: fixed; */
     }
-    #bg-logo.visible{ opacity: var(--wm-opacity); }
+    #bg-logo.visible{opacity:var(--wm-opacity);}
 
-    /* ===============================
-       NAV
-       =============================== */
+    /* Header / fixed nav */
     header{
-  position:fixed;        /* changed from sticky */
-  top:0;
-  left:0;
-  width:100%;
-  z-index:50;            /* higher to ensure it's above all content */
-  backdrop-filter:saturate(1.2) blur(10px);
-  background:linear-gradient(to bottom, rgba(10,14,19,.85), rgba(10,14,19,.45) 70%, rgba(10,14,19,0));
-  border-bottom:1px solid var(--line);
-}
+      position:fixed;top:0;left:0;width:100%;z-index:50;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background:rgba(10,14,19,.75);
+      border-bottom:1px solid var(--line);
+      transition:background .3s ease;
+    }
+    header.scrolled{background:rgba(10,14,19,.9);}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      height:64px;gap:16px;
+    }
+    .brand{font-weight:700;letter-spacing:.3px}
+    .navlinks{display:flex;gap:18px;flex-wrap:wrap}
+    .navlinks a{color:var(--ink);opacity:.9}
+    .cta{
+      background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
+      border:none;color:white;padding:10px 14px;border-radius:12px;
+      box-shadow:var(--glow);cursor:pointer;
+    }
+    .spacer{height:64px;} /* pushes content below fixed header */
 
-    /* ===============================
-       HERO with DATA PIPELINES
-       =============================== */
+    /* Hero */
     .hero{
-      position:relative; height:var(--hero-height); overflow:hidden;
-      display:grid; place-items:center;
+      position:relative;height:var(--hero-height);overflow:hidden;
+      display:grid;place-items:center;
       background:
         radial-gradient(1200px 400px at 50% 120%, rgba(0,188,212,.06), transparent 60%),
         radial-gradient(900px 400px at 10% -20%, rgba(255,64,129,.05), transparent 60%);
       border-bottom:1px solid var(--line);
     }
-    /* IMG_PLACEHOLDER: hero watermark/logo (subtle) */
     .hero::after{
-      content:""; position:absolute; inset:0;
-      background-image:url('/jmodco/assets/Jmod_SystemsTP.png'); /* Replace or remove */
-      background-repeat:no-repeat; background-position:center; background-size: 900px auto;
-      opacity:.03; pointer-events:none;
+      content:"";position:absolute;inset:0;
+      background-image:url('/jmodco/assets/systems-hero-watermark.png'); /* optional */
+      background-repeat:no-repeat;background-position:center;background-size:900px auto;
+      opacity:.03;pointer-events:none;
     }
-    .hero-inner{position:relative; z-index:1; text-align:center; padding:16px}
-    .eyebrow{color:var(--muted); text-transform:uppercase; letter-spacing:.2em; font-size:.8rem}
-    h1{margin:.35rem 0 0; font-size:clamp(28px, 4vw, 48px); line-height:1.1}
-    .sub{margin:.75rem auto 1.25rem; max-width:720px; color:var(--muted)}
-    .hero-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
-    .ghost{background:transparent; border:1px solid var(--line); color:var(--ink); padding:10px 14px; border-radius:12px}
-    .primary{background:var(--accent-2); color:#fff; border:none; padding:10px 14px; border-radius:12px; box-shadow:var(--glow)}
+    .hero-inner{position:relative;z-index:1;text-align:center;padding:16px}
+    .eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:.2em;font-size:.8rem}
+    h1{margin:.35rem 0 0;font-size:clamp(28px,4vw,48px);line-height:1.1}
+    .sub{margin:.75rem auto 1.25rem;max-width:720px;color:var(--muted)}
+    .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px}
+    .primary{background:var(--accent-2);color:#fff;border:none;padding:10px 14px;border-radius:12px;box-shadow:var(--glow)}
 
-    /* DATA PIPELINES CANVAS AREA */
-    .pipes{ position:absolute; inset:0; pointer-events:none; }
-    svg{width:100%; height:100%}
-    .pipe{stroke:var(--accent); stroke-width:var(--pipe-stroke); fill:none; opacity:.8; filter:drop-shadow(var(--glow))}
-    .packet{fill:var(--accent-2); filter:drop-shadow(0 0 10px rgba(255,64,129,.6))}
+    /* Animated pipelines */
+    .pipes{position:absolute;inset:0;pointer-events:none;}
+    svg{width:100%;height:100%}
+    .pipe{stroke:var(--accent);stroke-width:var(--pipe-stroke);fill:none;opacity:.8;filter:drop-shadow(var(--glow))}
+    .packet{fill:var(--accent-2);filter:drop-shadow(0 0 10px rgba(255,64,129,.6))}
 
-    /* ===============================
-       SECTIONS
-       =============================== */
+    /* Sections / cards */
     section{padding:64px 0}
-    .grid{
-      display:grid; gap:var(--grid-gap);
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-    }
-    .card{
-      background:var(--panel); border:1px solid var(--line);
-      border-radius:var(--radius); box-shadow:var(--shadow); padding:18px;
-    }
+    .grid{display:grid;gap:var(--grid-gap);grid-template-columns:repeat(12,minmax(0,1fr));}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;}
     .muted{color:var(--muted)}
-    hr.rule{border:none; border-top:1px solid var(--line); margin:18px 0}
+    hr.rule{border:none;border-top:1px solid var(--line);margin:18px 0}
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
 
-    /* ABOUT + KPIs */
+    /* Layout specifics */
     .kpis{grid-column: span 12}
     @media (min-width:900px){
       .about{grid-column: span 7}
       .kpis{grid-column: span 5}
     }
-    .kpi-list{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
-    .kpi{background:rgba(19,32,44,.5); border:1px dashed var(--line); border-radius:14px; padding:14px; text-align:center}
-    .kpi .val{font-size:1.8rem; font-weight:700}
-    .kpi .lab{font-size:.85rem; color:var(--muted)}
-
-    /* FRAMEWORKS (ACCORDION) */
-    .accordion{display:grid; gap:12px}
-    .acc-item{border:1px solid var(--line); border-radius:14px; overflow:hidden; background:rgba(19,32,44,.4)}
-    .acc-h{
-      display:flex; align-items:center; gap:12px;
-      padding:14px 16px; cursor:pointer; user-select:none;
-    }
+    .kpi-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .kpi{background:rgba(19,32,44,.5);border:1px dashed var(--line);border-radius:14px;padding:14px;text-align:center}
+    .kpi .val{font-size:1.8rem;font-weight:700}
+    .kpi .lab{font-size:.85rem;color:var(--muted)}
+    .accordion{display:grid;gap:12px}
+    .acc-item{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(19,32,44,.4)}
+    .acc-h{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
     .acc-h .chev{transition:transform .25s ease}
     .acc-h.open .chev{transform:rotate(90deg)}
-    .acc-b{max-height:0; overflow:hidden; transition:max-height .35s ease}
+    .acc-b{max-height:0;overflow:hidden;transition:max-height .35s ease}
     .acc-b.in{padding:0 16px 16px}
-    .tag{display:inline-block; padding:4px 8px; border-radius:999px; font-size:.75rem; background:rgba(0,188,212,.08); border:1px solid rgba(0,188,212,.25); color:var(--accent)}
-
-    /* REVEAL ANIMATIONS */
-    .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
-    .reveal.in{opacity:1; transform:none}
-
-    /* FOOTER */
-    footer{border-top:1px solid var(--line); padding:28px 0 56px; color:var(--muted)}
-    .foot{display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center}
-    .foot .right{display:flex; gap:14px; align-items:center}
+    .tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.75rem;background:rgba(0,188,212,.08);border:1px solid rgba(0,188,212,.25);color:var(--accent)}
   </style>
 </head>
 <body>
-
-  <!-- BACKGROUND LOGO (fades in after hero scroll) -->
+  <!-- Background watermark -->
   <div id="bg-logo"></div>
 
-  <!-- ===============================
-       NAV (logo image removed)
-       =============================== -->
+  <!-- Fixed header -->
   <header>
     <div class="wrap nav">
-      <div class="brand">
-        <div class="tt">Jmod Systems</div>
-      </div>
+      <div class="brand">Jmod Systems</div>
       <nav class="navlinks">
         <a href="#solutions">Solutions</a>
         <a href="#frameworks">Frameworks</a>
@@ -175,21 +148,15 @@
       <button class="cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request Assessment</button>
     </div>
   </header>
+  <div class="spacer"></div>
 
-  <!-- ===============================
-       HERO with DATA PIPELINES
-       =============================== -->
+  <!-- Hero -->
   <section class="hero">
     <div class="pipes" aria-hidden="true">
-      <svg viewBox="0 0 1600 800" preserveAspectRatio="none" id="pipes-svg">
-        <!-- LEFT INPUT PATHS -->
+      <svg viewBox="0 0 1600 800" preserveAspectRatio="none">
         <path id="pipe1" class="pipe" d="M 50 200 C 350 200, 500 350, 800 400 S 1250 450, 1550 320" />
         <path id="pipe2" class="pipe" d="M 50 500 C 300 520, 520 520, 800 420 S 1250 380, 1550 500" />
-        <!-- CENTER CORE OUTLINE -->
-        <circle cx="800" cy="400" r="110" stroke="rgba(255,255,255,.08)" stroke-width="1.5" fill="rgba(0,188,212,.06)"/>
-        <!-- RIGHT OUTPUT PATHS -->
         <path id="pipe3" class="pipe" d="M 1550 200 C 1250 250, 1100 350, 800 400 S 350 430, 50 320" />
-        <!-- PACKETS -->
         <circle class="packet" id="pkt1" r="7"/>
         <circle class="packet" id="pkt2" r="7"/>
         <circle class="packet" id="pkt3" r="7"/>
@@ -207,9 +174,7 @@
     </div>
   </section>
 
-  <!-- ===============================
-       ABOUT + KPIs
-       =============================== -->
+  <!-- About + KPIs -->
   <section id="solutions">
     <div class="wrap grid reveal">
       <div class="about card">
@@ -246,190 +211,100 @@
         </div>
         <div class="card" style="margin-top:12px; background:#0b1016">
           <div class="console">
-            <div class="log" id="log"></div>
+            <div class="log" id="log" style="height:240px; overflow:auto; background:#071018; border:1px solid var(--line); border-radius:10px; padding:10px"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===============================
-       FRAMEWORKS (ACCORDION)
-       =============================== -->
+  <!-- Frameworks (accordion) -->
   <section id="frameworks">
     <div class="wrap reveal">
       <h2>MODDES™ Core Engine</h2>
       <p class="muted">A modular engine that transforms fragmented operations into a unified, auditable flow.</p>
       <div class="accordion" id="acc">
-        <!-- 102 -->
         <div class="acc-item">
-          <div class="acc-h">
-            <span class="chev">▶</span>
-            <strong>102 — Schema-Discovery Engine</strong>
-            <span class="tag">ingest</span>
-          </div>
-          <div class="acc-b">
-            <div class="in">
-              Automatically inspects source systems to detect tables, fields, and constraints; emits structured “source maps” for downstream translation.
-            </div>
-          </div>
+          <div class="acc-h"><span class="chev">▶</span><strong>102 — Schema-Discovery Engine</strong><span class="tag">ingest</span></div>
+          <div class="acc-b"><div class="in">Automatically inspects source systems to detect tables, fields, and constraints; emits structured “source maps” for downstream translation.</div></div>
         </div>
-        <!-- 104 -->
         <div class="acc-item">
-          <div class="acc-h">
-            <span class="chev">▶</span>
-            <strong>104 — Semantic-Mapping Engine (AI Core)</strong>
-            <span class="tag">align</span>
-          </div>
-          <div class="acc-b">
-            <div class="in">
-              Uses embeddings and ontologies to align semantically equivalent fields across vendors and versions; builds canonical references.
-            </div>
-          </div>
+          <div class="acc-h"><span class="chev">▶</span><strong>104 — Semantic-Mapping Engine (AI Core)</strong><span class="tag">align</span></div>
+          <div class="acc-b"><div class="in">Uses embeddings and ontologies to align semantically equivalent fields across vendors and versions; builds canonical references.</div></div>
         </div>
-        <!-- 106 -->
         <div class="acc-item">
-          <div class="acc-h">
-            <span class="chev">▶</span>
-            <strong>106 — Dynamic Translation Layer</strong>
-            <span class="tag">transform</span>
-          </div>
-          <div class="acc-b">
-            <div class="in">
-              Produces standardized transaction objects decoupled from vendor syntax, enabling plug-and-play across integrations.
-            </div>
-          </div>
+          <div class="acc-h"><span class="chev">▶</span><strong>106 — Dynamic Translation Layer</strong><span class="tag">transform</span></div>
+          <div class="acc-b"><div class="in">Produces standardized transaction objects decoupled from vendor syntax, enabling plug-and-play across integrations.</div></div>
         </div>
-        <!-- 108 -->
         <div class="acc-item">
-          <div class="acc-h">
-            <span class="chev">▶</span>
-            <strong>108 — Routing &amp; Optimization Module</strong>
-            <span class="tag">route</span>
-          </div>
-          <div class="acc-b">
-            <div class="in">
-              Computes target systems using fulfillment scores and business rules; supports retries, backoff, and circuit breaking.
-            </div>
-          </div>
+          <div class="acc-h"><span class="chev">▶</span><strong>108 — Routing &amp; Optimization Module</strong><span class="tag">route</span></div>
+          <div class="acc-b"><div class="in">Computes target systems using fulfillment scores and business rules; supports retries, backoff, and circuit breaking.</div></div>
         </div>
-        <!-- 110 -->
         <div class="acc-item">
-          <div class="acc-h">
-            <span class="chev">▶</span>
-            <strong>110 — Feedback Learning Module</strong>
-            <span class="tag">learn</span>
-          </div>
-          <div class="acc-b">
-            <div class="in">
-              Captures performance and reconciliation feedback to fine-tune mappings, routing thresholds, and validation rules.
-            </div>
-          </div>
+          <div class="acc-h"><span class="chev">▶</span><strong>110 — Feedback Learning Module</strong><span class="tag">learn</span></div>
+          <div class="acc-b"><div class="in">Captures performance and reconciliation feedback to fine-tune mappings, routing thresholds, and validation rules.</div></div>
         </div>
-        <!-- 112 -->
         <div class="acc-item">
-          <div class="acc-h">
-            <span class="chev">▶</span>
-            <strong>112 — Finance &amp; Audit Layer</strong>
-            <span class="tag">audit</span>
-          </div>
-          <div class="acc-b">
-            <div class="in">
-              Ensures double-entry integrity across updates; emits immutable audit trails and variance alerts to a parent ledger.
-            </div>
-          </div>
+          <div class="acc-h"><span class="chev">▶</span><strong>112 — Finance &amp; Audit Layer</strong><span class="tag">audit</span></div>
+          <div class="acc-b"><div class="in">Ensures double-entry integrity across updates; emits immutable audit trails and variance alerts to a parent ledger.</div></div>
         </div>
-        <!-- 114 -->
         <div class="acc-item">
-          <div class="acc-h">
-            <span class="chev">▶</span>
-            <strong>114 — ERP Systems (Input)</strong>
-            <span class="tag">sources</span>
-          </div>
-          <div class="acc-b">
-            <div class="in">
-              Inbound events from ERPs/MRPs/CRMs and operational apps; adapters provide normalization and health checks.
-            </div>
-          </div>
+          <div class="acc-h"><span class="chev">▶</span><strong>114 — ERP Systems (Input)</strong><span class="tag">sources</span></div>
+          <div class="acc-b"><div class="in">Inbound events from ERPs/MRPs/CRMs and operational apps; adapters provide normalization and health checks.</div></div>
         </div>
-        <!-- 116 -->
         <div class="acc-item">
-          <div class="acc-h">
-            <span class="chev">▶</span>
-            <strong>116 — Parent Ledger (Output)</strong>
-            <span class="tag">destinations</span>
-          </div>
-          <div class="acc-b">
-            <div class="in">
-              Central financial record updated after reconciliation; exports evidence to BI and compliance systems.
-            </div>
-          </div>
+          <div class="acc-h"><span class="chev">▶</span><strong>116 — Parent Ledger (Output)</strong><span class="tag">destinations</span></div>
+          <div class="acc-b"><div class="in">Central financial record updated after reconciliation; exports evidence to BI and compliance systems.</div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===============================
-       WHAT SYSTEMS DELIVERS (expanded content)
-       =============================== -->
+  <!-- What we deliver -->
   <section id="deliver">
     <div class="wrap grid reveal">
       <div class="card" style="grid-column: span 12">
         <h2>What Systems Delivers</h2>
-        <p class="muted">The services below reflect how Systems turns concepts into controlled, scalable operations.</p>
+        <p class="muted">How Systems turns concepts into controlled, scalable operations.</p>
         <div class="grid" style="margin-top:10px">
           <div class="card" style="grid-column: span 12; background:rgba(0,188,212,.06); border-color:rgba(0,188,212,.25)">
             <strong>Integration Blueprints</strong>
-            <p class="muted">Current-state discovery, target-state architecture, RACI, and phased rollout plans across ERPs, CRMs, and apps.</p>
+            <p class="muted">Current-state discovery, target architecture, RACI, and phased rollout plans across ERPs, CRMs, and apps.</p>
           </div>
           <div class="card" style="grid-column: span 12; background:rgba(255,64,129,.06); border-color:rgba(255,64,129,.25)">
             <strong>API Gateway &amp; Orchestration</strong>
-            <p class="muted">Endpoint design, authentication, throttling, retries, circuit breakers, and event-driven routing with DLQs.</p>
+            <p class="muted">Auth, throttling, retries, circuit breakers, and event routing with DLQs.</p>
           </div>
           <div class="card" style="grid-column: span 12;">
             <strong>Data Pipelines (ETL/ELT)</strong>
-            <p class="muted">Schema discovery → semantic mapping → canonical models → validation → transformation → load with monitoring.</p>
+            <p class="muted">Schema discovery → semantic mapping → canonical models → validation → transform → load with monitoring.</p>
           </div>
           <div class="card" style="grid-column: span 12;">
             <strong>Master Data Sync</strong>
-            <p class="muted">Reference data governance, dedupe rules, survivorship logic, and cross-system consistency checks.</p>
+            <p class="muted">Reference governance, dedupe rules, survivorship logic, and consistency checks.</p>
           </div>
           <div class="card" style="grid-column: span 12;">
             <strong>Workflow Automation</strong>
-            <p class="muted">Rule engines and playbooks to eliminate manual entry, accelerate reconciliations, and standardize operations.</p>
+            <p class="muted">Rule engines and playbooks to remove manual entry and accelerate reconciliation.</p>
           </div>
           <div class="card" style="grid-column: span 12;">
             <strong>Observability &amp; Reporting</strong>
-            <p class="muted">KPIs (throughput, success rate, latency), alerting, runbooks, and incident workflows integrated with Insights.</p>
+            <p class="muted">Throughput, success rate, latency, alerting, runbooks, and incident workflows.</p>
           </div>
           <div class="card" style="grid-column: span 12;">
             <strong>Compliance &amp; Audit</strong>
-            <p class="muted">Double-entry integrity, immutable logs, variance alerts, and ledger exports for financial and regulatory reviews.</p>
+            <p class="muted">Double-entry integrity, immutable logs, variance alerts, and ledger exports.</p>
           </div>
           <div class="card" style="grid-column: span 12;">
             <strong>Change Management &amp; Rollout</strong>
-            <p class="muted">Cutover planning, sandbox pilots, training kits, and controlled waves to de-risk production adoption.</p>
-          </div>
-          <div class="card" style="grid-column: span 12;">
-            <strong>Developer Enablement</strong>
-            <p class="muted">Lightweight docs, sandbox endpoints, and a “starter kit” for partners to integrate faster with Systems.</p>
+            <p class="muted">Cutover planning, sandbox pilots, training kits, and controlled waves.</p>
           </div>
         </div>
-
-        <h3 style="margin-top:22px">Engagement Model</h3>
-        <ul class="muted">
-          <li><strong>Assessment (2–4 weeks):</strong> discovery, quick wins, blueprint, and ROI outline.</li>
-          <li><strong>Pilot (4–8 weeks):</strong> scope a thin slice (one object or flow), prove value, measure KPIs.</li>
-          <li><strong>Implementation (phased):</strong> incrementally expand coverage with runbooks and training.</li>
-          <li><strong>Managed Ops (optional):</strong> monitoring, patching, and continuous improvement of automations.</li>
-        </ul>
       </div>
     </div>
   </section>
 
-  <!-- ===============================
-       INTEGRATION SHOWCASE
-       =============================== -->
+  <!-- Integration showcase -->
   <section id="integration">
     <div class="wrap grid reveal">
       <div class="card" style="grid-column: span 12">
@@ -438,20 +313,18 @@
         <div class="grid" style="margin-top:12px">
           <div class="card" style="grid-column: span 12; background:rgba(0,188,212,.06); border-color:rgba(0,188,212,.25)">
             <strong>Pattern A — ETL + Orchestration</strong>
-            <p class="muted">Extract from ERP → Canonicalize via 104/106 → Route via 108 → Audit 112 → Emit to ledger 116</p>
+            <p class="muted">Extract → Canonicalize (104/106) → Route (108) → Audit (112) → Ledger (116).</p>
           </div>
           <div class="card" style="grid-column: span 12; background:rgba(255,64,129,.06); border-color:rgba(255,64,129,.25)">
             <strong>Pattern B — Event Mesh</strong>
-            <p class="muted">Event-driven adapters with backpressure, retries, and dead-letter queues; live metrics and alerts.</p>
+            <p class="muted">Event-driven adapters with backpressure, retries, DLQs; live metrics and alerts.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===============================
-       CONTACT
-       =============================== -->
+  <!-- Contact -->
   <section id="contact">
     <div class="wrap grid reveal">
       <div class="card" style="grid-column: span 12">
@@ -482,46 +355,30 @@
     </div>
   </section>
 
-  <!-- ===============================
-       FOOTER (Shared Pattern Ready)
-       =============================== -->
-  <footer>
-    <div class="wrap foot">
-      <div id="copyright">© Jmod Co.</div>
-      <div class="right">
-        <span>Built for operational clarity.</span>
-        <!-- IMG_PLACEHOLDER: small footer mark (optional) -->
-        <img src="assets/JmodSystems_IconSmall.png" alt="" style="width:18px; height:18px; opacity:.6">
-      </div>
-    </div>
-  </footer>
+  <!-- Footer slot (loads shared /jmodco/assets/footer.html) -->
+  <div id="footer-slot"></div>
 
   <script>
-    /* ============================================
-       TYPEWRITER headline
-       ============================================ */
-    (function typewriter(){
+    // Typewriter headline
+    (function(){
       const el = document.getElementById('typed');
       const txt = el.textContent.trim();
       el.textContent = '';
-      let i=0;
-      const tick=()=>{ if(i<=txt.length){ el.textContent = txt.slice(0,i++); setTimeout(tick, 12); } };
-      tick();
+      let i=0; (function tick(){ if(i<=txt.length){ el.textContent = txt.slice(0,i++); setTimeout(tick, 12);} })();
     })();
 
-    /* ============================================
-       SECTION REVEALS
-       ============================================ */
+    // Section reveals
     const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting) e.target.classList.add('in');
-      });
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
     }, {threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    /* ============================================
-       BACKGROUND LOGO VISIBILITY ON SCROLL
-       ============================================ */
+    // Header darken on scroll
+    window.addEventListener('scroll',()=>{
+      document.querySelector('header').classList.toggle('scrolled', window.scrollY>20);
+    });
+
+    // Background logo appears once hero leaves viewport
     const bgLogo = document.getElementById('bg-logo');
     const heroSec = document.querySelector('.hero');
     const logoObserver = new IntersectionObserver(entries=>{
@@ -532,109 +389,80 @@
     },{threshold:0.2});
     logoObserver.observe(heroSec);
 
-    /* ============================================
-       DATA PIPELINES: animate packets along paths
-       ============================================ */
+    // Animate packets along paths
     function moveAlong(pathId, dotId){
       const path = document.getElementById(pathId);
-      const dot = document.getElementById(dotId);
-      const len = path.getTotalLength();
-      let t = 0;
-      function step(){
-        t = (t + 1) % len;
-        const pt = path.getPointAtLength(t);
-        dot.setAttribute('cx', pt.x);
-        dot.setAttribute('cy', pt.y);
+      const dot  = document.getElementById(dotId);
+      const len  = path.getTotalLength();
+      let t=0; (function step(){ t=(t+1)%len;
+        const pt=path.getPointAtLength(t); dot.setAttribute('cx',pt.x); dot.setAttribute('cy',pt.y);
         requestAnimationFrame(step);
-      }
-      step();
+      })();
     }
-    moveAlong('pipe1','pkt1');
-    moveAlong('pipe2','pkt2');
-    moveAlong('pipe3','pkt3');
+    moveAlong('pipe1','pkt1'); moveAlong('pipe2','pkt2'); moveAlong('pipe3','pkt3');
 
-    /* ============================================
-       ACCORDION
-       ============================================ */
+    // Accordion
     document.querySelectorAll('.acc-item').forEach(item=>{
-      const head = item.querySelector('.acc-h');
-      const body = item.querySelector('.acc-b');
-      head.addEventListener('click', ()=>{
-        const open = head.classList.toggle('open');
-        if(open){
-          body.classList.add('in');
-          body.style.maxHeight = body.scrollHeight + 'px';
-        } else {
-          body.style.maxHeight = '0';
-          body.addEventListener('transitionend', ()=>body.classList.remove('in'), {once:true});
-        }
+      const head=item.querySelector('.acc-h'); const body=item.querySelector('.acc-b');
+      head.addEventListener('click',()=>{
+        const open=head.classList.toggle('open');
+        if(open){ body.classList.add('in'); body.style.maxHeight=body.scrollHeight+'px'; }
+        else{ body.style.maxHeight='0'; body.addEventListener('transitionend',()=>body.classList.remove('in'),{once:true}); }
       });
     });
 
-    /* ============================================
-       KPI COUNTERS + ORCHESTRATOR SIM
-       ============================================ */
-    const elRPM   = document.querySelector('[data-kpi="rpm"]');
-    const elOK    = document.querySelector('[data-kpi="okrate"]');
-    const elP95   = document.querySelector('[data-kpi="p95"]');
-    const log     = document.getElementById('log');
-
+    // KPIs + Orchestrator simulation
+    const elRPM=document.querySelector('[data-kpi="rpm"]');
+    const elOK =document.querySelector('[data-kpi="okrate"]');
+    const elP95=document.querySelector('[data-kpi="p95"]');
+    const log  =document.getElementById('log');
     let total=0, ok=0, latencies=[];
-
     function renderKPIs(){
-      const rpm = Math.min(600, Math.round(total * (0.6 + Math.random()*0.4)));
-      const okrate = total ? Math.round((ok/total)*100) : 0;
-      const p95 = latencies.length ? percentile(latencies, 0.95) : '—';
-      elRPM.textContent = rpm.toLocaleString();
-      elOK.textContent  = okrate + '%';
-      elP95.textContent = (p95==='—'?'—':Math.round(p95));
+      const rpm=Math.min(600, Math.round(total*(0.6+Math.random()*0.4)));
+      const okrate= total ? Math.round((ok/total)*100) : 0;
+      const p95   = latencies.length ? percentile(latencies, .95) : '—';
+      elRPM.textContent=rpm.toLocaleString();
+      elOK.textContent =okrate+'%';
+      elP95.textContent=(p95==='—'?'—':Math.round(p95));
     }
-    function percentile(arr, p){
-      const a = [...arr].sort((x,y)=>x-y);
-      const i = Math.floor(p * (a.length-1));
-      return a[i] ?? 0;
-    }
-    function appendLog(msg, cls=''){
-      const p = document.createElement('p');
-      if(cls) p.className = cls;
-      p.textContent = msg;
-      log.appendChild(p);
-      log.scrollTop = log.scrollHeight;
-    }
-
+    function percentile(arr,p){ const a=[...arr].sort((x,y)=>x-y); const i=Math.floor(p*(a.length-1)); return a[i]??0; }
+    function appendLog(msg,cls=''){ const p=document.createElement('p'); if(cls) p.className=cls; p.textContent=msg; log.appendChild(p); log.scrollTop=log.scrollHeight; }
     async function simulateBurst(count=25){
-      const ids = Array.from({length:count}, (_,i)=>`job_${Date.now()}_${i}`);
-      appendLog(`▶ Orchestrator: dispatching ${count} jobs...`, 'warn');
-
-      const tasks = ids.map(async id=>{
-        const latency = 80 + Math.random()*420; // 80-500ms
-        await new Promise(r=>setTimeout(r, latency));
-        const success = Math.random() > 0.08;   // ~92% success
-        total++; latencies.push(latency);
-        if(success){ ok++; appendLog(`✓ ${id} completed in ${Math.round(latency)}ms`, 'ok'); }
-        else{ appendLog(`✗ ${id} failed after ${Math.round(latency)}ms (retry queued)`, 'err'); }
+      const ids=Array.from({length:count},(_,i)=>`job_${Date.now()}_${i}`); appendLog(`▶ Orchestrator: dispatching ${count} jobs...`,'warn');
+      const tasks=ids.map(async id=>{
+        const latency=80+Math.random()*420; await new Promise(r=>setTimeout(r,latency));
+        const success=Math.random()>0.08; total++; latencies.push(latency);
+        if(success){ ok++; appendLog(`✓ ${id} completed in ${Math.round(latency)}ms`,'ok'); }
+        else{ appendLog(`✗ ${id} failed after ${Math.round(latency)}ms (retry queued)`,'err'); }
       });
-
-      await Promise.all(tasks);
-      renderKPIs();
-      appendLog(`■ Burst complete. Total=${total} OK=${ok} Fail=${total-ok}`);
+      await Promise.all(tasks); renderKPIs(); appendLog(`■ Burst complete. Total=${total} OK=${ok} Fail=${total-ok}`);
     }
-
-    document.getElementById('runSim').addEventListener('click', ()=>simulateBurst(30 + Math.floor(Math.random()*30)));
-    document.getElementById('clearLog').addEventListener('click', ()=>{
-      log.innerHTML=''; total=0; ok=0; latencies.length=0; renderKPIs();
-    });
-
-    // Initialize KPIs with a tiny idle tick
+    document.getElementById('runSim').addEventListener('click',()=>simulateBurst(30+Math.floor(Math.random()*30)));
+    document.getElementById('clearLog').addEventListener('click',()=>{ log.innerHTML=''; total=0; ok=0; latencies.length=0; renderKPIs(); });
     renderKPIs();
 
-    /* ============================================
-       FOOTER YEAR INJECTION (shared pattern)
-       ============================================ */
-    (function(){
-      const el = document.getElementById('copyright');
-      if(el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+    // Load shared footer from /jmodco/assets/footer.html
+    (async function loadFooter(){
+      try{
+        const res = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
+        const html = await res.text();
+        const slot = document.getElementById('footer-slot');
+        slot.innerHTML = html;
+
+        // Ensure © year is current (in case footer.html lacks/blocks script execution)
+        const c = slot.querySelector('#copyright');
+        if(c) c.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
+      }catch(e){
+        console.warn('Footer failed to load:', e);
+      }
     })();
   </script>
+
+  <style>
+    /* console colors (kept inline for simplicity) */
+    .ok{color:#7fffd4}
+    .warn{color:#ffd166}
+    .err{color:#ff6b6b}
+  </style>
 </body>
 </html>
