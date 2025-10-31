@@ -42,9 +42,9 @@
     /* Faint site-wide background logo (appears after hero) */
     #bg-logo{
       position:fixed;inset:0;z-index:-1;
-      background:url('/jmodco/assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat;
+      background:url('/jmodco/assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat; /*Hero Background*/
       opacity:0;transition:opacity .8s ease;pointer-events:none;
-      filter:drop-shadow(0 0 40px rgba(0,188,212,.22)) brightness(1.05);
+      filter:drop-shadow(0 0 40px rgba(0,188,212,.22)) brightness(1.15);
       /* Parallax option: background-attachment: fixed; */
     }
     #bg-logo.visible{opacity:var(--wm-opacity);}
@@ -84,7 +84,7 @@
     .hero::after{
       content:"";position:absolute;inset:0;
       background-image:url('/jmodco/assets/Jmod_SystemsTP.png'); /* optional */
-      background-repeat:no-repeat;background-position:center;background-size:900px auto;
+      background-repeat:no-repeat;background-position:center;background-size:880px auto;
       opacity:.03;pointer-events:none;
     }
     .hero-inner{position:relative;z-index:1;text-align:center;padding:16px}
