@@ -9,8 +9,7 @@
 
   <style>
     /* ===============================
-       JMOD SYSTEMS THEME TOKENS
-       Adjust these to re-skin quickly
+       SIZE_TOKENS — tweak quickly
        =============================== */
     :root{
       --bg:#0a0e13;               /* Page background */
@@ -19,7 +18,7 @@
       --muted:#9fb1c1;            /* Secondary text */
       --line:#13202c;             /* Dividers */
       --accent:#00bcd4;           /* Tech blue (data lines) */
-      --accent-2:#ff4081;         /* Magenta link/button to tie brand */
+      --accent-2:#ff4081;         /* Magenta link/button (Jmod Co. accent) */
       --glow:0 0 24px rgba(0,188,212,.35);
       --radius:18px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
@@ -28,8 +27,11 @@
       --grid-gap: 18px;
       --pipe-stroke: 2.5;         /* SVG line thickness */
       --packet-size: 7px;         /* moving dot size */
-      --logo-size: 40px;          /* top-left logo size */
-      --icon-size: 22px;          /* small inline icon size */
+      --icon-size: 22px;          /* inline icon size */
+
+      /* Watermark controls */
+      --wm-opacity: .08;          /* background logo intensity */
+      --wm-size: 70vw;            /* background logo scale */
     }
 
     *{box-sizing:border-box}
@@ -41,6 +43,19 @@
     a{color:var(--accent-2); text-decoration:none}
     a:hover{text-decoration:underline}
     .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:20px}
+
+    /* ===============================
+       BACKGROUND WATERMARK (appears after hero)
+       =============================== */
+    #bg-logo{
+      position:fixed; inset:0; z-index:-1;
+      /* IMG_PLACEHOLDER: faint site-wide watermark */
+      background:url('assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat;
+      opacity:0; transition:opacity .8s ease; pointer-events:none;
+      filter:drop-shadow(0 0 40px rgba(0,188,212,.22)) brightness(1.05);
+      /* Uncomment for parallax feel: background-attachment: fixed; */
+    }
+    #bg-logo.visible{ opacity: var(--wm-opacity); }
 
     /* ===============================
        NAV
@@ -56,7 +71,6 @@
       height:64px; gap:16px;
     }
     .brand{display:flex; align-items:center; gap:12px}
-    .brand img{width:var(--logo-size); height:var(--logo-size); object-fit:contain; filter:drop-shadow(var(--glow))}
     .brand .tt{font-weight:700; letter-spacing:.3px}
     .navlinks{display:flex; gap:18px; flex-wrap:wrap}
     .navlinks a{color:var(--ink); opacity:.9}
@@ -76,10 +90,10 @@
         radial-gradient(900px 400px at 10% -20%, rgba(255,64,129,.05), transparent 60%);
       border-bottom:1px solid var(--line);
     }
-    /* IMG_PLACEHOLDER: hero watermark/logo */
+    /* IMG_PLACEHOLDER: hero watermark/logo (subtle) */
     .hero::after{
       content:""; position:absolute; inset:0;
-      background-image:url('assets/systems-hero-watermark.png'); /* Replace with your watermark or remove */
+      background-image:url('assets/systems-hero-watermark.png'); /* Replace or remove */
       background-repeat:no-repeat; background-position:center; background-size: 900px auto;
       opacity:.03; pointer-events:none;
     }
@@ -92,9 +106,7 @@
     .primary{background:var(--accent-2); color:#fff; border:none; padding:10px 14px; border-radius:12px; box-shadow:var(--glow)}
 
     /* DATA PIPELINES CANVAS AREA */
-    .pipes{
-      position:absolute; inset:0; pointer-events:none;
-    }
+    .pipes{ position:absolute; inset:0; pointer-events:none; }
     svg{width:100%; height:100%}
     .pipe{stroke:var(--accent); stroke-width:var(--pipe-stroke); fill:none; opacity:.8; filter:drop-shadow(var(--glow))}
     .packet{fill:var(--accent-2); filter:drop-shadow(0 0 10px rgba(255,64,129,.6))}
@@ -138,14 +150,6 @@
     .acc-b.in{padding:0 16px 16px}
     .tag{display:inline-block; padding:4px 8px; border-radius:999px; font-size:.75rem; background:rgba(0,188,212,.08); border:1px solid rgba(0,188,212,.25); color:var(--accent)}
 
-    /* ORCHESTRATOR CONSOLE */
-    .console{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:#0b1016}
-    .log{height:240px; overflow:auto; background:#071018; border:1px solid var(--line); border-radius:10px; padding:10px}
-    .log p{margin:0 0 6px; white-space:pre-wrap}
-    .ok{color:#7fffd4}
-    .warn{color:#ffd166}
-    .err{color:#ff6b6b}
-
     /* REVEAL ANIMATIONS */
     .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
     .reveal.in{opacity:1; transform:none}
@@ -154,24 +158,25 @@
     footer{border-top:1px solid var(--line); padding:28px 0 56px; color:var(--muted)}
     .foot{display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center}
     .foot .right{display:flex; gap:14px; align-items:center}
-    /* Global footer text injection matches your pattern */
   </style>
 </head>
 <body>
 
+  <!-- BACKGROUND LOGO (fades in after hero scroll) -->
+  <div id="bg-logo"></div>
+
   <!-- ===============================
-       NAV
+       NAV (logo image removed)
        =============================== -->
   <header>
     <div class="wrap nav">
       <div class="brand">
-        <!-- IMG_PLACEHOLDER: top-left brand mark -->
-        <img src="assets/JmodSystems_Icon.png" alt="Jmod Systems" />
         <div class="tt">Jmod Systems</div>
       </div>
       <nav class="navlinks">
         <a href="#solutions">Solutions</a>
         <a href="#frameworks">Frameworks</a>
+        <a href="#deliver">What We Deliver</a>
         <a href="#integration">Integration</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -188,11 +193,11 @@
         <!-- LEFT INPUT PATHS -->
         <path id="pipe1" class="pipe" d="M 50 200 C 350 200, 500 350, 800 400 S 1250 450, 1550 320" />
         <path id="pipe2" class="pipe" d="M 50 500 C 300 520, 520 520, 800 420 S 1250 380, 1550 500" />
-        <!-- CENTER CORE OUTLINE (for vibe) -->
+        <!-- CENTER CORE OUTLINE -->
         <circle cx="800" cy="400" r="110" stroke="rgba(255,255,255,.08)" stroke-width="1.5" fill="rgba(0,188,212,.06)"/>
         <!-- RIGHT OUTPUT PATHS -->
         <path id="pipe3" class="pipe" d="M 1550 200 C 1250 250, 1100 350, 800 400 S 350 430, 50 320" />
-        <!-- PACKETS (animated via JS along paths) -->
+        <!-- PACKETS -->
         <circle class="packet" id="pkt1" r="7"/>
         <circle class="packet" id="pkt2" r="7"/>
         <circle class="packet" id="pkt3" r="7"/>
@@ -247,8 +252,10 @@
           <button class="cta" id="runSim">Run Simulation</button>
           <button class="ghost" id="clearLog">Clear Logs</button>
         </div>
-        <div class="console card" style="margin-top:12px">
-          <div class="log" id="log"></div>
+        <div class="card" style="margin-top:12px; background:#0b1016">
+          <div class="console">
+            <div class="log" id="log"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -371,13 +378,71 @@
   </section>
 
   <!-- ===============================
+       WHAT SYSTEMS DELIVERS (expanded content)
+       =============================== -->
+  <section id="deliver">
+    <div class="wrap grid reveal">
+      <div class="card" style="grid-column: span 12">
+        <h2>What Systems Delivers</h2>
+        <p class="muted">The services below reflect how Systems turns concepts into controlled, scalable operations.</p>
+        <div class="grid" style="margin-top:10px">
+          <div class="card" style="grid-column: span 12; background:rgba(0,188,212,.06); border-color:rgba(0,188,212,.25)">
+            <strong>Integration Blueprints</strong>
+            <p class="muted">Current-state discovery, target-state architecture, RACI, and phased rollout plans across ERPs, CRMs, and apps.</p>
+          </div>
+          <div class="card" style="grid-column: span 12; background:rgba(255,64,129,.06); border-color:rgba(255,64,129,.25)">
+            <strong>API Gateway &amp; Orchestration</strong>
+            <p class="muted">Endpoint design, authentication, throttling, retries, circuit breakers, and event-driven routing with DLQs.</p>
+          </div>
+          <div class="card" style="grid-column: span 12;">
+            <strong>Data Pipelines (ETL/ELT)</strong>
+            <p class="muted">Schema discovery → semantic mapping → canonical models → validation → transformation → load with monitoring.</p>
+          </div>
+          <div class="card" style="grid-column: span 12;">
+            <strong>Master Data Sync</strong>
+            <p class="muted">Reference data governance, dedupe rules, survivorship logic, and cross-system consistency checks.</p>
+          </div>
+          <div class="card" style="grid-column: span 12;">
+            <strong>Workflow Automation</strong>
+            <p class="muted">Rule engines and playbooks to eliminate manual entry, accelerate reconciliations, and standardize operations.</p>
+          </div>
+          <div class="card" style="grid-column: span 12;">
+            <strong>Observability &amp; Reporting</strong>
+            <p class="muted">KPIs (throughput, success rate, latency), alerting, runbooks, and incident workflows integrated with Insights.</p>
+          </div>
+          <div class="card" style="grid-column: span 12;">
+            <strong>Compliance &amp; Audit</strong>
+            <p class="muted">Double-entry integrity, immutable logs, variance alerts, and ledger exports for financial and regulatory reviews.</p>
+          </div>
+          <div class="card" style="grid-column: span 12;">
+            <strong>Change Management &amp; Rollout</strong>
+            <p class="muted">Cutover planning, sandbox pilots, training kits, and controlled waves to de-risk production adoption.</p>
+          </div>
+          <div class="card" style="grid-column: span 12;">
+            <strong>Developer Enablement</strong>
+            <p class="muted">Lightweight docs, sandbox endpoints, and a “starter kit” for partners to integrate faster with Systems.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:22px">Engagement Model</h3>
+        <ul class="muted">
+          <li><strong>Assessment (2–4 weeks):</strong> discovery, quick wins, blueprint, and ROI outline.</li>
+          <li><strong>Pilot (4–8 weeks):</strong> scope a thin slice (one object or flow), prove value, measure KPIs.</li>
+          <li><strong>Implementation (phased):</strong> incrementally expand coverage with runbooks and training.</li>
+          <li><strong>Managed Ops (optional):</strong> monitoring, patching, and continuous improvement of automations.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================
        INTEGRATION SHOWCASE
        =============================== -->
   <section id="integration">
     <div class="wrap grid reveal">
       <div class="card" style="grid-column: span 12">
         <h2>Integration Patterns</h2>
-        <p class="muted">Examples of how Systems bridges <strong>Labs</strong> prototypes into <strong>operational flows</strong>, with observability for <strong>Insights</strong> and distribution to <strong>Media</strong>.</p>
+        <p class="muted">How Systems bridges <strong>Labs</strong> prototypes into <strong>operational flows</strong>, with observability for <strong>Insights</strong> and distribution to <strong>Media</strong>.</p>
         <div class="grid" style="margin-top:12px">
           <div class="card" style="grid-column: span 12; background:rgba(0,188,212,.06); border-color:rgba(0,188,212,.25)">
             <strong>Pattern A — ETL + Orchestration</strong>
@@ -441,7 +506,7 @@
 
   <script>
     /* ============================================
-       UTIL: typewriter headline (subtle)
+       TYPEWRITER headline
        ============================================ */
     (function typewriter(){
       const el = document.getElementById('typed');
@@ -463,9 +528,22 @@
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
     /* ============================================
+       BACKGROUND LOGO VISIBILITY ON SCROLL
+       ============================================ */
+    const bgLogo = document.getElementById('bg-logo');
+    const heroSec = document.querySelector('.hero');
+    const logoObserver = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting){ bgLogo.classList.add('visible'); }
+        else{ bgLogo.classList.remove('visible'); }
+      });
+    },{threshold:0.2});
+    logoObserver.observe(heroSec);
+
+    /* ============================================
        DATA PIPELINES: animate packets along paths
        ============================================ */
-    function moveAlong(pathId, dotId, speedMs){
+    function moveAlong(pathId, dotId){
       const path = document.getElementById(pathId);
       const dot = document.getElementById(dotId);
       const len = path.getTotalLength();
@@ -479,9 +557,9 @@
       }
       step();
     }
-    moveAlong('pipe1','pkt1', 5000);
-    moveAlong('pipe2','pkt2', 6500);
-    moveAlong('pipe3','pkt3', 5600);
+    moveAlong('pipe1','pkt1');
+    moveAlong('pipe2','pkt2');
+    moveAlong('pipe3','pkt3');
 
     /* ============================================
        ACCORDION
@@ -512,7 +590,6 @@
     let total=0, ok=0, latencies=[];
 
     function renderKPIs(){
-      // RPM as simple function of last burst
       const rpm = Math.min(600, Math.round(total * (0.6 + Math.random()*0.4)));
       const okrate = total ? Math.round((ok/total)*100) : 0;
       const p95 = latencies.length ? percentile(latencies, 0.95) : '—';
