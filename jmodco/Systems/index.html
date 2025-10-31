@@ -24,8 +24,12 @@
       --grid-gap:18px;
       --pipe-stroke:2.5;
       --packet-size:7px;
-      --wm-opacity:.08;   /* background logo strength */
+      --wm-opacity:.10;   /* background logo strength */
       --wm-size:70vw;     /* background logo size */
+
+      /* mobile bottom bar sizes */
+      --bottom-bar-h:64px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -39,17 +43,16 @@
     a:hover{text-decoration:underline}
     .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:20px}
 
-    /* Faint site-wide background logo (appears after hero) */
+    /* Page watermark (fades in after hero) */
     #bg-logo{
       position:fixed;inset:0;z-index:-1;
-      background:url('/jmodco/assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat; /*Page Background*/
+      background:url('/jmodco/assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat;
       opacity:0;transition:opacity .8s ease;pointer-events:none;
-      filter:drop-shadow(0 0 40px rgba(0,188,212,.22)) brightness(1.15);
-      /* Parallax option: background-attachment: fixed; */
+      filter:drop-shadow(0 0 40px rgba(0,188,212,.24)) brightness(1.15);
     }
     #bg-logo.visible{opacity:var(--wm-opacity);}
 
-    /* Header / fixed nav */
+    /* Header (desktop / tablet) */
     header{
       position:fixed;top:0;left:0;width:100%;z-index:50;
       backdrop-filter:saturate(1.2) blur(10px);
@@ -83,9 +86,9 @@
     }
     .hero::after{
       content:"";position:absolute;inset:0;
-      background-image:url('/jmodco/assets/Jmod_SystemsTP.png'); /* optional */
+      background-image:url('/jmodco/assets/Jmod_SystemsTP.png'); /* faint hero mark */
       background-repeat:no-repeat;background-position:center;background-size:880px auto;
-      opacity:0.15;pointer-events:none; /*Page Background*/
+      opacity:.06;pointer-events:none;
     }
     .hero-inner{position:relative;z-index:1;text-align:center;padding:16px}
     .eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:.2em;font-size:.8rem}
@@ -110,7 +113,7 @@
     .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
     .reveal.in{opacity:1;transform:none}
 
-    /* Layout specifics */
+    /* KPIs + accordion etc. */
     .kpis{grid-column: span 12}
     @media (min-width:900px){
       .about{grid-column: span 7}
@@ -128,21 +131,74 @@
     .acc-b{max-height:0;overflow:hidden;transition:max-height .35s ease}
     .acc-b.in{padding:0 16px 16px}
     .tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.75rem;background:rgba(0,188,212,.08);border:1px solid rgba(0,188,212,.25);color:var(--accent)}
-/* Keep bullets inside the About card border */
-.about ul{
-  list-style-position: inside;
-  margin-left: 0;
-  padding-left: .5rem;
-}
-</style>
-  
+
+    /* --- MOBILE FIXES --- */
+    @media (max-width: 900px){
+      /* 1) About card should span full width on mobile */
+      .about{ grid-column: span 12; }
+
+      /* 2) Top header: keep brand, hide links + CTA (moved to bottom bar) */
+      .navlinks, header .cta{ display:none; }
+
+      /* 3) Add bottom padding so content isn't hidden behind bottom nav */
+      body{ padding-bottom: calc(var(--bottom-bar-h) + var(--safe-bottom)); }
+    }
+
+    /* Bottom hamburger nav (mobile only) */
+    .bottom-nav{
+      position:fixed; left:0; right:0; bottom:0; z-index:60;
+      display:none; /* shown via media query */
+      background:rgba(10,14,19,.85);
+      backdrop-filter:saturate(1.2) blur(10px);
+      border-top:1px solid var(--line);
+      height: calc(var(--bottom-bar-h) + var(--safe-bottom));
+      padding-bottom: var(--safe-bottom);
+    }
+    @media (max-width: 900px){ .bottom-nav{ display:flex; } }
+
+    .bottom-nav .wrap{
+      height:var(--bottom-bar-h);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .hamburger{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:44px; height:44px; border-radius:12px; border:1px solid var(--line);
+      background:linear-gradient(135deg, rgba(0,188,212,.2), rgba(255,64,129,.2));
+      cursor:pointer;
+    }
+    .hamburger svg{ width:22px; height:22px; }
+
+    /* Slide-up sheet for links */
+    .sheet{
+      position:fixed; left:0; right:0; bottom:0; z-index:70;
+      transform:translateY(105%);
+      transition:transform .25s ease-out;
+      background:rgba(10,14,19,.98);
+      border-top-left-radius:18px; border-top-right-radius:18px;
+      border-top:1px solid var(--line);
+      padding:16px 16px calc(16px + var(--safe-bottom));
+      box-shadow: 0 -20px 40px rgba(0,0,0,.45);
+    }
+    .sheet.open{ transform:translateY(0%); }
+    .sheet .grab{ width:44px; height:4px; border-radius:4px; background:#1f2a34; margin:6px auto 12px; }
+    .sheet a{
+      display:block; padding:14px 12px; margin:6px 0; border:1px solid var(--line);
+      border-radius:12px; color:var(--ink); text-decoration:none; background:rgba(19,32,44,.5);
+    }
+
+    /* Bullets inside About card */
+    .about ul{
+      list-style-position: inside;
+      margin-left: 0;
+      padding-left: 0;
+    }
   </style>
 </head>
 <body>
   <!-- Background watermark -->
   <div id="bg-logo"></div>
 
-  <!-- Fixed header -->
+  <!-- Fixed header (desktop/tablet) -->
   <header>
     <div class="wrap nav">
       <div class="brand">Jmod Systems</div>
@@ -186,7 +242,7 @@
   <section id="solutions">
     <div class="wrap grid reveal">
       <div class="about card">
-        <h2>About Systems</h2>
+        <h2>About<br>Systems</h2>
         <p class="muted">We connect every layer — from <strong>schema discovery</strong> to <strong>semantic mapping</strong>, dynamic translation, routing, and audit. Systems is the engine room that makes data move with intent.</p>
         <hr class="rule" />
         <ul>
@@ -363,8 +419,28 @@
     </div>
   </section>
 
-  <!-- Footer slot (loads shared /jmodco/assets/footer.html) -->
+  <!-- Footer (shared) -->
   <div id="footer-slot"></div>
+
+  <!-- Bottom hamburger nav (mobile) -->
+  <nav class="bottom-nav" aria-label="Mobile Navigation">
+    <div class="wrap">
+      <div class="brand" style="opacity:.9">Jmod Systems</div>
+      <button class="hamburger" id="openSheet" aria-label="Open menu" aria-controls="navSheet" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <div class="sheet" id="navSheet" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div class="grab"></div>
+    <a href="#solutions">Solutions</a>
+    <a href="#frameworks">Frameworks</a>
+    <a href="#deliver">What We Deliver</a>
+    <a href="#integration">Integration</a>
+    <a href="#contact">Contact</a>
+  </div>
 
   <script>
     // Typewriter headline
@@ -456,18 +532,29 @@
         const html = await res.text();
         const slot = document.getElementById('footer-slot');
         slot.innerHTML = html;
-
-        // Ensure © year is current (in case footer.html lacks/blocks script execution)
         const c = slot.querySelector('#copyright');
         if(c) c.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-      }catch(e){
-        console.warn('Footer failed to load:', e);
-      }
+      }catch(e){ console.warn('Footer failed to load:', e); }
     })();
+
+    // Mobile bottom sheet logic
+    const btn = document.getElementById('openSheet');
+    const sheet = document.getElementById('navSheet');
+    if(btn && sheet){
+      const toggle = (open) => {
+        sheet.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', String(open));
+      };
+      btn.addEventListener('click', ()=>toggle(!sheet.classList.contains('open')));
+      // Close when link tapped
+      sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>toggle(false)));
+      // Swipe-down / outside close (basic)
+      sheet.addEventListener('click', (e)=>{ if(e.target === sheet) toggle(false); });
+    }
   </script>
 
   <style>
-    /* console colors (kept inline for simplicity) */
+    /* console colors */
     .ok{color:#7fffd4}
     .warn{color:#ffd166}
     .err{color:#ff6b6b}
