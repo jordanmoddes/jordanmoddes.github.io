@@ -10,6 +10,7 @@
       /* ===== quick knobs ===== */
       --hero-logo-scale: 0.90;      /* 0.60–1.10 typical */
       --panel-opacity: .85;          /* .70 subtle … 1.00 solid */
+      --header-h: 68px;              /* header height for offsets */
 
       /* reactor palette */
       --reactor-core:#aef2ff;
@@ -30,6 +31,7 @@
       --blur: 0.6px;
     }
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     html,body{height:100%}
     body{
       margin:0; font:16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -39,7 +41,12 @@
         radial-gradient(1200px 800px at 120% 10%, rgba(87,230,255,.07), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
       overflow-x:hidden; position:relative; isolation:isolate;
+
+      /* keep content from sliding under fixed header */
+      padding-top: var(--header-h);
     }
+    /* offset anchor targets so content isn't hidden behind fixed header */
+    section{scroll-margin-top: calc(var(--header-h) + 12px)}
 
     /* ===== Parallax Background (Reactor Core) ===== */
     #labs-bg{position:fixed; inset:0; z-index:-1; overflow:hidden;
@@ -65,14 +72,11 @@
 
     .node{fill:#89d8ff}
     .halo{fill:none; stroke:rgba(130,210,255,.35); stroke-width:6; filter:blur(2px)}
-
     .icon{fill:none; stroke:#cfe9ff; stroke-width:1.2; opacity:.9; filter:drop-shadow(0 0 6px rgba(200,240,255,.35))}
     .brand-weave{fill:url(#brandGrad); font:800 22px/1 "Inter", ui-sans-serif; letter-spacing:.6px;
       filter:drop-shadow(0 0 10px rgba(120,200,255,.5))}
-
     .projectile{ fill:#ffffff; filter: drop-shadow(0 0 6px rgba(200,240,255,.9)); }
 
-    /* reactor visuals */
     .core-crystal{ fill:url(#coreGrad); stroke:rgba(255,255,255,.45); stroke-width:.8;
       filter: drop-shadow(0 0 22px rgba(120,240,255,.45)); }
     .beam{ stroke:url(#beamGrad); stroke-width:1.2; stroke-linecap:round; opacity:.55; }
@@ -86,46 +90,132 @@
       100%{ transform:scale(1.3); opacity:0 }
     }
 
-    /* Header */
-    header{position:sticky; top:0; z-index:5; backdrop-filter:blur(10px);
-      background:linear-gradient(180deg, rgba(10,11,15,.78), rgba(10,11,15,.42) 70%, transparent);
-      border-bottom:1px solid var(--border)}
-    .bar{display:flex; align-items:center; justify-content:space-between; gap:20px}
+    /* ===== Fixed Header ===== */
+    header{
+      position:fixed; top:0; left:0; right:0; height:var(--header-h); z-index:5;
+      display:flex; align-items:center;
+      backdrop-filter:blur(10px);
+      background:linear-gradient(180deg, rgba(10,11,15,.85), rgba(10,11,15,.55) 70%, transparent);
+      border-bottom:1px solid var(--border)
+    }
+    .bar{max-width:var(--maxw); margin:0 auto; width:100%; padding:0 20px;
+      display:flex; align-items:center; justify-content:space-between; gap:20px}
     .brand{display:flex; align-items:center; gap:12px}
     .brand .t1{font-weight:700; letter-spacing:.3px}
-    nav{display:flex; gap:18px}
+    nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
     a{color:#57e6ff; text-decoration:none}
     a:hover{text-decoration:underline}
+
+    /* layout containers */
     .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px; position:relative; z-index:2}
 
     /* HERO (equal columns) */
-    .hero{display:grid; grid-template-columns: 1fr 1fr; gap:32px; align-items:center;
-      padding:56px 20px 24px; margin:0 auto; max-width:var(--maxw); position:relative; z-index:2}
-    .hero-card{
-      background:rgba(17,19,28,var(--panel-opacity));
-      border:1px solid var(--border); border-radius:var(--radius);
-      padding:28px; box-shadow:var(--shadow); position:relative; overflow:hidden
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start; /* changed from center — stops stretching */
+      padding: 56px 20px 24px;
+      margin: 0 auto;
+      max-width: var(--maxw);
+      position: relative;
+      z-index: 2;
     }
-    .hero-left{display:flex; align-items:center; justify-content:center; padding:24px}
-    /* universal image slot */
-    .img-slot{width:100%; display:flex; justify-content:center}
-    .img-slot > img{width:calc(var(--img-scale,1) * 100%); max-width:none; height:auto; object-fit:contain; transition:width .25s ease}
-    #heroLogo{--img-scale: var(--hero-logo-scale); filter: drop-shadow(0 0 26px rgba(87,230,255,.45))}
-    .tag{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
-      background:linear-gradient(90deg, rgba(255,61,242,.20), rgba(87,230,255,.20));
-      border:1px solid var(--border); font-size:.85rem; color:#d8e2ff; margin-bottom:12px}
-    .hero-right h1{font-size:clamp(28px, 4vw, 46px); margin:0 0 10px}
-    .hero-right p{color:var(--muted); margin:10px 0 18px}
-    .cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
-    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; border:1px solid var(--border);
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); color:var(--ink); box-shadow:var(--shadow);
-      cursor:pointer; transition:transform .2s ease, box-shadow .2s ease}
-    .btn:hover{transform:translateY(-1px); box-shadow:0 18px 40px rgba(87,230,255,.18)}
-    .btn.primary{background:
-      radial-gradient(300px 120px at 20% 20%, rgba(255,61,242,.33), transparent 60%),
-      radial-gradient(300px 120px at 80% 20%, rgba(87,230,255,.33), transparent 60%),
-      linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
-      border-color:rgba(201,208,221,.35)}
+    
+    .hero-card {
+      background: rgba(17,19,28,var(--panel-opacity));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      height: auto;       /* let height adjust naturally */
+    }
+    
+    .hero-left {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    
+    .img-slot {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .img-slot > img {
+      width: calc(var(--img-scale,1) * 100%);
+      max-width: none;
+      height: auto;
+      object-fit: contain;
+      transition: width .25s ease;
+    }
+    
+    #heroLogo {
+      --img-scale: var(--hero-logo-scale);
+      filter: drop-shadow(0 0 26px rgba(87,230,255,.45));
+    }
+    
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,61,242,.20), rgba(87,230,255,.20));
+      border: 1px solid var(--border);
+      font-size: .85rem;
+      color: #d8e2ff;
+      margin-bottom: 12px;
+    }
+    
+    .hero-right h1 {
+      font-size: clamp(28px, 4vw, 46px);
+      margin: 0 0 10px;
+    }
+    
+    .hero-right p {
+      color: var(--muted);
+      margin: 10px 0 18px;
+    }
+    
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(87,230,255,.18);
+    }
+    
+    .btn.primary {
+      background:
+        radial-gradient(300px 120px at 20% 20%, rgba(255,61,242,.33), transparent 60%),
+        radial-gradient(300px 120px at 80% 20%, rgba(87,230,255,.33), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+      border-color: rgba(201,208,221,.35);
+    }
+
 
     /* Sections */
     section{padding:36px 20px}
@@ -154,7 +244,6 @@
     .tech{max-width:var(--maxw); margin:0 auto; display:flex; gap:14px; flex-wrap:wrap}
     .pill{border:1px solid var(--border); background:rgba(255,255,255,.06); border-radius:999px; padding:8px 12px; color:#e3e8f3; font-size:.9rem}
     .pill.silver{border-color:rgba(201,208,221,.35); color:#f0f4ff}
-
     dialog{border:none; border-radius:16px; padding:0; width:min(560px, 92vw);
       background:linear-gradient(180deg, #131628, #0f1222); color:var(--ink); box-shadow:0 30px 80px rgba(0,0,0,.55)}
     dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,255,.2), rgba(0,0,0,.6))}
@@ -163,8 +252,6 @@
     .field{display:grid; gap:6px}
     .field input{background:#0c0f1d; border:1px solid var(--border); color:var(--ink); padding:12px 12px; border-radius:10px}
     .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:0 22px 22px}
-    footer{border-top:1px solid var(--border); margin-top:40px; background:linear-gradient(180deg, rgba(255,61,242,.05), transparent)}
-    .foot-inner{max-width:var(--maxw); margin:0 auto; padding:18px 20px; color:#d2dcf4; display:flex; gap:12px; flex-wrap:wrap; align-items:center}
   </style>
 </head>
 <body>
@@ -177,8 +264,6 @@
         <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#cfe9ff"/><stop offset="100%" stop-color="#7fd9ff"/>
         </linearGradient>
-
-        <!-- core glow -->
         <radialGradient id="coreGrad" cx="50%" cy="50%" r="70%">
           <stop offset="0%" stop-color="var(--reactor-white)" stop-opacity="1"/>
           <stop offset="35%" stop-color="var(--reactor-core)" stop-opacity=".9"/>
@@ -188,37 +273,31 @@
           <stop offset="0%" stop-color="var(--reactor-white)" stop-opacity=".9"/>
           <stop offset="100%" stop-color="var(--reactor-cyan)" stop-opacity=".25"/>
         </linearGradient>
-
-        <!-- AI icon symbols -->
         <symbol id="ai-cloud" viewBox="0 0 24 24"><path d="M7 17h10a4 4 0 0 0 0-8 5 5 0 0 0-9.8 1A3.5 3.5 0 0 0 7 17Z"/></symbol>
         <symbol id="ai-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3Z"/><path d="M9 12l2 2 4-4"/></symbol>
         <symbol id="ai-graph" viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19H20"/><rect x="7" y="11" width="3" height="6" rx="1"/><rect x="12" y="8" width="3" height="9" rx="1"/><rect x="17" y="6" width="3" height="11" rx="1"/></symbol>
-        <symbol id="ai-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.2-1.2-2-2 1a7 7 0 0 0-1.6-.9l-.2-2.2H9.1l-.2 2.2a7 7 0 0 0-1.6.9l-2-1L4.1 9.8 6 11a7 7 0 0 0 0 2l-2 1.2 1.2 2 2-1a7 7 0 0 0 1.6.9l.2 2.2h3.8l.2-2.2a7 7 0 0 0 1.6-.9l2 1 1.2-2L18.9 13c.07-.33.1-.66.1-1Z"/></symbol>
+        <symbol id="ai-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.2-1.2-2-2 1a7 7 0 0 0 1.6-.9l-.2-2.2H9.1l-.2 2.2a7 7 0 0 0-1.6.9l-2-1L4.1 9.8 6 11a7 7 0 0 0 0 2l-2 1.2 1.2 2 2-1a7 7 0 0 0 1.6.9l.2 2.2h3.8l.2-2.2a7 7 0 0 0 1.6-.9l2 1 1.2-2L18.9 13c.07-.33.1-.66.1-1Z"/></symbol>
       </defs>
 
-      <!-- subtle orbits -->
       <g opacity=".30">
         <circle class="orbit slow" cx="600" cy="400" r="280"/>
         <circle class="orbit fast" cx="600" cy="400" r="380"/>
       </g>
 
-      <!-- data network -->
       <g id="links"></g>
       <g id="nodes"></g>
       <g id="projectiles"></g>
 
-      <!-- ===== AI REACTOR CORE ===== -->
+      <!-- Reactor Core -->
       <g id="reactor" transform="translate(600 400)">
-        <!-- expanding energy pulse rings -->
         <g>
           <circle class="pulse-ring" r="120"/>
           <circle class="pulse-ring" r="180"/>
           <circle class="pulse-ring" r="240"/>
         </g>
-
-        <!-- radial beams -->
         <g id="beams" opacity=".75">
           <!-- 24 beams -->
+          <!-- generated inline for simplicity -->
           <g transform="rotate(0)"><line class="beam" x1="0" y1="0" x2="0" y2="-330"/></g>
           <g transform="rotate(15)"><line class="beam" x1="0" y1="0" x2="0" y2="-330"/></g>
           <g transform="rotate(30)"><line class="beam" x1="0" y1="0" x2="0" y2="-330"/></g>
@@ -244,22 +323,15 @@
           <g transform="rotate(330)"><line class="beam" x1="0" y1="0" x2="0" y2="-330"/></g>
           <g transform="rotate(345)"><line class="beam" x1="0" y1="0" x2="0" y2="-330"/></g>
         </g>
-
-        <!-- crystal core -->
         <g class="core-crystal" transform="rotate(-8)">
           <polygon points="0,-62 46,0 0,62 -46,0"/>
         </g>
-
-        <!-- inner rings -->
         <circle class="core-ring" r="70"/>
         <circle class="core-ring" r="110" opacity=".5"/>
-
-        <!-- woven brand text inside the core -->
         <text class="brand-weave" text-anchor="middle" y="8">Jmod Labs</text>
       </g>
-      <!-- ===== /Reactor Core ===== -->
 
-      <!-- Some static icons to ground the theme -->
+      <!-- theme icons -->
       <g opacity=".95">
         <g transform="translate(250 170) scale(1.3)"><use href="#ai-cloud" class="icon"/></g>
         <g transform="translate(950 240) scale(1.1)"><use href="#ai-graph" class="icon"/></g>
@@ -268,10 +340,10 @@
       </g>
     </svg>
   </div>
-  <!-- =============================================================== -->
 
+  <!-- ===== Fixed Header ===== -->
   <header>
-    <div class="wrap bar">
+    <div class="bar">
       <div class="brand"><div class="t1">Jmod Labs</div></div>
       <nav>
         <a href="#experiments">Experiments</a>
@@ -288,7 +360,6 @@
   <!-- HERO -->
   <section class="hero" aria-label="Hero">
     <div class="hero-card hero-left">
-      <!-- Labeled image placer: change --hero-logo-scale at :root OR inline here -->
       <div class="img-slot" id="heroLogo">
         <img src="/jmodco/assets/Jmod_LabsTP.png" alt="Jmod Labs logo" />
       </div>
@@ -505,13 +576,8 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="foot-inner">
-      <div id="copyright"></div>
-      <div>Built for small business clarity.</div>
-    </div>
-  </footer>
+  <!-- FOOTER (injected from shared file) -->
+  <div id="footerMount"></div>
 
   <!-- Sign-in modal (stub) -->
   <dialog id="signin" aria-labelledby="signin-title">
@@ -530,13 +596,26 @@
   </dialog>
 
   <script>
-    // Footer © year
-    (function(){
-      const el = document.getElementById('copyright');
-      if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-    })();
-
     function gate(){ document.getElementById('signin').showModal(); }
+
+    // ===== Load shared footer =====
+    (async function mountFooter(){
+      const mount = document.getElementById('footerMount');
+      try{
+        const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
+        if(!r.ok) throw 0;
+        mount.innerHTML = await r.text();
+      }catch(e){
+        // graceful fallback
+        mount.innerHTML = `
+          <footer style="border-top:1px solid var(--border); background:linear-gradient(180deg, rgba(255,61,242,.05), transparent)">
+            <div class="wrap" style="display:flex;gap:12px;flex-wrap:wrap;color:#d2dcf4;">
+              <div>© ${new Date().getFullYear()} Jmod Co.</div>
+              <div>Built for small business clarity.</div>
+            </div>
+          </footer>`;
+      }
+    })();
 
     /* ===== Background network + reactor interactions ===== */
     (function(){
@@ -586,7 +665,7 @@
       const brand = document.querySelector('#reactor text.brand-weave'); let tt=0;
       (function shimmer(){ tt+=0.02; brand.setAttribute('opacity', 0.8 + Math.sin(tt)*0.18); requestAnimationFrame(shimmer); })();
 
-      // ===== Projectiles: little dots shooting between nodes =====
+      // ===== Projectiles =====
       const PROJECTILES_PER_SEC = 5;
       const PROJECTILE_SPEED_MS = 1600;
       const PROJECTILE_LIMIT    = 40;
