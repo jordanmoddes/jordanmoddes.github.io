@@ -1,228 +1,624 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" id="top">
+<html lang="en" id="top">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jmod Legacy — Rediscover Purpose with Human-Centered AI</title>
-  <meta name="description" content="A nonprofit support hub for families helping loved ones rediscover purpose. Human-centered AI tools, resources, and a gentle daily companion for seniors—built to expand to veterans and others in need." />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jmod Labs — The Innovation Core of Jmod Co.</title>
   <meta name="color-scheme" content="dark light" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   <style>
-    :root{
-      --bg:#0b0c10;
-      --panel:#161923;
-      --ink:#e8ecff;
-      --muted:#aab3c9;
-      --accent:#ff2e8c;
-      --accent2:#61e7ff;
-      --ring:rgba(255,255,255,.08);
-      --maxw:1120px;
-      --radius:18px;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-    }
-    *{box-sizing:border-box;scroll-behavior:smooth;}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      background:
-        radial-gradient(1200px 800px at -10% 0%, rgba(255,46,140,.08), transparent 60%),
-        radial-gradient(1200px 800px at 110% 10%, rgba(97,231,255,.08), transparent 60%),
-        var(--bg);
-      color:var(--ink); line-height:1.45;
-    }
+/* =========================
+   JMOD LABS — GLOBAL STYLES
+   ========================= */
+:root{
+  /* ===== quick knobs ===== */
+  --hero-card-pad: 28px;       /* padding for BOTH hero cards */
+  --hero-logo-scale: 1;        /* optional extra scale (1 = off) */
+  --panel-opacity: .85;        /* .70 subtle … 1.00 solid */
+  --header-h: 68px;            /* header height for offsets */
 
-    /* NAVBAR — fixed and follows scroll */
-    .nav{
-      position:fixed; top:0; left:0; width:100%; z-index:50;
-      backdrop-filter:saturate(140%) blur(10px);
-      background:linear-gradient(to bottom, rgba(15,17,24,.9), rgba(15,17,24,.6));
-      border-bottom:1px solid var(--ring);
-    }
-    .nav-inner{
-      max-width:var(--maxw); margin:0 auto; padding:12px 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-    }
-    .brand-word{
-      font-weight:800; letter-spacing:.2px; color:var(--ink);
-      text-decoration:none; cursor:pointer;
-    }
-    .brand-word .co{opacity:.8; font-weight:600}
-    .nav a{
-      color:var(--ink); text-decoration:none; opacity:.9;
-      padding:8px 10px; border-radius:10px; border:1px solid transparent;
-    }
-    .nav a:hover{border-color:var(--ring); opacity:1}
-    .nav-right{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+  /* reactor palette */
+  --reactor-core:#aef2ff;
+  --reactor-cyan:#57e6ff;
+  --reactor-white:#ffffff;
 
-    .spacer{height:64px;} /* space to offset fixed nav */
+  /* site palette */
+  --bg:#0a0b0f; --bg2:#0e1017;
+  --ink:#e6ecff; --muted:#c8d2ea;
+  --border:rgba(201,208,221,.18);
+  --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
+  --radius:18px; --radius-sm:12px; --gap:18px; --maxw:1200px;
 
-    .wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px}
+  /* background tuning */
+  --pulse-speed: 4200ms;
+  --ring-speed: 55s;
+  --density: 0.75;
+  --blur: 0.6px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{height:100%}
+body{
+  margin:0; font:16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 800px at 20% -10%, rgba(255,61,242,.06), transparent 60%),
+    radial-gradient(1200px 800px at 120% 10%, rgba(87,230,255,.07), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+  overflow-x:hidden; position:relative; isolation:isolate;
+  padding-top: var(--header-h); /* keep content clear of fixed header */
+}
+section{scroll-margin-top: calc(var(--header-h) + 12px)}
+a{color:#57e6ff; text-decoration:none}
+a:hover{text-decoration:underline}
 
-    /* HERO */
-    .hero{
-      display:grid; grid-template-columns:1fr; gap:24px;
-      align-items:center; padding:48px 0 16px;
-    }
-    @media(min-width:880px){
-      .hero{grid-template-columns:520px 1fr; gap:40px; padding:64px 0 24px;}
-    }
-    .hero-logo{display:flex; align-items:center; justify-content:center;}
-    .hero-logo img{width:100%;max-width:520px;height:auto;display:block;}
-    .hero-text h1{margin:0 0 10px;font-size:clamp(1.8rem,3.6vw + .6rem,3.2rem);line-height:1.05;}
-    .hero-text p{color:var(--muted);margin:0 0 18px;font-size:1.05rem}
-    .cta-row{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      appearance:none;border:none;cursor:pointer;
-      background:var(--accent);color:#fff;font-weight:800;
-      padding:13px 16px;border-radius:14px;box-shadow:var(--shadow);
-      text-decoration:none;display:inline-flex;align-items:center;gap:8px;
-    }
-    .btn.secondary{background:transparent;border:1px solid var(--ring);color:var(--ink);box-shadow:none}
+/* ===== Parallax Background (Reactor Core) ===== */
+#labs-bg{position:fixed; inset:0; z-index:-1; overflow:hidden;
+  background: radial-gradient(1200px 800px at 50% -10%, rgba(120,170,255,.06), transparent 60%),
+              linear-gradient(180deg, #071026, #0a142f 35%, #0b1638 65%, #0a142f);}
+#labs-grid{position:absolute; inset:0;
+  background:
+    repeating-linear-gradient(0deg,   rgba(120,160,220,.10) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg,  rgba(120,160,220,.10) 0 1px, transparent 1px 48px);
+  mask-image: radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.9), rgba(255,255,255,.3) 50%, transparent 80%);
+}
+#labs-svg{width:100%; height:100%; display:block; filter: drop-shadow(0 0 10px rgba(86,224,255,.25));}
+.orbit{fill:none; stroke:rgba(120,200,255,.25); stroke-width:.8}
+.orbit.slow{animation:spin var(--ring-speed) linear infinite; transform-origin:50% 50%}
+.orbit.fast{animation:spin calc(var(--ring-speed)/2) linear infinite reverse; transform-origin:50% 50%}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    section{padding:36px 0}
-    .panel{
-      background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
-      border:1px solid var(--ring);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);
-    }
-    .grid-2{display:grid;gap:16px}
-    @media(min-width:860px){.grid-2{grid-template-columns:1fr 1fr}}
-    .kicker{color:var(--accent2);font-weight:800;letter-spacing:.25px;margin-bottom:6px}
-    h2{margin:0 0 8px;font-size:1.7rem}
-    p.lead{color:var(--muted);font-size:1.05rem;margin:0 0 10px}
-    .features{display:grid;gap:14px}
-    @media(min-width:720px){.features{grid-template-columns:repeat(3,1fr)}}
-    .card{background:var(--panel);border:1px solid var(--ring);border-radius:16px;padding:16px}
-    .card h3{margin:0 0 6px;font-size:1.1rem}
-    .card p{margin:0;color:var(--muted)}
-    footer{margin:32px 0 12px}
+.link{stroke:rgba(135,220,255,.40); stroke-width:1; stroke-linecap:round; filter:blur(var(--blur));
+  stroke-dasharray:3 120; animation:pulse var(--pulse-speed) cubic-bezier(.25,.6,.2,1) infinite}
+@keyframes pulse{0%{stroke:#eaf9ff;stroke-width:1.5;stroke-dashoffset:0;opacity:.95}
+  60%{stroke:#57e6ff;stroke-width:1;stroke-dashoffset:-130;opacity:.55}
+  100%{stroke:#7dd9ff;stroke-width:.9;stroke-dashoffset:-260;opacity:.35}}
+
+.node{fill:#89d8ff}
+.halo{fill:none; stroke:rgba(130,210,255,.35); stroke-width:6; filter:blur(2px)}
+.icon{fill:none; stroke:#cfe9ff; stroke-width:1.2; opacity:.9; filter:drop-shadow(0 0 6px rgba(200,240,255,.35))}
+.brand-weave{fill:url(#brandGrad); font:800 22px/1 "Inter", ui-sans-serif; letter-spacing:.6px;
+  filter:drop-shadow(0 0 10px rgba(120,200,255,.5))}
+.projectile{ fill:#ffffff; filter: drop-shadow(0 0 6px rgba(200,240,255,.9)); }
+
+.core-crystal{ fill:url(#coreGrad); stroke:rgba(255,255,255,.45); stroke-width:.8;
+  filter: drop-shadow(0 0 22px rgba(120,240,255,.45)); }
+.beam{ stroke:url(#beamGrad); stroke-width:1.2; stroke-linecap:round; opacity:.55; }
+.core-ring{ fill:none; stroke:rgba(120,240,255,.25); stroke-width:1.5; }
+.pulse-ring{ fill:none; stroke:rgba(255,255,255,.28); stroke-width:1.2; opacity:.8; animation:expand 3.8s ease-out infinite; transform-origin:50% 50%; }
+.pulse-ring:nth-child(2){ animation-delay:.9s }
+.pulse-ring:nth-child(3){ animation-delay:1.8s }
+@keyframes expand{
+  0%{ transform:scale(.4); opacity:.9 }
+  70%{ transform:scale(1.1); opacity:.15 }
+  100%{ transform:scale(1.3); opacity:0 }
+}
+
+/* ===== Fixed Header ===== */
+header{
+  position:fixed; top:0; left:0; right:0; height:var(--header-h); z-index:5;
+  display:flex; align-items:center;
+  backdrop-filter:blur(10px);
+  background:linear-gradient(180deg, rgba(10,11,15,.85), rgba(10,11,15,.55) 70%, transparent);
+  border-bottom:1px solid var(--border)
+}
+.bar{max-width:var(--maxw); margin:0 auto; width:100%; padding:0 20px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px}
+.brand{display:flex; align-items:center; gap:12px}
+.brand .t1{font-weight:700; letter-spacing:.3px}
+nav{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+
+/* layout containers */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px; position:relative; z-index:2}
+
+/* ===== HERO (equal columns, equal height; logo fills left card height) ===== */
+.hero{
+  display:grid; grid-template-columns: 1fr 1fr; gap:32px;
+  align-items:stretch;            /* equalize heights */
+  padding:56px 20px 24px; margin:0 auto; max-width:var(--maxw);
+  position:relative; z-index:2;
+}
+.hero-card{
+  background:rgba(17,19,28,var(--panel-opacity));
+  border:1px solid var(--border); border-radius:var(--radius);
+  padding:var(--hero-card-pad); box-shadow:var(--shadow); position:relative; overflow:hidden;
+  display:flex; flex-direction:column; height:100%;
+}
+.hero-left{display:flex; align-items:center; justify-content:center;}
+.hero-right{display:flex; flex-direction:column; justify-content:center}
+
+/* make logo fill the inner height of the left card.
+   result: top and bottom of the logo align with the right card edges */
+.img-slot{flex:1; display:flex; align-items:center; justify-content:center; height:100%;}
+.img-slot > img{
+  height: 100%;              /* fills vertically */
+  max-height: 100%;
+  width: auto;               /* keep aspect ratio */
+  max-width: 100%;
+  object-fit: contain;
+  transform: scale(var(--hero-logo-scale));
+  transition: transform .25s ease;
+}
+#heroLogo{ filter: drop-shadow(0 0 26px rgba(87,230,255,.45)); }
+
+.tag{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+  background:linear-gradient(90deg, rgba(255,61,242,.20), rgba(87,230,255,.20));
+  border:1px solid var(--border); font-size:.85rem; color:#d8e2ff; margin-bottom:12px}
+.hero-right h1{font-size:clamp(28px, 4vw, 46px); margin:0 0 10px}
+.hero-right p{color:var(--muted); margin:10px 0 18px}
+.cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
+.btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; border:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); color:var(--ink); box-shadow:var(--shadow);
+  cursor:pointer; transition:transform .2s ease, box-shadow .2s ease}
+.btn:hover{transform:translateY(-1px); box-shadow:0 18px 40px rgba(87,230,255,.18)}
+.btn.primary{background:
+  radial-gradient(300px 120px at 20% 20%, rgba(255,61,242,.33), transparent 60%),
+  radial-gradient(300px 120px at 80% 20%, rgba(87,230,255,.33), transparent 60%),
+  linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  border-color:rgba(201,208,221,.35)}
+
+/* ===== Sections ===== */
+section{padding:36px 20px}
+.section-title{max-width:var(--maxw); margin:0 auto 16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px}
+.section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
+.muted{color:var(--muted)}
+.grid{max-width:var(--maxw); margin:0 auto; display:grid; gap:var(--gap); grid-template-columns: repeat(12, 1fr)}
+.card{
+  grid-column: span 12;
+  background:rgba(17,19,28,var(--panel-opacity));
+  border:1px solid var(--border); border-radius:var(--radius); padding:18px;
+  box-shadow:var(--shadow); position:relative; overflow:hidden; color:#e7eeff
+}
+@media (min-width:720px){.card.sm-6{grid-column: span 6} .card.sm-4{grid-column: span 4} .card.sm-3{grid-column: span 3}}
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+.chip{font-size:.75rem; background:#1a1f2d; border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:#d2dcf4}
+.status.beta{background: linear-gradient(90deg, rgba(87,230,255,.18), rgba(87,230,255,.08))}
+.status.soon{background: linear-gradient(90deg, rgba(201,208,221,.22), rgba(201,208,221,.08)); color:#dfe6f3}
+.redact{position:relative; color:transparent; text-shadow:none}
+.redact::after{content:"████████████"; letter-spacing:.08em; color:#e6e6e6; background:#000; padding:0 .25rem; border-radius:4px}
+.card p{color:#d2dcf4; margin:8px 0 12px}
+.card .actions{display:flex; gap:10px; flex-wrap:wrap}
+.process{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); max-width:var(--maxw); margin:0 auto}
+.step{background:rgba(17,19,28,var(--panel-opacity)); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; box-shadow:var(--shadow)}
+.tech{max-width:var(--maxw); margin:0 auto; display:flex; gap:14px; flex-wrap:wrap}
+.pill{border:1px solid var(--border); background:rgba(255,255,255,.06); border-radius:999px; padding:8px 12px; color:#e3e8f3; font-size:.9rem}
+.pill.silver{border-color:rgba(201,208,221,.35); color:#f0f4ff}
+dialog{border:none; border-radius:16px; padding:0; width:min(560px, 92vw);
+  background:linear-gradient(180deg, #131628, #0f1222); color:var(--ink); box-shadow:0 30px 80px rgba(0,0,0,.55)}
+dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,255,.2), rgba(0,0,0,.6))}
+.modal{padding:22px; border-bottom:1px solid var(--border)}
+.modal-body{padding:18px 22px; display:grid; gap:12px}
+.field{display:grid; gap:6px}
+.field input{background:#0c0f1d; border:1px solid var(--border); color:#var(--ink); padding:12px 12px; border-radius:10px}
+.modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:0 22px 22px}
   </style>
 </head>
 <body>
-  <!-- NAV -->
-  <nav class="nav" aria-label="Main">
-    <div class="nav-inner">
-      <a href="#top" class="brand-word">Jmod <span class="co">Legacy</span></a>
-      <div class="nav-right">
-        <a href="#why">Why this matters</a>
-        <a href="#how">How we help</a>
-        <a href="#demo">Try the companion</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact" class="btn secondary">Contact</a>
-      </div>
-    </div>
-  </nav>
 
-  <!-- Spacer below fixed nav -->
-  <div class="spacer"></div>
+  <!-- ===== Background (grid + reactor) ===== -->
+  <div id="labs-bg" aria-hidden="true">
+    <div id="labs-grid"></div>
+    <svg id="labs-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#cfe9ff"/><stop offset="100%" stop-color="#7fd9ff"/>
+        </linearGradient>
+        <radialGradient id="coreGrad" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="var(--reactor-white)" stop-opacity="1"/>
+          <stop offset="35%" stop-color="var(--reactor-core)" stop-opacity=".9"/>
+          <stop offset="100%" stop-color="rgba(87,230,255,0)" />
+        </radialGradient>
+        <linearGradient id="beamGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--reactor-white)" stop-opacity=".9"/>
+          <stop offset="100%" stop-color="var(--reactor-cyan)" stop-opacity=".25"/>
+        </linearGradient>
+      </defs>
 
-  <!-- HERO -->
-  <header class="wrap hero" role="banner">
-    <div class="hero-logo">
-      <img src="/jmodco/asset/legacy/logo-legacy.svg" alt="Jmod Legacy" onerror="this.src='/jmodco/asset/JmodCo_LogoTP.png'">
-    </div>
-    <div class="hero-text">
-      <div class="kicker">Human-Centered AI for Purpose</div>
-      <h1>Help your loved one<br>rediscover drive, safely.</h1>
-      <p class="lead">Retirement can feel like a cliff. We’re a nonprofit helping families guide seniors back to daily purpose—using approachable AI and gentle routines—so no one gets left behind by technology.</p>
-      <div class="cta-row">
-        <a class="btn" href="#demo">Try the Daily Companion</a>
-        <a class="btn secondary" href="#how">See how it works</a>
-      </div>
+      <!-- ambient rings -->
+      <g opacity=".30">
+        <circle class="orbit slow" cx="600" cy="400" r="280"/>
+        <circle class="orbit fast" cx="600" cy="400" r="380"/>
+      </g>
+
+      <!-- dynamic links & nodes are added by JS -->
+      <g id="links"></g>
+      <g id="nodes"></g>
+      <g id="projectiles"></g>
+
+      <!-- reactor core -->
+      <g id="reactor" transform="translate(600 400)">
+        <g>
+          <circle class="pulse-ring" r="120"/>
+          <circle class="pulse-ring" r="180"/>
+          <circle class="pulse-ring" r="240"/>
+        </g>
+        <g class="core-crystal" transform="rotate(-8)">
+          <polygon points="0,-62 46,0 0,62 -46,0"/>
+        </g>
+        <circle class="core-ring" r="70"/>
+        <circle class="core-ring" r="110" opacity=".5"/>
+        <text class="brand-weave" text-anchor="middle" y="8">Jmod Labs</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ===== Fixed Header ===== -->
+  <header>
+    <div class="bar">
+      <div class="brand"><div class="t1">Jmod Labs</div></div>
+      <nav>
+        <a href="#experiments">Experiments</a>
+        <a href="#mandate">Mandate</a>
+        <a href="#build">Build</a>
+        <a href="#learn">AI Learning</a>
+        <a href="#smb">SMB Value</a>
+        <a href="#tech">Tech</a>
+        <a href="#join">Join</a>
+      </nav>
     </div>
   </header>
 
-  <main class="wrap" id="content">
-    <!-- WHY -->
-    <section id="why">
-      <div class="grid-2">
-        <div class="panel">
-          <h2>Why this matters</h2>
-          <p class="lead">Many new retirees lose routine, role, and rhythm. That loss of purpose can feed isolation and low mood. Families see it—but don’t always know how to help.</p>
-          <p>We make it simple to start again: tiny wins, meaningful connection, and tech that serves the person—not the other way around.</p>
+  <!-- ===== HERO ===== -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-card hero-left">
+      <div class="img-slot" id="heroLogo">
+        <img src="/jmodco/assets/Jmod_LabsTP.png" alt="Jmod Labs logo" />
+      </div>
+    </div>
+    <div class="hero-card hero-right">
+      <div class="tag">The Innovation Core of <strong>Jmod Co.</strong></div>
+      <h1>Engineering tomorrow’s systems — today.</h1>
+      <p>Explore public highlights. Deeper demos and docs require sign-in. All divisions leverage the Labs knowledge base — continuously learning and improving.</p>
+      <div class="cta-row">
+        <button class="btn primary" onclick="document.getElementById('signin').showModal()">Sign in for access</button>
+        <a class="btn" href="#experiments">View active experiments</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Mandate ===== -->
+  <section id="mandate">
+    <div class="section-title wrap">
+      <h2>R&amp;D Mandate</h2>
+      <div class="muted">How Labs turns ideas into systems</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Core Identity</span></div>
+        <h3>The R&amp;D &amp; AI experimentation division</h3>
+        <p>Where new technologies, automation ideas, and tools are created and tested.</p>
+      </article>
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Primary Role</span></div>
+        <h3>Design, test, and prototype</h3>
+        <p>AI tools, data pipelines, and automation frameworks. Develop internal engines (e.g., the <strong>MODDES™ Core Engine</strong>) for data translation, optimization, and cross-system learning. Trials here later scale into deployable business products.</p>
+      </article>
+      <article class="card sm-12">
+        <div class="chips"><span class="chip">Focus Areas</span></div>
+        <ul>
+          <li>Machine learning prototypes</li>
+          <li>Process automation &amp; predictive analytics</li>
+          <li>API integrations &amp; workflow optimization</li>
+          <li>Software proof-of-concepts (internal alpha builds)</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== What we build ===== -->
+  <section id="build">
+    <div class="section-title wrap">
+      <h2>What we build</h2>
+      <div class="muted">Rapid prototypes that graduate into real products</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Apps</span><span class="chip">Frontend + Mobile</span></div>
+        <h3>Applied UI + App Scaffolds</h3>
+        <p>Authentication stubs, form engines, state patterns, and deployment recipes so features ship faster.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Automation</span><span class="chip">APIs</span></div>
+        <h3>Workflow &amp; Integrations</h3>
+        <p>Connectors for CRMs, ERPs, spreadsheets, and webhooks. Jobs, retries, and observability so ops run on rails.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">AI</span><span class="chip">Data</span></div>
+        <h3>Decision Engines</h3>
+        <p>Prompt chains, retrieval, lightweight models, and evaluators. Built to learn from usage and get cheaper over time.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Active Experiments ===== -->
+  <section id="experiments">
+    <div class="section-title wrap">
+      <h2>Active Experiments</h2>
+      <div class="muted">Client identities are protected. Names are always redacted.</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-4">
+        <div class="chips">
+          <span class="chip status beta">Pilot</span>
+          <span class="chip">Labs → Insights</span>
+          <span class="chip">Client: <span class="redact">Lisnup Installations</span></span>
         </div>
-        <div class="panel">
-          <h2>AI as a bridge, not a barrier</h2>
-          <p class="lead">Our tools use AI to support—not replace—human connection. Clear guidance, memory aids, gentle prompts, and family-friendly sharing keep everyone included.</p>
-          <p>We start with seniors, but the framework can extend to veterans, people with disabilities, and anyone who needs a reset.</p>
+        <h3>AI Quote Builder (Installations)</h3>
+        <p>Automates quoting for remote starts, tint, and electronics. Parts lookup, pricing rules, and clean PDF outputs.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="gate()">Preview</a>
+          <a class="btn" href="#" onclick="gate()">Docs</a>
         </div>
-      </div>
-    </section>
+      </article>
 
-    <!-- HOW -->
-    <section id="how">
-      <div class="kicker">Our Approach</div>
-      <h2>Simple tools + family guidance</h2>
-      <p class="lead">We combine a daily companion app with practical resources for families.</p>
-      <div class="features" style="margin-top:12px">
-        <div class="card"><h3>Daily Check-Ins</h3><p>Light challenges and photo check-ins to rebuild routine.</p></div>
-        <div class="card"><h3>Story Keeper</h3><p>Capture memories by voice or text; share with family.</p></div>
-        <div class="card"><h3>AI Guidance</h3><p>Approachable prompts and “what to try next” suggestions.</p></div>
-        <div class="card"><h3>Family Dashboard</h3><p>Invite loved ones to cheer, review stories, and celebrate streaks.</p></div>
-        <div class="card"><h3>Privacy First</h3><p>Local-first by default; you decide what’s shared.</p></div>
-        <div class="card"><h3>Built to Expand</h3><p>Ready to support anyone needing a purpose-reset program.</p></div>
-      </div>
-    </section>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip status soon">Coming Soon</span><span class="chip">Labs → Media</span></div>
+        <h3>Jmod Media App</h3>
+        <p>AI-driven planner + automation: plan → generate → schedule. Feedback improves tone and performance.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="gate()">Roadmap</a>
+          <a class="btn" href="#" onclick="gate()">Beta Waitlist</a>
+        </div>
+      </article>
 
-    <!-- DEMO -->
-    <section id="demo">
-      <div class="kicker">Try It</div>
-      <h2>Daily Companion (Demo)</h2>
-      <div class="panel">
-        <p class="lead">Mini-preview: press “I did it” to track a streak locally.</p>
-        <p id="challengeText">Loading challenge…</p>
-        <button class="btn" id="markDone">I did it</button>
-        <button class="btn secondary" id="newChallenge">New idea</button>
-        <p style="margin-top:8px">🔥 Streak: <span id="streakDays">0</span> days</p>
-      </div>
-    </section>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip status soon">Coming Soon</span><span class="chip">Labs → Legacy</span></div>
+        <h3>Legacy / Haven App</h3>
+        <p>Engagement & well-being for seniors: daily prompts, family touchpoints, positive habit loops. Licensing potential for care centers.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="gate()">Concept Brief</a>
+          <a class="btn" href="#" onclick="gate()">Partner Interest</a>
+        </div>
+      </article>
 
-    <!-- FAQ -->
-    <section id="faq">
-      <div class="kicker">Questions</div>
-      <h2>FAQ</h2>
-      <div class="grid-2" style="margin-top:10px">
-        <div class="panel"><h3>Is this only for seniors?</h3><p>We’re starting with seniors, but the framework can serve anyone seeking renewed purpose.</p></div>
-        <div class="panel"><h3>Do you share data?</h3><p>By default, no. The demo keeps everything on your device. Future features will always be opt-in.</p></div>
-      </div>
-    </section>
+      <article class="card sm-6">
+        <div class="chips">
+          <span class="chip">Metrics</span>
+          <span id="sampleFlag" class="chip" style="display:none">sample</span>
+        </div>
+        <h3>Pipeline Stats</h3>
+        <p class="muted">Auto-computed from <code>/internal/experiments.json</code>, <code>/internal/tools.json</code>, and <code>/internal/transfers.json</code> if present. Otherwise sample values are shown.</p>
+        <div class="actions">
+          <span class="btn" id="expCount">Active Experiments: –</span>
+          <span class="btn" id="toolsCount">Tools Built: –</span>
+          <span class="btn" id="xferCount">Transfers: –</span>
+        </div>
+      </article>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <div class="kicker">We’re here for families</div>
-      <h2>Get in touch</h2>
-      <div class="panel">
-        <p class="lead">Tell us about your loved one and what would help. We’ll reply with next steps.</p>
-        <p>Email: <a href="mailto:hello@jmod.co">hello@jmod.co</a></p>
-      </div>
-    </section>
-  </main>
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">How it works</span></div>
+        <h3>Internal Licensing Flow</h3>
+        <p>“Transfers” = completed hand-offs from Labs to a Jmod division (e.g., Labs → Media). After transfer, the division licenses to customers; Labs keeps learning via feedback.</p>
+      </article>
+    </div>
+  </section>
 
-  <footer id="footer"></footer>
+  <!-- ===== Learning ===== -->
+  <section id="learn">
+    <div class="section-title wrap">
+      <h2>How the AI learns</h2>
+      <div class="muted">Feedback → signals → better outcomes</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Signals</span></div>
+        <h3>Usage, outcomes, corrections</h3>
+        <p>Anonymized task results, user edits, and timing become training signals to improve prompts, rules, and routing.</p>
+      </article>
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Knowledge</span></div>
+        <h3>Structured & searchable</h3>
+        <p>Docs and patterns live in the Labs knowledge base. Everything is vector-searchable and versioned for reuse.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== SMB Value ===== -->
+  <section id="smb">
+    <div class="section-title wrap">
+      <h2>Built for Small & Medium Businesses</h2>
+      <div class="muted">Automate busywork. Focus on revenue.</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Quoting</span></div>
+        <h3>Instant, accurate quotes</h3>
+        <p>Price rules, parts lookup, and clean PDFs. Less time building quotes, more time closing.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Content</span></div>
+        <h3>Marketing on autopilot</h3>
+        <p>Plan → generate → schedule. Keep posts flowing while you’re on jobs.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Ops</span></div>
+        <h3>From clipboard to dashboard</h3>
+        <p>Digitize intake, reconcile inventory, push status updates. No more hunting through texts and spreadsheets.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Tech ===== -->
+  <section id="tech">
+    <div class="section-title wrap">
+      <h2>Current Tech Stack</h2>
+      <div class="muted">We update tools as Labs evolves.</div>
+    </div>
+    <div class="tech">
+      <span class="pill">JavaScript/TypeScript</span>
+      <span class="pill">Python</span>
+      <span class="pill">Cloudflare Workers</span>
+      <span class="pill">GitHub Pages</span>
+      <span class="pill pill silver">AI Embeddings & Vectors</span>
+      <span class="pill">Postgres/SQLite</span>
+      <span class="pill">Excel/VBA bridges</span>
+      <span class="pill">REST & Webhooks</span>
+    </div>
+  </section>
+
+  <!-- ===== Join ===== -->
+  <section id="join">
+    <div class="section-title wrap">
+      <h2>Collaborate with Labs</h2>
+      <div class="muted">Concept submissions open soon</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-12">
+        <p>We’ll soon enable concept submissions and private partner access. For now, sign in to register interest and unlock deeper docs.</p>
+        <div class="actions" style="justify-content:center">
+          <button class="btn primary" onclick="document.getElementById('signin').showModal()">Sign in / Request access</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Shared Footer (loaded from file) ===== -->
+  <div id="footerMount"></div>
+
+  <!-- ===== Sign-in modal (stub) ===== -->
+  <dialog id="signin" aria-labelledby="signin-title">
+    <div class="modal">
+      <h3 id="signin-title">Sign in to Jmod Labs</h3>
+      <p>Public can browse; detailed demos & docs require an account.</p>
+    </div>
+    <form class="modal-body" method="dialog" onsubmit="return false;">
+      <div class="field"><label>Email</label><input type="email" placeholder="you@email.com" required /></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="••••••••" required /></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="document.getElementById('signin').close()">Cancel</button>
+        <button class="btn primary" onclick="alert('Stub — wire to auth later')">Sign in</button>
+      </div>
+    </form>
+  </dialog>
 
   <script>
-    // Footer loader
-    (async()=>{
+    function gate(){ document.getElementById('signin').showModal(); }
+
+    // Load shared footer with graceful fallback
+    (async function mountFooter(){
+      const mount = document.getElementById('footerMount');
       try{
-        const r=await fetch("/jmodco/assets/footer.html",{cache:"no-store"});
-        if(!r.ok)throw 0;
-        document.getElementById("footer").innerHTML=await r.text();
-      }catch{
-        document.getElementById("footer").innerHTML='<div style="opacity:.85;text-align:center;padding:12px 10px;border-top:1px solid rgba(255,255,255,.12)">© '+new Date().getFullYear()+' Jmod Co. — Built for Generational Continuity.</div>';
+        const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
+        if(!r.ok) throw 0;
+        mount.innerHTML = await r.text();
+      }catch(e){
+        mount.innerHTML = `
+          <footer style="border-top:1px solid rgba(201,208,221,.18); background:linear-gradient(180deg, rgba(255,61,242,.05), transparent)">
+            <div style="max-width:1200px;margin:0 auto;padding:22px 20px;display:flex;gap:12px;flex-wrap:wrap;color:#d2dcf4;">
+              <div>© ${new Date().getFullYear()} Jmod Co.</div>
+              <div>Built for small business clarity.</div>
+            </div>
+          </footer>`;
       }
     })();
 
-    // Simple demo for streaks/challenges
-    const CH=["Take a photo outside.","Text a friend hello.","Stretch for 30 seconds.","Water a plant.","Share a short memory."];
-    const $=s=>document.querySelector(s);
-    const st=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
-    function rand(){return CH[Math.floor(Math.random()*CH.length)]}
-    function load(){ $("#challengeText").textContent=rand(); $("#streakDays").textContent=localStorage.getItem("legacy.streak")||0; }
-    function bump(){const today=st();const last=localStorage.getItem("legacy.last");let s=Number(localStorage.getItem("legacy.streak")||0);if(!last)s=1;else{const d=(today-new Date(last))/(1e3*60*60*24);if(d===1)s++;else if(d>1)s=1;}localStorage.setItem("legacy.streak",s);localStorage.setItem("legacy.last",today);$("#streakDays").textContent=s;}
-    $("#markDone").onclick=()=>{bump();};
-    $("#newChallenge").onclick=()=>$("#challengeText").textContent=rand();
-    load();
+    /* ===== Background network & projectiles ===== */
+    (function(){
+      const svg   = document.getElementById('labs-svg');
+      const gLinks= document.getElementById('links');
+      const gNodes= document.getElementById('nodes');
+      const gProj = document.getElementById('projectiles');
+
+      const W=1200, H=800, COLS=20, ROWS=14, jitter=16;
+      const density = 0.75, speed = 4200;
+
+      const nodes = [];
+      for (let r=0; r<=ROWS; r++){
+        for (let c=0; c<=COLS; c++){
+          if (Math.random()<0.85){
+            const x = (c/COLS)*W + (Math.random()*2-1)*jitter;
+            const y = (r/ROWS)*H + (Math.random()*2-1)*jitter;
+            nodes.push({x,y});
+          }
+        }
+      }
+      nodes.forEach(({x,y})=>{
+        const halo = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        halo.setAttribute('class','halo'); halo.setAttribute('cx',x); halo.setAttribute('cy',y); halo.setAttribute('r',3.8);
+        gNodes.appendChild(halo);
+        const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        dot.setAttribute('class','node'); dot.setAttribute('cx',x); dot.setAttribute('cy',y); dot.setAttribute('r',1.6);
+        gNodes.appendChild(dot);
+      });
+      for (let i=0;i<nodes.length;i++){
+        for (let j=i+1;j<nodes.length;j++){
+          const a=nodes[i], b=nodes[j]; const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
+          if (d<120 && Math.random() < (density * (120-d)/120)*0.22){
+            const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+            p.setAttribute('class','link'); p.setAttribute('d',`M${a.x} ${a.y} L${b.x} ${b.y}`);
+            p.style.animationDelay = (Math.random()*speed)+'ms';
+            gLinks.appendChild(p);
+          }
+        }
+      }
+
+      // tiny ambient projectiles
+      const PROJECTILES_PER_SEC = 5, PROJECTILE_LIMIT = 40;
+      const active = new Set();
+      function spawnProjectile(from, to){
+        if (active.size >= PROJECTILE_LIMIT) return;
+        if (!from){ from = nodes[(Math.random()*nodes.length)|0]; }
+        if (!to){ to = from; while (to === from){ to = nodes[(Math.random()*nodes.length)|0]; } }
+        const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        c.setAttribute('class','projectile'); c.setAttribute('r', 1.6);
+        c.setAttribute('cx', from.x); c.setAttribute('cy', from.y);
+        gProj.appendChild(c);
+        const id = Symbol(); active.add(id);
+        const start = performance.now(); const dur = 1600 * (0.7 + Math.random()*0.6);
+        function move(now){
+          const tNorm = Math.min(1, (now - start)/dur);
+          const t = tNorm<.5 ? 4*tNorm*tNorm*tNorm : 1 - Math.pow(-2*tNorm + 2, 3)/2;
+          const x = from.x + (to.x - from.x)*t;
+          const y = from.y + (to.y - from.y)*t;
+          c.setAttribute('cx', x); c.setAttribute('cy', y);
+          c.setAttribute('opacity', 0.95 - 0.7*t);
+          if (tNorm < 1){ requestAnimationFrame(move); }
+          else { gProj.removeChild(c); active.delete(id); }
+        }
+        requestAnimationFrame(move);
+      }
+      setInterval(()=>{ for (let i=0;i<PROJECTILES_PER_SEC;i++) spawnProjectile(); }, 1000);
+
+      // Reactor broadcast bursts
+      const center = {x:600, y:400};
+      setInterval(()=>{
+        for (let i=0;i<10;i++){
+          const target = nodes[(Math.random()*nodes.length)|0];
+          spawnProjectile(center, target);
+        }
+      }, 6000);
+    })();
+
+    /* ===== Auto metrics from internal JSONs ===== */
+    (async function(){
+      const expEl=document.getElementById('expCount'), toolsEl=document.getElementById('toolsCount'),
+            xferEl=document.getElementById('xferCount'), sampleFlag=document.getElementById('sampleFlag');
+
+      async function safeJson(path){
+        try{ const r=await fetch(path,{cache:'no-store'}); if(!r.ok) throw 0; return await r.json(); }
+        catch(e){ return null; }
+      }
+
+      const [exps, tools, xfers] = await Promise.all([
+        safeJson('/internal/experiments.json'),
+        safeJson('/internal/tools.json'),
+        safeJson('/internal/transfers.json')
+      ]);
+
+      if(exps || tools || xfers){
+        const activeCount = Array.isArray(exps) ? exps.filter(e => (e.status||'active').toLowerCase() !== 'archived').length : 0;
+        const toolsCount  = Array.isArray(tools) ? tools.length : 0;
+        const xferCount   = Array.isArray(xfers) ? xfers.length : 0;
+        expEl.textContent=`Active Experiments: ${activeCount}`;
+        toolsEl.textContent=`Tools Built: ${toolsCount}`;
+        xferEl.textContent=`Transfers: ${xferCount}`;
+      } else {
+        if(sampleFlag) sampleFlag.style.display='inline-block';
+        expEl.textContent='Active Experiments: 3';
+        toolsEl.textContent='Tools Built: 12';
+        xferEl.textContent='Transfers: 5';
+      }
+    })();
   </script>
 </body>
 </html>
