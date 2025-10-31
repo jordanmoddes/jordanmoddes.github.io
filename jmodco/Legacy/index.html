@@ -15,17 +15,17 @@
       --panel:#161923;
       --ink:#e8ecff;
       --muted:#aab3c9;
-      --accent:#ff2e8c;      /* Jmod magenta */
-      --accent2:#61e7ff;     /* cyan accent */
+      --accent:#ff2e8c;
+      --accent2:#61e7ff;
       --ring:rgba(255,255,255,.08);
       --maxw:1120px;
       --radius:18px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
     }
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;scroll-behavior:smooth;}
     html,body{height:100%}
     body{
-      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
       background:
         radial-gradient(1200px 800px at -10% 0%, rgba(255,46,140,.08), transparent 60%),
         radial-gradient(1200px 800px at 110% 10%, rgba(97,231,255,.08), transparent 60%),
@@ -33,18 +33,21 @@
       color:var(--ink); line-height:1.45;
     }
 
-    /* ----- NAV (sticky; no logo here) ----- */
+    /* NAVBAR — fixed and follows scroll */
     .nav{
-      position:sticky; top:0; z-index:20;
+      position:fixed; top:0; left:0; width:100%; z-index:50;
       backdrop-filter:saturate(140%) blur(10px);
-      background:linear-gradient(to bottom, rgba(15,17,24,.85), rgba(15,17,24,.65));
+      background:linear-gradient(to bottom, rgba(15,17,24,.9), rgba(15,17,24,.6));
       border-bottom:1px solid var(--ring);
     }
     .nav-inner{
       max-width:var(--maxw); margin:0 auto; padding:12px 16px;
-      display:flex; align-items:center; gap:14px; justify-content:space-between;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
     }
-    .brand-word{font-weight:800; letter-spacing:.2px}
+    .brand-word{
+      font-weight:800; letter-spacing:.2px; color:var(--ink);
+      text-decoration:none; cursor:pointer;
+    }
     .brand-word .co{opacity:.8; font-weight:600}
     .nav a{
       color:var(--ink); text-decoration:none; opacity:.9;
@@ -53,106 +56,76 @@
     .nav a:hover{border-color:var(--ring); opacity:1}
     .nav-right{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
 
-    /* ----- LAYOUT WRAPPER ----- */
+    .spacer{height:64px;} /* space to offset fixed nav */
+
     .wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px}
 
-    /* ----- HERO (logo left, text right) ----- */
+    /* HERO */
     .hero{
-      display:grid; grid-template-columns: 1fr; gap:24px;
+      display:grid; grid-template-columns:1fr; gap:24px;
       align-items:center; padding:48px 0 16px;
     }
     @media(min-width:880px){
-      .hero{grid-template-columns: 520px 1fr; gap:40px; padding:64px 0 24px;}
+      .hero{grid-template-columns:520px 1fr; gap:40px; padding:64px 0 24px;}
     }
-    .hero-logo{
-      display:flex; align-items:center; justify-content:center;
-      padding:0; /* no border, tight fit */
-    }
-    .hero-logo img{
-      width:100%; max-width:520px; height:auto; display:block;
-      /* no border/no shadow to match requirement */
-    }
-    .hero-text h1{
-      margin:0 0 10px; font-size:clamp(1.8rem, 3.6vw + .6rem, 3.2rem);
-      line-height:1.05;
-    }
-    .hero-text p{color:var(--muted); margin:0 0 18px; font-size:1.05rem}
-    .cta-row{display:flex; gap:10px; flex-wrap:wrap}
+    .hero-logo{display:flex; align-items:center; justify-content:center;}
+    .hero-logo img{width:100%;max-width:520px;height:auto;display:block;}
+    .hero-text h1{margin:0 0 10px;font-size:clamp(1.8rem,3.6vw + .6rem,3.2rem);line-height:1.05;}
+    .hero-text p{color:var(--muted);margin:0 0 18px;font-size:1.05rem}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap}
     .btn{
-      appearance:none; border:none; cursor:pointer;
-      background:var(--accent); color:#fff; font-weight:800;
-      padding:13px 16px; border-radius:14px; box-shadow:var(--shadow);
-      text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+      appearance:none;border:none;cursor:pointer;
+      background:var(--accent);color:#fff;font-weight:800;
+      padding:13px 16px;border-radius:14px;box-shadow:var(--shadow);
+      text-decoration:none;display:inline-flex;align-items:center;gap:8px;
     }
-    .btn.secondary{
-      background:transparent; border:1px solid var(--ring); color:var(--ink); box-shadow:none;
-    }
+    .btn.secondary{background:transparent;border:1px solid var(--ring);color:var(--ink);box-shadow:none}
 
-    /* ----- STRIPS / SECTIONS ----- */
     section{padding:36px 0}
     .panel{
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-      border:1px solid var(--ring); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+      background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
+      border:1px solid var(--ring);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);
     }
-
-    .grid-2{display:grid; gap:16px}
-    @media(min-width:860px){ .grid-2{grid-template-columns:1fr 1fr;} }
-
-    .kicker{color:var(--accent2); font-weight:800; letter-spacing:.25px; margin-bottom:6px}
-    h2{margin:0 0 8px; font-size:1.7rem}
-    p.lead{color:var(--muted); font-size:1.05rem; margin:0 0 10px}
-
-    /* Feature cards */
-    .features{display:grid; gap:14px}
-    @media(min-width:720px){ .features{grid-template-columns:repeat(3,1fr);} }
-    .card{background:var(--panel); border:1px solid var(--ring); border-radius:16px; padding:16px}
-    .card h3{margin:0 0 6px; font-size:1.1rem}
-    .card p{margin:0; color:var(--muted)}
-
-    /* Demo block (mini-app look) */
-    .demo{
-      display:grid; gap:16px;
-    }
-    @media(min-width:980px){ .demo{grid-template-columns: 380px 1fr;} }
-    .phone{
-      background:#0f1117; border:1px solid var(--ring); border-radius:22px; padding:16px;
-    }
-    .chip{display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid var(--ring); color:var(--muted); margin-right:6px}
-
-    /* Footer container (content is injected) */
+    .grid-2{display:grid;gap:16px}
+    @media(min-width:860px){.grid-2{grid-template-columns:1fr 1fr}}
+    .kicker{color:var(--accent2);font-weight:800;letter-spacing:.25px;margin-bottom:6px}
+    h2{margin:0 0 8px;font-size:1.7rem}
+    p.lead{color:var(--muted);font-size:1.05rem;margin:0 0 10px}
+    .features{display:grid;gap:14px}
+    @media(min-width:720px){.features{grid-template-columns:repeat(3,1fr)}}
+    .card{background:var(--panel);border:1px solid var(--ring);border-radius:16px;padding:16px}
+    .card h3{margin:0 0 6px;font-size:1.1rem}
+    .card p{margin:0;color:var(--muted)}
     footer{margin:32px 0 12px}
   </style>
 </head>
 <body>
-  <!-- NAV (no logo here; sticky) -->
+  <!-- NAV -->
   <nav class="nav" aria-label="Main">
     <div class="nav-inner">
-      <div class="brand-word">Jmod <span class="co">Legacy</span></div>
+      <a href="#top" class="brand-word">Jmod <span class="co">Legacy</span></a>
       <div class="nav-right">
         <a href="#why">Why this matters</a>
         <a href="#how">How we help</a>
         <a href="#demo">Try the companion</a>
         <a href="#faq">FAQ</a>
-        <a href="#contact" class="btn secondary">Get in touch</a>
+        <a href="#contact" class="btn secondary">Contact</a>
       </div>
     </div>
   </nav>
 
-  <header class="wrap hero" role="banner">
-    <!-- LEFT: LOGO (no border) -->
-    <div class="hero-logo">
-      <!-- Swap source to your Legacy mark; example uses your Jmod Co. style logo -->
-      <img src="https://jordanmoddes.com/jmodco/asset/Jmod_LegacyTP.png" alt="Jmod Legacy">
-    </div>
+  <!-- Spacer below fixed nav -->
+  <div class="spacer"></div>
 
-    <!-- RIGHT: TEXT -->
+  <!-- HERO -->
+  <header class="wrap hero" role="banner">
+    <div class="hero-logo">
+      <img src="/jmodco/asset/legacy/logo-legacy.svg" alt="Jmod Legacy" onerror="this.src='/jmodco/asset/JmodCo_LogoTP.png'">
+    </div>
     <div class="hero-text">
       <div class="kicker">Human-Centered AI for Purpose</div>
-      <h1>Help your loved one<br/>rediscover drive, safely.</h1>
-      <p class="lead">
-        Retirement can feel like a cliff. We’re a nonprofit helping families guide seniors back to
-        daily purpose—using approachable AI and gentle routines—so no one gets left behind by technology.
-      </p>
+      <h1>Help your loved one<br>rediscover drive, safely.</h1>
+      <p class="lead">Retirement can feel like a cliff. We’re a nonprofit helping families guide seniors back to daily purpose—using approachable AI and gentle routines—so no one gets left behind by technology.</p>
       <div class="cta-row">
         <a class="btn" href="#demo">Try the Daily Companion</a>
         <a class="btn secondary" href="#how">See how it works</a>
@@ -166,25 +139,13 @@
       <div class="grid-2">
         <div class="panel">
           <h2>Why this matters</h2>
-          <p class="lead">
-            Many new retirees lose routine, role, and rhythm. That loss of purpose can feed isolation
-            and low mood. Families see it—but don’t always know how to help.
-          </p>
-          <p>
-            We make it simple to start again: tiny wins, meaningful connection, and tech that serves the person—
-            not the other way around.
-          </p>
+          <p class="lead">Many new retirees lose routine, role, and rhythm. That loss of purpose can feed isolation and low mood. Families see it—but don’t always know how to help.</p>
+          <p>We make it simple to start again: tiny wins, meaningful connection, and tech that serves the person—not the other way around.</p>
         </div>
         <div class="panel">
           <h2>AI as a bridge, not a barrier</h2>
-          <p class="lead">
-            Our tools use AI to support—not replace—human connection. Clear guidance, memory aids,
-            gentle prompts, and family-friendly sharing keep everyone included.
-          </p>
-          <p>
-            We start with seniors, but the framework can extend to veterans, people with disabilities,
-            and anyone who needs a reset.
-          </p>
+          <p class="lead">Our tools use AI to support—not replace—human connection. Clear guidance, memory aids, gentle prompts, and family-friendly sharing keep everyone included.</p>
+          <p>We start with seniors, but the framework can extend to veterans, people with disabilities, and anyone who needs a reset.</p>
         </div>
       </div>
     </section>
@@ -194,70 +155,26 @@
       <div class="kicker">Our Approach</div>
       <h2>Simple tools + family guidance</h2>
       <p class="lead">We combine a daily companion app with practical resources for families.</p>
-
       <div class="features" style="margin-top:12px">
-        <div class="card">
-          <h3>Daily Check-Ins</h3>
-          <p>Light challenges and photo check-ins to rebuild routine and momentum.</p>
-        </div>
-        <div class="card">
-          <h3>Story Keeper</h3>
-          <p>Capture memories by voice or text; share with family in a tap.</p>
-        </div>
-        <div class="card">
-          <h3>AI Guidance</h3>
-          <p>Approachable prompts, reminders, and “what to try next” suggestions.</p>
-        </div>
-        <div class="card">
-          <h3>Family Dashboard</h3>
-          <p>Invite loved ones to cheer, review stories, and celebrate streaks.</p>
-        </div>
-        <div class="card">
-          <h3>Privacy First</h3>
-          <p>Local-first by default; you decide what’s shared and with whom.</p>
-        </div>
-        <div class="card">
-          <h3>Built to Expand</h3>
-          <p>Ready to support veterans and others needing purpose-reset programs.</p>
-        </div>
+        <div class="card"><h3>Daily Check-Ins</h3><p>Light challenges and photo check-ins to rebuild routine.</p></div>
+        <div class="card"><h3>Story Keeper</h3><p>Capture memories by voice or text; share with family.</p></div>
+        <div class="card"><h3>AI Guidance</h3><p>Approachable prompts and “what to try next” suggestions.</p></div>
+        <div class="card"><h3>Family Dashboard</h3><p>Invite loved ones to cheer, review stories, and celebrate streaks.</p></div>
+        <div class="card"><h3>Privacy First</h3><p>Local-first by default; you decide what’s shared.</p></div>
+        <div class="card"><h3>Built to Expand</h3><p>Ready to support anyone needing a purpose-reset program.</p></div>
       </div>
     </section>
 
-    <!-- DEMO / MINI APP -->
+    <!-- DEMO -->
     <section id="demo">
       <div class="kicker">Try It</div>
       <h2>Daily Companion (Demo)</h2>
-      <div class="demo" style="margin-top:10px">
-        <div class="phone" aria-label="Mini app demo">
-          <div class="chip">🔥 Streak: <span id="streakDays">0</span> days</div>
-          <div class="chip">✅ Done: <span id="doneCount">0</span></div>
-          <h3 style="margin:10px 0 6px">Today’s challenge</h3>
-          <p id="challengeText" style="color:var(--muted); margin:0 0 8px">Loading a gentle prompt…</p>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px">
-            <button class="btn" id="markDone">I did it</button>
-            <button class="btn secondary" id="newChallenge">New idea</button>
-          </div>
-          <hr style="border:none; border-top:1px solid var(--ring); margin:14px 0">
-          <h3 style="margin:0 0 6px">Share a story</h3>
-          <textarea id="storyText" rows="4" style="width:100%; background:#0b0e15; color:var(--ink); border:1px solid var(--ring); border-radius:12px; padding:10px" placeholder="Tell a short memory…"></textarea>
-          <div style="display:flex; gap:8px; margin-top:8px">
-            <button class="btn" id="copyStory">Copy</button>
-            <button class="btn secondary" id="clearStory">Clear</button>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h3 style="margin-top:0">How the demo works</h3>
-          <p class="lead">This is a safe, lightweight preview—no accounts, no uploads.</p>
-          <ul>
-            <li><strong>Challenges:</strong> tiny, achievable actions to build momentum.</li>
-            <li><strong>Streaks:</strong> each “I did it” bumps the day streak (local only).</li>
-            <li><strong>Stories:</strong> write a memory; copy or email from your device.</li>
-          </ul>
-          <p style="color:var(--muted)">
-            When families are ready, we provide onboarding materials and community resources.
-          </p>
-        </div>
+      <div class="panel">
+        <p class="lead">Mini-preview: press “I did it” to track a streak locally.</p>
+        <p id="challengeText">Loading challenge…</p>
+        <button class="btn" id="markDone">I did it</button>
+        <button class="btn secondary" id="newChallenge">New idea</button>
+        <p style="margin-top:8px">🔥 Streak: <span id="streakDays">0</span> days</p>
       </div>
     </section>
 
@@ -266,14 +183,8 @@
       <div class="kicker">Questions</div>
       <h2>FAQ</h2>
       <div class="grid-2" style="margin-top:10px">
-        <div class="panel">
-          <h3>Is this only for seniors?</h3>
-          <p>We’re starting with seniors, but the framework is designed to support veterans, people with disabilities, and anyone who needs a purpose reset.</p>
-        </div>
-        <div class="panel">
-          <h3>Do you share data?</h3>
-          <p>By default, no. The demo keeps everything on your device. Future features will be opt-in with clear controls.</p>
-        </div>
+        <div class="panel"><h3>Is this only for seniors?</h3><p>We’re starting with seniors, but the framework can serve anyone seeking renewed purpose.</p></div>
+        <div class="panel"><h3>Do you share data?</h3><p>By default, no. The demo keeps everything on your device. Future features will always be opt-in.</p></div>
       </div>
     </section>
 
@@ -288,81 +199,30 @@
     </section>
   </main>
 
-  <!-- FOOTER (loaded from shared file) -->
   <footer id="footer"></footer>
 
   <script>
-    // Footer include from /jmodco/assets/footer.html
-    (async function loadFooter(){
+    // Footer loader
+    (async()=>{
       try{
-        const res = await fetch("/jmodco/assets/footer.html", {cache:"no-store"});
-        if(!res.ok) throw new Error("Footer fetch failed");
-        document.getElementById("footer").innerHTML = await res.text();
-      }catch(e){
-        document.getElementById("footer").innerHTML =
-          '<div style="opacity:.85;text-align:center;padding:12px 10px;border-top:1px solid rgba(255,255,255,.12)">'+
-          '© '+new Date().getFullYear()+' Jmod Co. — Built for Generational Continuity.</div>';
+        const r=await fetch("/jmodco/assets/footer.html",{cache:"no-store"});
+        if(!r.ok)throw 0;
+        document.getElementById("footer").innerHTML=await r.text();
+      }catch{
+        document.getElementById("footer").innerHTML='<div style="opacity:.85;text-align:center;padding:12px 10px;border-top:1px solid rgba(255,255,255,.12)">© '+new Date().getFullYear()+' Jmod Co. — Built for Generational Continuity.</div>';
       }
     })();
 
-    // Lightweight demo logic (local-only)
-    const CHALLENGES = [
-      "Step onto the porch and take one deep breath.",
-      "Text a family member hello.",
-      "Drink a glass of water and stretch for 30 seconds.",
-      "Look out the window and name 3 things you see.",
-      "Write two sentences about a favorite memory.",
-      "Walk to the mailbox or end of driveway.",
-      "Put on a favorite song for 1 minute.",
-      "Photograph something that makes you smile."
-    ];
-    const $ = s => document.querySelector(s);
-    const store = {
-      get(k, d){ try{const v=localStorage.getItem(k); return v?JSON.parse(v):d;}catch{return d} },
-      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
-    };
-    const K = { STREAK:'legacy.streak', LAST:'legacy.last', DONE:'legacy.done', STORY:'legacy.story' };
-
-    function newChallenge(){
-      $("#challengeText").textContent = CHALLENGES[Math.floor(Math.random()*CHALLENGES.length)];
-    }
-    function bumpStreak(){
-      const today = new Date(); today.setHours(0,0,0,0);
-      const last = store.get(K.LAST, null);
-      let s = store.get(K.STREAK, 0);
-      if(!last){ s = 1; }
-      else{
-        const d = (today - new Date(last)) / (1000*60*60*24);
-        if(d === 0){ /* already counted today */ }
-        else if(d === 1){ s += 1; }
-        else if(d > 1){ s = 1; }
-      }
-      store.set(K.STREAK, s);
-      store.set(K.LAST, today.toISOString());
-      $("#streakDays").textContent = s;
-    }
-    function initDemo(){
-      $("#streakDays").textContent = store.get(K.STREAK, 0);
-      $("#doneCount").textContent = store.get(K.DONE, 0);
-      $("#storyText").value = store.get(K.STORY, "");
-      newChallenge();
-      $("#markDone").addEventListener("click", ()=>{
-        bumpStreak();
-        const d = store.get(K.DONE, 0)+1; store.set(K.DONE, d);
-        $("#doneCount").textContent = d;
-      });
-      $("#newChallenge").addEventListener("click", newChallenge);
-      $("#copyStory").addEventListener("click", ()=>{
-        const t = $("#storyText").value;
-        if(!t.trim()){ alert("Write a sentence first."); return; }
-        navigator.clipboard?.writeText(t).then(()=>alert("Copied! You can paste it into an email or text."));
-      });
-      $("#clearStory").addEventListener("click", ()=>{
-        $("#storyText").value = ""; store.set(K.STORY, "");
-      });
-      $("#storyText").addEventListener("input", e=>store.set(K.STORY, e.target.value));
-    }
-    initDemo();
+    // Simple demo for streaks/challenges
+    const CH=["Take a photo outside.","Text a friend hello.","Stretch for 30 seconds.","Water a plant.","Share a short memory."];
+    const $=s=>document.querySelector(s);
+    const st=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
+    function rand(){return CH[Math.floor(Math.random()*CH.length)]}
+    function load(){ $("#challengeText").textContent=rand(); $("#streakDays").textContent=localStorage.getItem("legacy.streak")||0; }
+    function bump(){const today=st();const last=localStorage.getItem("legacy.last");let s=Number(localStorage.getItem("legacy.streak")||0);if(!last)s=1;else{const d=(today-new Date(last))/(1e3*60*60*24);if(d===1)s++;else if(d>1)s=1;}localStorage.setItem("legacy.streak",s);localStorage.setItem("legacy.last",today);$("#streakDays").textContent=s;}
+    $("#markDone").onclick=()=>{bump();};
+    $("#newChallenge").onclick=()=>$("#challengeText").textContent=rand();
+    load();
   </script>
 </body>
 </html>
