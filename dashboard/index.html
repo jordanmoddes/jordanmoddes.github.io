@@ -13,39 +13,65 @@
     }
     html,body{height:100%}
     html{scroll-behavior:smooth}
-    /* Animated background: subtle gradients + faint grid */
+    /* ===== LIVING CIRCUIT BACKGROUND (REPLACED) ===== */
     body{
       margin:0;color:var(--ink);
+      /* layered background: deep core + soft radial glows */
       background:
-        radial-gradient(1200px 800px at 10% -20%, rgba(77,163,255,.10), transparent 60%),
-        radial-gradient(900px 700px at 90% 120%, rgba(180,77,255,.08), transparent 60%),
-        linear-gradient(180deg,#0b0c10,#0e1218);
+        radial-gradient(1000px 700px at 20% 80%, rgba(180,77,255,.06), transparent 60%),
+        radial-gradient(1000px 700px at 80% 10%, rgba(77,163,255,.06), transparent 60%),
+        linear-gradient(180deg,#07090d,#0d1116);
       position:relative;
       overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
+    /* thin animated circuit grid overlay */
     body::before{
-      content:""; position:fixed; inset:-2px;
+      content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
       background:
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px,
-        linear-gradient(0deg,  rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px;
-      opacity:.15; pointer-events:none; z-index:0;
-      animation:floatBG 40s linear infinite;
+        linear-gradient(90deg, rgba(77,163,255,.08) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(180,77,255,.06) 1px, transparent 1px);
+      background-size:56px 56px;
+      opacity:.26;
+      animation:circGridMove 60s linear infinite;
+      mix-blend-mode:screen;
     }
-    @keyframes floatBG{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+    @keyframes circGridMove{0%{transform:translate(0,0)}50%{transform:translate(-28px,-28px)}100%{transform:translate(0,0)}}
+
+    /* subtle glowing radial that slowly shifts hue */
+    body::after{
+      content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:radial-gradient(600px 480px at 50% 42%, rgba(90,160,255,.12), transparent 30%),
+                 radial-gradient(480px 380px at 12% 80%, rgba(200,90,255,.06), transparent 20%);
+      filter:blur(40px);
+      opacity:.7;
+      animation:coreGlow 24s ease-in-out infinite alternate;
+    }
+    @keyframes coreGlow{from{filter:blur(36px) saturate(.9)}to{filter:blur(46px) saturate(1.05)}}
+
+    /* small performance-friendly microchip shimmer using a pseudo element */
+    .chip-shimmer{position:fixed;left:12%;top:8%;width:420px;height:220px;border-radius:8px;opacity:.03;z-index:0;
+      background:conic-gradient(from 180deg at 50% 50%, rgba(77,163,255,.18), rgba(180,77,255,.06), rgba(77,163,255,.18));
+      filter:blur(24px);pointer-events:none;mix-blend-mode:screen;animation:chipPulse 18s linear infinite;}
+    @keyframes chipPulse{0%{opacity:.02}50%{opacity:.06}100%{opacity:.02}}
 
     a{color:inherit;text-decoration:none}
     .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 14px 48px}
 
-    /* Nav */
-    .nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);/* no border line */
-         border-bottom:0}
+    /* ===== NAV (Insights-style glass) ===== */
+    .nav{position:sticky;top:0;z-index:1000;
+         background:linear-gradient(90deg,rgba(12,16,22,.88),rgba(10,12,18,.88));
+         backdrop-filter:blur(10px);
+         border-bottom:1px solid rgba(77,163,255,.12);
+         box-shadow:0 4px 18px rgba(0,0,0,.45)}
     .navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;
            justify-content:center;padding:12px}
-    .nav a{color:#f1f3f7;font-weight:600}
-    .nav a:hover{opacity:.85}
+    .nav a{color:#e6eef6;font-weight:600;letter-spacing:.01em}
+    .nav a:hover{color:#4da3ff;text-shadow:0 0 8px rgba(77,163,255,.35)}
 
-    /* Ticker (no border line) */
-    .ticker{white-space:nowrap;overflow:hidden;background:#0e121800;border:0}
+    /* Ticker */
+    .ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
     .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
     .ticker:hover .ticker-inner{animation-play-state:paused}
     .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
@@ -69,7 +95,7 @@
 
     /* Grids & tiles reused for weather/stocks/crypto/events */
     .symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-    .sym{border:1px solid var(--border);border-radius:12px;padding:10px}
+    .sym{border:1px solid var(--border);border-radius:12px;padding:10px;background:linear-gradient(180deg,rgba(255,255,255,.01),transparent)}
     .sym .top{display:flex;justify-content:space-between;gap:8px}
     .sym .price{font-size:20px;font-weight:800;margin-top:4px}
     .hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
@@ -88,9 +114,9 @@
     .btn-top{background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;
              border-radius:999px;font-weight:600}
     .btn-top:hover{opacity:.9}
-    .footer{color:#9aa3b6;text-align:center;padding-bottom:24px}
+    .footer{color:#9aa3b6;text-align:center;padding-bottom:24px;position:relative;z-index:1}
 
-    /* VOTD card */
+    /* ---------- Verse of the Day POP ---------- */
     .votd-card{
       position:relative;border:1px solid var(--border);border-left:4px solid var(--accent);
       background:radial-gradient(1200px 400px at -10% -40%, rgba(77,163,255,.12), transparent 40%),
@@ -111,6 +137,9 @@
     .table{width:100%;border-collapse:collapse}
     .table th,.table td{border-top:1px solid var(--border);padding:8px;text-align:left;font-size:12px}
     .table th{color:#cfe0ff}
+
+    /*conversion table*/
+      .hidden{display:none}
 
     /* Conversions (scoped styles) */
     .cv-wrap{display:grid;gap:14px;margin:12px 0}
@@ -246,7 +275,7 @@
     <div class="card section" id="crypto" style="margin-top:16px">
       <div class="hd"><div>Crypto</div><button id="cryptoRefresh" class="pill">Refresh</button></div>
       <div class="bd">
-        <div id="cryptoList" class="symbols"></div>
+        <div id the="cryptoList" class="symbols"></div>
         <div id="cryptoStatus" class="mini muted" style="margin-top:6px"></div>
       </div>
     </div>
@@ -368,9 +397,10 @@
   const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
   const B = "411 W Main St, Round Rock, TX 78664";
 
-  const WEATHER_ZIPS = ["78664","53158","60030","44115"];
+  /* ====== WEATHER ZIPS: added 23314 (Carrollton, VA) as requested ====== */
+  const WEATHER_ZIPS = ["78664","53158","60030","44115","23314"];
   const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
-  const EVENTS_ZIP = "78664";
+  const EVENTS_ZIP = "78664"; // change if you want events for another base ZIP
 
   const COINS = [
     { id:"bitcoin",  symbol:"BTC" },
