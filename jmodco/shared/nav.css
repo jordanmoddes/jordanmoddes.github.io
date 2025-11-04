@@ -1,1 +1,21 @@
+.nav{
+  position:sticky; top:0; z-index:50; backdrop-filter: blur(8px);
+  background: color-mix(in oklab, var(--bg) 85%, black 15%);
+  border-bottom:1px solid #1b2230;
+}
+.nav .bar{display:flex;align-items:center;gap:12px}
+.nav .brand{display:flex;align-items:center;gap:.6rem;font-weight:700}
+.nav .brand img{height:28px;width:auto}
+.nav .links{margin-left:auto;display:flex;gap:1rem;align-items:center}
+.nav a{color:var(--ink);text-decoration:none;opacity:.9}
+.nav a:hover{opacity:1}
+.nav .toggle{display:none}
 
+@media (max-width: 860px){
+  .nav .toggle{display:inline-flex;margin-left:auto}
+  .nav .links{display:none}
+  .nav .tray{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease}
+  .nav .tray.open{grid-template-rows:1fr}
+  .nav .tray > div{overflow:hidden}
+  .nav .tray a{display:block;padding:.75rem 0;border-top:1px solid #1b2230}
+}
