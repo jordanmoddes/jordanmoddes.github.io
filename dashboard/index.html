@@ -13,22 +13,39 @@
     }
     html,body{height:100%}
     html{scroll-behavior:smooth}
-    body{margin:0;background:linear-gradient(180deg,#0b0c10,#0e1218);color:var(--ink);
-         font:14px/1.45 system-ui,Segoe UI,Inter,Arial,sans-serif}
-    a{color:inherit;text-decoration:none}
+    /* Animated background: subtle gradients + faint grid */
+    body{
+      margin:0;color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 10% -20%, rgba(77,163,255,.10), transparent 60%),
+        radial-gradient(900px 700px at 90% 120%, rgba(180,77,255,.08), transparent 60%),
+        linear-gradient(180deg,#0b0c10,#0e1218);
+      position:relative;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:""; position:fixed; inset:-2px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px,
+        linear-gradient(0deg,  rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px;
+      opacity:.15; pointer-events:none; z-index:0;
+      animation:floatBG 40s linear infinite;
+    }
+    @keyframes floatBG{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
 
-    .wrap{max-width:1200px;margin:0 auto;padding:0 14px 48px}
+    a{color:inherit;text-decoration:none}
+    .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 14px 48px}
 
     /* Nav */
-    .nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);
-         border-bottom:1px solid var(--border)}
+    .nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);/* no border line */
+         border-bottom:0}
     .navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;
            justify-content:center;padding:12px}
     .nav a{color:#f1f3f7;font-weight:600}
     .nav a:hover{opacity:.85}
 
-    /* Ticker */
-    .ticker{white-space:nowrap;overflow:hidden;border-bottom:1px solid var(--border);background:#0e1218}
+    /* Ticker (no border line) */
+    .ticker{white-space:nowrap;overflow:hidden;background:#0e121800;border:0}
     .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
     .ticker:hover .ticker-inner{animation-play-state:paused}
     .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
@@ -73,7 +90,7 @@
     .btn-top:hover{opacity:.9}
     .footer{color:#9aa3b6;text-align:center;padding-bottom:24px}
 
-    /* ---------- Verse of the Day POP ---------- */
+    /* VOTD card */
     .votd-card{
       position:relative;border:1px solid var(--border);border-left:4px solid var(--accent);
       background:radial-gradient(1200px 400px at -10% -40%, rgba(77,163,255,.12), transparent 40%),
@@ -95,21 +112,17 @@
     .table th,.table td{border-top:1px solid var(--border);padding:8px;text-align:left;font-size:12px}
     .table th{color:#cfe0ff}
 
-    /* conversions utility */
-    .hidden{display:none}
-
-    /* ===== Conversions (scoped styles) ===== */
+    /* Conversions (scoped styles) */
     .cv-wrap{display:grid;gap:14px;margin:12px 0}
     .cv-row{grid-template-columns:repeat(4,minmax(160px,1fr))}
     .cv-card{border:1px solid var(--border);border-radius:12px;padding:12px}
     .cv-card h4{margin:0 0 8px;font-size:1rem;font-weight:600}
     .cv-io{display:flex;align-items:center;gap:8px;margin:6px 0}
-    .cv-io .cv-label{min-width:1.5rem;text-align:center;opacity:.8}
-    .cv-io input{width:100%;padding:6px 8px;border:1px solid rgba(127,127,127,.35);border-radius:8px;background:transparent;color:inherit}
+    .cv-io input{flex:1;padding:6px 8px;border:1px solid rgba(127,127,127,.35);border-radius:8px;background:transparent;color:inherit}
     .cv-out{min-width:5ch;font-variant-numeric:tabular-nums}
     .cv-muted{opacity:.75;font-size:.9em}
-    .cv-grid-2{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:12px}
-    .cv-grid-3{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:10px}
+    .cv-grid-2{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:10px}
+    .cv-grid-3{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:8px}
     .cv-split{display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));gap:12px}
     .cv-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
     .cv-table td{padding:6px 8px;border-top:1px dashed rgba(127,127,127,.25)}
@@ -124,11 +137,18 @@
       .cv-grid-2{grid-template-columns:1fr}
       .cv-grid-3{grid-template-columns:1fr}
     }
+
+    /* Sunrise/Sunset arc */
+    .sunbox{display:flex;flex-direction:column;gap:8px}
+    .sun-legend{display:flex;gap:10px;align-items:center}
+    .sun-dot{width:10px;height:10px;border-radius:50%}
+    .sun-dot.fill{background:#ffd166}
+    .sun-dot.hollow{border:2px solid #ffd166;background:transparent}
   </style>
 </head>
 <body>
 
-  <!-- NAV (unchanged) -->
+  <!-- NAV -->
   <div class="nav">
     <div class="navin">
       <a href="/">🏠 Resume</a>
@@ -146,7 +166,7 @@
   <div class="wrap">
     <h1 class="section" id="welcome">Welcome</h1>
 
-    <!-- WELCOME COPY -->
+    <!-- WELCOME -->
     <div class="card">
       <div class="hd">
         <div>Welcome</div>
@@ -168,7 +188,17 @@
     <!-- SUNRISE / SUNSET -->
     <div class="card section" id="sun" style="margin-top:16px">
       <div class="hd"><div>Sunrise • Sunset</div><span id="sunDate" class="pill"></span></div>
-      <div class="bd"><div id="sunLine" class="mini"></div></div>
+      <div class="bd">
+        <div class="sunbox">
+          <div id="sunViz"></div>
+          <div class="sun-legend mini">
+            <span class="sun-dot fill"></span> <span class="muted">● sun above horizon</span>
+            <span style="width:10px"></span>
+            <span class="sun-dot hollow"></span> <span class="muted">○ night</span>
+          </div>
+          <div id="sunLine" class="mini"></div>
+        </div>
+      </div>
     </div>
 
     <!-- VOTD + EVENTS -->
@@ -206,13 +236,13 @@
       </div>
     </div>
 
-    <!-- STOCKS (unchanged) -->
+    <!-- STOCKS -->
     <div class="card section" id="stocks" style="margin-top:16px">
       <div class="hd"><div>Stocks</div><span class="pill">auto refresh</span></div>
       <div class="bd"><div id="stocksList" class="symbols"></div></div>
     </div>
 
-    <!-- 🔵 CRYPTO (unchanged) -->
+    <!-- CRYPTO -->
     <div class="card section" id="crypto" style="margin-top:16px">
       <div class="hd"><div>Crypto</div><button id="cryptoRefresh" class="pill">Refresh</button></div>
       <div class="bd">
@@ -221,12 +251,11 @@
       </div>
     </div>
 
-    <!-- 🔵 PELOSI TRADES (unchanged) -->
+    <!-- PELOSI TRADES -->
     <div class="card section" id="pelosi" style="margin-top:16px">
       <div class="hd"><div>Nancy Pelosi — Disclosed Trades (latest 50)</div></div>
       <div class="bd">
         <div id="pelosiStatus" class="mini muted" style="margin-bottom:6px">Loading…</div>
-        <div class="symbols" id="pelosiGrid" style="display:none"></div>
         <div style="overflow:auto">
           <table class="table" id="pelosiTable">
             <thead>
@@ -238,35 +267,31 @@
       </div>
     </div>
 
-    <!-- 🔵 CONVERSIONS (REPLACED) -->
+    <!-- CONVERSIONS -->
     <div class="card section" id="conversions" style="margin-top:16px">
       <div class="hd"><div>Conversions</div></div>
       <div class="bd">
         <!-- Four compact tiles -->
         <div class="cv-wrap cv-row">
-          <!-- °F ➜ °C -->
           <div class="cv-card">
-            <h4>Temperature</h4>
-            <div class="cv-io"><span class="cv-label">___</span><input id="f_in" type="number" step="any" placeholder="°F"></div>
-            <div class="cv-io"><span class="cv-label">#</span><span class="cv-out" id="c_out">—</span><span class="cv-muted">°C</span></div>
+            <h4>F → C</h4>
+            <div class="cv-io"><input id="f_in" type="number" step="any" placeholder="°F"><span>°F</span></div>
+            <div class="cv-io"><span id="c_out" class="cv-out">—</span><span class="cv-muted">°C</span></div>
           </div>
-          <!-- °C ➜ °F -->
           <div class="cv-card">
-            <h4>Temperature</h4>
-            <div class="cv-io"><span class="cv-label">___</span><input id="c_in" type="number" step="any" placeholder="°C"></div>
-            <div class="cv-io"><span class="cv-label">#</span><span class="cv-out" id="f_out">—</span><span class="cv-muted">°F</span></div>
+            <h4>C → F</h4>
+            <div class="cv-io"><input id="c_in" type="number" step="any" placeholder="°C"><span>°C</span></div>
+            <div class="cv-io"><span id="f_out" class="cv-out">—</span><span class="cv-muted">°F</span></div>
           </div>
-          <!-- m ➜ ft -->
           <div class="cv-card">
-            <h4>Length</h4>
-            <div class="cv-io"><span class="cv-label">___</span><input id="m_in" type="number" step="any" placeholder="m"></div>
-            <div class="cv-io"><span class="cv-label">#</span><span class="cv-out" id="ft_out">—</span><span class="cv-muted">ft</span></div>
+            <h4>m → ft</h4>
+            <div class="cv-io"><input id="m_in" type="number" step="any" placeholder="m"><span>m</span></div>
+            <div class="cv-io"><span id="ft_out" class="cv-out">—</span><span class="cv-muted">ft</span></div>
           </div>
-          <!-- in ➜ cm -->
           <div class="cv-card">
-            <h4>Length</h4>
-            <div class="cv-io"><span class="cv-label">___</span><input id="in_in" type="number" step="any" placeholder="in"></div>
-            <div class="cv-io"><span class="cv-label">#</span><span class="cv-out" id="cm_out">—</span><span class="cv-muted">cm</span></div>
+            <h4>in → cm</h4>
+            <div class="cv-io"><input id="in_in" type="number" step="any" placeholder="in"><span>in</span></div>
+            <div class="cv-io"><span id="cm_out" class="cv-out">—</span><span class="cv-muted">cm</span></div>
           </div>
         </div>
 
@@ -278,46 +303,50 @@
             <div>
               <h4 style="margin-bottom:6px">Inputs</h4>
               <div class="cv-grid-2">
-                <div class="cv-io"><span class="cv-label">___</span><input id="vol_ml" type="number" step="any" placeholder="mL"></div>
-                <div class="cv-io"><span class="cv-label">___</span><input id="density" type="number" step="any" placeholder="g/mL" value="0.979"></div>
+                <div class="cv-io"><input id="vol_ml" type="number" step="any" placeholder="Volume"><span>mL</span></div>
+                <div class="cv-io"><input id="density" type="number" step="any" placeholder="Density" value="0.979"><span>g/mL</span></div>
               </div>
-              <div class="cv-grid-3" style="margin-top:8px">
-                <div class="cv-io"><span class="cv-label">#</span><span class="cv-out cv-muted">Factor</span><span class="cv-muted">≤ 1 mL</span></div>
-                <div class="cv-io"><span class="cv-label">___</span><input id="k_small" type="number" step="any" value="1.15"></div>
-                <div class="cv-io"><span class="cv-label">#</span><span class="cv-out cv-muted">—</span></div>
+              <div class="cv-grid-3" style="margin-top:6px">
+                <div class="cv-io" style="margin:0"><span class="cv-muted">Factor ≤ 1 mL</span></div>
+                <div class="cv-io" style="margin:0"><input id="k_small" type="number" step="any" value="1.15"><span>k</span></div>
+                <div></div>
+                <div class="cv-io" style="margin:0"><span class="cv-muted">Factor &gt; 1 mL</span></div>
+                <div class="cv-io" style="margin:0"><input id="k_large" type="number" step="any" value="1.06"><span>k</span></div>
+                <div></div>
+              </div>
 
-                <div class="cv-io"><span class="cv-label">#</span><span class="cv-out cv-muted">Factor</span><span class="cv-muted">&gt; 1 mL</span></div>
-                <div class="cv-io"><span class="cv-label">___</span><input id="k_large" type="number" step="any" value="1.06"></div>
-                <div class="cv-io"><span class="cv-label">#</span><span class="cv-out cv-muted">—</span></div>
+              <p class="cv-muted" style="margin:8px 0 4px">
+                The mL you enter decides which factor applies (≤1 mL uses k=1.15, otherwise k=1.06). Results on the right update automatically.
+              </p>
+
+              <div style="margin-top:8px">
+                <div class="cv-io"><input id="ml_to_l" type="number" step="any" placeholder="mL → L (enter mL)"><span>mL</span></div>
+                <div class="cv-io"><span class="cv-out" id="liters_out">—</span><span class="cv-muted">L</span></div>
+
+                <div class="cv-io" style="margin-top:6px"><input id="l_to_ml" type="number" step="any" placeholder="L → mL (enter L)"><span>L</span></div>
+                <div class="cv-io"><span class="cv-out" id="ml_from_l_out">—</span><span class="cv-muted">mL</span></div>
               </div>
 
-              <div style="margin-top:10px">
-                <div class="cv-io"><span class="cv-label">___</span><input id="ml_to_l" type="number" step="any" placeholder="mL → L"></div>
-                <div class="cv-io"><span class="cv-label">#</span><span class="cv-out" id="liters_out">—</span><span class="cv-muted">L</span></div>
-              </div>
+              <p class="cv-muted" style="margin-top:6px">mass (g) = volume (mL) × density (g/mL) × k; mg = g × 1000.</p>
             </div>
 
-            <!-- Outputs -->
+            <!-- Results (unchanged behavior) -->
             <div>
               <h4 style="margin-bottom:6px">Results</h4>
               <table class="cv-table">
-                <!-- show only when mL ≤ 1 -->
                 <tbody id="res_small">
                   <tr><td class="cv-muted">mg (≤ 1 mL, k=<span id="k_small_view">1.15</span>)</td><td class="cv-right" id="mg_small">—</td></tr>
                   <tr><td class="cv-muted">g  (≤ 1 mL, k=<span id="k_small_view2">1.15</span>)</td><td class="cv-right" id="g_small">—</td></tr>
                 </tbody>
-                <!-- show only when mL > 1 -->
                 <tbody id="res_large" class="hidden">
                   <tr><td class="cv-muted">mg (&gt; 1 mL, k=<span id="k_large_view">1.06</span>)</td><td class="cv-right" id="mg_large">—</td></tr>
                   <tr><td class="cv-muted">g  (&gt; 1 mL, k=<span id="k_large_view2">1.06</span>)</td><td class="cv-right" id="g_large">—</td></tr>
                 </tbody>
               </table>
-              <p class="cv-muted" style="margin-top:8px">
-                Formula: mass = volume(mL) × density(g/mL) × k. mg = g × 1000. (k=1.15 when total ≤1 mL, else 1.06.)
-              </p>
             </div>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -332,20 +361,17 @@
   </div>
 
 <script>
-  /* =========================
-     CONFIG (unchanged)
-  ========================== */
+  /* ========= CONFIG ========= */
   const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
   const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
 
   const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
   const B = "411 W Main St, Round Rock, TX 78664";
 
-  const WEATHER_ZIPS = ["78664","53158","60030","44115"]; // RR, Pleasant Prairie, Grayslake, Cleveland
+  const WEATHER_ZIPS = ["78664","53158","60030","44115"];
   const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
-  const EVENTS_ZIP = "78664"; // change if you want events for another base ZIP
+  const EVENTS_ZIP = "78664";
 
-  // Crypto list
   const COINS = [
     { id:"bitcoin",  symbol:"BTC" },
     { id:"ethereum", symbol:"ETH" },
@@ -353,9 +379,7 @@
     { id:"dogecoin", symbol:"DOGE" }
   ];
 
-  /* =========================
-     HELPERS (unchanged)
-  ========================== */
+  /* ========= HELPERS ========= */
   const $ = s => document.querySelector(s);
   const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
   const toF = c => (c*9/5)+32;
@@ -365,10 +389,9 @@
     return `${mm}/${dd}/${yy}`;
   };
   const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code] || "🌡️");
+  const fmt = (x,d=3)=> (Number.isFinite(x)? Number(x).toFixed(d) : "—");
 
-  /* =========================
-     TICKER
-  ========================== */
+  /* ========= TICKER ========= */
   async function loadTicker(){
     try{
       const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
@@ -380,15 +403,11 @@
     }
   }
 
-  /* =========================
-     TRAFFIC
-  ========================== */
+  /* ========= TRAFFIC ========= */
   const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
   function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
 
-  /* =========================
-     WEATHER
-  ========================== */
+  /* ========= WEATHER ========= */
   async function wx(lat,lon){
     const u = `${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`;
     const r = await fetch(u);
@@ -396,7 +415,7 @@
     const url = new URL("https://api.open-meteo.com/v1/forecast");
     url.search = new URLSearchParams({
       latitude: lat, longitude: lon, timezone:"auto", wind_speed_unit:"mph",
-      current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code,time",
+      current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
       daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
       hourly:"temperature_2m,weather_code"
     }).toString();
@@ -453,28 +472,71 @@
     }
   }
 
-  /* =========================
-     SUNRISE / SUNSET
-  ========================== */
+  /* ========= SUN (Visualization) ========= */
   async function loadSun(){
     $("#sunDate").textContent = todayMMDDYYYY();
+    let s=null;
     try{
       const g = await geo(WEATHER_ZIPS[0]);
       const u = new URL("https://api.sunrisesunset.io/json");
       u.search = new URLSearchParams({ lat:g.lat, lng:g.lon, timezone:"auto" }).toString();
       const r = await fetch(u); const j = await r.json();
-      const s = j?.results;
-      if (s?.sunrise && s?.sunset){
-        $("#sunLine").textContent = `Sunrise ${s.sunrise} · Sunset ${s.sunset}`;
-        return;
-      }
+      s = j?.results;
     }catch{}
-    $("#sunLine").textContent = "Unavailable";
+    if (!(s?.sunrise && s?.sunset)){ $("#sunLine").textContent="Unavailable"; return; }
+
+    const sunrise = s.sunrise; const sunset = s.sunset; const noon = s.solar_noon || "";
+    $("#sunLine").textContent = `Sunrise ${sunrise} · Solar Noon ${noon || "—"} · Sunset ${sunset}`;
+
+    // Simple SVG viz: positions along a 0..100 scale
+    const W = 100, H = 40, xL = 10, xR = 90, yBase = 30, yPeak = 6;
+    const arc = `M ${xL},${yBase} Q ${(xL+xR)/2},${yPeak} ${xR},${yBase}`;
+
+    // Determine marker position at load
+    const now = new Date();
+    const today = now.toLocaleDateString(undefined,{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$1-$2');
+    function parseLocal(t){
+      // e.g., "6:49:54 AM" -> todayT local
+      return new Date(`${today} ${t}`);
+    }
+    const sr = parseLocal(sunrise); const ss = parseLocal(sunset);
+    let marker = { x: xL, y: yBase, day:false, label: now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) };
+
+    if (now >= sr && now <= ss){
+      const p = (now - sr) / (ss - sr); // 0..1
+      const x = xL + (xR - xL) * p;
+      // approximate arc y via quadratic peak
+      const y = yBase - (yBase - yPeak) * (1 - Math.pow(2*p-1,2)); // smooth hump
+      marker = { x, y, day:true, label: now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) };
+    }else{
+      // night: place below line, left if before sunrise, right if after sunset
+      const x = (now < sr) ? xL - 4 : xR + 4;
+      const y = yBase + 6;
+      marker = { x, y, day:false, label: now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) };
+    }
+
+    $("#sunViz").innerHTML = `
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:120px">
+        <!-- dayline -->
+        <line x1="${xL}" y1="${yBase}" x2="${xR}" y2="${yBase}" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>
+        <!-- ticks -->
+        <line x1="${xL}" y1="${yBase-6}" x2="${xL}" y2="${yBase+6}" stroke="rgba(255,255,255,.45)" stroke-width="1.2"/>
+        <line x1="${xR}" y1="${yBase-6}" x2="${xR}" y2="${yBase+6}" stroke="rgba(255,255,255,.45)" stroke-width="1.2"/>
+        <!-- arc -->
+        <path d="${arc}" fill="none" stroke="rgba(255,209,102,.8)" stroke-width="1.2"/>
+        <!-- labels -->
+        <text x="${xL}" y="${yBase+12}" font-size="4" fill="#cbd5e1" text-anchor="start">${sunrise}</text>
+        <text x="${xR}" y="${yBase+12}" font-size="4" fill="#cbd5e1" text-anchor="end">${sunset}</text>
+        ${noon ? `<text x="${(xL+xR)/2}" y="${yPeak-2}" font-size="4" fill="#cbd5e1" text-anchor="middle">Noon ${noon}</text>` : ""}
+        <!-- marker -->
+        ${marker.day
+          ? `<circle cx="${marker.x}" cy="${marker.y}" r="2.4" fill="#ffd166"><title>Now: ${marker.label} (day)</title></circle>`
+          : `<circle cx="${marker.x}" cy="${marker.y}" r="2.4" fill="none" stroke="#ffd166" stroke-width="1.2"><title>Now: ${marker.label} (night)</title></circle>`
+        }
+      </svg>`;
   }
 
-  /* =========================
-     VERSE OF THE DAY
-  ========================== */
+  /* ========= VOTD ========= */
   async function loadVOTD(){
     $("#votdDate").textContent = todayMMDDYYYY();
     try{
@@ -501,9 +563,7 @@
     $("#votdText").textContent = "Verse unavailable."; $("#votdRef").textContent = "";
   }
 
-  /* =========================
-     LOCAL EVENTS
-  ========================== */
+  /* ========= EVENTS ========= */
   async function loadEvents(){
     const host = $("#eventsList"); host.innerHTML = "";
     try{
@@ -527,9 +587,7 @@
     }
   }
 
-  /* =========================
-     STOCKS
-  ========================== */
+  /* ========= STOCKS ========= */
   async function loadStocks(){
     const host = $("#stocksList"); host.innerHTML = "";
     try{
@@ -554,9 +612,7 @@
     }
   }
 
-  /* =========================
-     CRYPTO — CoinGecko
-  ========================== */
+  /* ========= CRYPTO ========= */
   async function loadCrypto(){
     const host = $("#cryptoList"); const status = $("#cryptoStatus");
     host.innerHTML = ""; status.textContent = "Loading…";
@@ -585,31 +641,22 @@
   }
   $("#cryptoRefresh").addEventListener("click", loadCrypto);
 
-  /* =========================
-     PELOSI TRADES
-  ========================== */
-  async function getText(url){
-    try{ const r = await fetch(url); if(!r.ok) throw 0; return await r.text(); }
-    catch{ const p = `https://r.jina.ai/http://`+url.replace(/^https?:\/\//,''); const r2 = await fetch(p); if(!r2.ok) throw 0; return await r2.text(); }
-  }
+  /* ========= PELOSI ========= */
   async function loadPelosi(){
     const st = $("#pelosiStatus"); const tb = $("#pelosiTable tbody");
     tb.innerHTML = ""; st.textContent = "Loading…";
     try{
-      const raw = await getText("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json");
-      const all = JSON.parse(raw);
-      const rows = all.filter(x=>String(x.representative||"").includes("Nancy Pelosi"))
-                      .sort((a,b)=> new Date(b.disclosure_date) - new Date(a.disclosure_date))
-                      .slice(0,50);
-      rows.forEach(r=>{
+      const r = await fetch(`${WORKER_BASE}/pelosi`);
+      const rows = await r.json();
+      rows.forEach(rw=>{
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${r.disclosure_date||""}</td>
-          <td>${r.transaction_date||""}</td>
-          <td>${r.ticker||r.asset_description||""}</td>
-          <td>${r.type||""}</td>
-          <td>${r.amount||""}</td>
-          <td>${r.ptr_link?`<a class="pill" href="${r.ptr_link}" target="_blank" rel="noopener">PTR</a>`:""}</td>`;
+          <td>${rw.disclosure_date||""}</td>
+          <td>${rw.transaction_date||""}</td>
+          <td>${rw.ticker||rw.asset_description||""}</td>
+          <td>${rw.type||""}</td>
+          <td>${rw.amount||""}</td>
+          <td>${rw.ptr_link?`<a class="pill" href="${rw.ptr_link}" target="_blank" rel="noopener">PTR</a>`:""}</td>`;
         tb.appendChild(tr);
       });
       st.textContent = rows.length ? "Loaded." : "No trades found.";
@@ -618,22 +665,17 @@
     }
   }
 
-  /* =========================
-     CONVERSIONS (new logic)
-  ========================== */
-  const fmt = (x,d=3)=> (Number.isFinite(x)? Number(x).toFixed(d) : "—");
-
-  // temp
+  /* ========= CONVERSIONS ========= */
+  // top tiles
   const f_in = $("#f_in"), c_out = $("#c_out");
   const c_in = $("#c_in"), f_out = $("#f_out");
-  f_in?.addEventListener('input', ()=>{ const F=parseFloat(f_in.value); c_out.textContent = fmt((F-32)*5/9,3); });
-  c_in?.addEventListener('input', ()=>{ const C=parseFloat(c_in.value); f_out.textContent = fmt((C*9/5)+32,3); });
-
-  // length
   const m_in = $("#m_in"), ft_out = $("#ft_out");
   const in_in = $("#in_in"), cm_out = $("#cm_out");
+
+  f_in?.addEventListener('input', ()=>{ const F=parseFloat(f_in.value); c_out.textContent = fmt((F-32)*5/9,2); });
+  c_in?.addEventListener('input', ()=>{ const C=parseFloat(c_in.value); f_out.textContent = fmt((C*9/5)+32,2); });
   m_in?.addEventListener('input', ()=>{ const m=parseFloat(m_in.value); ft_out.textContent = fmt(m*3.280839895,4); });
-  in_in?.addEventListener('input', ()=>{ const inch=parseFloat(in_in.value); cm_out.textContent = fmt(inch*2.54,3); });
+  in_in?.addEventListener('input', ()=>{ const inch=parseFloat(in_in.value); cm_out.textContent = fmt(inch*2.54,2); });
 
   // work conversions
   const vol_ml = $("#vol_ml"), density = $("#density"), k_small = $("#k_small"), k_large = $("#k_large");
@@ -642,6 +684,7 @@
   const k_small_view=$("#k_small_view"), k_small_view2=$("#k_small_view2");
   const k_large_view=$("#k_large_view"), k_large_view2=$("#k_large_view2");
   const ml_to_l = $("#ml_to_l"), liters_out = $("#liters_out");
+  const l_to_ml = $("#l_to_ml"), ml_from_l_out = $("#ml_from_l_out");
 
   function updateWork(){
     const V  = parseFloat(vol_ml.value);
@@ -674,32 +717,24 @@
   [vol_ml,density,k_small,k_large].forEach(el=> el?.addEventListener('input', updateWork));
 
   ml_to_l?.addEventListener('input', ()=>{ const mL = parseFloat(ml_to_l.value); liters_out.textContent = fmt(mL/1000,6); });
+  l_to_ml?.addEventListener('input', ()=>{ const L = parseFloat(l_to_ml.value); ml_from_l_out.textContent = fmt(L*1000,3); });
 
-  /* =========================
-     NOTES + TODAY BADGES
-  ========================== */
+  /* ========= NOTES / INIT ========= */
   $("#todayBadge").textContent = todayMMDDYYYY();
   $("#votdDate").textContent  = todayMMDDYYYY();
   $("#clearNotes").onclick = ()=>{ const t=$("#notesBox"); t.value=""; localStorage.removeItem("dashboard-notes"); };
   const tSaved = localStorage.getItem("dashboard-notes")||""; $("#notesBox").value = tSaved;
   $("#notesBox").addEventListener("input", e=>localStorage.setItem("dashboard-notes", e.target.value));
 
-  /* =========================
-     INIT
-  ========================== */
   loadTicker();
   updateTraffic(); setInterval(updateTraffic, 120000);
   loadWeather();
-  loadSun();
+  loadSun(); // compute once at load
   loadVOTD(); setInterval(loadVOTD, 30*60*1000);
   loadEvents();
   loadStocks(); setInterval(loadStocks, 60000);
   loadCrypto(); setInterval(loadCrypto, 60000);
   loadPelosi();
-
-  // optional preload example values for quick test:
-  // vol_ml.value=0.5; density.value=0.979; k_small.value=1.15; k_large.value=1.06; updateWork();
-  // ml_to_l.value=1.272; ml_to_l.dispatchEvent(new Event('input'));
 </script>
 </body>
 </html>
