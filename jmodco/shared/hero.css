@@ -1,1 +1,19 @@
+.hero{
+  position:relative;overflow:hidden;border-bottom:1px solid #1b2230;
+  background:
+    radial-gradient(1200px 600px at 50% -200px, color-mix(in oklab, var(--accent) 35%, transparent) , transparent 60%),
+    radial-gradient(800px 400px at 80% 0%, color-mix(in oklab, var(--accent-2) 25%, transparent), transparent 60%),
+    linear-gradient(180deg, #0b1017, #090e15);
+}
+.hero .inner{display:grid;gap:1.25rem;align-items:center;min-height: clamp(420px, 60vh, 640px)}
+.hero h1{font-size:clamp(2rem,6vw,3.25rem);line-height:1.05;margin:0}
+.hero p{max-width:70ch;opacity:.9;margin:0}
+.hero .actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.5rem}
 
+/* optional subtle animated glow */
+@keyframes pulseGlow{0%{opacity:.5;filter:blur(30px)}50%{opacity:.85;filter:blur(45px)}100%{opacity:.5;filter:blur(30px)}}
+.hero::after{
+  content:""; position:absolute; inset:auto -20% -40% -20%; height:60%;
+  background:radial-gradient(60% 60% at 50% 0%, color-mix(in oklab,var(--accent) 25%, transparent), transparent 80%);
+  animation:pulseGlow 6s ease-in-out infinite;
+}
