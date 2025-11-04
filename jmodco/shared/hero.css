@@ -17,3 +17,17 @@
   background:radial-gradient(60% 60% at 50% 0%, color-mix(in oklab,var(--accent) 25%, transparent), transparent 80%);
   animation:pulseGlow 6s ease-in-out infinite;
 }
+
+/* Theme-aware logo swap for hero */
+.hero .brand-logos {
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+  margin-bottom:.5rem;
+}
+.hero .brand-logos img {
+  height:48px;
+  width:auto;
+}
+:root[data-theme="light"] .hero .logo-dark {display:none}         /* hide TP on light */
+:root:not([data-theme="light"]) .hero .logo-light {display:none}  /* hide non-TP on dark (default) */
