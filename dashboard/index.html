@@ -473,7 +473,7 @@
     }
   }
 
-  /* ========= SUN (Visualization) — FIXED FOR SOLAR NOON PEAK ========= */
+    /* ========= SUN (Visualization) — ANTI-CLIP TWEAK ========= */
   async function loadSun(){
     $("#sunDate").textContent = todayMMDDYYYY();
     let s=null;
@@ -485,56 +485,57 @@
       s = j?.results;
     }catch{}
     if (!(s?.sunrise && s?.sunset)){ $("#sunLine").textContent="Unavailable"; return; }
-
+  
     const sunrise = s.sunrise; 
-    const sunset  = s.sunset; 
-    const noon    = s.solar_noon || "";
-
+    const sunset = s.sunset; 
+    const noon = s.solar_noon || "";
+  
     $("#sunLine").textContent = `Sunrise ${sunrise} · Solar Noon ${noon || "—"} · Sunset ${sunset}`;
-
-    // SVG geometry
-    const W = 100, H = 40, xL = 10, xR = 90, yBase = 30, yPeak = 6;
+  
+    // Add internal margin + taller box to avoid clipping
+    const W = 100, H = 60; // taller viewBox for top label
+    const M = 6; // inner margin
+    const xL = 10 + M, xR = 90 - M; // pull in from edges a bit
+    const yBase = 38; // drop baseline slightly
+    const yPeak = 12; // leave headroom above arc
     const arc = `M ${xL},${yBase} Q ${(xL+xR)/2},${yPeak} ${xR},${yBase}`;
-
+  
     // Robust local-time parse for strings like "6:49:54 AM"
     const todayISO = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
     const toLocalDate = (tStr)=>{
-      // Try native first
       const d = new Date(`${todayISO} ${tStr}`);
       if (!isNaN(d)) return d;
-      // Fallback manual parse
       const m = tStr.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
       if(!m){ return new Date(); }
       let hh = parseInt(m[1],10); const mm=parseInt(m[2],10); const ss=parseInt(m[3]||"0",10);
       const ap = m[4].toUpperCase();
       if(ap==="PM" && hh!==12) hh+=12; if(ap==="AM" && hh===12) hh=0;
-      const base = new Date(); // today
+      const base = new Date();
       base.setHours(hh,mm,ss,0);
       return base;
     };
-
+  
     const sr = toLocalDate(sunrise);
     const ss = toLocalDate(sunset);
     const sn = noon ? toLocalDate(noon) : new Date((sr.getTime()+ss.getTime())/2);
     const now = new Date();
-
-    // Map current time to arc with solar-noon apex alignment
+  
     const daySpan = ss - sr;
-    const pRaw = (now - sr) / daySpan;                // 0..1 across daylight
+    const pRaw = (now - sr) / daySpan;
     const p = Math.max(0, Math.min(1, pRaw));
-    const r = Math.max(0, Math.min(1, (sn - sr) / daySpan)) || 0.5; // noon fraction
-    // u maps [0..r] -> [0..0.5], [r..1] -> [0.5..1] so peak aligns to noon
+    const r = Math.max(0, Math.min(1, (sn - sr) / daySpan)) || 0.5;
     const u = (p <= r) ? (p / (r || 1)) * 0.5 : 0.5 + ((p - r) / (1 - r || 1)) * 0.5;
-
-    // Arc point via semicircle-ish profile (smooth peak)
+  
     const t = 2*u - 1; // -1..1
     const xArc = xL + (xR - xL) * u;
     const yArc = yBase - (yBase - yPeak) * Math.sqrt(Math.max(0, 1 - t*t));
-
     const isDay = now >= sr && now <= ss;
-
+  
+    // place noon label a little lower so it never clips
+    const noonLabelY = yPeak + 2; // below arc apex for headroom
+  
     $("#sunViz").innerHTML = `
-      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:120px">
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:140px;overflow:visible">
         <!-- day baseline -->
         <line x1="${xL}" y1="${yBase}" x2="${xR}" y2="${yBase}" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>
         <!-- ticks -->
@@ -545,11 +546,11 @@
         <!-- labels -->
         <text x="${xL}" y="${yBase+12}" font-size="4" fill="#cbd5e1" text-anchor="start">${sunrise}</text>
         <text x="${xR}" y="${yBase+12}" font-size="4" fill="#cbd5e1" text-anchor="end">${sunset}</text>
-        ${noon ? `<text x="${(xL+xR)/2}" y="${yPeak-2}" font-size="4" fill="#cbd5e1" text-anchor="middle">Noon ${noon}</text>` : ""}
+        ${noon ? `<text x="${(xL+xR)/2}" y="${noonLabelY}" font-size="4" fill="#cbd5e1" text-anchor="middle">Noon ${noon}</text>` : ""}
         <!-- marker -->
         ${isDay
-          ? `<circle cx="${xArc}" cy="${yArc}" r="2.4" fill="#ffd166"><title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (day)</title></circle>`
-          : `<circle cx="${(now < sr) ? xL - 4 : xR + 4}" cy="${yBase+6}" r="2.4" fill="none" stroke="#ffd166" stroke-width="1.2"><title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (night)</title></circle>`
+          ? `<circle cx="${xArc}" cy="${yArc}" r="2.6" fill="#ffd166"><title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (day)</title></circle>`
+          : `<circle cx="${(now < sr) ? xL - 4 : xR + 4}" cy="${yBase+6}" r="2.6" fill="none" stroke="#ffd166" stroke-width="1.2"><title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (night)</title></circle>`
         }
       </svg>`;
   }
