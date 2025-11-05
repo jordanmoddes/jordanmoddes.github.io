@@ -67,11 +67,11 @@
     h1,h2{ margin:0 0 12px }
     section,header,footer{ scroll-margin-top: calc(var(--header-h) + 16px) }
 
-    /* ===== Header: pill/bubble like Insights ===== */
+    /* ===== Header: bubble (Insights style) ===== */
     .header{
-      position:fixed; left:0; right:0; top:0; z-index:1000;
+      position:fixed; left:0; right:0; top:0; z-index:1002;
       height:var(--header-h);
-      background:transparent; /* no full-width bar */
+      background:transparent; /* not a full-width bar */
     }
     .header-inner{
       height:100%;
@@ -103,13 +103,12 @@
     .nav a.item:hover{ opacity:1; background:rgba(255,255,255,.08) }
     html[data-theme="light"] .nav a.item:hover{ background:rgba(0,0,0,.06) }
 
-    /* Toggle pill (Dark/Light with dot) */
+    /* Toggle pill (Dark/Light with dot; label follows theme color) */
     .toggle{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 12px; border-radius:999px;
       border:1px solid var(--card-border); background:var(--card);
-      font-weight:700; cursor:pointer; user-select:none;
-      color:var(--text); /* ensure label color follows theme */
+      font-weight:700; cursor:pointer; user-select:none; color:var(--text);
     }
     .toggle-dot{
       width:12px; height:12px; border-radius:50%;
@@ -118,24 +117,37 @@
     }
     html[data-theme="light"] .toggle-dot{ background:#333; box-shadow:0 0 0 3px rgba(0,0,0,.10) }
 
-    /* Mobile menu (white text on dark, black on light) */
+    /* ===== Mobile menu (high-contrast overlay) ===== */
     .hamburger{
       display:none; border:1px solid var(--card-border); background:var(--card);
       border-radius:12px; padding:10px 12px; font-weight:700; color:var(--text);
     }
     .mobile-panel{
       position:fixed; top:var(--header-h); left:0; right:0;
-      background:inherit; backdrop-filter:inherit; border-bottom:1px solid var(--card-border);
-      display:none; padding:12px 16px;
+      z-index:1001;
+      display:none; padding:14px 16px 18px;
+      background:rgba(10,15,24,.92);             /* Dark overlay */
+      backdrop-filter:saturate(120%) blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    html[data-theme="light"] .mobile-panel{
+      background:rgba(255,255,255,.96);           /* Light overlay */
+      border-bottom:1px solid rgba(0,0,0,.08);
     }
     .mobile-panel.open{ display:block }
     .mobile-links{ display:flex; flex-direction:column; gap:10px }
     .mobile-links a,
     .mobile-links button{
-      color:var(--text);
-      text-align:center;
-      padding:12px 14px; border-radius:12px; border:1px solid var(--card-border); background:var(--card); font-weight:600
+      color:var(--text); text-align:center; font-weight:600;
+      padding:12px 14px; border-radius:12px;
+      border:1px solid var(--card-border);
+      background:rgba(255,255,255,.08);
     }
+    html[data-theme="light"] .mobile-links a,
+    html[data-theme="light"] .mobile-links button{
+      background:rgba(0,0,0,.06);
+    }
+    body.menu-open{ overflow:hidden }
     @media (max-width:720px){
       .nav{ display:none }
       .hamburger{ display:inline-flex }
@@ -167,15 +179,13 @@
     #divisions h2{ margin-bottom: 8px }
     .divisions-sub{ color:var(--muted); margin:4px 0 10px; text-align:center }
 
-    /* --- Radial SURFACE: keep TP logos within a dark panel on LIGHT theme --- */
+    /* Radial: dark surface so TP logos pop even in Light mode */
     .radial-surface{
       border-radius:24px; padding:16px;
-      /* dark panel in both themes looks fine; but required specifically for light */
       background: rgba(10,15,24,.9);
       border: 1px solid rgba(255,255,255,.08);
     }
     html[data-theme="dark"] .radial-surface{
-      /* keep subtle in dark so it blends */
       background: rgba(10,15,24,.6);
     }
 
@@ -333,70 +343,79 @@
           </div>
 
           <!-- SATELLITES — TP ONLY for radial section in BOTH themes -->
+          <!-- Top Left → Resume -->
           <a class="imgnode" style="--angle:-135deg" href="https://www.jordanmoddes.com/" rel="noopener">
             <img src="./assets/JmodCo_LogoTP.png" alt="Resume">
           </a>
-
+          <!-- Top → Labs -->
           <a class="imgnode" style="--angle:-90deg" href="https://www.jordanmoddes.com/jmodco/Labs" rel="noopener">
             <img src="./assets/Jmod_LabsTP.png" alt="R&D engine">
           </a>
-
+          <!-- Top Right → Systems -->
           <a class="imgnode" style="--angle:-45deg" href="https://www.jordanmoddes.com/jmodco/Systems" rel="noopener">
             <img src="./assets/Jmod_SystemsTP.png" alt="Automation & control">
           </a>
-
+          <!-- Left → Battlefield -->
           <a class="imgnode" style="--angle:180deg" href="https://www.jordanmoddes.com/battlefield" rel="noopener">
             <img src="./assets/JmodCo_LogoTP.png" alt="Coming Soon">
           </a>
-
+          <!-- Right → Personal Dashboard -->
           <a class="imgnode" style="--angle:0deg" href="https://www.jordanmoddes.com/dashboard" rel="noopener">
             <img src="./assets/JmodCo_LogoTP.png" alt="Personal Dashboard">
           </a>
-
+          <!-- Bottom Left → Insights -->
           <a class="imgnode" style="--angle:135deg" href="https://www.jordanmoddes.com/jmodco/Insights" rel="noopener">
             <img src="./assets/Jmod_InsightsTP.png" alt="SMB AI assist">
           </a>
-
+          <!-- Bottom → Legacy -->
           <a class="imgnode" style="--angle:90deg" href="https://www.jordanmoddes.com/jmodco/Legacy" rel="noopener">
             <img src="./assets/Jmod_LegacyTP.png" alt="AI for seniors">
           </a>
-
+          <!-- Bottom Right → Media -->
           <a class="imgnode" style="--angle:45deg" href="https://www.jordanmoddes.com/jmodco/Media" rel="noopener">
             <img src="./assets/Jmod_MediaTP.png" alt="Social auto-posting">
           </a>
         </div>
       </div>
 
-      <!-- MOBILE GRID (still swaps TP/non-TP; short captions only) -->
+      <!-- MOBILE GRID (swaps TP/non-TP; short captions only) -->
       <div class="grid8" aria-label="Jmod Co. divisions list">
+        <!-- Resume -->
         <a class="card" href="https://www.jordanmoddes.com">
           <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Resume">
           <div class="caption">Resume</div>
         </a>
+        <!-- Labs -->
         <a class="card" href="./Labs">
           <img data-img-dark="./assets/Jmod_LabsTP.png" data-img-light="./assets/Jmod_Labs.png" alt="R&D engine">
           <div class="caption">R&D engine</div>
         </a>
+        <!-- Systems -->
         <a class="card" href="./Systems">
           <img data-img-dark="./assets/Jmod_SystemsTP.png" data-img-light="./assets/Jmod_Systems.png" alt="Automation & control">
           <div class="caption">Automation & control</div>
         </a>
+        <!-- Battlefield -->
         <a class="card" href="https://www.jordanmoddes.com/battlefield">
           <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Coming Soon">
           <div class="caption">Coming Soon</div>
         </a>
+        <!-- Personal Dashboard -->
         <a class="card" href="https://www.jordanmoddes.com/dashboard">
           <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Personal Dashboard">
           <div class="caption">Personal Dashboard</div>
         </a>
+        <!-- Insights -->
         <a class="card" href="./Insights">
           <img data-img-dark="./assets/Jmod_InsightsTP.png" data-img-light="./assets/Jmod_Insights.png" alt="SMB AI assist">
           <div class="caption">SMB AI assist</div>
         </a>
+        <!-- Media -->
         <a class="card" href="./Media">
           <img data-img-dark="./assets/Jmod_MediaTP.png" data-img-light="./assets/Jmod_Media.png" alt="Social auto-posting">
           <div class="caption">Social auto-posting</div>
         </a>
+        <!-- Legacy -->
         <a class="card" href="./Legacy">
           <img data-img-dark="./assets/Jmod_LegacyTP.png" data-img-light="./assets/Jmod_Legacy.png" alt="AI for seniors">
           <div class="caption">AI for seniors</div>
@@ -413,6 +432,7 @@
         <p>We’re building a shared AI core that small teams can actually use—private by default, affordable to start, and powerful as you grow. The strategy is simple: reduce steps, reuse the core, and compound wins across every brand. That’s how we ship faster without adding complexity.</p>
       </div>
 
+      <!-- SUBSCRIBE (placeholder; front-end only) -->
       <form class="subscribe" onsubmit="event.preventDefault();handleSubscribe();">
         <h2>Subscribe for rollouts &amp; early access</h2>
         <div class="field">
@@ -432,12 +452,10 @@
     <div class="container" style="display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center">
       <div style="font-size:.9rem;color:var(--muted)">Backed and supported by <strong>GPT-5 Engine</strong></div>
       <div class="footnav" style="margin:4px 0 8px">
+        <span>Jmod Media</span>
         <span>Jmod Labs</span>
         <span>Jmod Systems</span>
-        <span>Jmod Media</span>
         <span>Jmod Insights</span>
-        <span>Jmod Legacy</span>
-  <!-- add in future business divisions -->
       </div>
       <div style="font-size:.9rem;color:var(--muted)">
         © <span id="year"></span> Jmod Co. · All rights reserved.
@@ -484,7 +502,7 @@
       if (hero){
         hero.src = isLight ? "./assets/ParentLogoCrop.png" : "./assets/ParentLogo_TPCrop.png";
       }
-      // Any <img> with data-img-dark/light (MOBILE GRID only here)
+      // Any <img> with data-img-dark/light (MOBILE GRID only)
       document.querySelectorAll('img[data-img-dark][data-img-light]').forEach(img=>{
         img.src = isLight ? img.getAttribute('data-img-light') : img.getAttribute('data-img-dark');
       });
@@ -494,7 +512,7 @@
     document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
     document.getElementById('themeToggleM')?.addEventListener('click', toggleTheme);
 
-    // Mobile menu with keyboard support
+    // Mobile menu with keyboard support + scroll lock
     const menuBtn = document.getElementById('menuBtn');
     const panel = document.getElementById('mobilePanel');
     let lastFocus = null;
@@ -502,6 +520,7 @@
     function openMenu(){
       lastFocus = document.activeElement;
       panel.classList.add('open');
+      document.body.classList.add('menu-open');  // lock scroll
       menuBtn.setAttribute('aria-expanded','true');
       const first = panel.querySelector('a,button'); if (first) first.focus();
       document.addEventListener('keydown', onKeydown);
@@ -509,6 +528,7 @@
     }
     function closeMenu(){
       panel.classList.remove('open');
+      document.body.classList.remove('menu-open'); // unlock scroll
       menuBtn.setAttribute('aria-expanded','false');
       document.removeEventListener('keydown', onKeydown);
       document.removeEventListener('click', onOutside, { capture:true });
@@ -519,7 +539,7 @@
     menuBtn?.addEventListener('click', ()=>{ panel.classList.contains('open') ? closeMenu() : openMenu(); });
     panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
 
-    // Smooth scroll with offset
+    // Smooth scroll with offset for fixed header
     function smoothScrollTo(targetId){
       const el = document.querySelector(targetId);
       if (!el) return;
@@ -536,7 +556,7 @@
       });
     });
 
-    // Subscribe placeholder
+    // Subscribe placeholder (front-end only)
     function handleSubscribe(){
       const email = document.getElementById('subEmail');
       const btn = document.getElementById('subBtn');
