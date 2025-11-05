@@ -491,13 +491,13 @@ async function loadSun(){
   $("#sunLine").textContent = `Sunrise ${sunrise} · Solar Noon ${noon || "—"} · Sunset ${sunset}`;
 
   // --- HERO geometry (bigger canvas, more travel, built-in margins) ---
-  const W = 350, H = 255; // larger virtual viewBox
-  const xL = 16, xR = 334; // closer to edges (still safe)
-  const yBase = 180, yPeak = 50; // taller arc
-  const tick = 9; // tick half-height
-  const stroke = 1.4; // line thickness
-  const font = 6; // label size
-  const dotR = 3.2; // sun radius
+  const W = 350, H = 255; // sizebox for the arch to show
+  const xL = 16, xR = 334; // the width of line for arch
+  const yBase = 180, yPeak = 50; // the hight of the arch
+  const tick = 14; // tick half-height
+  const stroke = 5; // line thickness
+  const font = 10; // label size
+  const dotR = 9; // sun radius
   const noonLabelY = yPeak + 3; // below apex to avoid clipping
   const arc = `M ${xL},${yBase} Q ${(xL+xR)/2},${yPeak} ${xR},${yBase}`;
 
