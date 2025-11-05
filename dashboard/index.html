@@ -473,87 +473,90 @@
     }
   }
 
-    /* ========= SUN (Visualization) — ANTI-CLIP TWEAK ========= */
-  async function loadSun(){
-    $("#sunDate").textContent = todayMMDDYYYY();
-    let s=null;
-    try{
-      const g = await geo(WEATHER_ZIPS[0]); // use first ZIP for location
-      const u = new URL("https://api.sunrisesunset.io/json");
-      u.search = new URLSearchParams({ lat:g.lat, lng:g.lon, timezone:"auto" }).toString();
-      const r = await fetch(u); const j = await r.json();
-      s = j?.results;
-    }catch{}
-    if (!(s?.sunrise && s?.sunset)){ $("#sunLine").textContent="Unavailable"; return; }
-  
-    const sunrise = s.sunrise; 
-    const sunset = s.sunset; 
-    const noon = s.solar_noon || "";
-  
-    $("#sunLine").textContent = `Sunrise ${sunrise} · Solar Noon ${noon || "—"} · Sunset ${sunset}`;
-  
-    // Add internal margin + taller box to avoid clipping
-    const W = 100, H = 60; // taller viewBox for top label
-    const M = 6; // inner margin
-    const xL = 10 + M, xR = 90 - M; // pull in from edges a bit
-    const yBase = 38; // drop baseline slightly
-    const yPeak = 12; // leave headroom above arc
-    const arc = `M ${xL},${yBase} Q ${(xL+xR)/2},${yPeak} ${xR},${yBase}`;
-  
-    // Robust local-time parse for strings like "6:49:54 AM"
-    const todayISO = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
-    const toLocalDate = (tStr)=>{
-      const d = new Date(`${todayISO} ${tStr}`);
-      if (!isNaN(d)) return d;
-      const m = tStr.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
-      if(!m){ return new Date(); }
-      let hh = parseInt(m[1],10); const mm=parseInt(m[2],10); const ss=parseInt(m[3]||"0",10);
-      const ap = m[4].toUpperCase();
-      if(ap==="PM" && hh!==12) hh+=12; if(ap==="AM" && hh===12) hh=0;
-      const base = new Date();
-      base.setHours(hh,mm,ss,0);
-      return base;
-    };
-  
-    const sr = toLocalDate(sunrise);
-    const ss = toLocalDate(sunset);
-    const sn = noon ? toLocalDate(noon) : new Date((sr.getTime()+ss.getTime())/2);
-    const now = new Date();
-  
-    const daySpan = ss - sr;
-    const pRaw = (now - sr) / daySpan;
-    const p = Math.max(0, Math.min(1, pRaw));
-    const r = Math.max(0, Math.min(1, (sn - sr) / daySpan)) || 0.5;
-    const u = (p <= r) ? (p / (r || 1)) * 0.5 : 0.5 + ((p - r) / (1 - r || 1)) * 0.5;
-  
-    const t = 2*u - 1; // -1..1
-    const xArc = xL + (xR - xL) * u;
-    const yArc = yBase - (yBase - yPeak) * Math.sqrt(Math.max(0, 1 - t*t));
-    const isDay = now >= sr && now <= ss;
-  
-    // place noon label a little lower so it never clips
-    const noonLabelY = yPeak + 2; // below arc apex for headroom
-  
-    $("#sunViz").innerHTML = `
-      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:140px;overflow:visible">
-        <!-- day baseline -->
-        <line x1="${xL}" y1="${yBase}" x2="${xR}" y2="${yBase}" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>
-        <!-- ticks -->
-        <line x1="${xL}" y1="${yBase-6}" x2="${xL}" y2="${yBase+6}" stroke="rgba(255,255,255,.45)" stroke-width="1.2"/>
-        <line x1="${xR}" y1="${yBase-6}" x2="${xR}" y2="${yBase+6}" stroke="rgba(255,255,255,.45)" stroke-width="1.2"/>
-        <!-- arc -->
-        <path d="${arc}" fill="none" stroke="rgba(255,209,102,.8)" stroke-width="1.2"/>
-        <!-- labels -->
-        <text x="${xL}" y="${yBase+12}" font-size="4" fill="#cbd5e1" text-anchor="start">${sunrise}</text>
-        <text x="${xR}" y="${yBase+12}" font-size="4" fill="#cbd5e1" text-anchor="end">${sunset}</text>
-        ${noon ? `<text x="${(xL+xR)/2}" y="${noonLabelY}" font-size="4" fill="#cbd5e1" text-anchor="middle">Noon ${noon}</text>` : ""}
-        <!-- marker -->
-        ${isDay
-          ? `<circle cx="${xArc}" cy="${yArc}" r="2.6" fill="#ffd166"><title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (day)</title></circle>`
-          : `<circle cx="${(now < sr) ? xL - 4 : xR + 4}" cy="${yBase+6}" r="2.6" fill="none" stroke="#ffd166" stroke-width="1.2"><title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (night)</title></circle>`
-        }
-      </svg>`;
-  }
+/* ========= SUN (Visualization) — HERO SIZE ========= */
+async function loadSun(){
+  $("#sunDate").textContent = todayMMDDYYYY();
+
+  let s = null;
+  try{
+    const g = await geo(WEATHER_ZIPS[0]); // first ZIP for location
+    const u = new URL("https://api.sunrisesunset.io/json");
+    u.search = new URLSearchParams({ lat:g.lat, lng:g.lon, timezone:"auto" }).toString();
+    const r = await fetch(u); const j = await r.json();
+    s = j?.results;
+  }catch{}
+  if (!(s?.sunrise && s?.sunset)){ $("#sunLine").textContent="Unavailable"; return; }
+
+  const sunrise = s.sunrise, sunset = s.sunset, noon = s.solar_noon || "";
+  $("#sunLine").textContent = `Sunrise ${sunrise} · Solar Noon ${noon || "—"} · Sunset ${sunset}`;
+
+  // --- HERO geometry (bigger canvas, more travel, built-in margins) ---
+  const W = 350, H = 255; // larger virtual viewBox
+  const xL = 5, xR = 95; // closer to edges (still safe)
+  const yBase = 55, yPeak = 15; // taller arc
+  const tick = 9; // tick half-height
+  const stroke = 1.4; // line thickness
+  const font = 6; // label size
+  const dotR = 3.2; // sun radius
+  const noonLabelY = yPeak + 3; // below apex to avoid clipping
+  const arc = `M ${xL},${yBase} Q ${(xL+xR)/2},${yPeak} ${xR},${yBase}`;
+
+  // --- robust local-time parsing for "6:49:54 AM" strings ---
+  const todayISO = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
+  const toLocalDate = (tStr)=>{
+    const d = new Date(`${todayISO} ${tStr}`);
+    if (!isNaN(d)) return d;
+    const m = tStr.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
+    if(!m){ return new Date(); }
+    let hh = parseInt(m[1],10), mm = parseInt(m[2],10), ss = parseInt(m[3]||"0",10);
+    const ap = m[4].toUpperCase();
+    if(ap==="PM" && hh!==12) hh+=12; if(ap==="AM" && hh===12) hh=0;
+    const base = new Date(); base.setHours(hh,mm,ss,0); return base;
+  };
+
+  const sr = toLocalDate(sunrise);
+  const ss = toLocalDate(sunset);
+  const sn = noon ? toLocalDate(noon) : new Date((sr.getTime()+ss.getTime())/2);
+  const now = new Date();
+
+  // Align arc apex with real solar noon
+  const span = ss - sr;
+  const pRaw = (now - sr) / span;
+  const p = Math.max(0, Math.min(1, pRaw));
+  const r = Math.max(0, Math.min(1, (sn - sr) / span)) || 0.5;
+  const u = (p <= r) ? (p / (r || 1)) * 0.5 : 0.5 + ((p - r) / (1 - r || 1)) * 0.5;
+
+  const t = 2*u - 1;
+  const xArc = xL + (xR - xL) * u;
+  const yArc = yBase - (yBase - yPeak) * Math.sqrt(Math.max(0, 1 - t*t));
+  const isDay = now >= sr && now <= ss;
+
+  $("#sunViz").innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"
+         style="width:100%;height:260px;overflow:visible">
+      <!-- baseline -->
+      <line x1="${xL}" y1="${yBase}" x2="${xR}" y2="${yBase}"
+            stroke="rgba(255,255,255,.35)" stroke-width="${stroke}"/>
+      <!-- ticks -->
+      <line x1="${xL}" y1="${yBase - tick}" x2="${xL}" y2="${yBase + tick}"
+            stroke="rgba(255,255,255,.45)" stroke-width="${stroke}"/>
+      <line x1="${xR}" y1="${yBase - tick}" x2="${xR}" y2="${yBase + tick}"
+            stroke="rgba(255,255,255,.45)" stroke-width="${stroke}"/>
+      <!-- arc -->
+      <path d="${arc}" fill="none" stroke="rgba(255,209,102,.85)" stroke-width="${stroke}"/>
+      <!-- labels -->
+      <text x="${xL}" y="${yBase+12}" font-size="${font}" fill="#cbd5e1" text-anchor="start">${sunrise}</text>
+      <text x="${xR}" y="${yBase+12}" font-size="${font}" fill="#cbd5e1" text-anchor="end">${sunset}</text>
+      ${noon ? `<text x="${(xL+xR)/2}" y="${noonLabelY}" font-size="${font}" fill="#cbd5e1" text-anchor="middle">Noon ${noon}</text>` : ""}
+      <!-- marker -->
+      ${isDay
+        ? `<circle cx="${xArc}" cy="${yArc}" r="${dotR}" fill="#ffd166"><title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (day)</title></circle>`
+        : `<circle cx="${(now < sr) ? xL - 4 : xR + 4}" cy="${yBase+6}" r="${dotR}" fill="none" stroke="#ffd166" stroke-width="${stroke}">
+             <title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (night)</title>
+           </circle>`
+      }
+    </svg>`;
+}
 
   /* ========= VOTD ========= */
   async function loadVOTD(){
