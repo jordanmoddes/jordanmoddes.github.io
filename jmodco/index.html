@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" id="top">
+<html lang="en" id="top" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jmod Co. — Preview</title>
-  <meta name="description" content="Jmod Co. builds practical AI systems that simplify daily operations for real-world businesses." />
+  <meta name="description" content="Jmod Co. builds AI-powered, practical systems that simplify daily operations for trades, retailers, and professionals." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- =========================
@@ -29,6 +29,15 @@
       --hub-offset-x: 0px;   /* tiny horizontal nudge */
     }
 
+    /* Light theme variables (applied when [data-theme="light"]) */
+    html[data-theme="light"]{
+      --text:#0b0f14;
+      --muted:#4e5b6e;
+      --brand:#335eea;
+      --card: rgba(0,0,0,.04);
+      --card-border: rgba(0,0,0,.10);
+    }
+
     *{ box-sizing:border-box }
     html,body{ height:100% }
     html{ scroll-behavior:smooth }
@@ -38,7 +47,7 @@
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
       padding-top: var(--header-h);
 
-      /* Seamless background */
+      /* Seamless background (dark default) */
       background:
         radial-gradient(1000px 600px at 20% 15%, rgba(26,79,132,.35) 0%, rgba(26,79,132,0) 60%),
         radial-gradient(900px 550px at 80% 75%, rgba(16,105,133,.30) 0%, rgba(16,105,133,0) 60%),
@@ -47,6 +56,15 @@
       background-attachment: fixed,fixed,fixed,fixed;
       min-height:100vh;
     }
+    /* Lighter backdrop for light theme */
+    html[data-theme="light"] body{
+      background:
+        radial-gradient(900px 540px at 20% 15%, rgba(120,160,230,.25) 0%, rgba(120,160,230,0) 60%),
+        radial-gradient(800px 520px at 80% 75%, rgba(80,140,220,.20) 0%, rgba(80,140,220,0) 60%),
+        #f5f7fb;
+      background-attachment: fixed,fixed,fixed;
+    }
+
     a{ color:var(--text); text-decoration:none }
 
     .container{ max-width:1100px; margin:0 auto; padding:16px 24px }
@@ -55,7 +73,7 @@
     h1,h2{ margin:0 0 12px }
     section,header,footer{ scroll-margin-top: calc(var(--header-h) + 16px) }
 
-    /* ===== Header ===== */
+    /* ===== Header (child-site style) ===== */
     .header{
       position:fixed; left:0; right:0; top:0; z-index:1000;
       height:var(--header-h);
@@ -63,22 +81,55 @@
       backdrop-filter:saturate(120%) blur(10px);
       border-bottom:1px solid rgba(255,255,255,.06);
     }
+    html[data-theme="light"] .header{
+      background:rgba(250,252,255,.7);
+      border-bottom:1px solid rgba(0,0,0,.08);
+    }
     .header-inner{
       height:100%;
-      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
     }
-    .brand .wordmark{ font-weight:500; font-size:1.25rem; letter-spacing:.2px }
+    .brand .wordmark{ font-weight:700; font-size:1.1rem; letter-spacing:.2px }
     .brand a{ opacity:.95 } .brand a:hover{ opacity:1 }
-    .nav{ display:flex; align-items:center; gap:10px; padding:8px 0; flex-wrap:nowrap }
-    .nav .item{
+
+    /* Desktop nav */
+    .nav{ display:flex; align-items:center; gap:10px; flex-wrap:nowrap }
+    .nav a.item{
       display:inline-block; padding:8px 14px;
-      border-radius:999px; border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.03);
+      border-radius:999px; border:1px solid var(--card-border);
+      background:var(--card);
       font-weight:600; letter-spacing:.2px; opacity:.95; transition:.15s ease; white-space:nowrap
     }
-    .nav .item:hover{ opacity:1; background:rgba(255,255,255,.08) }
-    @media (max-width:560px){ .nav{gap:6px} .nav .item{padding:6px 10px; font-size:.9rem} }
-    @media (max-width:420px){ .nav .item{padding:5px 8px; font-size:.85rem} }
+    .nav a.item:hover{ opacity:1; background:rgba(255,255,255,.08) }
+    html[data-theme="light"] .nav a.item:hover{ background:rgba(0,0,0,.06) }
+
+    /* Toggle button */
+    .toggle{
+      margin-left:6px;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px; padding:8px 12px; border-radius:999px;
+      border:1px solid var(--card-border); background:var(--card);
+      font-weight:700; cursor:pointer;
+    }
+
+    /* Mobile menu */
+    .hamburger{
+      display:none; border:1px solid var(--card-border); background:var(--card);
+      border-radius:12px; padding:10px 12px; font-weight:700;
+    }
+    .mobile-panel{
+      position:fixed; top:var(--header-h); left:0; right:0;
+      background:inherit; backdrop-filter:inherit; border-bottom:1px solid var(--card-border);
+      display:none; padding:12px 16px;
+    }
+    .mobile-panel.open{ display:block }
+    .mobile-links{ display:flex; flex-direction:column; gap:10px }
+    .mobile-links a{ padding:12px 14px; border-radius:12px; border:1px solid var(--card-border); background:var(--card); font-weight:600 }
+
+    @media (max-width:720px){
+      .nav{ display:none }
+      .hamburger{ display:inline-flex }
+    }
 
     /* ===== Hero ===== */
     .hero-wrap{ max-width:1100px; margin:0 auto; padding:0 24px }
@@ -104,6 +155,7 @@
     /* ===== Divisions (tight spacing) ===== */
     #divisions.section{ padding: 12px 0 }       /* tighten section */
     #divisions h2{ margin-bottom: 8px }
+    .divisions-sub{ color:var(--muted); margin:4px 0 10px; text-align:center }
 
     /* Radial map */
     .divisions-wrap{
@@ -169,46 +221,64 @@
       .grid8{ display:grid !important; }
     }
 
-    /* Founder + Contact (tight spacing above) */
-    #contact.section{ padding: 12px 0 20px }
+    /* Founder (Vision) + Subscribe (tight spacing above) */
+    #vision.section{ padding: 12px 0 20px }
 
     .two-col{
       display:grid; grid-template-columns:1fr; gap:24px; max-width:1100px; margin:12px auto 40px;
     }
     @media (min-width:850px){ .two-col{ grid-template-columns:1fr 1fr } }
-    .founder,.contact{
+    .founder,.contact,.subscribe{
       background:var(--card); border:1px solid var(--card-border);
       border-radius:var(--radius); padding:18px; overflow:hidden;
     }
-    .contact .field{ display:flex; flex-direction:column; margin-bottom:12px }
-    .contact label{ font-size:.9rem; color:var(--muted); margin-bottom:6px }
-    .contact input,.contact textarea{
+    .subscribe .field{ display:flex; flex-direction:column; margin-bottom:12px }
+    .subscribe label{ font-size:.9rem; color:var(--muted); margin-bottom:6px }
+    .subscribe input{
       width:100%; background:#111825; border:1px solid rgba(255,255,255,.09); border-radius:12px;
       padding:12px 14px; color:var(--text); font-family:inherit; box-shadow:inset 0 1px 0 rgba(255,255,255,.03)
     }
-    .contact textarea{ resize:vertical }
-    .contact .actions{ display:flex; justify-content:flex-end }
-    .contact button{ background:var(--brand); color:#0b0f14; border:none; border-radius:12px; padding:12px 18px; font-weight:700 }
-    .contact input:focus,.contact textarea:focus{ outline:2px solid var(--brand); box-shadow:none }
+    html[data-theme="light"] .subscribe input{ background:#ffffff }
+
+    .subscribe .actions{ display:flex; justify-content:flex-end; gap:8px }
+    .subscribe button{ background:var(--brand); color:#0b0f14; border:none; border-radius:12px; padding:12px 18px; font-weight:700; cursor:pointer }
+    .subscribe small{ color:var(--muted) }
 
     /* Footer */
     footer{ border-top:1px solid rgba(255,255,255,.08); padding:18px 0; margin-top:30px }
+    html[data-theme="light"] footer{ border-top:1px solid rgba(0,0,0,.08) }
     footer .footnav{ display:flex; gap:28px; justify-content:center; color:var(--muted) }
   </style>
 </head>
 <body>
 
   <!-- Header -->
-  <header class="header">
+  <header class="header" role="banner">
     <div class="container header-inner">
+      <!-- Left: Brand goes to top -->
       <div class="brand" aria-label="Jmod Co.">
-        <a class="wordmark" href="https://www.jordanmoddes.com">Jmod Co.</a>
+        <a class="wordmark" href="#top">Jmod Co.</a>
       </div>
+
+      <!-- Right: Desktop nav -->
       <nav class="nav" aria-label="Primary">
-        <a class="item" href="#top">Home</a>
-        <a class="item" href="#divisions">Solutions</a>
         <a class="item" href="#about">About</a>
-        <a class="item" href="#contact">Contact</a>
+        <a class="item" href="#divisions">Divisions</a>
+        <a class="item" href="#vision">Vision</a>
+        <button class="toggle" id="themeToggle" aria-pressed="false" aria-label="Toggle theme">Toggle</button>
+      </nav>
+
+      <!-- Mobile hamburger -->
+      <button class="hamburger" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel" aria-label="Open menu">Menu</button>
+    </div>
+
+    <!-- Mobile panel -->
+    <div class="mobile-panel" id="mobilePanel">
+      <nav class="mobile-links">
+        <a href="#about">About</a>
+        <a href="#divisions">Divisions</a>
+        <a href="#vision">Vision</a>
+        <button class="toggle" id="themeToggleM" aria-pressed="false" aria-label="Toggle theme">Toggle</button>
       </nav>
     </div>
   </header>
@@ -218,14 +288,14 @@
     <div class="hero-wrap">
       <div class="hero-grid">
         <div class="hero-logo">
-          <img src="./assets/ParentLogo_TPCrop.png?v=1" alt="Jmod Co. Logo">
+          <img id="hero-logo" src="./assets/ParentLogo_TPCrop.png?v=1" alt="Jmod Co. Logo">
         </div>
         <div class="hero-text">
-          <h1>AI-Driven Efficiency for Real-World Businesses</h1>
+          <h1>AI at the core. Systems that run themselves.</h1>
         </div>
       </div>
-      <p class="hero-under">Jmod Co. builds practical systems that simplify daily operations for trades, retailers, and professionals.</p>
-      <a class="cta" href="#divisions" role="button" aria-label="Explore Solutions">Explore Solutions</a>
+      <p class="hero-under">Jmod Co. builds <strong>AI-powered</strong>, practical systems that simplify daily operations for trades, retailers, and professionals.</p>
+      <a class="cta" href="#divisions" role="button" aria-label="Explore Divisions">Explore Divisions</a>
     </div>
   </section>
 
@@ -233,17 +303,17 @@
   <section class="section" id="about">
     <div class="container about">
       <h2>About Jmod Co.</h2>
-      <p>Jmod Co. is a diversified innovation group committed to empowering small and medium-sized businesses with the same intelligence, precision, and operational structure once reserved for global enterprises.</p>
-      <p>We believe every business—regardless of scale—deserves access to Fortune 100-level capabilities: powerful AI, streamlined operations, and strategic insight that drives measurable results.</p>
-      <p>What sets us apart is our ability to move beyond traditional consulting. Jmod Co. not only advises but builds—creating customized, practical systems that blend strategy, automation, and human insight.</p>
-      <p>Through our divisions we deliver end-to-end solutions: from automated content and intelligent tools to operational redesign and compliance-safe business frameworks.</p>
+      <p>Jmod Co. is the parent layer and the <strong>MODDES™ Core</strong>—our shared AI engine that powers everything we build. We design once, then reuse across brands so teams get consistent data, faster shipping, and less operational drag.</p>
+      <p><strong>Labs</strong> explores and prototypes what’s next for Jmod Co. <strong>Systems</strong> is the operational brain—integrations, automation, and control on the MODDES™ Core. <strong>Media</strong> (app + web) streamlines social posting; upgrade for advanced scheduling, branding, and team features. <strong>Insights</strong> plugs MODDES™ into SMB workflows to remove admin busywork and lift throughput. <strong>Legacy</strong> (nonprofit goal) helps older adults engage with AI—confidence, purpose, and practical digital skills.</p>
+      <p><strong>Our mission:</strong> make advanced tooling feel simple—so small teams can build like giants.</p>
     </div>
   </section>
 
-  <!-- Our Divisions -->
+  <!-- Divisions -->
   <section class="section" id="divisions">
     <div class="container divisions-wrap">
       <h2 class="center">Our Divisions</h2>
+      <div class="divisions-sub">Current focus areas — one base core. Pick a badge to explore; everything runs on the MODDES™ Core.</div>
 
       <div class="radial" aria-label="Jmod Co. divisions radial map">
         <!-- Hub -->
@@ -299,34 +369,24 @@
     </div>
   </section>
 
-  <!-- Founder + Contact -->
-  <section class="section" id="contact">
+  <!-- Vision + Subscribe (replaces Contact) -->
+  <section class="section" id="vision">
     <div class="container two-col">
       <div class="founder">
-        <h2>Founder Note / Story</h2>
-        <p>For over a decade, I’ve worked in high-performance operations and logistics—nearly ten of those years with Amazon—where I mastered what it truly takes to run a machine as complex as a global supply network. I lived and breathed enterprise-grade discipline: clear metrics, precise labor planning, and scalable systems spanning 90+ sites. I saw firsthand the power of process—the ability to turn a six-month backlog into a six-week win or transform a strategic plan into a $3.6M entitlement.</p>
-        <p>Yet the deeper I went, the more I noticed a gap. The same tools, insights, and automations that drove multi-million-dollar results were locked behind complexity, cost, or corporate scale—out of reach for the small and medium businesses that form the backbone of our economy.</p>
-        <p>That’s why I founded <strong>Jmod Co.</strong> My mission isn’t just to improve efficiency—it’s to make enterprise-grade systems accessible to every business. Jmod Co. builds the operational engine that gives every company a strategic advantage. We take the same AI power and operational rigor I honed over a decade and translate them into remarkably simple, intuitive platforms.</p>
-        <p><em>The goal is simple: to help every SMB harness Fortune 100-level capabilities, achieve peak operational efficiency, and compound wins that truly move the needle.</em></p>
+        <h2>Vision</h2>
+        <p>We’re building a shared AI core that small teams can actually use—private by default, affordable to start, and powerful as you grow. The strategy is simple: reduce steps, reuse the core, and compound wins across every brand. That’s how we ship faster without adding complexity.</p>
       </div>
 
-      <form class="contact" onsubmit="event.preventDefault()">
-        <h2>Contact / Inquiry</h2>
+      <form class="subscribe" onsubmit="event.preventDefault();handleSubscribe();">
+        <h2>Subscribe for rollouts &amp; early access</h2>
         <div class="field">
-          <label for="name">Name</label>
-          <input id="name" type="text" placeholder="Your name" />
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" type="email" placeholder="you@example.com" />
-        </div>
-        <div class="field">
-          <label for="msg">Message</label>
-          <textarea id="msg" rows="5" placeholder="How can we help?"></textarea>
+          <label for="subEmail">Email</label>
+          <input id="subEmail" type="email" placeholder="you@example.com" aria-describedby="subHelp" required />
         </div>
         <div class="actions">
-          <button type="submit">Submit</button>
+          <button type="submit" id="subBtn">Subscribe</button>
         </div>
+        <small id="subHelp">By subscribing, you agree to receive occasional emails from Jmod Co. You can unsubscribe anytime.</small>
       </form>
     </div>
   </section>
@@ -348,6 +408,116 @@
   </footer>
 
   <!-- JS -->
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---- Theme: force dark on load, allow manual toggle (no persistence) ----
+    (function initTheme(){
+      const html = document.documentElement;
+      html.setAttribute('data-theme','dark'); // always start dark
+      swapHeroImage(); // ensure correct hero on initial paint
+    })();
+
+    function swapHeroImage(){
+      const html = document.documentElement;
+      const isLight = html.getAttribute('data-theme') === 'light';
+      const img = document.getElementById('hero-logo');
+      if (!img) return;
+      img.src = isLight
+        ? "./assets/ParentLogoCrop.png"
+        : "./assets/ParentLogo_TPCrop.png";
+    }
+
+    function toggleTheme(){
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      const pressed = next === 'light';
+      // Update aria-pressed on both toggles if present
+      const t1 = document.getElementById('themeToggle');
+      const t2 = document.getElementById('themeToggleM');
+      if (t1) t1.setAttribute('aria-pressed', String(pressed));
+      if (t2) t2.setAttribute('aria-pressed', String(pressed));
+      swapHeroImage();
+    }
+
+    document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+    document.getElementById('themeToggleM')?.addEventListener('click', toggleTheme);
+
+    // ---- Mobile menu with keyboard support ----
+    const menuBtn = document.getElementById('menuBtn');
+    const panel = document.getElementById('mobilePanel');
+    let lastFocus = null;
+
+    function openMenu(){
+      lastFocus = document.activeElement;
+      panel.classList.add('open');
+      menuBtn.setAttribute('aria-expanded','true');
+      // focus first link
+      const first = panel.querySelector('a,button');
+      if (first) first.focus();
+      document.addEventListener('keydown', onKeydown);
+      // close on outside click
+      document.addEventListener('click', onOutside, { capture:true });
+    }
+    function closeMenu(){
+      panel.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded','false');
+      document.removeEventListener('keydown', onKeydown);
+      document.removeEventListener('click', onOutside, { capture:true });
+      if (lastFocus) menuBtn.focus();
+    }
+    function onKeydown(e){
+      if (e.key === 'Escape') closeMenu();
+    }
+    function onOutside(e){
+      if (!panel.contains(e.target) && e.target !== menuBtn) closeMenu();
+    }
+    menuBtn?.addEventListener('click', ()=>{
+      const open = panel.classList.contains('open');
+      open ? closeMenu() : openMenu();
+    });
+    // close menu on link click
+    panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+
+    // ---- Smooth scroll with offset for fixed header ----
+    function smoothScrollTo(targetId){
+      const el = document.querySelector(targetId);
+      if (!el) return;
+      const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 72;
+      const y = el.getBoundingClientRect().top + window.scrollY - (headerH + 16);
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+    // bind desktop and mobile anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(link=>{
+      link.addEventListener('click', (e)=>{
+        const id = link.getAttribute('href');
+        if (!id || id === '#top') return; // allow top to behave normally
+        e.preventDefault();
+        smoothScrollTo(id);
+      });
+    });
+
+    // ---- Subscribe placeholder (front-end only) ----
+    function handleSubscribe(){
+      const email = document.getElementById('subEmail');
+      const btn = document.getElementById('subBtn');
+      if (!email || !btn) return;
+
+      const val = (email.value || '').trim();
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      if (!ok){
+        email.focus();
+        email.setAttribute('aria-invalid','true');
+        return;
+      }
+      email.setAttribute('aria-invalid','false');
+      btn.disabled = true;
+      btn.textContent = 'Subscribed!';
+      setTimeout(()=>{ btn.disabled=false; btn.textContent='Subscribe'; email.value=''; }, 2200);
+    }
+    window.handleSubscribe = handleSubscribe;
+  </script>
 </body>
 </html>
