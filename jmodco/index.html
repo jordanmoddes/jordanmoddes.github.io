@@ -15,21 +15,21 @@
       --radius:18px;
       --card: rgba(255,255,255,.04);
       --card-border: rgba(255,255,255,.08);
-      --header-h: 72px;
+      --header-h: 80px;
 
       /* Radial sizing */
-      --orbit: 300px;        /* closer/farther from center */
-      --node-size: 260px;    /* satellite logos */
-      --hub-size: 800px;     /* center logo */
-      --hub-offset-y: -8px;  /* tiny vertical nudge */
-      --hub-offset-x: 0px;   /* tiny horizontal nudge */
+      --orbit: 300px;
+      --node-size: 260px;
+      --hub-size: 800px;
+      --hub-offset-y: -8px;
+      --hub-offset-x: 0px;
     }
-    /* Light theme variables (keep background same; only colors change) */
+    /* Light theme colors + LIGHT background */
     html[data-theme="light"]{
       --text:#0b0f14;
       --muted:#4e5b6e;
       --brand:#335eea;
-      --card: rgba(0,0,0,.04);
+      --card: rgba(0,0,0,.05);
       --card-border: rgba(0,0,0,.10);
     }
 
@@ -42,7 +42,7 @@
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
       padding-top: var(--header-h);
 
-      /* Keep your existing DARK background for BOTH themes (as requested) */
+      /* DARK background */
       background:
         radial-gradient(1000px 600px at 20% 15%, rgba(26,79,132,.35) 0%, rgba(26,79,132,0) 60%),
         radial-gradient(900px 550px at 80% 75%, rgba(16,105,133,.30) 0%, rgba(16,105,133,0) 60%),
@@ -50,6 +50,14 @@
         #0a0f18;
       background-attachment: fixed,fixed,fixed,fixed;
       min-height:100vh;
+    }
+    /* LIGHT background */
+    html[data-theme="light"] body{
+      background:
+        radial-gradient(900px 540px at 20% 15%, rgba(120,160,230,.25) 0%, rgba(120,160,230,0) 60%),
+        radial-gradient(800px 520px at 80% 75%, rgba(80,140,220,.20) 0%, rgba(80,140,220,0) 60%),
+        #f6f8fc;
+      background-attachment: fixed,fixed,fixed;
     }
 
     a{ color:var(--text); text-decoration:none }
@@ -59,27 +67,33 @@
     h1,h2{ margin:0 0 12px }
     section,header,footer{ scroll-margin-top: calc(var(--header-h) + 16px) }
 
-    /* ===== Header (Insights-style) ===== */
+    /* ===== Header: pill/bubble like Insights ===== */
     .header{
       position:fixed; left:0; right:0; top:0; z-index:1000;
       height:var(--header-h);
-      background:rgba(11,15,20,.7);
-      backdrop-filter:saturate(120%) blur(10px);
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    html[data-theme="light"] .header{
-      background:rgba(250,252,255,.7);
-      border-bottom:1px solid rgba(0,0,0,.08);
+      background:transparent; /* no full-width bar */
     }
     .header-inner{
       height:100%;
-      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      display:flex; align-items:center; justify-content:center;
     }
-    .brand .wordmark{ font-weight:700; font-size:1.1rem; letter-spacing:.2px }
-    .brand a{ opacity:.95 } .brand a:hover{ opacity:1 }
+    .nav-bubble{
+      width:100%;
+      max-width:1100px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(11,15,20,.70);
+      backdrop-filter:saturate(120%) blur(10px);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    html[data-theme="light"] .nav-bubble{
+      background:rgba(255,255,255,.75);
+      border:1px solid rgba(0,0,0,.10);
+    }
 
-    /* Desktop nav */
-    .nav{ display:flex; align-items:center; gap:10px; flex-wrap:nowrap }
+    .brand .wordmark{ font-weight:800; letter-spacing:.2px }
+    .nav{ display:flex; align-items:center; gap:8px; flex-wrap:nowrap }
     .nav a.item{
       display:inline-block; padding:8px 14px;
       border-radius:999px; border:1px solid var(--card-border);
@@ -89,12 +103,13 @@
     .nav a.item:hover{ opacity:1; background:rgba(255,255,255,.08) }
     html[data-theme="light"] .nav a.item:hover{ background:rgba(0,0,0,.06) }
 
-    /* Toggle pill (Dark/Light with centered dot) */
+    /* Toggle pill (Dark/Light with dot) */
     .toggle{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 12px; border-radius:999px;
       border:1px solid var(--card-border); background:var(--card);
       font-weight:700; cursor:pointer; user-select:none;
+      color:var(--text); /* ensure label color follows theme */
     }
     .toggle-dot{
       width:12px; height:12px; border-radius:50%;
@@ -103,10 +118,10 @@
     }
     html[data-theme="light"] .toggle-dot{ background:#333; box-shadow:0 0 0 3px rgba(0,0,0,.10) }
 
-    /* Mobile menu */
+    /* Mobile menu (white text on dark, black on light) */
     .hamburger{
       display:none; border:1px solid var(--card-border); background:var(--card);
-      border-radius:12px; padding:10px 12px; font-weight:700;
+      border-radius:12px; padding:10px 12px; font-weight:700; color:var(--text);
     }
     .mobile-panel{
       position:fixed; top:var(--header-h); left:0; right:0;
@@ -117,7 +132,7 @@
     .mobile-links{ display:flex; flex-direction:column; gap:10px }
     .mobile-links a,
     .mobile-links button{
-      color:var(--text); /* white in dark, black in light */
+      color:var(--text);
       text-align:center;
       padding:12px 14px; border-radius:12px; border:1px solid var(--card-border); background:var(--card); font-weight:600
     }
@@ -147,13 +162,24 @@
     .about{ max-width:920px; margin:40px auto 8px; color:var(--muted) }
     .about h2{ color:var(--text) }
 
-    /* ===== Divisions (tight spacing) ===== */
+    /* ===== Divisions ===== */
     #divisions.section{ padding: 12px 0 }
     #divisions h2{ margin-bottom: 8px }
     .divisions-sub{ color:var(--muted); margin:4px 0 10px; text-align:center }
 
-    /* Radial map */
-    .divisions-wrap{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px }
+    /* --- Radial SURFACE: keep TP logos within a dark panel on LIGHT theme --- */
+    .radial-surface{
+      border-radius:24px; padding:16px;
+      /* dark panel in both themes looks fine; but required specifically for light */
+      background: rgba(10,15,24,.9);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    html[data-theme="dark"] .radial-surface{
+      /* keep subtle in dark so it blends */
+      background: rgba(10,15,24,.6);
+    }
+
+    .divisions-wrap{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px }
     .radial{
       position:relative;
       width:min(980px,95vw);
@@ -168,7 +194,6 @@
     }
     .radial .hub img{ width:100%; height:auto; display:block; background:transparent }
 
-    /* Satellites */
     .radial .imgnode{
       --angle:0deg;
       --_base: translate(calc(-50% + var(--hub-offset-x)), calc(-50% + var(--hub-offset-y))) rotate(var(--angle));
@@ -180,22 +205,19 @@
       filter: drop-shadow(0 2px 10px rgba(0,0,0,.25));
       transition: transform .3s ease; transform-style: preserve-3d;
     }
-    .radial .imgnode > img{
-      max-width:100%; max-height:100%; width:auto; height:auto; display:block; background:transparent;
-    }
+    .radial .imgnode > img{ max-width:100%; max-height:100%; display:block; background:transparent }
     .radial .imgnode:hover{
       transform: var(--_base) rotateY(360deg) translateX(calc(var(--orbit) + 28px)) rotate(calc(-1 * var(--angle)));
     }
 
-    /* Mobile grid fallback (shows short descriptions) */
+    /* Mobile grid fallback (short descriptions only) */
     .grid8{ display:none !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:14px auto 54px; width:100% }
     .grid8 .card{
       background:var(--card); border:1px solid var(--card-border); border-radius:16px;
       padding:16px; text-align:center; font-weight:600; display:flex; flex-direction:column; gap:8px
     }
     .grid8 .card img{ width:100%; height:auto; display:block; background:transparent; border-radius:12px }
-    .grid8 .caption{ font-size:.95rem; color:var(--text) } /* short label text */
-    .grid8 .muted{ font-size:.85rem; color:var(--muted) }  /* optional sublabel if ever needed */
+    .grid8 .caption{ font-size:.95rem; color:var(--text) }
 
     @media (min-width:860px){ .grid8{ grid-template-columns:repeat(4,minmax(0,1fr)) } }
     @media (max-width:820px){
@@ -203,7 +225,7 @@
       .grid8{ display:grid !important; }
     }
 
-    /* Vision + Subscribe */
+    /* ===== Vision + Subscribe ===== */
     #vision.section{ padding: 12px 0 20px }
     .two-col{ display:grid; grid-template-columns:1fr; gap:24px; max-width:1100px; margin:12px auto 40px }
     @media (min-width:850px){ .two-col{ grid-template-columns:1fr 1fr } }
@@ -230,27 +252,29 @@
 </head>
 <body>
 
-  <!-- ===== Header (brand left; anchors + toggle right) ===== -->
+  <!-- ===== Header (bubble) ===== -->
   <header class="header" role="banner">
     <div class="container header-inner">
-      <div class="brand" aria-label="Jmod Co.">
-        <a class="wordmark" href="#top">Jmod Co.</a>
+      <div class="nav-bubble" role="navigation" aria-label="Primary">
+        <div class="brand" aria-label="Jmod Co.">
+          <a class="wordmark" href="#top">Jmod Co.</a>
+        </div>
+
+        <!-- Desktop nav -->
+        <nav class="nav" aria-label="Primary links">
+          <a class="item" href="#about">About</a>
+          <a class="item" href="#divisions">Divisions</a>
+          <a class="item" href="#vision">Vision</a>
+          <!-- Theme toggle -->
+          <button class="toggle" id="themeToggle" aria-pressed="false" aria-label="Toggle theme">
+            <span class="toggle-dot" aria-hidden="true"></span>
+            <span id="toggleLabel">Dark</span>
+          </button>
+        </nav>
+
+        <!-- Mobile hamburger -->
+        <button class="hamburger" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel" aria-label="Open menu">Menu</button>
       </div>
-
-      <!-- Desktop nav -->
-      <nav class="nav" aria-label="Primary">
-        <a class="item" href="#about">About</a>
-        <a class="item" href="#divisions">Divisions</a>
-        <a class="item" href="#vision">Vision</a>
-        <!-- THEME TOGGLE (pill with centered dot) -->
-        <button class="toggle" id="themeToggle" aria-pressed="false" aria-label="Toggle theme">
-          <span class="toggle-dot" aria-hidden="true"></span>
-          <span id="toggleLabel">Dark</span>
-        </button>
-      </nav>
-
-      <!-- Mobile hamburger -->
-      <button class="hamburger" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel" aria-label="Open menu">Menu</button>
     </div>
 
     <!-- Mobile panel -->
@@ -259,7 +283,6 @@
         <a href="#about">About</a>
         <a href="#divisions">Divisions</a>
         <a href="#vision">Vision</a>
-        <!-- THEME TOGGLE (mobile) -->
         <button class="toggle" id="themeToggleM" aria-pressed="false" aria-label="Toggle theme">
           <span class="toggle-dot" aria-hidden="true"></span>
           <span id="toggleLabelM">Dark</span>
@@ -273,7 +296,7 @@
     <div class="hero-wrap">
       <div class="hero-grid">
         <div class="hero-logo">
-          <!-- HERO IMAGE (swaps TP/non-TP on theme) -->
+          <!-- HERO IMAGE (TP in dark, non-TP in light) -->
           <img id="hero-logo" src="./assets/ParentLogo_TPCrop.png" alt="Jmod Co. Logo">
         </div>
         <div class="hero-text">
@@ -301,98 +324,79 @@
       <h2 class="center">Our Divisions</h2>
       <div class="divisions-sub">Current focus areas — one base core. Pick a badge to explore; everything runs on the MODDES™ Core.</div>
 
-      <!-- RADIAL MAP (swappable TP/non-TP images) -->
-      <div class="radial" aria-label="Jmod Co. divisions radial map">
-        <!-- HUB ICON (stays TP in both themes, per direction) -->
-        <div class="hub">
-          <img src="./assets/JmodLogoIconTP.png" alt="Parent & core">
+      <!-- DARK SURFACE: keeps TP logos looking clean even in LIGHT theme -->
+      <div class="radial-surface">
+        <div class="radial" aria-label="Jmod Co. divisions radial map">
+          <!-- HUB ICON (stays TP) -->
+          <div class="hub">
+            <img src="./assets/JmodLogoIconTP.png" alt="Parent & core">
+          </div>
+
+          <!-- SATELLITES — TP ONLY for radial section in BOTH themes -->
+          <a class="imgnode" style="--angle:-135deg" href="https://www.jordanmoddes.com/" rel="noopener">
+            <img src="./assets/JmodCo_LogoTP.png" alt="Resume">
+          </a>
+
+          <a class="imgnode" style="--angle:-90deg" href="https://www.jordanmoddes.com/jmodco/Labs" rel="noopener">
+            <img src="./assets/Jmod_LabsTP.png" alt="R&D engine">
+          </a>
+
+          <a class="imgnode" style="--angle:-45deg" href="https://www.jordanmoddes.com/jmodco/Systems" rel="noopener">
+            <img src="./assets/Jmod_SystemsTP.png" alt="Automation & control">
+          </a>
+
+          <a class="imgnode" style="--angle:180deg" href="https://www.jordanmoddes.com/battlefield" rel="noopener">
+            <img src="./assets/JmodCo_LogoTP.png" alt="Coming Soon">
+          </a>
+
+          <a class="imgnode" style="--angle:0deg" href="https://www.jordanmoddes.com/dashboard" rel="noopener">
+            <img src="./assets/JmodCo_LogoTP.png" alt="Personal Dashboard">
+          </a>
+
+          <a class="imgnode" style="--angle:135deg" href="https://www.jordanmoddes.com/jmodco/Insights" rel="noopener">
+            <img src="./assets/Jmod_InsightsTP.png" alt="SMB AI assist">
+          </a>
+
+          <a class="imgnode" style="--angle:90deg" href="https://www.jordanmoddes.com/jmodco/Legacy" rel="noopener">
+            <img src="./assets/Jmod_LegacyTP.png" alt="AI for seniors">
+          </a>
+
+          <a class="imgnode" style="--angle:45deg" href="https://www.jordanmoddes.com/jmodco/Media" rel="noopener">
+            <img src="./assets/Jmod_MediaTP.png" alt="Social auto-posting">
+          </a>
         </div>
-
-        <!-- Each satellite below:
-             data-img-dark  = TP image
-             data-img-light = non-TP image
-             alt            = short label per your spec
-        -->
-
-        <!-- Top Left → Resume -->
-        <a class="imgnode" style="--angle:-135deg" href="https://www.jordanmoddes.com/" rel="noopener">
-          <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Resume">
-        </a>
-
-        <!-- Top → Labs -->
-        <a class="imgnode" style="--angle:-90deg" href="https://www.jordanmoddes.com/jmodco/Labs" rel="noopener">
-          <img data-img-dark="./assets/Jmod_LabsTP.png" data-img-light="./assets/Jmod_Labs.png" alt="R&D engine">
-        </a>
-
-        <!-- Top Right → Systems -->
-        <a class="imgnode" style="--angle:-45deg" href="https://www.jordanmoddes.com/jmodco/Systems" rel="noopener">
-          <img data-img-dark="./assets/Jmod_SystemsTP.png" data-img-light="./assets/Jmod_Systems.png" alt="Automation & control">
-        </a>
-
-        <!-- Left → Battlefield -->
-        <a class="imgnode" style="--angle:180deg" href="https://www.jordanmoddes.com/battlefield" rel="noopener">
-          <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Coming Soon">
-        </a>
-
-        <!-- Right → Personal Dashboard -->
-        <a class="imgnode" style="--angle:0deg" href="https://www.jordanmoddes.com/dashboard" rel="noopener">
-          <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Personal Dashboard">
-        </a>
-
-        <!-- Bottom Left → Insights -->
-        <a class="imgnode" style="--angle:135deg" href="https://www.jordanmoddes.com/jmodco/Insights" rel="noopener">
-          <img data-img-dark="./assets/Jmod_InsightsTP.png" data-img-light="./assets/Jmod_Insights.png" alt="SMB AI assist">
-        </a>
-
-        <!-- Bottom → Legacy -->
-        <a class="imgnode" style="--angle:90deg" href="https://www.jordanmoddes.com/jmodco/Legacy" rel="noopener">
-          <img data-img-dark="./assets/Jmod_LegacyTP.png" data-img-light="./assets/Jmod_Legacy.png" alt="AI for seniors">
-        </a>
-
-        <!-- Bottom Right → Media -->
-        <a class="imgnode" style="--angle:45deg" href="https://www.jordanmoddes.com/jmodco/Media" rel="noopener">
-          <img data-img-dark="./assets/Jmod_MediaTP.png" data-img-light="./assets/Jmod_Media.png" alt="Social auto-posting">
-        </a>
       </div>
 
-      <!-- MOBILE GRID (shows short descriptions only) -->
+      <!-- MOBILE GRID (still swaps TP/non-TP; short captions only) -->
       <div class="grid8" aria-label="Jmod Co. divisions list">
-        <!-- Resume -->
         <a class="card" href="https://www.jordanmoddes.com">
           <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Resume">
           <div class="caption">Resume</div>
         </a>
-        <!-- Labs -->
         <a class="card" href="./Labs">
           <img data-img-dark="./assets/Jmod_LabsTP.png" data-img-light="./assets/Jmod_Labs.png" alt="R&D engine">
           <div class="caption">R&D engine</div>
         </a>
-        <!-- Systems -->
         <a class="card" href="./Systems">
           <img data-img-dark="./assets/Jmod_SystemsTP.png" data-img-light="./assets/Jmod_Systems.png" alt="Automation & control">
           <div class="caption">Automation & control</div>
         </a>
-        <!-- Battlefield -->
         <a class="card" href="https://www.jordanmoddes.com/battlefield">
           <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Coming Soon">
           <div class="caption">Coming Soon</div>
         </a>
-        <!-- Personal Dashboard -->
         <a class="card" href="https://www.jordanmoddes.com/dashboard">
           <img data-img-dark="./assets/JmodCo_LogoTP.png" data-img-light="./assets/JmodCo_Logo.png" alt="Personal Dashboard">
           <div class="caption">Personal Dashboard</div>
         </a>
-        <!-- Insights -->
         <a class="card" href="./Insights">
           <img data-img-dark="./assets/Jmod_InsightsTP.png" data-img-light="./assets/Jmod_Insights.png" alt="SMB AI assist">
           <div class="caption">SMB AI assist</div>
         </a>
-        <!-- Media -->
         <a class="card" href="./Media">
           <img data-img-dark="./assets/Jmod_MediaTP.png" data-img-light="./assets/Jmod_Media.png" alt="Social auto-posting">
           <div class="caption">Social auto-posting</div>
         </a>
-        <!-- Legacy -->
         <a class="card" href="./Legacy">
           <img data-img-dark="./assets/Jmod_LegacyTP.png" data-img-light="./assets/Jmod_Legacy.png" alt="AI for seniors">
           <div class="caption">AI for seniors</div>
@@ -401,7 +405,7 @@
     </div>
   </section>
 
-  <!-- ===== Vision + Subscribe (Contact replaced) ===== -->
+  <!-- ===== Vision + Subscribe ===== -->
   <section class="section" id="vision">
     <div class="container two-col">
       <div class="founder">
@@ -409,7 +413,6 @@
         <p>We’re building a shared AI core that small teams can actually use—private by default, affordable to start, and powerful as you grow. The strategy is simple: reduce steps, reuse the core, and compound wins across every brand. That’s how we ship faster without adding complexity.</p>
       </div>
 
-      <!-- SUBSCRIBE (placeholder; front-end only) -->
       <form class="subscribe" onsubmit="event.preventDefault();handleSubscribe();">
         <h2>Subscribe for rollouts &amp; early access</h2>
         <div class="field">
@@ -441,24 +444,22 @@
   </footer>
 
   <script>
-    // ===== Year =====
+    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ===== Theme init: ALWAYS start in dark (no persistence) =====
+    // Start in DARK every load (no persistence)
     (function initTheme(){
-      const html = document.documentElement;
-      html.setAttribute('data-theme','dark');
+      document.documentElement.setAttribute('data-theme','dark');
       updateToggleLabels();
-      swapAllThemeImages();
+      swapThemeImages();
     })();
 
-    // ===== Toggle theme (updates labels, dot color via CSS, and all images) =====
     function toggleTheme(){
       const html = document.documentElement;
       const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
       html.setAttribute('data-theme', next);
       updateToggleLabels();
-      swapAllThemeImages();
+      swapThemeImages();
     }
     function updateToggleLabels(){
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
@@ -472,17 +473,16 @@
       if (t2) t2.setAttribute('aria-pressed', String(isLight));
     }
 
-    // ===== Swap hero + radial + grid images based on theme =====
-    function swapAllThemeImages(){
+    // Swap hero + MOBILE GRID images (radial keeps TP always)
+    function swapThemeImages(){
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
 
-      // HERO
+      // Hero
       const hero = document.getElementById('hero-logo');
       if (hero){
         hero.src = isLight ? "./assets/ParentLogoCrop.png" : "./assets/ParentLogo_TPCrop.png";
       }
-
-      // RADIAL + MOBILE GRID (any <img> with data-img-dark / data-img-light)
+      // Any <img> with data-img-dark/light (MOBILE GRID only here)
       document.querySelectorAll('img[data-img-dark][data-img-light]').forEach(img=>{
         img.src = isLight ? img.getAttribute('data-img-light') : img.getAttribute('data-img-dark');
       });
@@ -492,7 +492,7 @@
     document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
     document.getElementById('themeToggleM')?.addEventListener('click', toggleTheme);
 
-    // ===== Mobile menu with keyboard support =====
+    // Mobile menu with keyboard support
     const menuBtn = document.getElementById('menuBtn');
     const panel = document.getElementById('mobilePanel');
     let lastFocus = null;
@@ -501,8 +501,7 @@
       lastFocus = document.activeElement;
       panel.classList.add('open');
       menuBtn.setAttribute('aria-expanded','true');
-      const first = panel.querySelector('a,button');
-      if (first) first.focus();
+      const first = panel.querySelector('a,button'); if (first) first.focus();
       document.addEventListener('keydown', onKeydown);
       document.addEventListener('click', onOutside, { capture:true });
     }
@@ -518,11 +517,11 @@
     menuBtn?.addEventListener('click', ()=>{ panel.classList.contains('open') ? closeMenu() : openMenu(); });
     panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
 
-    // ===== Smooth scroll with offset for fixed header =====
+    // Smooth scroll with offset
     function smoothScrollTo(targetId){
       const el = document.querySelector(targetId);
       if (!el) return;
-      const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 72;
+      const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 80;
       const y = el.getBoundingClientRect().top + window.scrollY - (headerH + 16);
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
@@ -535,7 +534,7 @@
       });
     });
 
-    // ===== Subscribe placeholder (front-end only) =====
+    // Subscribe placeholder
     function handleSubscribe(){
       const email = document.getElementById('subEmail');
       const btn = document.getElementById('subBtn');
