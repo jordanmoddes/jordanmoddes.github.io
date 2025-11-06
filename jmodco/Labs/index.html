@@ -210,18 +210,47 @@ body{
 .hero--reactor h1{ text-shadow: 0 2px 24px rgba(0,0,0,.22) }
 [data-theme="light"] .hero--reactor h1{ text-shadow:none }
 
-/* Fancy entrance */
-@keyframes revealUp{
-  0% { opacity:0; transform: translateY(14px) scale(.985); filter: blur(6px) }
-  60%{ opacity:1; transform: translateY(0) scale(1); filter: blur(0) }
-  100%{ opacity:1; transform:none; filter:none }
+/* Fancy entrance v2 — cinematic float */
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    filter: blur(10px);
+  }
+  40% {
+    opacity: 0.6;
+    transform: translateY(10px) scale(1.01);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
 }
-.hero-content h1{ animation: revealUp 2.4s cubic-bezier(.2,.65,.2,1) both }
-.hero-content p{ animation: revealUp 2.4s cubic-bezier(.2,.65,.2,1) .3s both }
 
-@media (prefers-reduced-motion: reduce){
-  .hero-content h1, .hero-content p{ animation:none !important }
+/* Apply animations with staggered timing */
+.hero-content h1 {
+  animation: floatIn 2.4s cubic-bezier(.16,.8,.25,1) both;
 }
+
+.hero-content p {
+  animation: floatIn 2.4s cubic-bezier(.16,.8,.25,1) .3s both;
+}
+
+.hero-content .cta-row {
+  animation: floatIn 3.0s cubic-bezier(.16,.8,.25,1) .45s both;
+}
+
+/* Accessibility: disable animation for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-content h1,
+  .hero-content p,
+  .hero-content .cta-row {
+    animation: none !important;
+  }
+}
+
 
 /* =========================
    CARDS/SECTIONS
