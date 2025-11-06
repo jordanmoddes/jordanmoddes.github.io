@@ -155,13 +155,12 @@ body{
 }
 .hero-content p{ margin:6px auto 18px; color:var(--muted); max-width:820px }
 
-/* Logo layer */
+/* Logo layer (above bg, below text) */
 .hero--reactor .hero-logo-bg{
   position:absolute; left:0; right:0; top:1px; bottom:1px;
   z-index:-1; display:grid; place-items:center; pointer-events:none;
   will-change:transform; transform:translateZ(0);
 }
-
 .hero-logo-img{
   height: var(--hero-logo-height);
   width:auto; max-width:98vw; object-fit:contain;
@@ -184,11 +183,8 @@ body{
 
 /* ------------------------------------------
    Motion background UNDER logo — REACTOR
-   (kept so your current hero keeps working)
    ------------------------------------------ */
 .hero--reactor{ position:relative; overflow:hidden }
-
-/* default reactor bg */
 .hero--reactor .hero-bg{ position:absolute; inset:0; z-index:-2; display:grid; place-items:center }
 .hero--reactor .core{
   width:min(1250px, 96vw); height:420px; border-radius:999px; filter:blur(28px);
@@ -216,7 +212,7 @@ body{
 
 /* ------------------------------------------
    Motion background UNDER logo — FLOWFIELD
-   (new option; use <div class="hero-bg flowfield">…)
+   (use <div class="hero-bg flowfield">…)
    ------------------------------------------ */
 .hero-bg.flowfield{
   position:absolute; inset:0; z-index:-2; overflow:hidden;
@@ -239,22 +235,94 @@ body{
    Fancy entrance v2 — cinematic float
    ------------------------------------------ */
 @keyframes floatIn {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.98);
-    filter: blur(10px);
-  }
-  40% {
-    opacity: 0.6;
-    transform: translateY(10px) scale(1.01);
-    filter: blur(4px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
+  0%   { opacity:0;   transform: translateY(30px) scale(.98); filter: blur(10px) }
+  40%  { opacity:.6;  transform: translateY(10px) scale(1.01); filter: blur(4px) }
+  100% { opacity:1;   transform: translateY(0)    scale(1);    filter: blur(0) }
 }
+/* Apply stagger */
+.hero-content h1       { animation: floatIn 2.4s cubic-bezier(.16,.8,.25,1) both }
+.hero-content p        { animation: floatIn 2.4s cubic-bezier(.16,.8,.25,1) .3s both }
+.hero-content .cta-row { animation: floatIn 3.0s cubic-bezier(.16,.8,.25,1) .45s both }
+@media (prefers-reduced-motion: reduce){
+  .hero-content h1, .hero-content p, .hero-content .cta-row{ animation:none !important }
+}
+
+/* ------------------------------------------
+   OPTIONAL: AI HUD overlay (sits between bg and text)
+   Add the <svg class="ai-hud">…</svg> in your HTML if you want this.
+   ------------------------------------------ */
+.ai-hud{
+  position:absolute; inset:0 0 auto 0;   /* within hero */
+  width:100%; height:420px;
+  z-index:0;                              /* above logo (-1), below text (2) */
+  pointer-events:none; opacity:.9;
+}
+/* palette from theme vars */
+:root{
+  --hud-ink: color-mix(in oklab, var(--ink) 80%, transparent);
+  --hud-accent: color-mix(in oklab, var(--accent) 85%, white 10%);
+  --hud-accent-soft: color-mix(in oklab, var(--accent) 35%, transparent);
+}
+[data-theme="light"]{
+  --hud-ink: color-mix(in oklab, var(--ink) 80%, transparent);
+  --hud-accent: color-mix(in oklab, var(--accent) 75%, black 0%);
+}
+/* gentle float */
+.hud-float{ animation: hudFloat 9s ease-in-out infinite; transform-origin: 50% 50%; }
+@keyframes hudFloat{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-6px) } }
+/* panels */
+.hud-box{
+  fill: color-mix(in oklab, var(--panel) 78%, transparent);
+  stroke: var(--border); stroke-width:1;
+  filter: drop-shadow(0 10px 40px rgba(0,0,0,.35));
+}
+.tick{ stroke: color-mix(in oklab, var(--ink) 18%, transparent); stroke-width:1 }
+/* bars */
+.bar{
+  fill: var(--hud-accent); opacity:.85; transform-origin: bottom;
+  animation: barRise 2.8s ease-in-out infinite;
+}
+.bar:nth-child(2){ animation-delay:.1s }
+.bar:nth-child(3){ animation-delay:.2s }
+.bar:nth-child(4){ animation-delay:.3s }
+.bar:nth-child(5){ animation-delay:.4s }
+.bar:nth-child(6){ animation-delay:.5s }
+@keyframes barRise{ 0%,100%{ transform: scaleY(.96) } 50%{ transform: scaleY(1.06) } }
+/* doughnut */
+.ring-bg{ fill:none; stroke: color-mix(in oklab, var(--ink) 14%, transparent); stroke-width:8 }
+.ring{
+  fill:none; stroke: var(--hud-accent); stroke-width:8; stroke-linecap:round;
+  animation: donut 6s ease-in-out infinite;
+}
+@keyframes donut{ 0%{stroke-dashoffset:314} 50%{stroke-dashoffset:110} 100%{stroke-dashoffset:314} }
+/* chip + pins */
+.chip{ fill: color-mix(in oklab, var(--panel) 86%, transparent); stroke: var(--border); stroke-width:1 }
+.pin{ stroke: var(--hud-accent-soft) }
+.ai-txt{ font: 800 42px/1 "Inter", ui-sans-serif; fill: var(--hud-accent) }
+/* links and nodes */
+.link{
+  fill:none; stroke: var(--hud-accent); stroke-width:3;
+  filter: drop-shadow(0 8px 26px color-mix(in oklab, var(--accent) 35%, transparent));
+  stroke-dasharray: 6 160; animation: linkMove 4.6s linear infinite; opacity:.8;
+}
+.link.delay1{ animation-delay:.6s }
+.link.delay2{ animation-delay:1.2s }
+.link.delay3{ animation-delay:1.8s }
+@keyframes linkMove{ to{ stroke-dashoffset:-166 } }
+.node{
+  fill:url(#nodeG); transform-origin:center; animation: nodePulse 2.8s ease-in-out infinite;
+}
+.node:nth-child(2){ animation-delay:.6s }
+.node:nth-child(3){ animation-delay:1.2s }
+.node:nth-child(4){ animation-delay:1.8s }
+@keyframes nodePulse{ 0%,100%{ r:7; opacity:.75 } 50%{ r:9; opacity:1 } }
+/* sheen sweep */
+.hud-sheen{
+  fill: linear-gradient(115deg, transparent 42%, color-mix(in oklab, var(--accent) 22%, transparent) 50%, transparent 58%);
+  mix-blend-mode: screen; opacity:.25; animation: sheen 7.5s linear infinite;
+}
+@keyframes sheen{ 0%{ transform: translateX(-18%) } 100%{ transform: translateX(18%) } }
+
 
 /* Apply animations with staggered timing */
 .hero-content h1 {
@@ -331,46 +399,97 @@ section{padding:30px 0}
     <a href="/jmodco/">Jmod Co.</a>
   </div>
 
-  <!-- ========= HERO ========= -->
-  <section id="home" class="hero hero--reactor" aria-label="Hero">
-    <!-- Logo layer (one block only) -->
-    <div class="hero-logo-bg" aria-hidden="true">
-      <img class="hero-logo-img theme-dark"  src="/jmodco/assets/Jmod_LabsTP.png" alt="" loading="eager" decoding="async" />
-      <img class="hero-logo-img theme-light" src="/jmodco/assets/Jmod_Labs.png"   alt="" loading="eager" decoding="async" />
-    </div>
-
-  <!-- Motion background: Data Flow field -->
-  <div class="hero-bg flowfield" aria-hidden="true">
-    <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#57e6ff" stop-opacity="0.0"/>
-          <stop offset="50%" stop-color="#57e6ff" stop-opacity="0.4"/>
-          <stop offset="100%" stop-color="#ff3df2" stop-opacity="0.0"/>
-        </linearGradient>
-      </defs>
-  
-      <!-- flowing data lines -->
-      <path d="M0 200 Q300 150 600 200 T1200 200" stroke="url(#flowGrad)" stroke-width="2" fill="none">
-        <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="8s" repeatCount="indefinite" />
-      </path>
-      <path d="M0 300 Q300 250 600 300 T1200 300" stroke="url(#flowGrad)" stroke-width="1.5" fill="none">
-        <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="10s" repeatCount="indefinite" />
-      </path>
-      <path d="M0 400 Q300 350 600 400 T1200 400" stroke="url(#flowGrad)" stroke-width="2" fill="none">
-        <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="9s" repeatCount="indefinite" />
-      </path>
-    </svg>
+<!-- ========= HERO ========= -->
+<section id="home" class="hero hero--reactor" aria-label="Hero">
+  <!-- Logo layer -->
+  <div class="hero-logo-bg" aria-hidden="true">
+    <img class="hero-logo-img theme-dark"  src="/jmodco/assets/Jmod_LabsTP.png" alt="" loading="eager" decoding="async" />
+    <img class="hero-logo-img theme-light" src="/jmodco/assets/Jmod_Labs.png"   alt="" loading="eager" decoding="async" />
   </div>
 
+  <!-- AI HUD overlay (PASTE THIS BLOCK) -->
+  <!-- sits above logo because it comes after it in DOM (same z-index) -->
+  <svg class="ai-hud" viewBox="0 0 1200 420" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <filter id="glow">
+        <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="rgba(120,240,255,.55)"/>
+      </filter>
+      <radialGradient id="nodeG" cx="50%" cy="50%">
+        <stop offset="0%" stop-color="var(--ink)" stop-opacity="1"/>
+        <stop offset="100%" stop-color="var(--ink)" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
 
-    <!-- Centered content -->
-    <div class="hero-content">
-      <h1>Engineering tomorrow’s systems — today. Redefining R&amp;D at Jmod Co.</h1>
-      <p>Jmod Labs prototypes the engines, automations, and AI that the rest of the company runs on.
-        What works here graduates into Systems, Media, Insights, and Legacy.</p>
-    </div>
-  </section>
+    <g class="hud-float">
+      <!-- left panel -->
+      <g class="panel" transform="translate(120 70)">
+        <rect x="0" y="0" rx="14" ry="14" width="280" height="150" class="hud-box"/>
+        <g class="bars" transform="translate(20 20)">
+          <rect width="18" height="60" x="0"  y="30" class="bar"/>
+          <rect width="18" height="70" x="28" y="20" class="bar"/>
+          <rect width="18" height="92" x="56" y="-2" class="bar"/>
+          <rect width="18" height="80" x="84" y="10" class="bar"/>
+          <rect width="18" height="104" x="112" y="-14" class="bar"/>
+          <rect width="18" height="84" x="140" y="6" class="bar"/>
+        </g>
+        <line x1="20" y1="130" x2="260" y2="130" class="tick"/>
+      </g>
+
+      <!-- right panel -->
+      <g class="panel" transform="translate(800 70)">
+        <rect x="0" y="0" rx="14" ry="14" width="280" height="150" class="hud-box"/>
+        <g transform="translate(80 28)">
+          <circle r="50" cx="60" cy="47" class="ring-bg"/>
+          <circle r="50" cx="60" cy="47" class="ring" stroke-dasharray="314" stroke-dashoffset="314"/>
+        </g>
+        <line x1="20" y1="130" x2="260" y2="130" class="tick"/>
+      </g>
+
+      <!-- center AI glyph -->
+      <g class="ai-chip" transform="translate(560 116)" filter="url(#glow)">
+        <rect x="-70" y="-50" rx="16" ry="16" width="140" height="100" class="chip"/>
+        <g class="pins" stroke-width="6" stroke-linecap="round">
+          <line x1="-90" y1="0"   x2="-70" y2="0"   class="pin"/>
+          <line x1="-86" y1="-26" x2="-70" y2="-26" class="pin"/>
+          <line x1="-86" y1="26"  x2="-70" y2="26"  class="pin"/>
+          <line x1="70"  y1="0"   x2="90" y2="0"    class="pin"/>
+          <line x1="70"  y1="-26" x2="90" y2="-26"  class="pin"/>
+          <line x1="70"  y1="26"  x2="90" y2="26"   class="pin"/>
+        </g>
+        <text x="0" y="10" text-anchor="middle" class="ai-txt">AI</text>
+      </g>
+
+      <!-- links -->
+      <g class="links">
+        <path d="M 170 180 C 350 140, 480 150, 560 166" class="link"/>
+        <path d="M 1030 180 C 850 140, 720 150, 640 166" class="link delay1"/>
+        <path d="M 250 260 C 430 220, 520 220, 600 230" class="link delay2"/>
+        <path d="M 950 260 C 770 220, 680 220, 600 230" class="link delay3"/>
+      </g>
+
+      <!-- nodes -->
+      <g class="nodes">
+        <circle cx="160" cy="180" r="8" class="node"/>
+        <circle cx="1040" cy="180" r="8" class="node"/>
+        <circle cx="240" cy="260" r="8" class="node"/>
+        <circle cx="960" cy="260" r="8" class="node"/>
+      </g>
+    </g>
+
+    <!-- sheen -->
+    <rect class="hud-sheen" x="-10%" y="0" width="120%" height="100%"/>
+  </svg>
+
+  <!-- Flowfield (keeps running under HUD + logo) -->
+  <div class="hero-bg flowfield" aria-hidden="true">
+    <!-- your flowfield SVG stays here -->
+    …
+  </div>
+
+  <!-- Centered text -->
+  <div class="hero-content">…</div>
+</section>
+
 
   <!-- ===== Mandate ===== -->
   <section id="mandate">
