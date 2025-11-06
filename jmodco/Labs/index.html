@@ -202,31 +202,33 @@ body{
   margin:6px auto 18px; color:var(--muted); max-width:820px;
 }
 
-/* LOGO layer (behind motion) */
+/* Logo container (behind motion) */
 .hero--reactor .hero-logo-bg{
-  position:absolute; left:0; right:0; top:1px; bottom:1px;
+  position:absolute; inset:1px 0;         /* ~1px top/bottom margin */
   z-index:-2; pointer-events:none;
   display:grid; place-items:center;
-  --logo-url: url('/jmodco/assets/Jmod_LabsTP.png');   /* default: dark */
-  opacity: var(--hero-logo-opacity-dark);
 }
-[data-theme="light"] .hero--reactor .hero-logo-bg{
-  --logo-url: url('/jmodco/assets/Jmod_Labs.png');
-  opacity: var(--hero-logo-opacity-light);
-}
-.hero--reactor .hero-logo-bg::before{
-  content:"";
-  height: var(--hero-logo-height);         /* fill hero height */
-  aspect-ratio: var(--hero-logo-aspect);   /* <<< critical: gives width */
-  width: auto;
-  background: var(--logo-url) center/contain no-repeat;
+
+/* Both logo images share sizing; we swap visibility per theme */
+.hero-logo-img{
+  height: var(--hero-logo-height);         /* fills hero vertically */
+  width: auto;                             /* preserve aspect */
+  max-width: 96vw;                         /* safety on small screens */
   filter: drop-shadow(0 20px 60px rgba(0,0,0,.35));
+  display: none;                           /* default off; theme turns on */
 }
+
+.theme-dark{  opacity: var(--hero-logo-opacity-dark); }
+.theme-light{ opacity: var(--hero-logo-opacity-light); }
+
+/* Theme swap */
+:root:not([data-theme="light"]) .hero-logo-bg .theme-dark{ display:block; }
+:root[data-theme="light"]         .hero-logo-bg .theme-light{ display:block; }
+
 @media (max-width:860px){
-  .hero--reactor .hero-logo-bg::before{
-    height: var(--hero-logo-height-mobile);
-  }
+  .hero-logo-img{ height: var(--hero-logo-height-mobile); }
 }
+
 
 /* Motion background (glow / ring / sparks) */
 .hero--reactor{ position:relative; overflow:hidden }
@@ -319,7 +321,17 @@ section{padding:30px 0}
   <div class="hero-logo-bg" aria-hidden="true"></div>
 
   <!-- motion background -->
-  <div class="hero-bg" aria-hidden="true">
+<div class="hero-logo-bg" aria-hidden="true">
+  <!-- Dark theme logo (transparent) -->
+  <img class="hero-logo-img theme-dark"
+       src="/jmodco/assets/Jmod_LabsTP.png"
+       alt="" loading="eager" decoding="async" />
+  <!-- Light theme logo (solid) -->
+  <img class="hero-logo-img theme-light"
+       src="/jmodco/assets/Jmod_Labs.png"
+       alt="" loading="eager" decoding="async" />
+</div>
+
     <div class="ring"></div>
     <div class="core"></div>
     <svg class="sparks" viewBox="0 0 100 40" preserveAspectRatio="none">
@@ -340,13 +352,9 @@ section{padding:30px 0}
 
   <!-- centered content -->
   <div class="hero-content">
-    <h1>Engineering tomorrow’s systems — today.</h1>
+    <h1>Engineering tomorrow’s systems — today. The Core Engine of Jmod Co.</h1>
     <p>Jmod Labs prototypes the engines, automations, and AI that the rest of the company runs on.
        What works here graduates into Systems, Media, Insights, and Legacy.</p>
-    <div class="cta-row">
-      <a class="btn primary" href="#experiments">Explore MODDES™</a>
-      <a class="btn" href="#build">See Integrations</a>
-    </div>
   </div>
 </section>
 
