@@ -66,10 +66,14 @@ body{
   border-radius: 999px;
   z-index:1000;
 }
-.nav-inner{display:flex; align-items:center; justify-content:flex-start; padding:10px 14px; gap:12px}
-.brand{font-weight:700; padding-left:10px}
+.nav-inner{
+  display:flex; align-items:center; gap:12px;
+  padding:10px 14px;
+}
+.brand{font-weight:700; padding-left:10px; flex-shrink:0}
 .brand a{color:var(--ink); text-decoration:none}
 
+/* center group (desktop) */
 .nav-links{
   display:flex; align-items:center; gap:28px;
   list-style:none; margin:0 12px 0 auto; padding:0;
@@ -77,7 +81,9 @@ body{
 .nav-links a{color:var(--ink); text-decoration:none; font-weight:600; opacity:.9}
 .nav-links a:hover{opacity:1}
 
-.nav-right{display:flex; align-items:center; gap:14px}
+/* right cluster; margin-left:auto so it sticks to far right when .nav-links is hidden on mobile */
+.nav-right{display:flex; align-items:center; gap:14px; margin-left:auto}
+
 .theme{
   display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
   border:1px solid var(--border); border-radius:999px;
@@ -96,6 +102,7 @@ body{
 .burger span::before,.burger span::after{content:""; position:absolute; left:0; width:18px; height:2px; background:var(--ink); opacity:.9}
 .burger span::before{top:-6px} .burger span::after{top:6px}
 
+/* slide-down mobile panel */
 .mobile-panel{
   position:fixed; top:72px; left:50%; transform:translateX(-50%);
   width:min(1200px,94vw);
@@ -105,10 +112,35 @@ body{
   border-radius:18px; padding:10px 14px; display:none; z-index:999;
 }
 .mobile-panel.open{display:block}
-.mobile-panel a{display:block; padding:12px 10px; border-radius:10px; color:var(--ink); text-decoration:none; font-weight:600}
+.mobile-panel a{
+  display:block; padding:12px 10px; border-radius:10px; color:var(--ink); text-decoration:none; font-weight:600
+}
 .mobile-panel a:active{background:rgba(255,255,255,.06)}
-@media (max-width:880px){ .nav-links{display:none} .burger{display:inline-flex} }
 
+/* mobile-only theme toggle inside panel */
+.theme--mobile{
+  display:flex;
+  width:100%;
+  justify-content:center;
+  margin:8px 4px 2px;
+}
+
+/* faint divider above the toggle */
+.mobile-panel::after{
+  content:"";
+  display:block;
+  height:1px;
+  margin:10px 6px 6px;
+  background:var(--border);
+}
+
+/* responsive behavior */
+@media (max-width:880px){
+  .nav-links{ display:none }     /* hide center links */
+  .theme{ display:none }         /* hide header toggle; we use panel toggle instead */
+  .burger{ display:inline-flex } /* show hamburger */
+}
+    
 /* =========================
    HERO — Labs (bigger + logo bg)
    ========================= */
@@ -277,7 +309,9 @@ section{padding:30px 0}
   </style>
 </head>
 <body>
-
+  /* =========================
+   HTML
+   ========================= */
   <!-- ========= NAV ========= -->
   <div class="nav" role="navigation" aria-label="Primary">
     <div class="nav-inner">
@@ -299,11 +333,18 @@ section{padding:30px 0}
       </div>
     </div>
   </div>
+    <!-- ========= NAV Mobile ========= -->
   <div class="mobile-panel" id="mnav" aria-hidden="true">
     <a href="#build">Services</a>
     <a href="#mandate">About</a>
     <a href="#join">Contact Us</a>
     <a href="/jmodco/">Jmod Co.</a>
+  
+    <!-- Mobile-only theme toggle -->
+    <button class="theme theme--mobile" id="themeBtnMobile" type="button">
+      <span class="dot" aria-hidden="true"></span>
+      <span id="themeLabelMobile">Dark</span>
+    </button>
   </div>
 
   <!-- ========= HERO ========= -->
@@ -511,49 +552,77 @@ section{padding:30px 0}
   </section>
 
   <div id="footerMount"></div>
+  /* =========================
+   JS
+   ========================= */
+<script>
+  // Theme toggle (desktop)
+  const html = document.documentElement;
+  const themeBtn   = document.getElementById('themeBtn');
+  const themeLabel = document.getElementById('themeLabel');
 
-  <script>
-    // Theme toggle
-    const html = document.documentElement;
-    const themeBtn = document.getElementById('themeBtn');
-    const themeLabel = document.getElementById('themeLabel');
-    const saved = localStorage.getItem('theme');
-    if(saved){ html.setAttribute('data-theme', saved); themeLabel.textContent = saved === 'dark' ? 'Dark' : 'Light'; }
-    themeBtn?.addEventListener('click', () => {
-      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      themeLabel.textContent = next === 'dark' ? 'Dark' : 'Light';
-    });
+  // Theme toggle (mobile panel)
+  const themeBtnMobile   = document.getElementById('themeBtnMobile');
+  const themeLabelMobile = document.getElementById('themeLabelMobile');
 
-    // Mobile menu
-    const burger = document.getElementById('burger');
-    const panel  = document.getElementById('mnav');
-    burger?.addEventListener('click', () => {
-      panel.classList.toggle('open');
-      panel.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
-    });
-    panel?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      panel.classList.remove('open'); panel.setAttribute('aria-hidden','true');
-    }));
+  // Initialize from persisted value
+  const saved = localStorage.getItem('theme');
+  const applyThemeLabel = (mode) => {
+    if (themeLabel) themeLabel.textContent = mode === 'dark' ? 'Dark' : 'Light';
+    if (themeLabelMobile) themeLabelMobile.textContent = mode === 'dark' ? 'Dark' : 'Light';
+  };
+  if (saved) {
+    html.setAttribute('data-theme', saved);
+    applyThemeLabel(saved);
+  }
 
-    // Footer loader (fallback inline)
-    (async function mountFooter(){
-      const mount = document.getElementById('footerMount');
-      try{
-        const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
-        if(!r.ok) throw 0;
-        mount.innerHTML = await r.text();
-      }catch(e){
-        mount.innerHTML = `
-          <footer style="border-top:1px solid var(--border);">
-            <div style="max-width:1200px;margin:0 auto;padding:22px 20px;display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);">
-              <div>© ${new Date().getFullYear()} Jmod Co.</div>
-              <div>Built for small business clarity.</div>
-            </div>
-          </footer>`;
-      }
-    })();
-  </script>
+  // Shared toggler
+  const toggleTheme = () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    applyThemeLabel(next);
+  };
+
+  themeBtn?.addEventListener('click', toggleTheme);
+  themeBtnMobile?.addEventListener('click', toggleTheme);
+
+  // Mobile menu
+  const burger = document.getElementById('burger');
+  const panel  = document.getElementById('mnav');
+
+  const closePanel = () => {
+    panel.classList.remove('open');
+    panel.setAttribute('aria-hidden','true');
+  };
+
+  burger?.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    panel.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
+  });
+
+  panel?.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', closePanel)
+  );
+
+  // Footer loader (fallback inline)
+  (async function mountFooter(){
+    const mount = document.getElementById('footerMount');
+    try{
+      const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
+      if(!r.ok) throw 0;
+      mount.innerHTML = await r.text();
+    }catch(e){
+      mount.innerHTML = `
+        <footer style="border-top:1px solid var(--border);">
+          <div style="max-width:1200px;margin:0 auto;padding:22px 20px;display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);">
+            <div>© ${new Date().getFullYear()} Jmod Co.</div>
+            <div>Built for small business clarity.</div>
+          </div>
+        </footer>`;
+    }
+  })();
+</script>
+
 </body>
 </html>
