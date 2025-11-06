@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Jmod Labs — The Innovation Core of Jmod Co.</title>
   <meta name="color-scheme" content="dark light" />
-  <!-- =========     ========= -->
-  <!-- ========= css ========= -->
-  <!-- =========     ========= -->  
+
   <style>
 /* =========================
    JMOD LABS — GLOBAL
@@ -21,14 +19,13 @@
   /* Theme tokens */
   --bg:#0b0f14; 
   --bg2:#0e131a;
-  --panel: #141a22;
+  --panel:#141a22;
   --ink:#e8edf7;
   --muted:#a9b4c6;
   --border: rgba(255,255,255,.12);
   --accent:#57e6ff;
   --hot:#ff3df2;
 }
-
 [data-theme="light"]{
   --bg:#f6f8fb;
   --bg2:#eef2f8;
@@ -52,7 +49,7 @@ body{
     radial-gradient(1200px 800px at 120% 10%, rgba(87,230,255,.07), transparent 60%),
     linear-gradient(180deg, var(--bg), var(--bg2));
   overflow-x:hidden;
-  padding-top: 92px; /* room for floating nav */
+  padding-top:92px; /* room for floating nav */
 }
 
 /* =========================
@@ -75,16 +72,20 @@ body{
 .brand{font-weight:700; padding-left:10px; flex-shrink:0}
 .brand a{color:var(--ink); text-decoration:none}
 
-/* center group (desktop) */
+/* center links (sit before right cluster) */
 .nav-links{
   display:flex; align-items:center; gap:28px;
-  list-style:none; margin:0 12px 0 auto; padding:0;
+  list-style:none; margin:0; padding:0;
+  margin-left:24px;              /* spacing after brand */
 }
 .nav-links a{color:var(--ink); text-decoration:none; font-weight:600; opacity:.9}
 .nav-links a:hover{opacity:1}
 
-/* right cluster; margin-left:auto so it sticks to far right when .nav-links is hidden on mobile */
-.nav-right{display:flex; align-items:center; gap:14px; margin-left:auto}
+/* right cluster pinned FAR RIGHT */
+.nav-right{
+  display:flex; align-items:center; gap:14px;
+  margin-left:auto;              /* pushes this group to the far right */
+}
 
 .theme{
   display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
@@ -119,7 +120,7 @@ body{
 }
 .mobile-panel a:active{background:rgba(255,255,255,.06)}
 
-/* mobile-only theme toggle inside panel */
+/* mobile-only theme toggle INSIDE panel */
 .theme--mobile{
   display:flex;
   width:100%;
@@ -138,11 +139,12 @@ body{
 
 /* responsive behavior */
 @media (max-width:880px){
-  .nav-links{ display:none }     /* hide center links */
-  .theme{ display:none }         /* hide header toggle; we use panel toggle instead */
-  .burger{ display:inline-flex } /* show hamburger */
+  .nav-links{ display:none }            /* hide center links */
+  .nav .theme{ display:none }           /* hide header toggle */
+  .burger{ display:inline-flex }        /* show hamburger */
+  .mobile-panel .theme{ display:flex }  /* show toggle inside panel */
 }
-    
+
 /* =========================
    HERO — Labs (bigger + logo bg)
    ========================= */
@@ -170,7 +172,6 @@ body{
   margin: 48px auto 24px;
   padding: var(--hero-pad-y) var(--hero-pad-x);
   min-height: var(--hero-height);
-
   display:grid;
   place-items:center;
 }
@@ -196,7 +197,6 @@ body{
   z-index:-1; display:grid; place-items:center; pointer-events:none;
   will-change:transform; transform:translateZ(0);
 }
-
 .hero-logo-img{
   height: var(--hero-logo-height);
   width:auto; max-width:98vw; object-fit:contain;
@@ -246,45 +246,17 @@ body{
 
 /* Fancy entrance v2 — cinematic float */
 @keyframes floatIn {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.98);
-    filter: blur(10px);
-  }
-  40% {
-    opacity: 0.6;
-    transform: translateY(10px) scale(1.01);
-    filter: blur(4px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
+  0%   { opacity:0; transform: translateY(30px) scale(.98); filter: blur(10px) }
+  40%  { opacity:.6; transform: translateY(10px) scale(1.01); filter: blur(4px) }
+  100% { opacity:1; transform: translateY(0) scale(1); filter: blur(0) }
 }
+.hero-content h1{ animation: floatIn 2.4s cubic-bezier(.16,.8,.25,1) both }
+.hero-content p{  animation: floatIn 2.4s cubic-bezier(.16,.8,.25,1) .3s both }
+.hero-content .cta-row{ animation: floatIn 3s cubic-bezier(.16,.8,.25,1) .45s both }
 
-/* Apply animations with staggered timing */
-.hero-content h1 {
-  animation: floatIn 2.4s cubic-bezier(.16,.8,.25,1) both;
+@media (prefers-reduced-motion: reduce){
+  .hero-content h1,.hero-content p,.hero-content .cta-row{ animation:none !important }
 }
-
-.hero-content p {
-  animation: floatIn 2.4s cubic-bezier(.16,.8,.25,1) .3s both;
-}
-
-.hero-content .cta-row {
-  animation: floatIn 3.0s cubic-bezier(.16,.8,.25,1) .45s both;
-}
-
-/* Accessibility: disable animation for users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hero-content h1,
-  .hero-content p,
-  .hero-content .cta-row {
-    animation: none !important;
-  }
-}
-
 
 /* =========================
    CARDS/SECTIONS
@@ -310,11 +282,8 @@ section{padding:30px 0}
 .card .actions{display:flex; gap:10px; flex-wrap:wrap}
   </style>
 </head>
+<body>
 
-  <!-- =========      ========= -->
-  <!-- ========= HTML ========= -->
-  <!-- =========      ========= -->  
- <body>
   <!-- ========= NAV ========= -->
   <div class="nav" role="navigation" aria-label="Primary">
     <div class="nav-inner">
@@ -336,13 +305,14 @@ section{padding:30px 0}
       </div>
     </div>
   </div>
-    <!-- ========= NAV Mobile ========= -->
+
+  <!-- ========= NAV Mobile ========= -->
   <div class="mobile-panel" id="mnav" aria-hidden="true">
     <a href="#build">Services</a>
     <a href="#mandate">About</a>
     <a href="#join">Contact Us</a>
     <a href="/jmodco/">Jmod Co.</a>
-  
+
     <!-- Mobile-only theme toggle -->
     <button class="theme theme--mobile" id="themeBtnMobile" type="button">
       <span class="dot" aria-hidden="true"></span>
@@ -352,7 +322,7 @@ section{padding:30px 0}
 
   <!-- ========= HERO ========= -->
   <section id="home" class="hero hero--reactor" aria-label="Hero">
-    <!-- Logo layer (one block only) -->
+    <!-- Logo layer -->
     <div class="hero-logo-bg" aria-hidden="true">
       <img class="hero-logo-img theme-dark"  src="/jmodco/assets/Jmod_LabsTP.png" alt="" loading="eager" decoding="async" />
       <img class="hero-logo-img theme-light" src="/jmodco/assets/Jmod_Labs.png"   alt="" loading="eager" decoding="async" />
@@ -556,77 +526,74 @@ section{padding:30px 0}
 
   <div id="footerMount"></div>
 
-  <!-- =========    ========= -->
-  <!-- ========= JS ========= -->
-  <!-- =========    ========= -->  
-<script>
-  // Theme toggle (desktop)
-  const html = document.documentElement;
-  const themeBtn   = document.getElementById('themeBtn');
-  const themeLabel = document.getElementById('themeLabel');
+  <script>
+    // Theme toggle (desktop)
+    const html = document.documentElement;
+    const themeBtn   = document.getElementById('themeBtn');
+    const themeLabel = document.getElementById('themeLabel');
 
-  // Theme toggle (mobile panel)
-  const themeBtnMobile   = document.getElementById('themeBtnMobile');
-  const themeLabelMobile = document.getElementById('themeLabelMobile');
+    // Theme toggle (mobile panel)
+    const themeBtnMobile   = document.getElementById('themeBtnMobile');
+    const themeLabelMobile = document.getElementById('themeLabelMobile');
 
-  // Initialize from persisted value
-  const saved = localStorage.getItem('theme');
-  const applyThemeLabel = (mode) => {
-    if (themeLabel) themeLabel.textContent = mode === 'dark' ? 'Dark' : 'Light';
-    if (themeLabelMobile) themeLabelMobile.textContent = mode === 'dark' ? 'Dark' : 'Light';
-  };
-  if (saved) {
-    html.setAttribute('data-theme', saved);
-    applyThemeLabel(saved);
-  }
-
-  // Shared toggler
-  const toggleTheme = () => {
-    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    applyThemeLabel(next);
-  };
-
-  themeBtn?.addEventListener('click', toggleTheme);
-  themeBtnMobile?.addEventListener('click', toggleTheme);
-
-  // Mobile menu
-  const burger = document.getElementById('burger');
-  const panel  = document.getElementById('mnav');
-
-  const closePanel = () => {
-    panel.classList.remove('open');
-    panel.setAttribute('aria-hidden','true');
-  };
-
-  burger?.addEventListener('click', () => {
-    panel.classList.toggle('open');
-    panel.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
-  });
-
-  panel?.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', closePanel)
-  );
-
-  // Footer loader (fallback inline)
-  (async function mountFooter(){
-    const mount = document.getElementById('footerMount');
-    try{
-      const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
-      if(!r.ok) throw 0;
-      mount.innerHTML = await r.text();
-    }catch(e){
-      mount.innerHTML = `
-        <footer style="border-top:1px solid var(--border);">
-          <div style="max-width:1200px;margin:0 auto;padding:22px 20px;display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);">
-            <div>© ${new Date().getFullYear()} Jmod Co.</div>
-            <div>Built for small business clarity.</div>
-          </div>
-        </footer>`;
+    // Initialize from persisted value
+    const saved = localStorage.getItem('theme');
+    const applyThemeLabel = (mode) => {
+      const txt = mode === 'dark' ? 'Dark' : 'Light';
+      if (themeLabel) themeLabel.textContent = txt;
+      if (themeLabelMobile) themeLabelMobile.textContent = txt;
+    };
+    if (saved) {
+      html.setAttribute('data-theme', saved);
+      applyThemeLabel(saved);
     }
-  })();
-</script>
 
+    // Shared toggler
+    const toggleTheme = () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      applyThemeLabel(next);
+    };
+
+    themeBtn?.addEventListener('click', toggleTheme);
+    themeBtnMobile?.addEventListener('click', toggleTheme);
+
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    const panel  = document.getElementById('mnav');
+
+    const closePanel = () => {
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden','true');
+    };
+
+    burger?.addEventListener('click', () => {
+      panel.classList.toggle('open');
+      panel.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
+    });
+
+    panel?.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', closePanel)
+    );
+
+    // Footer loader (fallback inline)
+    (async function mountFooter(){
+      const mount = document.getElementById('footerMount');
+      try{
+        const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
+        if(!r.ok) throw 0;
+        mount.innerHTML = await r.text();
+      }catch(e){
+        mount.innerHTML = `
+          <footer style="border-top:1px solid var(--border);">
+            <div style="max-width:1200px;margin:0 auto;padding:22px 20px;display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);">
+              <div>© ${new Date().getFullYear()} Jmod Co.</div>
+              <div>Built for small business clarity.</div>
+            </div>
+          </footer>`;
+      }
+    })();
+  </script>
 </body>
 </html>
