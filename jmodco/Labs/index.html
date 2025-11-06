@@ -151,24 +151,36 @@ body{
    ========================= */
 
 /* ===== LABS HERO KNOBS ===== */
+/* ===== LABS HERO KNOBS ===== */
 :root{
-  --hero-height: 740px;            /* desktop hero height */
-  --hero-height-mobile: 560px;     /* mobile hero height */
-  --hero-logo-maxw: 1280px;         /* logo max width on desktop */
-  --hero-logo-maxw-mobile: 94vw;   /* logo max width on mobile */
-  --hero-logo-opacity-dark: .10;   /* transparency in dark theme */
-  --hero-logo-opacity-light: .14;  /* transparency in light theme */
+  --hero-height: 740px;              /* keep your current height */
+  --hero-height-mobile: 560px;
+
+  /* Wider hero than the site max */
+  --hero-maxw: 1680px;               /* <- make hero much wider */
+  --hero-padding-top: 52px;
+  --hero-padding-bottom: 72px;
+
+  /* Logo sizing now follows height (fills the hero vertically) */
+  --hero-logo-height: calc(var(--hero-height) * 0.90);          /* desktop */
+  --hero-logo-height-mobile: calc(var(--hero-height-mobile) * 0.90);
+
+  /* Logo transparency */
+  --hero-logo-opacity-dark: .10;
+  --hero-logo-opacity-light: .14;
 }
+
 /* ===== /KNOBS ===== */
 
 .hero{
   position:relative;
-  max-width: var(--maxw);
+  max-width: var(--hero-maxw);          /* wider than site content */
   margin: 48px auto 24px;
-  padding: 52px 20px 72px;           /* more breathing room */
+  padding: var(--hero-padding-top) 20px var(--hero-padding-bottom);
   text-align:center;
-  min-height: var(--hero-height);    /* make hero taller like Systems */
+  min-height: var(--hero-height);
 }
+
 @media (max-width: 860px){
   .hero{ min-height: var(--hero-height-mobile); padding: 34px 16px 56px; }
 }
@@ -217,13 +229,15 @@ body{
 }
 .hero--reactor .hero-logo-bg::before{
   content:"";
-  width: min(var(--hero-logo-maxw), 90vw);
-  aspect-ratio: 1200 / 600;           /* adjust if your PNG ratio differs */
+  height: var(--hero-logo-height);      /* fill hero height */
+  width: auto;                          /* keep aspect by height */
   background: var(--logo-url) center/contain no-repeat;
   filter: drop-shadow(0 20px 60px rgba(0,0,0,.35));
 }
 @media (max-width: 860px){
-  .hero--reactor .hero-logo-bg::before{ width: var(--hero-logo-maxw-mobile); }
+  .hero--reactor .hero-logo-bg::before{
+    height: var(--hero-logo-height-mobile);
+  }
 }
 
 /* ===== Reactor effect (in front of logo) ===== */
@@ -233,7 +247,7 @@ body{
 }
 .hero--reactor .core{
   width:min(1200px, 95vw);
-  height:380px;
+  height:420px;
   border-radius:999px;
   filter: blur(28px);
   background:
@@ -249,8 +263,8 @@ body{
 }
 .hero--reactor .ring{
   position:absolute;
-  width:120%;
-  height:420px;
+  width:180%;
+  height:460px;
   border-radius:999px;
   border:1px solid color-mix(in oklab, var(--accent) 35%, transparent);
   box-shadow: 0 0 60px color-mix(in oklab, var(--accent) 20%, transparent) inset;
@@ -259,9 +273,25 @@ body{
 }
 @keyframes ringSpin{ to{ transform:rotate(360deg) } }
 .hero--reactor .sparks{
-  position:absolute; left:5%; right:5%; top:10%;
-  height:320px; opacity:.65;
+  position:absolute; left:2%; right:2%; top:10%;
+  height:340px; opacity:.65;
   filter: drop-shadow(0 8px 24px color-mix(in oklab, var(--accent) 45%, transparent));
+}
+/* Diagonal sheen sweep across the hero for a lab-grade vibe */
+.hero--reactor .sheen{
+  position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:
+    linear-gradient(120deg,
+      transparent 35%,
+      color-mix(in oklab, var(--accent) 18%, transparent) 48%,
+      transparent 61%);
+  mix-blend-mode: screen; opacity:.25;
+  transform: translateX(-30%);
+  animation: sheenSweep 8s linear infinite;
+}
+@keyframes sheenSweep{
+  0%   { transform: translateX(-35%) }
+  100% { transform: translateX(35%) }
 }
 
 /* heading legibility */
@@ -345,7 +375,8 @@ section{padding:30px 0}
           <stop offset="100%" stop-color="white" stop-opacity="0"/>
         </radialGradient>
       </defs>
-
+   
+      <div class="sheen" aria-hidden="true"></div>
       <circle cx="10" cy="14" r="0.6" fill="url(#sp)">
         <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite" />
       </circle>
