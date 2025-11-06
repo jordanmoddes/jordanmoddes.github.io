@@ -159,13 +159,17 @@ body{
   --hero-pad-x: 20px;                /* side padding */
   --hero-pad-y: 48px;                /* top/btm padding */
 
-  /* Logo fills the hero vertically (≈1px margins top/btm) */
+  /* Logo fills the hero vertically (~1px margin top/btm) */
   --hero-logo-height: calc(var(--hero-height) - 2px);
   --hero-logo-height-mobile: calc(var(--hero-height-mobile) - 2px);
-  --hero-logo-aspect: 1200 / 600;    /* << keep the PNG ratio here */
 
+  /* Base logo opacities */
   --hero-logo-opacity-dark: .10;
   --hero-logo-opacity-light: .14;
+
+  /* Mobile tuning (a bit stronger so it reads on phones) */
+  --hero-logo-opacity-dark-mobile: .16;
+  --hero-logo-opacity-light-mobile: .20;
 }
 /* ===== /KNOBS ===== */
 
@@ -202,22 +206,25 @@ body{
   margin:6px auto 18px; color:var(--muted); max-width:820px;
 }
 
-/* Logo container (behind motion) */
+/* --- Logo layer (uses <img> so ratio is always correct) --- */
 .hero--reactor .hero-logo-bg{
-  position:absolute; inset:1px 0;         /* ~1px top/bottom margin */
-  z-index:-2; pointer-events:none;
+  position:absolute; left:0; right:0; top:1px; bottom:1px;
+  z-index:-1;                     /* logo ABOVE glow, below text */
   display:grid; place-items:center;
+  pointer-events:none;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Both logo images share sizing; we swap visibility per theme */
 .hero-logo-img{
-  height: var(--hero-logo-height);         /* fills hero vertically */
-  width: auto;                             /* preserve aspect */
-  max-width: 96vw;                         /* safety on small screens */
+  height: var(--hero-logo-height);     /* fills hero vertically */
+  width: auto;                         /* preserve intrinsic ratio */
+  max-width: 98vw;
+  object-fit: contain;
   filter: drop-shadow(0 20px 60px rgba(0,0,0,.35));
-  display: none;                           /* default off; theme turns on */
+  display:none;                        /* default off; theme turns on */
 }
-
 .theme-dark{  opacity: var(--hero-logo-opacity-dark); }
 .theme-light{ opacity: var(--hero-logo-opacity-light); }
 
@@ -225,15 +232,17 @@ body{
 :root:not([data-theme="light"]) .hero-logo-bg .theme-dark{ display:block; }
 :root[data-theme="light"]         .hero-logo-bg .theme-light{ display:block; }
 
+/* Mobile boosts */
 @media (max-width:860px){
-  .hero-logo-img{ height: var(--hero-logo-height-mobile); }
+  .hero-logo-img{ height: var(--hero-logo-height-mobile); max-width:96vw; }
+  .hero-logo-bg .theme-dark{  opacity: var(--hero-logo-opacity-dark-mobile);  filter: brightness(1.08); }
+  :root[data-theme="light"] .hero-logo-bg .theme-light{ opacity: var(--hero-logo-opacity-light-mobile); filter: brightness(1); }
 }
-
 
 /* Motion background (glow / ring / sparks) */
 .hero--reactor{ position:relative; overflow:hidden }
 .hero--reactor .hero-bg{
-  position:absolute; inset:0; z-index:-1;
+  position:absolute; inset:0; z-index:-2;   /* glow BELOW logo */
   display:grid; place-items:center;
 }
 .hero--reactor .core{
@@ -259,6 +268,23 @@ body{
 /* legibility */
 .hero--reactor h1{ text-shadow: 0 2px 24px rgba(0,0,0,.22) }
 [data-theme="light"] .hero--reactor h1{ text-shadow:none }
+
+/* ===== Fancy entrance animation (H1 + stagger) ===== */
+@keyframes revealUp{
+  0%   { opacity:0; transform: translateY(14px) scale(.985); filter: blur(6px); }
+  60%  { opacity:1; transform: translateY(0)   scale(1.000); filter: blur(0); }
+  100% { opacity:1; transform: none; filter: none; }
+}
+.hero-content h1{ animation: revealUp .7s cubic-bezier(.2,.65,.2,1) both; }
+.hero-content p{ animation: revealUp .7s cubic-bezier(.2,.65,.2,1) .08s both; }
+.hero-content .cta-row{ animation: revealUp .7s cubic-bezier(.2,.65,.2,1) .16s both; }
+
+@media (prefers-reduced-motion: reduce){
+  .hero-content h1,
+  .hero-content p,
+  .hero-content .cta-row{ animation: none !important; }
+}
+
 
 
 /* =========================
@@ -317,8 +343,14 @@ section{padding:30px 0}
 
 <!-- ========= HERO ========= -->
 <section id="home" class="hero hero--reactor" aria-label="Hero">
-  <!-- translucent Labs logo -->
-  <div class="hero-logo-bg" aria-hidden="true"></div>
+<!-- Translucent Labs logo — preserves intrinsic ratio -->
+<div class="hero-logo-bg" aria-hidden="true">
+  <!-- Dark theme logo -->
+  <img class="hero-logo hero-logo--dark" src="/jmodco/assets/Jmod_LabsTP.png" alt="Jmod Labs" />
+  <!-- Light theme logo -->
+  <img class="hero-logo hero-logo--light" src="/jmodco/assets/Jmod_Labs.png"  alt="Jmod Labs" />
+</div>
+
 
   <!-- motion background -->
 <div class="hero-logo-bg" aria-hidden="true">
