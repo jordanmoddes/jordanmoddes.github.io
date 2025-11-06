@@ -128,6 +128,27 @@ body{
   justify-content:center;
   margin:8px 4px 2px;
 }
+/* === MOBILE RIGHT-ALIGN FIX === */
+@media (max-width:880px){
+  /* Push the burger (menu button) to the far right */
+  .nav-inner{
+    justify-content: space-between; /* Jmod Labs left, burger right */
+  }
+  .burger{
+    margin-left: auto;              /* forces burger to far right */
+  }
+
+  /* Make the mobile-panel content align right too */
+  .mobile-panel{
+    text-align: right;              /* text in panel right-aligned */
+  }
+  .mobile-panel a{
+    text-align: right;              /* each link right-aligned */
+  }
+  .theme--mobile{
+    justify-content: flex-end;      /* theme button to far right */
+  }
+}
 
 /* faint divider above the toggle */
 .mobile-panel::after{
