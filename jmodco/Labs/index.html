@@ -152,18 +152,19 @@ body{
 
 /* ===== LABS HERO KNOBS ===== */
 :root{
-  --hero-height: 740px;              /* overall hero height (desktop) */
-  --hero-height-mobile: 560px;       /* hero height (mobile) */
+  --hero-height: 740px;              /* desktop hero height */
+  --hero-height-mobile: 560px;       /* mobile hero height */
 
-  --hero-maxw: 1680px;               /* make hero wider than page body */
-  --hero-padding-top: 52px;
-  --hero-padding-bottom: 72px;
+  --hero-maxw: 1680px;               /* wide hero container */
+  --hero-pad-x: 20px;                /* side padding */
+  --hero-pad-y: 48px;                /* top/btm padding */
 
-  /* Logo fills nearly all hero height (1px margin top/bottom) */
+  /* Logo fills the hero vertically (≈1px margins top/btm) */
   --hero-logo-height: calc(var(--hero-height) - 2px);
   --hero-logo-height-mobile: calc(var(--hero-height-mobile) - 2px);
+  --hero-logo-aspect: 1200 / 600;    /* << keep the PNG ratio here */
 
-  --hero-logo-opacity-dark: .10;     /* logo transparency */
+  --hero-logo-opacity-dark: .10;
   --hero-logo-opacity-light: .14;
 }
 /* ===== /KNOBS ===== */
@@ -172,17 +173,24 @@ body{
   position:relative;
   max-width: var(--hero-maxw);
   margin: 48px auto 24px;
-  padding: var(--hero-padding-top) 20px var(--hero-padding-bottom);
+  padding: var(--hero-pad-y) var(--hero-pad-x);
   min-height: var(--hero-height);
+
+  /* Center content like Systems */
+  display:grid;
+  place-items:center;    /* centers hero-content block */
 }
 @media (max-width:860px){
-  .hero{ min-height: var(--hero-height-mobile); padding: 34px 16px 56px; }
+  .hero{
+    min-height: var(--hero-height-mobile);
+    padding: 34px 16px 56px;
+  }
 }
 
-/* center the text like Systems and keep above backgrounds */
+/* Centered content block */
 .hero-content{
   position:relative; z-index:2;
-  max-width: 980px; margin: 0 auto;
+  max-width: 980px; width:100%;
   text-align:center;
 }
 .hero-content h1{
@@ -196,10 +204,10 @@ body{
 
 /* LOGO layer (behind motion) */
 .hero--reactor .hero-logo-bg{
-  position:absolute; left:0; right:0; top:1px; bottom:1px;   /* ~1px margins */
+  position:absolute; left:0; right:0; top:1px; bottom:1px;
   z-index:-2; pointer-events:none;
   display:grid; place-items:center;
-  --logo-url: url('/jmodco/assets/Jmod_LabsTP.png');          /* default: dark */
+  --logo-url: url('/jmodco/assets/Jmod_LabsTP.png');   /* default: dark */
   opacity: var(--hero-logo-opacity-dark);
 }
 [data-theme="light"] .hero--reactor .hero-logo-bg{
@@ -208,19 +216,23 @@ body{
 }
 .hero--reactor .hero-logo-bg::before{
   content:"";
-  height: var(--hero-logo-height);        /* fill hero height (auto width) */
-  width:auto;
+  height: var(--hero-logo-height);         /* fill hero height */
+  aspect-ratio: var(--hero-logo-aspect);   /* <<< critical: gives width */
+  width: auto;
   background: var(--logo-url) center/contain no-repeat;
   filter: drop-shadow(0 20px 60px rgba(0,0,0,.35));
 }
 @media (max-width:860px){
-  .hero--reactor .hero-logo-bg::before{ height: var(--hero-logo-height-mobile); }
+  .hero--reactor .hero-logo-bg::before{
+    height: var(--hero-logo-height-mobile);
+  }
 }
 
-/* MOTION background (your existing reactor bits can stay) */
+/* Motion background (glow / ring / sparks) */
 .hero--reactor{ position:relative; overflow:hidden }
 .hero--reactor .hero-bg{
-  position:absolute; inset:0; z-index:-1; display:grid; place-items:center;
+  position:absolute; inset:0; z-index:-1;
+  display:grid; place-items:center;
 }
 .hero--reactor .core{
   width:min(1250px, 96vw); height:420px; border-radius:999px; filter:blur(28px);
@@ -245,6 +257,7 @@ body{
 /* legibility */
 .hero--reactor h1{ text-shadow: 0 2px 24px rgba(0,0,0,.22) }
 [data-theme="light"] .hero--reactor h1{ text-shadow:none }
+
 
 /* =========================
    CARDS/SECTIONS (kept from your working page)
@@ -294,7 +307,6 @@ section{padding:30px 0}
     </div>
   </div>
   <div class="mobile-panel" id="mnav" aria-hidden="true">
-    <a href="#home">Home</a>
     <a href="#build">Services</a>
     <a href="#mandate">About</a>
     <a href="#join">Contact Us</a>
@@ -303,12 +315,10 @@ section{padding:30px 0}
 
 <!-- ========= HERO ========= -->
 <section id="home" class="hero hero--reactor" aria-label="Hero">
-  <!-- (1) Large translucent LOGO behind motion -->
-  <!-- DARK  : /jmodco/assets/Jmod_LabsTP.png
-       LIGHT : /jmodco/assets/Jmod_Labs.png -->
+  <!-- translucent Labs logo -->
   <div class="hero-logo-bg" aria-hidden="true"></div>
 
-  <!-- (2) Motion background (glow/ring/sparks) -->
+  <!-- motion background -->
   <div class="hero-bg" aria-hidden="true">
     <div class="ring"></div>
     <div class="core"></div>
@@ -319,28 +329,16 @@ section{padding:30px 0}
           <stop offset="100%" stop-color="white" stop-opacity="0"/>
         </radialGradient>
       </defs>
-      <circle cx="10" cy="14" r="0.6" fill="url(#sp)">
-        <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="28" cy="8" r="0.5" fill="url(#sp)">
-        <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.2s" begin="-.8s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="44" cy="18" r="0.5" fill="url(#sp)">
-        <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" begin="-1.2s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="62" cy="6" r="0.55" fill="url(#sp)">
-        <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.6s" begin="-.4s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="78" cy="20" r="0.5" fill="url(#sp)">
-        <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" begin="-.6s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="92" cy="12" r="0.55" fill="url(#sp)">
-        <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.0s" begin="-1.4s" repeatCount="indefinite" />
-      </circle>
+      <circle cx="10" cy="14" r="0.6" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite"/></circle>
+      <circle cx="28" cy="8"  r="0.5" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.2s" begin="-.8s"  repeatCount="indefinite"/></circle>
+      <circle cx="44" cy="18" r="0.5" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" begin="-1.2s" repeatCount="indefinite"/></circle>
+      <circle cx="62" cy="6"  r="0.55" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.6s" begin="-.4s"  repeatCount="indefinite"/></circle>
+      <circle cx="78" cy="20" r="0.5" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" begin="-.6s"  repeatCount="indefinite"/></circle>
+      <circle cx="92" cy="12" r="0.55" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.0s" begin="-1.4s" repeatCount="indefinite"/></circle>
     </svg>
   </div>
 
-  <!-- (3) Centered content -->
+  <!-- centered content -->
   <div class="hero-content">
     <h1>Engineering tomorrow’s systems — today.</h1>
     <p>Jmod Labs prototypes the engines, automations, and AI that the rest of the company runs on.
@@ -351,8 +349,6 @@ section{padding:30px 0}
     </div>
   </div>
 </section>
-
-
 
   <!-- ===== Mandate ===== -->
   <section id="mandate">
