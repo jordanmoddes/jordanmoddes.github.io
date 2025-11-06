@@ -189,6 +189,11 @@ section{padding:36px 20px}
 .card p{color:#d2dcf4; margin:8px 0 12px}
 .card .actions{display:flex; gap:10px; flex-wrap:wrap}
 
+/* ===== Pills (Tech stack line) ===== */
+.tech{max-width:var(--maxw); margin:0 auto; display:flex; flex-wrap:wrap; gap:10px}
+.pill{padding:8px 12px; border-radius:999px; border:1px solid var(--border); background:#121727; color:#d9e4ff; font-size:.85rem}
+.pill.silver{background:linear-gradient(180deg,#1a2033,#151a2a)}
+
 /* ====== MOBILE LAYOUT FIXES ====== */
 @media (max-width: 860px){
   /* header */
@@ -278,20 +283,21 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
     </svg>
   </div>
 
-  <!-- ===== Header ===== -->
+  <!-- ===== Header (updated order + Jmod Co. link) ===== -->
   <header>
     <div class="bar">
-      <div class="brand"><div class="t1">Jmod Labs</div></div>
+      <div class="brand"><a class="t1" href="/jmodco/Labs/">Jmod Labs</a></div>
 
       <!-- desktop nav -->
       <nav aria-label="Primary">
-        <a href="#experiments">Experiments</a>
         <a href="#mandate">Mandate</a>
         <a href="#build">Build</a>
+        <a href="#experiments">Experiments</a>
         <a href="#learn">AI Learning</a>
         <a href="#smb">SMB Value</a>
         <a href="#tech">Tech</a>
         <a href="#join">Join</a>
+        <a href="/jmodco/">Jmod Co.</a>
       </nav>
 
       <!-- mobile toggle -->
@@ -302,17 +308,18 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
 
     <!-- mobile panel -->
     <div id="mnav" class="nav-panel" aria-hidden="true">
-      <a href="#experiments">Experiments</a>
       <a href="#mandate">Mandate</a>
       <a href="#build">Build</a>
+      <a href="#experiments">Experiments</a>
       <a href="#learn">AI Learning</a>
       <a href="#smb">SMB Value</a>
       <a href="#tech">Tech</a>
       <a href="#join">Join</a>
+      <a href="/jmodco/">Jmod Co.</a>
     </div>
   </header>
 
-  <!-- ===== HERO ===== -->
+  <!-- ===== HERO (Labs version, Systems-style) ===== -->
   <section class="hero" aria-label="Hero">
     <div class="hero-card hero-left">
       <div class="img-slot" id="heroLogo">
@@ -320,12 +327,12 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
       </div>
     </div>
     <div class="hero-card hero-right">
-      <div class="tag">The Innovation Core of <strong>Jmod Co.</strong></div>
-      <h1>Engineering tomorrow’s systems — today.</h1>
-      <p>Explore public highlights. Deeper demos and docs require sign-in. All divisions leverage the Labs knowledge base — continuously learning and improving.</p>
+      <div class="tag">EXPERIMENTATION • DISCOVERY • ACCELERATION</div>
+      <h1>Building the R&amp;D engine of Jmod Co.</h1>
+      <p>Jmod Labs prototypes AI workflows, rapid tools, and proof-of-concepts that graduate into Jmod Systems and Media.</p>
       <div class="cta-row">
-        <button class="btn primary" onclick="document.getElementById('signin').showModal()">Sign in for access</button>
-        <a class="btn" href="#experiments">View active experiments</a>
+        <a class="btn primary" href="#experiments">See Experiments</a>
+        <a class="btn" href="#mandate">Our Mandate</a>
       </div>
     </div>
   </section>
@@ -471,7 +478,7 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
   <section id="smb">
     <div class="section-title wrap">
       <h2>Built for Small & Medium Businesses</h2>
-    <div class="muted">Automate busywork. Focus on revenue.</div>
+      <div class="muted">Automate busywork. Focus on revenue.</div>
     </div>
     <div class="grid">
       <article class="card sm-4">
@@ -503,10 +510,10 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
       <span class="pill">Python</span>
       <span class="pill">Cloudflare Workers</span>
       <span class="pill">GitHub Pages</span>
-      <span class="pill pill silver">AI Embeddings & Vectors</span>
+      <span class="pill pill silver">AI Embeddings &amp; Vectors</span>
       <span class="pill">Postgres/SQLite</span>
       <span class="pill">Excel/VBA bridges</span>
-      <span class="pill">REST & Webhooks</span>
+      <span class="pill">REST &amp; Webhooks</span>
     </div>
   </section>
 
@@ -533,7 +540,7 @@ dialog::backdrop{background:radial-gradient(800px 600px at 50% 50%, rgba(87,230,
   <dialog id="signin" aria-labelledby="signin-title">
     <div class="modal">
       <h3 id="signin-title">Sign in to Jmod Labs</h3>
-      <p>Public can browse; detailed demos & docs require an account.</p>
+      <p>Public can browse; detailed demos &amp; docs require an account.</p>
     </div>
     <form class="modal-body" method="dialog" onsubmit="return false;">
       <div class="field"><label>Email</label><input type="email" placeholder="you@email.com" required /></div>
