@@ -147,18 +147,35 @@ body{
 }
 
 /* =========================
-   HERO — Labs (reactor, no Systems lines)
+   HERO — Labs (bigger + logo bg)
    ========================= */
+
+/* ===== LABS HERO KNOBS ===== */
+:root{
+  --hero-height: 560px;            /* desktop hero height */
+  --hero-height-mobile: 440px;     /* mobile hero height */
+  --hero-logo-maxw: 980px;         /* logo max width on desktop */
+  --hero-logo-maxw-mobile: 82vw;   /* logo max width on mobile */
+  --hero-logo-opacity-dark: .10;   /* transparency in dark theme */
+  --hero-logo-opacity-light: .14;  /* transparency in light theme */
+}
+/* ===== /KNOBS ===== */
+
 .hero{
   position:relative;
   max-width: var(--maxw);
   margin: 48px auto 24px;
-  padding: 40px 20px 56px;
+  padding: 52px 20px 72px;           /* more breathing room */
   text-align:center;
+  min-height: var(--hero-height);    /* make hero taller like Systems */
 }
+@media (max-width: 860px){
+  .hero{ min-height: var(--hero-height-mobile); padding: 34px 16px 56px; }
+}
+
 .hero h1{
   margin:0 0 12px;
-  font-size: clamp(28px, 5.6vw, 52px);
+  font-size: clamp(30px, 6vw, 56px);
   line-height:1.1;
 }
 .hero p{
@@ -183,14 +200,37 @@ body{
   color: var(--ink);
 }
 
-/* ===== Labs-only reactor background (no lines) ===== */
+/* ===== Background LOGO layer (behind reactor) =====
+   DARK  : /jmodco/assets/Jmod_LabsTP.png
+   LIGHT : /jmodco/assets/Jmod_Labs.png
+*/
 .hero--reactor{ position:relative; overflow:hidden }
-.hero--reactor .hero-bg{
-  position:absolute; inset:0; z-index:-1;
-  display:grid; place-items:center;
+.hero--reactor .hero-logo-bg{
+  position:absolute; inset:0; z-index:-2;         /* sits behind reactor */
+  display:grid; place-items:center; pointer-events:none;
+  --logo-url: url('/jmodco/assets/Jmod_LabsTP.png'); /* default dark */
+  opacity: var(--hero-logo-opacity-dark);
+}
+[data-theme="light"] .hero--reactor .hero-logo-bg{
+  --logo-url: url('/jmodco/assets/Jmod_Labs.png');
+  opacity: var(--hero-logo-opacity-light);
+}
+.hero--reactor .hero-logo-bg::before{
+  content:"";
+  width: min(var(--hero-logo-maxw), 90vw);
+  aspect-ratio: 1200 / 600;           /* adjust if your PNG ratio differs */
+  background: var(--logo-url) center/contain no-repeat;
+  filter: drop-shadow(0 20px 60px rgba(0,0,0,.35));
+}
+@media (max-width: 860px){
+  .hero--reactor .hero-logo-bg::before{ width: var(--hero-logo-maxw-mobile); }
 }
 
-/* soft pulsing core glow */
+/* ===== Reactor effect (in front of logo) ===== */
+.hero--reactor .hero-bg{
+  position:absolute; inset:0; z-index:-1;          /* above logo */
+  display:grid; place-items:center;
+}
 .hero--reactor .core{
   width:min(900px, 90vw);
   height:380px;
@@ -207,8 +247,6 @@ body{
   0%,100%{ transform:scale(0.96); opacity:.55 }
   50%{ transform:scale(1.02); opacity:.75 }
 }
-
-/* faint rotating ring */
 .hero--reactor .ring{
   position:absolute;
   width:120%;
@@ -220,15 +258,13 @@ body{
   animation: ringSpin 40s linear infinite;
 }
 @keyframes ringSpin{ to{ transform:rotate(360deg) } }
-
-/* tiny sparkles */
 .hero--reactor .sparks{
   position:absolute; left:5%; right:5%; top:10%;
   height:320px; opacity:.65;
   filter: drop-shadow(0 8px 24px color-mix(in oklab, var(--accent) 45%, transparent));
 }
 
-/* keep heading crisp across themes */
+/* heading legibility */
 .hero--reactor h1{ text-shadow: 0 2px 24px rgba(0,0,0,.22) }
 [data-theme="light"] .hero--reactor h1{ text-shadow:none }
 
@@ -289,49 +325,60 @@ section{padding:30px 0}
     <a href="/jmodco/">Jmod Co.</a>
   </div>
 
-  <!-- ========= HERO ========= -->
-  <section id="home" class="hero hero--reactor" aria-label="Hero">
-    <!-- motion inside HERO -->
-    <div class="hero-bg" aria-hidden="true">
-      <div class="ring"></div>
-      <div class="core"></div>
-      <svg class="sparks" viewBox="0 0 100 40" preserveAspectRatio="none">
-        <defs>
-          <radialGradient id="sp" cx="50%" cy="50%">
-            <stop offset="0%" stop-color="white" stop-opacity="1"/>
-            <stop offset="100%" stop-color="white" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <circle cx="10" cy="14" r="0.6" fill="url(#sp)">
-          <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="28" cy="8" r="0.5" fill="url(#sp)">
-          <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.2s" begin="-.8s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="44" cy="18" r="0.5" fill="url(#sp)">
-          <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" begin="-1.2s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="62" cy="6" r="0.55" fill="url(#sp)">
-          <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.6s" begin="-.4s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="78" cy="20" r="0.5" fill="url(#sp)">
-          <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" begin="-.6s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="92" cy="12" r="0.55" fill="url(#sp)">
-          <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.0s" begin="-1.4s" repeatCount="indefinite" />
-        </circle>
-      </svg>
-    </div>
+<!-- ========= HERO ========= -->
+<section id="home" class="hero hero--reactor" aria-label="Hero">
 
-      <!-- Hero Text -->
-    <h1>Building the digital nervous system of Jmod Co.</h1>
-    <p>Jmod Labs prototypes the engines, automations, and AI that the rest of the company runs on. What works here
-       graduates into Systems, Media, Insights, and Legacy.</p>
-    <div class="cta-row">
-      <a class="btn primary" href="#experiments">Explore MODDES™</a>
-      <a class="btn" href="#build">See Integrations</a>
-    </div>
-  </section>
+  <!-- (1) Large translucent logo behind motion -->
+  <!-- Automatically switches:
+       DARK  → /jmodco/assets/Jmod_LabsTP.png
+       LIGHT → /jmodco/assets/Jmod_Labs.png
+       Sizes + opacity knobs live in CSS vars near the top of the hero block -->
+  <div class="hero-logo-bg" aria-hidden="true"></div>
+
+  <!-- (2) Motion background -->
+  <div class="hero-bg" aria-hidden="true">
+    <div class="ring"></div>
+    <div class="core"></div>
+    <svg class="sparks" viewBox="0 0 100 40" preserveAspectRatio="none">
+      <defs>
+        <radialGradient id="sp" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="white" stop-opacity="1"/>
+          <stop offset="100%" stop-color="white" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <circle cx="10" cy="14" r="0.6" fill="url(#sp)">
+        <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="28" cy="8" r="0.5" fill="url(#sp)">
+        <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.2s" begin="-.8s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="44" cy="18" r="0.5" fill="url(#sp)">
+        <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" begin="-1.2s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="62" cy="6" r="0.55" fill="url(#sp)">
+        <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.6s" begin="-.4s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="78" cy="20" r="0.5" fill="url(#sp)">
+        <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" begin="-.6s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="92" cy="12" r="0.55" fill="url(#sp)">
+        <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.0s" begin="-1.4s" repeatCount="indefinite" />
+      </circle>
+    </svg>
+  </div>
+
+  <!-- (3) Hero content -->
+  <h1>Building the digital nervous system of Jmod Co.</h1>
+  <p>Jmod Labs prototypes the engines, automations, and AI that the rest of the company runs on.
+     What works here graduates into Systems, Media, Insights, and Legacy.</p>
+
+  <div class="cta-row">
+    <a class="btn primary" href="#experiments">Explore MODDES™</a>
+    <a class="btn" href="#build">See Integrations</a>
+  </div>
+</section>
+
 
   <!-- ===== Mandate ===== -->
   <section id="mandate">
