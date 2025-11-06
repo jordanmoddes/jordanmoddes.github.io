@@ -67,7 +67,7 @@ body{
   z-index:1000;
 }
 .nav-inner{
-  display:flex; align-items:right; justify-content:space-between;
+  display:flex; align-items:center; justify-content:flex-start;
   padding:10px 14px;
   gap:12px;
 }
@@ -76,10 +76,11 @@ body{
   padding-left:10px;
 }
 
-/* center links */
+/* right links */
 .nav-links{
-  display:flex; align-items:right; gap:28px;
-  list-style:none; margin:0; padding:0;
+  display:flex; align-items:center; gap:28px;
+  list-style:none; margin:0 12px 0 auto; padding:0; 
+  justify-content:flex-end;
 }
 .nav-links a{
   color:var(--ink); text-decoration:none; font-weight:600;
