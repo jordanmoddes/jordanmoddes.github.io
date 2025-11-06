@@ -1,123 +1,272 @@
 <!DOCTYPE html>
-<html lang="en" id="top">
+<html lang="en" id="top" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Jmod Labs — The Innovation Core of Jmod Co.</title>
   <meta name="color-scheme" content="dark light" />
 
-  <!-- Shared nav + hero styles -->
-  <link rel="stylesheet" href="/jmodco/assets/shared/nav.css" />
-  <link rel="stylesheet" href="/jmodco/assets/shared/hero.css" />
-
   <style>
-    /* ===== Site tokens (kept simple; inherits into shared CSS) ===== */
-    :root{
-      --bg:#0a0b0f; --bg2:#0e1017; --ink:#e6ecff; --muted:#c8d2ea;
-      --border:rgba(201,208,221,.18);
-      --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
-      --radius:18px; --gap:18px; --maxw:1200px;
-      --nav-spacer: 86px; /* space below floating nav */
-    }
-    :root[data-theme="light"]{
-      --bg:#f7f9fc; --bg2:#e8eef7; --ink:#0b1020; --muted:#4a566b;
-    }
+/* =========================
+   JMOD LABS — GLOBAL
+   ========================= */
+:root{
+  --header-gap: 16px;
+  --maxw: 1200px;
+  --radius-xl: 24px;
+  --radius: 16px;
 
-    html{scroll-behavior:smooth}
-    body{
-      margin:0; font:16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      color:var(--ink);
-      background: linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow-x:hidden;
-    }
+  /* Theme tokens */
+  --bg:#0b0f14; 
+  --bg2:#0e131a;
+  --panel: #141a22;
+  --ink:#e8edf7;
+  --muted:#a9b4c6;
+  --border: rgba(255,255,255,.12);
+  --accent:#57e6ff;
+  --hot:#ff3df2;
+}
 
-    /* Layout helpers */
-    .spacer{ height: var(--nav-spacer); }
-    .wrap{ max-width:var(--maxw); margin:0 auto; padding:28px 20px; position:relative; z-index:1 }
-    section{ scroll-margin-top: calc(var(--nav-spacer) + 12px) }
+[data-theme="light"]{
+  --bg:#f6f8fb;
+  --bg2:#eef2f8;
+  --panel:#ffffff;
+  --ink:#0c1117;
+  --muted:#556070;
+  --border: rgba(0,0,0,.12);
+  --accent:#0078d4;
+  --hot:#d600a9;
+}
 
-    /* Cards / grid */
-    .section-title{max-width:var(--maxw); margin:0 auto 16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px}
-    .section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
-    .muted{ color: var(--muted) }
+*{box-sizing:border-box}
+html,body{height:100%}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font:16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 800px at 20% -10%, rgba(255,61,242,.06), transparent 60%),
+    radial-gradient(1200px 800px at 120% 10%, rgba(87,230,255,.07), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+  overflow-x:hidden;
+  padding-top: 92px; /* create room for floating nav */
+}
 
-    .grid{ max-width:var(--maxw); margin:0 auto; display:grid; gap:var(--gap); grid-template-columns: repeat(12, 1fr) }
-    .card{ grid-column: span 12; background: color-mix(in oklab, var(--bg2) 10%, #0f131c); border:1px solid var(--border);
-      border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); color:#e7eeff }
-    :root[data-theme="light"] .card{ color:#0f1320; background:#ffffff }
+/* =========================
+   FLOATING NAV (like screenshot)
+   ========================= */
+.nav{
+  position:fixed; top:16px; left:50%; transform:translateX(-50%);
+  width:min(1200px,94vw);
+  background: color-mix(in oklab, var(--panel) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border:1px solid var(--border);
+  box-shadow: 0 8px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+  border-radius: 999px;
+  z-index:1000;
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 14px;
+  gap:12px;
+}
+.brand{
+  font-weight:700;
+  padding-left:10px;
+}
 
-    @media (min-width:720px){
-      .card.sm-6{grid-column: span 6} .card.sm-4{grid-column: span 4}
-    }
-    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px }
-    .chip{ font-size:.75rem; background:#1a1f2d; border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:#d2dcf4 }
-    :root[data-theme="light"] .chip{ background:#eef2fb; color:#2b3650 }
+/* center links */
+.nav-links{
+  display:flex; align-items:center; gap:28px;
+  list-style:none; margin:0; padding:0;
+}
+.nav-links a{
+  color:var(--ink); text-decoration:none; font-weight:600;
+  opacity:.9;
+}
+.nav-links a:hover{ opacity:1 }
 
-    .actions{ display:flex; gap:10px; flex-wrap:wrap }
-    .btn, .primary, .ghost{ text-decoration:none }
+/* right cluster: Jmod Co. + theme toggle */
+.nav-right{
+  display:flex; align-items:center; gap:14px;
+}
 
-    /* Simple tech line pills (optional) */
-    .techline{ max-width:var(--maxw); margin:0 auto; padding:10px 20px; color:var(--muted) }
+/* theme toggle with purple dot */
+.theme{
+  display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
+  border:1px solid var(--border); border-radius:999px;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  cursor:pointer; user-select:none;
+}
+.theme .dot{
+  width:12px; height:12px; border-radius:999px;
+  background:#7a52ff;
+  box-shadow:0 0 0 2px rgba(122,82,255,.25);
+}
+
+/* mobile: hamburger */
+.burger{
+  display:none;
+  width:40px; height:40px; border-radius:12px;
+  border:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  align-items:center; justify-content:center;
+}
+.burger span{
+  width:18px; height:2px; background:var(--ink); position:relative; display:block; opacity:.9;
+}
+.burger span::before,.burger span::after{
+  content:""; position:absolute; left:0; width:18px; height:2px; background:var(--ink); opacity:.9;
+}
+.burger span::before{ top:-6px } .burger span::after{ top:6px }
+
+/* slide-down mobile panel */
+.mobile-panel{
+  position:fixed; top:72px; left:50%; transform:translateX(-50%);
+  width:min(1200px,94vw);
+  background: color-mix(in oklab, var(--panel) 96%, transparent);
+  border:1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(0,0,0,.45);
+  border-radius: 18px;
+  padding:10px 14px;
+  display:none; z-index:999;
+}
+.mobile-panel.open{ display:block }
+.mobile-panel a{
+  display:block; padding:12px 10px; border-radius:10px; color:var(--ink); text-decoration:none; font-weight:600;
+}
+.mobile-panel a:active{ background:rgba(255,255,255,.06) }
+
+/* responsive behavior */
+@media (max-width: 880px){
+  .nav-links{ display:none }
+  .burger{ display:inline-flex }
+}
+
+/* =========================
+   HERO (like Systems screenshot)
+   ========================= */
+.hero{
+  position:relative;
+  max-width: var(--maxw);
+  margin: 48px auto 24px;
+  padding: 40px 20px 56px;
+  text-align:center;
+}
+.hero h1{
+  margin:0 0 12px;
+  font-size: clamp(28px, 5.6vw, 52px);
+  line-height:1.1;
+}
+.hero p{
+  margin: 6px auto 18px;
+  color: var(--muted);
+  max-width: 820px;
+}
+.cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap }
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:12px 16px; border-radius:12px; border:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  color:var(--ink); cursor:pointer;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
+  text-decoration:none; font-weight:600;
+}
+.btn.primary{
+  background:
+    radial-gradient(280px 120px at 20% 20%, color-mix(in oklab, var(--hot) 35%, transparent), transparent 60%),
+    radial-gradient(280px 120px at 80% 20%, color-mix(in oklab, var(--accent) 35%, transparent), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+}
+
+/* flowing aqua lines */
+.hero-lines{
+  position:absolute; inset:0; pointer-events:none; z-index:-1;
+  opacity:.9;
+}
+.hero svg path{
+  fill:none; stroke: var(--accent); stroke-width:3;
+  filter: drop-shadow(0 8px 24px rgba(87,230,255,.35));
+}
+.hero svg path:nth-child(1){ opacity:.8 }
+.hero svg path:nth-child(2){ opacity:.7 }
+.hero svg path:nth-child(3){ opacity:.7 }
+
+/* =========================
+   CARDS/SECTIONS (kept from your working page)
+   ========================= */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+section{padding:30px 0}
+.section-title{max-width:var(--maxw); margin:0 auto 16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px}
+.section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
+.muted{color:var(--muted)}
+.grid{max-width:var(--maxw); margin:0 auto; display:grid; gap:18px; grid-template-columns: repeat(12, 1fr)}
+.card{grid-column: span 12; background:color-mix(in oklab, var(--panel) 92%, transparent); border:1px solid var(--border);
+  border-radius:var(--radius); padding:18px; position:relative; overflow:hidden; color:var(--ink)}
+@media (min-width:720px){
+  .card.sm-6{grid-column: span 6} .card.sm-4{grid-column: span 4} .card.sm-3{grid-column: span 3}
+}
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+.chip{font-size:.75rem; background:rgba(255,255,255,.05); border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:var(--ink)}
+.status.beta{background: linear-gradient(90deg, rgba(87,230,255,.18), rgba(87,230,255,.08))}
+.status.soon{background: linear-gradient(90deg, rgba(201,208,221,.22), rgba(201,208,221,.08)); color:var(--ink)}
+.redact{position:relative; color:transparent; text-shadow:none}
+.redact::after{content:"████████████"; letter-spacing:.08em; color:#e6e6e6; background:#000; padding:0 .25rem; border-radius:4px}
+.card p{color:var(--ink); opacity:.88; margin:8px 0 12px}
+.card .actions{display:flex; gap:10px; flex-wrap:wrap}
   </style>
 </head>
 <body>
 
-  <!-- Floating Navbar (shared styles/JS) -->
-  <nav class="nav" role="navigation" aria-label="Primary">
-    <div class="brand"><span class="title">Jmod Labs</span></div>
+  <!-- ========= NAV ========= -->
+  <div class="nav" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+      <div class="brand">Jmod Labs</div>
 
-    <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Toggle menu">☰</button>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#build">Services</a></li>
+        <li><a href="#mandate">About</a></li>
+        <li><a href="#join">Contact Us</a></li>
+        <li><a href="/jmodco/">Jmod Co.</a></li>
+      </ul>
 
-    <div id="menu" class="navlinks">
-      <a href="#mandate">Mandate</a>
-      <a href="#build">Build</a>
-      <a href="#experiments">Experiments</a>
-      <a href="#learn">AI Learning</a>
-      <a href="#smb">SMB Value</a>
-      <a href="#tech">Tech</a>
-      <a href="#join">Join</a>
-
-      <!-- Always last two -->
-      <a href="/jmodco/">Jmod Co.</a>
-      <label class="toggle" title="Toggle theme">
-        <input id="themeToggle" type="checkbox" />
-        <span class="dot"></span>
-        <span>Dark</span>
-      </label>
+      <div class="nav-right">
+        <a href="/jmodco/" class="btn" style="padding:8px 12px;border-radius:999px;">Jmod Co.</a>
+        <button class="theme" id="themeBtn" type="button">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="themeLabel">Dark</span>
+        </button>
+        <button class="burger" id="burger" aria-label="Open menu"><span></span></button>
+      </div>
     </div>
-  </nav>
+  </div>
+  <div class="mobile-panel" id="mnav" aria-hidden="true">
+    <a href="#home">Home</a>
+    <a href="#build">Services</a>
+    <a href="#mandate">About</a>
+    <a href="#join">Contact Us</a>
+    <a href="/jmodco/">Jmod Co.</a>
+  </div>
 
-  <!-- Space under floating nav -->
-  <div class="spacer" aria-hidden="true"></div>
-
-  <!-- ===== HERO (shared component; centered; faint logo; animated pipes) ===== -->
-  <section class="hero"
-    style="
-      --hero-mark-dark:url('/jmodco/assets/Jmod_LabsTP.png');
-      --hero-mark-light:url('/jmodco/assets/Jmod_Labs.png');
-    ">
-    <div class="pipes" aria-hidden="true">
-      <svg viewBox="0 0 1600 800" preserveAspectRatio="none">
-        <path id="pipe1" class="pipe" d="M 50 200 C 350 200, 500 350, 800 400 S 1250 450, 1550 320" />
-        <path id="pipe2" class="pipe" d="M 50 500 C 300 520, 520 520, 800 420 S 1250 380, 1550 500" />
-        <path id="pipe3" class="pipe" d="M 1550 200 C 1250 250, 1100 350, 800 400 S 350 430, 50 320" />
-        <circle class="packet" id="pkt1" r="7" />
-        <circle class="packet" id="pkt2" r="7" />
-        <circle class="packet" id="pkt3" r="7" />
+  <!-- ========= HERO ========= -->
+  <section id="home" class="hero" aria-label="Hero">
+    <!-- flowing lines behind headline -->
+    <div class="hero-lines">
+      <svg width="100%" height="320" viewBox="0 0 1600 320" preserveAspectRatio="none">
+        <path d="M40,80 C380,40 880,140 1540,60"/>
+        <path d="M40,160 C520,200 1060,80 1540,180"/>
+        <path d="M40,240 C520,300 1120,140 1540,260"/>
       </svg>
     </div>
 
-    <div class="hero-inner">
-      <div class="eyebrow">Experimentation • Discovery • Acceleration</div>
-      <h1>Building the R&amp;D engine of Jmod Co.</h1>
-      <p class="sub">
-        Jmod Labs prototypes AI workflows, rapid tools, and proof-of-concepts that graduate into
-        Jmod Systems and Media — powered by the MODDES™ Core Engine.
-      </p>
-      <div class="hero-actions">
-        <a class="primary" href="#experiments">See Experiments</a>
-        <a class="ghost" href="#mandate">Our Mandate</a>
-      </div>
+    <h1>Building the digital nervous system of Jmod Co.</h1>
+    <p>Jmod Labs prototypes the engines, automations, and AI that the rest of the company runs on. What works here
+       graduates into Systems, Media, Insights, and Legacy.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#experiments">Explore MODDES™</a>
+      <a class="btn" href="#build">See Integrations</a>
     </div>
   </section>
 
@@ -136,8 +285,7 @@
       <article class="card sm-6">
         <div class="chips"><span class="chip">Primary Role</span></div>
         <h3>Design, test, and prototype</h3>
-        <p>AI tools, data pipelines, and automation frameworks. Develop internal engines (e.g., the
-          <strong>MODDES™ Core Engine</strong>) for data translation, optimization, and cross-system learning.</p>
+        <p>AI tools, data pipelines, and automation frameworks. Develop internal engines (e.g., the <strong>MODDES™ Core Engine</strong>) for data translation, optimization, and cross-system learning. Trials here later scale into deployable business products.</p>
       </article>
       <article class="card sm-12">
         <div class="chips"><span class="chip">Focus Areas</span></div>
@@ -161,7 +309,7 @@
       <article class="card sm-4">
         <div class="chips"><span class="chip">Apps</span><span class="chip">Frontend + Mobile</span></div>
         <h3>Applied UI + App Scaffolds</h3>
-        <p>Auth stubs, form engines, state patterns, and deployment recipes so features ship faster.</p>
+        <p>Authentication stubs, form engines, state patterns, and deployment recipes so features ship faster.</p>
       </article>
       <article class="card sm-4">
         <div class="chips"><span class="chip">Automation</span><span class="chip">APIs</span></div>
@@ -176,7 +324,7 @@
     </div>
   </section>
 
-  <!-- ===== Experiments ===== -->
+  <!-- ===== Active Experiments ===== -->
   <section id="experiments">
     <div class="section-title wrap">
       <h2>Active Experiments</h2>
@@ -185,28 +333,59 @@
     <div class="grid">
       <article class="card sm-4">
         <div class="chips">
-          <span class="chip">Pilot</span>
+          <span class="chip status beta">Pilot</span>
           <span class="chip">Labs → Insights</span>
-          <span class="chip">Client: ████████████</span>
+          <span class="chip">Client: <span class="redact">Lisnup Installations</span></span>
         </div>
         <h3>AI Quote Builder (Installations)</h3>
         <p>Automates quoting for remote starts, tint, and electronics. Parts lookup, pricing rules, and clean PDF outputs.</p>
+        <div class="actions">
+          <a class="btn" href="#experiments">Preview</a>
+          <a class="btn" href="#experiments">Docs</a>
+        </div>
       </article>
+
       <article class="card sm-4">
-        <div class="chips"><span class="chip">Coming Soon</span><span class="chip">Labs → Media</span></div>
+        <div class="chips"><span class="chip status soon">Coming Soon</span><span class="chip">Labs → Media</span></div>
         <h3>Jmod Media App</h3>
         <p>AI-driven planner + automation: plan → generate → schedule. Feedback improves tone and performance.</p>
+        <div class="actions">
+          <a class="btn" href="#experiments">Roadmap</a>
+          <a class="btn" href="#experiments">Beta Waitlist</a>
+        </div>
       </article>
+
       <article class="card sm-4">
-        <div class="chips"><span class="chip">Coming Soon</span><span class="chip">Labs → Legacy</span></div>
+        <div class="chips"><span class="chip status soon">Coming Soon</span><span class="chip">Labs → Legacy</span></div>
         <h3>Legacy / Haven App</h3>
-        <p>Engagement &amp; well-being for seniors: daily prompts, family touchpoints, positive habit loops.</p>
+        <p>Engagement & well-being for seniors: daily prompts, family touchpoints, positive habit loops. Licensing potential for care centers.</p>
+        <div class="actions">
+          <a class="btn" href="#experiments">Concept Brief</a>
+          <a class="btn" href="#experiments">Partner Interest</a>
+        </div>
+      </article>
+
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Metrics</span></div>
+        <h3>Pipeline Stats</h3>
+        <p class="muted">Hook up your internal JSONs and replace these with live counts.</p>
+        <div class="actions">
+          <span class="btn">Active Experiments: 3</span>
+          <span class="btn">Tools Built: 12</span>
+          <span class="btn">Transfers: 5</span>
+        </div>
+      </article>
+
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">How it works</span></div>
+        <h3>Internal Licensing Flow</h3>
+        <p>“Transfers” = completed hand-offs from Labs to a Jmod division (e.g., Labs → Media). After transfer, the division licenses to customers; Labs keeps learning via feedback.</p>
       </article>
     </div>
   </section>
 
-  <!-- ===== AI Learning ===== -->
-  <section id="learn">
+  <!-- ===== Learning ===== -->
+  <section id="mandate-more">
     <div class="section-title wrap">
       <h2>How the AI learns</h2>
       <div class="muted">Feedback → signals → better outcomes</div>
@@ -219,33 +398,8 @@
       </article>
       <article class="card sm-6">
         <div class="chips"><span class="chip">Knowledge</span></div>
-        <h3>Structured &amp; searchable</h3>
+        <h3>Structured & searchable</h3>
         <p>Docs and patterns live in the Labs knowledge base. Everything is vector-searchable and versioned for reuse.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===== SMB Value ===== -->
-  <section id="smb">
-    <div class="section-title wrap">
-      <h2>Built for Small &amp; Medium Businesses</h2>
-      <div class="muted">Automate busywork. Focus on revenue.</div>
-    </div>
-    <div class="grid">
-      <article class="card sm-4">
-        <div class="chips"><span class="chip">Quoting</span></div>
-        <h3>Instant, accurate quotes</h3>
-        <p>Price rules, parts lookup, and clean PDFs. Less time building quotes, more time closing.</p>
-      </article>
-      <article class="card sm-4">
-        <div class="chips"><span class="chip">Content</span></div>
-        <h3>Marketing on autopilot</h3>
-        <p>Plan → generate → schedule. Keep posts flowing while you’re on jobs.</p>
-      </article>
-      <article class="card sm-4">
-        <div class="chips"><span class="chip">Ops</span></div>
-        <h3>From clipboard to dashboard</h3>
-        <p>Digitize intake, reconcile inventory, push status updates. No more hunting through texts and spreadsheets.</p>
       </article>
     </div>
   </section>
@@ -256,9 +410,15 @@
       <h2>Current Tech Stack</h2>
       <div class="muted">We update tools as Labs evolves.</div>
     </div>
-    <div class="techline">
-      JavaScript/TypeScript • Python • Cloudflare Workers • GitHub Pages • OpenAI Embeddings &amp; Vectors •
-      SQLite/Postgres • REST/Webhooks • Excel/VBA Bridges
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:10px">
+      <span class="chip">JavaScript/TypeScript</span>
+      <span class="chip">Python</span>
+      <span class="chip">Cloudflare Workers</span>
+      <span class="chip">GitHub Pages</span>
+      <span class="chip">AI Embeddings & Vectors</span>
+      <span class="chip">Postgres/SQLite</span>
+      <span class="chip">Excel/VBA bridges</span>
+      <span class="chip">REST & Webhooks</span>
     </div>
   </section>
 
@@ -271,19 +431,44 @@
     <div class="grid">
       <article class="card sm-12">
         <p>We’ll soon enable concept submissions and private partner access. For now, sign in to register interest and unlock deeper docs.</p>
+        <div class="actions" style="justify-content:center">
+          <a class="btn primary" href="#join">Sign in / Request access</a>
+        </div>
       </article>
     </div>
   </section>
 
-  <!-- ===== Footer mount (shared file) ===== -->
-  <div id="footerMount" class="wrap"></div>
+  <!-- ===== FOOTER MOUNT (you can keep your shared loader) ===== -->
+  <div id="footerMount"></div>
 
-  <!-- Shared behavior -->
-  <script src="/jmodco/assets/shared/nav.js" defer></script>
-  <script src="/jmodco/assets/shared/hero.js" defer></script>
-
-  <!-- Page JS: footer loader -->
   <script>
+    // ============ Theme toggle =============
+    const html = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    const themeLabel = document.getElementById('themeLabel');
+
+    const saved = localStorage.getItem('theme');
+    if(saved){ html.setAttribute('data-theme', saved); themeLabel.textContent = saved === 'dark' ? 'Dark' : 'Light'; }
+
+    themeBtn?.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      themeLabel.textContent = next === 'dark' ? 'Dark' : 'Light';
+    });
+
+    // ============ Mobile menu =============
+    const burger = document.getElementById('burger');
+    const panel  = document.getElementById('mnav');
+    burger?.addEventListener('click', () => {
+      panel.classList.toggle('open');
+      panel.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
+    });
+    panel?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      panel.classList.remove('open'); panel.setAttribute('aria-hidden','true');
+    }));
+
+    // ============ Shared footer loader (optional) ============
     (async function mountFooter(){
       const mount = document.getElementById('footerMount');
       try{
@@ -291,8 +476,13 @@
         if(!r.ok) throw 0;
         mount.innerHTML = await r.text();
       }catch(e){
-        mount.innerHTML = `<footer style="border-top:1px solid var(--border);text-align:center;padding:16px;color:var(--muted)">
-          © ${new Date().getFullYear()} Jmod Co. — Built for small business clarity.</footer>`;
+        mount.innerHTML = `
+          <footer style="border-top:1px solid var(--border);">
+            <div style="max-width:1200px;margin:0 auto;padding:22px 20px;display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);">
+              <div>© ${new Date().getFullYear()} Jmod Co.</div>
+              <div>Built for small business clarity.</div>
+            </div>
+          </footer>`;
       }
     })();
   </script>
