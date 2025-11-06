@@ -5,91 +5,70 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Jmod Labs — The Innovation Core of Jmod Co.</title>
   <meta name="color-scheme" content="dark light" />
+
+  <!-- Shared nav + hero styles -->
+  <link rel="stylesheet" href="/jmodco/assets/shared/nav.css" />
   <link rel="stylesheet" href="/jmodco/assets/shared/hero.css" />
 
   <style>
-  :root{
-    --bg:#0a0b0f;--bg2:#0e1017;--ink:#e6ecff;--muted:#c8d2ea;--border:rgba(201,208,221,.18);
-    --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
-    --radius:18px;--gap:18px;--maxw:1200px;
-    --header-h:60px;
-  }
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;font:16px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    color:var(--ink);
-    background:linear-gradient(180deg,var(--bg),var(--bg2));
-    overflow-x:hidden;
-    padding-top:var(--header-h);
-  }
-  section{scroll-margin-top:calc(var(--header-h) + 12px)}
-  a{color:#57e6ff;text-decoration:none}
-  a:hover{text-decoration:underline}
+    /* ===== Site tokens (kept simple; inherits into shared CSS) ===== */
+    :root{
+      --bg:#0a0b0f; --bg2:#0e1017; --ink:#e6ecff; --muted:#c8d2ea;
+      --border:rgba(201,208,221,.18);
+      --shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
+      --radius:18px; --gap:18px; --maxw:1200px;
+      --nav-spacer: 86px; /* space below floating nav */
+    }
+    :root[data-theme="light"]{
+      --bg:#f7f9fc; --bg2:#e8eef7; --ink:#0b1020; --muted:#4a566b;
+    }
 
-  /* ===== HEADER ===== */
-  header{
-    position:fixed;inset:0 0 auto 0;height:var(--header-h);z-index:50;
-    display:flex;align-items:center;
-    backdrop-filter:blur(10px);
-    background:linear-gradient(180deg,rgba(10,11,15,.88),rgba(10,11,15,.60) 70%,transparent);
-    border-bottom:1px solid var(--border)
-  }
-  .bar{max-width:var(--maxw);margin:0 auto;width:100%;padding:0 14px;
-    display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand .t1{font-weight:700;letter-spacing:.3px}
-  nav{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-  .nav-toggle{display:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);
-    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
-    align-items:center;justify-content:center;cursor:pointer}
-  .nav-toggle span{width:18px;height:2px;background:#dfe8ff;position:relative;display:block}
-  .nav-toggle span::before,.nav-toggle span::after{
-    content:"";position:absolute;left:0;width:18px;height:2px;background:#dfe8ff
-  }
-  .nav-toggle span::before{top:-6px}.nav-toggle span::after{top:6px}
-  .nav-panel{display:none;position:fixed;top:var(--header-h);left:0;right:0;z-index:45;
-    background:linear-gradient(180deg,#0b1020,#0a0e1b);border-bottom:1px solid var(--border);
-    padding:12px 16px;box-shadow:0 16px 40px rgba(0,0,0,.45)}
-  .nav-panel a{display:block;padding:10px 4px;border-radius:8px}
-  .nav-panel a:active{background:rgba(255,255,255,.06)}
-  .nav-panel.open{display:block}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; font:16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--ink);
+      background: linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
 
-  /* SECTIONS */
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:28px 20px;position:relative;z-index:2}
-  .section-title{max-width:var(--maxw);margin:0 auto 16px;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
-  .section-title h2{margin:0;font-size:clamp(22px,3vw,30px)}
-  .muted{color:var(--muted)}
-  .grid{max-width:var(--maxw);margin:0 auto;display:grid;gap:var(--gap);grid-template-columns:repeat(12,1fr)}
-  .card{grid-column:span 12;background:rgba(17,19,28,.85);border:1px solid var(--border);
-    border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);color:#e7eeff}
-  @media(min-width:720px){.card.sm-6{grid-column:span 6}.card.sm-4{grid-column:span 4}}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-  .chip{font-size:.75rem;background:#1a1f2d;border:1px solid var(--border);padding:4px 8px;border-radius:999px;color:#d2dcf4}
-  .actions{display:flex;gap:10px;flex-wrap:wrap}
-  button,a.btn{cursor:pointer}
+    /* Layout helpers */
+    .spacer{ height: var(--nav-spacer); }
+    .wrap{ max-width:var(--maxw); margin:0 auto; padding:28px 20px; position:relative; z-index:1 }
+    section{ scroll-margin-top: calc(var(--nav-spacer) + 12px) }
 
-  /* MOBILE HEADER FIX */
-  @media(max-width:860px){
-    :root{--header-h:56px}
-    nav{display:none}
-    .nav-toggle{display:flex}
-    .bar{padding:0 10px}
-  }
+    /* Cards / grid */
+    .section-title{max-width:var(--maxw); margin:0 auto 16px; display:flex; align-items:baseline; justify-content:space-between; gap:16px}
+    .section-title h2{margin:0; font-size:clamp(22px,3vw,30px)}
+    .muted{ color: var(--muted) }
 
-  /* Light mode adaptation */
-  :root[data-theme="light"] body{
-    background:linear-gradient(180deg,#f8f9fb,#dfe6f3);
-    color:#0b1020;
-  }
+    .grid{ max-width:var(--maxw); margin:0 auto; display:grid; gap:var(--gap); grid-template-columns: repeat(12, 1fr) }
+    .card{ grid-column: span 12; background: color-mix(in oklab, var(--bg2) 10%, #0f131c); border:1px solid var(--border);
+      border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); color:#e7eeff }
+    :root[data-theme="light"] .card{ color:#0f1320; background:#ffffff }
+
+    @media (min-width:720px){
+      .card.sm-6{grid-column: span 6} .card.sm-4{grid-column: span 4}
+    }
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px }
+    .chip{ font-size:.75rem; background:#1a1f2d; border:1px solid var(--border); padding:4px 8px; border-radius:999px; color:#d2dcf4 }
+    :root[data-theme="light"] .chip{ background:#eef2fb; color:#2b3650 }
+
+    .actions{ display:flex; gap:10px; flex-wrap:wrap }
+    .btn, .primary, .ghost{ text-decoration:none }
+
+    /* Simple tech line pills (optional) */
+    .techline{ max-width:var(--maxw); margin:0 auto; padding:10px 20px; color:var(--muted) }
   </style>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
-<header>
-  <div class="bar">
-    <div class="brand"><a class="t1" href="/jmodco/Labs/">Jmod Labs</a></div>
-    <nav>
+  <!-- Floating Navbar (shared styles/JS) -->
+  <nav class="nav" role="navigation" aria-label="Primary">
+    <div class="brand"><span class="title">Jmod Labs</span></div>
+
+    <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Toggle menu">☰</button>
+
+    <div id="menu" class="navlinks">
       <a href="#mandate">Mandate</a>
       <a href="#build">Build</a>
       <a href="#experiments">Experiments</a>
@@ -97,159 +76,225 @@
       <a href="#smb">SMB Value</a>
       <a href="#tech">Tech</a>
       <a href="#join">Join</a>
+
+      <!-- Always last two -->
       <a href="/jmodco/">Jmod Co.</a>
-      <button id="themeToggle" class="ghost" style="margin-left:8px;">Toggle Theme</button>
-    </nav>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mnav"><span></span></button>
-  </div>
-  <div id="mnav" class="nav-panel" aria-hidden="true">
-    <a href="#mandate">Mandate</a>
-    <a href="#build">Build</a>
-    <a href="#experiments">Experiments</a>
-    <a href="#learn">AI Learning</a>
-    <a href="#smb">SMB Value</a>
-    <a href="#tech">Tech</a>
-    <a href="#join">Join</a>
-    <a href="/jmodco/">Jmod Co.</a>
-  </div>
-</header>
-
-<!-- ===== HERO (Shared component) ===== -->
-<section class="hero"
-  style="
-    --hero-mark-dark:url('/jmodco/assets/Jmod_LabsTP.png');
-    --hero-mark-light:url('/jmodco/assets/Jmod_Labs.png');
-  ">
-  <div class="pipes" aria-hidden="true">
-    <svg viewBox="0 0 1600 800" preserveAspectRatio="none">
-      <path id="pipe1" class="pipe" d="M 50 200 C 350 200, 500 350, 800 400 S 1250 450, 1550 320" />
-      <path id="pipe2" class="pipe" d="M 50 500 C 300 520, 520 520, 800 420 S 1250 380, 1550 500" />
-      <path id="pipe3" class="pipe" d="M 1550 200 C 1250 250, 1100 350, 800 400 S 350 430, 50 320" />
-      <circle class="packet" id="pkt1" r="7"/>
-      <circle class="packet" id="pkt2" r="7"/>
-      <circle class="packet" id="pkt3" r="7"/>
-    </svg>
-  </div>
-  <div class="hero-inner">
-    <div class="eyebrow">Experimentation • Discovery • Acceleration</div>
-    <h1>Building the R&amp;D engine of Jmod Co.</h1>
-    <p class="sub">
-      Jmod Labs prototypes AI workflows, rapid tools, and proof-of-concepts that graduate into
-      Jmod Systems and Media — powered by the MODDES™ Core Engine.
-    </p>
-    <div class="hero-actions">
-      <a class="primary" href="#experiments">See Experiments</a>
-      <a class="ghost" href="#mandate">Our Mandate</a>
+      <label class="toggle" title="Toggle theme">
+        <input id="themeToggle" type="checkbox" />
+        <span class="dot"></span>
+        <span>Dark</span>
+      </label>
     </div>
-  </div>
-</section>
+  </nav>
 
-<!-- ===== R&D Mandate ===== -->
-<section id="mandate">
-  <div class="section-title wrap">
-    <h2>R&amp;D Mandate</h2>
-    <div class="muted">How Labs turns ideas into systems</div>
-  </div>
-  <div class="grid">
-    <article class="card sm-6"><div class="chips"><span class="chip">Core Identity</span></div>
-      <h3>The R&amp;D &amp; AI experimentation division</h3>
-      <p>Where new technologies, automation ideas, and tools are created and tested.</p>
-    </article>
-    <article class="card sm-6"><div class="chips"><span class="chip">Primary Role</span></div>
-      <h3>Design, test, and prototype</h3>
-      <p>AI tools, data pipelines, and automation frameworks. Develop internal engines (e.g., the
-      <strong>MODDES™ Core Engine</strong>) for data translation, optimization, and cross-system learning.</p>
-    </article>
-  </div>
-</section>
+  <!-- Space under floating nav -->
+  <div class="spacer" aria-hidden="true"></div>
 
-<!-- ===== Experiments ===== -->
-<section id="experiments">
-  <div class="section-title wrap">
-    <h2>Active Experiments</h2>
-    <div class="muted">Client identities are protected. Names are always redacted.</div>
-  </div>
-  <div class="grid">
-    <article class="card sm-4"><div class="chips"><span class="chip status beta">Pilot</span></div>
-      <h3>AI Quote Builder (Installations)</h3>
-      <p>Automates quoting for remote starts, tint, and electronics. Parts lookup, pricing rules, and clean PDF outputs.</p>
-    </article>
-    <article class="card sm-4"><div class="chips"><span class="chip status soon">Coming Soon</span></div>
-      <h3>Jmod Media App</h3>
-      <p>AI-driven planner + automation: plan → generate → schedule. Feedback improves tone and performance.</p>
-    </article>
-    <article class="card sm-4"><div class="chips"><span class="chip status soon">Coming Soon</span></div>
-      <h3>Legacy / Haven App</h3>
-      <p>Engagement &amp; well-being for seniors: daily prompts, family touchpoints, positive habit loops.</p>
-    </article>
-  </div>
-</section>
+  <!-- ===== HERO (shared component; centered; faint logo; animated pipes) ===== -->
+  <section class="hero"
+    style="
+      --hero-mark-dark:url('/jmodco/assets/Jmod_LabsTP.png');
+      --hero-mark-light:url('/jmodco/assets/Jmod_Labs.png');
+    ">
+    <div class="pipes" aria-hidden="true">
+      <svg viewBox="0 0 1600 800" preserveAspectRatio="none">
+        <path id="pipe1" class="pipe" d="M 50 200 C 350 200, 500 350, 800 400 S 1250 450, 1550 320" />
+        <path id="pipe2" class="pipe" d="M 50 500 C 300 520, 520 520, 800 420 S 1250 380, 1550 500" />
+        <path id="pipe3" class="pipe" d="M 1550 200 C 1250 250, 1100 350, 800 400 S 350 430, 50 320" />
+        <circle class="packet" id="pkt1" r="7" />
+        <circle class="packet" id="pkt2" r="7" />
+        <circle class="packet" id="pkt3" r="7" />
+      </svg>
+    </div>
 
-<!-- ===== Tech Stack ===== -->
-<section id="tech">
-  <div class="section-title wrap">
-    <h2>Current Tech Stack</h2><div class="muted">We update tools as Labs evolves.</div>
-  </div>
-  <div class="wrap">
-    <p>JavaScript/TypeScript • Python • Cloudflare Workers • GitHub Pages • OpenAI Embeddings &amp; Vectors •
-      SQLite/Postgres • REST/Webhooks • Excel/VBA Bridges</p>
-  </div>
-</section>
+    <div class="hero-inner">
+      <div class="eyebrow">Experimentation • Discovery • Acceleration</div>
+      <h1>Building the R&amp;D engine of Jmod Co.</h1>
+      <p class="sub">
+        Jmod Labs prototypes AI workflows, rapid tools, and proof-of-concepts that graduate into
+        Jmod Systems and Media — powered by the MODDES™ Core Engine.
+      </p>
+      <div class="hero-actions">
+        <a class="primary" href="#experiments">See Experiments</a>
+        <a class="ghost" href="#mandate">Our Mandate</a>
+      </div>
+    </div>
+  </section>
 
-<!-- ===== Join ===== -->
-<section id="join">
-  <div class="section-title wrap">
-    <h2>Collaborate with Labs</h2><div class="muted">Concept submissions open soon</div>
-  </div>
-  <div class="grid">
-    <article class="card sm-12">
-      <p>We’ll soon enable concept submissions and private partner access. For now, sign in to register interest and unlock deeper docs.</p>
-    </article>
-  </div>
-</section>
+  <!-- ===== Mandate ===== -->
+  <section id="mandate">
+    <div class="section-title wrap">
+      <h2>R&amp;D Mandate</h2>
+      <div class="muted">How Labs turns ideas into systems</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Core Identity</span></div>
+        <h3>The R&amp;D &amp; AI experimentation division</h3>
+        <p>Where new technologies, automation ideas, and tools are created and tested.</p>
+      </article>
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Primary Role</span></div>
+        <h3>Design, test, and prototype</h3>
+        <p>AI tools, data pipelines, and automation frameworks. Develop internal engines (e.g., the
+          <strong>MODDES™ Core Engine</strong>) for data translation, optimization, and cross-system learning.</p>
+      </article>
+      <article class="card sm-12">
+        <div class="chips"><span class="chip">Focus Areas</span></div>
+        <ul>
+          <li>Machine learning prototypes</li>
+          <li>Process automation &amp; predictive analytics</li>
+          <li>API integrations &amp; workflow optimization</li>
+          <li>Software proof-of-concepts (internal alpha builds)</li>
+        </ul>
+      </article>
+    </div>
+  </section>
 
-<!-- ===== Footer ===== -->
-<div id="footerMount"></div>
+  <!-- ===== What we build ===== -->
+  <section id="build">
+    <div class="section-title wrap">
+      <h2>What we build</h2>
+      <div class="muted">Rapid prototypes that graduate into real products</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Apps</span><span class="chip">Frontend + Mobile</span></div>
+        <h3>Applied UI + App Scaffolds</h3>
+        <p>Auth stubs, form engines, state patterns, and deployment recipes so features ship faster.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Automation</span><span class="chip">APIs</span></div>
+        <h3>Workflow &amp; Integrations</h3>
+        <p>Connectors for CRMs, ERPs, spreadsheets, and webhooks. Jobs, retries, and observability so ops run on rails.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">AI</span><span class="chip">Data</span></div>
+        <h3>Decision Engines</h3>
+        <p>Prompt chains, retrieval, lightweight models, and evaluators. Built to learn from usage and get cheaper over time.</p>
+      </article>
+    </div>
+  </section>
 
-<script src="/jmodco/assets/shared/hero.js"></script>
-<script>
-/* ===== Mobile nav toggle ===== */
-const toggle=document.querySelector('.nav-toggle'),panel=document.getElementById('mnav');
-toggle?.addEventListener('click',()=>{
-  const open=panel.classList.toggle('open');
-  toggle.setAttribute('aria-expanded',open?'true':'false');
-  panel.setAttribute('aria-hidden',open?'false':'true');
-});
-panel?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-  panel.classList.remove('open');
-  toggle.setAttribute('aria-expanded','false');
-  panel.setAttribute('aria-hidden','true');
-}));
+  <!-- ===== Experiments ===== -->
+  <section id="experiments">
+    <div class="section-title wrap">
+      <h2>Active Experiments</h2>
+      <div class="muted">Client identities are protected. Names are always redacted.</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-4">
+        <div class="chips">
+          <span class="chip">Pilot</span>
+          <span class="chip">Labs → Insights</span>
+          <span class="chip">Client: ████████████</span>
+        </div>
+        <h3>AI Quote Builder (Installations)</h3>
+        <p>Automates quoting for remote starts, tint, and electronics. Parts lookup, pricing rules, and clean PDF outputs.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Coming Soon</span><span class="chip">Labs → Media</span></div>
+        <h3>Jmod Media App</h3>
+        <p>AI-driven planner + automation: plan → generate → schedule. Feedback improves tone and performance.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Coming Soon</span><span class="chip">Labs → Legacy</span></div>
+        <h3>Legacy / Haven App</h3>
+        <p>Engagement &amp; well-being for seniors: daily prompts, family touchpoints, positive habit loops.</p>
+      </article>
+    </div>
+  </section>
 
-/* ===== Theme toggle ===== */
-(function(){
-  const KEY='jmod-theme',root=document.documentElement;
-  const saved=localStorage.getItem(KEY);
-  if(saved) root.setAttribute('data-theme',saved);
-  document.getElementById('themeToggle')?.addEventListener('click',()=>{
-    const next=root.getAttribute('data-theme')==='light'?'':'light';
-    if(next) root.setAttribute('data-theme',next);else root.removeAttribute('data-theme');
-    localStorage.setItem(KEY,next);
-  });
-})();
+  <!-- ===== AI Learning ===== -->
+  <section id="learn">
+    <div class="section-title wrap">
+      <h2>How the AI learns</h2>
+      <div class="muted">Feedback → signals → better outcomes</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Signals</span></div>
+        <h3>Usage, outcomes, corrections</h3>
+        <p>Anonymized task results, user edits, and timing become training signals to improve prompts, rules, and routing.</p>
+      </article>
+      <article class="card sm-6">
+        <div class="chips"><span class="chip">Knowledge</span></div>
+        <h3>Structured &amp; searchable</h3>
+        <p>Docs and patterns live in the Labs knowledge base. Everything is vector-searchable and versioned for reuse.</p>
+      </article>
+    </div>
+  </section>
 
-/* ===== Footer loader ===== */
-(async function(){
-  const mount=document.getElementById('footerMount');
-  try{
-    const r=await fetch('/jmodco/assets/footer.html',{cache:'no-store'});
-    if(!r.ok) throw 0;
-    mount.innerHTML=await r.text();
-  }catch(e){
-    mount.innerHTML=`<footer style="border-top:1px solid var(--border);text-align:center;padding:16px;color:var(--muted)">
-    © ${new Date().getFullYear()} Jmod Co. — Built for small business clarity.</footer>`;
-  }
-})();
-</script>
+  <!-- ===== SMB Value ===== -->
+  <section id="smb">
+    <div class="section-title wrap">
+      <h2>Built for Small &amp; Medium Businesses</h2>
+      <div class="muted">Automate busywork. Focus on revenue.</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Quoting</span></div>
+        <h3>Instant, accurate quotes</h3>
+        <p>Price rules, parts lookup, and clean PDFs. Less time building quotes, more time closing.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Content</span></div>
+        <h3>Marketing on autopilot</h3>
+        <p>Plan → generate → schedule. Keep posts flowing while you’re on jobs.</p>
+      </article>
+      <article class="card sm-4">
+        <div class="chips"><span class="chip">Ops</span></div>
+        <h3>From clipboard to dashboard</h3>
+        <p>Digitize intake, reconcile inventory, push status updates. No more hunting through texts and spreadsheets.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Tech ===== -->
+  <section id="tech">
+    <div class="section-title wrap">
+      <h2>Current Tech Stack</h2>
+      <div class="muted">We update tools as Labs evolves.</div>
+    </div>
+    <div class="techline">
+      JavaScript/TypeScript • Python • Cloudflare Workers • GitHub Pages • OpenAI Embeddings &amp; Vectors •
+      SQLite/Postgres • REST/Webhooks • Excel/VBA Bridges
+    </div>
+  </section>
+
+  <!-- ===== Join ===== -->
+  <section id="join">
+    <div class="section-title wrap">
+      <h2>Collaborate with Labs</h2>
+      <div class="muted">Concept submissions open soon</div>
+    </div>
+    <div class="grid">
+      <article class="card sm-12">
+        <p>We’ll soon enable concept submissions and private partner access. For now, sign in to register interest and unlock deeper docs.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Footer mount (shared file) ===== -->
+  <div id="footerMount" class="wrap"></div>
+
+  <!-- Shared behavior -->
+  <script src="/jmodco/assets/shared/nav.js" defer></script>
+  <script src="/jmodco/assets/shared/hero.js" defer></script>
+
+  <!-- Page JS: footer loader -->
+  <script>
+    (async function mountFooter(){
+      const mount = document.getElementById('footerMount');
+      try{
+        const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
+        if(!r.ok) throw 0;
+        mount.innerHTML = await r.text();
+      }catch(e){
+        mount.innerHTML = `<footer style="border-top:1px solid var(--border);text-align:center;padding:16px;color:var(--muted)">
+          © ${new Date().getFullYear()} Jmod Co. — Built for small business clarity.</footer>`;
+      }
+    })();
+  </script>
 </body>
 </html>
