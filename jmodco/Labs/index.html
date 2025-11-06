@@ -72,19 +72,20 @@ body{
 .brand{font-weight:700; padding-left:10px; flex-shrink:0}
 .brand a{color:var(--ink); text-decoration:none}
 
-/* center links (sit before right cluster) */
+/* center links (RightSide) */
 .nav-links{
   display:flex; align-items:center; gap:28px;
-  list-style:none; margin:0; padding:0;
-  margin-left:24px;              /* spacing after brand */
+  list-style:none; padding:0;
+  margin:0 16px 0 auto;   /* <-- this moves the whole links group to the FAR RIGHT */
 }
+
 .nav-links a{color:var(--ink); text-decoration:none; font-weight:600; opacity:.9}
 .nav-links a:hover{opacity:1}
 
 /* right cluster pinned FAR RIGHT */
 .nav-right{
   display:flex; align-items:center; gap:14px;
-  margin-left:auto;              /* pushes this group to the far right */
+  margin-left:0;           /* keep a small gap, but DO NOT use auto */
 }
 
 .theme{
