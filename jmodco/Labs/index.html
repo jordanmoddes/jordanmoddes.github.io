@@ -72,20 +72,19 @@ body{
 .brand{font-weight:700; padding-left:10px; flex-shrink:0}
 .brand a{color:var(--ink); text-decoration:none}
 
-/* center links (RightSide) */
+/* center links (RightSide on desktop) */
 .nav-links{
   display:flex; align-items:center; gap:28px;
   list-style:none; padding:0;
-  margin:0 16px 0 auto;   /* <-- this moves the whole links group to the FAR RIGHT */
+  margin:0 16px 0 auto; /* push links group to the FAR RIGHT */
 }
-
 .nav-links a{color:var(--ink); text-decoration:none; font-weight:600; opacity:.9}
 .nav-links a:hover{opacity:1}
 
-/* right cluster pinned FAR RIGHT */
+/* right cluster sits immediately to the right of links */
 .nav-right{
   display:flex; align-items:center; gap:14px;
-  margin-left:0;           /* keep a small gap, but DO NOT use auto */
+  margin-left:0; /* do not use auto here */
 }
 
 .theme{
@@ -96,6 +95,7 @@ body{
 }
 .theme .dot{width:12px; height:12px; border-radius:999px; background:#7a52ff; box-shadow:0 0 0 2px rgba(122,82,255,.25)}
 
+/* hamburger (hidden on desktop) */
 .burger{
   display:none; width:40px; height:40px; border-radius:12px;
   border:1px solid var(--border);
@@ -138,11 +138,20 @@ body{
   background:var(--border);
 }
 
-/* responsive behavior */
+/* responsive behavior (MOBILE) */
 @media (max-width:880px){
-  .nav-links{ display:none }            /* hide center links */
-  .nav .theme{ display:none }           /* hide header toggle */
-  .burger{ display:inline-flex }        /* show hamburger */
+  .nav-links{ display:none }       /* hide links row on mobile */
+  .nav .theme{ display:none }      /* hide header toggle on mobile (we show panel toggle) */
+
+  .nav-inner{
+    justify-content:space-between; /* brand left, burger far right */
+  }
+  .burger{
+    display:inline-flex;
+    margin-left:auto;              /* ensure it anchors to the far right */
+  }
+}
+ display:inline-flex }        /* show hamburger */
   .mobile-panel .theme{ display:flex }  /* show toggle inside panel */
 }
 
