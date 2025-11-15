@@ -25,6 +25,10 @@
   --border: rgba(255,255,255,.12);
   --accent:#57e6ff;
   --hot:#ff3df2;
+
+  /* Watermark */
+  --wm-size: min(80vw, 80vh);
+  --wm-opacity: 0.12;
 }
 [data-theme="light"]{
   --bg:#f6f8fb;
@@ -35,6 +39,8 @@
   --border: rgba(0,0,0,.12);
   --accent:#0078d4;
   --hot:#d600a9;
+
+  --wm-opacity: 0.18;
 }
 
 *{box-sizing:border-box}
@@ -48,6 +54,10 @@ body{
     radial-gradient(1200px 800px at 20% -10%, rgba(255,61,242,.06), transparent 60%),
     radial-gradient(1200px 800px at 120% 10%, rgba(87,230,255,.07), transparent 60%),
     linear-gradient(180deg, var(--bg), var(--bg2));
+  /* kill visible horizontal “bands” from tiling */
+  background-repeat:no-repeat,no-repeat,no-repeat;
+  background-size:140% 140%,140% 140%,100% 100%;
+  background-attachment:fixed,fixed,scroll;
   overflow-x:hidden;
   padding-top:92px; /* room for floating nav */
 }
@@ -76,16 +86,15 @@ body{
 .nav-links{
   display:flex; align-items:center; gap:28px;
   list-style:none; padding:0;
-  margin:0 16px 0 auto;   /* <-- this moves the whole links group to the FAR RIGHT */
+  margin:0 16px 0 auto;   /* <-- moves links group to FAR RIGHT */
 }
-
 .nav-links a{color:var(--ink); text-decoration:none; font-weight:600; opacity:.9}
 .nav-links a:hover{opacity:1}
 
 /* right cluster pinned FAR RIGHT */
 .nav-right{
   display:flex; align-items:center; gap:14px;
-  margin-left:0;           /* keep a small gap, but DO NOT use auto */
+  margin-left:0;
 }
 
 .theme{
@@ -128,25 +137,23 @@ body{
   justify-content:center;
   margin:8px 4px 2px;
 }
+
 /* === MOBILE RIGHT-ALIGN FIX === */
 @media (max-width:880px){
-  /* Push the burger (menu button) to the far right */
   .nav-inner{
     justify-content: space-between; /* Jmod Labs left, burger right */
   }
   .burger{
-    margin-left: auto;              /* forces burger to far right */
+    margin-left: auto;
   }
-
-  /* Make the mobile-panel content align right too */
   .mobile-panel{
-    text-align: right;              /* text in panel right-aligned */
+    text-align: right;
   }
   .mobile-panel a{
-    text-align: right;              /* each link right-aligned */
+    text-align: right;
   }
   .theme--mobile{
-    justify-content: flex-end;      /* theme button to far right */
+    justify-content: flex-end;
   }
 }
 
@@ -161,10 +168,10 @@ body{
 
 /* responsive behavior */
 @media (max-width:880px){
-  .nav-links{ display:none }            /* hide center links */
-  .nav .theme{ display:none }           /* hide header toggle */
-  .burger{ display:inline-flex }        /* show hamburger */
-  .mobile-panel .theme{ display:flex }  /* show toggle inside panel */
+  .nav-links{ display:none }
+  .nav .theme{ display:none }
+  .burger{ display:inline-flex }
+  .mobile-panel .theme{ display:flex }
 }
 
 /* =========================
@@ -190,8 +197,8 @@ body{
 
 .hero{
   position:relative;
-  max-width: var(--hero-maxw);
-  margin: 48px auto 24px;
+  width:100%;                 /* full-bleed */
+  margin:48px 0 24px;         /* no side auto-centering */
   padding: var(--hero-pad-y) var(--hero-pad-x);
   min-height: var(--hero-height);
   display:grid;
@@ -204,6 +211,7 @@ body{
 .hero-content{
   position:relative; z-index:2;
   max-width:980px; width:100%;
+  margin:0 auto;
   text-align:center;
 }
 .hero-content h1{
@@ -221,7 +229,7 @@ body{
 }
 .hero-logo-img{
   height: var(--hero-logo-height);
-  width:auto; max-width:98vw; object-fit:contain;
+  width:auto; max-width:1600px; max-width:98vw; object-fit:contain;
   filter: drop-shadow(0 20px 60px rgba(0,0,0,.35));
   display:none;
 }
@@ -235,8 +243,13 @@ body{
 /* Mobile tuning */
 @media (max-width:860px){
   .hero-logo-img{ height: var(--hero-logo-height-mobile); max-width:96vw }
-  .hero-logo-bg .theme-dark{  opacity: var(--hero-logo-opacity-dark-mobile);  filter: brightness(1.08) }
-  :root[data-theme="light"] .hero-logo-bg .theme-light{ opacity: var(--hero-logo-opacity-light-mobile) }
+  .hero-logo-bg .theme-dark{
+    opacity: var(--hero-logo-opacity-dark-mobile);
+    filter: brightness(1.08) drop-shadow(0 16px 50px rgba(0,0,0,.35));
+  }
+  :root[data-theme="light"] .hero-logo-bg .theme-light{
+    opacity: var(--hero-logo-opacity-light-mobile);
+  }
 }
 
 /* Motion background UNDER logo */
@@ -281,6 +294,27 @@ body{
 }
 
 /* =========================
+   PAGE WATERMARK (Labs)
+   ========================= */
+#bg-logo{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:url('/jmodco/assets/Jmod_LabsTP.png') center/var(--wm-size) no-repeat;
+  opacity:0;
+  transition:opacity .8s ease;
+  pointer-events:none;
+  filter:drop-shadow(0 0 40px rgba(87,230,255,.24)) brightness(1.15);
+}
+#bg-logo.visible{
+  opacity:var(--wm-opacity);
+}
+[data-theme="light"] #bg-logo{
+  background-image:url('/jmodco/assets/Jmod_Labs.png');
+  filter:drop-shadow(0 0 32px rgba(0,0,0,.16)) brightness(1.02);
+}
+
+/* =========================
    CARDS/SECTIONS
    ========================= */
 .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
@@ -305,6 +339,9 @@ section{padding:30px 0}
   </style>
 </head>
 <body>
+
+  <!-- PAGE WATERMARK -->
+  <div id="bg-logo"></div>
 
   <!-- ========= NAV ========= -->
   <div class="nav" role="navigation" aria-label="Primary">
@@ -361,12 +398,24 @@ section{padding:30px 0}
             <stop offset="100%" stop-color="white" stop-opacity="0"/>
           </radialGradient>
         </defs>
-        <circle cx="10" cy="14" r="0.6" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite"/></circle>
-        <circle cx="28" cy="8"  r="0.5" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.2s" begin="-.8s"  repeatCount="indefinite"/></circle>
-        <circle cx="44" cy="18" r="0.5" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" begin="-1.2s" repeatCount="indefinite"/></circle>
-        <circle cx="62" cy="6"  r="0.55" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.6s" begin="-.4s"  repeatCount="indefinite"/></circle>
-        <circle cx="78" cy="20" r="0.5" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" begin="-.6s"  repeatCount="indefinite"/></circle>
-        <circle cx="92" cy="12" r="0.55" fill="url(#sp)"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.0s" begin="-1.4s" repeatCount="indefinite"/></circle>
+        <circle cx="10" cy="14" r="0.6" fill="url(#sp)">
+          <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="28" cy="8"  r="0.5" fill="url(#sp)">
+          <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.2s" begin="-.8s"  repeatCount="indefinite"/>
+        </circle>
+        <circle cx="44" cy="18" r="0.5" fill="url(#sp)">
+          <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" begin="-1.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="62" cy="6"  r="0.55" fill="url(#sp)">
+          <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.6s" begin="-.4s"  repeatCount="indefinite"/>
+        </circle>
+        <circle cx="78" cy="20" r="0.5" fill="url(#sp)">
+          <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" begin="-.6s"  repeatCount="indefinite"/>
+        </circle>
+        <circle cx="92" cy="12" r="0.55" fill="url(#sp)">
+          <animate attributeName="opacity" values="0.1;0.7;0.1" dur="4.0s" begin="-1.4s" repeatCount="indefinite"/>
+        </circle>
       </svg>
     </div>
 
@@ -598,6 +647,24 @@ section{padding:30px 0}
     panel?.querySelectorAll('a').forEach(a =>
       a.addEventListener('click', closePanel)
     );
+
+    // Page watermark visibility (identical behavior to Systems)
+    const bgLogo = document.getElementById('bg-logo');
+    const heroSection = document.getElementById('home');
+
+    function updateBgLogoVisibility(){
+      if (!bgLogo || !heroSection) return;
+      const trigger = heroSection.offsetHeight * 0.7; // ~after hero
+      if (window.scrollY > trigger){
+        bgLogo.classList.add('visible');
+      } else {
+        bgLogo.classList.remove('visible');
+      }
+    }
+
+    window.addEventListener('scroll', updateBgLogoVisibility);
+    window.addEventListener('resize', updateBgLogoVisibility);
+    window.addEventListener('load', updateBgLogoVisibility);
 
     // Footer loader (fallback inline)
     (async function mountFooter(){
