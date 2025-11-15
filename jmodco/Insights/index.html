@@ -21,6 +21,8 @@
     body{
       font-family: system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
       color:var(--text); background:var(--bg); line-height:1.5; scroll-behavior:smooth;
+      position:relative;
+      min-height:100vh;
     }
 
     /* Floating nav */
@@ -67,6 +69,25 @@
       .menu-btn{ display:inline-flex; }
     }
 
+    /* Page watermark (fades in after hero) */
+    .watermark{
+      position:fixed;
+      inset:220px 0 0;
+      pointer-events:none;
+      z-index:-1;
+      opacity:.06;
+      background:
+        radial-gradient(600px 600px at 50% 0, rgba(148,163,184,.28), transparent 65%),
+        url("/jmodco/assets/Jmod_InsightsTP.png") center 160px / 420px auto no-repeat;
+      filter:blur(.2px);
+    }
+    html[data-theme="light"] .watermark{
+      opacity:.09;
+      background:
+        radial-gradient(600px 600px at 50% 0, rgba(148,163,184,.40), transparent 65%),
+        url("/jmodco/assets/Jmod_Insights.png") center 160px / 420px auto no-repeat;
+    }
+
     /* Hero */
     .hero{
       position:relative; overflow:hidden;
@@ -105,7 +126,7 @@
       .hero-logo { max-width:220px; }
     }
 
-    /* Sections (unchanged placeholders) */
+    /* Sections */
     section{ padding: 4rem 1.25rem; }
     .cards{ display:grid; grid-template-columns: repeat( auto-fit, minmax(240px,1fr)); gap:1rem; margin-top:1.25rem; }
     .card{ background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:1.1rem 1.1rem 1.25rem; box-shadow:0 10px 30px rgba(0,0,0,.06); }
@@ -124,7 +145,7 @@
   <!-- Floating Navbar -->
   <nav class="nav" role="navigation" aria-label="Primary">
     <div class="brand">
-      <span class="title">Insights</span>
+      <span class="title">Jmod Co. Insights</span>
     </div>
 
     <button class="menu-btn" aria-expanded="false" aria-controls="menu">☰</button>
@@ -144,6 +165,9 @@
       </label>
     </div>
   </nav>
+
+  <!-- Page watermark background (behind sections, after hero) -->
+  <div class="watermark"></div>
 
   <!-- HERO -->
   <header id="home" class="hero">
@@ -241,6 +265,7 @@
     const initTheme = 'dark';
     root.setAttribute('data-theme', initTheme);
     toggle.checked = (initTheme === 'dark');
+
     function applyLogo() {
       const theme = root.getAttribute('data-theme');
       document.getElementById('heroLogo').src =
