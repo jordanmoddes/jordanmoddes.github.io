@@ -358,6 +358,17 @@ section{padding:30px 0}
   border-color:rgba(0,0,0,0.55);
 }
  
+/* Light-mode footer adjustments */
+[data-theme="light"] .site-footer{
+  background: var(--panel);
+  color: #111827 !important;
+  border-top: 1px solid rgba(0,0,0,0.18);
+}
+
+/* Light-mode footer links = aqua accent */
+[data-theme="light"] .site-footer a{
+  color: #00e5ff !important;
+}
   
   </style>
 </head>
@@ -619,7 +630,7 @@ section{padding:30px 0}
   </section>
 
 
-  <footer style="
+<footer class="site-footer" style="
     padding:40px 20px;
     text-align:center;
     color:var(--muted);
@@ -648,6 +659,7 @@ section{padding:30px 0}
       © 2025 Jmod Co. • All rights reserved.
     </div>
   </footer>
+
 
   <script>
     // Theme toggle (desktop)
