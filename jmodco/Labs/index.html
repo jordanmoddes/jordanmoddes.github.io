@@ -336,6 +336,29 @@ section{padding:30px 0}
 .redact::after{content:"████████████"; letter-spacing:.08em; color:#e6e6e6; background:#000; padding:0 .25rem; border-radius:4px}
 .card p{color:var(--ink); opacity:.88; margin:8px 0 12px}
 .card .actions{display:flex; gap:10px; flex-wrap:wrap}
+
+/* Light mode: force key section headings + sublines to white */
+[data-theme="light"] #build .section-title h2,
+[data-theme="light"] #experiments .section-title h2,
+[data-theme="light"] #mandate-more .section-title h2,
+[data-theme="light"] #tech .section-title h2,
+[data-theme="light"] #join .section-title h2,
+[data-theme="light"] #build .section-title .muted,
+[data-theme="light"] #experiments .section-title .muted,
+[data-theme="light"] #mandate-more .section-title .muted,
+[data-theme="light"] #tech .section-title .muted,
+[data-theme="light"] #join .section-title .muted{
+  color:#ffffff;
+}
+  
+/* Light mode: tech stack chips = dark pills with white text */
+[data-theme="light"] #tech .chip{
+  background:rgba(0,0,0,0.78);
+  color:#ffffff;
+  border-color:rgba(0,0,0,0.55);
+}
+ 
+  
   </style>
 </head>
 <body>
