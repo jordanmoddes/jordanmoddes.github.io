@@ -22,12 +22,12 @@
 
       /* HERO image sizing (Insights logo in hero background)
          Adjust this if you want the hero logo bigger/smaller. */
-      --hero-logo-size: min(60vw, 640px);
+      --hero-logo-size: min(100vw, 1000px);
 
       /* WATERMARK sizing & opacity for page background
          Matches Labs behavior: large, centered logo behind content. */
-      --wm-size: min(78vw, 900px);
-      --wm-opacity: 0.09;
+      --wm-size: min(90vw, 900px);
+      --wm-opacity: 0.12;
     }
     html[data-theme="light"]{
       --text:#0f172a;
@@ -312,7 +312,7 @@
           rgba(15,23,42,.0) 100%
         );
       mix-blend-mode:screen;
-      opacity:.9;
+      opacity:.35;
       animation:insightsScan 26s linear infinite;
       z-index:-2;
       filter:drop-shadow(0 0 40px rgba(56,189,248,.75));
