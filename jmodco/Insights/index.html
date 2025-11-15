@@ -8,12 +8,12 @@
 
   <style>
     :root{
-      --text:#0f172a; --muted:#475569; --brand:#4f46e5; --panel:#ffffff; --bg:#f8fafc;
-      --ring:rgba(79,70,229,.25); --border: #e2e8f0;
+      --text:#0f172a; --muted:#475569; --brand:#4f46e5; --panel:#ffffff; --bg:#020617;
+      --ring:rgba(79,70,229,.25); --border: #111827;
     }
     [data-theme="dark"]{
-      --text:#e6edf3; --muted:#a1a1aa; --brand:#8b5cf6; --panel:#121826; --bg:#0b1020;
-      --ring:rgba(139,92,246,.35); --border:#273244;
+      --text:#e6edf3; --muted:#a1a1aa; --brand:#8b5cf6; --panel:#020617; --bg:#020617;
+      --ring:rgba(139,92,246,.35); --border:#1f2937;
     }
 
     *{box-sizing:border-box}
@@ -30,27 +30,27 @@
       position:fixed; top:16px; left:50%; transform:translateX(-50%);
       width:min(1200px,94vw);
       background: color-mix(in oklab, var(--panel) 88%, transparent);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(14px);
       border:1px solid var(--border);
-      box-shadow: 0 8px 30px rgba(0,0,0,.12);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
       border-radius:18px; padding:.5rem .75rem;
       display:flex; align-items:center; justify-content:space-between; gap:.75rem; z-index:50;
     }
     .brand{ display:flex; align-items:center; gap:.6rem; }
-    .brand .title{ font-weight:700; letter-spacing:.2px; white-space:nowrap; }
+    .brand .title{ font-weight:700; letter-spacing:.06em; white-space:nowrap; text-transform:uppercase; font-size:.8rem; opacity:.9; }
     .navlinks{ display:flex; align-items:center; gap:.75rem; }
     .navlinks a{
       text-decoration:none; color:var(--text); opacity:.95; font-weight:600;
-      padding:.55rem .85rem; border-radius:12px; font-size:.95rem;
+      padding:.55rem .85rem; border-radius:12px; font-size:.9rem;
     }
-    .navlinks a:hover{ background: color-mix(in oklab, var(--brand) 10%, transparent); }
-    .menu-btn{ display:none; background:none; border:0; padding:.5rem .75rem; border-radius:12px; }
+    .navlinks a:hover{ background: color-mix(in oklab, var(--brand) 15%, transparent); }
+    .menu-btn{ display:none; background:none; border:0; padding:.5rem .75rem; border-radius:12px; font-size:1.1rem; }
     .menu-btn:focus{ outline:2px solid var(--ring); outline-offset:2px; }
 
     /* Theme toggle */
     .toggle{
-      display:inline-flex; align-items:center; gap:.4rem; font-size:.9rem; color:var(--muted);
-      border:1px solid var(--border); border-radius:999px; padding:.35rem .6rem; cursor:pointer;
+      display:inline-flex; align-items:center; gap:.4rem; font-size:.8rem; color:var(--muted);
+      border:1px solid var(--border); border-radius:999px; padding:.35rem .65rem; cursor:pointer;
       user-select:none;
     }
     .toggle input{ display:none; }
@@ -64,78 +64,181 @@
       .nav{ padding:.5rem .6rem; }
       .navlinks{ display:none; position:absolute; top:60px; right:8px; flex-direction:column;
         background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:.5rem;
-        width:min(260px,88vw); }
+        width:min(260px,88vw); box-shadow:0 18px 50px rgba(0,0,0,.65);
+      }
       .navlinks.show{ display:flex; }
       .menu-btn{ display:inline-flex; }
     }
 
-    /* Page watermark (fades in after hero) */
+    /* Page watermark (very large, only after hero) */
     .watermark{
       position:fixed;
-      inset:220px 0 0;
+      top:max(620px, 82vh);  /* starts after hero; matches Labs/Systems behavior */
+      left:0; right:0; bottom:0;
       pointer-events:none;
       z-index:-1;
-      opacity:.06;
+      opacity:.07;
       background:
-        radial-gradient(600px 600px at 50% 0, rgba(148,163,184,.28), transparent 65%),
-        url("/jmodco/assets/Jmod_InsightsTP.png") center 160px / 420px auto no-repeat;
-      filter:blur(.2px);
+        radial-gradient(900px 900px at 50% 0, rgba(148,163,184,.35), transparent 65%),
+        url("/jmodco/assets/Jmod_InsightsTP.png") center top / min(80vw,900px) auto no-repeat;
+      filter:blur(.3px);
     }
     html[data-theme="light"] .watermark{
-      opacity:.09;
+      opacity:.11;
       background:
-        radial-gradient(600px 600px at 50% 0, rgba(148,163,184,.40), transparent 65%),
-        url("/jmodco/assets/Jmod_Insights.png") center 160px / 420px auto no-repeat;
+        radial-gradient(900px 900px at 50% 0, rgba(148,163,184,.45), transparent 65%),
+        url("/jmodco/assets/Jmod_Insights.png") center top / min(80vw,900px) auto no-repeat;
     }
 
-    /* Hero */
+    /* HERO – full-width, Labs-style height, custom animation */
     .hero{
       position:relative; overflow:hidden;
-      padding: calc(72px + 4rem) 1.25rem 4rem;
+      padding: calc(72px + 4rem) 1.5rem 4.75rem;
+      min-height:max(540px, 82vh);
+      display:flex; align-items:center;
       background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(139,92,246,.20), transparent 60%),
-        radial-gradient(1000px 520px at 90% -20%, rgba(16,185,129,.24), transparent 55%),
-        radial-gradient(900px 600px at 50% 120%, rgba(56,189,248,.22), transparent 55%),
-        var(--bg);
+        radial-gradient(1200px 800px at 0% 0%, rgba(56,189,248,.30), transparent 60%),
+        radial-gradient(1200px 800px at 100% 0%, rgba(129,140,248,.35), transparent 60%),
+        radial-gradient(1200px 800px at 50% 110%, rgba(24,24,27,.9), #020617);
     }
-    html[data-theme="light"] .hero{
+
+    /* Large background logo inside hero */
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-10% 0 auto;
+      top:-180px;
       background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(79,70,229,.15), transparent 60%),
-        radial-gradient(1000px 520px at 90% -20%, rgba(16,185,129,.18), transparent 55%),
-        radial-gradient(900px 600px at 50% 120%, rgba(14,165,233,.16), transparent 55%),
-        var(--bg);
+        radial-gradient(circle at center, rgba(15,23,42,.9), transparent 68%),
+        url("/jmodco/assets/Jmod_InsightsTP.png") center 40% / min(48vw,520px) auto no-repeat;
+      opacity:.16;
+      filter: drop-shadow(0 0 60px rgba(56,189,248,.55));
+      pointer-events:none;
     }
+    html[data-theme="light"] .hero::before{
+      background:
+        radial-gradient(circle at center, rgba(15,23,42,.85), transparent 68%),
+        url("/jmodco/assets/Jmod_Insights.png") center 40% / min(48vw,520px) auto no-repeat;
+      opacity:.12;
+      filter: drop-shadow(0 0 40px rgba(59,130,246,.45));
+    }
+
+    /* Animated glow layer – different from Labs/Systems but same family */
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(120% 120% at 0% 20%, rgba(56,189,248,.25), transparent 60%),
+        radial-gradient(120% 120% at 100% 80%, rgba(168,85,247,.28), transparent 60%);
+      mix-blend-mode:screen;
+      opacity:.55;
+      animation: insightsSweep 22s linear infinite;
+      pointer-events:none;
+    }
+
+    @keyframes insightsSweep{
+      0%{ transform:translate3d(-4%,0,0) rotate(0deg); }
+      50%{ transform:translate3d(4%,3%,0) rotate(180deg); }
+      100%{ transform:translate3d(-4%,0,0) rotate(360deg); }
+    }
+
     .container { width:min(1100px,92vw); margin:0 auto; }
-    .hero-grid { display:grid; grid-template-columns: 360px 1fr; gap: clamp(24px,4vw,48px); align-items:center; }
+    .hero-grid { display:grid; grid-template-columns: minmax(260px,340px) minmax(0,1fr); gap: clamp(28px,4.5vw,56px); align-items:center; }
     .hero-logo-wrap { display:flex; align-items:center; justify-content:center; }
-    .hero-logo { width:100%; max-width:340px; height:auto; filter: drop-shadow(0 8px 24px rgba(0,0,0,.18)); }
-    .hero-copy { max-width:780px; }
-    .hero-title { margin:0 0 .5rem; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height:1.05; letter-spacing:-0.03em; font-weight:800; color:var(--text); }
-    .hero-sub { margin:0 0 1rem; color:var(--muted); font-size: clamp(1rem, 1.2vw, 1.125rem); line-height:1.5; }
-    .hero-mini { margin:0 0 1.2rem; color:var(--muted); font-size:.9rem; }
+    .hero-logo-card{
+      position:relative;
+      padding:1.6rem 1.9rem;
+      border-radius:24px;
+      background: radial-gradient(circle at top, rgba(15,23,42,.85), rgba(15,23,42,.98));
+      border:1px solid rgba(148,163,184,.25);
+      box-shadow:0 24px 80px rgba(15,23,42,.9);
+      backdrop-filter: blur(16px);
+    }
+    .hero-logo {
+      width:100%; max-width:260px; height:auto;
+      display:block;
+      filter: drop-shadow(0 14px 40px rgba(56,189,248,.8));
+    }
+    .hero-logo-caption{
+      margin-top:.8rem;
+      font-size:.85rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--muted);
+      opacity:.85;
+    }
+
+    .hero-copy { max-width:780px; position:relative; z-index:1; }
+    .hero-title {
+      margin:0 0 .6rem;
+      font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+      line-height:1.02;
+      letter-spacing:-0.03em;
+      font-weight:800;
+      color:var(--text);
+    }
+    .hero-sub {
+      margin:0 0 1rem;
+      color:var(--muted);
+      font-size: clamp(1.02rem, 1.25vw, 1.15rem);
+      line-height:1.6;
+    }
+    .hero-mini {
+      margin:0 0 1.2rem;
+      color:var(--muted);
+      font-size:.9rem;
+    }
     .cta { display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1rem; }
-    .btn{ appearance:none; border:0; border-radius:14px; padding:.85rem 1rem; font-weight:700; cursor:pointer; }
-    .btn-primary{ background:var(--brand); color:#fff; }
-    .btn-outline{ background:transparent; color:var(--text); border:1px solid color-mix(in oklab, var(--brand) 30%, transparent); }
+    .btn{ appearance:none; border:0; border-radius:14px; padding:.9rem 1.15rem; font-weight:700; cursor:pointer; font-size:.95rem; }
+    .btn-primary{ background:var(--brand); color:#fff; box-shadow:0 16px 40px rgba(79,70,229,.6); }
+    .btn-outline{ background:transparent; color:var(--text); border:1px solid color-mix(in oklab, var(--brand) 45%, transparent); }
     .trust{ margin-top:1.25rem; color:var(--muted); font-size:.9rem; }
 
     @media (max-width: 900px){
+      .hero{
+        padding: calc(72px + 3.2rem) 1.25rem 3.6rem;
+        min-height: max(520px, 88vh);
+      }
       .hero-grid { grid-template-columns:1fr; }
-      .hero-logo-wrap { justify-content:center; margin-bottom:1rem; }
+      .hero-logo-wrap { justify-content:center; }
       .hero-copy { text-align:center; }
       .cta { justify-content:center; }
-      .hero-logo { max-width:220px; }
+      .hero-logo-card{ max-width:260px; margin:0 auto; }
+      .hero::before{
+        top:-220px;
+        background:
+          radial-gradient(circle at center, rgba(15,23,42,.9), transparent 70%),
+          url("/jmodco/assets/Jmod_InsightsTP.png") center 30% / min(70vw,420px) auto no-repeat;
+      }
+      html[data-theme="light"] .hero::before{
+        background:
+          radial-gradient(circle at center, rgba(15,23,42,.88), transparent 70%),
+          url("/jmodco/assets/Jmod_Insights.png") center 30% / min(70vw,420px) auto no-repeat;
+      }
     }
 
     /* Sections */
     section{ padding: 4rem 1.25rem; }
     .cards{ display:grid; grid-template-columns: repeat( auto-fit, minmax(240px,1fr)); gap:1rem; margin-top:1.25rem; }
-    .card{ background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:1.1rem 1.1rem 1.25rem; box-shadow:0 10px 30px rgba(0,0,0,.06); }
+    .card{
+      background: radial-gradient(circle at top left, rgba(15,23,42,.85), rgba(15,23,42,.98));
+      border:1px solid rgba(31,41,55,.9);
+      border-radius:18px;
+      padding:1.1rem 1.1rem 1.25rem;
+      box-shadow:0 18px 50px rgba(15,23,42,.85);
+    }
     .card h3{ margin:.25rem 0 .35rem; font-size:1.05rem }
     .card p{ margin:0; color:var(--muted); font-size:.95rem }
 
+    h2{
+      font-size:1.6rem;
+      margin:0;
+      letter-spacing:-0.01em;
+    }
+
     /* Footer */
-    footer{ padding:2.5rem 1.25rem; border-top:1px solid var(--border); color:var(--muted); }
+    footer{ padding:2.5rem 1.25rem; border-top:1px solid var(--border); color:var(--muted); margin-top:2rem; }
     .foot-inner{ width:min(1100px,92vw); margin:0 auto; text-align:center; }
     .foot-links a{ margin:0 8px; color:inherit; text-decoration:none; }
     .foot-links a:hover{ text-decoration:underline; }
@@ -146,7 +249,7 @@
   <!-- Floating Navbar -->
   <nav class="nav" role="navigation" aria-label="Primary">
     <div class="brand">
-      <span class="title">Jmod Co. Insights</span>
+      <span class="title">JMOD CO. INSIGHTS</span>
     </div>
 
     <button class="menu-btn" aria-expanded="false" aria-controls="menu">☰</button>
@@ -174,7 +277,10 @@
   <header id="home" class="hero">
     <div class="container hero-grid">
       <div class="hero-logo-wrap">
-        <img id="heroLogo" class="hero-logo" src="/jmodco/assets/Jmod_InsightsTP.png" alt="Jmod Insights logo">
+        <div class="hero-logo-card">
+          <img id="heroLogo" class="hero-logo" src="/jmodco/assets/Jmod_InsightsTP.png" alt="Jmod Insights logo">
+          <div class="hero-logo-caption">Insights engine • Operations layer</div>
+        </div>
       </div>
 
       <div class="hero-copy">
@@ -421,7 +527,9 @@
 
     function applyLogo() {
       const theme = root.getAttribute('data-theme');
-      document.getElementById('heroLogo').src =
+      const heroLogo = document.getElementById('heroLogo');
+      if (!heroLogo) return;
+      heroLogo.src =
         theme === 'dark'
           ? '/jmodco/assets/Jmod_InsightsTP.png'
           : '/jmodco/assets/Jmod_Insights.png';
