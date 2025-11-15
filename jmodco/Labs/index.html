@@ -596,7 +596,35 @@ section{padding:30px 0}
   </section>
 
 
-  <div id="footerMount"></div>
+  <footer style="
+    padding:40px 20px;
+    text-align:center;
+    color:var(--muted);
+    border-top:1px solid var(--border);
+  ">
+    <div style="font-weight:600; margin-bottom:6px;">
+      Backed and supported by <span style="color:var(--ink);">GPT-5 Engine</span>
+    </div>
+
+    <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:18px;
+      margin:12px 0 16px;
+      font-size:0.95rem;
+    ">
+      <a href="/jmodco/Labs/" style="color:var(--ink); text-decoration:none;">Jmod Labs</a>
+      <a href="/jmodco/Systems/" style="color:var(--ink); text-decoration:none;">Jmod Systems</a>
+      <a href="/jmodco/Media/" style="color:var(--ink); text-decoration:none;">Jmod Media</a>
+      <a href="/jmodco/Legacy/" style="color:var(--ink); text-decoration:none;">Jmod Legacy</a>
+      <a href="/jmodco/Insights/" style="color:var(--ink); text-decoration:none;">Jmod Insights</a>
+    </div>
+
+    <div style="margin-top:8px; font-size:0.9rem;">
+      © 2025 Jmod Co. • All rights reserved.
+    </div>
+  </footer>
 
   <script>
     // Theme toggle (desktop)
@@ -666,25 +694,6 @@ section{padding:30px 0}
     window.addEventListener('scroll', updateBgLogoVisibility);
     window.addEventListener('resize', updateBgLogoVisibility);
     window.addEventListener('load', updateBgLogoVisibility);
-
-    // Footer loader (fallback inline)
-    (async function mountFooter(){
-      const mount = document.getElementById('footerMount');
-      try{
-        const r = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
-        if(!r.ok) throw 0;
-        mount.innerHTML = await r.text();
-      }catch(e){
-        mount.innerHTML = `
-          <footer style="border-top:1px solid var(--border);">
-            <div style="max-width:1200px;margin:0 auto;padding:22px 20px;display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);">
-              <div>© ${new Date().getFullYear()} Jmod Co.</div>
-              <div>Built for small business clarity.</div>
-            </div>
-          </footer>`;
-      }
-    })();
   </script>
 </body>
 </html>
-
