@@ -141,11 +141,44 @@
       width:100%; display:flex;
     }
 
-    @media(max-width:880px){
-      .nav-links{display:none}
-      .theme{display:none}
-      .burger{display:flex}
-    }
+/* === MOBILE NAV LAYOUT FIX (match Labs/Systems/Insights) === */
+@media (max-width: 880px){
+  /* Spread brand and burger to opposite sides */
+  .nav-inner{
+    justify-content: space-between;
+  }
+
+  /* Brand stays left, burger forced to far right */
+  .brand{
+    flex: 1;
+  }
+  .burger{
+    margin-left: auto;
+  }
+
+  /* Right-align links inside the dropdown so it feels intentional */
+  .mobile-panel{
+    text-align: right;
+  }
+  .mobile-panel a{
+    text-align: right;
+  }
+  .theme--mobile{
+    justify-content: flex-end;
+  }
+}
+
+/* Optional: cleaner burger icon lines on mobile */
+.burger span{
+  display:block;
+  width:18px;
+  height:2px;
+  border-radius:999px;
+}
+.burger span::before,
+.burger span::after{
+  border-radius:999px;
+}
 
     /* =============== HERO =============== */
     .hero{
