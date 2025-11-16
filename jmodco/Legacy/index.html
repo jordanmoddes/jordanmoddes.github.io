@@ -12,30 +12,22 @@
        THEME TOKENS & GLOBAL VARS
        ========================= */
     :root{
-      /* Text & surface colors (dark default) */
       --text:#e5f1ff;
       --muted:#a5b4cf;
-      --brand:#38bdf8; /* soft cyan for calm, senior-friendly feel */
+      --brand:#38bdf8;
       --brand-soft:rgba(56,189,248,.18);
       --panel:#020617;
       --bg:#020617;
       --ring:rgba(56,189,248,.65);
       --border:#1f2937;
 
-      /* HERO & WATERMARK assets */
       --hero-logo:url("assets/Jmod_LegacyTP.png");
       --wm-logo:url("assets/Jmod_LegacyTP.png");
 
-      /* HERO sizing */
-      --hero-logo-size:min(92vw, 900px);
-
-      /* WATERMARK sizing & opacity */
       --wm-size:min(88vw, 820px);
-      --wm-opacity:0.10;
+      --wm-opacity:0.12;
 
-      /* Layout tokens */
       --page-max:1120px;
-      --radius-xl:24px;
       --radius-pill:999px;
       --shadow-soft:0 18px 60px rgba(0,0,0,.55);
       --shadow-card:0 16px 40px rgba(0,0,0,.45);
@@ -61,14 +53,13 @@
       min-height:100vh;
       font-family: system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(56,189,248,.16), transparent 55%),
-        radial-gradient(circle at bottom right, rgba(129,140,248,.08), transparent 55%),
+        radial-gradient(circle at top left, rgba(56,189,248,.12), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(129,140,248,.10), transparent 55%),
         var(--bg);
       color:var(--text);
       -webkit-font-smoothing:antialiased;
       text-rendering:optimizeLegibility;
     }
-    img{max-width:100%;display:block}
 
     main{
       width:100%;
@@ -76,12 +67,11 @@
       position:relative;
       isolation:isolate;
     }
-    /* Watermark behind body (not hero) */
     main::before{
       content:"";
       position:fixed;
       inset:auto 0 0 50%;
-      transform:translateX(-50%) translateY(120px);
+      transform:translateX(-50%) translateY(140px);
       width:var(--wm-size);
       height:var(--wm-size);
       background-image:var(--wm-logo);
@@ -96,11 +86,11 @@
     }
     main.watermark-visible::before{
       opacity:var(--wm-opacity);
-      transform:translateX(-50%) translateY(40px);
+      transform:translateX(-50%) translateY(60px);
     }
 
     /* =========================
-       FLOATING NAV
+       NAV
        ========================= */
     .nav{
       position:fixed;
@@ -108,7 +98,7 @@
       left:50%;
       transform:translateX(-50%);
       width:min(1200px,94vw);
-      background:color-mix(in oklab, var(--panel) 88%, transparent);
+      background:linear-gradient(90deg, rgba(15,23,42,.96), rgba(15,23,42,.94));
       backdrop-filter:blur(10px);
       border:1px solid var(--border);
       box-shadow:0 8px 30px rgba(0,0,0,.6);
@@ -120,7 +110,7 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:14px;
+      gap:12px;
     }
     .nav-left{
       display:flex;
@@ -131,23 +121,25 @@
     .nav-brand{
       font-size:.95rem;
       font-weight:650;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      color:var(--muted);
       white-space:nowrap;
+      color:#f9fafb;
     }
 
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-left:auto;
+    }
     .nav-links{
       display:flex;
       align-items:center;
-      justify-content:center;
-      gap:12px;
-      flex:1;
+      gap:16px;
       font-size:.9rem;
       font-weight:500;
     }
     .nav-links a{
-      padding:7px 11px;
+      padding:6px 6px;
       border-radius:999px;
       text-decoration:none;
       color:var(--muted);
@@ -160,11 +152,6 @@
       transform:translateY(-1px);
     }
 
-    .nav-right{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
     .nav-co{
       padding:6px 11px;
       border-radius:999px;
@@ -186,57 +173,30 @@
       box-shadow:0 0 0 4px rgba(56,189,248,.35);
     }
 
-    /* Theme toggle - match Labs/Insights pill toggle */
     .theme-toggle{
-      position:relative;
-      width:46px;
-      height:24px;
       border-radius:999px;
       border:1px solid color-mix(in oklab, var(--border) 82%, transparent);
-      background:radial-gradient(circle at 0% 0%, rgba(248,250,252,.08), transparent 60%),
-                 color-mix(in oklab, var(--panel) 88%, transparent);
-      display:flex;
+      background:linear-gradient(135deg, rgba(30,64,175,.95), rgba(88,28,135,.95));
+      padding:4px 10px;
+      display:inline-flex;
       align-items:center;
-      padding:0 3px;
+      gap:6px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#e5e7eb;
       cursor:pointer;
       box-shadow:0 8px 20px rgba(0,0,0,.45);
+      min-width:64px;
+      justify-content:center;
     }
-    .theme-toggle::before{
-      content:"";
-      position:absolute;
-      inset:3px;
+    .theme-toggle-dot{
+      width:8px;
+      height:8px;
       border-radius:999px;
-      border:1px solid rgba(148,163,184,.45);
-      pointer-events:none;
-    }
-    .theme-toggle-knob{
-      position:relative;
-      width:18px;
-      height:18px;
-      border-radius:999px;
-      background:radial-gradient(circle at 30% 25%, #f9fafb, #e5e7eb);
-      box-shadow:0 2px 6px rgba(15,23,42,.6);
-      transform:translateX(0);
-      transition:transform .22s ease;
-    }
-    html[data-theme="light"] .theme-toggle-knob{
-      transform:translateX(18px);
-      background:radial-gradient(circle at 30% 25%, #0f172a, #1f2937);
+      background:#f97316;
+      box-shadow:0 0 0 4px rgba(249,115,22,.4);
     }
 
-    .theme-toggle-icons{
-      position:absolute;
-      inset:0;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:0 7px;
-      font-size:.7rem;
-      color:var(--muted);
-      pointer-events:none;
-    }
-
-    /* Mobile nav controls */
     .nav-mobile-toggle{
       display:none;
       border-radius:999px;
@@ -301,74 +261,77 @@
     }
 
     /* =========================
-       HERO
+       HERO (edge-to-edge)
        ========================= */
     .hero{
       width:100%;
       margin:0 auto;
       margin-top:96px;
-      padding:32px 0 40px;
-    }
-    .hero-shell{
-      width:min(var(--page-max), 100%);
-      margin:0 auto;
-      border-radius:32px;
-      padding:30px 18px 30px;
+      padding:40px 0 56px;
       position:relative;
       overflow:hidden;
       background:
-        radial-gradient(circle at top, rgba(56,189,248,.18), transparent 58%),
-        radial-gradient(circle at bottom, rgba(15,23,42,.95), var(--panel));
-      box-shadow:var(--shadow-soft);
-      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+        radial-gradient(circle at 0% 0%, rgba(56,189,248,.35), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(88,28,135,.40), transparent 60%),
+        radial-gradient(circle at 50% 0%, rgba(15,23,42,.9), rgba(15,23,42,1));
+      box-shadow:0 22px 50px rgba(0,0,0,.7);
     }
+
     .hero-bg-logo{
       position:absolute;
-      inset:50% auto auto 50%;
-      transform:translate(-50%, -52%);
-      width:var(--hero-logo-size);
-      max-width:1000px;
-      opacity:.22;
+      top:8px;
+      bottom:8px;
+      left:50%;
+      transform:translateX(-50%);
+      width:auto;
+      max-width:min(1000px, 94vw);
       background-image:var(--hero-logo);
       background-size:contain;
       background-repeat:no-repeat;
       background-position:center;
+      opacity:.12;
       filter:drop-shadow(0 20px 40px rgba(15,23,42,.85));
       pointer-events:none;
       z-index:0;
-      animation:heroPulse 18s ease-in-out infinite alternate;
+      animation:logoFloat 26s ease-in-out infinite alternate;
     }
 
-    /* soft particle-like overlay to echo current bg but calmer */
-    .hero-shell::before,
-    .hero-shell::after{
+    .hero-lights::before,
+    .hero-lights::after{
       content:"";
       position:absolute;
       border-radius:999px;
       filter:blur(40px);
-      opacity:.65;
+      opacity:.45;
       pointer-events:none;
+      mix-blend-mode:screen;
     }
-    .hero-shell::before{
-      width:320px;height:320px;
-      top:-80px;left:-40px;
-      background:radial-gradient(circle, rgba(56,189,248,.7), transparent 70%);
-      animation:driftA 28s linear infinite alternate;
+    .hero-lights::before{
+      width:420px;height:420px;
+      top:-120px;left:-80px;
+      background:radial-gradient(circle, rgba(56,189,248,.8), transparent 70%);
+      animation:driftA 32s linear infinite alternate;
     }
-    .hero-shell::after{
-      width:260px;height:260px;
-      bottom:-60px;right:-30px;
-      background:radial-gradient(circle, rgba(129,140,248,.55), transparent 70%);
-      animation:driftB 32s linear infinite alternate;
+    .hero-lights::after{
+      width:340px;height:340px;
+      bottom:-120px;right:-60px;
+      background:radial-gradient(circle, rgba(129,140,248,.7), transparent 70%);
+      animation:driftB 36s linear infinite alternate;
     }
 
-    .hero-content{
+    .hero-inner{
       position:relative;
       z-index:1;
+      width:min(var(--page-max), 100%);
+      margin:0 auto;
+      padding:0 14px;
+    }
+    .hero-content{
       max-width:640px;
       margin:0 auto;
       text-align:center;
     }
+
     .hero-kicker{
       display:inline-flex;
       align-items:center;
@@ -377,8 +340,8 @@
       border-radius:999px;
       font-size:.78rem;
       font-weight:550;
-      background:rgba(15,23,42,.75);
-      border:1px solid rgba(148,163,184,.5);
+      background:rgba(15,23,42,.8);
+      border:1px solid rgba(148,163,184,.55);
       margin-bottom:14px;
     }
     .hero-kicker-pill{
@@ -389,7 +352,7 @@
     }
 
     .hero-title{
-      font-size:clamp(1.9rem, 3vw, 2.4rem);
+      font-size:clamp(1.9rem, 3.2vw, 2.5rem);
       line-height:1.1;
       letter-spacing:-.03em;
       margin-bottom:12px;
@@ -438,12 +401,12 @@
       box-shadow:0 16px 36px rgba(8,47,73,.9);
     }
     .btn-ghost{
-      background:rgba(15,23,42,.7);
+      background:rgba(15,23,42,.75);
       border-color:rgba(148,163,184,.7);
       color:var(--text);
     }
     .btn-ghost:hover{
-      background:rgba(15,23,42,.9);
+      background:rgba(15,23,42,.92);
       transform:translateY(-1px);
     }
     .hero-note{
@@ -457,24 +420,25 @@
     .page{
       width:min(var(--page-max), 100%);
       margin:0 auto;
-      margin-top:32px;
+      margin-top:40px;
       display:flex;
       flex-direction:column;
       gap:26px;
+      padding:0 14px;
     }
     section{
       scroll-margin-top:120px;
     }
     .section-heading{
-      font-size:1.1rem;
-      letter-spacing:.12em;
+      font-size:1rem;
+      letter-spacing:.14em;
       text-transform:uppercase;
       color:var(--muted);
-      margin-bottom:10px;
+      margin-bottom:8px;
     }
     .section-title{
       font-size:1.35rem;
-      margin-bottom:8px;
+      margin-bottom:6px;
     }
     .section-lead{
       font-size:.95rem;
@@ -490,7 +454,7 @@
     }
     .card{
       background:color-mix(in oklab, var(--panel) 92%, transparent);
-      border-radius:var(--radius-xl);
+      border-radius:22px;
       padding:16px 16px 15px;
       border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
       box-shadow:var(--shadow-card);
@@ -536,23 +500,6 @@
       margin:2px 0;
     }
 
-    /* Companion section emphasis */
-    .companion-block{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      margin-top:14px;
-    }
-    .companion-cta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      font-size:.9rem;
-      color:var(--muted);
-    }
-
-    /* FAQ */
     details{
       background:color-mix(in oklab, var(--panel) 92%, transparent);
       border-radius:16px;
@@ -582,7 +529,6 @@
       color:var(--muted);
     }
 
-    /* Contact */
     .contact-row{
       display:flex;
       flex-wrap:wrap;
@@ -657,17 +603,17 @@
     /* =========================
        ANIMATIONS
        ========================= */
-    @keyframes heroPulse{
-      0%{transform:translate(-50%,-52%) scale(1)}
-      100%{transform:translate(-50%,-52%) scale(1.03)}
+    @keyframes logoFloat{
+      0%{transform:translateX(-50%) translateY(0)}
+      100%{transform:translateX(-50%) translateY(6px)}
     }
     @keyframes driftA{
       0%{transform:translate3d(0,0,0)}
-      100%{transform:translate3d(40px,35px,0)}
+      100%{transform:translate3d(46px,35px,0)}
     }
     @keyframes driftB{
       0%{transform:translate3d(0,0,0)}
-      100%{transform:translate3d(-30px,-28px,0)}
+      100%{transform:translate3d(-36px,-30px,0)}
     }
 
     /* =========================
@@ -677,47 +623,30 @@
       .grid{
         grid-template-columns:1fr;
       }
-      .hero-shell{
-        padding:26px 18px 26px;
-      }
-      .hero-title{
-        font-size:clamp(1.7rem, 6vw, 2.1rem);
-      }
     }
 
     @media (max-width:768px){
-      .nav-inner{
-        gap:8px;
-      }
       .nav-links{
         display:none;
       }
       .nav-mobile-toggle{
         display:flex;
       }
-      .nav-right{
-        gap:6px;
-      }
       .hero{
         margin-top:90px;
+        padding:32px 0 40px;
       }
-      .hero-shell{
-        border-radius:26px;
-      }
-      .hero-bg-logo{
-        opacity:.18;
+      .page{
+        margin-top:32px;
       }
     }
 
     @media (max-width:480px){
-      .hero-shell{
-        padding:24px 14px 22px;
+      .hero-inner{
+        padding:0 8px;
       }
       .hero-title{
-        font-size:1.55rem;
-      }
-      .page{
-        gap:22px;
+        font-size:1.65rem;
       }
       .card{
         padding:14px 13px 13px;
@@ -733,26 +662,23 @@
         <div class="nav-brand">Jmod Legacy</div>
       </div>
 
-      <div class="nav-links">
-        <a href="#why">Why this matters</a>
-        <a href="#help">How we help</a>
-        <a href="#companion">Try the companion</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
-      </div>
-
       <div class="nav-right">
+        <div class="nav-links">
+          <a href="#who">Who we are</a>
+          <a href="#services">Services</a>
+          <a href="#companion">Companion</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </div>
+
         <a class="nav-co" href="/jmodco/">
           <span class="dot"></span>
           <span>Jmod Co.</span>
         </a>
 
         <button class="theme-toggle" type="button" id="themeToggle" aria-label="Toggle dark/light mode">
-          <div class="theme-toggle-icons">
-            <span>☾</span>
-            <span>☼</span>
-          </div>
-          <div class="theme-toggle-knob"></div>
+          <span class="theme-toggle-dot"></span>
+          <span>Dark</span>
         </button>
 
         <button class="nav-mobile-toggle" type="button" id="mobileToggle" aria-label="Open navigation">
@@ -764,19 +690,16 @@
 
   <!-- MOBILE PANEL -->
   <div class="mobile-panel" id="mobilePanel">
-    <a href="#why">Why this matters</a>
-    <a href="#help">How we help</a>
-    <a href="#companion">Try the companion</a>
+    <a href="#who">Who we are</a>
+    <a href="#services">Services</a>
+    <a href="#companion">Companion</a>
     <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
     <a href="/jmodco/">Jmod Co.</a>
     <div class="theme--mobile">
       <button class="theme-toggle" type="button" id="themeToggleMobile" aria-label="Toggle dark/light mode (mobile)">
-        <div class="theme-toggle-icons">
-          <span>☾</span>
-          <span>☼</span>
-        </div>
-        <div class="theme-toggle-knob"></div>
+        <span class="theme-toggle-dot"></span>
+        <span>Dark</span>
       </button>
     </div>
   </div>
@@ -784,9 +707,10 @@
   <main id="mainContent">
     <!-- HERO -->
     <header class="hero">
-      <div class="hero-shell">
-        <div class="hero-bg-logo"></div>
+      <div class="hero-bg-logo"></div>
+      <div class="hero-lights"></div>
 
+      <div class="hero-inner">
         <div class="hero-content">
           <div class="hero-kicker">
             <span class="hero-kicker-pill"></span>
@@ -803,10 +727,10 @@
 
           <div class="hero-actions">
             <a class="btn btn-primary" href="#companion">
-              Try the companion (early concept)
+              Companion (early concept)
             </a>
-            <a class="btn btn-ghost" href="#why">
-              Why this matters
+            <a class="btn btn-ghost" href="#who">
+              Who we are
             </a>
           </div>
 
@@ -819,61 +743,75 @@
 
     <!-- BODY -->
     <div class="page">
-      <!-- WHY THIS MATTERS -->
-      <section id="why">
-        <div class="section-heading">Why this matters</div>
-        <h2 class="section-title">Aging parents. Busy families. Technology that often makes it harder.</h2>
+      <!-- WHO WE ARE -->
+      <section id="who">
+        <div class="section-heading">Who we are</div>
+        <h2 class="section-title">A small project for a big problem: aging, distance, and confusing tech.</h2>
         <p class="section-lead">
-          Most tools for seniors are either too complicated, too clinical, or designed for companies instead of real families. Legacy aims to stay small, human, and focused on the gaps we see every day.
+          Jmod Legacy is a focused piece of Jmod Co. — built around one question: how do we make it easier for families
+          to support aging loved ones without turning them into unpaid IT support?
         </p>
 
         <div class="grid" style="margin-top:18px">
           <article class="card">
             <div class="card-header">
               <div class="card-badge">1</div>
-              <div class="card-title">We’re living farther apart than ever.</div>
+              <div class="card-title">Life has spread us out.</div>
             </div>
             <div class="card-body">
-              Staying close used to mean showing up at the door. Now it’s calls, texts, portals, apps, and passwords.
-              For older adults, that stack is overwhelming — and for their family, it’s one more system to manage.
+              Families are often states or countries apart. “Checking in” now means:
+            </div>
+            <div class="card-list">
+              <ul>
+                <li>Calls, texts, emails, portals, apps, and passwords.</li>
+                <li>Older adults juggling devices and accounts they never asked for.</li>
+                <li>Caregivers trying to manage everything remotely.</li>
+              </ul>
             </div>
           </article>
 
           <article class="card">
             <div class="card-header">
               <div class="card-badge">2</div>
-              <div class="card-title">Most “solutions” forget the person in the middle.</div>
+              <div class="card-title">Caregivers become the help desk.</div>
             </div>
             <div class="card-body">
-              The adult child, grandchild, or caregiver becomes the untrained “IT help desk” — on top of work, kids,
-              appointments, and life. Legacy is being designed for that person as much as for the senior.
+              The adult child or grandchild often ends up:
+            </div>
+            <div class="card-list">
+              <ul>
+                <li>Explaining the same steps again and again.</li>
+                <li>Sorting out “is this safe to click?” every week.</li>
+                <li>Doing all of this on top of work, kids, and their own life.</li>
+              </ul>
             </div>
           </article>
         </div>
       </section>
 
-      <!-- HOW WE HELP -->
-      <section id="help">
-        <div class="section-heading">How we help</div>
-        <h2 class="section-title">A calm layer between your family and the chaos of tech.</h2>
+      <!-- SERVICES -->
+      <section id="services">
+        <div class="section-heading">Services</div>
+        <h2 class="section-title">A calm layer between your family and the chaos of technology.</h2>
         <p class="section-lead">
-          Jmod Legacy will live as a simple, guided “companion” that can explain, remind, and organize — without asking your loved ones to learn another complicated system.
+          Legacy is being designed as a simple, guided “companion” that can explain, remind, and organize — without asking
+          your loved ones to learn one more complicated system.
         </p>
 
         <div class="grid">
           <article class="card">
             <div class="card-header">
               <div class="card-badge">A</div>
-              <div class="card-title">Plain-language explanations, on demand.</div>
+              <div class="card-title">Plain-language explanations when things look scary.</div>
             </div>
             <div class="card-body">
-              When a parent gets a confusing email, notice, or message, Legacy aims to:
+              When a parent gets a letter, email, or pop-up they don’t understand, Legacy is meant to:
             </div>
             <div class="card-list">
               <ul>
-                <li>Explain what it means in simple, direct language.</li>
-                <li>Highlight what’s urgent vs. what can wait.</li>
-                <li>Suggest next steps for you or for them.</li>
+                <li>Break it down in clear, direct language.</li>
+                <li>Flag what’s urgent vs. what can wait.</li>
+                <li>Suggest practical next steps for them or for you.</li>
               </ul>
             </div>
           </article>
@@ -881,16 +819,16 @@
           <article class="card">
             <div class="card-header">
               <div class="card-badge">B</div>
-              <div class="card-title">Gentle structure for the “important stuff.”</div>
+              <div class="card-title">Gentle structure for the “important details.”</div>
             </div>
             <div class="card-body">
-              Over time, Legacy is meant to help families keep track of:
+              Over time, Legacy aims to help your family keep track of:
             </div>
             <div class="card-list">
               <ul>
-                <li>Key medical contacts and appointments.</li>
-                <li>Household “how to” details that only they know.</li>
-                <li>Little daily check-ins that show someone cares.</li>
+                <li>Key contacts and recurring appointments.</li>
+                <li>Household “how to” information only they know.</li>
+                <li>Simple check-ins that show someone is watching out for them.</li>
               </ul>
             </div>
           </article>
@@ -899,27 +837,35 @@
 
       <!-- COMPANION -->
       <section id="companion">
-        <div class="section-heading">Try the companion</div>
-        <h2 class="section-title">Early-stage concept — focused on clarity, not features.</h2>
+        <div class="section-heading">Companion</div>
+        <h2 class="section-title">Early-stage concept — built around clarity, not features.</h2>
         <p class="section-lead">
           The Legacy Companion is being shaped as a calm, always-available guide you can ask questions like:
-          “How do I explain this letter to my dad?” or “How can I check in without making mom feel watched?”
         </p>
+        <div class="card" style="margin-top:14px">
+          <div class="card-body">
+            <ul style="list-style:disc; padding-left:18px; margin:0">
+              <li>“How do I explain this letter to my dad without scaring him?”</li>
+              <li>“My mom got this email — is it real or a scam?”</li>
+              <li>“What’s a simple way to check in without making them feel watched?”</li>
+            </ul>
+          </div>
+        </div>
 
-        <div class="companion-block">
-          <article class="card">
-            <div class="card-header">
-              <div class="card-badge">α</div>
-              <div class="card-title">What exists right now</div>
-            </div>
-            <div class="card-body">
-              Behind the scenes, Legacy is powered by the same engine that supports other Jmod Co. tools — but here we’re
-              tuning everything toward slower pace, higher contrast, and simpler language for seniors and family members.
-            </div>
-          </article>
-
-          <div class="companion-cta">
-            <span>As the tool matures, this section will become a live, guided experience — with clear “stop” buttons, privacy-first defaults, and no pressure to sign up.</span>
+        <div class="card" style="margin-top:14px">
+          <div class="card-header">
+            <div class="card-badge">α</div>
+            <div class="card-title">Where it is today</div>
+          </div>
+          <div class="card-body">
+            Behind the scenes, Legacy uses the same engine as other Jmod Co. tools. Here we’re tuning everything toward:
+          </div>
+          <div class="card-list">
+            <ul>
+              <li>Slower pace and simpler wording.</li>
+              <li>High-contrast visuals for easier reading.</li>
+              <li>Controls that feel safe to both seniors and families.</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -927,7 +873,7 @@
       <!-- FAQ -->
       <section id="faq">
         <div class="section-heading">FAQ</div>
-        <h2 class="section-title">Questions you might be asking already.</h2>
+        <h2 class="section-title">Questions you might already be thinking about.</h2>
 
         <details>
           <summary><span>Is this a medical, legal, or emergency service?</span></summary>
@@ -938,17 +884,17 @@
         </details>
 
         <details>
-          <summary><span>Will my family’s information be sold or shared?</span></summary>
+          <summary><span>Will our family’s information be sold or shared?</span></summary>
           <p>
             The long-term vision for Legacy is privacy-first: minimal data, clear controls, and no hidden reselling.
-            As features are defined, this page will include a plain-language version of how data is handled — not just fine print.
+            As features are defined, this page will include a plain-language description of how data is handled — not just fine print.
           </p>
         </details>
 
         <details>
-          <summary><span>Do my parents or grandparents need to be “good with technology?”</span></summary>
+          <summary><span>Do my parents or grandparents need to be “good with technology”?</span></summary>
           <p>
-            No. In fact, Legacy is being built for families where the older generation is not comfortable with
+            No. Legacy is being built specifically for families where the older generation is not comfortable with
             technology. Much of the interaction may come through you, the family member — at whatever pace feels right.
           </p>
         </details>
@@ -957,10 +903,10 @@
       <!-- CONTACT -->
       <section id="contact">
         <div class="section-heading">Contact</div>
-        <h2 class="section-title">Want to give feedback or share your situation?</h2>
+        <h2 class="section-title">Want to share your experience or give feedback?</h2>
         <p class="section-lead">
           Legacy is in an early design phase inside Jmod Co. If you’ve navigated aging parents, long-distance support,
-          or just want to help shape something better, your lived experience matters here.
+          or just want to help shape something more helpful than another unused “portal,” your input matters.
         </p>
 
         <div class="contact-row">
@@ -968,8 +914,8 @@
             <div class="contact-label">Current status</div>
             <div class="contact-main">Early concept — pre-launch</div>
             <p>
-              The best thing you can do now is share the kinds of tools, reminders, or supports that would actually
-              help your family — so we don’t build another unused “portal.”
+              The most useful thing you can do right now is share what would actually help your situation — tools, reminders,
+              or supports that would make your days easier, not more crowded.
             </p>
           </div>
 
@@ -977,8 +923,8 @@
             <div class="contact-label">Reach out</div>
             <div class="contact-main">Jordan @ Jmod Co.</div>
             <p>
-              Until Legacy is public, inquiries are handled directly by Jmod Co. through existing channels. As the project
-              matures, this section will update with a simpler, dedicated contact path.
+              Until Legacy goes public, inquiries are handled directly through Jmod Co. channels. As the project matures,
+              this section will be updated with a simpler, dedicated contact path.
             </p>
           </div>
         </div>
@@ -1004,9 +950,7 @@
   </footer>
 
   <script>
-    // =========================
-    // THEME HANDLING
-    // =========================
+    // THEME
     (function(){
       const root = document.documentElement;
       const stored = localStorage.getItem("jmod-theme");
@@ -1023,19 +967,16 @@
         localStorage.setItem("jmod-theme", next);
       }
 
-      const toggleDesktop = document.getElementById("themeToggle");
-      const toggleMobile = document.getElementById("themeToggleMobile");
-      if(toggleDesktop) toggleDesktop.addEventListener("click", toggleTheme);
-      if(toggleMobile) toggleMobile.addEventListener("click", toggleTheme);
+      const toggles = [document.getElementById("themeToggle"), document.getElementById("themeToggleMobile")];
+      toggles.forEach(btn => {
+        if(btn) btn.addEventListener("click", toggleTheme);
+      });
     })();
 
-    // =========================
     // MOBILE NAV
-    // =========================
     (function(){
       const mobileToggle = document.getElementById("mobileToggle");
       const mobilePanel = document.getElementById("mobilePanel");
-
       if(!mobileToggle || !mobilePanel) return;
 
       mobileToggle.addEventListener("click", () => {
@@ -1049,9 +990,7 @@
       });
     })();
 
-    // =========================
-    // WATERMARK VISIBILITY ON SCROLL
-    // =========================
+    // WATERMARK VISIBILITY
     (function(){
       const hero = document.querySelector(".hero");
       const main = document.getElementById("mainContent");
