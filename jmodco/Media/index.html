@@ -16,7 +16,7 @@
 
       --hero-logo-size: 88vh;
 
-      /* watermark: 80% of screen, capped so it doesn't blow up */
+      /* watermark: 80% of viewport, capped so it doesn't blow up */
       --wm-opacity: 0.15;
 
       --accent:#22d3ee;
@@ -27,7 +27,7 @@
       --muted:#94a1c6;
       --border:rgba(255,255,255,0.08);
 
-      /* PHONE / PREVIEW SIZING (from your original) */
+      /* PHONE / PREVIEW SIZING (your original) */
       --phone-w: 360px;     /* phone outer width */
       --phone-h: 800px;     /* phone outer height */
       --screen-pad-v: 14px; /* vertical screen padding */
@@ -151,10 +151,14 @@
     .hero{
       position:relative;
       width:100%;
-      margin-top:15px;          /* 15px gap under nav */
-      padding-top:160px;        /* space before text */
-      padding-bottom:80px;      /* plus phone height will extend hero further */
+      margin-top:15px;          /* start ~15px under nav */
+      min-height:70vh;          /* tall hero (adjust if needed) */
+      padding:140px 0 120px;    /* top padding for nav, bottom to separate from phone */
       overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;   /* vertical center text block */
+      align-items:center;
       text-align:center;
     }
 
@@ -186,7 +190,7 @@
       position:relative;
       z-index:5;
       max-width:800px;
-      margin:0 auto 40px;
+      margin:0 auto;
     }
     .hero-content h1{
       font-size:clamp(34px,4vw,56px);
@@ -266,7 +270,6 @@
 
     /* =============== PHONE (YOUR ORIGINAL CODE) =============== */
 
-    /* PHONE WRAP */
     .phone-wrap{
       padding:10px 0 34px;
     }
@@ -296,7 +299,6 @@
       opacity:.8;
     }
 
-    /* screen is flex column */
     .screen{
       width:100%;
       flex:1;
@@ -462,7 +464,7 @@
 <div id="bg-logo"></div>
 <div id="icon-field"></div>
 
-<!-- HERO (NOW WRAPS THE PHONE TOO) -->
+<!-- HERO (text centered; phone is BELOW this section) -->
 <section class="hero" id="top">
   <canvas id="hero-canvas"></canvas>
   <img class="hero-logo" src="/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media">
@@ -481,38 +483,37 @@
       </a>
     </div>
   </div>
+</section>
 
-  <!-- PHONE PREVIEW (your original, unchanged) -->
-  <section class="phone-wrap">
-    <div class="shell">
-      <div class="phone">
-        <div class="screen">
-          <div class="bar">Jmod Media</div>
+<!-- PHONE PREVIEW (your original), NOW BELOW HERO -->
+<section class="phone-wrap">
+  <div class="shell">
+    <div class="phone">
+      <div class="screen">
+        <div class="bar">Jmod Media</div>
 
-          <div class="screen-copy">
-            Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.
-          </div>
+        <div class="screen-copy">
+          Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.
+        </div>
 
-          <div class="ig-area">
-            <iframe class="ig"
-              src="https://www.instagram.com/p/CwLvMC2p0Fu/embed"
-              allowtransparency="true"
-              frameborder="0"
-              scrolling="no"
-              title="Instagram post preview"></iframe>
-          </div>
+        <div class="ig-area">
+          <iframe class="ig"
+            src="https://www.instagram.com/p/CwLvMC2p0Fu/embed"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="no"
+            title="Instagram post preview"></iframe>
+        </div>
 
-          <div class="dock">
-            <div class="pill">Compose</div>
-            <div class="pill">Calendar</div>
-            <div class="pill">Brand Kit</div>
-            <div class="pill">Analytics</div>
-          </div>
+        <div class="dock">
+          <div class="pill">Compose</div>
+          <div class="pill">Calendar</div>
+          <div class="pill">Brand Kit</div>
+          <div class="pill">Analytics</div>
         </div>
       </div>
     </div>
-  </section>
-
+  </div>
 </section>
 
 <!-- FEATURES -->
@@ -590,7 +591,7 @@ function checkWM(){
 window.addEventListener("scroll", checkWM);
 checkWM();
 
-/* HERO CANVAS — multi-layer neon sweep, full hero size */
+/* HERO CANVAS — more obvious multi-layer neon sweep */
 const canvas = document.getElementById("hero-canvas");
 const ctx = canvas.getContext("2d");
 let w,h;
@@ -602,25 +603,32 @@ function resizeCanvas(){
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
+/* Faster speeds + mixed colors so you actually see motion */
 const layers = [
-  { speed:0.06, dx:1.2, dy:0.7, opacity:0.32, size:1.4 },
-  { speed:0.09, dx:-1.0, dy:0.5, opacity:0.26, size:1.8 },
-  { speed:0.14, dx:0.7, dy:-1.1, opacity:0.20, size:2.3 },
-  { speed:0.18, dx:-0.6, dy:-0.8, opacity:0.16, size:2.8 }
+  { speed:0.12, dx:1.4, dy:0.8, opacity:0.40, size:1.2, color1:'34,211,238', color2:'147,51,234' },
+  { speed:0.18, dx:-1.1, dy:0.6, opacity:0.32, size:1.7, color1:'59,130,246', color2:'236,72,153' },
+  { speed:0.24, dx:0.8, dy:-1.2, opacity:0.26, size:2.3, color1:'56,189,248', color2:'94,234,212' },
+  { speed:0.32, dx:-0.7, dy:-0.9, opacity:0.22, size:2.9, color1:'129,140,248', color2:'236,72,153' }
 ];
 
 function drawLayer(l, t){
-  const cx = w/2 + Math.sin(t*l.speed)*l.dx*300;
-  const cy = h/2 + Math.cos(t*l.speed)*l.dy*300;
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w,h)*l.size);
-  grd.addColorStop(0, `rgba(34,211,238,${l.opacity})`);
-  grd.addColorStop(1, 'rgba(34,211,238,0)');
+  const cx = w/2 + Math.sin(t*l.speed)*l.dx*320;
+  const cy = h/2 + Math.cos(t*l.speed)*l.dy*320;
+  const radius = Math.max(w,h)*l.size;
+
+  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+  grd.addColorStop(0, `rgba(${l.color1},${l.opacity})`);
+  grd.addColorStop(0.45, `rgba(${l.color2},${l.opacity*0.7})`);
+  grd.addColorStop(1, `rgba(${l.color2},0)`);
+
+  ctx.globalCompositeOperation = "screen";
   ctx.fillStyle = grd;
   ctx.fillRect(0,0,w,h);
 }
+
 function animate(t){
   ctx.clearRect(0,0,w,h);
-  for(const l of layers) drawLayer(l, t/7000);
+  for(const l of layers) drawLayer(l, t/4000);  // faster cycle for visible motion
   requestAnimationFrame(animate);
 }
 animate(0);
