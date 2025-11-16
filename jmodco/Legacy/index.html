@@ -1,311 +1,1074 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" id="top">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jmod Legacy — Rediscover Purpose with Human-Centered AI</title>
-  <meta name="description" content="A nonprofit support hub for families helping loved ones rediscover purpose. Human-centered AI tools, resources, and a gentle daily companion for seniors—built to expand to veterans and others in need." />
+  <title>Jmod Legacy — Technology with Heart.</title>
   <meta name="color-scheme" content="dark light" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <meta name="description" content="Jmod Legacy helps families use technology to stay connected, supported, and informed as their loved ones age — without overwhelm or complexity." />
+
   <style>
+    /* =========================
+       THEME TOKENS & GLOBAL VARS
+       ========================= */
     :root{
-      --bg:#0b0c10;
-      --panel:#161923;
-      --ink:#e8ecff;
-      --muted:#aab3c9;
-      --accent:#ff2e8c;   /* magenta */
-      --accent2:#61e7ff;  /* cyan */
-      --ring:rgba(255,255,255,.08);
-      --maxw:1120px;
-      --radius:18px;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-    }
-    *{box-sizing:border-box;scroll-behavior:smooth}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      background:var(--bg);
-      color:var(--ink); line-height:1.45;
+      /* Text & surface colors (dark default) */
+      --text:#e5f1ff;
+      --muted:#a5b4cf;
+      --brand:#38bdf8; /* soft cyan for calm, senior-friendly feel */
+      --brand-soft:rgba(56,189,248,.18);
+      --panel:#020617;
+      --bg:#020617;
+      --ring:rgba(56,189,248,.65);
+      --border:#1f2937;
+
+      /* HERO & WATERMARK assets */
+      --hero-logo:url("assets/Jmod_LegacyTP.png");
+      --wm-logo:url("assets/Jmod_LegacyTP.png");
+
+      /* HERO sizing */
+      --hero-logo-size:min(92vw, 900px);
+
+      /* WATERMARK sizing & opacity */
+      --wm-size:min(88vw, 820px);
+      --wm-opacity:0.10;
+
+      /* Layout tokens */
+      --page-max:1120px;
+      --radius-xl:24px;
+      --radius-pill:999px;
+      --shadow-soft:0 18px 60px rgba(0,0,0,.55);
+      --shadow-card:0 16px 40px rgba(0,0,0,.45);
     }
 
-    /* ===== Fixed NAV (brand scrolls to top) ===== */
+    html[data-theme="light"]{
+      --text:#0f172a;
+      --muted:#4b5563;
+      --brand:#0284c7;
+      --brand-soft:rgba(37,99,235,.14);
+      --panel:#f9fafb;
+      --bg:#e5edf5;
+      --ring:rgba(37,99,235,.30);
+      --border:#d1d5db;
+
+      --hero-logo:url("assets/Jmod_Legacy.png");
+      --wm-logo:url("assets/Jmod_Legacy.png");
+      --wm-opacity:0.12;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.16), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(129,140,248,.08), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    img{max-width:100%;display:block}
+
+    main{
+      width:100%;
+      padding:0 14px 40px;
+      position:relative;
+      isolation:isolate;
+    }
+    /* Watermark behind body (not hero) */
+    main::before{
+      content:"";
+      position:fixed;
+      inset:auto 0 0 50%;
+      transform:translateX(-50%) translateY(120px);
+      width:var(--wm-size);
+      height:var(--wm-size);
+      background-image:var(--wm-logo);
+      background-position:center;
+      background-repeat:no-repeat;
+      background-size:contain;
+      opacity:0;
+      filter:drop-shadow(0 16px 32px rgba(15,23,42,.65));
+      pointer-events:none;
+      z-index:-1;
+      transition:opacity .6s ease, transform .6s ease;
+    }
+    main.watermark-visible::before{
+      opacity:var(--wm-opacity);
+      transform:translateX(-50%) translateY(40px);
+    }
+
+    /* =========================
+       FLOATING NAV
+       ========================= */
     .nav{
-      position:fixed; top:0; left:0; width:100%; z-index:50;
-      backdrop-filter:saturate(140%) blur(10px);
-      background:linear-gradient(to bottom, rgba(15,17,24,.9), rgba(15,17,24,.6));
-      border-bottom:1px solid var(--ring);
+      position:fixed;
+      top:16px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(1200px,94vw);
+      background:color-mix(in oklab, var(--panel) 88%, transparent);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      box-shadow:0 8px 30px rgba(0,0,0,.6);
+      border-radius:var(--radius-pill);
+      padding:8px 14px;
+      z-index:1000;
     }
     .nav-inner{
-      max-width:var(--maxw); margin:0 auto; padding:12px 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
     }
-    .brand-word{font-weight:800; letter-spacing:.2px; color:var(--ink); text-decoration:none}
-    .brand-word .co{opacity:.85; font-weight:600}
-    .nav a{
-      color:var(--ink); text-decoration:none; opacity:.9;
-      padding:8px 10px; border-radius:10px; border:1px solid transparent;
+    .nav-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
     }
-    .nav a:hover{border-color:var(--ring); opacity:1}
-    .nav-right{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
-    .spacer{height:64px} /* offsets fixed nav */
-
-    /* ===== Background SVG layer ===== */
-    .bg-scene{
-      position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.45;
-      background:
-        radial-gradient(1200px 800px at -10% 0%, rgba(255,46,140,.10), transparent 60%),
-        radial-gradient(1200px 800px at 110% 10%, rgba(97,231,255,.10), transparent 60%);
+    .nav-brand{
+      font-size:.95rem;
+      font-weight:650;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:var(--muted);
+      white-space:nowrap;
     }
-    .bg-scene svg{width:100%; height:100%; display:block}
-    .pulse path.flow{stroke-dasharray:4 10; animation:dash 7s linear infinite}
-    @keyframes dash{to{stroke-dashoffset:-140}}
 
-    /* ===== Layout ===== */
-    .wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px}
+    .nav-links{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      flex:1;
+      font-size:.9rem;
+      font-weight:500;
+    }
+    .nav-links a{
+      padding:7px 11px;
+      border-radius:999px;
+      text-decoration:none;
+      color:var(--muted);
+      transition:color .18s ease, background-color .18s ease, transform .18s ease;
+      white-space:nowrap;
+    }
+    .nav-links a:hover{
+      color:var(--text);
+      background:rgba(15,23,42,.4);
+      transform:translateY(-1px);
+    }
 
-    /* HERO (logo left, text right) */
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .nav-co{
+      padding:6px 11px;
+      border-radius:999px;
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      font-size:.85rem;
+      font-weight:600;
+      color:var(--muted);
+      text-decoration:none;
+      background:color-mix(in oklab, var(--panel) 70%, transparent);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .nav-co span.dot{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:var(--brand);
+      box-shadow:0 0 0 4px rgba(56,189,248,.35);
+    }
+
+    /* Theme toggle - match Labs/Insights pill toggle */
+    .theme-toggle{
+      position:relative;
+      width:46px;
+      height:24px;
+      border-radius:999px;
+      border:1px solid color-mix(in oklab, var(--border) 82%, transparent);
+      background:radial-gradient(circle at 0% 0%, rgba(248,250,252,.08), transparent 60%),
+                 color-mix(in oklab, var(--panel) 88%, transparent);
+      display:flex;
+      align-items:center;
+      padding:0 3px;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(0,0,0,.45);
+    }
+    .theme-toggle::before{
+      content:"";
+      position:absolute;
+      inset:3px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.45);
+      pointer-events:none;
+    }
+    .theme-toggle-knob{
+      position:relative;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 25%, #f9fafb, #e5e7eb);
+      box-shadow:0 2px 6px rgba(15,23,42,.6);
+      transform:translateX(0);
+      transition:transform .22s ease;
+    }
+    html[data-theme="light"] .theme-toggle-knob{
+      transform:translateX(18px);
+      background:radial-gradient(circle at 30% 25%, #0f172a, #1f2937);
+    }
+
+    .theme-toggle-icons{
+      position:absolute;
+      inset:0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 7px;
+      font-size:.7rem;
+      color:var(--muted);
+      pointer-events:none;
+    }
+
+    /* Mobile nav controls */
+    .nav-mobile-toggle{
+      display:none;
+      border-radius:999px;
+      border:1px solid color-mix(in oklab, var(--border) 82%, transparent);
+      background:color-mix(in oklab, var(--panel) 88%, transparent);
+      padding:6px 8px;
+      cursor:pointer;
+    }
+    .nav-mobile-toggle span{
+      display:block;
+      width:16px;
+      height:2px;
+      border-radius:999px;
+      background:var(--muted);
+      position:relative;
+    }
+    .nav-mobile-toggle span::before,
+    .nav-mobile-toggle span::after{
+      content:"";
+      position:absolute;
+      left:0;
+      width:16px;
+      height:2px;
+      border-radius:999px;
+      background:var(--muted);
+    }
+    .nav-mobile-toggle span::before{top:-5px}
+    .nav-mobile-toggle span::after{top:5px}
+
+    .mobile-panel{
+      position:fixed;
+      top:72px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(1200px,94vw);
+      background:color-mix(in oklab, var(--panel) 96%, transparent);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:10px 14px 12px;
+      box-shadow:0 16px 40px rgba(0,0,0,.55);
+      display:none;
+      z-index:999;
+    }
+    .mobile-panel.open{display:block}
+    .mobile-panel a{
+      display:block;
+      padding:11px 8px;
+      border-radius:10px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:.95rem;
+      font-weight:550;
+    }
+    .mobile-panel a:active{
+      background:rgba(148,163,184,.10);
+    }
+    .theme--mobile{
+      display:flex;
+      width:100%;
+      justify-content:center;
+      margin:8px 4px 2px;
+    }
+
+    /* =========================
+       HERO
+       ========================= */
     .hero{
-      display:grid; grid-template-columns:1fr; gap:24px;
-      align-items:center; padding:48px 0 16px;
+      width:100%;
+      margin:0 auto;
+      margin-top:96px;
+      padding:32px 0 40px;
     }
-    @media(min-width:880px){
-      .hero{grid-template-columns:520px 1fr; gap:40px; padding:64px 0 24px;}
+    .hero-shell{
+      width:min(var(--page-max), 100%);
+      margin:0 auto;
+      border-radius:32px;
+      padding:30px 18px 30px;
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at top, rgba(56,189,248,.18), transparent 58%),
+        radial-gradient(circle at bottom, rgba(15,23,42,.95), var(--panel));
+      box-shadow:var(--shadow-soft);
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
     }
-    .hero-logo{display:flex; align-items:center; justify-content:center}
-    .hero-logo img{width:100%; max-width:520px; height:auto; display:block}
-    .hero-text h1{margin:0 0 10px; font-size:clamp(1.8rem,3.6vw + .6rem,3.2rem); line-height:1.05}
-    .hero-text p{color:var(--muted); margin:0 0 18px; font-size:1.05rem}
-    .cta-row{display:flex; gap:10px; flex-wrap:wrap}
-    .btn{
-      appearance:none; border:none; cursor:pointer;
-      background:var(--accent); color:#fff; font-weight:800;
-      padding:13px 16px; border-radius:14px; box-shadow:var(--shadow);
-      text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    .hero-bg-logo{
+      position:absolute;
+      inset:50% auto auto 50%;
+      transform:translate(-50%, -52%);
+      width:var(--hero-logo-size);
+      max-width:1000px;
+      opacity:.22;
+      background-image:var(--hero-logo);
+      background-size:contain;
+      background-repeat:no-repeat;
+      background-position:center;
+      filter:drop-shadow(0 20px 40px rgba(15,23,42,.85));
+      pointer-events:none;
+      z-index:0;
+      animation:heroPulse 18s ease-in-out infinite alternate;
     }
-    .btn.secondary{background:transparent; border:1px solid var(--ring); color:var(--ink); box-shadow:none}
 
-    /* Sections */
-    section{padding:36px 0}
-    .panel{
-      background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
-      border:1px solid var(--ring); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+    /* soft particle-like overlay to echo current bg but calmer */
+    .hero-shell::before,
+    .hero-shell::after{
+      content:"";
+      position:absolute;
+      border-radius:999px;
+      filter:blur(40px);
+      opacity:.65;
+      pointer-events:none;
     }
-    .grid-2{display:grid; gap:16px}
-    @media(min-width:860px){.grid-2{grid-template-columns:1fr 1fr}}
-    .kicker{color:var(--accent2); font-weight:800; letter-spacing:.25px; margin-bottom:6px}
-    h2{margin:0 0 8px; font-size:1.7rem}
-    p.lead{color:var(--muted); font-size:1.05rem; margin:0 0 10px}
-    .features{display:grid; gap:14px}
-    @media(min-width:720px){.features{grid-template-columns:repeat(3,1fr)}}
-    .card{background:var(--panel); border:1px solid var(--ring); border-radius:16px; padding:16px}
-    .card h3{margin:0 0 6px; font-size:1.1rem}
-    .card p{margin:0; color:var(--muted)}
-    footer{margin:32px 0 12px}
+    .hero-shell::before{
+      width:320px;height:320px;
+      top:-80px;left:-40px;
+      background:radial-gradient(circle, rgba(56,189,248,.7), transparent 70%);
+      animation:driftA 28s linear infinite alternate;
+    }
+    .hero-shell::after{
+      width:260px;height:260px;
+      bottom:-60px;right:-30px;
+      background:radial-gradient(circle, rgba(129,140,248,.55), transparent 70%);
+      animation:driftB 32s linear infinite alternate;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:1;
+      max-width:640px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:4px 10px 4px 6px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:550;
+      background:rgba(15,23,42,.75);
+      border:1px solid rgba(148,163,184,.5);
+      margin-bottom:14px;
+    }
+    .hero-kicker-pill{
+      width:18px;height:18px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 30%, #e0f2fe, #0284c7);
+      box-shadow:0 0 0 4px rgba(56,189,248,.35);
+    }
+
+    .hero-title{
+      font-size:clamp(1.9rem, 3vw, 2.4rem);
+      line-height:1.1;
+      letter-spacing:-.03em;
+      margin-bottom:12px;
+    }
+    .hero-title span.highlight{
+      background:linear-gradient(120deg, #38bdf8, #a855f7);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .hero-subtitle{
+      font-size:1rem;
+      line-height:1.5;
+      color:var(--muted);
+      max-width:35rem;
+      margin:0 auto 20px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .btn{
+      border-radius:999px;
+      padding:9px 18px;
+      font-size:.9rem;
+      font-weight:600;
+      border:1px solid transparent;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition:transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease, color .16s ease;
+    }
+    .btn-primary{
+      background:linear-gradient(120deg,#38bdf8,#0ea5e9);
+      border-color:rgba(56,189,248,.8);
+      color:#0b1120;
+      box-shadow:0 12px 30px rgba(8,47,73,.7);
+    }
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 16px 36px rgba(8,47,73,.9);
+    }
+    .btn-ghost{
+      background:rgba(15,23,42,.7);
+      border-color:rgba(148,163,184,.7);
+      color:var(--text);
+    }
+    .btn-ghost:hover{
+      background:rgba(15,23,42,.9);
+      transform:translateY(-1px);
+    }
+    .hero-note{
+      font-size:.80rem;
+      color:var(--muted);
+    }
+
+    /* =========================
+       BODY CONTENT
+       ========================= */
+    .page{
+      width:min(var(--page-max), 100%);
+      margin:0 auto;
+      margin-top:32px;
+      display:flex;
+      flex-direction:column;
+      gap:26px;
+    }
+    section{
+      scroll-margin-top:120px;
+    }
+    .section-heading{
+      font-size:1.1rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+    .section-title{
+      font-size:1.35rem;
+      margin-bottom:8px;
+    }
+    .section-lead{
+      font-size:.95rem;
+      color:var(--muted);
+      max-width:38rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+      margin-top:16px;
+    }
+    .card{
+      background:color-mix(in oklab, var(--panel) 92%, transparent);
+      border-radius:var(--radius-xl);
+      padding:16px 16px 15px;
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      box-shadow:var(--shadow-card);
+    }
+    .card-header{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .card-badge{
+      width:24px;height:24px;
+      border-radius:999px;
+      background:var(--brand-soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.8rem;
+      color:var(--brand);
+      font-weight:650;
+    }
+    .card-title{
+      font-size:.98rem;
+      font-weight:600;
+    }
+    .card-body{
+      font-size:.9rem;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    .card-list{
+      margin-top:8px;
+      font-size:.9rem;
+      color:var(--muted);
+    }
+    .card-list ul{
+      list-style:disc;
+      padding-left:18px;
+      margin:4px 0 4px;
+    }
+    .card-list li{
+      margin:2px 0;
+    }
+
+    /* Companion section emphasis */
+    .companion-block{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      margin-top:14px;
+    }
+    .companion-cta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      font-size:.9rem;
+      color:var(--muted);
+    }
+
+    /* FAQ */
+    details{
+      background:color-mix(in oklab, var(--panel) 92%, transparent);
+      border-radius:16px;
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      padding:10px 12px;
+      margin-top:8px;
+      box-shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+    summary{
+      cursor:pointer;
+      font-size:.92rem;
+      font-weight:550;
+      list-style:none;
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      color:var(--text);
+    }
+    summary::-webkit-details-marker{display:none}
+    details[open] summary{
+      color:var(--brand);
+    }
+    details p{
+      margin-top:6px;
+      font-size:.9rem;
+      line-height:1.55;
+      color:var(--muted);
+    }
+
+    /* Contact */
+    .contact-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      margin-top:16px;
+      font-size:.9rem;
+      color:var(--muted);
+    }
+    .contact-col{
+      flex:1 1 240px;
+      background:color-mix(in oklab, var(--panel) 92%, transparent);
+      border-radius:18px;
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      padding:12px 14px;
+      box-shadow:0 12px 30px rgba(0,0,0,.5);
+    }
+    .contact-label{
+      font-size:.85rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .contact-main{
+      font-weight:600;
+      color:var(--text);
+      margin-bottom:2px;
+    }
+
+    /* =========================
+       FOOTER
+       ========================= */
+    footer{
+      width:100%;
+      margin-top:32px;
+      padding:24px 16px 18px;
+      border-top:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      background:linear-gradient(
+        to top,
+        color-mix(in oklab, var(--panel) 96%, transparent),
+        transparent
+      );
+    }
+    .footer-inner{
+      width:min(var(--page-max), 100%);
+      margin:0 auto;
+      text-align:center;
+      font-size:.86rem;
+      color:var(--muted);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .footer-top{
+      font-weight:600;
+    }
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:16px;
+      font-size:.85rem;
+    }
+    .footer-links a{
+      color:var(--text);
+      text-decoration:none;
+    }
+    .footer-links a:hover{
+      text-decoration:underline;
+    }
+
+    /* =========================
+       ANIMATIONS
+       ========================= */
+    @keyframes heroPulse{
+      0%{transform:translate(-50%,-52%) scale(1)}
+      100%{transform:translate(-50%,-52%) scale(1.03)}
+    }
+    @keyframes driftA{
+      0%{transform:translate3d(0,0,0)}
+      100%{transform:translate3d(40px,35px,0)}
+    }
+    @keyframes driftB{
+      0%{transform:translate3d(0,0,0)}
+      100%{transform:translate3d(-30px,-28px,0)}
+    }
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+    @media (max-width:900px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+      .hero-shell{
+        padding:26px 18px 26px;
+      }
+      .hero-title{
+        font-size:clamp(1.7rem, 6vw, 2.1rem);
+      }
+    }
+
+    @media (max-width:768px){
+      .nav-inner{
+        gap:8px;
+      }
+      .nav-links{
+        display:none;
+      }
+      .nav-mobile-toggle{
+        display:flex;
+      }
+      .nav-right{
+        gap:6px;
+      }
+      .hero{
+        margin-top:90px;
+      }
+      .hero-shell{
+        border-radius:26px;
+      }
+      .hero-bg-logo{
+        opacity:.18;
+      }
+    }
+
+    @media (max-width:480px){
+      .hero-shell{
+        padding:24px 14px 22px;
+      }
+      .hero-title{
+        font-size:1.55rem;
+      }
+      .page{
+        gap:22px;
+      }
+      .card{
+        padding:14px 13px 13px;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Subtle animated background (AI head + family nodes) -->
-  <div class="bg-scene">
-    <svg viewBox="0 0 1200 800" class="pulse" aria-hidden="true">
-      <!-- Head silhouette -->
-      <defs>
-        <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="#61e7ff" stop-opacity="0.6"/>
-          <stop offset="100%" stop-color="#ff2e8c" stop-opacity="0.6"/>
-        </linearGradient>
-      </defs>
-      <path d="M350,170
-               c120,-40 250,30 280,150
-               c20,80 -10,140 -40,190
-               c-20,35 -25,70 -20,110
-               l-140,0
-               c-20,0 -35,-15 -35,-35
-               v-40
-               c-90,-10 -160,-110 -150,-210
-               c10,-100 60,-145 105,-165z"
-            fill="none" stroke="url(#g1)" stroke-width="2.5" opacity="0.85"/>
-      <!-- Data lines from head to families -->
-      <g stroke="#61e7ff" stroke-width="2" opacity="0.9">
-        <path class="flow" d="M530,330 C700,260 880,220 1020,260" fill="none"/>
-        <path class="flow" d="M520,360 C690,340 920,380 1080,420" fill="none"/>
-        <path class="flow" d="M500,390 C680,430 900,520 1060,560" fill="none"/>
-      </g>
-      <!-- Family nodes -->
-      <g fill="#61e7ff" opacity="0.9">
-        <circle cx="1020" cy="260" r="5"/><circle cx="1080" cy="420" r="5"/><circle cx="1060" cy="560" r="5"/>
-      </g>
-      <!-- Magenta highlights -->
-      <g fill="#ff2e8c" opacity="0.9">
-        <circle cx="1048" cy="248" r="3.5"/><circle cx="1100" cy="416" r="3.5"/><circle cx="1084" cy="548" r="3.5"/>
-      </g>
-    </svg>
-  </div>
-
   <!-- NAV -->
-  <nav class="nav" aria-label="Main">
+  <nav class="nav" aria-label="Primary">
     <div class="nav-inner">
-      <a href="#top" class="brand-word">Jmod <span class="co">Legacy</span></a>
-      <div class="nav-right">
+      <div class="nav-left">
+        <div class="nav-brand">Jmod Legacy</div>
+      </div>
+
+      <div class="nav-links">
         <a href="#why">Why this matters</a>
-        <a href="#how">How we help</a>
-        <a href="#demo">Try the companion</a>
+        <a href="#help">How we help</a>
+        <a href="#companion">Try the companion</a>
         <a href="#faq">FAQ</a>
-        <a href="#contact" class="btn secondary">Contact</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="nav-right">
+        <a class="nav-co" href="/jmodco/">
+          <span class="dot"></span>
+          <span>Jmod Co.</span>
+        </a>
+
+        <button class="theme-toggle" type="button" id="themeToggle" aria-label="Toggle dark/light mode">
+          <div class="theme-toggle-icons">
+            <span>☾</span>
+            <span>☼</span>
+          </div>
+          <div class="theme-toggle-knob"></div>
+        </button>
+
+        <button class="nav-mobile-toggle" type="button" id="mobileToggle" aria-label="Open navigation">
+          <span></span>
+        </button>
       </div>
     </div>
   </nav>
-  <div class="spacer"></div>
 
-  <!-- HERO -->
-  <header class="wrap hero" role="banner">
-    <div class="hero-logo">
-      <img
-        src="https://www.jordanmoddes.com/jmodco/assets/Jmod_LegacyTP.png"
-        alt="Jmod Legacy"
-        style="max-width:100%;height:auto"
-      >
-    </div>
-    <div class="hero-text">
-      <div class="kicker">Human-Centered AI for Purpose</div>
-      <h1>Help your loved one<br>rediscover drive, safely.</h1>
-      <p class="lead">
-        Retirement can feel like a cliff. We help families guide seniors back to daily purpose—
-        using approachable AI and gentle routines—so no one gets left behind by technology.
-      </p>
-      <div class="cta-row">
-        <a class="btn" href="#demo">Try the Daily Companion</a>
-        <a class="btn secondary" href="#how">See how it works</a>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap" id="content">
-    <!-- WHY -->
-    <section id="why">
-      <div class="grid-2">
-        <div class="panel">
-          <h2>Why this matters</h2>
-          <p class="lead">Many new retirees lose routine, role, and rhythm. That loss of purpose can feed isolation and low mood. Families see it—but don’t always know how to help.</p>
-          <p>We make it simple to start again: tiny wins, meaningful connection, and tech that serves the person—not the other way around.</p>
+  <!-- MOBILE PANEL -->
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#why">Why this matters</a>
+    <a href="#help">How we help</a>
+    <a href="#companion">Try the companion</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+    <a href="/jmodco/">Jmod Co.</a>
+    <div class="theme--mobile">
+      <button class="theme-toggle" type="button" id="themeToggleMobile" aria-label="Toggle dark/light mode (mobile)">
+        <div class="theme-toggle-icons">
+          <span>☾</span>
+          <span>☼</span>
         </div>
-        <div class="panel">
-          <h2>AI as a bridge, not a barrier</h2>
-          <p class="lead">Our tools use AI to support—not replace—human connection. Clear guidance, memory aids, gentle prompts, and family-friendly sharing keep everyone included.</p>
-          <p>We start with seniors, but the framework can extend to veterans, people with disabilities, and anyone who needs a reset.</p>
+        <div class="theme-toggle-knob"></div>
+      </button>
+    </div>
+  </div>
+
+  <main id="mainContent">
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-shell">
+        <div class="hero-bg-logo"></div>
+
+        <div class="hero-content">
+          <div class="hero-kicker">
+            <span class="hero-kicker-pill"></span>
+            <span>Technology that feels like a helping hand — not a hurdle.</span>
+          </div>
+
+          <h1 class="hero-title">
+            Support for the people who raised us — powered by <span class="highlight">calm, clear technology.</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Jmod Legacy is being built as a gentle “bridge” between modern tech and the real needs of aging parents, grandparents, and the family members who care for them.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#companion">
+              Try the companion (early concept)
+            </a>
+            <a class="btn btn-ghost" href="#why">
+              Why this matters
+            </a>
+          </div>
+
+          <div class="hero-note">
+            No logins. No spam. Just a future tool we’re designing with families and seniors in mind.
+          </div>
         </div>
       </div>
-    </section>
+    </header>
 
-    <!-- HOW -->
-    <section id="how">
-      <div class="kicker">Our Approach</div>
-      <h2>Simple tools + family guidance</h2>
-      <p class="lead">We combine a daily companion app with practical resources for families.</p>
-      <div class="features" style="margin-top:12px">
-        <div class="card"><h3>Daily Check-Ins</h3><p>Light challenges and photo check-ins to rebuild routine.</p></div>
-        <div class="card"><h3>Story Keeper</h3><p>Capture memories by voice or text; share with family.</p></div>
-        <div class="card"><h3>AI Guidance</h3><p>Approachable prompts and “what to try next” suggestions.</p></div>
-        <div class="card"><h3>Family Dashboard</h3><p>Invite loved ones to cheer, review stories, and celebrate streaks.</p></div>
-        <div class="card"><h3>Privacy First</h3><p>Local-first by default; you decide what’s shared.</p></div>
-        <div class="card"><h3>Built to Expand</h3><p>Ready to support anyone needing a purpose-reset program.</p></div>
-      </div>
-    </section>
+    <!-- BODY -->
+    <div class="page">
+      <!-- WHY THIS MATTERS -->
+      <section id="why">
+        <div class="section-heading">Why this matters</div>
+        <h2 class="section-title">Aging parents. Busy families. Technology that often makes it harder.</h2>
+        <p class="section-lead">
+          Most tools for seniors are either too complicated, too clinical, or designed for companies instead of real families. Legacy aims to stay small, human, and focused on the gaps we see every day.
+        </p>
 
-    <!-- DEMO -->
-    <section id="demo">
-      <div class="kicker">Try It</div>
-      <h2>Daily Companion (Demo)</h2>
-      <div class="panel">
-        <p class="lead">Mini-preview: press “I did it” to track a streak locally.</p>
-        <p id="challengeText">Loading challenge…</p>
-        <button class="btn" id="markDone">I did it</button>
-        <button class="btn secondary" id="newChallenge">New idea</button>
-        <p style="margin-top:8px">🔥 Streak: <span id="streakDays">0</span> days</p>
-      </div>
-    </section>
+        <div class="grid" style="margin-top:18px">
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">1</div>
+              <div class="card-title">We’re living farther apart than ever.</div>
+            </div>
+            <div class="card-body">
+              Staying close used to mean showing up at the door. Now it’s calls, texts, portals, apps, and passwords.
+              For older adults, that stack is overwhelming — and for their family, it’s one more system to manage.
+            </div>
+          </article>
 
-    <!-- FAQ -->
-    <section id="faq">
-      <div class="kicker">Questions</div>
-      <h2>FAQ</h2>
-      <div class="grid-2" style="margin-top:10px">
-        <div class="panel"><h3>Is this only for seniors?</h3><p>We’re starting with seniors, but the framework can serve anyone seeking renewed purpose.</p></div>
-        <div class="panel"><h3>Do you share data?</h3><p>By default, no. The demo keeps everything on your device. Future features will always be opt-in.</p></div>
-      </div>
-    </section>
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">2</div>
+              <div class="card-title">Most “solutions” forget the person in the middle.</div>
+            </div>
+            <div class="card-body">
+              The adult child, grandchild, or caregiver becomes the untrained “IT help desk” — on top of work, kids,
+              appointments, and life. Legacy is being designed for that person as much as for the senior.
+            </div>
+          </article>
+        </div>
+      </section>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <div class="kicker">We’re here for families</div>
-      <h2>Get in touch</h2>
-      <div class="panel">
-        <p class="lead">Tell us about your loved one and what would help. We’ll reply with next steps.</p>
-        <p>Email: <a href="mailto:hello@jmod.co">hello@jmod.co</a></p>
-      </div>
-    </section>
+      <!-- HOW WE HELP -->
+      <section id="help">
+        <div class="section-heading">How we help</div>
+        <h2 class="section-title">A calm layer between your family and the chaos of tech.</h2>
+        <p class="section-lead">
+          Jmod Legacy will live as a simple, guided “companion” that can explain, remind, and organize — without asking your loved ones to learn another complicated system.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">A</div>
+              <div class="card-title">Plain-language explanations, on demand.</div>
+            </div>
+            <div class="card-body">
+              When a parent gets a confusing email, notice, or message, Legacy aims to:
+            </div>
+            <div class="card-list">
+              <ul>
+                <li>Explain what it means in simple, direct language.</li>
+                <li>Highlight what’s urgent vs. what can wait.</li>
+                <li>Suggest next steps for you or for them.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">B</div>
+              <div class="card-title">Gentle structure for the “important stuff.”</div>
+            </div>
+            <div class="card-body">
+              Over time, Legacy is meant to help families keep track of:
+            </div>
+            <div class="card-list">
+              <ul>
+                <li>Key medical contacts and appointments.</li>
+                <li>Household “how to” details that only they know.</li>
+                <li>Little daily check-ins that show someone cares.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- COMPANION -->
+      <section id="companion">
+        <div class="section-heading">Try the companion</div>
+        <h2 class="section-title">Early-stage concept — focused on clarity, not features.</h2>
+        <p class="section-lead">
+          The Legacy Companion is being shaped as a calm, always-available guide you can ask questions like:
+          “How do I explain this letter to my dad?” or “How can I check in without making mom feel watched?”
+        </p>
+
+        <div class="companion-block">
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">α</div>
+              <div class="card-title">What exists right now</div>
+            </div>
+            <div class="card-body">
+              Behind the scenes, Legacy is powered by the same engine that supports other Jmod Co. tools — but here we’re
+              tuning everything toward slower pace, higher contrast, and simpler language for seniors and family members.
+            </div>
+          </article>
+
+          <div class="companion-cta">
+            <span>As the tool matures, this section will become a live, guided experience — with clear “stop” buttons, privacy-first defaults, and no pressure to sign up.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="section-heading">FAQ</div>
+        <h2 class="section-title">Questions you might be asking already.</h2>
+
+        <details>
+          <summary><span>Is this a medical, legal, or emergency service?</span></summary>
+          <p>
+            No. Jmod Legacy is intended as a supportive, informational tool — not a replacement for doctors, attorneys,
+            or 911. It’s meant to help you understand and organize, not to make critical decisions for your family.
+          </p>
+        </details>
+
+        <details>
+          <summary><span>Will my family’s information be sold or shared?</span></summary>
+          <p>
+            The long-term vision for Legacy is privacy-first: minimal data, clear controls, and no hidden reselling.
+            As features are defined, this page will include a plain-language version of how data is handled — not just fine print.
+          </p>
+        </details>
+
+        <details>
+          <summary><span>Do my parents or grandparents need to be “good with technology?”</span></summary>
+          <p>
+            No. In fact, Legacy is being built for families where the older generation is not comfortable with
+            technology. Much of the interaction may come through you, the family member — at whatever pace feels right.
+          </p>
+        </details>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="section-heading">Contact</div>
+        <h2 class="section-title">Want to give feedback or share your situation?</h2>
+        <p class="section-lead">
+          Legacy is in an early design phase inside Jmod Co. If you’ve navigated aging parents, long-distance support,
+          or just want to help shape something better, your lived experience matters here.
+        </p>
+
+        <div class="contact-row">
+          <div class="contact-col">
+            <div class="contact-label">Current status</div>
+            <div class="contact-main">Early concept — pre-launch</div>
+            <p>
+              The best thing you can do now is share the kinds of tools, reminders, or supports that would actually
+              help your family — so we don’t build another unused “portal.”
+            </p>
+          </div>
+
+          <div class="contact-col">
+            <div class="contact-label">Reach out</div>
+            <div class="contact-main">Jordan @ Jmod Co.</div>
+            <p>
+              Until Legacy is public, inquiries are handled directly by Jmod Co. through existing channels. As the project
+              matures, this section will update with a simpler, dedicated contact path.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <!-- FOOTER -->
-  <footer id="footer"></footer>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        Backed by GPT-5 Engine
+      </div>
+      <div class="footer-links">
+        <a href="/jmodco/Labs/">Jmod Labs</a>
+        <a href="/jmodco/Systems/">Jmod Systems</a>
+        <a href="/jmodco/Media/">Jmod Media</a>
+        <a href="/jmodco/Legacy/">Jmod Legacy</a>
+        <a href="/jmodco/Insights/">Jmod Insights</a>
+      </div>
+      <div>© 2025 Jmod Co. — Built for small business clarity.</div>
+    </div>
+  </footer>
 
   <script>
-    // ----- Robust logo loader (tries multiple known paths) -----
+    // =========================
+    // THEME HANDLING
+    // =========================
     (function(){
-      const el = document.getElementById('legacyLogo');
-      const candidates = [
-        "/jmodco/asset/legacy/logo-legacy.svg",
-        "/jmodco/asset/legacy/logo-legacy.png",
-        "/jmodco/asset/JmodCo_LogoTP.png"
-      ];
-      let i = 0;
-      function tryNext(){
-        if(i >= candidates.length){ el.style.display='none'; return; }
-        const src = candidates[i++];
-        const img = new Image();
-        img.onload = ()=>{ el.src = src; };
-        img.onerror = tryNext;
-        img.src = src;
+      const root = document.documentElement;
+      const stored = localStorage.getItem("jmod-theme");
+      if(stored === "light" || stored === "dark"){
+        root.setAttribute("data-theme", stored);
+      }else{
+        root.setAttribute("data-theme","dark");
       }
-      tryNext();
+
+      function toggleTheme(){
+        const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+        const next = current === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("jmod-theme", next);
+      }
+
+      const toggleDesktop = document.getElementById("themeToggle");
+      const toggleMobile = document.getElementById("themeToggleMobile");
+      if(toggleDesktop) toggleDesktop.addEventListener("click", toggleTheme);
+      if(toggleMobile) toggleMobile.addEventListener("click", toggleTheme);
     })();
 
-    // ----- Footer include -----
-    (async()=>{
-      try{
-        const r=await fetch("/jmodco/assets/footer.html",{cache:"no-store"});
-        if(!r.ok) throw 0;
-        document.getElementById("footer").innerHTML = await r.text();
-      }catch{
-        document.getElementById("footer").innerHTML =
-          '<div style="opacity:.85;text-align:center;padding:12px 10px;border-top:1px solid rgba(255,255,255,.12)">© '+new Date().getFullYear()+' Jmod Co. — Built for Generational Continuity.</div>';
-      }
+    // =========================
+    // MOBILE NAV
+    // =========================
+    (function(){
+      const mobileToggle = document.getElementById("mobileToggle");
+      const mobilePanel = document.getElementById("mobilePanel");
+
+      if(!mobileToggle || !mobilePanel) return;
+
+      mobileToggle.addEventListener("click", () => {
+        mobilePanel.classList.toggle("open");
+      });
+
+      mobilePanel.addEventListener("click", (e) => {
+        if(e.target.tagName.toLowerCase() === "a"){
+          mobilePanel.classList.remove("open");
+        }
+      });
     })();
 
-    // ----- Tiny demo (streaks + challenges, local only) -----
-    const CH=["Step outside and breathe once.","Text a family member hello.","Stretch for 30 seconds.","Water a plant.","Write two sentences of a memory."];
-    const $=s=>document.querySelector(s);
-    function rand(){return CH[Math.floor(Math.random()*CH.length)]}
-    function today0(){const d=new Date(); d.setHours(0,0,0,0); return d}
-    function loadDemo(){
-      $("#challengeText").textContent = rand();
-      $("#streakDays").textContent = localStorage.getItem("legacy.streak") || 0;
-    }
-    function bump(){
-      const t=today0(), last=localStorage.getItem("legacy.last");
-      let s=Number(localStorage.getItem("legacy.streak")||0);
-      if(!last) s=1; else{
-        const diff=(t - new Date(last))/(864e5);
-        if(diff===1) s++; else if(diff>1) s=1;
+    // =========================
+    // WATERMARK VISIBILITY ON SCROLL
+    // =========================
+    (function(){
+      const hero = document.querySelector(".hero");
+      const main = document.getElementById("mainContent");
+      if(!hero || !main) return;
+
+      function onScroll(){
+        const rect = hero.getBoundingClientRect();
+        const triggerPoint = window.innerHeight * 0.4;
+        if(rect.bottom < triggerPoint){
+          main.classList.add("watermark-visible");
+        }else{
+          main.classList.remove("watermark-visible");
+        }
       }
-      localStorage.setItem("legacy.streak", s);
-      localStorage.setItem("legacy.last", t);
-      $("#streakDays").textContent = s;
-    }
-    $("#markDone").onclick=()=>bump();
-    $("#newChallenge").onclick=()=>$("#challengeText").textContent=rand();
-    loadDemo();
+      window.addEventListener("scroll", onScroll, {passive:true});
+      onScroll();
+    })();
   </script>
 </body>
 </html>
