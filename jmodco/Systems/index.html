@@ -37,7 +37,7 @@
 
       /* watermark + hero logo */
       --wm-image:url('/jmodco/assets/Jmod_SystemsTP.png');
-      --wm-size:80vw;
+      --wm-size:80vmin;          /* ~80% of viewport */
       --wm-opacity:.12;
 
       --hero-logo:url('/jmodco/assets/Jmod_SystemsTP.png');
@@ -91,10 +91,7 @@
     html,body{height:100%}
 
     body{
-      background:
-        radial-gradient(1200px 600px at 10% 0%, rgba(0,188,212,.12), transparent 60%),
-        radial-gradient(1200px 700px at 100% 100%, rgba(255,64,129,.10), transparent 60%),
-        var(--bg);
+      background:var(--bg);   /* smooth, no tiling gradients */
       color:var(--ink);
       font:16px/1.55 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       text-rendering:geometricPrecision;
@@ -132,7 +129,6 @@
 
     /* =========================
        FLOATING PILL NAV
-       (matches Labs / Insights)
        ========================= */
     .nav-shell{
       position:fixed;
@@ -178,7 +174,7 @@
       gap:14px;
       font-size:.92rem;
       flex:1;
-      justify-content:center;
+      justify-content:flex-end;   /* push links to the right */
     }
 
     .nav-center a{
@@ -202,61 +198,16 @@
       white-space:nowrap;
     }
 
-    .nav-link-co{
+    /* Jmod Co. slightly emphasized but inline with nav links */
+    .nav-center .nav-link-co{
       font-weight:600;
-      font-size:.9rem;
-      color:var(--ink);
-      text-decoration:none;
-      padding:6px 12px;
-      border-radius:999px;
+      padding-inline:12px;
       border:1px solid color-mix(in oklab, var(--border) 60%, transparent);
       background:color-mix(in oklab, var(--panel-soft) 80%, transparent);
     }
-    .nav-link-co:hover{
-      text-decoration:none;
+    .nav-center .nav-link-co:hover{
       background:color-mix(in oklab, var(--accent-soft) 30%, var(--panel-soft) 70%);
-    }
-
-    /* theme toggle */
-    .theme-toggle{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid color-mix(in oklab, var(--border) 70%, transparent);
-      background:color-mix(in oklab, var(--panel-soft) 92%, transparent);
-      font-size:.8rem;
-      color:var(--muted);
-      cursor:pointer;
-    }
-    .theme-toggle span[data-theme-label]{
-      min-width:32px;
-    }
-
-    .theme-toggle-pill{
-      position:relative;
-      width:34px;
-      height:18px;
-      border-radius:999px;
-      background:color-mix(in oklab, var(--bg-soft) 70%, var(--panel) 30%);
-      box-shadow:inset 0 0 0 1px rgba(15,23,42,.6);
-    }
-
-    .theme-toggle-dot{
-      position:absolute;
-      top:2px;
-      left:2px;
-      width:14px;
-      height:14px;
-      border-radius:999px;
-      background:var(--accent);
-      box-shadow:0 0 10px rgba(0,188,212,.6);
-      transition:transform .18s ease;
-    }
-
-    html[data-theme="light"] .theme-toggle-pill{
-      box-shadow:inset 0 0 0 1px rgba(148,163,184,.7);
+      text-decoration:none;
     }
 
     /* burger */
@@ -280,6 +231,36 @@
       background:var(--ink);
       margin:2px 0;
     }
+
+    /* Labs/Insights-style theme toggle */
+    .theme-toggle{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid color-mix(in oklab, var(--border) 70%, transparent);
+      background:color-mix(in oklab, var(--panel-soft) 96%, transparent);
+      font-size:.8rem;
+      color:var(--muted);
+      cursor:pointer;
+    }
+
+    .theme-toggle-dot{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 30%, #fefce8, #a855f7);
+      box-shadow:0 0 14px rgba(168,85,247,.75);
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    html[data-theme="light"] .theme-toggle-dot{
+      background:radial-gradient(circle at 30% 30%, #e0f2fe, #22c55e);
+      box-shadow:0 0 12px rgba(34,197,94,.7);
+    }
+
+    .nav-spacer{height:84px;}
 
     /* slide-down mobile panel */
     .mobile-panel{
@@ -317,8 +298,6 @@
       justify-content:center;
       margin:8px 4px 2px;
     }
-
-    .nav-spacer{height:84px;}
 
     @media (max-width:900px){
       .nav-center{display:none;}
@@ -690,15 +669,13 @@
         <a href="#deliver">What we Deliver</a>
         <a href="#integration">Integration</a>
         <a href="#contact">Contact</a>
+        <a class="nav-link-co" href="/jmodco/">Jmod Co.</a>
       </nav>
 
       <div class="nav-right">
-        <a class="nav-link-co" href="/jmodco/">Jmod Co.</a>
         <button class="theme-toggle" type="button" data-theme-toggle>
+          <span class="theme-toggle-dot" data-theme-dot></span>
           <span data-theme-label>Dark</span>
-          <div class="theme-toggle-pill">
-            <div class="theme-toggle-dot" data-theme-dot></div>
-          </div>
         </button>
       </div>
     </div>
@@ -713,10 +690,8 @@
       <a href="/jmodco/">Jmod Co.</a>
       <div class="theme--mobile">
         <button class="theme-toggle" type="button" data-theme-toggle>
+          <span class="theme-toggle-dot" data-theme-dot></span>
           <span data-theme-label>Dark</span>
-          <div class="theme-toggle-pill">
-            <div class="theme-toggle-dot" data-theme-dot></div>
-          </div>
         </button>
       </div>
     </div>
@@ -1090,9 +1065,7 @@
   </footer>
 
   <script>
-    // =========================
     // Typewriter headline
-    // =========================
     (function(){
       const el = document.getElementById('typed');
       const txt = el.textContent.trim();
@@ -1106,9 +1079,7 @@
       })();
     })();
 
-    // =========================
-    // Scroll-based reveal
-    // =========================
+    // Section reveals
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if(e.isIntersecting) e.target.classList.add('in');
@@ -1117,9 +1088,7 @@
 
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // =========================
     // Nav shrink + watermark
-    // =========================
     const navShell = document.getElementById('page-nav');
     const bgLogo = document.getElementById('bg-logo');
     const heroSec = document.querySelector('.hero');
@@ -1130,7 +1099,6 @@
 
     const logoObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        // Once ~80% of hero is scrolled past, fade in watermark
         if(!entry.isIntersecting){
           bgLogo.classList.add('visible');
         }else{
@@ -1141,9 +1109,7 @@
 
     logoObserver.observe(heroSec);
 
-    // =========================
     // Animate packets along paths
-    // =========================
     function moveAlong(pathId, dotId){
       const path = document.getElementById(pathId);
       const dot  = document.getElementById(dotId);
@@ -1161,9 +1127,7 @@
     moveAlong('pipe2','pkt2');
     moveAlong('pipe3','pkt3');
 
-    // =========================
     // Accordion
-    // =========================
     document.querySelectorAll('.acc-item').forEach(item => {
       const head = item.querySelector('.acc-h');
       const body = item.querySelector('.acc-b');
@@ -1179,9 +1143,7 @@
       });
     });
 
-    // =========================
     // KPIs + orchestrator simulation
-    // =========================
     const elRPM = document.querySelector('[data-kpi="rpm"]');
     const elOK  = document.querySelector('[data-kpi="okrate"]');
     const elP95 = document.querySelector('[data-kpi="p95"]');
@@ -1252,9 +1214,7 @@
 
     renderKPIs();
 
-    // =========================
     // Theme toggle (desktop + mobile)
-    // =========================
     (function(){
       const root = document.documentElement;
       const THEME_KEY = 'jmod-theme';
@@ -1268,7 +1228,7 @@
 
         labels.forEach(el => el.textContent = theme === 'light' ? 'Light' : 'Dark');
         dots.forEach(dot => {
-          dot.style.transform = theme === 'light' ? 'translateX(16px)' : 'translateX(0)';
+          dot.style.transform = theme === 'light' ? 'translateX(2px)' : 'translateX(0)';
         });
       }
 
@@ -1285,9 +1245,7 @@
       });
     })();
 
-    // =========================
     // Mobile nav toggle
-    // =========================
     (function(){
       const btn   = document.getElementById('navToggle');
       const panel = document.getElementById('mobilePanel');
