@@ -287,61 +287,68 @@
 .hero-scan{
   position:absolute;
   inset:-25% -35%;
-  /* Layer 1: dot grid / lattice
-     Layer 2: soft nebula pulse top-left
-     Layer 3: soft nebula pulse bottom-right */
+  /* Layer 1: dot grid / lattice (this is what moves)
+     Layer 2–3: soft nebula pulses, mostly static */
   background:
-    radial-gradient(circle, rgba(56,189,248,.45) 1px, transparent 1px),
+    radial-gradient(circle, rgba(56,189,248,.55) 1px, transparent 1px),
     radial-gradient(circle at 10% 0%, rgba(56,189,248,.18), transparent 60%),
     radial-gradient(circle at 90% 100%, rgba(129,140,248,.22), transparent 65%);
   background-size:
-    38px 38px,
+    34px 34px,        /* tighter grid so motion is readable */
     120% 120%,
     150% 150%;
   background-repeat:repeat, no-repeat, no-repeat;
-  opacity:.45;
+  background-position:0 0, 50% 40%, 40% 60%;
+  opacity:.55;
   mix-blend-mode:screen;
-  filter:blur(.5px);
-  animation:pulseGrid 18s ease-in-out infinite;
+  filter:blur(.4px);
+  animation:pulseGrid 14s linear infinite;
   z-index:-1;
 }
+
 [data-theme="light"] .hero-scan{
   background:
-    radial-gradient(circle, rgba(148,163,184,.65) 1px, transparent 1px),
-    radial-gradient(circle at 10% 0%, rgba(59,130,246,.20), transparent 60%),
-    radial-gradient(circle at 90% 100%, rgba(129,140,248,.20), transparent 65%);
+    radial-gradient(circle, rgba(148,163,184,.7) 1px, transparent 1px),
+    radial-gradient(circle at 10% 0%, rgba(59,130,246,.22), transparent 60%),
+    radial-gradient(circle at 90% 100%, rgba(168,85,247,.20), transparent 65%);
   background-size:
-    34px 34px,
+    30px 30px,
     125% 125%,
     150% 150%;
-  opacity:.38;
+  background-repeat:repeat, no-repeat, no-repeat;
+  background-position:0 0, 52% 42%, 42% 62%;
+  opacity:.5;              /* stronger so it actually shows on light */
   mix-blend-mode:screen;
 }
 
 /* Nebula Pulse Grid animation */
 @keyframes pulseGrid{
   0%{
+    /* grid starts top-left, pulses slightly offset */
     background-position:
-      0 0,           /* grid */
-      50% 40%,       /* pulse 1 */
-      40% 60%;       /* pulse 2 */
-    opacity:.35;
+      0 0,          /* grid */
+      50% 40%,      /* pulse 1 */
+      40% 60%;      /* pulse 2 */
+    opacity:.45;
   }
   50%{
+    /* grid drifts diagonally, pulses shift toward center */
     background-position:
-      24px 20px,
+      80px 60px,
       52% 48%,
       50% 50%;
-    opacity:.55;
+    opacity:.65;
   }
   100%{
+    /* grid drifts further, pulses shift opposite corner */
     background-position:
-      48px 40px,
+      160px 120px,
       48% 60%,
       60% 40%;
-    opacity:.4;
+    opacity:.5;
   }
 }
+
 
 .hero-title{
   margin:0 0 .75rem;
