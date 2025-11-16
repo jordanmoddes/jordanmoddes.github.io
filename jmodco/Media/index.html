@@ -6,27 +6,36 @@
   <title>Jmod Media — AI Social Posting for Small Business</title>
   <meta name="description" content="Create smarter. Post faster. Grow everywhere. Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms.">
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
   <style>
-    /* ============================================================
-       ROOT VARIABLES — You can safely change these
-       ============================================================ */
+    /* ================= ROOT VARS ================= */
     :root{
       --shell-max: 1200px;
       --shell-pad: 20px;
 
-      --hero-logo-size: 88vh;   /* Giant hero logo size */
-      --wm-size: 80vw;          /* Watermark base size */
+      --hero-logo-size: 88vh;
+
+      /* watermark: 80% of screen, capped so it doesn't blow up */
       --wm-opacity: 0.15;
-      --accent: #22d3ee;
+
+      --accent:#22d3ee;
 
       --bg:#0b0f1a;
       --panel:#0e1527;
       --ink:#e9ecff;
       --muted:#94a1c6;
       --border:rgba(255,255,255,0.08);
+
+      /* PHONE / PREVIEW SIZING (from your original) */
+      --phone-w: 360px;     /* phone outer width */
+      --phone-h: 800px;     /* phone outer height */
+      --screen-pad-v: 14px; /* vertical screen padding */
+      --screen-pad-h: 0px;  /* horizontal screen padding */
+      --screen-bar-h: 28px; /* top bar height */
+      --screen-copy-maxh: 86px; /* copy block max height */
+
+      --neon:#33ff66;       /* glow outline for phone */
     }
 
     html[data-theme="light"]{
@@ -44,16 +53,13 @@
       color:var(--ink);
       overflow-x:hidden;
     }
-
     .shell{
       max-width:var(--shell-max);
       margin:0 auto;
       padding:0 var(--shell-pad);
     }
 
-    /* ============================================================
-       NAV — identical style to Labs/Systems/Insights
-       ============================================================ */
+    /* =============== NAV (Labs-style) =============== */
     .nav{
       position:fixed; top:16px; left:50%; transform:translateX(-50%);
       width:min(1200px,94vw);
@@ -73,7 +79,6 @@
       color:var(--ink); font-weight:700; text-decoration:none;
       padding-left:10px;
     }
-
     .nav-links{
       display:flex; align-items:center; gap:28px;
       list-style:none; padding:0;
@@ -83,12 +88,8 @@
       color:var(--ink); text-decoration:none; font-weight:600; opacity:.9;
     }
     .nav-links a:hover{opacity:1}
+    .nav-right{display:flex; align-items:center; gap:14px;}
 
-    .nav-right{
-      display:flex; align-items:center; gap:14px;
-    }
-
-    /* Theme toggle pill */
     .theme{
       display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
       border:1px solid var(--border); border-radius:999px;
@@ -101,7 +102,6 @@
       box-shadow:0 0 0 2px rgba(122,82,255,0.25);
     }
 
-    /* Hamburger */
     .burger{
       display:none; width:40px; height:40px; border-radius:10px;
       border:1px solid var(--border);
@@ -119,7 +119,6 @@
     .burger span::before{top:-6px}
     .burger span::after{top:6px}
 
-    /* Mobile panel */
     .mobile-panel{
       position:fixed; top:72px; left:50%; transform:translateX(-50%);
       width:min(1200px,94vw);
@@ -136,9 +135,7 @@
       display:block; padding:12px 10px; color:var(--ink);
       text-decoration:none; font-weight:600;
     }
-    .mobile-panel a:active{
-      background:rgba(255,255,255,0.06);
-    }
+    .mobile-panel a:active{background:rgba(255,255,255,0.06);}
     .theme--mobile{
       margin-top:8px; justify-content:center;
       width:100%; display:flex;
@@ -150,26 +147,26 @@
       .burger{display:flex}
     }
 
-    /* ============================================================
-       HERO SECTION
-       ============================================================ */
+    /* =============== HERO =============== */
     .hero{
       position:relative;
       width:100%;
-      padding-top:160px;
-      padding-bottom:100px;
+      margin-top:15px;          /* 15px gap under nav */
+      padding-top:160px;        /* space before text */
+      padding-bottom:80px;      /* plus phone height will extend hero further */
       overflow:hidden;
       text-align:center;
     }
 
-    /* Canvas background sits behind hero text + logo */
     #hero-canvas{
       position:absolute;
       inset:0;
+      display:block;
+      width:100%;
+      height:100%;
       z-index:0;
     }
 
-    /* Full hero logo behind text */
     .hero-logo{
       position:absolute; left:50%; top:50%;
       transform:translate(-50%, -50%);
@@ -180,7 +177,6 @@
       pointer-events:none;
       filter:drop-shadow(0 0 40px rgba(34,211,238,.35));
     }
-
     html[data-theme="light"] .hero-logo{
       opacity:0.20;
       filter:drop-shadow(0 0 20px rgba(0,0,0,.22));
@@ -190,16 +186,14 @@
       position:relative;
       z-index:5;
       max-width:800px;
-      margin:0 auto;
+      margin:0 auto 40px;
     }
-
     .hero-content h1{
       font-size:clamp(34px,4vw,56px);
       font-weight:900;
       color:var(--ink);
       margin-bottom:12px;
     }
-
     .hero-content p{
       font-size:1.15rem;
       color:var(--muted);
@@ -209,7 +203,6 @@
       margin-right:auto;
     }
 
-    /* Store buttons */
     .store-row{
       display:flex;
       gap:18px;
@@ -217,25 +210,22 @@
       justify-content:center;
       margin-top:16px;
     }
-
     .store-btn img{
       height:52px;
       filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
     }
-
     html[data-theme="light"] .store-btn img{
       filter:drop-shadow(0 4px 12px rgba(0,0,0,.25));
     }
 
-    /* ============================================================
-       WATERMARK — fades in after hero
-       ============================================================ */
+    /* =============== WATERMARK (smaller) =============== */
     #bg-logo{
       position:fixed;
       inset:0;
       background-position:center;
-      background-size:var(--wm-size);
       background-repeat:no-repeat;
+      /* 80% viewport, but capped to 960px so it doesn't dominate */
+      background-size:min(80vw, 960px);
       opacity:0;
       transition:opacity .8s ease;
       pointer-events:none;
@@ -251,9 +241,7 @@
       filter:drop-shadow(0 0 32px rgba(0,0,0,0.18));
     }
 
-    /* ============================================================
-       FLOATING SOCIAL ICONS
-       ============================================================ */
+    /* =============== FLOATING ICONS =============== */
     #icon-field{
       position:fixed;
       inset:0;
@@ -269,7 +257,6 @@
       filter:drop-shadow(0 0 8px rgba(255,255,255,.25));
       pointer-events:none;
     }
-
     @keyframes burstAnim{
       0%{opacity:0; transform:translate(-50%,-50%) scale(.35)}
       15%{opacity:.9}
@@ -277,78 +264,117 @@
       100%{opacity:0; transform:translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.05)}
     }
 
-    /* ============================================================
-       PHONE PREVIEW SECTION
-       ============================================================ */
-    .phone-wrap{
-      padding:40px 0 34px;
-    }
+    /* =============== PHONE (YOUR ORIGINAL CODE) =============== */
 
+    /* PHONE WRAP */
+    .phone-wrap{
+      padding:10px 0 34px;
+    }
     .phone{
-      width:360px;
+      width:var(--phone-w);
+      height:var(--phone-h);
       margin:0 auto;
       background:var(--panel);
-      border:2px solid var(--accent);
+      border:2px solid var(--neon);
       border-radius:28px;
-      box-shadow:0 0 22px rgba(34,211,238,.25);
-      padding:16px;
-    }
-
-    .screen{
-      width:100%;
-      border-radius:20px;
-      background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),
-                 linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),
-                 #0e142b;
-      padding:12px;
+      box-shadow:0 0 22px rgba(51,255,102,.25);
+      position:relative;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      align-items:center;
+      padding:16px;
+    }
+    .phone::after{
+      content:"";
+      position:absolute;
+      right:-5px;
+      top:74px;
+      width:4px;
+      height:56px;
+      background:var(--neon);
+      border-radius:2px;
+      opacity:.8;
     }
 
+    /* screen is flex column */
+    .screen{
+      width:100%;
+      flex:1;
+      border-radius:20px;
+      background:
+        linear-gradient(180deg, rgba(34,211,238,.12), transparent),
+        linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),
+        #0e142b;
+      aspect-ratio:9/19.5;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:var(--screen-pad-v) var(--screen-pad-h);
+      overflow:hidden;
+    }
     .bar{
-      text-align:center;
-      color:#b8c2ff;
-      background:rgba(255,255,255,.1);
-      border-radius:10px;
-      padding:6px 0;
-      font-weight:800;
-    }
-
-    .screen-copy{
+      width:92%;
+      height:var(--screen-bar-h);
+      border-radius:999px;
       background:rgba(255,255,255,.08);
-      padding:10px;
-      border-radius:10px;
-      color:#e9ecff;
-      max-height:90px;
-      overflow:auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#b8c2ff;
+      font-weight:800;
+      font-size:.8rem;
+      margin-bottom:8px;
     }
-
-    .ig-area{flex:1;}
+    .screen-copy{
+      width:92%;
+      background:rgba(255,255,255,.08);
+      color:#dfe5ff;
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:13px;
+      line-height:1.35;
+      max-height:var(--screen-copy-maxh);
+      overflow:auto;
+      margin-bottom:8px;
+    }
+    .ig-area{
+      width:92%;
+      flex:1;
+      display:flex;
+      align-items:stretch;
+      justify-content:center;
+      margin:0 auto;
+    }
     .ig{
       width:100%;
       height:100%;
       border:0;
-      border-radius:10px;
+      border-radius:12px;
+      background:#000;
+      display:block;
     }
-
     .dock{
+      width:92%;
+      margin:10px auto 0;
       display:grid;
       grid-template-columns:repeat(4,1fr);
       gap:8px;
+      align-items:center;
+      justify-items:stretch;
     }
     .pill{
-      text-align:center;
-      color:var(--ink);
-      border:1px solid rgba(255,255,255,.4);
-      border-radius:10px;
+      background:transparent;
       padding:8px 0;
+      border-radius:12px;
+      text-align:center;
       font-weight:800;
+      font-size:11px;
+      letter-spacing:.2px;
+      color:var(--ink);
+      border:1px solid rgba(255,255,255,.65);
     }
 
-    /* ============================================================
-       FEATURES + WAITLIST
-       ============================================================ */
+    /* =============== FEATURES / WAITLIST / FOOTER =============== */
     .section{
       padding:60px 0;
     }
@@ -364,7 +390,6 @@
       margin:0 auto 18px;
       color:var(--muted);
     }
-
     .grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
@@ -383,9 +408,6 @@
     .card h3{margin-bottom:6px;}
     .card p{color:var(--muted);}
 
-    /* ============================================================
-       FOOTER
-       ============================================================ */
     footer{
       text-align:center;
       padding:40px 20px;
@@ -406,9 +428,7 @@
 
 <body>
 
-<!-- ============================================================
-     NAV BAR
-     ============================================================ -->
+<!-- NAV -->
 <div class="nav">
   <div class="nav-inner">
     <div class="brand"><a href="#top">Jmod Co. Media</a></div>
@@ -427,7 +447,6 @@
   </div>
 </div>
 
-<!-- Mobile panel -->
 <div class="mobile-panel" id="mnav">
   <a href="#top">Home</a>
   <a href="#features">Services</a>
@@ -439,25 +458,13 @@
   </button>
 </div>
 
-<!-- ============================================================
-     WATERMARK HOLDER
-     ============================================================ -->
+<!-- WATERMARK + ICON FIELD -->
 <div id="bg-logo"></div>
-
-<!-- ============================================================
-     FLOATING ICON FIELD
-     ============================================================ -->
 <div id="icon-field"></div>
 
-<!-- ============================================================
-     HERO SECTION
-     ============================================================ -->
+<!-- HERO (NOW WRAPS THE PHONE TOO) -->
 <section class="hero" id="top">
-
-  <!-- Canvas for 4-layer neon sweep -->
   <canvas id="hero-canvas"></canvas>
-
-  <!-- hero logo behind text -->
   <img class="hero-logo" src="/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media">
 
   <div class="hero-content">
@@ -465,41 +472,50 @@
     <p>Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms — powered by Jmod Labs’ adaptive AI that learns your tone and what performs.</p>
 
     <div class="store-row">
-      <a class="store-btn" href="http://apple.com/app-store/"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/Download_on_the_App_Store_Badge_US-UK_RGB_blk.svg"></a>
-      <a class="store-btn" href="https://play.google.com/store/apps?hl=en_US"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"></a>
+      <!-- Apple: back to your original PNG that actually works -->
+      <a class="store-btn" href="http://apple.com/app-store/">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Available_on_the_App_Store_%28black%29_SVG.svg/120px-Available_on_the_App_Store_%28black%29_SVG.svg.png" alt="Download on the App Store">
+      </a>
+      <a class="store-btn" href="https://play.google.com/store/apps?hl=en_US">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play">
+      </a>
     </div>
   </div>
-</section>
 
-<!-- ============================================================
-     PHONE PREVIEW
-     ============================================================ -->
-<section class="phone-wrap">
-  <div class="phone">
-    <div class="screen">
-      <div class="bar">Jmod Media</div>
+  <!-- PHONE PREVIEW (your original, unchanged) -->
+  <section class="phone-wrap">
+    <div class="shell">
+      <div class="phone">
+        <div class="screen">
+          <div class="bar">Jmod Media</div>
 
-      <div class="screen-copy">
-        Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.
-      </div>
+          <div class="screen-copy">
+            Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.
+          </div>
 
-      <div class="ig-area">
-        <iframe class="ig" src="https://www.instagram.com/p/CwLvMC2p0Fu/embed" frameborder="0"></iframe>
-      </div>
+          <div class="ig-area">
+            <iframe class="ig"
+              src="https://www.instagram.com/p/CwLvMC2p0Fu/embed"
+              allowtransparency="true"
+              frameborder="0"
+              scrolling="no"
+              title="Instagram post preview"></iframe>
+          </div>
 
-      <div class="dock">
-        <div class="pill">Compose</div>
-        <div class="pill">Calendar</div>
-        <div class="pill">Brand Kit</div>
-        <div class="pill">Analytics</div>
+          <div class="dock">
+            <div class="pill">Compose</div>
+            <div class="pill">Calendar</div>
+            <div class="pill">Brand Kit</div>
+            <div class="pill">Analytics</div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
+
 </section>
 
-<!-- ============================================================
-     FEATURES
-     ============================================================ -->
+<!-- FEATURES -->
 <section class="section" id="features">
   <h2>Everything you need to post smarter</h2>
   <p class="lead">Speed, consistency, and clarity — built for owner-operators. Jmod Media is your AI teammate for social.</p>
@@ -516,9 +532,7 @@
   </div>
 </section>
 
-<!-- ============================================================
-     WAITLIST
-     ============================================================ -->
+<!-- WAITLIST -->
 <section class="section" id="waitlist">
   <h2>Be first to launch with us</h2>
   <p class="lead">Early signups get onboarding help and founder pricing.</p>
@@ -530,9 +544,7 @@
   </form>
 </section>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
+<!-- FOOTER -->
 <footer>
   <div><strong>Backed by GPT-5 Engine</strong></div>
 
@@ -547,21 +559,13 @@
   <div>© 2025 Jmod Co. — Built for small business clarity.</div>
 </footer>
 
-
-<!-- ============================================================
-     JAVASCRIPT SECTION
-     ============================================================ -->
 <script>
-/* ------------------------------------------
-   MOBILE NAV
---------------------------------------------*/
+/* MOBILE NAV */
 const burger = document.getElementById("burger");
 const mnav = document.getElementById("mnav");
 burger.onclick = ()=> mnav.classList.toggle("open");
 
-/* ------------------------------------------
-   THEME LOGIC
---------------------------------------------*/
+/* THEME TOGGLE */
 function setTheme(t){
   document.documentElement.setAttribute("data-theme", t);
   localStorage.setItem("theme", t);
@@ -574,41 +578,30 @@ setTheme(theme);
 document.getElementById("themeBtn").onclick = ()=>setTheme(theme = (theme==="dark"?"light":"dark"));
 document.getElementById("themeBtnMobile").onclick = ()=>setTheme(theme = (theme==="dark"?"light":"dark"));
 
-/* ------------------------------------------
-   WATERMARK FADE BASED ON HERO VISIBILITY
---------------------------------------------*/
-const hero = document.getElementById("top");
+/* WATERMARK VISIBILITY (appear after hero ~60% off screen) */
+const heroSection = document.getElementById("top");
 const wm = document.getElementById("bg-logo");
 function checkWM(){
-  const rect = hero.getBoundingClientRect();
-  let pct = rect.bottom / rect.height;
+  const rect = heroSection.getBoundingClientRect();
+  const pct = rect.bottom / rect.height;
   if(pct < 0.60) wm.classList.add("visible");
   else wm.classList.remove("visible");
 }
 window.addEventListener("scroll", checkWM);
 checkWM();
 
-/* ------------------------------------------
-   4-LAYER NEON SWEEP CANVAS
---------------------------------------------*/
+/* HERO CANVAS — multi-layer neon sweep, full hero size */
 const canvas = document.getElementById("hero-canvas");
 const ctx = canvas.getContext("2d");
-
-let w, h;
+let w,h;
 function resizeCanvas(){
-  w = canvas.width = canvas.offsetWidth;
-  h = canvas.height = canvas.offsetHeight;
+  const rect = canvas.getBoundingClientRect();
+  w = canvas.width = rect.width;
+  h = canvas.height = rect.height;
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-/* 
-Layers: each layer has:
-- speed
-- direction (dx, dy)
-- opacity
-- gradient radius
-*/
 const layers = [
   { speed:0.06, dx:1.2, dy:0.7, opacity:0.32, size:1.4 },
   { speed:0.09, dx:-1.0, dy:0.5, opacity:0.26, size:1.8 },
@@ -619,25 +612,20 @@ const layers = [
 function drawLayer(l, t){
   const cx = w/2 + Math.sin(t*l.speed)*l.dx*300;
   const cy = h/2 + Math.cos(t*l.speed)*l.dy*300;
-
   const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w,h)*l.size);
   grd.addColorStop(0, `rgba(34,211,238,${l.opacity})`);
   grd.addColorStop(1, 'rgba(34,211,238,0)');
-
   ctx.fillStyle = grd;
   ctx.fillRect(0,0,w,h);
 }
-
 function animate(t){
   ctx.clearRect(0,0,w,h);
-  for(const layer of layers) drawLayer(layer, t/7000);
+  for(const l of layers) drawLayer(l, t/7000);
   requestAnimationFrame(animate);
 }
 animate(0);
 
-/* ------------------------------------------
-   FLOATING SOCIAL ICONS — STAGGERED
---------------------------------------------*/
+/* FLOATING SOCIAL ICONS — spaced out */
 const ICONS=[
   "https://cdn.simpleicons.org/youtube/FF0000",
   "https://cdn.simpleicons.org/facebook/1877F2",
@@ -660,34 +648,28 @@ const ICONS=[
 const iconField = document.getElementById("icon-field");
 let alive=0;
 function spawnIcon(){
-  if(alive >= 39) return; /* triple density */
+  if(alive >= 39) return;
   const img=document.createElement("img");
   img.className="burst";
   img.src=ICONS[Math.floor(Math.random()*ICONS.length)];
-
   const angle=Math.random()*360;
   const radius=Math.max(window.innerWidth,window.innerHeight)*0.65*(0.5+Math.random()*1);
   const rad=angle*Math.PI/180;
-
   img.style.setProperty("--tx", Math.cos(rad)*radius+"px");
   img.style.setProperty("--ty", Math.sin(rad)*radius+"px");
   img.style.width=(30+Math.random()*50)+"px";
-
   img.addEventListener("animationend", ()=>{alive--; img.remove();});
-
   alive++;
   iconField.appendChild(img);
 }
-
 function iconLoop(){
   spawnIcon();
-  setTimeout(iconLoop, 400+Math.random()*1200);
+  setTimeout(iconLoop, 500+Math.random()*1300);
 }
 for(let i=0;i<8;i++){
-  setTimeout(spawnIcon, i*500);
+  setTimeout(spawnIcon, i*600);
 }
 setTimeout(iconLoop,2000);
-
 </script>
 
 </body>
