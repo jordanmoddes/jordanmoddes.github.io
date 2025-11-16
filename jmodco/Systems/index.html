@@ -8,211 +8,724 @@
   <meta name="description" content="Jmod Systems builds the digital nervous system of Jmod Co. — integration, automation, and data control powered by the MODDES™ Core Engine." />
 
   <style>
+    /* =========================
+       THEME TOKENS
+       ========================= */
     :root{
-      --bg:#0a0e13;
+      color-scheme: dark;
+
+      --bg:#05070b;
+      --bg-soft:#0b1016;
       --panel:#0f141b;
+      --panel-soft:#131a24;
       --ink:#e6eef6;
       --muted:#9fb1c1;
-      --line:#13202c;
+      --border:#1b2734;
+
       --accent:#00bcd4;
+      --accent-soft:rgba(0,188,212,.16);
       --accent-2:#ff4081;
-      --glow:0 0 24px rgba(0,188,212,.35);
+
+      --shadow-soft:0 18px 45px rgba(0,0,0,.55);
       --radius:18px;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
       --hero-height:72vh;
       --maxw:1200px;
       --grid-gap:18px;
+
       --pipe-stroke:2.5;
       --packet-size:7px;
-      --wm-opacity:.10;   /* background logo strength */
-      --wm-size:70vw;     /* background logo size */
 
-      /* mobile bottom bar sizes */
-      --bottom-bar-h:64px;
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      /* watermark + hero logo */
+      --wm-image:url('/jmodco/assets/Jmod_SystemsTP.png');
+      --wm-size:80vw;
+      --wm-opacity:.12;
+
+      --hero-logo:url('/jmodco/assets/Jmod_SystemsTP.png');
+      --hero-mark-opacity:.06;
+
+      /* surfaces */
+      --console-bg:#050b12;
+      --input-bg:#050b12;
+      --input-border:var(--border);
+
+      /* nav */
+      --nav-bg-mix:88%;
+      --nav-backdrop-blur:18px;
+
+      --bottom-safe: env(safe-area-inset-bottom, 0px);
+      --section-pad-y:72px;
+    }
+
+    html[data-theme="light"]{
+      color-scheme: light;
+
+      --bg:#f4f7fb;
+      --bg-soft:#eef2fa;
+      --panel:#ffffff;
+      --panel-soft:#f7f9ff;
+      --ink:#111827;
+      --muted:#4b5563;
+      --border:#d0d7e2;
+
+      --accent:#00a4c4;
+      --accent-soft:rgba(0,164,196,.14);
+      --accent-2:#e11d48;
+
+      --shadow-soft:0 16px 40px rgba(15,23,42,.18);
+
+      --wm-image:url('/jmodco/assets/Jmod_Systems.png');
+      --wm-opacity:.18;
+
+      --hero-logo:url('/jmodco/assets/Jmod_Systems.png');
+      --hero-mark-opacity:.12;
+
+      --console-bg:#f1f5f9;
+      --input-bg:#f9fafb;
+      --input-border:#cbd5e1;
+
+      --nav-bg-mix:96%;
+      --nav-backdrop-blur:18px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
+
     body{
-      background:var(--bg);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(0,188,212,.12), transparent 60%),
+        radial-gradient(1200px 700px at 100% 100%, rgba(255,64,129,.10), transparent 60%),
+        var(--bg);
       color:var(--ink);
       font:16px/1.55 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      text-rendering:geometricPrecision;
+      -webkit-font-smoothing:antialiased;
     }
-    a{color:var(--accent-2);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:20px}
 
-    /* Page watermark (fades in after hero) */
+    a{
+      color:var(--accent-2);
+      text-decoration:none;
+    }
+    a:hover{text-decoration:underline}
+
+    .wrap{
+      max-width:var(--maxw);
+      margin-inline:auto;
+      padding-inline:20px;
+    }
+
+    /* =========================
+       PAGE WATERMARK
+       ========================= */
     #bg-logo{
-      position:fixed;inset:0;z-index:-1;
-      background:url('/jmodco/assets/Jmod_SystemsTP.png') center/var(--wm-size) no-repeat;
-      opacity:0;transition:opacity .8s ease;pointer-events:none;
-      filter:drop-shadow(0 0 40px rgba(0,188,212,.24)) brightness(1.15);
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background-position:center;
+      background-repeat:no-repeat;
+      background-size:var(--wm-size);
+      background-image:var(--wm-image);
+      opacity:0;
+      transition:opacity .9s ease;
+      pointer-events:none;
     }
     #bg-logo.visible{opacity:var(--wm-opacity);}
 
-    /* Header (desktop / tablet) */
-    header{
-      position:fixed;top:0;left:0;width:100%;z-index:50;
-      backdrop-filter:saturate(1.2) blur(10px);
-      background:rgba(10,14,19,.75);
-      border-bottom:1px solid var(--line);
-      transition:background .3s ease;
+    /* =========================
+       FLOATING PILL NAV
+       (matches Labs / Insights)
+       ========================= */
+    .nav-shell{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:40;
+      display:flex;
+      justify-content:center;
+      padding:10px 16px;
+      pointer-events:none;
     }
-    header.scrolled{background:rgba(10,14,19,.9);}
+
+    .nav-shell.scrolled{
+      padding-top:8px;
+    }
+
     .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      height:64px;gap:16px;
-    }
-    .brand{font-weight:700;letter-spacing:.3px}
-    .navlinks{display:flex;gap:18px;flex-wrap:wrap}
-    .navlinks a{color:var(--ink);opacity:.9}
-    .cta{
-      background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
-      border:none;color:white;padding:10px 14px;border-radius:12px;
-      box-shadow:var(--glow);cursor:pointer;
-    }
-    .spacer{height:64px;} /* pushes content below fixed header */
-
-    /* Hero */
-    .hero{
-      position:relative;height:var(--hero-height);overflow:hidden;
-      display:grid;place-items:center;
-      background:
-        radial-gradient(1200px 400px at 50% 120%, rgba(0,188,212,.06), transparent 60%),
-        radial-gradient(900px 400px at 10% -20%, rgba(255,64,129,.05), transparent 60%);
-      border-bottom:1px solid var(--line);
-    }
-    .hero::after{
-      content:"";position:absolute;inset:0;
-      background-image:url('/jmodco/assets/Jmod_SystemsTP.png'); /* faint hero mark */
-      background-repeat:no-repeat;background-position:center;background-size:880px auto;
-      opacity:.06;pointer-events:none;
-    }
-    .hero-inner{position:relative;z-index:1;text-align:center;padding:16px}
-    .eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:.2em;font-size:.8rem}
-    h1{margin:.35rem 0 0;font-size:clamp(28px,4vw,48px);line-height:1.1}
-    .sub{margin:.75rem auto 1.25rem;max-width:720px;color:var(--muted)}
-    .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px}
-    .primary{background:var(--accent-2);color:#fff;border:none;padding:10px 14px;border-radius:12px;box-shadow:var(--glow)}
-
-    /* Animated pipelines */
-    .pipes{position:absolute;inset:0;pointer-events:none;}
-    svg{width:100%;height:100%}
-    .pipe{stroke:var(--accent);stroke-width:var(--pipe-stroke);fill:none;opacity:.8;filter:drop-shadow(var(--glow))}
-    .packet{fill:var(--accent-2);filter:drop-shadow(0 0 10px rgba(255,64,129,.6))}
-
-    /* Sections / cards */
-    section{padding:64px 0}
-    .grid{display:grid;gap:var(--grid-gap);grid-template-columns:repeat(12,minmax(0,1fr));}
-    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;}
-    .muted{color:var(--muted)}
-    hr.rule{border:none;border-top:1px solid var(--line);margin:18px 0}
-    .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
-    .reveal.in{opacity:1;transform:none}
-
-    /* KPIs + accordion etc. */
-    .kpis{grid-column: span 12}
-    @media (min-width:900px){
-      .about{grid-column: span 7}
-      .kpis{grid-column: span 5}
-    }
-    .kpi-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .kpi{background:rgba(19,32,44,.5);border:1px dashed var(--line);border-radius:14px;padding:14px;text-align:center}
-    .kpi .val{font-size:1.8rem;font-weight:700}
-    .kpi .lab{font-size:.85rem;color:var(--muted)}
-    .accordion{display:grid;gap:12px}
-    .acc-item{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(19,32,44,.4)}
-    .acc-h{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
-    .acc-h .chev{transition:transform .25s ease}
-    .acc-h.open .chev{transform:rotate(90deg)}
-    .acc-b{max-height:0;overflow:hidden;transition:max-height .35s ease}
-    .acc-b.in{padding:0 16px 16px}
-    .tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.75rem;background:rgba(0,188,212,.08);border:1px solid rgba(0,188,212,.25);color:var(--accent)}
-
-    /* --- MOBILE FIXES --- */
-    @media (max-width: 900px){
-      /* 1) About card should span full width on mobile */
-      .about{ grid-column: span 12; }
-
-      /* 2) Top header: keep brand, hide links + CTA (moved to bottom bar) */
-      .navlinks, header .cta{ display:none; }
-
-      /* 3) Add bottom padding so content isn't hidden behind bottom nav */
-      body{ padding-bottom: calc(var(--bottom-bar-h) + var(--safe-bottom)); }
+      pointer-events:auto;
+      width:min(var(--maxw), 100%);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:10px 16px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:color-mix(in oklab, var(--panel) var(--nav-bg-mix), transparent);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(var(--nav-backdrop-blur));
     }
 
-    /* Bottom hamburger nav (mobile only) */
-    .bottom-nav{
-      position:fixed; left:0; right:0; bottom:0; z-index:60;
-      display:none; /* shown via media query */
-      background:rgba(10,14,19,.85);
-      backdrop-filter:saturate(1.2) blur(10px);
-      border-top:1px solid var(--line);
-      height: calc(var(--bottom-bar-h) + var(--safe-bottom));
-      padding-bottom: var(--safe-bottom);
+    .brand{
+      font-weight:700;
+      letter-spacing:.03em;
+      font-size:.98rem;
+      white-space:nowrap;
     }
-    @media (max-width: 900px){ .bottom-nav{ display:flex; } }
 
-    .bottom-nav .wrap{
-      height:var(--bottom-bar-h);
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    .nav-center{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-size:.92rem;
+      flex:1;
+      justify-content:center;
     }
-    .hamburger{
-      display:inline-flex; align-items:center; justify-content:center;
-      width:44px; height:44px; border-radius:12px; border:1px solid var(--line);
-      background:linear-gradient(135deg, rgba(0,188,212,.2), rgba(255,64,129,.2));
+
+    .nav-center a{
+      color:var(--ink);
+      opacity:.9;
+      padding:6px 10px;
+      border-radius:999px;
+      text-decoration:none;
+      transition:background .18s ease, opacity .18s ease, transform .18s ease;
+    }
+    .nav-center a:hover{
+      background:color-mix(in oklab, var(--accent-soft) 40%, transparent);
+      opacity:1;
+      transform:translateY(-1px);
+    }
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      white-space:nowrap;
+    }
+
+    .nav-link-co{
+      font-weight:600;
+      font-size:.9rem;
+      color:var(--ink);
+      text-decoration:none;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid color-mix(in oklab, var(--border) 60%, transparent);
+      background:color-mix(in oklab, var(--panel-soft) 80%, transparent);
+    }
+    .nav-link-co:hover{
+      text-decoration:none;
+      background:color-mix(in oklab, var(--accent-soft) 30%, var(--panel-soft) 70%);
+    }
+
+    /* theme toggle */
+    .theme-toggle{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid color-mix(in oklab, var(--border) 70%, transparent);
+      background:color-mix(in oklab, var(--panel-soft) 92%, transparent);
+      font-size:.8rem;
+      color:var(--muted);
       cursor:pointer;
     }
-    .hamburger svg{ width:22px; height:22px; }
-
-    /* Slide-up sheet for links */
-    .sheet{
-      position:fixed; left:0; right:0; bottom:0; z-index:70;
-      transform:translateY(105%);
-      transition:transform .25s ease-out;
-      background:rgba(10,14,19,.98);
-      border-top-left-radius:18px; border-top-right-radius:18px;
-      border-top:1px solid var(--line);
-      padding:16px 16px calc(16px + var(--safe-bottom));
-      box-shadow: 0 -20px 40px rgba(0,0,0,.45);
-    }
-    .sheet.open{ transform:translateY(0%); }
-    .sheet .grab{ width:44px; height:4px; border-radius:4px; background:#1f2a34; margin:6px auto 12px; }
-    .sheet a{
-      display:block; padding:14px 12px; margin:6px 0; border:1px solid var(--line);
-      border-radius:12px; color:var(--ink); text-decoration:none; background:rgba(19,32,44,.5);
+    .theme-toggle span[data-theme-label]{
+      min-width:32px;
     }
 
-    /* Bullets inside About card */
+    .theme-toggle-pill{
+      position:relative;
+      width:34px;
+      height:18px;
+      border-radius:999px;
+      background:color-mix(in oklab, var(--bg-soft) 70%, var(--panel) 30%);
+      box-shadow:inset 0 0 0 1px rgba(15,23,42,.6);
+    }
+
+    .theme-toggle-dot{
+      position:absolute;
+      top:2px;
+      left:2px;
+      width:14px;
+      height:14px;
+      border-radius:999px;
+      background:var(--accent);
+      box-shadow:0 0 10px rgba(0,188,212,.6);
+      transition:transform .18s ease;
+    }
+
+    html[data-theme="light"] .theme-toggle-pill{
+      box-shadow:inset 0 0 0 1px rgba(148,163,184,.7);
+    }
+
+    /* burger */
+    .nav-toggle{
+      display:none;
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      border:1px solid color-mix(in oklab, var(--border) 70%, transparent);
+      background:color-mix(in oklab, var(--panel-soft) 92%, transparent);
+      align-items:center;
+      justify-content:center;
+      padding:0;
+      cursor:pointer;
+    }
+    .nav-toggle span{
+      display:block;
+      width:16px;
+      height:2px;
+      border-radius:999px;
+      background:var(--ink);
+      margin:2px 0;
+    }
+
+    /* slide-down mobile panel */
+    .mobile-panel{
+      position:fixed;
+      top:72px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(1200px,94vw);
+      background:color-mix(in oklab, var(--panel) 96%, transparent);
+      border:1px solid var(--border);
+      box-shadow:0 16px 40px rgba(0,0,0,.45);
+      border-radius:18px;
+      padding:10px 14px 12px;
+      display:none;
+      z-index:39;
+    }
+    .mobile-panel.open{display:block;}
+
+    .mobile-panel a{
+      display:block;
+      padding:12px 10px;
+      border-radius:10px;
+      color:var(--ink);
+      text-decoration:none;
+      font-weight:600;
+      font-size:.95rem;
+    }
+    .mobile-panel a:active{
+      background:color-mix(in oklab, var(--accent-soft) 40%, transparent);
+    }
+
+    .theme--mobile{
+      display:flex;
+      width:100%;
+      justify-content:center;
+      margin:8px 4px 2px;
+    }
+
+    .nav-spacer{height:84px;}
+
+    @media (max-width:900px){
+      .nav-center{display:none;}
+      .nav-right{display:none;}
+      .nav-toggle{display:inline-flex;}
+      .nav-spacer{height:76px;}
+    }
+
+    /* =========================
+       HERO
+       ========================= */
+    .hero{
+      position:relative;
+      height:var(--hero-height);
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+      border-bottom:1px solid var(--border);
+      background:
+        radial-gradient(1200px 450px at 50% 120%, rgba(0,188,212,.10), transparent 60%),
+        radial-gradient(900px 400px at 10% -20%, rgba(255,64,129,.08), transparent 60%),
+        var(--bg-soft);
+    }
+
+    html[data-theme="light"] .hero{
+      background:
+        radial-gradient(1400px 520px at 50% 110%, rgba(0,164,196,.18), transparent 65%),
+        radial-gradient(900px 420px at 0% -10%, rgba(225,29,72,.10), transparent 60%),
+        var(--bg-soft);
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:var(--hero-logo);
+      background-repeat:no-repeat;
+      background-position:center;
+      background-size:clamp(360px, 70vw, 880px);
+      opacity:var(--hero-mark-opacity);
+      pointer-events:none;
+    }
+
+    .hero-inner{
+      position:relative;
+      z-index:1;
+      text-align:center;
+      padding:16px;
+      max-width:720px;
+    }
+
+    .eyebrow{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.78rem;
+    }
+
+    h1{
+      margin:.35rem 0 0;
+      font-size:clamp(28px,4vw,48px);
+      line-height:1.1;
+    }
+
+    .sub{
+      margin:.75rem auto 1.25rem;
+      max-width:720px;
+      color:var(--muted);
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:.95rem;
+      font-weight:500;
+      cursor:pointer;
+      border:1px solid transparent;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
+      color:#fff;
+      box-shadow:0 0 24px rgba(0,188,212,.35);
+      border:none;
+    }
+
+    .btn-ghost{
+      background:transparent;
+      border:1px solid var(--border);
+      color:var(--ink);
+    }
+
+    /* animated pipelines */
+    .pipes{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+    svg{width:100%;height:100%}
+    .pipe{
+      stroke:var(--accent);
+      stroke-width:var(--pipe-stroke);
+      fill:none;
+      opacity:.8;
+      filter:drop-shadow(0 0 24px rgba(0,188,212,.35));
+    }
+    .packet{
+      fill:var(--accent-2);
+      filter:drop-shadow(0 0 10px rgba(255,64,129,.6));
+    }
+
+    /* =========================
+       LAYOUT / CARDS
+       ========================= */
+    section{
+      padding:var(--section-pad-y) 0;
+    }
+
+    .grid{
+      display:grid;
+      gap:var(--grid-gap);
+      grid-template-columns:repeat(12, minmax(0,1fr));
+    }
+
+    .card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-soft);
+      padding:18px;
+    }
+
+    .muted{color:var(--muted);}
+    hr.rule{
+      border:none;
+      border-top:1px solid var(--border);
+      margin:18px 0;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(14px);
+      transition:opacity .6s ease, transform .6s ease;
+    }
+    .reveal.in{
+      opacity:1;
+      transform:none;
+    }
+
+    /* about + KPIs */
+    .about{grid-column:span 7;}
+    .kpis{grid-column:span 5;}
+
+    @media (max-width:900px){
+      .about,
+      .kpis{grid-column:span 12;}
+    }
+
     .about ul{
-      list-style-position: inside;
-      margin-left: 0;
-      padding-left: 0;
+      list-style-position:inside;
+      margin-left:0;
+      padding-left:0;
+    }
+
+    .kpi-list{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .kpi{
+      background:color-mix(in oklab, var(--panel-soft) 70%, transparent);
+      border:1px dashed color-mix(in oklab, var(--border) 70%, transparent);
+      border-radius:14px;
+      padding:14px;
+      text-align:center;
+    }
+
+    .kpi .val{
+      font-size:1.8rem;
+      font-weight:700;
+    }
+
+    .kpi .lab{
+      font-size:.85rem;
+      color:var(--muted);
+    }
+
+    .console-card{
+      margin-top:12px;
+      background:var(--panel-soft);
+    }
+
+    .console-frame{
+      height:240px;
+      overflow:auto;
+      background:var(--console-bg);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:10px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:.83rem;
+    }
+
+    /* accordion framework */
+    .accordion{
+      display:grid;
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .acc-item{
+      border:1px solid var(--border);
+      border-radius:14px;
+      overflow:hidden;
+      background:color-mix(in oklab, var(--panel-soft) 85%, transparent);
+    }
+
+    .acc-h{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px 16px;
+      cursor:pointer;
+      user-select:none;
+      font-size:.96rem;
+    }
+
+    .acc-h .chev{
+      transition:transform .25s ease;
+    }
+    .acc-h.open .chev{transform:rotate(90deg);}
+
+    .acc-b{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .35s ease;
+    }
+
+    .acc-b.in{
+      padding:0 16px 12px;
+    }
+
+    .tag{
+      margin-left:auto;
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:.75rem;
+      background:rgba(0,188,212,.08);
+      border:1px solid rgba(0,188,212,.25);
+      color:var(--accent);
+    }
+
+    /* content cards in "What we deliver" & "Integration" */
+    .pill-card{
+      background:color-mix(in oklab, var(--accent-soft) 40%, var(--panel) 60%);
+      border-color:color-mix(in oklab, var(--accent) 40%, var(--border) 60%);
+    }
+
+    .pill-card.alt{
+      background:color-mix(in oklab, rgba(255,64,129,.16) 45%, var(--panel) 55%);
+      border-color:color-mix(in oklab, var(--accent-2) 45%, var(--border) 55%);
+    }
+
+    /* FORM FIELDS */
+    .field-label{
+      display:block;
+      font-size:.92rem;
+      font-weight:500;
+      margin-bottom:4px;
+    }
+
+    .field-input,
+    .field-textarea{
+      width:100%;
+      margin-top:4px;
+      padding:10px 11px;
+      border-radius:8px;
+      border:1px solid var(--input-border);
+      background:var(--input-bg);
+      color:var(--ink);
+      font:inherit;
+      resize:vertical;
+    }
+
+    .field-input::placeholder,
+    .field-textarea::placeholder{
+      color:color-mix(in oklab, var(--muted) 80%, transparent);
+    }
+
+    .grid-half{
+      grid-column:span 6;
+    }
+    .grid-full{
+      grid-column:span 12;
+    }
+
+    @media (max-width:900px){
+      .grid-half{grid-column:span 12;}
+    }
+
+    /* console line colors */
+    .ok{color:#22c55e;}
+    .warn{color:#fbbf24;}
+    .err{color:#f97373;}
+
+    /* footer */
+    footer{
+      padding:40px 20px;
+      text-align:center;
+      color:var(--muted);
+      border-top:1px solid var(--border);
+      margin-top:40px;
+      background:color-mix(in oklab, var(--bg-soft) 90%, transparent);
+    }
+
+    footer .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:18px;
+      margin:12px 0 16px;
+      font-size:.95rem;
+    }
+
+    footer a{
+      color:var(--ink);
+      text-decoration:none;
+    }
+    footer a:hover{
+      text-decoration:underline;
+    }
+
+    footer .copyright{
+      font-size:.85rem;
+      opacity:.8;
     }
   </style>
 </head>
+
 <body>
   <!-- Background watermark -->
   <div id="bg-logo"></div>
 
-  <!-- Fixed header (desktop/tablet) -->
-  <header>
-    <div class="wrap nav">
+  <!-- Floating pill nav -->
+  <header class="nav-shell" id="page-nav">
+    <div class="nav wrap">
       <div class="brand">Jmod Systems</div>
-      <nav class="navlinks">
-        <a href="#solutions">Solutions</a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-center" aria-label="Primary navigation">
+        <a href="#top">Home</a>
         <a href="#frameworks">Frameworks</a>
-        <a href="#deliver">What We Deliver</a>
+        <a href="#deliver">What we Deliver</a>
         <a href="#integration">Integration</a>
         <a href="#contact">Contact</a>
       </nav>
-      <button class="cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request Assessment</button>
+
+      <div class="nav-right">
+        <a class="nav-link-co" href="/jmodco/">Jmod Co.</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>
+          <span data-theme-label>Dark</span>
+          <div class="theme-toggle-pill">
+            <div class="theme-toggle-dot" data-theme-dot></div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- mobile slide-down panel -->
+    <div class="mobile-panel" id="mobilePanel">
+      <a href="#top">Home</a>
+      <a href="#frameworks">Frameworks</a>
+      <a href="#deliver">What we Deliver</a>
+      <a href="#integration">Integration</a>
+      <a href="#contact">Contact</a>
+      <a href="/jmodco/">Jmod Co.</a>
+      <div class="theme--mobile">
+        <button class="theme-toggle" type="button" data-theme-toggle>
+          <span data-theme-label>Dark</span>
+          <div class="theme-toggle-pill">
+            <div class="theme-toggle-dot" data-theme-dot></div>
+          </div>
+        </button>
+      </div>
     </div>
   </header>
-  <div class="spacer"></div>
+
+  <div class="nav-spacer"></div>
+
+  <!-- anchor for "Home" -->
+  <div id="top"></div>
 
   <!-- Hero -->
   <section class="hero">
@@ -221,19 +734,28 @@
         <path id="pipe1" class="pipe" d="M 50 200 C 350 200, 500 350, 800 400 S 1250 450, 1550 320" />
         <path id="pipe2" class="pipe" d="M 50 500 C 300 520, 520 520, 800 420 S 1250 380, 1550 500" />
         <path id="pipe3" class="pipe" d="M 1550 200 C 1250 250, 1100 350, 800 400 S 350 430, 50 320" />
-        <circle class="packet" id="pkt1" r="7"/>
-        <circle class="packet" id="pkt2" r="7"/>
-        <circle class="packet" id="pkt3" r="7"/>
+        <circle class="packet" id="pkt1" r="7"></circle>
+        <circle class="packet" id="pkt2" r="7"></circle>
+        <circle class="packet" id="pkt3" r="7"></circle>
       </svg>
     </div>
 
     <div class="hero-inner">
       <div class="eyebrow">Automation • Connectivity • Control</div>
       <h1 id="typed">Building the digital nervous system of Jmod Co.</h1>
-      <p class="sub">Jmod Systems integrates ERPs, APIs, and data pipelines into a controllable, observable network — powered by the MODDES™ Core Engine.</p>
+      <p class="sub">
+        Jmod Systems integrates ERPs, APIs, and data pipelines into a controllable, observable network —
+        powered by the MODDES™ Core Engine.
+      </p>
       <div class="hero-actions">
-        <button class="primary" onclick="document.getElementById('frameworks').scrollIntoView({behavior:'smooth'})">Explore MODDES™</button>
-        <a class="ghost" href="#integration">See Integrations</a>
+        <button class="btn btn-primary" type="button"
+          onclick="document.getElementById('frameworks').scrollIntoView({behavior:'smooth'})">
+          Explore MODDES™
+        </button>
+        <button class="btn btn-ghost" type="button"
+          onclick="document.getElementById('integration').scrollIntoView({behavior:'smooth'})">
+          See Integrations
+        </button>
       </div>
     </div>
   </section>
@@ -243,10 +765,13 @@
     <div class="wrap grid reveal">
       <div class="about card">
         <h2>About<br>Systems</h2>
-        <p class="muted">We connect every layer — from <strong>schema discovery</strong> to <strong>semantic mapping</strong>, dynamic translation, routing, and audit. Systems is the engine room that makes data move with intent.</p>
+        <p class="muted">
+          Systems connects every layer — from <strong>schema discovery</strong> and <strong>semantic mapping</strong>, to
+          routing, automation, and audit. It’s the engine room that makes data move with intent instead of luck.
+        </p>
         <hr class="rule" />
         <ul>
-          <li>System integration &amp; optimization (ERP/MRP/CRM)</li>
+          <li>System integration &amp; optimization (ERP / MRP / CRM)</li>
           <li>Data synchronization pipelines &amp; workflow automation</li>
           <li>API orchestration with real-time observability</li>
           <li>Blueprints &amp; rollout for cross-system initiatives</li>
@@ -270,13 +795,11 @@
           </div>
         </div>
         <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
-          <button class="cta" id="runSim">Run Simulation</button>
-          <button class="ghost" id="clearLog">Clear Logs</button>
+          <button class="btn btn-primary" type="button" id="runSim">Run Simulation</button>
+          <button class="btn btn-ghost" type="button" id="clearLog">Clear Logs</button>
         </div>
-        <div class="card" style="margin-top:12px; background:#0b1016">
-          <div class="console">
-            <div class="log" id="log" style="height:240px; overflow:auto; background:#071018; border:1px solid var(--line); border-radius:10px; padding:10px"></div>
-          </div>
+        <div class="card console-card">
+          <div id="log" class="console-frame"></div>
         </div>
       </div>
     </div>
@@ -286,39 +809,118 @@
   <section id="frameworks">
     <div class="wrap reveal">
       <h2>MODDES™ Core Engine</h2>
-      <p class="muted">A modular engine that transforms fragmented operations into a unified, auditable flow.</p>
+      <p class="muted">A modular engine that turns fragmented operations into a unified, auditable flow.</p>
       <div class="accordion" id="acc">
         <div class="acc-item">
-          <div class="acc-h"><span class="chev">▶</span><strong>102 — Schema-Discovery Engine</strong><span class="tag">ingest</span></div>
-          <div class="acc-b"><div class="in">Automatically inspects source systems to detect tables, fields, and constraints; emits structured “source maps” for downstream translation.</div></div>
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>102 — Schema-Discovery Engine</strong>
+            <span class="tag">ingest</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Automatically inspects source systems to detect tables, fields, and constraints;
+              emits structured “source maps” for downstream translation.
+            </div>
+          </div>
         </div>
+
         <div class="acc-item">
-          <div class="acc-h"><span class="chev">▶</span><strong>104 — Semantic-Mapping Engine (AI Core)</strong><span class="tag">align</span></div>
-          <div class="acc-b"><div class="in">Uses embeddings and ontologies to align semantically equivalent fields across vendors and versions; builds canonical references.</div></div>
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>104 — Semantic-Mapping Engine (AI Core)</strong>
+            <span class="tag">align</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Uses embeddings and ontologies to align semantically equivalent fields across vendors and versions;
+              builds canonical references that survive system changes.
+            </div>
+          </div>
         </div>
+
         <div class="acc-item">
-          <div class="acc-h"><span class="chev">▶</span><strong>106 — Dynamic Translation Layer</strong><span class="tag">transform</span></div>
-          <div class="acc-b"><div class="in">Produces standardized transaction objects decoupled from vendor syntax, enabling plug-and-play across integrations.</div></div>
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>106 — Dynamic Translation Layer</strong>
+            <span class="tag">transform</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Produces standardized transaction objects decoupled from vendor syntax,
+              enabling plug-and-play across integrations.
+            </div>
+          </div>
         </div>
+
         <div class="acc-item">
-          <div class="acc-h"><span class="chev">▶</span><strong>108 — Routing &amp; Optimization Module</strong><span class="tag">route</span></div>
-          <div class="acc-b"><div class="in">Computes target systems using fulfillment scores and business rules; supports retries, backoff, and circuit breaking.</div></div>
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>108 — Routing &amp; Optimization Module</strong>
+            <span class="tag">route</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Computes target systems using fulfillment scores and business rules;
+              supports retries, backoff, and circuit breaking.
+            </div>
+          </div>
         </div>
+
         <div class="acc-item">
-          <div class="acc-h"><span class="chev">▶</span><strong>110 — Feedback Learning Module</strong><span class="tag">learn</span></div>
-          <div class="acc-b"><div class="in">Captures performance and reconciliation feedback to fine-tune mappings, routing thresholds, and validation rules.</div></div>
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>110 — Feedback Learning Module</strong>
+            <span class="tag">learn</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Captures performance and reconciliation feedback to fine-tune mappings,
+              routing thresholds, and validation rules over time.
+            </div>
+          </div>
         </div>
+
         <div class="acc-item">
-          <div class="acc-h"><span class="chev">▶</span><strong>112 — Finance &amp; Audit Layer</strong><span class="tag">audit</span></div>
-          <div class="acc-b"><div class="in">Ensures double-entry integrity across updates; emits immutable audit trails and variance alerts to a parent ledger.</div></div>
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>112 — Finance &amp; Audit Layer</strong>
+            <span class="tag">audit</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Ensures double-entry integrity across updates; emits immutable audit trails
+              and variance alerts to a parent ledger.
+            </div>
+          </div>
         </div>
+
         <div class="acc-item">
-          <div class="acc-h"><span class="chev">▶</span><strong>114 — ERP Systems (Input)</strong><span class="tag">sources</span></div>
-          <div class="acc-b"><div class="in">Inbound events from ERPs/MRPs/CRMs and operational apps; adapters provide normalization and health checks.</div></div>
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>114 — ERP Systems (Input)</strong>
+            <span class="tag">sources</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Inbound events from ERPs, MRPs, CRMs, and operational apps; adapters provide
+              normalization, health checks, and retry policies.
+            </div>
+          </div>
         </div>
+
         <div class="acc-item">
-          <div class="acc-h"><span class="chev">▶</span><strong>116 — Parent Ledger (Output)</strong><span class="tag">destinations</span></div>
-          <div class="acc-b"><div class="in">Central financial record updated after reconciliation; exports evidence to BI and compliance systems.</div></div>
+          <div class="acc-h">
+            <span class="chev">▶</span>
+            <strong>116 — Parent Ledger (Output)</strong>
+            <span class="tag">destinations</span>
+          </div>
+          <div class="acc-b">
+            <div class="in">
+              Central financial record updated after reconciliation; exports evidence
+              to BI and compliance systems.
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -327,61 +929,104 @@
   <!-- What we deliver -->
   <section id="deliver">
     <div class="wrap grid reveal">
-      <div class="card" style="grid-column: span 12">
+      <div class="card" style="grid-column: span 12;">
         <h2>What Systems Delivers</h2>
         <p class="muted">How Systems turns concepts into controlled, scalable operations.</p>
-        <div class="grid" style="margin-top:10px">
-          <div class="card" style="grid-column: span 12; background:rgba(0,188,212,.06); border-color:rgba(0,188,212,.25)">
+
+        <div class="grid" style="margin-top:10px;">
+          <div class="card pill-card" style="grid-column: span 12;">
             <strong>Integration Blueprints</strong>
-            <p class="muted">Current-state discovery, target architecture, RACI, and phased rollout plans across ERPs, CRMs, and apps.</p>
+            <p class="muted">
+              Current-state discovery, target architecture, RACI, and phased rollout plans
+              across ERPs, CRMs, data stores, and apps.
+            </p>
           </div>
-          <div class="card" style="grid-column: span 12; background:rgba(255,64,129,.06); border-color:rgba(255,64,129,.25)">
+
+          <div class="card pill-card alt" style="grid-column: span 12;">
             <strong>API Gateway &amp; Orchestration</strong>
-            <p class="muted">Auth, throttling, retries, circuit breakers, and event routing with DLQs.</p>
+            <p class="muted">
+              Auth, throttling, retries, circuit breakers, event routing, and DLQs —
+              with the MODDES™ engine deciding how traffic flows.
+            </p>
           </div>
+
           <div class="card" style="grid-column: span 12;">
-            <strong>Data Pipelines (ETL/ELT)</strong>
-            <p class="muted">Schema discovery → semantic mapping → canonical models → validation → transform → load with monitoring.</p>
+            <strong>Data Pipelines (ETL / ELT)</strong>
+            <p class="muted">
+              Schema discovery → semantic mapping → canonical models → validation →
+              transform → load — all with monitoring, alerting, and replay.
+            </p>
           </div>
+
           <div class="card" style="grid-column: span 12;">
             <strong>Master Data Sync</strong>
-            <p class="muted">Reference governance, dedupe rules, survivorship logic, and consistency checks.</p>
+            <p class="muted">
+              Reference governance, dedupe rules, survivorship logic, and consistency checks
+              so every system sees the same truth.
+            </p>
           </div>
+
           <div class="card" style="grid-column: span 12;">
             <strong>Workflow Automation</strong>
-            <p class="muted">Rule engines and playbooks to remove manual entry and accelerate reconciliation.</p>
+            <p class="muted">
+              Rule engines and playbooks to remove manual entry, shrink backlogs,
+              and accelerate reconciliation.
+            </p>
           </div>
+
           <div class="card" style="grid-column: span 12;">
             <strong>Observability &amp; Reporting</strong>
-            <p class="muted">Throughput, success rate, latency, alerting, runbooks, and incident workflows.</p>
+            <p class="muted">
+              Throughput, success rate, latency, alerting, runbooks, and incident workflows —
+              exposing the “nervous system” signals in real time.
+            </p>
           </div>
+
           <div class="card" style="grid-column: span 12;">
             <strong>Compliance &amp; Audit</strong>
-            <p class="muted">Double-entry integrity, immutable logs, variance alerts, and ledger exports.</p>
+            <p class="muted">
+              Double-entry integrity, immutable logs, variance alerts, and ledger exports
+              to keep finance and operations aligned.
+            </p>
           </div>
+
           <div class="card" style="grid-column: span 12;">
             <strong>Change Management &amp; Rollout</strong>
-            <p class="muted">Cutover planning, sandbox pilots, training kits, and controlled waves.</p>
+            <p class="muted">
+              Cutover planning, sandbox pilots, training kits, and controlled waves —
+              so new integrations land cleanly instead of chaotically.
+            </p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Integration showcase -->
+  <!-- Integration -->
   <section id="integration">
     <div class="wrap grid reveal">
-      <div class="card" style="grid-column: span 12">
+      <div class="card" style="grid-column: span 12;">
         <h2>Integration Patterns</h2>
-        <p class="muted">How Systems bridges <strong>Labs</strong> prototypes into <strong>operational flows</strong>, with observability for <strong>Insights</strong> and distribution to <strong>Media</strong>.</p>
-        <div class="grid" style="margin-top:12px">
-          <div class="card" style="grid-column: span 12; background:rgba(0,188,212,.06); border-color:rgba(0,188,212,.25)">
+        <p class="muted">
+          Systems is the bridge between <strong>Labs</strong> prototypes,
+          <strong>Insights</strong> analytics, and <strong>Media</strong> distribution
+          — wiring it all into operational flows.
+        </p>
+
+        <div class="grid" style="margin-top:12px;">
+          <div class="card pill-card" style="grid-column: span 12;">
             <strong>Pattern A — ETL + Orchestration</strong>
-            <p class="muted">Extract → Canonicalize (104/106) → Route (108) → Audit (112) → Ledger (116).</p>
+            <p class="muted">
+              Extract → Canonicalize (104 / 106) → Route (108) → Audit (112) → Ledger (116).
+            </p>
           </div>
-          <div class="card" style="grid-column: span 12; background:rgba(255,64,129,.06); border-color:rgba(255,64,129,.25)">
+
+          <div class="card pill-card alt" style="grid-column: span 12;">
             <strong>Pattern B — Event Mesh</strong>
-            <p class="muted">Event-driven adapters with backpressure, retries, DLQs; live metrics and alerts.</p>
+            <p class="muted">
+              Event-driven adapters with backpressure, retries, DLQs, live metrics,
+              and alerts when integrations drift or fail.
+            </p>
           </div>
         </div>
       </div>
@@ -391,173 +1036,283 @@
   <!-- Contact -->
   <section id="contact">
     <div class="wrap grid reveal">
-      <div class="card" style="grid-column: span 12">
+      <div class="card" style="grid-column: span 12;">
         <h2>Request a Systems Integration Assessment</h2>
-        <p class="muted">Tell us what systems you use and the outcomes you want — we’ll map a path.</p>
+        <p class="muted">
+          Tell us what systems you use and the outcomes you want — we’ll map a path
+          and show how the MODDES™ Core Engine can sit in the middle.
+        </p>
+
         <form onsubmit="event.preventDefault(); alert('Thanks! We will reach out shortly.');">
-          <div class="grid" style="margin-top:10px">
-            <label class="card" style="grid-column: span 6">
-              <div>Company</div>
-              <input required placeholder="Company name" style="width:100%; padding:10px; border-radius:8px; background:#0b1016; border:1px solid var(--line); color:var(--ink)"/>
+          <div class="grid" style="margin-top:10px;">
+            <label class="card grid-half" style="display:block;">
+              <span class="field-label">Company</span>
+              <input class="field-input" required placeholder="Company name" />
             </label>
-            <label class="card" style="grid-column: span 6">
-              <div>Email</div>
-              <input required type="email" placeholder="you@company.com" style="width:100%; padding:10px; border-radius:8px; background:#0b1016; border:1px solid var(--line); color:var(--ink)"/>
+
+            <label class="card grid-half" style="display:block;">
+              <span class="field-label">Email</span>
+              <input class="field-input" required type="email" placeholder="you@company.com" />
             </label>
-            <label class="card" style="grid-column: span 12">
-              <div>Current Systems</div>
-              <textarea rows="4" placeholder="ERP / CRM / Data lakes / Apps ..." style="width:100%; padding:10px; border-radius:8px; background:#0b1016; border:1px solid var(--line); color:var(--ink)"></textarea>
+
+            <label class="card grid-full" style="display:block;">
+              <span class="field-label">Current Systems</span>
+              <textarea class="field-textarea" rows="4" placeholder="ERP / CRM / Data lakes / Apps ..."></textarea>
             </label>
-            <label class="card" style="grid-column: span 12">
-              <div>Desired Outcomes</div>
-              <textarea rows="4" placeholder="Reduce manual entry, reconcile faster, unify inventory..." style="width:100%; padding:10px; border-radius:8px; background:#0b1016; border:1px solid var(--line); color:var(--ink)"></textarea>
+
+            <label class="card grid-full" style="display:block;">
+              <span class="field-label">Desired Outcomes</span>
+              <textarea class="field-textarea" rows="4" placeholder="Reduce manual entry, reconcile faster, unify inventory..."></textarea>
             </label>
           </div>
-          <button class="cta" style="margin-top:12px">Send</button>
+
+          <button class="btn btn-primary" type="submit" style="margin-top:12px;">Send</button>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- Footer (shared) -->
-  <div id="footer-slot"></div>
-
-  <!-- Bottom hamburger nav (mobile) -->
-  <nav class="bottom-nav" aria-label="Mobile Navigation">
-    <div class="wrap">
-      <div class="brand" style="opacity:.9">Jmod Systems</div>
-      <button class="hamburger" id="openSheet" aria-label="Open menu" aria-controls="navSheet" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path stroke-linecap="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/>
-        </svg>
-      </button>
+  <!-- Footer (local, with correct links) -->
+  <footer>
+    <div style="font-weight:600; margin-bottom:6px;">
+      Backed and supported by <span style="color:var(--ink);">GPT-5 Engine</span>
     </div>
-  </nav>
-  <div class="sheet" id="navSheet" role="dialog" aria-modal="true" aria-label="Navigation menu">
-    <div class="grab"></div>
-    <a href="#solutions">Solutions</a>
-    <a href="#frameworks">Frameworks</a>
-    <a href="#deliver">What We Deliver</a>
-    <a href="#integration">Integration</a>
-    <a href="#contact">Contact</a>
-  </div>
+
+    <div class="footer-links">
+      <a href="/jmodco/Labs/">Jmod Labs</a>
+      <a href="/jmodco/Systems/">Jmod Systems</a>
+      <a href="/jmodco/Media/">Jmod Media</a>
+      <a href="/jmodco/Legacy/">Jmod Legacy</a>
+      <a href="/jmodco/Insights/">Jmod Insights</a>
+    </div>
+
+    <div class="copyright">© 2025 Jmod Co.</div>
+  </footer>
 
   <script>
+    // =========================
     // Typewriter headline
+    // =========================
     (function(){
       const el = document.getElementById('typed');
       const txt = el.textContent.trim();
       el.textContent = '';
-      let i=0; (function tick(){ if(i<=txt.length){ el.textContent = txt.slice(0,i++); setTimeout(tick, 12);} })();
+      let i = 0;
+      (function tick(){
+        if(i <= txt.length){
+          el.textContent = txt.slice(0, i++);
+          setTimeout(tick, 12);
+        }
+      })();
     })();
 
-    // Section reveals
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
-    }, {threshold:.12});
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    // =========================
+    // Scroll-based reveal
+    // =========================
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting) e.target.classList.add('in');
+      });
+    }, { threshold:.12 });
 
-    // Header darken on scroll
-    window.addEventListener('scroll',()=>{
-      document.querySelector('header').classList.toggle('scrolled', window.scrollY>20);
-    });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // Background logo appears once hero leaves viewport
+    // =========================
+    // Nav shrink + watermark
+    // =========================
+    const navShell = document.getElementById('page-nav');
     const bgLogo = document.getElementById('bg-logo');
     const heroSec = document.querySelector('.hero');
-    const logoObserver = new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(!entry.isIntersecting){ bgLogo.classList.add('visible'); }
-        else{ bgLogo.classList.remove('visible'); }
+
+    window.addEventListener('scroll', () => {
+      navShell.classList.toggle('scrolled', window.scrollY > 24);
+    });
+
+    const logoObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        // Once ~80% of hero is scrolled past, fade in watermark
+        if(!entry.isIntersecting){
+          bgLogo.classList.add('visible');
+        }else{
+          bgLogo.classList.remove('visible');
+        }
       });
-    },{threshold:0.2});
+    }, { threshold:0.2 });
+
     logoObserver.observe(heroSec);
 
+    // =========================
     // Animate packets along paths
+    // =========================
     function moveAlong(pathId, dotId){
       const path = document.getElementById(pathId);
       const dot  = document.getElementById(dotId);
       const len  = path.getTotalLength();
-      let t=0; (function step(){ t=(t+1)%len;
-        const pt=path.getPointAtLength(t); dot.setAttribute('cx',pt.x); dot.setAttribute('cy',pt.y);
+      let t = 0;
+      (function step(){
+        t = (t + 1) % len;
+        const pt = path.getPointAtLength(t);
+        dot.setAttribute('cx', pt.x);
+        dot.setAttribute('cy', pt.y);
         requestAnimationFrame(step);
       })();
     }
-    moveAlong('pipe1','pkt1'); moveAlong('pipe2','pkt2'); moveAlong('pipe3','pkt3');
+    moveAlong('pipe1','pkt1');
+    moveAlong('pipe2','pkt2');
+    moveAlong('pipe3','pkt3');
 
+    // =========================
     // Accordion
-    document.querySelectorAll('.acc-item').forEach(item=>{
-      const head=item.querySelector('.acc-h'); const body=item.querySelector('.acc-b');
-      head.addEventListener('click',()=>{
-        const open=head.classList.toggle('open');
-        if(open){ body.classList.add('in'); body.style.maxHeight=body.scrollHeight+'px'; }
-        else{ body.style.maxHeight='0'; body.addEventListener('transitionend',()=>body.classList.remove('in'),{once:true}); }
+    // =========================
+    document.querySelectorAll('.acc-item').forEach(item => {
+      const head = item.querySelector('.acc-h');
+      const body = item.querySelector('.acc-b');
+      head.addEventListener('click', () => {
+        const open = head.classList.toggle('open');
+        if(open){
+          body.classList.add('in');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }else{
+          body.style.maxHeight = '0';
+          body.addEventListener('transitionend', () => body.classList.remove('in'), { once:true });
+        }
       });
     });
 
-    // KPIs + Orchestrator simulation
-    const elRPM=document.querySelector('[data-kpi="rpm"]');
-    const elOK =document.querySelector('[data-kpi="okrate"]');
-    const elP95=document.querySelector('[data-kpi="p95"]');
-    const log  =document.getElementById('log');
-    let total=0, ok=0, latencies=[];
+    // =========================
+    // KPIs + orchestrator simulation
+    // =========================
+    const elRPM = document.querySelector('[data-kpi="rpm"]');
+    const elOK  = document.querySelector('[data-kpi="okrate"]');
+    const elP95 = document.querySelector('[data-kpi="p95"]');
+    const log   = document.getElementById('log');
+
+    let total = 0, ok = 0, latencies = [];
+
+    function percentile(arr, p){
+      if(!arr.length) return 0;
+      const a = [...arr].sort((x,y) => x - y);
+      const i = Math.floor(p * (a.length - 1));
+      return a[i] ?? 0;
+    }
+
     function renderKPIs(){
-      const rpm=Math.min(600, Math.round(total*(0.6+Math.random()*0.4)));
-      const okrate= total ? Math.round((ok/total)*100) : 0;
-      const p95   = latencies.length ? percentile(latencies, .95) : '—';
-      elRPM.textContent=rpm.toLocaleString();
-      elOK.textContent =okrate+'%';
-      elP95.textContent=(p95==='—'?'—':Math.round(p95));
+      const rpm = Math.min(600, Math.round(total * (0.6 + Math.random() * 0.4)));
+      const okrate = total ? Math.round((ok / total) * 100) : 0;
+      const p95 = latencies.length ? percentile(latencies, .95) : '—';
+
+      elRPM.textContent = rpm.toLocaleString();
+      elOK.textContent  = okrate + '%';
+      elP95.textContent = (p95 === '—' ? '—' : Math.round(p95));
     }
-    function percentile(arr,p){ const a=[...arr].sort((x,y)=>x-y); const i=Math.floor(p*(a.length-1)); return a[i]??0; }
-    function appendLog(msg,cls=''){ const p=document.createElement('p'); if(cls) p.className=cls; p.textContent=msg; log.appendChild(p); log.scrollTop=log.scrollHeight; }
-    async function simulateBurst(count=25){
-      const ids=Array.from({length:count},(_,i)=>`job_${Date.now()}_${i}`); appendLog(`▶ Orchestrator: dispatching ${count} jobs...`,'warn');
-      const tasks=ids.map(async id=>{
-        const latency=80+Math.random()*420; await new Promise(r=>setTimeout(r,latency));
-        const success=Math.random()>0.08; total++; latencies.push(latency);
-        if(success){ ok++; appendLog(`✓ ${id} completed in ${Math.round(latency)}ms`,'ok'); }
-        else{ appendLog(`✗ ${id} failed after ${Math.round(latency)}ms (retry queued)`,'err'); }
+
+    function appendLog(msg, cls=''){
+      const p = document.createElement('p');
+      if(cls) p.className = cls;
+      p.textContent = msg;
+      log.appendChild(p);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    async function simulateBurst(count = 25){
+      const ids = Array.from({length:count}, (_,i) => `job_${Date.now()}_${i}`);
+      appendLog(`▶ Orchestrator: dispatching ${count} jobs...`,'warn');
+
+      const tasks = ids.map(async id => {
+        const latency = 80 + Math.random() * 420;
+        await new Promise(r => setTimeout(r, latency));
+        const success = Math.random() > 0.08;
+        total++;
+        latencies.push(latency);
+
+        if(success){
+          ok++;
+          appendLog(`✓ ${id} completed in ${Math.round(latency)}ms`,'ok');
+        }else{
+          appendLog(`✗ ${id} failed after ${Math.round(latency)}ms (retry queued)`,'err');
+        }
       });
-      await Promise.all(tasks); renderKPIs(); appendLog(`■ Burst complete. Total=${total} OK=${ok} Fail=${total-ok}`);
+
+      await Promise.all(tasks);
+      renderKPIs();
+      appendLog(`■ Burst complete. Total=${total} OK=${ok} Fail=${total-ok}`);
     }
-    document.getElementById('runSim').addEventListener('click',()=>simulateBurst(30+Math.floor(Math.random()*30)));
-    document.getElementById('clearLog').addEventListener('click',()=>{ log.innerHTML=''; total=0; ok=0; latencies.length=0; renderKPIs(); });
+
+    document.getElementById('runSim').addEventListener('click', () => {
+      simulateBurst(30 + Math.floor(Math.random() * 30));
+    });
+
+    document.getElementById('clearLog').addEventListener('click', () => {
+      log.innerHTML = '';
+      total = 0;
+      ok = 0;
+      latencies.length = 0;
+      renderKPIs();
+    });
+
     renderKPIs();
 
-    // Load shared footer from /jmodco/assets/footer.html
-    (async function loadFooter(){
-      try{
-        const res = await fetch('/jmodco/assets/footer.html', {cache:'no-store'});
-        const html = await res.text();
-        const slot = document.getElementById('footer-slot');
-        slot.innerHTML = html;
-        const c = slot.querySelector('#copyright');
-        if(c) c.textContent = `© ${new Date().getFullYear()} Jmod Co.`;
-      }catch(e){ console.warn('Footer failed to load:', e); }
+    // =========================
+    // Theme toggle (desktop + mobile)
+    // =========================
+    (function(){
+      const root = document.documentElement;
+      const THEME_KEY = 'jmod-theme';
+
+      function applyTheme(theme){
+        root.dataset.theme = theme;
+        try{ localStorage.setItem(THEME_KEY, theme); }catch(e){}
+
+        const labels = document.querySelectorAll('[data-theme-label]');
+        const dots   = document.querySelectorAll('[data-theme-dot]');
+
+        labels.forEach(el => el.textContent = theme === 'light' ? 'Light' : 'Dark');
+        dots.forEach(dot => {
+          dot.style.transform = theme === 'light' ? 'translateX(16px)' : 'translateX(0)';
+        });
+      }
+
+      let stored = null;
+      try{ stored = localStorage.getItem(THEME_KEY); }catch(e){}
+      if(stored !== 'light' && stored !== 'dark') stored = 'dark';
+      applyTheme(stored);
+
+      document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+          applyTheme(next);
+        });
+      });
     })();
 
-    // Mobile bottom sheet logic
-    const btn = document.getElementById('openSheet');
-    const sheet = document.getElementById('navSheet');
-    if(btn && sheet){
-      const toggle = (open) => {
-        sheet.classList.toggle('open', open);
-        btn.setAttribute('aria-expanded', String(open));
-      };
-      btn.addEventListener('click', ()=>toggle(!sheet.classList.contains('open')));
-      // Close when link tapped
-      sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>toggle(false)));
-      // Swipe-down / outside close (basic)
-      sheet.addEventListener('click', (e)=>{ if(e.target === sheet) toggle(false); });
-    }
-  </script>
+    // =========================
+    // Mobile nav toggle
+    // =========================
+    (function(){
+      const btn   = document.getElementById('navToggle');
+      const panel = document.getElementById('mobilePanel');
 
-  <style>
-    /* console colors */
-    .ok{color:#7fffd4}
-    .warn{color:#ffd166}
-    .err{color:#ff6b6b}
-  </style>
+      if(!btn || !panel) return;
+
+      function setOpen(open){
+        panel.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', String(open));
+      }
+
+      btn.addEventListener('click', () => {
+        setOpen(!panel.classList.contains('open'));
+      });
+
+      panel.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => setOpen(false));
+      });
+
+      window.addEventListener('resize', () => {
+        if(window.innerWidth > 900 && panel.classList.contains('open')){
+          setOpen(false);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
