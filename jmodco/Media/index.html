@@ -4,51 +4,75 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jmod Media — AI Social Posting for Small Business</title>
-  <meta name="description" content="Create smarter, post faster, grow everywhere. Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms." />
+  <meta name="description" content="Create smarter. Post faster. Grow everywhere. Jmod Media automates captions, hashtags, watermarks, and scheduling across platforms.">
 
-  <!-- Shared theme + nav -->
-  <link rel="stylesheet" href="/jmodco/shared/theme.css">
-  <script defer src="/jmodco/shared/include.js"></script>
-
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
   <style>
+    /* ============================================================
+       ROOT VARIABLES — You can safely change these
+       ============================================================ */
     :root{
-      /* Adjustable sizes */
-      --hero-logo-size: 88vh;     /* YOU CAN CHANGE THIS LATER */
-      --wm-size: 80vw;            /* YOU CAN CHANGE THIS LATER */
-      --wm-opacity: 0.15;
+      --shell-max: 1200px;
+      --shell-pad: 20px;
 
+      --hero-logo-size: 88vh;   /* Giant hero logo size */
+      --wm-size: 80vw;          /* Watermark base size */
+      --wm-opacity: 0.15;
       --accent: #22d3ee;
+
+      --bg:#0b0f1a;
+      --panel:#0e1527;
+      --ink:#e9ecff;
+      --muted:#94a1c6;
+      --border:rgba(255,255,255,0.08);
+    }
+
+    html[data-theme="light"]{
+      --bg:#fbfbfd;
+      --panel:#ffffff;
+      --ink:#0a0a0f;
+      --muted:#444c57;
+      --border:rgba(0,0,0,0.12);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
     body{
-      font-family:Inter,system-ui,Roboto,Helvetica,Arial,sans-serif;
-      overflow-x:hidden;
-      color:var(--ink);
       background:var(--bg);
+      font-family:Inter,system-ui,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--ink);
+      overflow-x:hidden;
     }
 
-    /* -------------------------------------------------------
-       NAV (copied 1:1 from Labs, renamed for Media)
-    ------------------------------------------------------- */
+    .shell{
+      max-width:var(--shell-max);
+      margin:0 auto;
+      padding:0 var(--shell-pad);
+    }
+
+    /* ============================================================
+       NAV — identical style to Labs/Systems/Insights
+       ============================================================ */
     .nav{
       position:fixed; top:16px; left:50%; transform:translateX(-50%);
       width:min(1200px,94vw);
       background: color-mix(in oklab, var(--panel) 88%, transparent);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       border:1px solid var(--border);
-      box-shadow:0 8px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
       border-radius:999px;
-      z-index:1000;
+      padding:0;
+      z-index:9999;
+      box-shadow:0 8px 30px rgba(0,0,0,.35);
     }
     .nav-inner{
       display:flex; align-items:center; gap:12px;
       padding:10px 14px;
     }
-    .brand{font-weight:700; padding-left:10px; flex-shrink:0}
-    .brand a{color:var(--ink); text-decoration:none;}
+    .brand a{
+      color:var(--ink); font-weight:700; text-decoration:none;
+      padding-left:10px;
+    }
 
     .nav-links{
       display:flex; align-items:center; gap:28px;
@@ -62,216 +86,283 @@
 
     .nav-right{
       display:flex; align-items:center; gap:14px;
-      margin-left:0;
     }
+
+    /* Theme toggle pill */
     .theme{
       display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
       border:1px solid var(--border); border-radius:999px;
       background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
-      cursor:pointer; color:var(--ink);
+      color:var(--ink); cursor:pointer;
     }
     .theme .dot{
-      width:12px; height:12px; border-radius:999px;
+      width:12px; height:12px; border-radius:50%;
       background:#7a52ff;
-      box-shadow:0 0 0 2px rgba(122,82,255,.25);
+      box-shadow:0 0 0 2px rgba(122,82,255,0.25);
     }
 
+    /* Hamburger */
     .burger{
-      display:none; width:40px; height:40px; border-radius:12px;
+      display:none; width:40px; height:40px; border-radius:10px;
       border:1px solid var(--border);
       background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
       align-items:center; justify-content:center;
+      cursor:pointer;
     }
     .burger span{
-      width:18px; height:2px; background:var(--ink);
-      position:relative; display:block; opacity:.9;
+      width:18px; height:2px; background:var(--ink); position:relative;
     }
-    .burger span::before,.burger span::after{
-      content:""; position:absolute; left:0; width:18px; height:2px;
-      background:var(--ink); opacity:.9;
+    .burger span::before,
+    .burger span::after{
+      content:""; position:absolute; width:18px; height:2px; background:var(--ink);
     }
     .burger span::before{top:-6px}
     .burger span::after{top:6px}
 
+    /* Mobile panel */
     .mobile-panel{
       position:fixed; top:72px; left:50%; transform:translateX(-50%);
       width:min(1200px,94vw);
       background: color-mix(in oklab, var(--panel) 96%, transparent);
       border:1px solid var(--border);
+      border-radius:16px;
+      padding:10px 14px;
       box-shadow:0 16px 40px rgba(0,0,0,.45);
-      border-radius:18px; padding:10px 14px;
-      display:none; z-index:999;
+      display:none;
+      z-index:9998;
     }
-    .mobile-panel.open{display:block}
+    .mobile-panel.open{display:block;}
     .mobile-panel a{
-      display:block; padding:12px 10px; border-radius:10px;
-      color:var(--ink); text-decoration:none; font-weight:600;
+      display:block; padding:12px 10px; color:var(--ink);
+      text-decoration:none; font-weight:600;
     }
-    .mobile-panel a:active{background:rgba(255,255,255,.06)}
-
+    .mobile-panel a:active{
+      background:rgba(255,255,255,0.06);
+    }
     .theme--mobile{
-      display:flex; width:100%; justify-content:center;
-      margin:8px 4px 2px;
-    }
-    .mobile-panel::after{
-      content:""; display:block;
-      height:1px; margin:10px 6px 6px; background:var(--border);
+      margin-top:8px; justify-content:center;
+      width:100%; display:flex;
     }
 
     @media(max-width:880px){
-      .nav-inner{justify-content:space-between;}
       .nav-links{display:none}
       .theme{display:none}
-      .burger{display:inline-flex}
-      .mobile-panel{text-align:right;}
-      .mobile-panel a{text-align:right;}
-      .theme--mobile{justify-content:flex-end;}
+      .burger{display:flex}
     }
 
-    /* -------------------------------------------------------
+    /* ============================================================
        HERO SECTION
-    ------------------------------------------------------- */
+       ============================================================ */
     .hero{
-      width:100%;
-      padding-top:160px; /* spacing below nav */
-      padding-bottom:60px;
       position:relative;
+      width:100%;
+      padding-top:160px;
+      padding-bottom:100px;
       overflow:hidden;
+      text-align:center;
     }
 
-    /* Giant full hero logo behind text */
-    .hero-logo{
+    /* Canvas background sits behind hero text + logo */
+    #hero-canvas{
       position:absolute;
-      left:50%; top:50%;
+      inset:0;
+      z-index:0;
+    }
+
+    /* Full hero logo behind text */
+    .hero-logo{
+      position:absolute; left:50%; top:50%;
       transform:translate(-50%, -50%);
       width:var(--hero-logo-size);
       max-width:110vw;
       opacity:0.22;
-      filter:drop-shadow(0 0 40px rgba(34,211,238,.35));
+      z-index:1;
       pointer-events:none;
-      z-index:0;
+      filter:drop-shadow(0 0 40px rgba(34,211,238,.35));
     }
+
     html[data-theme="light"] .hero-logo{
       opacity:0.20;
       filter:drop-shadow(0 0 20px rgba(0,0,0,.22));
     }
 
-    /* Creator-burst particle canvas */
-    #particles{
-      position:absolute;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-    }
-
-    /* Foreground hero content */
     .hero-content{
       position:relative;
-      z-index:2;
-      text-align:center;
+      z-index:5;
       max-width:800px;
       margin:0 auto;
-      padding:0 20px;
     }
+
     .hero-content h1{
-      font-size:clamp(32px,4vw,54px);
-      line-height:1.05;
+      font-size:clamp(34px,4vw,56px);
       font-weight:900;
       color:var(--ink);
       margin-bottom:12px;
-      text-shadow:0 0 22px rgba(0,0,0,.35);
     }
+
     .hero-content p{
       font-size:1.15rem;
       color:var(--muted);
-      margin:0 auto 22px;
+      margin-bottom:22px;
       max-width:620px;
+      margin-left:auto;
+      margin-right:auto;
     }
 
+    /* Store buttons */
     .store-row{
       display:flex;
-      gap:16px;
+      gap:18px;
       flex-wrap:wrap;
       justify-content:center;
-      margin-top:14px;
+      margin-top:16px;
     }
+
     .store-btn img{
       height:52px;
       filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
     }
+
     html[data-theme="light"] .store-btn img{
-      filter:drop-shadow(0 4px 12px rgba(0,0,0,.22));
+      filter:drop-shadow(0 4px 12px rgba(0,0,0,.25));
     }
 
-    /* -------------------------------------------------------
-       WATERMARK (appears after hero)
-    ------------------------------------------------------- */
+    /* ============================================================
+       WATERMARK — fades in after hero
+       ============================================================ */
     #bg-logo{
       position:fixed;
       inset:0;
-      z-index:-1;
-      background:center/var(--wm-size) no-repeat;
+      background-position:center;
+      background-size:var(--wm-size);
+      background-repeat:no-repeat;
       opacity:0;
       transition:opacity .8s ease;
       pointer-events:none;
-      filter:drop-shadow(0 0 40px rgba(87,230,255,.24)) brightness(1.15);
+      z-index:-1;
     }
-    #bg-logo.visible{
-      opacity:var(--wm-opacity);
-    }
+    #bg-logo.visible{opacity:var(--wm-opacity);}
     html[data-theme="dark"] #bg-logo{
       background-image:url('/jmodco/assets/Jmod_MediaTP.png');
+      filter:drop-shadow(0 0 40px rgba(0,0,0,0.45));
     }
     html[data-theme="light"] #bg-logo{
       background-image:url('/jmodco/assets/Jmod_Media.png');
-      filter:drop-shadow(0 0 32px rgba(0,0,0,.16)) brightness(1.02);
+      filter:drop-shadow(0 0 32px rgba(0,0,0,0.18));
     }
 
-    /* -------------------------------------------------------
+    /* ============================================================
        FLOATING SOCIAL ICONS
-    ------------------------------------------------------- */
+       ============================================================ */
     #icon-field{
       position:fixed;
       inset:0;
       pointer-events:none;
       z-index:-2;
-      overflow:hidden;
     }
     .burst{
       position:absolute;
       left:50%; top:50%;
       transform:translate(-50%,-50%) scale(.35);
       opacity:0;
-      pointer-events:none;
-      animation:burstAnim 8s ease-in-out forwards;
+      animation:burstAnim 9s ease-in-out forwards;
       filter:drop-shadow(0 0 8px rgba(255,255,255,.25));
+      pointer-events:none;
     }
+
     @keyframes burstAnim{
       0%{opacity:0; transform:translate(-50%,-50%) scale(.35)}
-      12%{opacity:.9}
-      84%{opacity:.9; transform:translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1)}
+      15%{opacity:.9}
+      85%{opacity:.9; transform:translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1)}
       100%{opacity:0; transform:translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.05)}
     }
 
-    /* -------------------------------------------------------
-       PAGE CONTENT / CARDS
-    ------------------------------------------------------- */
+    /* ============================================================
+       PHONE PREVIEW SECTION
+       ============================================================ */
+    .phone-wrap{
+      padding:40px 0 34px;
+    }
+
+    .phone{
+      width:360px;
+      margin:0 auto;
+      background:var(--panel);
+      border:2px solid var(--accent);
+      border-radius:28px;
+      box-shadow:0 0 22px rgba(34,211,238,.25);
+      padding:16px;
+    }
+
+    .screen{
+      width:100%;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(34,211,238,.12), transparent),
+                 linear-gradient(180deg, rgba(123,57,255,.12), transparent 40%),
+                 #0e142b;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .bar{
+      text-align:center;
+      color:#b8c2ff;
+      background:rgba(255,255,255,.1);
+      border-radius:10px;
+      padding:6px 0;
+      font-weight:800;
+    }
+
+    .screen-copy{
+      background:rgba(255,255,255,.08);
+      padding:10px;
+      border-radius:10px;
+      color:#e9ecff;
+      max-height:90px;
+      overflow:auto;
+    }
+
+    .ig-area{flex:1;}
+    .ig{
+      width:100%;
+      height:100%;
+      border:0;
+      border-radius:10px;
+    }
+
+    .dock{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+    }
+    .pill{
+      text-align:center;
+      color:var(--ink);
+      border:1px solid rgba(255,255,255,.4);
+      border-radius:10px;
+      padding:8px 0;
+      font-weight:800;
+    }
+
+    /* ============================================================
+       FEATURES + WAITLIST
+       ============================================================ */
     .section{
-      padding:60px 0 40px;
-      position:relative;
-      z-index:2;
+      padding:60px 0;
     }
     .section h2{
-      font-size:clamp(24px,2.4vw,34px);
-      font-weight:900;
       text-align:center;
+      font-size:clamp(24px,2.4vw,34px);
       margin-bottom:14px;
+      font-weight:900;
     }
     .section p.lead{
       text-align:center;
-      color:var(--muted);
       max-width:760px;
       margin:0 auto 18px;
+      color:var(--muted);
     }
 
     .grid{
@@ -279,57 +370,46 @@
       grid-template-columns:repeat(3,1fr);
       gap:20px;
     }
-    @media(max-width:840px){
-      .grid{grid-template-columns:1fr 1fr;}
-    }
-    @media(max-width:540px){
-      .grid{grid-template-columns:1fr;}
-    }
+    @media(max-width:850px){.grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:520px){.grid{grid-template-columns:1fr;}}
 
     .card{
       background:var(--panel);
       border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
+      border-radius:16px;
       padding:18px;
       box-shadow:0 18px 46px rgba(0,0,0,.55);
     }
-    .card h3{
-      font-weight:800; margin-bottom:6px;
-    }
-    .card p{
-      color:var(--muted);
-    }
+    .card h3{margin-bottom:6px;}
+    .card p{color:var(--muted);}
 
-    /* -------------------------------------------------------
-       FOOTER (matching Labs/Systems/Insights)
-    ------------------------------------------------------- */
+    /* ============================================================
+       FOOTER
+       ============================================================ */
     footer{
-      position:relative;
-      z-index:3;
-      padding:40px 20px;
       text-align:center;
+      padding:40px 20px;
+      background: color-mix(in oklab, var(--panel) 90%, transparent);
       border-top:1px solid var(--border);
-      background: color-mix(in oklab, var(--panel) 92%, transparent);
       backdrop-filter:blur(6px);
       margin-top:60px;
-    }
-    footer a{
-      color:var(--ink); text-decoration:none;
     }
     footer .row{
       display:flex; flex-wrap:wrap; gap:18px;
       justify-content:center;
-      margin:14px 0 16px;
-      font-size:.95rem;
+      margin:12px 0 16px;
     }
+    footer a{color:var(--ink); text-decoration:none;}
 
   </style>
 </head>
 
 <body>
 
-<!-- NAV -->
-<div class="nav" role="navigation" aria-label="Primary">
+<!-- ============================================================
+     NAV BAR
+     ============================================================ -->
+<div class="nav">
   <div class="nav-inner">
     <div class="brand"><a href="#top">Jmod Co. Media</a></div>
 
@@ -342,12 +422,12 @@
 
     <div class="nav-right">
       <button class="theme" id="themeBtn"><span class="dot"></span><span id="themeLabel">Dark</span></button>
-      <button class="burger" id="burger" aria-label="Open menu"><span></span></button>
+      <button class="burger" id="burger"><span></span></button>
     </div>
   </div>
 </div>
 
-<!-- MOBILE NAV -->
+<!-- Mobile panel -->
 <div class="mobile-panel" id="mnav">
   <a href="#top">Home</a>
   <a href="#features">Services</a>
@@ -359,14 +439,26 @@
   </button>
 </div>
 
-<!-- HERO -->
+<!-- ============================================================
+     WATERMARK HOLDER
+     ============================================================ -->
 <div id="bg-logo"></div>
+
+<!-- ============================================================
+     FLOATING ICON FIELD
+     ============================================================ -->
 <div id="icon-field"></div>
 
+<!-- ============================================================
+     HERO SECTION
+     ============================================================ -->
 <section class="hero" id="top">
-  <img class="hero-logo" src="/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media Logo">
 
-  <canvas id="particles"></canvas>
+  <!-- Canvas for 4-layer neon sweep -->
+  <canvas id="hero-canvas"></canvas>
+
+  <!-- hero logo behind text -->
+  <img class="hero-logo" src="/jmodco/assets/Jmod_MediaTP.png" alt="Jmod Media">
 
   <div class="hero-content">
     <h1>Create smarter. Post faster. Grow everywhere.</h1>
@@ -379,22 +471,54 @@
   </div>
 </section>
 
-<!-- FEATURES -->
+<!-- ============================================================
+     PHONE PREVIEW
+     ============================================================ -->
+<section class="phone-wrap">
+  <div class="phone">
+    <div class="screen">
+      <div class="bar">Jmod Media</div>
+
+      <div class="screen-copy">
+        Jmod Media turns your brand kit, templates, and calendar into fast, consistent posts—on phone or web—in a few taps.
+      </div>
+
+      <div class="ig-area">
+        <iframe class="ig" src="https://www.instagram.com/p/CwLvMC2p0Fu/embed" frameborder="0"></iframe>
+      </div>
+
+      <div class="dock">
+        <div class="pill">Compose</div>
+        <div class="pill">Calendar</div>
+        <div class="pill">Brand Kit</div>
+        <div class="pill">Analytics</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FEATURES
+     ============================================================ -->
 <section class="section" id="features">
   <h2>Everything you need to post smarter</h2>
   <p class="lead">Speed, consistency, and clarity — built for owner-operators. Jmod Media is your AI teammate for social.</p>
 
-  <div class="grid">
-    <div class="card"><h3>AI Caption Builder</h3><p>Drop a photo and get a caption that matches your voice — with hashtags tuned to trends and your audience.</p></div>
-    <div class="card"><h3>Smart Scheduling</h3><p>Auto-schedule posts across networks at the best times. Premium unlocks unlimited queues.</p></div>
-    <div class="card"><h3>Auto Watermark</h3><p>Upload your logo once — AI places a subtle mark that never blocks your subject.</p></div>
-    <div class="card"><h3>Preset Templates</h3><p>“Product Launch”, “Customer Congrats”, “Weekend Promo” — save and reuse in a tap.</p></div>
-    <div class="card"><h3>Adaptive Tone</h3><p>Every edit teaches the model your style so suggestions get better the more you post.</p></div>
-    <div class="card"><h3>Insights that Learn</h3><p>See what performs and why. Jmod highlights repeat-worthy content and fades what underperforms.</p></div>
+  <div class="shell">
+    <div class="grid">
+      <div class="card"><h3>AI Caption Builder</h3><p>Drop a photo and get a caption that matches your voice — with hashtags tuned to trends and your audience.</p></div>
+      <div class="card"><h3>Smart Scheduling</h3><p>Auto-schedule posts across networks at the best times. Premium unlocks unlimited queues.</p></div>
+      <div class="card"><h3>Auto Watermark</h3><p>Upload your logo once — AI places a subtle mark that never blocks your subject.</p></div>
+      <div class="card"><h3>Preset Templates</h3><p>“Product Launch”, “Customer Congrats”, “Weekend Promo” — save and reuse in a tap.</p></div>
+      <div class="card"><h3>Adaptive Tone</h3><p>Every edit teaches the model your style so suggestions get better the more you post.</p></div>
+      <div class="card"><h3>Insights that Learn</h3><p>See what performs and why. Jmod highlights repeat-worthy content and fades what underperforms.</p></div>
+    </div>
   </div>
 </section>
 
-<!-- WAITLIST -->
+<!-- ============================================================
+     WAITLIST
+     ============================================================ -->
 <section class="section" id="waitlist">
   <h2>Be first to launch with us</h2>
   <p class="lead">Early signups get onboarding help and founder pricing.</p>
@@ -406,7 +530,9 @@
   </form>
 </section>
 
-<!-- FOOTER -->
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
 <footer>
   <div><strong>Backed by GPT-5 Engine</strong></div>
 
@@ -421,76 +547,97 @@
   <div>© 2025 Jmod Co. — Built for small business clarity.</div>
 </footer>
 
-<script>
-/* MOBILE NAV TOGGLE */
-const b = document.getElementById("burger");
-const m = document.getElementById("mnav");
-b.addEventListener("click", ()=> m.classList.toggle("open"));
 
-/* THEME TOGGLE (shared logic) */
+<!-- ============================================================
+     JAVASCRIPT SECTION
+     ============================================================ -->
+<script>
+/* ------------------------------------------
+   MOBILE NAV
+--------------------------------------------*/
+const burger = document.getElementById("burger");
+const mnav = document.getElementById("mnav");
+burger.onclick = ()=> mnav.classList.toggle("open");
+
+/* ------------------------------------------
+   THEME LOGIC
+--------------------------------------------*/
 function setTheme(t){
   document.documentElement.setAttribute("data-theme", t);
   localStorage.setItem("theme", t);
-  let label = (t==="dark"?"Dark":"Light");
+  const label = (t==="dark" ? "Dark" : "Light");
   document.getElementById("themeLabel").textContent = label;
   document.getElementById("themeLabelMobile").textContent = label;
 }
-let saved = localStorage.getItem("theme") || "dark";
-setTheme(saved);
-document.getElementById("themeBtn").onclick = ()=> setTheme(saved = (saved==="dark"?"light":"dark"));
-document.getElementById("themeBtnMobile").onclick = ()=> setTheme(saved = (saved==="dark"?"light":"dark"));
+let theme = localStorage.getItem("theme") || "dark";
+setTheme(theme);
+document.getElementById("themeBtn").onclick = ()=>setTheme(theme = (theme==="dark"?"light":"dark"));
+document.getElementById("themeBtnMobile").onclick = ()=>setTheme(theme = (theme==="dark"?"light":"dark"));
 
-/* WATERMARK FADE ON SCROLL */
+/* ------------------------------------------
+   WATERMARK FADE BASED ON HERO VISIBILITY
+--------------------------------------------*/
 const hero = document.getElementById("top");
 const wm = document.getElementById("bg-logo");
 function checkWM(){
   const rect = hero.getBoundingClientRect();
-  let visiblePct = rect.bottom / rect.height;
-  if(visiblePct < 0.60) wm.classList.add("visible");
+  let pct = rect.bottom / rect.height;
+  if(pct < 0.60) wm.classList.add("visible");
   else wm.classList.remove("visible");
 }
 window.addEventListener("scroll", checkWM);
 checkWM();
 
-/* CREATOR-BURST PARTICLES (neon aqua) */
-const canvas = document.getElementById("particles");
+/* ------------------------------------------
+   4-LAYER NEON SWEEP CANVAS
+--------------------------------------------*/
+const canvas = document.getElementById("hero-canvas");
 const ctx = canvas.getContext("2d");
+
 let w, h;
-function resize(){
+function resizeCanvas(){
   w = canvas.width = canvas.offsetWidth;
   h = canvas.height = canvas.offsetHeight;
 }
-resize();
-window.addEventListener("resize", resize);
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-let particles=[];
-for(let i=0;i<60;i++){
-  particles.push({
-    x:Math.random()*w,
-    y:h+Math.random()*200,
-    s:1+Math.random()*3,
-    v:0.4+Math.random()*0.9
-  });
+/* 
+Layers: each layer has:
+- speed
+- direction (dx, dy)
+- opacity
+- gradient radius
+*/
+const layers = [
+  { speed:0.06, dx:1.2, dy:0.7, opacity:0.32, size:1.4 },
+  { speed:0.09, dx:-1.0, dy:0.5, opacity:0.26, size:1.8 },
+  { speed:0.14, dx:0.7, dy:-1.1, opacity:0.20, size:2.3 },
+  { speed:0.18, dx:-0.6, dy:-0.8, opacity:0.16, size:2.8 }
+];
+
+function drawLayer(l, t){
+  const cx = w/2 + Math.sin(t*l.speed)*l.dx*300;
+  const cy = h/2 + Math.cos(t*l.speed)*l.dy*300;
+
+  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w,h)*l.size);
+  grd.addColorStop(0, `rgba(34,211,238,${l.opacity})`);
+  grd.addColorStop(1, 'rgba(34,211,238,0)');
+
+  ctx.fillStyle = grd;
+  ctx.fillRect(0,0,w,h);
 }
 
-function animate(){
+function animate(t){
   ctx.clearRect(0,0,w,h);
-  ctx.fillStyle="rgba(34,211,238,0.55)";
-  for(let p of particles){
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.s,0,Math.PI*2);
-    ctx.fill();
-    p.y -= p.v;
-    if(p.y < -40){
-      p.x = Math.random()*w;
-      p.y = h + Math.random()*120;
-    }
-  }
+  for(const layer of layers) drawLayer(layer, t/7000);
   requestAnimationFrame(animate);
 }
-animate();
+animate(0);
 
-/* FLOATING ICON FIELD — TRIPLE DENSITY */
+/* ------------------------------------------
+   FLOATING SOCIAL ICONS — STAGGERED
+--------------------------------------------*/
 const ICONS=[
   "https://cdn.simpleicons.org/youtube/FF0000",
   "https://cdn.simpleicons.org/facebook/1877F2",
@@ -509,29 +656,38 @@ const ICONS=[
   "https://cdn.simpleicons.org/rumble/85C808",
   "https://cdn.simpleicons.org/kik/82BC23"
 ];
-const iconField=document.getElementById("icon-field");
+
+const iconField = document.getElementById("icon-field");
 let alive=0;
-function spawn(){
-  if(alive >= 39) return; /* TRIPLE 13 */
+function spawnIcon(){
+  if(alive >= 39) return; /* triple density */
   const img=document.createElement("img");
   img.className="burst";
   img.src=ICONS[Math.floor(Math.random()*ICONS.length)];
+
   const angle=Math.random()*360;
-  const r=(Math.min(window.innerWidth,window.innerHeight)*0.9)*(0.4+Math.random()*1.1);
+  const radius=Math.max(window.innerWidth,window.innerHeight)*0.65*(0.5+Math.random()*1);
   const rad=angle*Math.PI/180;
-  img.style.setProperty("--tx", Math.cos(rad)*r+"px");
-  img.style.setProperty("--ty", Math.sin(rad)*r+"px");
-  img.style.width= (32+Math.random()*48)+"px";
-  img.addEventListener("animationend",()=>{alive--;img.remove();});
-  iconField.appendChild(img);
+
+  img.style.setProperty("--tx", Math.cos(rad)*radius+"px");
+  img.style.setProperty("--ty", Math.sin(rad)*radius+"px");
+  img.style.width=(30+Math.random()*50)+"px";
+
+  img.addEventListener("animationend", ()=>{alive--; img.remove();});
+
   alive++;
+  iconField.appendChild(img);
 }
-function cycle(){
-  spawn();
-  setTimeout(cycle, 220 + Math.random()*900);
+
+function iconLoop(){
+  spawnIcon();
+  setTimeout(iconLoop, 400+Math.random()*1200);
 }
-for(let i=0;i<8;i++) setTimeout(spawn, i*350);
-setTimeout(cycle,1500);
+for(let i=0;i<8;i++){
+  setTimeout(spawnIcon, i*500);
+}
+setTimeout(iconLoop,2000);
+
 </script>
 
 </body>
