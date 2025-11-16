@@ -425,6 +425,22 @@
     }
     footer a{color:var(--ink); text-decoration:none;}
 
+  /* =============== HERO SubText=============== */
+    .hero-subtext {
+  color: #000 !important;      /* Black in ALL themes */
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+/* Default = Dark Mode (TP image) */
+.hero {
+  background-image: url('/jmodco/assets/Jmod_MediaTP.png');
+}
+
+/* Light Mode = NON-TP image */
+html[data-theme="light"] .hero {
+  background-image: url('/jmodco/assets/Jmod_Media.png');
+}
+
   </style>
 </head>
 
