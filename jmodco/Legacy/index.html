@@ -669,12 +669,8 @@
           <a href="#companion">Companion</a>
           <a href="#faq">FAQ</a>
           <a href="#contact">Contact</a>
+          <a href="/jmodco/">Jmod Co.</a>
         </div>
-
-        <a class="nav-co" href="/jmodco/">
-          <span class="dot"></span>
-          <span>Jmod Co.</span>
-        </a>
 
         <button class="theme-toggle" type="button" id="themeToggle" aria-label="Toggle dark/light mode">
           <span class="theme-toggle-dot"></span>
@@ -967,10 +963,9 @@
         localStorage.setItem("jmod-theme", next);
       }
 
-      const toggles = [document.getElementById("themeToggle"), document.getElementById("themeToggleMobile")];
-      toggles.forEach(btn => {
-        if(btn) btn.addEventListener("click", toggleTheme);
-      });
+      const toggle = document.getElementById("themeToggle");
+      if (toggle) toggle.addEventListener("click", toggleTheme);
+
     })();
 
     // MOBILE NAV
