@@ -224,7 +224,8 @@
   .hero{
     position:relative;
     overflow:hidden;
-    padding:calc(72px + 4.2rem) 1.5rem 4.75rem;
+    /* pulled hero higher: reduced top padding */
+    padding:calc(40px + 2.2rem) 1.5rem 4.75rem;
     min-height:max(540px, 82vh);
     display:flex;
     align-items:center;
@@ -412,7 +413,8 @@
 
   @media (max-width:900px){
     .hero{
-      padding:calc(72px + 3.2rem) 1.1rem 3.7rem;
+      /* also pull hero up on mobile a bit */
+      padding:calc(40px + 1.6rem) 1.1rem 3.7rem;
       min-height:max(520px, 88vh);
     }
     .hero-title{
