@@ -11,7 +11,6 @@
        THEME TOKENS & GLOBAL VARS
        ========================= */
     :root{
-      /* Text & surface colors (dark default) */
       --text:#e5f1ff;
       --muted:#a5b4cf;
       --brand:#8b5cf6;
@@ -20,18 +19,11 @@
       --ring:rgba(129,140,248,.6);
       --border:#1f2937;
 
-      /* HERO image sizing (Insights logo in hero background) */
       --hero-logo-size: min(100vw, 1000px);
-
-      /* WATERMARK sizing & opacity */
       --wm-size: min(90vw, 900px);
       --wm-opacity: 0.12;
     }
 
-    /* Light mode tokens:
-       - Global text is light (for dark cards/sections)
-       - Hero overrides its own text colors further down
-    */
     html[data-theme="light"]{
       --text:#e5f1ff;
       --muted:#cbd5f5;
@@ -54,9 +46,7 @@
       min-height:100vh;
     }
 
-    /* =========================
-       GLOBAL BACKGROUND GLOW
-       ========================= */
+    /* GLOBAL BACKGROUND GLOW */
     body::before{
       content:"";
       position:fixed;
@@ -70,7 +60,7 @@
     }
 
     /* =========================
-       FLOATING NAV (Labs-style pill)
+       NAV
        ========================= */
     .nav{
       position:fixed;
@@ -133,9 +123,7 @@
       outline-offset:2px;
     }
 
-    /* =========================
-       THEME TOGGLE
-       ========================= */
+    /* THEME TOGGLE */
     .toggle{
       display:inline-flex;
       align-items:center;
@@ -192,8 +180,13 @@
       .menu-btn{display:inline-flex;}
     }
 
+    /* spacer band UNDER nav, ABOVE hero */
+    .nav-spacer{
+      height:90px; /* adjust here if you want a little more/less gap */
+    }
+
     /* =========================
-       PAGE WATERMARK (Insights)
+       PAGE WATERMARK
        ========================= */
     #bg-logo{
       position:fixed;
@@ -214,15 +207,12 @@
     }
 
     /* =========================
-       HERO SECTION
+       HERO
        ========================= */
     .hero{
       position:relative;
       overflow:hidden;
-
-      /* push hero down so nav sits above a clean void */
-      margin-top:90px;
-
+      margin-top:0; /* hero now sits directly under spacer */
       padding:calc(72px + 4.2rem) 1.5rem 4.75rem;
       min-height:max(540px, 82vh);
       display:flex;
@@ -238,7 +228,6 @@
       z-index:1;
     }
 
-    /* HERO background base gradients */
     .hero::before{
       content:"";
       position:absolute;
@@ -256,7 +245,6 @@
         radial-gradient(180% 180% at 50% 130%, #e5edff, #f4f5fb);
     }
 
-    /* HERO logo layer (TP on dark, non-TP on light) */
     .hero::after{
       content:"";
       position:absolute;
@@ -274,7 +262,6 @@
       mix-blend-mode:normal;
     }
 
-    /* HERO Nebula Pulse Grid layer */
     .hero-scan{
       position:absolute;
       inset:-25% -35%;
@@ -295,7 +282,6 @@
       z-index:-1;
     }
 
-    /* LIGHT MODE: make grid clearly visible */
     [data-theme="light"] .hero-scan{
       background:
         radial-gradient(circle, rgba(0,0,0,.55) 1.4px, transparent 1.4px),
@@ -311,27 +297,17 @@
       mix-blend-mode:normal;
     }
 
-    /* Nebula Pulse Grid animation */
     @keyframes pulseGrid{
       0%{
-        background-position:
-          0 0,
-          50% 40%,
-          40% 60%;
+        background-position:0 0, 50% 40%, 40% 60%;
         opacity:.45;
       }
       50%{
-        background-position:
-          80px 60px,
-          52% 48%,
-          50% 50%;
+        background-position:80px 60px, 52% 48%, 50% 50%;
         opacity:.65;
       }
       100%{
-        background-position:
-          160px 120px,
-          48% 60%,
-          60% 40%;
+        background-position:160px 120px, 48% 60%, 60% 40%;
         opacity:.5;
       }
     }
@@ -362,7 +338,6 @@
       margin-top:1rem;
     }
 
-    /* Light-mode hero text is dark-on-light */
     [data-theme="light"] .hero-title,
     [data-theme="light"] .hero-mini{
       color:#0f172a;
@@ -408,7 +383,6 @@
 
     @media (max-width:900px){
       .hero{
-        margin-top:90px; /* keep same offset feel on mobile */
         padding:calc(72px + 3.2rem) 1.1rem 3.7rem;
         min-height:max(520px, 88vh);
       }
@@ -417,9 +391,7 @@
       }
     }
 
-    /* =========================
-       CONTENT SECTIONS
-       ========================= */
+    /* CONTENT SECTIONS */
     section{
       padding:4rem 1.25rem;
     }
@@ -457,9 +429,7 @@
       letter-spacing:-0.01em;
     }
 
-    /* =========================
-       FOOTER
-       ========================= */
+    /* FOOTER */
     footer{
       padding:2.5rem 1.25rem;
       border-top:1px solid var(--border);
@@ -484,9 +454,7 @@
 </head>
 
 <body>
-  <!-- =========================
-       NAV BAR
-       ========================= -->
+  <!-- NAV -->
   <nav class="nav" role="navigation" aria-label="Primary">
     <div class="brand">
       <span>Jmod Insights</span>
@@ -508,14 +476,13 @@
     </div>
   </nav>
 
-  <!-- =========================
-       PAGE WATERMARK BACKGROUND
-       ========================= -->
+  <!-- spacer band under nav -->
+  <div class="nav-spacer"></div>
+
+  <!-- PAGE WATERMARK -->
   <div id="bg-logo"></div>
 
-  <!-- =========================
-       HERO
-       ========================= -->
+  <!-- HERO -->
   <header id="home" class="hero">
     <div class="hero-inner">
       <h1 class="hero-title">AI that quietly runs your back office.</h1>
@@ -537,9 +504,7 @@
     <div class="hero-scan" aria-hidden="true"></div>
   </header>
 
-  <!-- =========================
-       SERVICES SECTION
-       ========================= -->
+  <!-- SERVICES -->
   <section id="services">
     <div class="container">
       <h2>What Insights actually does for you</h2>
@@ -610,9 +575,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       ABOUT / HOW IT WORKS SECTION
-       ========================= -->
+  <!-- ABOUT / HOW IT WORKS -->
   <section id="about">
     <div class="container">
       <h2>How Insights fits into a real day</h2>
@@ -688,9 +651,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       CONTACT SECTION
-       ========================= -->
+  <!-- CONTACT -->
   <section id="contact">
     <div class="container">
       <h2>Tell us how you run things now</h2>
@@ -731,9 +692,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       FOOTER
-       ========================= -->
+  <!-- FOOTER -->
   <footer>
     <div class="foot-inner">
       <div style="margin-bottom:.5rem;font-size:.95rem;">
@@ -751,9 +710,7 @@
   </footer>
 
   <script>
-    // =========================
     // MOBILE NAV TOGGLE
-    // =========================
     const menuBtn = document.querySelector('.menu-btn');
     const menu = document.getElementById('menu');
     menuBtn?.addEventListener('click', () => {
@@ -761,9 +718,7 @@
       menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
-    // =========================
-    // THEME TOGGLE (default dark)
-    // =========================
+    // THEME TOGGLE
     const toggle = document.getElementById('themeToggle');
     const themeLabel = document.getElementById('themeLabel');
     const root = document.documentElement;
@@ -778,9 +733,7 @@
       if (themeLabel) themeLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
     });
 
-    // =========================
     // PAGE WATERMARK VISIBILITY
-    // =========================
     const bgLogo = document.getElementById('bg-logo');
     const heroSection = document.getElementById('home');
 
@@ -798,9 +751,7 @@
     window.addEventListener('resize', updateBgLogoVisibility);
     window.addEventListener('load', updateBgLogoVisibility);
 
-    // =========================
     // FOOTER COPYRIGHT YEAR
-    // =========================
     (function () {
       const el = document.getElementById('copyright');
       if (el) el.textContent = `© ${new Date().getFullYear()} Jmod Co. • All rights reserved.`;
