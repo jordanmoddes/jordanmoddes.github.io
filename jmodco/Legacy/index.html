@@ -24,7 +24,8 @@
       --hero-logo:url("assets/Jmod_LegacyTP.png");
       --wm-logo:url("assets/Jmod_LegacyTP.png");
 
-      --wm-size:min(88vw, 820px);
+      /* watermark ~80% of screen */
+      --wm-size:min(80vw, 900px);
       --wm-opacity:0.12;
 
       --page-max:1120px;
@@ -248,8 +249,8 @@
       width:100%;
       margin:0 auto;
       margin-top:96px;
-      padding:60px 0 140px;  /* extra bottom height */
-      min-height:480px;      /* taller hero */
+      padding:80px 0 260px;  /* extra tall hero */
+      min-height:620px;      /* much taller hero */
       position:relative;
       overflow:hidden;
       background:
@@ -261,12 +262,12 @@
 
     .hero-bg-logo{
       position:absolute;
-      top:8px;
-      bottom:8px;
+      top:12px;
+      bottom:12px;
       left:50%;
       transform:translateX(-50%);
       width:auto;
-      max-width:min(1000px, 94vw);
+      max-width:min(1100px, 96vw); /* let it grow to fill height */
       background-image:var(--hero-logo);
       background-size:contain;
       background-repeat:no-repeat;
@@ -988,7 +989,7 @@
 
       function onScroll(){
         const rect = hero.getBoundingClientRect();
-        const triggerPoint = window.innerHeight * 0.4;
+        const triggerPoint = window.innerHeight * 0.4; // when hero ~40% visible
         if(rect.bottom < triggerPoint){
           main.classList.add("watermark-visible");
         }else{
