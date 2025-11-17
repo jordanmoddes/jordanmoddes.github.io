@@ -224,8 +224,48 @@
   .hero{
     position:relative;
     overflow:hidden;
-    /* pulled hero higher: reduced top padding */
-    padding:calc(40px + 2.2rem) 1.5rem 4.75rem;
+/* =========================
+   HERO SECTION (Labs-style layout, Insights animation)
+   ========================= */
+.hero{
+  position:relative;
+  overflow:hidden;
+
+  /* push the whole hero down so it starts below the nav / orange line */
+  margin-top:72px; /* tweak this (60–90px) until it visually matches what you want */
+
+  /* keep your existing internal spacing so hero size & layout stay the same */
+  padding:calc(72px + 4.2rem) 1.5rem 4.75rem;
+
+  min-height:max(540px, 82vh);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  isolation:isolate;
+}
+
+.hero-inner{
+  width:min(960px, 92vw);
+  margin:0 auto;
+  position:relative;
+  z-index:1;
+}
+
+/* ... keep all the ::before, ::after, .hero-scan, etc exactly as you have them ... */
+
+@media (max-width:900px){
+  .hero{
+    /* also push it down on mobile */
+    margin-top:72px;
+    padding:calc(72px + 3.2rem) 1.1rem 3.7rem;
+    min-height:max(520px, 88vh);
+  }
+  .hero-title{
+    font-size:clamp(2.3rem, 7vw, 3.1rem);
+  }
+}
+
     min-height:max(540px, 82vh);
     display:flex;
     align-items:center;
@@ -411,16 +451,17 @@
     font-size:.9rem;
   }
 
-  @media (max-width:900px){
-    .hero{
-      /* also pull hero up on mobile a bit */
-      padding:calc(40px + 1.6rem) 1.1rem 3.7rem;
-      min-height:max(520px, 88vh);
-    }
-    .hero-title{
-      font-size:clamp(2.3rem, 7vw, 3.1rem);
-    }
+@media (max-width:900px){
+  .hero{
+    /* also push it down on mobile */
+    margin-top:72px;
+    padding:calc(72px + 3.2rem) 1.1rem 3.7rem;
+    min-height:max(520px, 88vh);
   }
+  .hero-title{
+    font-size:clamp(2.3rem, 7vw, 3.1rem);
+  }
+}
 
   /* =========================
      CONTENT SECTIONS
