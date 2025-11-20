@@ -292,9 +292,60 @@ html[data-theme='light'] .translate-toggle {
     text-align: center;
   }
 }
+/* ============================= */
+/* PAGE SIGNATURE WATERMARK      */
+/* ============================= */
+
+.signature-watermark{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  /* 🔧 SIZE CONTROL
+     - 0.8 = ~80% of viewport width
+     - Adjust if you want bigger/smaller
+  */
+  width: 80vw;
+  max-width: 900px;       /* cap on huge screens */
+  max-height: 80vh;       /* keep within height on small screens */
+
+  /* 🔧 OPACITY CONTROL
+     - 0.05 ≈ 5%
+     - Increase for more visible, decrease for more subtle
+  */
+  opacity: 0.05;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  pointer-events: none;   /* don’t block clicks */
+  z-index: 0;             /* sit behind main content */
+}
+
+/* Make sure main content sits above the watermark */
+body > *:not(.signature-watermark){
+  position: relative;
+  z-index: 1;
+}
+
+/* THEME-BASED IMAGES */
+/* Dark/default theme → white signature */
+html[data-theme="dark"] .signature-watermark{
+  background-image: url("/assets/Signature_WhiteTP.png");
+}
+
+/* Light theme → black signature */
+html[data-theme="light"] .signature-watermark{
+  background-image: url("/assets/Signature_BlackTP.png");
+}
 </style>
 </head>
 <body>
+  <!-- Signature watermark (behind content) -->
+  <div class="signature-watermark"></div>
+  <!-- Existing content below -->
 <header class="site-header">
   <h1>Jordan Moddes</h1>
   <p><strong>OPERATIONS MANAGER | PROGRAM MANAGEMENT | SUPPLY CHAIN STRATEGY</strong></p>
