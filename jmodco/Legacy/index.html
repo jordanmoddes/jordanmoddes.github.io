@@ -3,467 +3,1008 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/png" href="/assets/JmodLogoIconTP.png" />
+  <link rel="icon" type="image/png" href="/jmodco/assets/JmodLogoIconTP.png" />
   <title>Jmod Legacy</title>
   <meta name="color-scheme" content="dark light" />
   <meta name="description" content="Jmod Legacy helps families use technology to stay connected, supported, and informed as their loved ones age — without overwhelm or complexity." />
 
-<style>
-/* =====================================================
-   THEME VARIABLES
-===================================================== */
-:root{
-  --text:#e5f1ff;
-  --muted:#a5b4cf;
-  --brand:#38bdf8;
-  --brand-soft:rgba(56,189,248,.18);
-  --panel:#020617;
-  --bg:#020617;
-  --ring:rgba(56,189,248,.65);
-  --border:#1f2937;
+  <style>
+    /* =========================
+       THEME TOKENS & GLOBAL VARS
+       ========================= */
+    :root{
+      --text:#e5f1ff;
+      --muted:#a5b4cf;
+      --brand:#38bdf8;
+      --brand-soft:rgba(56,189,248,.18);
+      --panel:#020617;
+      --bg:#020617;
+      --ring:rgba(56,189,248,.65);
+      --border:#1f2937;
 
-  /* FIXED: Correct asset paths */
-  --hero-logo:url("/assets/Jmod_LegacyTP.png");
-  --wm-logo:url("/assets/Jmod_LegacyTP.png");
+      --hero-logo:url("/jmodco/assets/Jmod_LegacyTP.png");
+      --wm-logo:url("/jmodco/assets/Jmod_LegacyTP.png");
 
-  --wm-size:min(88vw, 820px);
-  --wm-opacity:0.12;
+      /* watermark ~80% of screen */
+      --wm-size:min(80vw, 900px);
+      --wm-opacity:0.12;
 
-  --page-max:1120px;
-  --radius-pill:999px;
-  --shadow-soft:0 18px 60px rgba(0,0,0,.55);
-  --shadow-card:0 16px 40px rgba(0,0,0,.45);
-}
+      --page-max:1120px;
+      --radius-pill:999px;
+      --shadow-soft:0 18px 60px rgba(0,0,0,.55);
+      --shadow-card:0 16px 40px rgba(0,0,0,.45);
+    }
 
-html[data-theme="light"]{
-  --text:#0f172a;
-  --muted:#4b5563;
-  --brand:#0284c7;
-  --brand-soft:rgba(37,99,235,.14);
-  --panel:#f9fafb;
-  --bg:#e5edf5;
-  --ring:rgba(37,99,235,.30);
-  --border:#d1d5db;
+    html[data-theme="light"]{
+      --text:#0f172a;
+      --muted:#4b5563;
+      --brand:#0284c7;
+      --brand-soft:rgba(37,99,235,.14);
+      --panel:#f9fafb;
+      --bg:#e5edf5;
+      --ring:rgba(37,99,235,.30);
+      --border:#d1d5db;
 
-  --hero-logo:url("/assets/Jmod_Legacy.png");
-  --wm-logo:url("/assets/Jmod_Legacy.png");
-}
+      --hero-logo:url("/jmodco/assets/Jmod_Legacy.png");
+      --wm-logo:url("/jmodco/assets/Jmod_Legacy.png");
+      --wm-opacity:0.12;
+    }
 
-/* =====================================================
-   GLOBAL RESET
-===================================================== */
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(56,189,248,.12), transparent 55%),
-    radial-gradient(circle at bottom right, rgba(129,140,248,.10), transparent 55%),
-    var(--bg);
-  color:var(--text);
-}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.12), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(129,140,248,.10), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
 
-/* =====================================================
-   WATERMARK SYSTEM
-===================================================== */
-main{
-  width:100%;
-  padding:0 14px 40px;
-  position:relative;
-  isolation:isolate;
-}
-main::before{
-  content:"";
-  position:fixed;
-  inset:auto 0 0 50%;
-  transform:translateX(-50%) translateY(140px);
-  width:var(--wm-size);
-  height:var(--wm-size);
-  background-image:var(--wm-logo);
-  background-position:center;
-  background-repeat:no-repeat;
-  background-size:contain;
-  opacity:0;
-  pointer-events:none;
-  z-index:-1;
-  transition:.6s ease;
-}
-main.watermark-visible::before{
-  opacity:var(--wm-opacity);
-  transform:translateX(-50%) translateY(60px);
-}
+    main{
+      width:100%;
+      padding:0 14px 40px;
+      position:relative;
+      isolation:isolate;
+    }
+    main::before{
+      content:"";
+      position:fixed;
+      inset:auto 0 0 50%;
+      transform:translateX(-50%) translateY(140px);
+      width:var(--wm-size);
+      height:var(--wm-size);
+      background-image:var(--wm-logo);
+      background-position:center;
+      background-repeat:no-repeat;
+      background-size:contain;
+      opacity:0;
+      filter:drop-shadow(0 16px 32px rgba(15,23,42,.65));
+      pointer-events:none;
+      z-index:-1;
+      transition:opacity .6s ease, transform .6s ease;
+    }
+    main.watermark-visible::before{
+      opacity:var(--wm-opacity);
+      transform:translateX(-50%) translateY(60px);
+    }
 
-/* =====================================================
-   NAV 
-===================================================== */
-.nav{
-  position:fixed;
-  top:16px;
-  left:50%;
-  transform:translateX(-50%);
-  width:min(1200px,94vw);
-  background:color-mix(in oklab, var(--panel) 90%, transparent);
-  backdrop-filter:blur(12px);
-  border:1px solid var(--border);
-  border-radius:var(--radius-pill);
-  padding:8px 14px;
-  z-index:1000;
-}
-.nav-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.nav-brand{
-  font-size:.95rem;
-  font-weight:650;
-}
-.nav-right{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
-.nav-links{
-  display:flex;
-  gap:16px;
-}
-.nav-links a{
-  color:var(--muted);
-  text-decoration:none;
-  padding:6px 8px;
-  border-radius:999px;
-  transition:.18s;
-}
-.nav-links a:hover{
-  color:var(--text);
-  background:rgba(255,255,255,.06);
-}
+    /* =========================
+       NAV
+       ========================= */
+    .nav{
+      position:fixed;
+      top:16px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(1200px,94vw);
+      background:linear-gradient(90deg, rgba(15,23,42,.96), rgba(15,23,42,.94));
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      box-shadow:0 8px 30px rgba(0,0,0,.6);
+      border-radius:var(--radius-pill);
+      padding:8px 14px;
+      z-index:1000;
+    }
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .nav-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+    }
+    .nav-brand{
+      font-size:.95rem;
+      font-weight:650;
+      white-space:nowrap;
+      color:#f9fafb;
+    }
 
-/* DARK/LIGHT BUTTON */
-.theme-toggle{
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:linear-gradient(135deg, rgba(30,64,175,.95), rgba(88,28,135,.95));
-  padding:4px 12px;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  color:white;
-  cursor:pointer;
-  box-shadow:0 8px 20px rgba(0,0,0,.5);
-}
-.theme-toggle-dot{
-  width:8px;
-  height:8px;
-  border-radius:999px;
-  background:#f97316;
-}
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-left:auto;
+    }
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      font-size:.9rem;
+      font-weight:500;
+    }
+    .nav-links a{
+      padding:6px 6px;
+      border-radius:999px;
+      text-decoration:none;
+      color:var(--muted);
+      transition:color .18s ease, background-color .18s ease, transform .18s ease;
+      white-space:nowrap;
+    }
+    .nav-links a:hover{
+      color:var(--text);
+      background:rgba(15,23,42,.4);
+      transform:translateY(-1px);
+    }
 
-/* MOBILE NAV */
-.nav-mobile-toggle{
-  display:none;
-}
-@media(max-width:768px){
-  .nav-links{display:none;}
-  .nav-mobile-toggle{
-    display:flex;
-    padding:6px 8px;
-    border-radius:999px;
-    border:1px solid var(--border);
-    background:color-mix(in oklab, var(--panel) 88%, transparent);
-  }
-  .nav-mobile-toggle span{
-    width:18px;height:2px;background:var(--muted);
-    position:relative;display:block;
-  }
-  .nav-mobile-toggle span::before,
-  .nav-mobile-toggle span::after{
-    content:"";width:18px;height:2px;background:var(--muted);
-    position:absolute;left:0;
-  }
-  .nav-mobile-toggle span::before{top:-6px}
-  .nav-mobile-toggle span::after{top:6px}
-}
+    .theme-toggle{
+      border-radius:999px;
+      border:1px solid color-mix(in oklab, var(--border) 82%, transparent);
+      background:linear-gradient(135deg, rgba(30,64,175,.95), rgba(88,28,135,.95));
+      padding:4px 10px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#e5e7eb;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(0,0,0,.45);
+      min-width:64px;
+      justify-content:center;
+    }
+    .theme-toggle-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#f97316;
+      box-shadow:0 0 0 4px rgba(249,115,22,.4);
+    }
 
-.mobile-panel{
-  position:fixed;
-  top:72px;
-  left:50%;
-  transform:translateX(-50%);
-  width:min(1200px,94vw);
-  background:color-mix(in oklab, var(--panel) 96%, transparent);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:14px;
-  box-shadow:0 16px 40px rgba(0,0,0,.55);
-  display:none;
-  z-index:999;
-}
-.mobile-panel.open{display:block}
-.mobile-panel a{
-  display:block;
-  padding:12px 6px;
-  color:var(--text);
-  text-decoration:none;
-  border-radius:10px;
-}
-.mobile-panel a:active{
-  background:rgba(255,255,255,.06);
-}
+    .nav-mobile-toggle{
+      display:none;
+      border-radius:999px;
+      border:1px solid color-mix(in oklab, var(--border) 82%, transparent);
+      background:color-mix(in oklab, var(--panel) 88%, transparent);
+      padding:6px 8px;
+      cursor:pointer;
+    }
+    .nav-mobile-toggle span{
+      display:block;
+      width:16px;
+      height:2px;
+      border-radius:999px;
+      background:var(--muted);
+      position:relative;
+    }
+    .nav-mobile-toggle span::before,
+    .nav-mobile-toggle span::after{
+      content:"";
+      position:absolute;
+      left:0;
+      width:16px;
+      height:2px;
+      border-radius:999px;
+      background:var(--muted);
+    }
+    .nav-mobile-toggle span::before{top:-5px}
+    .nav-mobile-toggle span::after{top:5px}
 
-/* =====================================================
-   HERO
-===================================================== */
-.hero{
-  width:100%;
-  margin-top:96px;
-  padding:80px 0 200px;
-  min-height:600px;
-  position:relative;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(56,189,248,.3), transparent 60%),
-    radial-gradient(circle at 100% 100%, rgba(88,28,135,.35), transparent 60%),
-    var(--panel);
-}
+    .mobile-panel{
+      position:fixed;
+      top:72px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(1200px,94vw);
+      background:color-mix(in oklab, var(--panel) 96%, transparent);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:10px 14px 12px;
+      box-shadow:0 16px 40px rgba(0,0,0,.55);
+      display:none;
+      z-index:999;
+    }
+    .mobile-panel.open{display:block}
+    .mobile-panel a{
+      display:block;
+      padding:11px 8px;
+      border-radius:10px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:.95rem;
+      font-weight:550;
+    }
+    .mobile-panel a:active{
+      background:rgba(148,163,184,.10);
+    }
 
-.hero-bg-logo{
-  position:absolute;
-  top:12px;
-  bottom:12px;
-  left:50%;
-  transform:translateX(-50%);
-  width:auto;
-  max-width:min(1000px,95vw);
-  background-image:var(--hero-logo);
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-  opacity:.12;
-  pointer-events:none;
-  animation:logoFloat 25s ease-in-out infinite alternate;
-}
+    /* Light-mode nav contrast */
+    html[data-theme="light"] .nav-links a{
+      color:#e5e7eb;
+    }
+    html[data-theme="light"] .nav-links a:hover{
+      background:rgba(15,23,42,.55);
+    }
 
-.hero-inner{
-  position:relative;
-  z-index:2;
-  width:min(var(--page-max), 100%);
-  margin:0 auto;
-  padding:0 14px;
-  text-align:center;
-}
+    /* =========================
+       HERO (edge-to-edge)
+       ========================= */
+    .hero{
+      width:100%;
+      margin:0 auto;
+      margin-top:96px;
+      padding:80px 0 260px;  /* extra tall hero */
+      min-height:620px;      /* much taller hero */
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56,189,248,.35), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(88,28,135,.40), transparent 60%),
+        radial-gradient(circle at 50% 0%, rgba(15,23,42,.9), rgba(15,23,42,1));
+      box-shadow:0 22px 50px rgba(0,0,0,.7);
+    }
 
-.hero-title{
-  font-size:clamp(2rem,3vw,2.8rem);
-  line-height:1.1;
-  margin-bottom:12px;
-}
-.hero-title .highlight{
-  background:linear-gradient(120deg,#38bdf8,#a855f7);
-  -webkit-background-clip:text;
-  color:transparent;
-}
-.hero-subtitle{
-  color:var(--muted);
-  max-width:40rem;
-  margin:0 auto 20px;
-}
+    /* lights behind logo + content */
+    .hero-lights{
+      position:absolute;
+      inset:0;
+      z-index:0;
+    }
 
-@keyframes logoFloat{
-  0%{transform:translateX(-50%) translateY(0)}
-  100%{transform:translateX(-50%) translateY(6px)}
-}
+    .hero-bg-logo {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 85%;           /* fills the hero vertically */
+      width: auto;           /* keep aspect ratio */
+      background-image: var(--hero-logo);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.18;
+      filter: drop-shadow(0 20px 40px rgba(15,23,42,.75));
+      pointer-events: none;
+      z-index: 1;
+      animation: logoFloat 26s ease-in-out infinite alternate;
+    }
+    .hero-lights::before,
+    .hero-lights::after{
+      content:"";
+      position:absolute;
+      border-radius:999px;
+      filter:blur(40px);
+      opacity:.45;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .hero-lights::before{
+      width:420px;height:420px;
+      top:-120px;left:-80px;
+      background:radial-gradient(circle, rgba(56,189,248,.8), transparent 70%);
+      animation:driftA 32s linear infinite alternate;
+    }
+    .hero-lights::after{
+      width:340px;height:340px;
+      bottom:-120px;right:-60px;
+      background:radial-gradient(circle, rgba(129,140,248,.7), transparent 70%);
+      animation:driftB 36s linear infinite alternate;
+    }
 
-/* =====================================================
-   BODY
-===================================================== */
-.page{
-  width:min(var(--page-max),100%);
-  margin:0 auto;
-  padding:0 14px;
-  margin-top:56px;
-}
-section{scroll-margin-top:120px;}
-.section-heading{
-  font-size:1rem;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--muted);
-}
-.section-title{font-size:1.35rem;margin:6px 0}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-}
-@media(max-width:900px){
-  .grid{grid-template-columns:1fr;}
-}
-.card{
-  background:color-mix(in oklab,var(--panel) 92%,transparent);
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:16px;
-}
+    .hero-inner{
+      position:relative;
+      z-index:2; /* text over everything */
+      width:min(var(--page-max), 100%);
+      margin:0 auto;
+      padding:0 14px;
+    }
 
-/* =====================================================
-   FOOTER
-===================================================== */
-footer{
-  margin-top:40px;
-  padding:24px 16px;
-  border-top:1px solid var(--border);
-  text-align:center;
-  color:var(--muted);
-}
-.footer-links{
-  display:flex;
-  justify-content:center;
-  gap:16px;
-  flex-wrap:wrap;
-}
+    .hero-content{
+      max-width:720px;
+      margin:0 auto;
+      text-align:center;
+    }
 
-/* =====================================================
-   END CSS
-===================================================== */
-</style>
+    .hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:4px 10px 4px 6px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:550;
+      background:rgba(15,23,42,.8);
+      border:1px solid rgba(148,163,184,.55);
+      margin-bottom:14px;
+      color:#e5f1ff;
+    }
+    .hero-kicker-pill{
+      width:18px;height:18px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 30%, #e0f2fe, #0284c7);
+      box-shadow:0 0 0 4px rgba(56,189,248,.35);
+    }
+
+    .hero-title{
+      font-size:clamp(2.2rem, 3.6vw, 2.9rem);
+      line-height:1.08;
+      letter-spacing:-.03em;
+      margin-bottom:14px;
+      color:#e5f1ff;
+    }
+    .hero-title span.highlight{
+      background:linear-gradient(120deg, #38bdf8, #a855f7);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+
+    .hero-subtitle{
+      font-size:1.02rem;
+      line-height:1.55;
+      color:var(--muted);
+      max-width:40rem;
+      margin:0 auto 22px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .btn{
+      border-radius:999px;
+      padding:9px 18px;
+      font-size:.9rem;
+      font-weight:600;
+      border:1px solid transparent;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition:transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease, color .16s ease;
+    }
+    .btn-primary{
+      background:linear-gradient(120deg,#38bdf8,#0ea5e9);
+      border-color:rgba(56,189,248,.8);
+      color:#0b1120;
+      box-shadow:0 12px 30px rgba(8,47,73,.7);
+    }
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 16px 36px rgba(8,47,73,.9);
+    }
+    .btn-ghost{
+      background:rgba(15,23,42,.75);
+      border-color:rgba(148,163,184,.7);
+      color:var(--text);
+    }
+    .btn-ghost:hover{
+      background:rgba(15,23,42,.92);
+      transform:translateY(-1px);
+    }
+    .hero-note{
+      font-size:.80rem;
+      color:var(--muted);
+    }
+
+    /* Light-mode hero contrast: keep hero text light */
+    html[data-theme="light"] .hero-title,
+    html[data-theme="light"] .hero-note{
+      color:#e5f1ff;
+    }
+    html[data-theme="light"] .hero-subtitle{
+      color:#cbd5f5;
+    }
+    html[data-theme="light"] .hero-kicker{
+      background:rgba(15,23,42,.9);
+      border-color:rgba(148,163,184,.8);
+      color:#e5f1ff;
+    }
+
+    /* =========================
+       BODY CONTENT
+       ========================= */
+    .page{
+      width:min(var(--page-max), 100%);
+      margin:0 auto;
+      margin-top:56px;
+      display:flex;
+      flex-direction:column;
+      gap:26px;
+      padding:0 14px;
+    }
+    section{
+      scroll-margin-top:120px;
+    }
+    .section-heading{
+      font-size:1rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+    .section-title{
+      font-size:1.35rem;
+      margin-bottom:6px;
+    }
+    .section-lead{
+      font-size:.95rem;
+      color:var(--muted);
+      max-width:38rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+      margin-top:16px;
+    }
+    .card{
+      background:color-mix(in oklab, var(--panel) 92%, transparent);
+      border-radius:22px;
+      padding:16px 16px 15px;
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      box-shadow:var(--shadow-card);
+    }
+    .card-header{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .card-badge{
+      width:24px;height:24px;
+      border-radius:999px;
+      background:var(--brand-soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.8rem;
+      color:var(--brand);
+      font-weight:650;
+    }
+    .card-title{
+      font-size:.98rem;
+      font-weight:600;
+    }
+    .card-body{
+      font-size:.9rem;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    .card-list{
+      margin-top:8px;
+      font-size:.9rem;
+      color:var(--muted);
+    }
+    .card-list ul{
+      list-style:disc;
+      padding-left:18px;
+      margin:4px 0 4px;
+    }
+    .card-list li{
+      margin:2px 0;
+    }
+
+    details{
+      background:color-mix(in oklab, var(--panel) 92%, transparent);
+      border-radius:16px;
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      padding:10px 12px;
+      margin-top:8px;
+      box-shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+    summary{
+      cursor:pointer;
+      font-size:.92rem;
+      font-weight:550;
+      list-style:none;
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      color:var(--text);
+    }
+    summary::-webkit-details-marker{display:none}
+    details[open] summary{
+      color:var(--brand);
+    }
+    details p{
+      margin-top:6px;
+      font-size:.9rem;
+      line-height:1.55;
+      color:var(--muted);
+    }
+
+    .contact-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      margin-top:16px;
+      font-size:.9rem;
+      color:var(--muted);
+    }
+    .contact-col{
+      flex:1 1 240px;
+      background:color-mix(in oklab, var(--panel) 92%, transparent);
+      border-radius:18px;
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      padding:12px 14px;
+      box-shadow:0 12px 30px rgba(0,0,0,.5);
+    }
+    .contact-label{
+      font-size:.85rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .contact-main{
+      font-weight:600;
+      color:var(--text);
+      margin-bottom:2px;
+    }
+
+    /* =========================
+       FOOTER
+       ========================= */
+    footer{
+      width:100%;
+      margin-top:32px;
+      padding:24px 16px 18px;
+      border-top:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      background:linear-gradient(
+        to top,
+        color-mix(in oklab, var(--panel) 96%, transparent),
+        transparent
+      );
+    }
+    .footer-inner{
+      width:min(var(--page-max), 100%);
+      margin:0 auto;
+      text-align:center;
+      font-size:.86rem;
+      color:var(--muted);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .footer-top{
+      font-weight:600;
+    }
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:16px;
+      font-size:.85rem;
+    }
+    .footer-links a{
+      color:var(--text);
+      text-decoration:none;
+    }
+    .footer-links a:hover{
+      text-decoration:underline;
+    }
+
+    /* =========================
+       ANIMATIONS
+       ========================= */
+    @keyframes logoFloat{
+      0%{transform:translate(-50%, -50%) translateY(0)}
+      100%{transform:translate(-50%, -50%) translateY(6px)}
+    }
+    @keyframes driftA{
+      0%{transform:translate3d(0,0,0)}
+      100%{transform:translate3d(46px,35px,0)}
+    }
+    @keyframes driftB{
+      0%{transform:translate3d(0,0,0)}
+      100%{transform:translate3d(-36px,-30px,0)}
+    }
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+    @media (max-width:900px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:768px){
+      .nav-links{
+        display:none;
+      }
+      .nav-mobile-toggle{
+        display:flex;
+      }
+      .hero{
+        margin-top:90px;
+        padding:40px 0 80px;
+        min-height:auto;
+      }
+      .page{
+        margin-top:32px;
+      }
+    }
+
+    @media (max-width:480px){
+      .hero-inner{
+        padding:0 8px;
+      }
+      .hero-title{
+        font-size:1.65rem;
+      }
+      .card{
+        padding:14px 13px 13px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-brand">Jmod Legacy</div>
-
-    <div class="nav-right">
-      <div class="nav-links">
-        <a href="#who">Who we are</a>
-        <a href="#services">Services</a>
-        <a href="#companion">Companion</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
-        <a href="/jmodco/">Jmod Co.</a>
+  <!-- NAV -->
+  <nav class="nav" aria-label="Primary">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <div class="nav-brand">Jmod Legacy</div>
       </div>
 
-      <button class="theme-toggle" id="themeToggle">
-        <span class="theme-toggle-dot"></span> Dark
-      </button>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="#who">Who we are</a>
+          <a href="#services">Services</a>
+          <a href="#companion">Companion</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+          <a href="/jmodco/">Jmod Co.</a>
+        </div>
 
-      <button class="nav-mobile-toggle" id="mobileToggle"><span></span></button>
+        <button class="theme-toggle" type="button" id="themeToggle" aria-label="Toggle dark/light mode">
+          <span class="theme-toggle-dot"></span>
+          <span>Dark</span>
+        </button>
+
+        <button class="nav-mobile-toggle" type="button" id="mobileToggle" aria-label="Open navigation">
+          <span></span>
+        </button>
+      </div>
     </div>
+  </nav>
+
+  <!-- MOBILE PANEL -->
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#who">Who we are</a>
+    <a href="#services">Services</a>
+    <a href="#companion">Companion</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+    <a href="/jmodco/">Jmod Co.</a>
   </div>
-</nav>
 
-<!-- MOBILE PANEL -->
-<div class="mobile-panel" id="mobilePanel">
-  <a href="#who">Who we are</a>
-  <a href="#services">Services</a>
-  <a href="#companion">Companion</a>
-  <a href="#faq">FAQ</a>
-  <a href="#contact">Contact</a>
-  <a href="/jmodco/">Jmod Co.</a>
-</div>
+  <main id="mainContent">
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-bg-logo"></div>
+      <div class="hero-lights"></div>
 
-<main id="mainContent">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-kicker">
+            <span class="hero-kicker-pill"></span>
+            <span>Technology that feels like a helping hand — not a hurdle.</span>
+          </div>
 
-<!-- HERO -->
-<header class="hero">
-  <div class="hero-bg-logo"></div>
+          <h1 class="hero-title">
+            Support for the people who raised us — powered by <span class="highlight">calm, clear technology.</span>
+          </h1>
 
-  <div class="hero-inner">
-    <h1 class="hero-title">
-      Support for the people who raised us — built on <span class="highlight">calm, clear technology.</span>
-    </h1>
-    <p class="hero-subtitle">
-      Jmod Legacy is a gentle bridge between modern tech and the real needs of aging parents, grandparents, and their families.
-    </p>
-  </div>
-</header>
+          <p class="hero-subtitle">
+            Jmod Legacy is being built as a gentle “bridge” between modern tech and the real needs of aging parents,
+            grandparents, and the family members who care for them.
+          </p>
 
-<!-- BODY CONTENT -->
-<div class="page">
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#companion">
+              Companion (early concept)
+            </a>
+            <a class="btn btn-ghost" href="#who">
+              Who we are
+            </a>
+          </div>
 
-  <section id="who">
-    <div class="section-heading">Who we are</div>
-    <h2 class="section-title">
-      A small project for a big problem.
-    </h2>
-  </section>
+          <div class="hero-note">
+            No logins. No spam. Just a future tool we’re designing with families and seniors in mind.
+          </div>
+        </div>
+      </div>
+    </header>
 
-  <section id="services">
-    <div class="section-heading">Services</div>
-    <h2 class="section-title">Calm support for families.</h2>
-  </section>
+    <!-- BODY -->
+    <div class="page">
+      <!-- WHO WE ARE -->
+      <section id="who">
+        <div class="section-heading">Who we are</div>
+        <h2 class="section-title">A small project for a big problem: aging, distance, and confusing tech.</h2>
+        <p class="section-lead">
+          Jmod Legacy is a focused piece of Jmod Co. — built around one question: how do we make it easier for families
+          to support aging loved ones without turning them into unpaid IT support?
+        </p>
 
-  <section id="companion">
-    <div class="section-heading">Companion</div>
-    <h2 class="section-title">Early concept.</h2>
-  </section>
+        <div class="grid" style="margin-top:18px">
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">1</div>
+              <div class="card-title">Life has spread us out.</div>
+            </div>
+            <div class="card-body">
+              Families are often states or countries apart. “Checking in” now means:
+            </div>
+            <div class="card-list">
+              <ul>
+                <li>Calls, texts, emails, portals, apps, and passwords.</li>
+                <li>Older adults juggling devices and accounts they never asked for.</li>
+                <li>Caregivers trying to manage everything remotely.</li>
+              </ul>
+            </div>
+          </article>
 
-  <section id="faq">
-    <div class="section-heading">FAQ</div>
-    <h2 class="section-title">Questions answered.</h2>
-  </section>
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">2</div>
+              <div class="card-title">Caregivers become the help desk.</div>
+            </div>
+            <div class="card-body">
+              The adult child or grandchild often ends up:
+            </div>
+            <div class="card-list">
+              <ul>
+                <li>Explaining the same steps again and again.</li>
+                <li>Sorting out “is this safe to click?” every week.</li>
+                <li>Doing all of this on top of work, kids, and their own life.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
 
-  <section id="contact">
-    <div class="section-heading">Contact</div>
-    <h2 class="section-title">Share your feedback.</h2>
-  </section>
+      <!-- SERVICES -->
+      <section id="services">
+        <div class="section-heading">Services</div>
+        <h2 class="section-title">A calm layer between your family and the chaos of technology.</h2>
+        <p class="section-lead">
+          Legacy is being designed as a simple, guided “companion” that can explain, remind, and organize — without asking
+          your loved ones to learn one more complicated system.
+        </p>
 
-</div>
-</main>
+        <div class="grid">
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">A</div>
+              <div class="card-title">Plain-language explanations when things look scary.</div>
+            </div>
+            <div class="card-body">
+              When a parent gets a letter, email, or pop-up they don’t understand, Legacy is meant to:
+            </div>
+            <div class="card-list">
+              <ul>
+                <li>Break it down in clear, direct language.</li>
+                <li>Flag what’s urgent vs. what can wait.</li>
+                <li>Suggest practical next steps for them or for you.</li>
+              </ul>
+            </div>
+          </article>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-top">Backed by GPT-5 Engine</div>
-  <div class="footer-links">
-    <a href="/jmodco/Labs/">Jmod Labs</a>
-    <a href="/jmodco/Systems/">Jmod Systems</a>
-    <a href="/jmodco/Media/">Jmod Media</a>
-    <a href="/jmodco/Legacy/">Jmod Legacy</a>
-    <a href="/jmodco/Insights/">Jmod Insights</a>
-  </div>
-  © 2025 Jmod Co.
-</footer>
+          <article class="card">
+            <div class="card-header">
+              <div class="card-badge">B</div>
+              <div class="card-title">Gentle structure for the “important details.”</div>
+            </div>
+            <div class="card-body">
+              Over time, Legacy aims to help your family keep track of:
+            </div>
+            <div class="card-list">
+              <ul>
+                <li>Key contacts and recurring appointments.</li>
+                <li>Household “how to” information only they know.</li>
+                <li>Simple check-ins that show someone is watching out for them.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
 
-<script>
-/* THEME */
-(function(){
-  const root = document.documentElement;
-  const stored = localStorage.getItem("jmod-theme");
-  root.setAttribute("data-theme", stored || "dark");
+      <!-- COMPANION -->
+      <section id="companion">
+        <div class="section-heading">Companion</div>
+        <h2 class="section-title">Early-stage concept — built around clarity, not features.</h2>
+        <p class="section-lead">
+          The Legacy Companion is being shaped as a calm, always-available guide you can ask questions like:
+        </p>
+        <div class="card" style="margin-top:14px">
+          <div class="card-body">
+            <ul style="list-style:disc; padding-left:18px; margin:0">
+              <li>“How do I explain this letter to my dad without scaring him?”</li>
+              <li>“My mom got this email — is it real or a scam?”</li>
+              <li>“What’s a simple way to check in without making them feel watched?”</li>
+            </ul>
+          </div>
+        </div>
 
-  document.getElementById("themeToggle").onclick = () => {
-    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", next);
-    localStorage.setItem("jmod-theme", next);
-  };
-})();
+        <div class="card" style="margin-top:14px">
+          <div class="card-header">
+            <div class="card-badge">α</div>
+            <div class="card-title">Where it is today</div>
+          </div>
+          <div class="card-body">
+            Behind the scenes, Legacy uses the same engine as other Jmod Co. tools. Here we’re tuning everything toward:
+          </div>
+          <div class="card-list">
+            <ul>
+              <li>Slower pace and simpler wording.</li>
+              <li>High-contrast visuals for easier reading.</li>
+              <li>Controls that feel safe to both seniors and families.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-/* MOBILE NAV */
-(function(){
-  const btn = document.getElementById("mobileToggle");
-  const panel = document.getElementById("mobilePanel");
-  btn.onclick = () => panel.classList.toggle("open");
-  panel.onclick = e => { if(e.target.tagName === "A") panel.classList.remove("open"); };
-})();
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="section-heading">FAQ</div>
+        <h2 class="section-title">Questions you might already be thinking about.</h2>
 
-/* WATERMARK */
-(function(){
-  const hero = document.querySelector(".hero");
-  const main = document.getElementById("mainContent");
+        <details>
+          <summary><span>Is this a medical, legal, or emergency service?</span></summary>
+          <p>
+            No. Jmod Legacy is intended as a supportive, informational tool — not a replacement for doctors, attorneys,
+            or 911. It’s meant to help you understand and organize, not to make critical decisions for your family.
+          </p>
+        </details>
 
-  function check(){
-    const rect = hero.getBoundingClientRect();
-    const trigger = window.innerHeight * 0.4;
-    if(rect.bottom < trigger) main.classList.add("watermark-visible");
-    else main.classList.remove("watermark-visible");
-  }
-  window.addEventListener("scroll", check, {passive:true});
-  check();
-})();
-</script>
+        <details>
+          <summary><span>Will our family’s information be sold or shared?</span></summary>
+          <p>
+            The long-term vision for Legacy is privacy-first: minimal data, clear controls, and no hidden reselling.
+            As features are defined, this page will include a plain-language description of how data is handled — not just fine print.
+          </p>
+        </details>
 
+        <details>
+          <summary><span>Do my parents or grandparents need to be “good with technology”?</span></summary>
+          <p>
+            No. Legacy is being built specifically for families where the older generation is not comfortable with
+            technology. Much of the interaction may come through you, the family member — at whatever pace feels right.
+          </p>
+        </details>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="section-heading">Contact</div>
+        <h2 class="section-title">Want to share your experience or give feedback?</h2>
+        <p class="section-lead">
+          Legacy is in an early design phase inside Jmod Co. If you’ve navigated aging parents, long-distance support,
+          or just want to help shape something more helpful than another unused “portal,” your input matters.
+        </p>
+
+        <div class="contact-row">
+          <div class="contact-col">
+            <div class="contact-label">Current status</div>
+            <div class="contact-main">Early concept — pre-launch</div>
+            <p>
+              The most useful thing you can do right now is share what would actually help your situation — tools, reminders,
+              or supports that would make your days easier, not more crowded.
+            </p>
+          </div>
+
+          <div class="contact-col">
+            <div class="contact-label">Reach out</div>
+            <div class="contact-main">Jordan @ Jmod Co.</div>
+            <p>
+              Until Legacy goes public, inquiries are handled directly through Jmod Co. channels. As the project matures,
+              this section will be updated with a simpler, dedicated contact path.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        Backed by GPT-5 Engine
+      </div>
+      <div class="footer-links">
+        <a href="/jmodco/Labs/">Jmod Labs</a>
+        <a href="/jmodco/Systems/">Jmod Systems</a>
+        <a href="/jmodco/Media/">Jmod Media</a>
+        <a href="/jmodco/Legacy/">Jmod Legacy</a>
+        <a href="/jmodco/Insights/">Jmod Insights</a>
+      </div>
+      <div>© 2025 Jmod Co. — Built for small business clarity.</div>
+    </div>
+  </footer>
+
+  <script>
+    // THEME
+    (function(){
+      const root = document.documentElement;
+      const stored = localStorage.getItem("jmod-theme");
+      if(stored === "light" || stored === "dark"){
+        root.setAttribute("data-theme", stored);
+      }else{
+        root.setAttribute("data-theme","dark");
+      }
+
+      function toggleTheme(){
+        const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+        const next = current === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("jmod-theme", next);
+      }
+
+      const toggle = document.getElementById("themeToggle");
+      if (toggle) toggle.addEventListener("click", toggleTheme);
+    })();
+
+    // MOBILE NAV
+    (function(){
+      const mobileToggle = document.getElementById("mobileToggle");
+      const mobilePanel  = document.getElementById("mobilePanel");
+      if(!mobileToggle || !mobilePanel) return;
+
+      mobileToggle.addEventListener("click", () => {
+        mobilePanel.classList.toggle("open");
+      });
+
+      mobilePanel.addEventListener("click", (e) => {
+        if(e.target.tagName.toLowerCase() === "a"){
+          mobilePanel.classList.remove("open");
+        }
+      });
+    })();
+
+    // WATERMARK VISIBILITY
+    (function(){
+      const hero = document.querySelector(".hero");
+      const main = document.getElementById("mainContent");
+      if(!hero || !main) return;
+
+      function onScroll(){
+        const rect = hero.getBoundingClientRect();
+        const triggerPoint = window.innerHeight * 0.4; // when hero ~40% visible
+        if(rect.bottom < triggerPoint){
+          main.classList.add("watermark-visible");
+        }else{
+          main.classList.remove("watermark-visible");
+        }
+      }
+      window.addEventListener("scroll", onScroll, {passive:true});
+      onScroll();
+    })();
+  </script>
 </body>
 </html>
