@@ -292,6 +292,37 @@ html[data-theme='light'] .translate-toggle {
     text-align: center;
   }
 }
+/* =======================
+   THEME–AWARE WATERMARK
+   ======================= */
+
+/* DARK MODE WATERMARK (default) */
+html[data-theme='dark'] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(70vw, 600px);
+  height: auto;
+  background: url("/assets/Signature_WhiteTP.png") center/contain no-repeat;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* LIGHT MODE WATERMARK */
+html[data-theme='light'] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(70vw, 600px);
+  height: auto;
+  background: url("/assets/Signature_BlackTP.png") center/contain no-repeat;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
 </style>
 </head>
 <body>
