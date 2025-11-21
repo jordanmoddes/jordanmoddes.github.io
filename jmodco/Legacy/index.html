@@ -291,27 +291,21 @@
       animation:driftB 36s linear infinite alternate;
     }
 
-    /* THIS is the Media-style hero logo */
-    .hero-logo{
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform:translate(-50%, -50%);
-      width:var(--hero-logo-size);
-      max-width:110vw;
-      opacity:0.22;
-      z-index:1;
-      pointer-events:none;
-      filter:drop-shadow(0 0 40px rgba(34,211,238,.35));
-      background-image:var(--hero-logo-mark);
-      background-repeat:no-repeat;
-      background-size:contain;
-      background-position:center;
-    }
-    html[data-theme="light"] .hero-logo{
-      opacity:0.20;
-      filter:drop-shadow(0 0 20px rgba(0,0,0,.22));
-    }
+.hero-logo{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+  width: min(820px, 78vw); /* safe size */
+  opacity:0.12;            /* visible but soft */
+  z-index:1;               /* above background, below text */
+  pointer-events:none;
+  filter: drop-shadow(0 0 18px rgba(34,211,238,.22));
+}
+html[data-theme="light"] .hero-logo{
+  opacity:0.10;
+  filter: drop-shadow(0 0 10px rgba(0,0,0,.18));
+}
 
     .hero-inner{
       position:relative;
