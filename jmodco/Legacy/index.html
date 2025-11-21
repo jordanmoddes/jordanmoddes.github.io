@@ -328,349 +328,142 @@ footer{
 ===================================================== */
 </style>
 </head>
+
 <body>
-  <!-- NAV -->
-  <nav class="nav" aria-label="Primary">
-    <div class="nav-inner">
-      <div class="nav-left">
-        <div class="nav-brand">Jmod Legacy</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">Jmod Legacy</div>
+
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#who">Who we are</a>
+        <a href="#services">Services</a>
+        <a href="#companion">Companion</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+        <a href="/jmodco/">Jmod Co.</a>
       </div>
 
-      <div class="nav-right">
-        <div class="nav-links">
-          <a href="#who">Who we are</a>
-          <a href="#services">Services</a>
-          <a href="#companion">Companion</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Contact</a>
-          <a href="/jmodco/">Jmod Co.</a>
-        </div>
+      <button class="theme-toggle" id="themeToggle">
+        <span class="theme-toggle-dot"></span> Dark
+      </button>
 
-        <button class="theme-toggle" type="button" id="themeToggle" aria-label="Toggle dark/light mode">
-          <span class="theme-toggle-dot"></span>
-          <span>Dark</span>
-        </button>
-
-        <button class="nav-mobile-toggle" type="button" id="mobileToggle" aria-label="Open navigation">
-          <span></span>
-        </button>
-      </div>
+      <button class="nav-mobile-toggle" id="mobileToggle"><span></span></button>
     </div>
-  </nav>
-
-  <!-- MOBILE PANEL -->
-  <div class="mobile-panel" id="mobilePanel">
-    <a href="#who">Who we are</a>
-    <a href="#services">Services</a>
-    <a href="#companion">Companion</a>
-    <a href="#faq">FAQ</a>
-    <a href="#contact">Contact</a>
-    <a href="/jmodco/">Jmod Co.</a>
   </div>
+</nav>
 
-  <main id="mainContent">
-    <!-- HERO -->
-    <header class="hero">
-      <div class="hero-bg-logo"></div>
-      <div class="hero-lights"></div>
+<!-- MOBILE PANEL -->
+<div class="mobile-panel" id="mobilePanel">
+  <a href="#who">Who we are</a>
+  <a href="#services">Services</a>
+  <a href="#companion">Companion</a>
+  <a href="#faq">FAQ</a>
+  <a href="#contact">Contact</a>
+  <a href="/jmodco/">Jmod Co.</a>
+</div>
 
-      <div class="hero-inner">
-        <div class="hero-content">
-          <div class="hero-kicker">
-            <span class="hero-kicker-pill"></span>
-            <span>Technology that feels like a helping hand — not a hurdle.</span>
-          </div>
+<main id="mainContent">
 
-          <h1 class="hero-title">
-            Support for the people who raised us — powered by <span class="highlight">calm, clear technology.</span>
-          </h1>
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg-logo"></div>
 
-          <p class="hero-subtitle">
-            Jmod Legacy is being built as a gentle “bridge” between modern tech and the real needs of aging parents,
-            grandparents, and the family members who care for them.
-          </p>
+  <div class="hero-inner">
+    <h1 class="hero-title">
+      Support for the people who raised us — built on <span class="highlight">calm, clear technology.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Jmod Legacy is a gentle bridge between modern tech and the real needs of aging parents, grandparents, and their families.
+    </p>
+  </div>
+</header>
 
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#companion">
-              Companion (early concept)
-            </a>
-            <a class="btn btn-ghost" href="#who">
-              Who we are
-            </a>
-          </div>
+<!-- BODY CONTENT -->
+<div class="page">
 
-          <div class="hero-note">
-            No logins. No spam. Just a future tool we’re designing with families and seniors in mind.
-          </div>
-        </div>
-      </div>
-    </header>
+  <section id="who">
+    <div class="section-heading">Who we are</div>
+    <h2 class="section-title">
+      A small project for a big problem.
+    </h2>
+  </section>
 
-    <!-- BODY -->
-    <div class="page">
-      <!-- WHO WE ARE -->
-      <section id="who">
-        <div class="section-heading">Who we are</div>
-        <h2 class="section-title">A small project for a big problem: aging, distance, and confusing tech.</h2>
-        <p class="section-lead">
-          Jmod Legacy is a focused piece of Jmod Co. — built around one question: how do we make it easier for families
-          to support aging loved ones without turning them into unpaid IT support?
-        </p>
+  <section id="services">
+    <div class="section-heading">Services</div>
+    <h2 class="section-title">Calm support for families.</h2>
+  </section>
 
-        <div class="grid" style="margin-top:18px">
-          <article class="card">
-            <div class="card-header">
-              <div class="card-badge">1</div>
-              <div class="card-title">Life has spread us out.</div>
-            </div>
-            <div class="card-body">
-              Families are often states or countries apart. “Checking in” now means:
-            </div>
-            <div class="card-list">
-              <ul>
-                <li>Calls, texts, emails, portals, apps, and passwords.</li>
-                <li>Older adults juggling devices and accounts they never asked for.</li>
-                <li>Caregivers trying to manage everything remotely.</li>
-              </ul>
-            </div>
-          </article>
+  <section id="companion">
+    <div class="section-heading">Companion</div>
+    <h2 class="section-title">Early concept.</h2>
+  </section>
 
-          <article class="card">
-            <div class="card-header">
-              <div class="card-badge">2</div>
-              <div class="card-title">Caregivers become the help desk.</div>
-            </div>
-            <div class="card-body">
-              The adult child or grandchild often ends up:
-            </div>
-            <div class="card-list">
-              <ul>
-                <li>Explaining the same steps again and again.</li>
-                <li>Sorting out “is this safe to click?” every week.</li>
-                <li>Doing all of this on top of work, kids, and their own life.</li>
-              </ul>
-            </div>
-          </article>
-        </div>
-      </section>
+  <section id="faq">
+    <div class="section-heading">FAQ</div>
+    <h2 class="section-title">Questions answered.</h2>
+  </section>
 
-      <!-- SERVICES -->
-      <section id="services">
-        <div class="section-heading">Services</div>
-        <h2 class="section-title">A calm layer between your family and the chaos of technology.</h2>
-        <p class="section-lead">
-          Legacy is being designed as a simple, guided “companion” that can explain, remind, and organize — without asking
-          your loved ones to learn one more complicated system.
-        </p>
+  <section id="contact">
+    <div class="section-heading">Contact</div>
+    <h2 class="section-title">Share your feedback.</h2>
+  </section>
 
-        <div class="grid">
-          <article class="card">
-            <div class="card-header">
-              <div class="card-badge">A</div>
-              <div class="card-title">Plain-language explanations when things look scary.</div>
-            </div>
-            <div class="card-body">
-              When a parent gets a letter, email, or pop-up they don’t understand, Legacy is meant to:
-            </div>
-            <div class="card-list">
-              <ul>
-                <li>Break it down in clear, direct language.</li>
-                <li>Flag what’s urgent vs. what can wait.</li>
-                <li>Suggest practical next steps for them or for you.</li>
-              </ul>
-            </div>
-          </article>
+</div>
+</main>
 
-          <article class="card">
-            <div class="card-header">
-              <div class="card-badge">B</div>
-              <div class="card-title">Gentle structure for the “important details.”</div>
-            </div>
-            <div class="card-body">
-              Over time, Legacy aims to help your family keep track of:
-            </div>
-            <div class="card-list">
-              <ul>
-                <li>Key contacts and recurring appointments.</li>
-                <li>Household “how to” information only they know.</li>
-                <li>Simple check-ins that show someone is watching out for them.</li>
-              </ul>
-            </div>
-          </article>
-        </div>
-      </section>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">Backed by GPT-5 Engine</div>
+  <div class="footer-links">
+    <a href="/jmodco/Labs/">Jmod Labs</a>
+    <a href="/jmodco/Systems/">Jmod Systems</a>
+    <a href="/jmodco/Media/">Jmod Media</a>
+    <a href="/jmodco/Legacy/">Jmod Legacy</a>
+    <a href="/jmodco/Insights/">Jmod Insights</a>
+  </div>
+  © 2025 Jmod Co.
+</footer>
 
-      <!-- COMPANION -->
-      <section id="companion">
-        <div class="section-heading">Companion</div>
-        <h2 class="section-title">Early-stage concept — built around clarity, not features.</h2>
-        <p class="section-lead">
-          The Legacy Companion is being shaped as a calm, always-available guide you can ask questions like:
-        </p>
-        <div class="card" style="margin-top:14px">
-          <div class="card-body">
-            <ul style="list-style:disc; padding-left:18px; margin:0">
-              <li>“How do I explain this letter to my dad without scaring him?”</li>
-              <li>“My mom got this email — is it real or a scam?”</li>
-              <li>“What’s a simple way to check in without making them feel watched?”</li>
-            </ul>
-          </div>
-        </div>
+<script>
+/* THEME */
+(function(){
+  const root = document.documentElement;
+  const stored = localStorage.getItem("jmod-theme");
+  root.setAttribute("data-theme", stored || "dark");
 
-        <div class="card" style="margin-top:14px">
-          <div class="card-header">
-            <div class="card-badge">α</div>
-            <div class="card-title">Where it is today</div>
-          </div>
-          <div class="card-body">
-            Behind the scenes, Legacy uses the same engine as other Jmod Co. tools. Here we’re tuning everything toward:
-          </div>
-          <div class="card-list">
-            <ul>
-              <li>Slower pace and simpler wording.</li>
-              <li>High-contrast visuals for easier reading.</li>
-              <li>Controls that feel safe to both seniors and families.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
+  document.getElementById("themeToggle").onclick = () => {
+    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    localStorage.setItem("jmod-theme", next);
+  };
+})();
 
-      <!-- FAQ -->
-      <section id="faq">
-        <div class="section-heading">FAQ</div>
-        <h2 class="section-title">Questions you might already be thinking about.</h2>
+/* MOBILE NAV */
+(function(){
+  const btn = document.getElementById("mobileToggle");
+  const panel = document.getElementById("mobilePanel");
+  btn.onclick = () => panel.classList.toggle("open");
+  panel.onclick = e => { if(e.target.tagName === "A") panel.classList.remove("open"); };
+})();
 
-        <details>
-          <summary><span>Is this a medical, legal, or emergency service?</span></summary>
-          <p>
-            No. Jmod Legacy is intended as a supportive, informational tool — not a replacement for doctors, attorneys,
-            or 911. It’s meant to help you understand and organize, not to make critical decisions for your family.
-          </p>
-        </details>
+/* WATERMARK */
+(function(){
+  const hero = document.querySelector(".hero");
+  const main = document.getElementById("mainContent");
 
-        <details>
-          <summary><span>Will our family’s information be sold or shared?</span></summary>
-          <p>
-            The long-term vision for Legacy is privacy-first: minimal data, clear controls, and no hidden reselling.
-            As features are defined, this page will include a plain-language description of how data is handled — not just fine print.
-          </p>
-        </details>
+  function check(){
+    const rect = hero.getBoundingClientRect();
+    const trigger = window.innerHeight * 0.4;
+    if(rect.bottom < trigger) main.classList.add("watermark-visible");
+    else main.classList.remove("watermark-visible");
+  }
+  window.addEventListener("scroll", check, {passive:true});
+  check();
+})();
+</script>
 
-        <details>
-          <summary><span>Do my parents or grandparents need to be “good with technology”?</span></summary>
-          <p>
-            No. Legacy is being built specifically for families where the older generation is not comfortable with
-            technology. Much of the interaction may come through you, the family member — at whatever pace feels right.
-          </p>
-        </details>
-      </section>
-
-      <!-- CONTACT -->
-      <section id="contact">
-        <div class="section-heading">Contact</div>
-        <h2 class="section-title">Want to share your experience or give feedback?</h2>
-        <p class="section-lead">
-          Legacy is in an early design phase inside Jmod Co. If you’ve navigated aging parents, long-distance support,
-          or just want to help shape something more helpful than another unused “portal,” your input matters.
-        </p>
-
-        <div class="contact-row">
-          <div class="contact-col">
-            <div class="contact-label">Current status</div>
-            <div class="contact-main">Early concept — pre-launch</div>
-            <p>
-              The most useful thing you can do right now is share what would actually help your situation — tools, reminders,
-              or supports that would make your days easier, not more crowded.
-            </p>
-          </div>
-
-          <div class="contact-col">
-            <div class="contact-label">Reach out</div>
-            <div class="contact-main">Jordan @ Jmod Co.</div>
-            <p>
-              Until Legacy goes public, inquiries are handled directly through Jmod Co. channels. As the project matures,
-              this section will be updated with a simpler, dedicated contact path.
-            </p>
-          </div>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-top">
-        Backed by GPT-5 Engine
-      </div>
-      <div class="footer-links">
-        <a href="/jmodco/Labs/">Jmod Labs</a>
-        <a href="/jmodco/Systems/">Jmod Systems</a>
-        <a href="/jmodco/Media/">Jmod Media</a>
-        <a href="/jmodco/Legacy/">Jmod Legacy</a>
-        <a href="/jmodco/Insights/">Jmod Insights</a>
-      </div>
-      <div>© 2025 Jmod Co. — Built for small business clarity.</div>
-    </div>
-  </footer>
-
-  <script>
-    // THEME
-    (function(){
-      const root = document.documentElement;
-      const stored = localStorage.getItem("jmod-theme");
-      if(stored === "light" || stored === "dark"){
-        root.setAttribute("data-theme", stored);
-      }else{
-        root.setAttribute("data-theme","dark");
-      }
-
-      function toggleTheme(){
-        const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
-        const next = current === "dark" ? "light" : "dark";
-        root.setAttribute("data-theme", next);
-        localStorage.setItem("jmod-theme", next);
-      }
-
-      const toggle = document.getElementById("themeToggle");
-      if (toggle) toggle.addEventListener("click", toggleTheme);
-    })();
-
-    // MOBILE NAV
-    (function(){
-      const mobileToggle = document.getElementById("mobileToggle");
-      const mobilePanel  = document.getElementById("mobilePanel");
-      if(!mobileToggle || !mobilePanel) return;
-
-      mobileToggle.addEventListener("click", () => {
-        mobilePanel.classList.toggle("open");
-      });
-
-      mobilePanel.addEventListener("click", (e) => {
-        if(e.target.tagName.toLowerCase() === "a"){
-          mobilePanel.classList.remove("open");
-        }
-      });
-    })();
-
-    // WATERMARK VISIBILITY
-    (function(){
-      const hero = document.querySelector(".hero");
-      const main = document.getElementById("mainContent");
-      if(!hero || !main) return;
-
-      function onScroll(){
-        const rect = hero.getBoundingClientRect();
-        const triggerPoint = window.innerHeight * 0.4; // when hero ~40% visible
-        if(rect.bottom < triggerPoint){
-          main.classList.add("watermark-visible");
-        }else{
-          main.classList.remove("watermark-visible");
-        }
-      }
-      window.addEventListener("scroll", onScroll, {passive:true});
-      onScroll();
-    })();
-  </script>
 </body>
 </html>
