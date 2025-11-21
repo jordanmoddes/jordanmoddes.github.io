@@ -270,13 +270,13 @@
 
     .hero-bg-logo{
       position:absolute;
-      top:8px;          /* small buffer from top of hero */
-      bottom:8px;       /* small buffer from bottom of hero */
+      top:0;
+      bottom:0;
       left:50%;
-      height:calc(100% - 16px);  /* fill hero height minus the 8px top/bottom */
-      width:auto;
-      max-width:95vw;   /* prevents it from going wider than the viewport */
       transform:translateX(-50%);
+      height:100%;
+      width:auto;
+      max-width:95vw;
       background-image:var(--hero-logo);
       background-size:contain;
       background-repeat:no-repeat;
