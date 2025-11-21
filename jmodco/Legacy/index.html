@@ -291,21 +291,26 @@
       animation:driftB 36s linear infinite alternate;
     }
 
-.hero-logo{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%, -50%);
-  width: min(820px, 78vw); /* safe size */
-  opacity:0.12;            /* visible but soft */
-  z-index:1;               /* above background, below text */
-  pointer-events:none;
-  filter: drop-shadow(0 0 18px rgba(34,211,238,.22));
-}
-html[data-theme="light"] .hero-logo{
-  opacity:0.10;
-  filter: drop-shadow(0 0 10px rgba(0,0,0,.18));
-}
+    /* HERO LOGO OVERLAY */
+    .hero-logo{
+      position:absolute;
+      top:8px;
+      bottom:8px;
+      left:0;
+      right:0;
+      background-image:var(--hero-logo-mark);
+      background-repeat:no-repeat;
+      background-position:center;
+      background-size:contain;
+      opacity:.12; /* 12% */
+      z-index:1;   /* above lights, below text */
+      pointer-events:none;
+      filter:drop-shadow(0 0 18px rgba(34,211,238,.22));
+    }
+    html[data-theme="light"] .hero-logo{
+      opacity:.12; /* keep 12% in light mode too */
+      filter:drop-shadow(0 0 10px rgba(0,0,0,.18));
+    }
 
     .hero-inner{
       position:relative;
