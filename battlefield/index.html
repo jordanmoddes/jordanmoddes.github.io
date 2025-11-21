@@ -4,16 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1220">
-
   <title>Battlefield 6 Dashboard</title>
 
   <!-- JM white TP favicon -->
   <link rel="icon" type="image/png" href="/jmodco/assets/Signature_WhiteTP.png" />
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- html2canvas for Snip -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <style>
@@ -76,10 +72,7 @@
     .rank-bottom{ color:var(--rank-bottom) }
   </style>
 </head>
-
 <body class="pb-12">
-
-  <!-- Top Navigation -->
   <nav class="nav sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <a href="https://jordanmoddes.com" target="_blank" rel="noopener" class="brand text-lg">JMOD</a>
@@ -93,17 +86,16 @@
   </nav>
 
   <header class="text-center mt-6 mb-6 px-4">
-    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight" style="color:var(--title)">Battlefield 6 Stats Dashboard</h1>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight" style="color:var(--title)">
+      Battlefield 6 Stats Dashboard
+    </h1>
     <p class="text-sm" style="color:var(--sub)">
       Pick a platform, enter a gamer tag, then hit <b style="color:var(--bf-accent)">LOAD</b>. Auto-refresh every 60s.
     </p>
   </header>
 
-  <!-- Controls -->
   <form id="controls" class="max-w-6xl mx-auto grid grid-cols-1 gap-3 mb-6 px-4">
     <div class="card grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto] gap-3">
-
-      <!-- Platform radios -->
       <div>
         <div class="text-xs" style="color:var(--sub);">Platform</div>
         <div class="flex flex-wrap items-center gap-4 mt-1">
@@ -126,22 +118,18 @@
         </div>
       </div>
 
-      <!-- LOAD button -->
       <div class="flex items-end justify-center">
         <button id="loadBtn" type="submit" class="btn">LOAD</button>
       </div>
 
-      <!-- Gamer tag -->
       <div>
         <div class="text-xs" style="color:var(--sub);">Gamer Tag</div>
-        <input id="tag" class="w-full rounded-md px-3 py-3 text-slate-900" placeholder="Enter gamer tag" />
+        <input id="tag" class="w-full rounded-md px-3 py-3 text-slate-900" autocomplete="off" autocapitalize="none" placeholder="Enter gamer tag" />
       </div>
 
-      <!-- Last updated -->
       <div class="flex items-end justify-start md:justify-end">
         <div class="chip text-xs" style="color:var(--sub)">Last updated: <span id="updated">—</span></div>
       </div>
-
     </div>
   </form>
 
@@ -152,11 +140,9 @@
   </footer>
 
   <script>
-    // ===== set this to your Worker URL =====
     const API_BASE = "https://jmodbattlefield.jmodwork.workers.dev";
     const REFRESH_MS = 60000;
 
-    // Theme toggle
     const themeBtn = document.getElementById("themeBtn");
     const savedTheme = localStorage.getItem("bf-theme");
     if (savedTheme === "light") {
@@ -170,7 +156,6 @@
       localStorage.setItem("bf-theme", light ? "light" : "dark");
     });
 
-    // Share
     document.getElementById("shareBtn").addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(location.href);
@@ -178,24 +163,21 @@
         b.textContent = "Copied!";
         setTimeout(() => (b.textContent = "Share"), 1200);
       } catch {
-        alert("Copy failed. Use the address bar.");
+        alert("Could not copy. Please copy from the address bar.");
       }
     });
 
-    // Snip
     document.getElementById("snipBtn").addEventListener("click", async () => {
       try {
         const canvas = await html2canvas(document.body, {
           useCORS: true,
           logging: false,
           windowWidth: document.documentElement.scrollWidth,
-          windowHeight: document.documentElement.scrollHeight,
+          windowHeight: document.documentElement.scrollHeight
         });
         canvas.toBlob(async (blob) => {
           try {
-            await navigator.clipboard.write([
-              new ClipboardItem({ "image/png": blob }),
-            ]);
+            await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
             const b = document.getElementById("snipBtn");
             b.textContent = "Snipped!";
             setTimeout(() => (b.textContent = "Snip"), 1200);
@@ -208,12 +190,11 @@
           }
         });
       } catch (e) {
-        alert("Screenshot failed.");
+        alert("Screenshot failed. Try again.");
         console.error(e);
       }
     });
 
-    // Dashboard Logic
     const params = new URLSearchParams(location.search);
     const defaultTag = params.get("tag") || "notJMODsuspended";
     const defaultPlatform = params.get("platform") || "PS5";
@@ -221,7 +202,8 @@
     const tagEl = document.getElementById("tag");
     tagEl.value = defaultTag;
 
-    (document.getElementById(defaultPlatform.toLowerCase()) || document.getElementById("ps5")).checked = true;
+    const idMap = { EA: "ea", Steam: "steam", Xbox: "xbox", PS5: "ps5" };
+    (document.getElementById(idMap[defaultPlatform]) || document.getElementById("ps5")).checked = true;
 
     const formEl = document.getElementById("controls");
     const updatedEl = document.getElementById("updated");
@@ -247,19 +229,18 @@
       e.preventDefault();
       const platform = getPlatform();
       const tag = tagEl.value.trim() || "notJMODsuspended";
-      history.replaceState(null, "", `?${new URLSearchParams({ platform, tag })}`);
+      history.replaceState(null, "", "?" + new URLSearchParams({ platform, tag }).toString());
       load(platform, tag);
       startPolling(platform, tag);
     });
 
     function rankSpan(txt) {
       if (!txt) return "";
-      const cls =
-        txt.toLowerCase().startsWith("top")
-          ? "rank-top"
-          : txt.toLowerCase().startsWith("bottom")
-          ? "rank-bottom"
-          : "";
+      const cls = txt.toLowerCase().startsWith("top")
+        ? "rank-top"
+        : txt.toLowerCase().startsWith("bottom")
+        ? "rank-bottom"
+        : "";
       return cls ? `<span class="${cls}">(${txt})</span>` : `(${txt})`;
     }
 
@@ -288,6 +269,7 @@
         <div class="card" style="background:#7f1d1d;border-color:#fecaca">
           <div class="font-bold mb-1">Couldn’t load data</div>
           <div class="text-xs">${msg}</div>
+          <div class="text-xs mt-2">Check API_BASE, Worker deployment, and CORS headers.</div>
         </div>`;
     }
 
@@ -321,12 +303,12 @@
             ${(data.classes || [])
               .map(
                 (x) => `
-                <div>
-                  <b>${x.name}</b><br/>
-                  ⭐ ${x.stars} &nbsp; Kills: ${x.kills}<br/>
-                  K/D: ${x.kd} &nbsp; KPM: ${x.kpm}<br/>
-                  Revives: ${x.revives} &nbsp; Time: ${x.hours} hrs
-                </div>`
+              <div>
+                <b>${x.name}</b><br/>
+                ⭐ ${x.stars} &nbsp; Kills: ${x.kills}<br/>
+                K/D: ${x.kd} &nbsp; KPM: ${x.kpm}<br/>
+                Revives: ${x.revives} &nbsp; Time: ${x.hours} hrs
+              </div>`
               )
               .join("")}
           </div>
@@ -339,12 +321,12 @@
             ${(data.modes || [])
               .map(
                 (m) => `
-                <div>
-                  <b>${m.name}</b><br/>
-                  Kills: ${m.kills} &nbsp; KPM: ${m.kpm}<br/>
-                  W/L: ${m.wl}% &nbsp; Wins: ${m.wins} • Losses: ${m.losses}<br/>
-                  Time: ${m.time} hrs
-                </div>`
+              <div>
+                <b>${m.name}</b><br/>
+                Kills: ${m.kills} &nbsp; KPM: ${m.kpm}<br/>
+                W/L: ${m.wl}% &nbsp; Wins: ${m.wins} • Losses: ${m.losses}<br/>
+                Time: ${m.time} hrs
+              </div>`
               )
               .join("")}
           </div>
@@ -357,12 +339,12 @@
             ${(data.weapons || [])
               .map(
                 (w) => `
-                <div>
-                  <b>${w.name}</b><br/>
-                  Kills: ${w.kills}<br/>
-                  Accuracy: ${w.acc}<br/>
-                  KPM: ${w.kpm}
-                </div>`
+              <div>
+                <b>${w.name}</b><br/>
+                Kills: ${w.kills}<br/>
+                Accuracy: ${w.acc}<br/>
+                KPM: ${w.kpm}
+              </div>`
               )
               .join("")}
           </div>
@@ -375,12 +357,12 @@
             ${(data.gadgets || [])
               .map(
                 (g) => `
-                <div>
-                  <b>${g.name}</b><br/>
-                  Kills: ${g.kills}<br/>
-                  KPM: ${g.kpm}<br/>
-                  Time: ${g.hours} hrs
-                </div>`
+              <div>
+                <b>${g.name}</b><br/>
+                Kills: ${g.kills}<br/>
+                KPM: ${g.kpm}<br/>
+                Time: ${g.hours} hrs
+              </div>`
               )
               .join("")}
           </div>
@@ -394,6 +376,5 @@
         </section>`;
     }
   </script>
-
 </body>
 </html>
