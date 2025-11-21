@@ -25,7 +25,6 @@
       --hero-logo:url("/jmodco/assets/Jmod_LegacyTP.png");
       --wm-logo:url("/jmodco/assets/Jmod_LegacyTP.png");
 
-      /* watermark ~80% of screen */
       --wm-size:min(80vw, 900px);
       --wm-opacity:0.12;
 
@@ -235,7 +234,6 @@
       background:rgba(148,163,184,.10);
     }
 
-    /* Light-mode nav contrast */
     html[data-theme="light"] .nav-links a{
       color:#e5e7eb;
     }
@@ -244,16 +242,19 @@
     }
 
     /* =========================
-       HERO (edge-to-edge)
+       HERO (edge-to-edge, centered text)
        ========================= */
     .hero{
       width:100%;
       margin:0 auto;
       margin-top:96px;
-      padding:80px 0 260px;  /* extra tall hero */
-      min-height:620px;      /* much taller hero */
+      padding:40px 0;
+      min-height:620px;
       position:relative;
       overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       background:
         radial-gradient(circle at 0% 0%, rgba(56,189,248,.35), transparent 60%),
         radial-gradient(circle at 100% 100%, rgba(88,28,135,.40), transparent 60%),
@@ -268,15 +269,16 @@
       z-index:0;
     }
 
+    /* LOGO: fills hero height with 8px padding top/bottom */
     .hero-bg-logo{
       position:absolute;
       top:8px;
       bottom:8px;
       left:50%;
-      transform:translateX(-50%);
-      height:calc(100% - 16px);   /* fills hero height minus 8px top/bottom */
+      height:calc(100% - 16px);
       width:auto;
-      max-width:140%;             /* allow it to grow wider so height can fill */
+      max-width:1200px;
+      transform:translateX(-50%);
       background-image:var(--hero-logo);
       background-size:contain;
       background-repeat:no-repeat;
@@ -284,10 +286,9 @@
       opacity:.32;
       filter:drop-shadow(0 20px 40px rgba(15,23,42,.85));
       pointer-events:none;
-      z-index:1;
-      animation:logoFloat 26s ease-in-out infinite alternate;
+      z-index:1; /* above lights, below text */
     }
-    
+
     .hero-lights::before,
     .hero-lights::after{
       content:"";
@@ -410,7 +411,6 @@
       color:var(--muted);
     }
 
-    /* Light-mode hero contrast: keep hero text light */
     html[data-theme="light"] .hero-title,
     html[data-theme="light"] .hero-note{
       color:#e5f1ff;
@@ -611,12 +611,8 @@
     }
 
     /* =========================
-       ANIMATIONS
+       ANIMATIONS (lights only)
        ========================= */
-    @keyframes logoFloat{
-      0%{transform:translate(-50%, -50%) translateY(0)}
-      100%{transform:translate(-50%, -50%) translateY(6px)}
-    }
     @keyframes driftA{
       0%{transform:translate3d(0,0,0)}
       100%{transform:translate3d(46px,35px,0)}
@@ -644,7 +640,7 @@
       }
       .hero{
         margin-top:90px;
-        padding:40px 0 80px;
+        padding:40px 0;
         min-height:auto;
       }
       .page{
@@ -998,7 +994,7 @@
 
       function onScroll(){
         const rect = hero.getBoundingClientRect();
-        const triggerPoint = window.innerHeight * 0.4; // when hero ~40% visible
+        const triggerPoint = window.innerHeight * 0.4;
         if(rect.bottom < triggerPoint){
           main.classList.add("watermark-visible");
         }else{
