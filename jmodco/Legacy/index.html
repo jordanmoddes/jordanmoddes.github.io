@@ -270,11 +270,13 @@
 
     .hero-bg-logo{
       position:absolute;
-      top:50%;
+      top:8px;          /* small buffer from top of hero */
+      bottom:8px;       /* small buffer from bottom of hero */
       left:50%;
-      width:min(900px, 80vw);
-      height:min(420px, 52vh);
-      transform:translate(-50%, -50%);
+      height:calc(100% - 16px);  /* fill hero height minus the 8px top/bottom */
+      width:auto;
+      max-width:95vw;   /* prevents it from going wider than the viewport */
+      transform:translateX(-50%);
       background-image:var(--hero-logo);
       background-size:contain;
       background-repeat:no-repeat;
@@ -282,10 +284,10 @@
       opacity:.32;
       filter:drop-shadow(0 20px 40px rgba(15,23,42,.85));
       pointer-events:none;
-      z-index:1; /* above lights, below text */
+      z-index:1;
       animation:logoFloat 26s ease-in-out infinite alternate;
     }
-
+    
     .hero-lights::before,
     .hero-lights::after{
       content:"";
