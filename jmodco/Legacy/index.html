@@ -270,13 +270,13 @@
 
     .hero-bg-logo{
       position:absolute;
-      top:50%;
+      top:8px;
+      bottom:8px;
       left:50%;
-      transform:translate(-50%, -50%);
-      /* BIGGER SIZE — tweak these two lines only if you want more/less */
-      width:min(1400px, 98vw);
-      height:min(875px, 90vh);
-    
+      transform:translateX(-50%);
+      height:calc(100% - 16px);   /* fills hero height minus 8px top/bottom */
+      width:auto;
+      max-width:140%;             /* allow it to grow wider so height can fill */
       background-image:var(--hero-logo);
       background-size:contain;
       background-repeat:no-repeat;
@@ -284,7 +284,7 @@
       opacity:.32;
       filter:drop-shadow(0 20px 40px rgba(15,23,42,.85));
       pointer-events:none;
-      z-index:1; /* above lights, below text */
+      z-index:1;
       animation:logoFloat 26s ease-in-out infinite alternate;
     }
     
