@@ -261,6 +261,13 @@
       box-shadow:0 22px 50px rgba(0,0,0,.7);
     }
 
+    /* lights live behind logo + content */
+    .hero-lights{
+      position:absolute;
+      inset:0;
+      z-index:0;
+    }
+
     .hero-bg-logo{
       position:absolute;
       top:12px;
@@ -273,10 +280,10 @@
       background-size:contain;
       background-repeat:no-repeat;
       background-position:center;
-      opacity:.12;
+      opacity:.24; /* more visible */
       filter:drop-shadow(0 20px 40px rgba(15,23,42,.85));
       pointer-events:none;
-      z-index:0;
+      z-index:1; /* above lights, below text */
       animation:logoFloat 26s ease-in-out infinite alternate;
     }
 
@@ -305,7 +312,7 @@
 
     .hero-inner{
       position:relative;
-      z-index:1;
+      z-index:2; /* text over everything */
       width:min(var(--page-max), 100%);
       margin:0 auto;
       padding:0 14px;
