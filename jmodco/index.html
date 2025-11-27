@@ -573,170 +573,212 @@
     }
     window.handleSubscribe = handleSubscribe;
   </script>
-        <!-- =========================== -->
-      <!--   MODDES LIVE CHAT WIDGET   -->
-      <!-- =========================== -->
-      <style>
-        /* Accent color just for MODDES widget (aqua) */
-        :root {
-          --moddes-accent: #38e5ff; /* tweak if you want a different aqua */
-        }
-      
-        #moddes-launcher {
-          position: fixed;
-          bottom: 22px;
-          right: 22px;
-          background: var(--moddes-accent);
-          color: #0b0f14;
-          padding: 12px 18px;
-          border-radius: 14px;
-          font-weight: bold;
-          cursor: pointer;
-          z-index: 2000;
-          box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-        }
-      
-        #moddes-chat-box {
-          position: fixed;
-          bottom: 80px;
-          right: 22px;
-          width: 320px;
-          height: 430px;
-          background: rgba(10,15,24,0.95);
-          backdrop-filter: blur(10px);
-          border: 3px solid #ffffff;          /* thick white outline in dark mode */
-          border-radius: 16px;
-          display: none;
-          flex-direction: column;
-          z-index: 2001;
-        }
-      
-        /* Light mode: white background + black outline */
-        html[data-theme="light"] #moddes-chat-box {
-          background: #ffffff;
-          border-color: #000000;
-        }
-      
-        #moddes-messages {
-          flex: 1;
-          overflow-y: auto;
-          padding: 12px;
-          color: var(--text);
-          font-size: 0.9rem;
-          display: flex;                /* make messages a flex column */
-          flex-direction: column;
-          gap: 4px;
-        }
-      
-        .moddes-msg {
-          margin-bottom: 4px;
-          padding: 8px 10px;
-          border-radius: 10px;
-          max-width: 85%;
-          align-self: flex-start;       /* default: left side */
-        }
-      
-        /* USER bubbles – right side, aqua, bold black text */
-        .moddes-user {
-          background: var(--moddes-accent);
-          color: #000000;
-          font-weight: 700;
-          align-self: flex-end;
-        }
-      
-        /* BOT bubbles – left side, dark with white text (works in both themes) */
-        .moddes-bot {
-          background: #111827;
-          color: #ffffff;
-        }
-      
-        #moddes-input-wrap {
-          padding: 10px;
-          display: flex;
-          gap: 8px;
-        }
-      
-        #moddes-input {
-          flex: 1;
-          padding: 8px;
-          border-radius: 8px;
-          border: 1px solid rgba(255,255,255,0.16);
-          background: rgba(0,0,0,0.4);
-          color: var(--text);
-        }
-      
-        html[data-theme="light"] #moddes-input {
-          background: #f3f4f6;
-          color: #000000;
-          border-color: rgba(0,0,0,0.15);
-        }
-      
-        #moddes-send {
-          padding: 8px 12px;
-          background: var(--moddes-accent);  /* aqua */
-          border: none;
-          border-radius: 8px;
-          font-weight: bold;
-          cursor: pointer;
-          color: #000000;                    /* bold black text */
-        }
-      </style>
-        /* BOT bubbles – left side, dark with white text (works in both themes) */
-        <div id="moddes-launcher">Chat with MODDES</div>
-      
-      <div id="moddes-chat-box">
-        <div id="moddes-messages"></div>
-      
-        <div id="moddes-input-wrap">
-          <input id="moddes-input" type="text" placeholder="Ask MODDES..." />
-          <button id="moddes-send">Send</button>
-        </div>
-      </div>
-      
-      <script>
-        const CHAT_ENDPOINT = "https://moddes-backend.onrender.com/chat";
-      
-        const launcher = document.getElementById("moddes-launcher");
-        const box = document.getElementById("moddes-chat-box");
-        const messagesDiv = document.getElementById("moddes-messages");
-        const input = document.getElementById("moddes-input");
-        const sendBtn = document.getElementById("moddes-send");
-      
-        launcher.onclick = () => {
-          box.style.display = box.style.display === "flex" ? "none" : "flex";
-        };
-      
-        async function sendToModdes(text) {
-          addMessage(text, "user");
-      
-          const res = await fetch(CHAT_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: text })
-          });
-      
-          const data = await res.json();
-          addMessage(data.reply || "No response", "bot");
-        }
-      
-        function addMessage(text, type) {
-          const msg = document.createElement("div");
-          msg.className = "moddes-msg " + (type === "user" ? "moddes-user" : "moddes-bot");
-          msg.textContent = text;
-          messagesDiv.appendChild(msg);
-          messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-      
-        sendBtn.onclick = () => {
-          const text = input.value.trim();
-          if (!text) return;
-          input.value = "";
-          sendToModdes(text);
-        };
-      
-        input.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") sendBtn.onclick();
-        });
-      </script>
-  </body>
+  <!-- =========================== -->
+  <!--   MODDES LIVE CHAT WIDGET   -->
+  <!-- =========================== -->
+  <style>
+    :root {
+      --moddes-accent: #38e5ff; /* tweak if you want a different aqua */
+    }
+
+    #moddes-launcher {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: var(--moddes-accent);
+      color: #0b0f14;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 2000;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+
+    #moddes-chat-box {
+      position: fixed;
+      bottom: 80px;
+      right: 22px;
+      width: 320px;
+      height: 430px;
+      background: rgba(10,15,24,0.95);
+      backdrop-filter: blur(10px);
+      border: 3px solid #ffffff;          /* thick white outline in dark mode */
+      border-radius: 16px;
+      display: none;
+      flex-direction: column;
+      z-index: 2001;
+    }
+
+    /* Large size toggle */
+    #moddes-chat-box.large {
+      width: 500px;
+      height: 600px;
+    }
+
+    /* Light mode: white background + black outline */
+    html[data-theme="light"] #moddes-chat-box {
+      background: #ffffff;
+      border-color: #000000;
+    }
+
+    /* Resize control */
+    #moddes-resize {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--moddes-accent);
+      z-index: 1;
+    }
+
+    #moddes-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      color: var(--text);
+      font-size: 0.9rem;
+      display: flex;                /* messages in a column */
+      flex-direction: column;
+      gap: 4px;
+      max-width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .moddes-msg {
+      margin-bottom: 4px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      max-width: 85%;
+      align-self: flex-start;       /* default: left side */
+    }
+
+    /* USER bubbles – right side, aqua, bold black text */
+    .moddes-user {
+      background: var(--moddes-accent);
+      color: #000000;
+      font-weight: 700;
+      align-self: flex-end;
+    }
+
+    /* BOT bubbles – left side, dark with white text */
+    .moddes-bot {
+      background: #111827;
+      color: #ffffff;
+    }
+
+    #moddes-input-wrap {
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+    }
+
+    #moddes-input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.4);
+      color: var(--text);
+      resize: none;
+      overflow-y: auto;
+      line-height: 1.4;
+    }
+
+    html[data-theme="light"] #moddes-input {
+      background: #f3f4f6;
+      color: #000000;
+      border-color: rgba(0,0,0,0.15);
+    }
+
+    #moddes-send {
+      padding: 8px 12px;
+      background: var(--moddes-accent);  /* aqua */
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #000000;                    /* bold black text */
+    }
+  </style>
+
+  <div id="moddes-launcher">Chat with MODDES</div>
+
+  <div id="moddes-chat-box">
+    <div id="moddes-resize" title="Resize chat">↔</div>
+
+    <div id="moddes-messages"></div>
+
+    <div id="moddes-input-wrap">
+      <textarea id="moddes-input" placeholder="Ask MODDES..." rows="1"></textarea>
+      <button id="moddes-send">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const CHAT_ENDPOINT = "https://moddes-backend.onrender.com/chat";
+
+    const launcher = document.getElementById("moddes-launcher");
+    const box = document.getElementById("moddes-chat-box");
+    const messagesDiv = document.getElementById("moddes-messages");
+    const input = document.getElementById("moddes-input");
+    const sendBtn = document.getElementById("moddes-send");
+    const resizeBtn = document.getElementById("moddes-resize");
+
+    launcher.onclick = () => {
+      box.style.display = box.style.display === "flex" ? "none" : "flex";
+    };
+
+    // Toggle size
+    resizeBtn.onclick = () => {
+      box.classList.toggle("large");
+    };
+
+    // Turn URLs into clickable links that open in a new tab
+    function linkify(text) {
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      return text.replace(urlRegex, (url) => {
+        return `<a href="${url}" target="_blank" rel="noopener" style="color:var(--moddes-accent);font-weight:600;text-decoration:underline;">${url}</a>`;
+      });
+    }
+
+    async function sendToModdes(text) {
+      addMessage(text, "user");
+
+      const res = await fetch(CHAT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text })
+      });
+
+      const data = await res.json();
+      addMessage(data.reply || "No response", "bot");
+    }
+
+    function addMessage(text, type) {
+      const msg = document.createElement("div");
+      msg.className = "moddes-msg " + (type === "user" ? "moddes-user" : "moddes-bot");
+      msg.innerHTML = linkify(text);
+      messagesDiv.appendChild(msg);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    sendBtn.onclick = () => {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+      sendToModdes(text);
+    };
+
+    // ENTER = send, SHIFT+ENTER = newline
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendBtn.onclick();
+      }
+    });
+  </script>
+</body>
 </html>
