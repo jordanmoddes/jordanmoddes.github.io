@@ -9,18 +9,42 @@
 
   <style>
     :root{
-      --bg:#0b0c10;--card:#13151b;--ink:#e8ebf4;--muted:#a2a8b6;--border:#222631;
-      --accent:#4da3ff;--good:#17e5a1;--bad:#ff7b7b
+      --bg:#0b0c10;
+      --bg-soft:#0e1218;
+      --card:#13151b;
+      --ink:#e8ebf4;
+      --muted:#a2a8b6;
+      --border:#222631;
+      --accent:#4da3ff;
+      --good:#17e5a1;
+      --bad:#ff7b7b;
     }
+
+    /* Light theme overrides (applied when html.light is set) */
+    html.light{
+      --bg:#f4f5fb;
+      --bg-soft:#e7e9f5;
+      --card:#ffffff;
+      --ink:#111827;
+      --muted:#6b7280;
+      --border:#d3d7e6;
+      --accent:#2563eb;
+      --good:#059669;
+      --bad:#dc2626;
+    }
+
     html,body{height:100%}
     html{scroll-behavior:smooth}
+    .hidden{display:none;}
+
     /* Animated background: subtle gradients + faint grid */
     body{
-      margin:0;color:var(--ink);
+      margin:0;
+      color:var(--ink);
       background:
         radial-gradient(1200px 800px at 10% -20%, rgba(77,163,255,.10), transparent 60%),
         radial-gradient(900px 700px at 90% 120%, rgba(180,77,255,.08), transparent 60%),
-        linear-gradient(180deg,#0b0c10,#0e1218);
+        linear-gradient(180deg,var(--bg),var(--bg-soft));
       position:relative;
       overflow-x:hidden;
     }
@@ -32,17 +56,34 @@
       opacity:.15; pointer-events:none; z-index:0;
       animation:floatBG 40s linear infinite;
     }
+    /* Adjust grid lines in light mode */
+    html.light body::before{
+      background:
+        linear-gradient(90deg, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/40px 40px,
+        linear-gradient(0deg,  rgba(15,23,42,.06) 1px, transparent 1px) 0 0/40px 40px;
+      opacity:.22;
+    }
+
     @keyframes floatBG{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
 
     a{color:inherit;text-decoration:none}
     .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 14px 48px}
 
     /* Nav */
-    .nav{position:sticky;top:0;z-index:1000;background:#0d0f14cc;backdrop-filter:blur(8px);/* no border line */
-         border-bottom:0}
+    .nav{
+      position:sticky;top:0;z-index:1000;
+      background:#0d0f14cc;
+      backdrop-filter:blur(8px);
+      border-bottom:0;
+    }
+    html.light .nav{
+      background:rgba(248,250,255,0.94);
+      border-bottom:1px solid var(--border);
+    }
     .navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;
            justify-content:center;padding:12px}
     .nav a{color:#f1f3f7;font-weight:600}
+    html.light .nav a{color:#111827;}
     .nav a:hover{opacity:.85}
 
     /* Ticker (no border line) */
@@ -50,20 +91,40 @@
     .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
     .ticker:hover .ticker-inner{animation-play-state:paused}
     .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
+    html.light .tick-item{color:#1f2937;}
     @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
     /* Cards / layout */
     h1{font-size:22px;margin:16px 0}
     .grid{display:grid;gap:16px}
     @media(min-width:900px){.grid.cols-2{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;
-          box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35)
+    }
+    html.light .card{
+      box-shadow:0 12px 30px rgba(15,23,42,.08);
+    }
     .card .hd{padding:12px 14px;border-bottom:1px solid var(--border);
               display:flex;justify-content:space-between;align-items:center}
     .card .bd{padding:14px}
-    .pill{font-size:12px;background:#0f1420;border:1px solid #1f2a43;color:#a9c8ff;
-          padding:5px 10px;border-radius:999px}
+    .pill{
+      font-size:12px;
+      background:#0f1420;
+      border:1px solid #1f2a43;
+      color:#a9c8ff;
+      padding:5px 10px;
+      border-radius:999px;
+    }
+    html.light .pill{
+      background:#f3f5ff;
+      border-color:#d0d4e5;
+      color:#111827;
+    }
     .mini{font-size:12px;color:#cbd5e1}
+    html.light .mini{color:#4b5563;}
     .muted{color:var(--muted)}
     .section{scroll-margin-top:72px}
     iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
@@ -74,22 +135,41 @@
     .sym .top{display:flex;justify-content:space-between;gap:8px}
     .sym .price{font-size:20px;font-weight:800;margin-top:4px}
     .hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .hchip{display:flex;flex-direction:column;align-items:center;justify-content:center;
-           border:1px solid var(--border);background:#0f1218;border-radius:10px;padding:6px 8px;min-width:52px}
+    .hchip{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      border:1px solid var(--border);background:#0f1218;border-radius:10px;
+      padding:6px 8px;min-width:52px
+    }
+    html.light .hchip{
+      background:#f5f7ff;
+    }
     .hchip .ico{font-size:18px;line-height:1}
     .hchip .t{font-weight:700;margin-top:2px}
     .chg.up{color:var(--good)} .chg.down{color:var(--bad)}
 
     /* Notes */
-    textarea{width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;
-             color:var(--ink);border-radius:12px;padding:10px}
+    textarea{
+      width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;
+      color:var(--ink);border-radius:12px;padding:10px
+    }
+    html.light textarea{
+      background:#f8f9ff;
+    }
 
     /* “Top” + footer */
     .btm{display:flex;justify-content:center;margin:28px 0}
-    .btn-top{background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;
-             border-radius:999px;font-weight:600}
+    .btn-top{
+      background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;
+      border-radius:999px;font-weight:600
+    }
+    html.light .btn-top{
+      background:#f3f5ff;
+      border-color:#d0d4e5;
+      color:#111827;
+    }
     .btn-top:hover{opacity:.9}
     .footer{color:#9aa3b6;text-align:center;padding-bottom:24px}
+    html.light .footer{color:#6b7280;}
 
     /* VOTD card */
     .votd-card{
@@ -98,20 +178,32 @@
                  linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.06));
       border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25)
     }
+    html.light .votd-card{
+      background:radial-gradient(1200px 400px at -10% -40%, rgba(37,99,235,.10), transparent 40%),
+                 linear-gradient(180deg, rgba(255,255,255,0.9), rgba(241,245,249,1));
+      box-shadow:0 12px 30px rgba(15,23,42,.08);
+    }
     .votd-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
     .votd-badge{font-size:12px;font-weight:700;letter-spacing:.04em;color:#cfe0ff;
       background:#0f1420;border:1px solid #1f2a43;border-radius:999px;padding:4px 10px}
+    html.light .votd-badge{
+      color:#1f2937;
+      background:#e0ebff;
+      border-color:#c7d2fe;
+    }
     .votd-date{font-size:12px;color:var(--muted)}
     .votd-quote{margin:4px 0 10px;font-size:clamp(18px,2.2vw,22px);line-height:1.5;font-weight:600;color:var(--ink);position:relative}
     .votd-quote::before{content:"“";position:absolute;left:-14px;top:-6px;font-size:28px;line-height:1;opacity:.25}
     .votd-quote::after{content:"”";margin-left:4px;opacity:.25}
     .votd-bottom{display:flex;justify-content:flex-end}
     .votd-ref{font-size:13px;color:#a9c8ff;font-weight:700}
+    html.light .votd-ref{color:#2563eb;}
 
     /* Simple table for Pelosi list */
     .table{width:100%;border-collapse:collapse}
     .table th,.table td{border-top:1px solid var(--border);padding:8px;text-align:left;font-size:12px}
     .table th{color:#cfe0ff}
+    html.light .table th{color:#1f2937;}
 
     /* Conversions (scoped styles) */
     .cv-wrap{display:grid;gap:14px;margin:12px 0}
@@ -145,6 +237,31 @@
     .sun-dot{width:10px;height:10px;border-radius:50%}
     .sun-dot.fill{background:#ffd166}
     .sun-dot.hollow{border:2px solid #ffd166;background:transparent}
+
+    /* Theme toggle pill */
+    .theme-toggle{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      z-index:1100;
+      background:#0f1420;
+      border:1px solid var(--border);
+      color:#ffd166;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 6px 16px rgba(0,0,0,.35);
+    }
+    html.light .theme-toggle{
+      background:#ffffff;
+      border-color:#d0d4e5;
+      color:#f6b500;
+      box-shadow:0 6px 16px rgba(15,23,42,.18);
+    }
   </style>
 </head>
 <body>
@@ -360,6 +477,9 @@
     <div class="btm"><a class="btn-top" href="#top">Top</a></div>
     <div class="footer">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
   </div>
+
+  <!-- Theme toggle pill (bottom-right) -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle light mode">💡</button>
 
 <script>
   /* ========= CONFIG ========= */
@@ -758,6 +878,31 @@ async function loadSun(){
   loadStocks(); setInterval(loadStocks, 60000);
   loadCrypto(); setInterval(loadCrypto, 60000);
   loadPelosi();
+
+  /* ========= THEME TOGGLE ========= */
+  const THEME_KEY = "dashboard-theme";
+  function applyTheme(theme){
+    const htmlEl = document.documentElement;
+    if(theme === "light"){
+      htmlEl.classList.add("light");
+    } else {
+      htmlEl.classList.remove("light");
+    }
+  }
+
+  // Load saved theme (default = dark)
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if(savedTheme === "light" || savedTheme === "dark"){
+    applyTheme(savedTheme);
+  }
+
+  const themeToggleBtn = document.getElementById("themeToggle");
+  themeToggleBtn.addEventListener("click", () => {
+    const htmlEl = document.documentElement;
+    const isNowLight = !htmlEl.classList.contains("light");
+    applyTheme(isNowLight ? "light" : "dark");
+    localStorage.setItem(THEME_KEY, isNowLight ? "light" : "dark");
+  });
 </script>
 </body>
 </html>
