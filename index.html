@@ -300,13 +300,31 @@
       color: #ff8000;
     }
 
-    /* Skills Web/Mobile Clean */
-    @media (max-width: 600px) {
-      .tools-columns {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
+/* Skills Web/Mobile Clean + CTA Mobile Fix */
+@media (max-width: 600px) {
+  /* Existing behavior */
+  .tools-columns {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Keep CTA buttons to exactly 2 rows */
+  .quick-links {
+    gap: 0.4rem;
+  }
+
+  .link-row {
+    flex-wrap: nowrap;        /* prevents breaking into 3+ rows */
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .link-btn {
+    font-size: 0.85rem;       /* shrink slightly to fit */
+    padding: 0.35rem 0.5rem;  /* tighter spacing */
+    white-space: nowrap;      /* keep icon + text together */
+  }
+}
 
     /* =======================
        THEME–AWARE WATERMARK
