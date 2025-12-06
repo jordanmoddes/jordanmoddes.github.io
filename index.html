@@ -300,29 +300,37 @@
       color: #ff8000;
     }
 
-/* Skills Web/Mobile Clean + CTA Mobile Fix */
+/* Skills Web/Mobile Clean + CTA Mobile Fix + Tools Fix */
 @media (max-width: 600px) {
-  /* Existing behavior */
+
+  /* --- TOOLS & TECH: Keep 2 columns + add bullets --- */
   .tools-columns {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: row;      /* stay side-by-side */
+    justify-content: center;
+    text-align: left;
   }
 
-  /* Keep CTA buttons to exactly 2 rows */
+  .tools-columns ul {
+    flex: 1 1 45%;            /* each UL takes half width */
+    padding-left: 1.2rem;     /* ensure bullets show */
+    list-style: disc;         /* force bullets on mobile */
+  }
+
+  /* --- CTA BUTTONS: Keep 2 rows --- */
   .quick-links {
     gap: 0.4rem;
   }
 
   .link-row {
-    flex-wrap: nowrap;        /* prevents breaking into 3+ rows */
+    flex-wrap: nowrap;        /* prevents wrapping into extra rows */
     justify-content: center;
     gap: 0.5rem;
   }
 
   .link-btn {
-    font-size: 0.85rem;       /* shrink slightly to fit */
-    padding: 0.35rem 0.5rem;  /* tighter spacing */
-    white-space: nowrap;      /* keep icon + text together */
+    font-size: 0.85rem;
+    padding: 0.35rem 0.5rem;
+    white-space: nowrap;
   }
 }
 
@@ -625,27 +633,27 @@
     </ul>
   </section>
 
-  <section>
-    <h4 style="text-align: center; margin-top: 2rem;">Tools & Tech</h4>
-    <div class="tools-columns" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; max-width: 800px; margin: auto; font-size: 1rem; line-height: 1.6;">
-      <ul style="list-style: none; padding: 0; margin: 0;">
-        <li>Excel (Advanced)</li>
-        <li>VBA & SQL (Basic)</li>
-        <li>Dashboard Reporting</li>
-        <li>SharePoint</li>
-        <li>PowerBI</li>
-        <li>Google Docs Suite</li>
-      </ul>
-      <ul style="list-style: none; padding: 0; margin: 0;">
-        <li>Asana</li>
-        <li>WMS</li>
-        <li>Quip</li>
-        <li>Internal Wiki Platforms</li>
-        <li>Slack</li>
-        <li>AI Assisted Tool</li>
-      </ul>
-    </div>
-  </section>
+<section>
+  <h4 style="text-align: center; margin-top: 2rem;">Tools & Tech</h4>
+  <div class="tools-columns" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; max-width: 800px; margin: auto; font-size: 1rem; line-height: 1.6;">
+    <ul style="margin: 0; padding-left: 1.2rem; list-style: disc;">
+      <li>Excel (Advanced)</li>
+      <li>VBA &amp; SQL (Basic)</li>
+      <li>Dashboard Reporting</li>
+      <li>SharePoint</li>
+      <li>PowerBI</li>
+      <li>Google Docs Suite</li>
+    </ul>
+    <ul style="margin: 0; padding-left: 1.2rem; list-style: disc;">
+      <li>Asana</li>
+      <li>WMS</li>
+      <li>Quip</li>
+      <li>Internal Wiki Platforms</li>
+      <li>Slack</li>
+      <li>AI Assisted Tool</li>
+    </ul>
+  </div>
+</section>
 
   <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
 </main>
