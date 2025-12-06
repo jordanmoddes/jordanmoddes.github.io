@@ -332,26 +332,44 @@
        =========================== */
     /* (Uses inline styles for columns on the <ul>, left as-is for clarity) */
 
-    /* ===========================
-       TOOLS & TECH SECTION
-       =========================== */
-    .tools-columns {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      max-width: 800px;
-      margin: auto;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
+/* ===========================
+   TOOLS & TECH SECTION
+   =========================== */
+.tools-section {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1.2rem;
+}
 
-    .tools-columns ul {
-      list-style: disc;
-      padding-left: 1.2rem;
-      margin: 0;
-      flex: 1 1 220px;
-    }
+.tools-section h4 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Inner wrapper keeps the columns narrow and centered */
+.tools-grid {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Force 2 columns everywhere (desktop + mobile) */
+.tools-grid ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  column-gap: 2rem;
+  list-style: disc;
+  padding-left: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Optional tiny tweak for very narrow phones */
+@media (max-width: 400px) {
+  .tools-grid ul {
+    font-size: 0.95rem;
+  }
+}
 
     /* ===========================
        FOOTER
@@ -743,30 +761,28 @@
       </ul>
     </section>
 
-    <!-- ===================== -->
-    <!--       TOOLS & TECH    -->
-    <!-- ===================== -->
-    <section>
-      <h4 style="text-align: center; margin-top: 2rem;">Tools &amp; Tech</h4>
-      <div class="tools-columns">
-        <ul>
-          <li>Excel (Advanced)</li>
-          <li>VBA &amp; SQL (Basic)</li>
-          <li>Dashboard Reporting</li>
-          <li>SharePoint</li>
-          <li>PowerBI</li>
-          <li>Google Docs Suite</li>
-        </ul>
-        <ul>
-          <li>Asana</li>
-          <li>WMS</li>
-          <li>Quip</li>
-          <li>Internal Wiki Platforms</li>
-          <li>Slack</li>
-          <li>AI Assisted Tool</li>
-        </ul>
-      </div>
-    </section>
+<!-- ===================== -->
+<!--       TOOLS & TECH    -->
+<!-- ===================== -->
+<section class="tools-section">
+  <h4>Tools &amp; Tech</h4>
+  <div class="tools-grid">
+    <ul>
+      <li>Excel (Advanced)</li>
+      <li>VBA &amp; SQL (Basic)</li>
+      <li>Dashboard Reporting</li>
+      <li>SharePoint</li>
+      <li>PowerBI</li>
+      <li>Google Docs Suite</li>
+      <li>Asana</li>
+      <li>WMS</li>
+      <li>Quip</li>
+      <li>Internal Wiki Platforms</li>
+      <li>Slack</li>
+      <li>AI Assisted Tool</li>
+    </ul>
+  </div>
+</section>
 
     <!-- ===================== -->
     <!--    THEME TOGGLE BTN   -->
