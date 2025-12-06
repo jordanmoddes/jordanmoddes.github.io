@@ -300,29 +300,32 @@
       color: #ff8000;
     }
 
-/* Skills Web/Mobile Clean + CTA Mobile Fix + Tools Fix */
+/* Skills Web/Mobile Clean + Tools 2-Column Mobile + CTA Fix */
 @media (max-width: 600px) {
 
-  /* --- TOOLS & TECH: Keep 2 columns + add bullets --- */
+  /* --- TOOLS & TECH: Force 2 columns on mobile --- */
   .tools-columns {
-    flex-direction: row;      /* stay side-by-side */
+    flex-direction: row;      /* side-by-side */
+    flex-wrap: wrap;
     justify-content: center;
     text-align: left;
+    gap: 0.5rem;
   }
 
   .tools-columns ul {
-    flex: 1 1 45%;            /* each UL takes half width */
-    padding-left: 1.2rem;     /* ensure bullets show */
-    list-style: disc;         /* force bullets on mobile */
+    width: 50%;               /* EXACT 2 columns */
+    list-style: disc;         /* bullets */
+    padding-left: 1.4rem;     /* spacing for bullets */
+    margin: 0;
   }
 
-  /* --- CTA BUTTONS: Keep 2 rows --- */
+  /* --- CTA BUTTONS: Keep exactly 2 rows --- */
   .quick-links {
     gap: 0.4rem;
   }
 
   .link-row {
-    flex-wrap: nowrap;        /* prevents wrapping into extra rows */
+    flex-wrap: nowrap;
     justify-content: center;
     gap: 0.5rem;
   }
