@@ -1,8 +1,10 @@
 BEGIN:VCARD
 VERSION:3.0
-N:Moddes;Jordan;;;
 FN:Jordan Moddes
-TEL;TYPE=CELL:2627050853
-EMAIL:jmodwork@gmail.com
-URL:https://www.linkedin.com/in/jordanmoddes/
+N:Moddes;Jordan;;;
+ORG:Jmod Co.
+TITLE:Strategic Operations Leader
+TEL;TYPE=CELL,VOICE,MSG:+1-262-705-0853
+EMAIL;TYPE=INTERNET,WORK:jmodwork@gmail.com
+URL:https://www.jordanmoddes.com
 END:VCARD
