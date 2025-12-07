@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MODDES Chat Test</title>
+<style>
+    body {
+        background: #0b0c10;
+        font-family: Arial, sans-serif;
+        color: #e8ebf4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    #chat-container {
+        width: 420px;
+        background: #13151b;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    #messages {
+        height: 350px;
+        overflow-y: auto;
+        border: 1px solid #222631;
+        padding: 10px;
+        border-radius: 8px;
+        background: #0b0c10;
+        margin-bottom: 15px;
+    }
+
+    .msg {
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+
+    .user {
+        color: #4da3ff;
+        font-weight: bold;
+    }
+
+    .bot {
+        color: #17e5a1;
+        font-weight: bold;
+    }
+
+    #input-area {
+        display: flex;
+        gap: 10px;
+    }
+
+    #prompt {
+        flex: 1;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #222631;
+        background: #0b0c10;
+        color: #e8ebf4;
+    }
+
+    #send-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        background: #4da3ff;
+        color: #0b0c10;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div id="chat-container">
+    <div id="messages"></div>
+
+    <div id="input-area">
+        <input id="prompt" type="text" placeholder="Say something to MODDES...">
+        <button id="send-btn">Send</button>
+    </div>
+</div>
+
+<script>
+const API_URL = "https://moddes-core.onrender.com/ask";
+
+document.getElementById("send-btn").onclick = sendMessage;
+document.getElementById("prompt").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+});
+
+function addMessage(role, text) {
+    const msgBox = document.getElementById("messages");
+    const div = document.createElement("div");
+    div.classList.add("msg");
+
+    if (role === "user") div.innerHTML = `<span class="user">You:</span> ${text}`;
+    if (role === "bot") div.innerHTML = `<span class="bot">MODDES:</span> ${text}`;
+
+    msgBox.appendChild(div);
+    msgBox.scrollTop = msgBox.scrollHeight;
+}
+
+async function sendMessage() {
+    const input = document.getElementById("prompt");
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage("user", text);
+    input.value = "";
+
+    try {
+        const resp = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: text })
+        });
+
+        const data = await resp.json();
+        addMessage("bot", data.reply || "(No reply)");
+    } catch (err) {
+        addMessage("bot", "Error connecting to MODDES.");
+    }
+}
+</script>
+
+</body>
+</html>
