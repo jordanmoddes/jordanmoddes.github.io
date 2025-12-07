@@ -87,6 +87,9 @@
 <script>
 const API_URL = "https://moddes-core.onrender.com/ask";
 
+// In-memory session history (dies when tab closes)
+let history = [];
+
 document.getElementById("send-btn").onclick = sendMessage;
 document.getElementById("prompt").addEventListener("keypress", function(e) {
     if (e.key === "Enter") sendMessage();
@@ -109,23 +112,37 @@ async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
+    // Show user message
     addMessage("user", text);
+
+    // Add to history as a "user" turn
+    history.push({ role: "user", content: text });
+
     input.value = "";
 
     try {
         const resp = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: text })
+            body: JSON.stringify({
+                prompt: text,
+                history: history
+            })
         });
 
         const data = await resp.json();
-        addMessage("bot", data.reply || "(No reply)");
+        const reply = data.reply || "(No reply)";
+        addMessage("bot", reply);
+
+        // Add bot reply to history as "assistant"
+        history.push({ role: "assistant", content: reply });
+
     } catch (err) {
         addMessage("bot", "Error connecting to MODDES.");
     }
 }
 </script>
+
 
 </body>
 </html>
