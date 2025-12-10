@@ -32,7 +32,6 @@
   <meta property="og:description"
         content="Operations and logistics leader with 10+ years experience, known for turning around underperforming departments, clearing backlogs, and scaling tools across 90+ sites." />
   <meta property="og:url" content="https://www.jordanmoddes.com/" />
-  <!-- If you have a real profile image, swap this to that URL -->
   <meta property="og:image"
         content="https://www.jordanmoddes.com/assets/Signature_WhiteTP.png" />
 
@@ -46,9 +45,6 @@
         content="10+ years driving fulfillment and logistics performance: 15% gains, backlog clearances, and multi-site optimization." />
   <meta name="twitter:image"
         content="https://www.jordanmoddes.com/assets/Signature_WhiteTP.png" />
-  <!-- If you have an X/Twitter handle, add it like:
-  <meta name="twitter:site" content="@YourHandle" />
-  -->
 
   <!-- ========================= -->
   <!--   JSON-LD STRUCTURED DATA -->
@@ -369,14 +365,12 @@
       z-index: 1000;
     }
 
-    /* DARK THEME buttons */
     html[data-theme='dark'] .theme-toggle,
     html[data-theme='dark'] .translate-toggle {
       background: #00ffee;
       color: #000;
     }
 
-    /* LIGHT THEME buttons */
     html[data-theme='light'] .theme-toggle,
     html[data-theme='light'] .translate-toggle {
       background: #0000ff;
@@ -392,11 +386,6 @@
     }
 
     /* ===========================
-       CORE STRENGTHS SECTION
-       =========================== */
-    /* (Uses inline styles for columns on the <ul>, left as-is for clarity) */
-
-    /* ===========================
        TOOLS & TECH SECTION
        =========================== */
     .tools-section {
@@ -410,13 +399,11 @@
       margin-bottom: 1rem;
     }
 
-    /* Inner wrapper keeps the columns narrow and centered */
     .tools-grid {
       max-width: 600px;
       margin: 0 auto;
     }
 
-    /* Force 2 columns everywhere (desktop + mobile) */
     .tools-grid ul {
       columns: 2;
       -webkit-columns: 2;
@@ -428,11 +415,33 @@
       line-height: 1.6;
     }
 
-    /* Optional tiny tweak for very narrow phones */
     @media (max-width: 400px) {
       .tools-grid ul {
         font-size: 0.95rem;
       }
+    }
+
+    /* ===========================
+       CERTIFICATIONS SECTION
+       =========================== */
+    #certifications {
+      max-width: 800px;
+      margin: 2rem auto 0;
+      padding: 0 1.2rem;
+    }
+
+    #certifications h4 {
+      text-align: center;
+      margin-bottom: 0.75rem;
+      font-size: 1.25rem;
+    }
+
+    #certifications ul {
+      padding-left: 1.5rem;
+      font-size: 1rem;
+      line-height: 1.6;
+      list-style: disc;
+      margin: 0 auto;
     }
 
     /* ===========================
@@ -450,9 +459,6 @@
        RESPONSIVE TWEAKS (MOBILE)
        =========================== */
     @media (max-width: 600px) {
-      /* Core strengths already 2 columns via inline CSS */
-
-      /* Tools & Tech: keep 2 columns + bullets on mobile */
       .tools-columns {
         gap: 1.5rem;
       }
@@ -461,7 +467,6 @@
         flex: 1 1 45%;
       }
 
-      /* CTA buttons: keep to 2 rows, shrink text slightly */
       .quick-links {
         gap: 0.4rem;
       }
@@ -482,8 +487,6 @@
     /* =======================
        THEME–AWARE WATERMARK
        ======================= */
-
-    /* DARK MODE WATERMARK (default) */
     html[data-theme='dark'] body::before {
       content: "";
       position: fixed;
@@ -497,7 +500,6 @@
       z-index: 0;
     }
 
-    /* LIGHT MODE WATERMARK */
     html[data-theme='light'] body::before {
       content: "";
       position: fixed;
@@ -514,13 +516,10 @@
     /* =========================
        DESKTOP-ONLY CONTACT TOOLTIPS
        ========================= */
-
-    /* default: off everywhere */
     .tooltip {
       display: none;
     }
 
-    /* Only enable on real desktop/laptop (hover + fine pointer + width) */
     @media (hover: hover) and (pointer: fine) and (min-width: 768px) {
       .link-btn.has-tooltip {
         position: relative;
@@ -531,7 +530,7 @@
         display: block;
         position: absolute;
         left: 50%;
-        bottom: 125%; /* bubble above button */
+        bottom: 125%;
         transform: translateX(-50%) translateY(10px);
         background: #ffffff;
         color: #111827;
@@ -549,7 +548,6 @@
           visibility 0.18s ease-out;
       }
 
-      /* small arrow */
       .tooltip::after {
         content: "";
         position: absolute;
@@ -579,7 +577,6 @@
         border-radius: 0.5rem;
       }
 
-      /* show on hover / keyboard focus */
       .link-btn.has-tooltip:hover .tooltip,
       .link-btn.has-tooltip:focus-visible .tooltip {
         opacity: 1;
@@ -597,9 +594,7 @@
     <h1>Jordan Moddes</h1>
     <p><strong>OPERATIONS MANAGER | PROGRAM MANAGEMENT | SUPPLY CHAIN STRATEGY</strong></p>
 
-    <!-- QUICK CTA LINKS -->
     <div class="quick-links">
-      <!-- Top Row -->
       <div class="link-row">
         <a class="link-btn" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">
           🔗 <span>LinkedIn</span>
@@ -612,9 +607,7 @@
         </a>
       </div>
 
-      <!-- Bottom Row -->
       <div class="link-row">
-        <!-- Call Button + Tooltip -->
         <a class="link-btn has-tooltip"
            href="tel:2627050853"
            title="Call 262-705-0853">
@@ -625,7 +618,6 @@
           </div>
         </a>
 
-        <!-- Text Button + Tooltip -->
         <a class="link-btn has-tooltip"
            href="sms:2627050853"
            title="Text 262-705-0853">
@@ -636,14 +628,12 @@
           </div>
         </a>
 
-        <!-- Email (unchanged, no tooltip requested) -->
         <a class="link-btn"
            href="mailto:jmodwork@gmail.com"
            title="Email jmodwork@gmail.com">
           ✉️ <span>Email</span>
         </a>
 
-        <!-- Save Contact Button + QR Tooltip -->
         <a class="link-btn has-tooltip"
            href="/vCard.vcf"
            download="Jordan_Moddes.vcf"
@@ -679,9 +669,7 @@
   <!--           MAIN            -->
   <!-- ========================= -->
   <main>
-    <!-- ===================== -->
-    <!--   PROFESSIONAL SUMMARY
-    <!-- ===================== -->
+    <!-- PROFESSIONAL SUMMARY -->
     <section>
       <h3 style="text-align:center; font-size: 1.4rem;">Professional Resume</h3>
       <p style="text-align: center; max-width: 800px; margin: auto; font-size: 1rem; line-height: 1.6;">
@@ -692,20 +680,16 @@
       </p>
     </section>
 
-    <!-- ===================== -->
-    <!--     MORE THAN METRICS -->
-    <!-- ===================== -->
+    <!-- MORE THAN METRICS -->
     <section>
       <h3>More Than Metrics</h3>
-      <p style="text-align: center; max-width: 800px; margin: auto;">
+      <p style="text-align: center; max-width: 800px; margin: auto; line-height: 1.6;">
         I believe leadership is more than metrics — it’s about mentoring people, solving chaos with clarity, and leaving every place better than I found it.
         Outside work, I recharge through attending various car shows supporting local businesses, creative strategy games on extreme downtime, and look for personal growth opportunities.
       </p>
     </section>
 
-    <!-- ===================== -->
-    <!--   AMAZON IMPACT METRICS
-    <!-- ===================== -->
+    <!-- AMAZON IMPACT METRICS -->
     <section>
       <h3>Amazon Impact Metrics</h3>
       <div class="impact-grid">
@@ -721,13 +705,9 @@
       </div>
     </section>
 
-    <!-- ===================== -->
-    <!-- ====Core Strengths=== -->
-    <!-- ===================== -->
+    <!-- CORE STRENGTHS -->
     <section style="max-width: 800px; margin: 1.5rem auto 0; padding: 0 1.2rem;">
       <h3 style="text-align: center; font-size: 1.25rem;">Core Strengths</h3>
-
-      <!-- INNER WRAPPER MAKES THE COLUMNS NARROWER + CENTERED -->
       <div style="max-width: 600px; margin: 0 auto;">
         <ul
           style="
@@ -763,9 +743,7 @@
       </div>
     </section>
 
-    <!-- ===================== -->
-    <!--  PROFESSIONAL EXPERIENCE
-    <!-- ===================== -->
+    <!-- PROFESSIONAL EXPERIENCE -->
     <section>
       <h4 style="text-align:center; font-size: 1.25rem;">Professional Experience</h4>
       <ul style="max-width: 800px; margin: auto; padding-left: 1.2rem;">
@@ -820,7 +798,7 @@
 
           <details open>
             <summary style="font-size: 1rem; font-weight: bold;">Special Assignments & Field Support</summary>
-            <ul style="font-size: 1rem; line-height: 1.6%;">
+            <ul style="font-size: 1rem; line-height: 1.6;">
               <li>Traveled 15 months continuously to support 10 new-generation Amazon sites under STA assignment</li>
               <li>Visited 18+ fulfillment centers to learn upstream/downstream processes for better site training</li>
               <li>Acted as internal consultant across Inbound/Outbound dock ops at 5+ additional sites</li>
@@ -834,7 +812,7 @@
 
           <details>
             <summary style="font-size: 1rem; font-weight: bold;">Day to Day Execution</summary>
-            <ul style="font-size: 1rem; line-height: 1.6%;">
+            <ul style="font-size: 1rem; line-height: 1.6;">
               <li>Host preshift meetings and align shift expectations with prior results</li>
               <li>Monitor KPIs, resolve escalations, and step in operationally when needed</li>
               <li>Engage teams to boost morale and accountability</li>
@@ -850,7 +828,7 @@
 
           <details>
             <summary style="font-size: 1rem; font-weight: bold;">Week to Week Execution</summary>
-            <ul style="font-size: 1rem; line-height: 1.6%;">
+            <ul style="font-size: 1rem; line-height: 1.6;">
               <li>Review headcount forecasts, fill labor gaps, and drive VET/VTO plans</li>
               <li>Schedule and execute operational and leadership training initiatives</li>
               <li>Report and track CI projects with measurable outcomes</li>
@@ -864,7 +842,7 @@
 
           <details>
             <summary style="font-size: 1rem; font-weight: bold;">Month to Month Execution</summary>
-            <ul style="font-size: 1rem; line-height: 1.6%;">
+            <ul style="font-size: 1rem; line-height: 1.6;">
               <li>Develop direct reports through regular 1:1s and progression planning</li>
               <li>Update all dashboard tools and validate project KPIs</li>
               <li>Forecast labor demand 21+ days out and align with leadership on cross-training or hiring plans</li>
@@ -877,7 +855,7 @@
         <li>
           <h5 style="font-size: 1.1rem; margin-bottom: 0;">Area Manager I/II & Process Assistant (2015 – 2021)</h5>
           <strong>Key Highlights</strong>
-          <ul style="font-size: 1rem; line-height: 1.6%;">
+          <ul style="font-size: 1rem; line-height: 1.6;">
             <li>240 → 310 UPH increase in 3 months & 2100 → 400 DPMO reduction in 1 month</li>
             <li>SME for inbound operations and real-time problem solving</li>
             <li>Stow quality improvement: +19% team, +11% site, +4% region</li>
@@ -893,21 +871,19 @@
         <h5 style="text-align:left; font-size: 1.25rem;">Retail</h5>
         <li>
           <h5 style="font-size: 1.1rem;">SC Johnson (2014 – 2015) — Transportation Coordinator</h5>
-          <span style="font-size: 1rem; line-height: 1.6%;">• Managed outbound logistics and vendor scheduling</span>
+          <span style="font-size: 1rem; line-height: 1.6;">• Managed outbound logistics and vendor scheduling</span>
         </li>
 
         <br>
 
         <li>
           <h5 style="font-size: 1.1rem;">Menards / Reebok Retail (2011 – 2014) — Assistant Department Manager</h5>
-          <span style="font-size: 1rem; line-height: 1.6%;">• Managed $3M department with &gt;85% inventory accuracy</span>
+          <span style="font-size: 1rem; line-height: 1.6;">• Managed $3M department with &gt;85% inventory accuracy</span>
         </li>
       </ul>
     </section>
 
-    <!-- ===================== -->
-    <!--       EDUCATION       -->
-    <!-- ===================== -->
+    <!-- EDUCATION -->
     <section>
       <h4 style="text-align: center; font-size: 1.25rem;">Education</h4>
       <ul style="max-width: 800px; margin: auto; padding-left: 1.2rem;">
@@ -917,12 +893,10 @@
       </ul>
     </section>
 
-    <!-- ===================== -->
-    <!--  CERTIFICATIONS & TRAINING
-    <!-- ===================== -->
-    <section>
-      <h4 style="text-align: center; font-size: 1.25rem;">Certifications &amp; Specialized Training</h4>
-      <ul style="padding-left: 1.5rem; font-size: 1rem; line-height: 1.6%; max-width: 800px; margin: auto;">
+    <!-- CERTIFICATIONS & TRAINING -->
+    <section id="certifications">
+      <h4>Certifications &amp; Specialized Training</h4>
+      <ul>
         <li>Weekly Business Review (WBR): Prep, Analysis &amp; Reporting</li>
         <li>Peak &amp; Prime Day: Playbook Planning &amp; Execution Lead</li>
         <li>MMA (Management Methods Application) &amp; TDR (Total Demand Review) Proficient</li>
@@ -932,9 +906,7 @@
       </ul>
     </section>
 
-    <!-- ===================== -->
-    <!--       TOOLS & TECH    -->
-    <!-- ===================== -->
+    <!-- TOOLS & TECH -->
     <section class="tools-section">
       <h4>Tools &amp; Tech</h4>
       <div class="tools-grid">
@@ -955,26 +927,17 @@
       </div>
     </section>
 
-    <!-- ===================== -->
-    <!--    THEME TOGGLE BTN   -->
-    <!-- ===================== -->
+    <!-- THEME TOGGLE BTN -->
     <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
   </main>
 
-  <!-- ===================== -->
-  <!--         FOOTER        -->
-  <!-- ===================== -->
+  <!-- FOOTER -->
   <footer>
     ✦ Crafted by Jordan Moddes · AI-Partnership ✦<br><br><br><br><br><br>
   </footer>
 
-  <!-- ===================== -->
-  <!--      CORE SCRIPTS     -->
-  <!-- ===================== -->
+  <!-- CORE SCRIPTS -->
   <script>
-    // ===========================
-    // THEME TOGGLE + PERSISTENCE
-    // ===========================
     function toggleTheme() {
       const html = document.documentElement;
       const current = html.getAttribute('data-theme') || 'dark';
@@ -988,17 +951,12 @@
       widget.style.display = (widget.style.display === "none" || widget.style.display === "") ? "block" : "none";
     }
 
-    // ===========================
-    // ON LOAD: METRICS + SHARE UI
-    // ===========================
     document.addEventListener("DOMContentLoaded", function () {
-      // Restore stored theme if present
       const storedTheme = localStorage.getItem('theme');
       if (storedTheme) {
         document.documentElement.setAttribute('data-theme', storedTheme);
       }
 
-      // ------- IMPACT METRICS ANIMATION -------
       function animateValue(id, start, end, duration, suffix = "") {
         const obj = document.getElementById(id);
         if (!obj) return;
@@ -1028,7 +986,6 @@
       animateValue("VBAMacros", 0, 19, 1500);
       animateValue("SOPCreated", 0, 5, 1500);
 
-      // ------- SHARE DROPDOWN INTERACTION -------
       const shareButton = document.querySelector(".share-button");
       const shareContent = document.querySelector(".share-content");
 
@@ -1047,15 +1004,9 @@
     });
   </script>
 
-  <!-- ===================== -->
-  <!--   TRANSLATE BUTTON    -->
-  <!-- ===================== -->
+  <!-- TRANSLATE BUTTON + WIDGET -->
   <button class="translate-toggle" onclick="toggleTranslateWidget()">🌍 Translate</button>
   <div id="google_translate_element" class="translate-container"></div>
-
-  <!-- ===================== -->
-  <!--  GOOGLE TRANSLATE JS  -->
-  <!-- ===================== -->
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
