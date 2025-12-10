@@ -466,7 +466,7 @@
     </div>
   </footer>
 
-  <script>
+   <script>
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -718,7 +718,10 @@
   </div>
 
   <script>
-    const CHAT_ENDPOINT = "https://moddes-backend.onrender.com/chat";
+    // Primary = new MODDES core (Jmod AI with agents)
+    const PRIMARY_CHAT_ENDPOINT = "https://moddes-core.onrender.com/ask";
+    // Fallback = legacy backend (old behavior)
+    const FALLBACK_CHAT_ENDPOINT = "https://moddes-backend.onrender.com/chat";
 
     const launcher = document.getElementById("moddes-launcher");
     const box = document.getElementById("moddes-chat-box");
@@ -726,6 +729,9 @@
     const input = document.getElementById("moddes-input");
     const sendBtn = document.getElementById("moddes-send");
     const resizeBtn = document.getElementById("moddes-resize");
+
+    // In-memory history for PRIMARY endpoint (moddes-core)
+    let moddesHistory = [];
 
     launcher.onclick = () => {
       box.style.display = box.style.display === "flex" ? "none" : "flex";
@@ -745,16 +751,50 @@
     }
 
     async function sendToModdes(text) {
+      // Show user bubble
       addMessage(text, "user");
+      moddesHistory.push({ role: "user", content: text });
 
-      const res = await fetch(CHAT_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text })
-      });
+      // ===== Try PRIMARY: moddes-core (new Jmod AI) =====
+      try {
+        const res = await fetch(PRIMARY_CHAT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: text,
+            history: moddesHistory
+          })
+        });
 
-      const data = await res.json();
-      addMessage(data.reply || "No response", "bot");
+        if (!res.ok) {
+          throw new Error("Primary status " + res.status);
+        }
+
+        const data = await res.json();
+        const reply = data.reply || "No response";
+        addMessage(reply, "bot");
+        moddesHistory.push({ role: "assistant", content: reply });
+        return; // success, no need to fallback
+      } catch (err) {
+        console.error("Primary MODDES core failed, falling back to legacy backend:", err);
+      }
+
+      // ===== Fallback: legacy moddes-backend =====
+      try {
+        const res2 = await fetch(FALLBACK_CHAT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text })
+        });
+
+        const data2 = await res2.json();
+        const reply2 = data2.reply || "No response";
+        addMessage(reply2, "bot");
+        moddesHistory.push({ role: "assistant", content: reply2 });
+      } catch (err2) {
+        console.error("Fallback MODDES backend failed:", err2);
+        addMessage("Sorry—Jmod AI is having trouble responding right now.", "bot");
+      }
     }
 
     function addMessage(text, type) {
