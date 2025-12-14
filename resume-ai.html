@@ -1,92 +1,299 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Resume AI</title>
+  <title>Jmod AI · Resume Intelligence</title>
+
+  <link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap">
+
   <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px;max-width:900px}
-    textarea,input,button{width:100%;padding:10px;font-size:16px;margin:8px 0}
-    textarea{min-height:120px}
-    .card{border:1px solid #3333;border-radius:12px;padding:14px;margin-top:12px}
-    pre{white-space:pre-wrap;word-break:break-word}
+    /* =========================
+       THEME VARIABLES
+       ========================= */
+    :root{
+      --bg-dark:#121212;
+      --text-dark:#ffffff;
+      --accent-dark:#00ffee;
+
+      --bg-light:#ffffff;
+      --text-light:#121212;
+      --accent-light:#0000ff;
+    }
+
+    html[data-theme='dark']{
+      background:var(--bg-dark);
+      color:var(--text-dark);
+      --accent:var(--accent-dark);
+    }
+
+    html[data-theme='light']{
+      background:var(--bg-light);
+      color:var(--text-light);
+      --accent:var(--accent-light);
+    }
+
+    body{
+      font-family:'Inter',system-ui;
+      margin:0;
+      padding:0;
+      min-height:100vh;
+      position:relative;
+      z-index:1;
+    }
+
+    /* =========================
+       WATERMARK
+       ========================= */
+    html[data-theme='dark'] body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      margin:auto;
+      width:min(70vw,600px);
+      background:url("/assets/Signature_WhiteTP.png") center/contain no-repeat;
+      opacity:0.05;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    html[data-theme='light'] body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      margin:auto;
+      width:min(70vw,600px);
+      background:url("/assets/Signature_BlackTP.png") center/contain no-repeat;
+      opacity:0.06;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    /* =========================
+       HEADER
+       ========================= */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:1rem 1.25rem;
+      border-bottom:1px solid rgba(255,255,255,0.12);
+      position:relative;
+      z-index:2;
+    }
+
+    html[data-theme='light'] header{
+      border-bottom:1px solid rgba(0,0,0,0.12);
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      gap:0.75rem;
+    }
+
+    .title img{
+      width:36px;
+      height:36px;
+      border-radius:8px;
+    }
+
+    .title strong{
+      font-size:1.05rem;
+      letter-spacing:0.3px;
+    }
+
+    /* =========================
+       THEME BULB
+       ========================= */
+    .theme-bulb{
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      border:2px solid var(--accent);
+      background:transparent;
+      color:var(--accent);
+      font-size:1.1rem;
+      cursor:pointer;
+    }
+
+    html[data-theme='light'] .theme-bulb{
+      color:#ffd400;
+      border-color:#ffd400;
+    }
+
+    /* =========================
+       MAIN CARD
+       ========================= */
+    main{
+      max-width:900px;
+      margin:2rem auto;
+      padding:0 1.25rem;
+      position:relative;
+      z-index:2;
+    }
+
+    .card{
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:16px;
+      padding:1.25rem;
+      background:rgba(0,0,0,0.35);
+    }
+
+    html[data-theme='light'] .card{
+      background:rgba(255,255,255,0.9);
+      border-color:rgba(0,0,0,0.12);
+    }
+
+    textarea,input,button{
+      width:100%;
+      padding:0.7rem 0.75rem;
+      font-size:0.95rem;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(255,255,255,0.06);
+      color:inherit;
+      font-family:inherit;
+    }
+
+    html[data-theme='light'] textarea,
+    html[data-theme='light'] input{
+      background:rgba(0,0,0,0.04);
+      border-color:rgba(0,0,0,0.15);
+    }
+
+    textarea{min-height:110px}
+
+    button.primary{
+      margin-top:0.75rem;
+      border:2px solid var(--accent);
+      background:transparent;
+      color:var(--accent);
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .status{
+      margin-top:0.5rem;
+      font-size:0.85rem;
+      opacity:0.8;
+    }
+
+    pre{
+      white-space:pre-wrap;
+      word-break:break-word;
+      margin-top:1rem;
+      font-size:0.95rem;
+      line-height:1.45;
+    }
+
     .hidden{display:none}
+
+    /* =========================
+       FOOTER (MATCH MAIN SITE)
+       ========================= */
+    footer{
+      text-align:center;
+      margin-top:3rem;
+      font-size:0.9rem;
+      padding:1rem 0;
+      white-space:nowrap;
+      position:relative;
+      z-index:2;
+    }
+
+    footer .spacer{
+      display:block;
+      height:6rem;
+    }
   </style>
 </head>
-<body>
-  <h1>Resume AI</h1>
 
+<body>
+
+<header>
+  <div class="title">
+    <img src="/assets/Signature_WhiteTP.png" alt="JM Logo">
+    <strong>Jmod AI · Resume Intelligence</strong>
+  </div>
+  <button class="theme-bulb" id="themeBulb" title="Toggle theme">💡</button>
+</header>
+
+<main>
   <div class="card">
     <label><b>Question</b></label>
-    <textarea id="question" placeholder="What certifications do you hold?"></textarea>
+    <textarea id="question" placeholder="Ask about scope, results, certifications, leadership…"></textarea>
 
     <label><b>Job URL (optional)</b></label>
     <input id="job_url" placeholder="https://www.linkedin.com/jobs/view/..." />
 
     <div id="pasteBox" class="hidden">
-      <label><b>Paste Job Description (required if LinkedIn blocks)</b></label>
-      <textarea id="job_text" placeholder="Paste the JD text here..."></textarea>
+      <label><b>Paste Job Description</b></label>
+      <textarea id="job_text" placeholder="Paste the JD text here if the link is blocked"></textarea>
     </div>
 
-    <button id="askBtn">Ask</button>
-    <div id="status"></div>
-  </div>
+    <button class="primary" id="askBtn">Ask Jmod AI</button>
+    <div class="status" id="status">Ready.</div>
 
-  <div class="card">
-    <div class="muted"><b>Answer</b></div>
     <pre id="answer"></pre>
   </div>
+</main>
 
-  <div class="card">
-    <div class="muted"><b>Debug</b></div>
-    <pre id="debug"></pre>
-  </div>
+<footer>
+  ✦ Crafted by Jordan Moddes · AI-Partnership ✦
+  <span class="spacer"></span>
+</footer>
 
 <script>
-const API = "https://resume-ai-backend-sx60.onrender.com/";
+const API="https://resume-ai-backend-sx60.onrender.com/";
+const $=id=>document.getElementById(id);
 
-function $(id){ return document.getElementById(id); }
+/* theme */
+function toggleTheme(){
+  const html=document.documentElement;
+  const next=html.getAttribute("data-theme")==="dark"?"light":"dark";
+  html.setAttribute("data-theme",next);
+  localStorage.setItem("theme",next);
+}
+$("themeBulb").onclick=toggleTheme;
 
+const stored=localStorage.getItem("theme");
+if(stored) document.documentElement.setAttribute("data-theme",stored);
+
+/* ask */
 async function ask(){
-  $("status").textContent = "Thinking...";
-  $("answer").textContent = "";
-  $("debug").textContent = "";
+  $("status").textContent="Thinking…";
+  $("answer").textContent="";
   $("pasteBox").classList.add("hidden");
 
-  const payload = {
-    question: $("question").value.trim(),
-    job_url: $("job_url").value.trim() || null,
-    job_text: $("job_text") ? ($("job_text").value.trim() || null) : null
+  const payload={
+    question:$("question").value.trim(),
+    job_url:$("job_url").value.trim()||null,
+    job_text:$("job_text")?.value.trim()||null
   };
 
-  const res = await fetch(API + "ask", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
-
-  const data = await res.json();
-
-  $("answer").textContent = data.answer || "";
-  $("debug").textContent = JSON.stringify({
-    used_claim_ids: data.used_claim_ids,
-    job_text_loaded: data.job_text_loaded,
-    needs_paste_jd: data.needs_paste_jd
-  }, null, 2);
-
-  if (data.needs_paste_jd) {
-    $("pasteBox").classList.remove("hidden");
-    $("status").textContent = "Paste the JD text, then click Ask again.";
-  } else {
-    $("status").textContent = "Done.";
+  try{
+    const res=await fetch(API+"ask",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+    const data=await res.json();
+    $("answer").textContent=data.answer||"";
+    if(data.needs_paste_jd){
+      $("pasteBox").classList.remove("hidden");
+      $("status").textContent="Paste JD and ask again.";
+    }else{
+      $("status").textContent="Done.";
+    }
+  }catch(e){
+    $("status").textContent="Error. Refresh and retry.";
   }
 }
 
-$("askBtn").addEventListener("click", () => {
-  ask().catch(err => {
-    $("status").textContent = "Error: " + (err?.message || err);
-  });
-});
+$("askBtn").onclick=ask;
 </script>
+
 </body>
 </html>
