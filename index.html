@@ -635,14 +635,23 @@
       }
     }
 
-    /* =========================
-       FLOATING JMOD AI CHAT
-       ========================= */
-    .jmod-ai-bubble {
+   /* =========================
+   FLOATING JMOD AI CHAT
+   ========================= */
+    
+    /* 1) Bottom-right dock that holds BOTH: Jmod AI + bulb */
+    .floating-dock {
       position: fixed;
       right: 1rem;
-      bottom: 4.1rem; /* above bulb */
+      bottom: 1rem;
       z-index: 1200;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    
+    /* 2) Jmod AI button is NOT fixed anymore (dock handles placement) */
+    .jmod-ai-bubble {
       border: 2px solid var(--accent);
       background: var(--accent);          /* filled */
       color: #000;                        /* readable on aqua */
@@ -655,20 +664,22 @@
       align-items: center;
       gap: 0.5rem;
       user-select: none;
+      transform: none;
     }
-
+    
     html[data-theme='light'] .jmod-ai-bubble {
       color: #fff; /* readable on blue */
     }
-
+    
     .jmod-ai-bubble:hover {
       transform: translateY(-1px);
     }
-
+    
+    /* 3) Panel is anchored above the dock, aligned to the right edge */
     .jmod-ai-panel {
       position: fixed;
       right: 1rem;
-      bottom: 7.4rem;
+      bottom: calc(1rem + 56px); /* dock height clearance */
       z-index: 1201;
       width: min(360px, calc(100vw - 2rem));
       max-height: 72vh;
@@ -680,11 +691,11 @@
       box-shadow: var(--chat-shadow);
       overflow: hidden;
     }
-
+    
     .jmod-ai-panel.open {
       display: flex;
     }
-
+    
     .jmod-ai-header {
       padding: 0.9rem 0.95rem 0.75rem;
       border-bottom: 1px solid var(--chat-border);
@@ -693,38 +704,38 @@
       justify-content: space-between;
       gap: 0.75rem;
     }
-
+    
     .jmod-ai-title {
       display: flex;
       align-items: center;
       gap: 0.6rem;
     }
-
+    
     .jmod-ai-title img {
       width: 22px;
       height: 22px;
       border-radius: 6px;
       box-shadow: 0 0 0 1px var(--chat-border);
     }
-
+    
     .jmod-ai-title .twrap {
       display: flex;
       flex-direction: column;
       gap: 0.15rem;
     }
-
+    
     .jmod-ai-title strong {
       color: var(--chat-text);
       font-size: 0.95rem;
       letter-spacing: 0.2px;
     }
-
+    
     .jmod-ai-title span {
       color: var(--chat-muted);
       font-size: 0.78rem;
       line-height: 1.2;
     }
-
+    
     .jmod-ai-close {
       border: 1px solid var(--chat-border);
       background: transparent;
@@ -734,27 +745,27 @@
       cursor: pointer;
       font-weight: 800;
     }
-
+    
     .jmod-ai-body {
       padding: 0.85rem 0.95rem;
       overflow-y: auto;
       color: var(--chat-text);
     }
-
+    
     .jmod-ai-systemline {
       color: var(--chat-text);
       font-size: 0.92rem;
       line-height: 1.35;
       margin: 0 0 0.75rem;
     }
-
+    
     .jmod-ai-thread {
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
       margin-top: 0.25rem;
     }
-
+    
     .jmod-ai-msg {
       border: 1px solid var(--chat-border);
       border-radius: 12px;
@@ -764,36 +775,36 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-
+    
     .jmod-ai-msg.user {
       background: rgba(0,0,0,0.00);
       border-color: rgba(255,255,255,0.10);
       align-self: flex-end;
       max-width: 96%;
     }
-
+    
     html[data-theme='light'] .jmod-ai-msg.user {
       border-color: rgba(0,0,0,0.12);
     }
-
+    
     .jmod-ai-msg.bot {
       background: rgba(0,0,0,0.00);
       border-color: rgba(255,255,255,0.10);
       align-self: flex-start;
       max-width: 96%;
     }
-
+    
     html[data-theme='light'] .jmod-ai-msg.bot {
       border-color: rgba(0,0,0,0.12);
     }
-
+    
     .jmod-ai-alert {
       color: var(--chat-muted);
       font-size: 0.82rem;
       margin-top: 0.5rem;
       line-height: 1.25;
     }
-
+    
     .jmod-ai-footer {
       border-top: 1px solid var(--chat-border);
       padding: 0.75rem 0.95rem 0.9rem;
@@ -801,13 +812,13 @@
       flex-direction: column;
       gap: 0.55rem;
     }
-
+    
     .jmod-ai-row {
       display: flex;
       gap: 0.55rem;
       align-items: center;
     }
-
+    
     .jmod-ai-input {
       flex: 1 1 auto;
       border: 1px solid var(--chat-border);
@@ -818,7 +829,7 @@
       font-size: 0.92rem;
       outline: none;
     }
-
+    
     .jmod-ai-send {
       flex: 0 0 auto;
       border: 2px solid var(--accent);
@@ -829,12 +840,12 @@
       font-weight: 900;
       cursor: pointer;
     }
-
+    
     .jmod-ai-send:disabled {
       opacity: 0.55;
       cursor: not-allowed;
     }
-
+    
     .jmod-ai-jd {
       display: none;
       border: 1px solid var(--chat-border);
@@ -847,11 +858,11 @@
       min-height: 90px;
       resize: vertical;
     }
-
+    
     .jmod-ai-jd.show {
       display: block;
     }
-
+    
     .jmod-ai-mini {
       display: flex;
       justify-content: space-between;
@@ -859,21 +870,25 @@
       color: var(--chat-muted);
       font-size: 0.78rem;
     }
-
+    
     .jmod-ai-mini a {
       color: var(--accent);
       text-decoration: none;
       font-weight: 800;
     }
-
+    
     @media (max-width: 600px) {
+      .floating-dock {
+        right: 0.75rem;
+        bottom: 0.75rem;
+        gap: 0.5rem;
+      }
       .jmod-ai-bubble {
-        bottom: 4.1rem;
         padding: 0.55rem 0.75rem;
       }
       .jmod-ai-panel {
         right: 0.75rem;
-        bottom: 7.2rem;
+        bottom: calc(0.75rem + 52px);
         width: calc(100vw - 1.5rem);
       }
       .theme-bulb {
@@ -1230,266 +1245,277 @@
     ✦ Crafted by Jordan Moddes · AI-Partnership ✦<br><br><br><br><br><br>
   </footer>
 
-  <!-- ========================= -->
-  <!--     FLOATING JMOD AI      -->
-  <!-- ========================= -->
-  <button class="jmod-ai-bubble" id="jmodAiBubble" aria-label="Open Jmod AI chat" title="Jmod AI">
-    💬 <span>Jmod AI</span>
-  </button>
-
-  <div class="jmod-ai-panel" id="jmodAiPanel" role="dialog" aria-label="Jmod AI chat">
-    <div class="jmod-ai-header">
-      <div class="jmod-ai-title">
-        <img src="/assets/Signature_WhiteTP.png" alt="Jmod AI logo" id="jmodAiLogo">
-        <div class="twrap">
-          <strong>Jmod AI</strong>
-          <span>Verified experience only.</span>
+    <!-- ========================= -->
+    <!--     FLOATING JMOD AI      -->
+    <!-- ========================= -->
+    <button class="jmod-ai-bubble" id="jmodAiBubble" type="button" aria-label="Open Jmod AI chat" title="Jmod AI">
+      <img src="/assets/Signature_WhiteTP.png" alt="" class="jmod-ai-bubble-logo" id="jmodAiBubbleLogo">
+      <span>Jmod AI</span>
+    </button>
+  
+    <div class="jmod-ai-panel" id="jmodAiPanel" role="dialog" aria-label="Jmod AI chat" aria-modal="true">
+      <div class="jmod-ai-header">
+        <div class="jmod-ai-title">
+          <img src="/assets/Signature_WhiteTP.png" alt="Jmod AI logo" id="jmodAiLogo">
+          <div class="twrap">
+            <strong>Jmod AI</strong>
+            <span>Verified experience only.</span>
+          </div>
+        </div>
+        <button class="jmod-ai-close" id="jmodAiClose" type="button" aria-label="Close">✕</button>
+      </div>
+  
+      <div class="jmod-ai-body">
+        <p class="jmod-ai-systemline" id="jmodAiWelcome">
+          Ask about scope, results, cost mindset, leadership, or paste a job link.
+        </p>
+  
+        <div class="jmod-ai-thread" id="jmodAiThread"></div>
+        <div class="jmod-ai-alert" id="jmodAiAlert" style="display:none;"></div>
+      </div>
+  
+      <div class="jmod-ai-footer">
+        <textarea class="jmod-ai-jd" id="jmodAiJobText" placeholder="Paste job description text here (only needed if a job link is blocked)"></textarea>
+  
+        <div class="jmod-ai-row">
+          <input class="jmod-ai-input" id="jmodAiInput" placeholder="Type a question… (optional: paste a job link)" />
+          <button class="jmod-ai-send" id="jmodAiSend" type="button">Send</button>
+        </div>
+  
+        <div class="jmod-ai-mini">
+          <span id="jmodAiStatus">Ready.</span>
+          <a href="/resume-ai.html" target="_blank" rel="noopener">Open full page</a>
         </div>
       </div>
-      <button class="jmod-ai-close" id="jmodAiClose" aria-label="Close">✕</button>
     </div>
-
-    <div class="jmod-ai-body">
-      <p class="jmod-ai-systemline" id="jmodAiWelcome">
-        Ask about scope, results, cost mindset, leadership, or paste a job link.
-      </p>
-
-      <div class="jmod-ai-thread" id="jmodAiThread"></div>
-      <div class="jmod-ai-alert" id="jmodAiAlert" style="display:none;"></div>
-    </div>
-
-    <div class="jmod-ai-footer">
-      <textarea class="jmod-ai-jd" id="jmodAiJobText" placeholder="Paste job description text here (only needed if a job link is blocked)"></textarea>
-
-      <div class="jmod-ai-row">
-        <input class="jmod-ai-input" id="jmodAiInput" placeholder="Type a question… (optional: paste a job link)" />
-        <button class="jmod-ai-send" id="jmodAiSend">Send</button>
-      </div>
-
-      <div class="jmod-ai-mini">
-        <span id="jmodAiStatus">Ready.</span>
-        <a href="/resume-ai.html" target="_blank" rel="noopener">Open full page</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================= -->
-  <!--   THEME TOGGLE (BULB)     -->
-  <!-- ========================= -->
-  <button class="theme-bulb" id="themeBulb" aria-label="Toggle light/dark" title="Toggle theme">
-    <!-- Outline-only bulb icon -->
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M9 18h6" />
-      <path d="M10 22h4" />
-      <path d="M8.5 15.5c-1.7-1.3-2.8-3.3-2.8-5.6A6.3 6.3 0 0 1 12 3.8a6.3 6.3 0 0 1 6.3 6.1c0 2.3-1.1 4.3-2.8 5.6-.8.6-1.5 1.8-1.5 2.5H10c0-.7-.7-1.9-1.5-2.5z"/>
-    </svg>
-  </button>
-
-  <!-- CORE SCRIPTS -->
-  <script>
-    function toggleTheme() {
-      const html = document.documentElement;
-      const current = html.getAttribute('data-theme') || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-
-      // swap logo in chat header to match theme (white on dark, black on light)
-      const logo = document.getElementById("jmodAiLogo");
-      if (logo) {
-        logo.src = (next === "dark") ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
-      }
-    }
-
-    function toggleTranslateWidget() {
-      const widget = document.getElementById("google_translate_element");
-      widget.style.display = (widget.style.display === "none" || widget.style.display === "") ? "block" : "none";
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const storedTheme = localStorage.getItem('theme');
-      if (storedTheme) {
-        document.documentElement.setAttribute('data-theme', storedTheme);
-      }
-
-      // Ensure chat logo matches initial theme
-      const logo = document.getElementById("jmodAiLogo");
-      if (logo) {
-        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
-        logo.src = (cur === "dark") ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
-      }
-
-      function animateValue(id, start, end, duration, suffix = "") {
-        const obj = document.getElementById(id);
-        if (!obj) return;
-        const range = end - start;
-        if (range === 0) {
-          obj.textContent = end + suffix;
-          return;
+  
+      <!-- ========================= -->
+      <!--   THEME TOGGLE (BULB)     -->
+      <!-- ========================= -->
+      <button class="theme-bulb" id="themeBulb" aria-label="Toggle light/dark" title="Toggle theme">
+        <!-- Outline-only bulb icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 18h6" />
+          <path d="M10 22h4" />
+          <path d="M8.5 15.5c-1.7-1.3-2.8-3.3-2.8-5.6A6.3 6.3 0 0 1 12 3.8a6.3 6.3 0 0 1 6.3 6.1c0 2.3-1.1 4.3-2.8 5.6-.8.6-1.5 1.8-1.5 2.5H10c0-.7-.7-1.9-1.5-2.5z"/>
+        </svg>
+      </button>
+    
+      <!-- CORE SCRIPTS -->
+      <script>
+        function toggleTheme() {
+          const html = document.documentElement;
+          const current = html.getAttribute('data-theme') || 'dark';
+          const next = current === 'dark' ? 'light' : 'dark';
+          html.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+    
+          // swap logo in chat header to match theme (white on dark, black on light)
+          const logo = document.getElementById("jmodAiLogo");
+          if (logo) {
+            logo.src = (next === "dark") ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
+          }
         }
-        const stepTime = Math.max(20, Math.abs(Math.floor(duration / range)));
-        let current = start;
-        const timer = setInterval(() => {
-          current += Math.sign(range);
-          obj.textContent = current + suffix;
-          if ((range > 0 && current >= end) || (range < 0 && current <= end)) {
-            clearInterval(timer);
+    
+        function toggleTranslateWidget() {
+          const widget = document.getElementById("google_translate_element");
+          widget.style.display = (widget.style.display === "none" || widget.style.display === "") ? "block" : "none";
+        }
+    
+        document.addEventListener("DOMContentLoaded", function () {
+          const storedTheme = localStorage.getItem('theme');
+          if (storedTheme) {
+            document.documentElement.setAttribute('data-theme', storedTheme);
           }
-        }, stepTime);
-      }
-
-      animateValue("sitesVisited", 0, 53, 1500);
-      animateValue("facilitiesHome", 0, 5, 1500);
-      animateValue("leadersPromoted", 0, 9, 1500);
-      animateValue("associatesPromoted", 0, 22, 1500);
-      animateValue("networkProjects", 0, 3, 1500);
-      animateValue("regionalProjects", 0, 10, 1500);
-      animateValue("performanceGains", 0, 15, 1500, "%");
-      animateValue("VBAMacros", 0, 19, 1500);
-      animateValue("SOPCreated", 0, 5, 1500);
-
-      const shareButton = document.querySelector(".share-button");
-      const shareContent = document.querySelector(".share-content");
-
-      if (shareButton && shareContent) {
-        shareButton.addEventListener("click", function (e) {
-          e.stopPropagation();
-          shareContent.style.display = shareContent.style.display === "block" ? "none" : "block";
+    
+          // Ensure chat logo matches initial theme
+          const logo = document.getElementById("jmodAiLogo");
+          if (logo) {
+            const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+            logo.src = (cur === "dark") ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
+          }
+    
+          function animateValue(id, start, end, duration, suffix = "") {
+            const obj = document.getElementById(id);
+            if (!obj) return;
+            const range = end - start;
+            if (range === 0) {
+              obj.textContent = end + suffix;
+              return;
+            }
+            const stepTime = Math.max(20, Math.abs(Math.floor(duration / range)));
+            let current = start;
+            const timer = setInterval(() => {
+              current += Math.sign(range);
+              obj.textContent = current + suffix;
+              if ((range > 0 && current >= end) || (range < 0 && current <= end)) {
+                clearInterval(timer);
+              }
+            }, stepTime);
+          }
+    
+          animateValue("sitesVisited", 0, 53, 1500);
+          animateValue("facilitiesHome", 0, 5, 1500);
+          animateValue("leadersPromoted", 0, 9, 1500);
+          animateValue("associatesPromoted", 0, 22, 1500);
+          animateValue("networkProjects", 0, 3, 1500);
+          animateValue("regionalProjects", 0, 10, 1500);
+          animateValue("performanceGains", 0, 15, 1500, "%");
+          animateValue("VBAMacros", 0, 19, 1500);
+          animateValue("SOPCreated", 0, 5, 1500);
+    
+          const shareButton = document.querySelector(".share-button");
+          const shareContent = document.querySelector(".share-content");
+    
+          if (shareButton && shareContent) {
+            shareButton.addEventListener("click", function (e) {
+              e.stopPropagation();
+              shareContent.style.display = shareContent.style.display === "block" ? "none" : "block";
+            });
+    
+            document.addEventListener("click", function (e) {
+              if (!shareContent.contains(e.target) && e.target !== shareButton) {
+                shareContent.style.display = "none";
+              }
+            });
+          }
+    
+    /* =========================
+       Theme bulb binding
+       ========================= */
+    const bulb = document.getElementById("themeBulb");
+    if (bulb) {
+      bulb.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleTheme();
+      });
+    }
+    
+    /* =========================
+       Jmod AI Chat Logic
+       ========================= */
+    const API_BASE = "https://resume-ai-backend-sx60.onrender.com";
+    
+    const bubble   = document.getElementById("jmodAiBubble");
+    const panel    = document.getElementById("jmodAiPanel");
+    const closeBtn = document.getElementById("jmodAiClose");
+    const input    = document.getElementById("jmodAiInput");
+    const send     = document.getElementById("jmodAiSend");
+    const thread   = document.getElementById("jmodAiThread");
+    const status   = document.getElementById("jmodAiStatus");
+    const alertBox = document.getElementById("jmodAiAlert");
+    const jobBox   = document.getElementById("jmodAiJobText");
+    
+    let needsPaste = false;
+    
+    /* ---------- panel control ---------- */
+    function openChat() {
+      panel.classList.add("open");
+      setTimeout(() => input?.focus(), 50);
+    }
+    
+    function closeChat() {
+      panel.classList.remove("open");
+      alertBox.style.display = "none";
+    }
+    
+    /* ---------- message rendering ---------- */
+    function addMsg(type, text) {
+      const div = document.createElement("div");
+      div.className = `jmod-ai-msg ${type}`;
+      div.textContent = text;
+      thread.appendChild(div);
+      thread.scrollTop = thread.scrollHeight;
+    }
+    
+    /* ---------- helpers ---------- */
+    function extractUrl(text) {
+      const m = text.match(/https?:\/\/\S+/i);
+      return m ? m[0].replace(/[)\],.]+$/g, "") : null;
+    }
+    
+    /* ---------- backend call ---------- */
+    async function askBackend(rawText) {
+      status.textContent = "Thinking…";
+      send.disabled = true;
+      alertBox.style.display = "none";
+    
+      const raw = rawText.trim();
+      const url = extractUrl(raw);
+      const question = url ? raw.replace(url, "").trim() : raw;
+    
+      const payload = {
+        question,
+        job_url: url,
+        job_text: jobBox.value.trim() || null
+      };
+    
+      try {
+        const res = await fetch(`${API_BASE}/ask`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
         });
-
-        document.addEventListener("click", function (e) {
-          if (!shareContent.contains(e.target) && e.target !== shareButton) {
-            shareContent.style.display = "none";
-          }
-        });
-      }
-
-      /* =========================
-         Theme bulb binding
-         ========================= */
-      const bulb = document.getElementById("themeBulb");
-      if (bulb) bulb.addEventListener("click", (e) => { e.stopPropagation(); toggleTheme(); });
-
-      /* =========================
-         Jmod AI Chat Logic
-         ========================= */
-      const API_BASE = "https://resume-ai-backend-sx60.onrender.com/";
-      const bubble = document.getElementById("jmodAiBubble");
-      const panel = document.getElementById("jmodAiPanel");
-      const closeBtn = document.getElementById("jmodAiClose");
-      const input = document.getElementById("jmodAiInput");
-      const send = document.getElementById("jmodAiSend");
-      const thread = document.getElementById("jmodAiThread");
-      const status = document.getElementById("jmodAiStatus");
-      const alertBox = document.getElementById("jmodAiAlert");
-      const jobTextBox = document.getElementById("jmodAiJobText");
-
-      let needsPaste = false;
-
-      function openChat() {
-        panel.classList.add("open");
-        setTimeout(() => input && input.focus(), 50);
-      }
-
-      function closeChat() {
-        panel.classList.remove("open");
-        alertBox.style.display = "none";
-      }
-
-      function addMsg(kind, text) {
-        const div = document.createElement("div");
-        div.className = "jmod-ai-msg " + kind;
-        div.textContent = text;
-        thread.appendChild(div);
-        thread.parentElement.scrollTop = thread.parentElement.scrollHeight;
-      }
-
-      function parseJobUrlFromText(text) {
-        const m = (text || "").match(/https?:\/\/\S+/i);
-        return m ? m[0].replace(/[)\],.]+$/g, "") : "";
-      }
-
-      async function askBackend(questionText) {
-        status.textContent = "Thinking…";
-        send.disabled = true;
-        alertBox.style.display = "none";
-
-        const raw = (questionText || "").trim();
-        const extractedUrl = parseJobUrlFromText(raw);
-        const cleanQuestion = raw.replace(extractedUrl, "").trim() || raw;
-
-        const payload = {
-          question: cleanQuestion,
-          job_url: extractedUrl || null,
-          job_text: (jobTextBox.value || "").trim() || null
-        };
-
-        try {
-          const res = await fetch(API_BASE + "ask", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-
-          const data = await res.json();
-          const answer = (data && data.answer) ? data.answer : "No answer returned.";
-          needsPaste = !!(data && data.needs_paste_jd);
-
-          addMsg("bot", answer);
-
-          if (needsPaste) {
-            jobTextBox.classList.add("show");
-            alertBox.textContent = "This job link is blocked. Paste the job description text to continue.";
-            alertBox.style.display = "block";
-            status.textContent = "Paste JD, then send again.";
-          } else {
-            jobTextBox.classList.remove("show");
-            status.textContent = "Ready.";
-          }
-        } catch (e) {
-          status.textContent = "Error.";
-          alertBox.textContent = "Network error. If this persists, refresh the page.";
+    
+        const data = await res.json();
+        addMsg("bot", data.answer || "No response.");
+    
+        needsPaste = !!data.needs_paste_jd;
+    
+        if (needsPaste) {
+          jobBox.classList.add("show");
+          alertBox.textContent =
+            "Job link blocked. Paste the job description to continue.";
           alertBox.style.display = "block";
-        } finally {
-          send.disabled = false;
+          status.textContent = "Waiting for job description.";
+        } else {
+          jobBox.classList.remove("show");
+          status.textContent = "Ready.";
         }
+    
+      } catch {
+        status.textContent = "Error";
+        alertBox.textContent = "Network error. Refresh and try again.";
+        alertBox.style.display = "block";
+      } finally {
+        send.disabled = false;
       }
-
-      function handleSend(text) {
-        const t = (text || "").trim();
-        if (!t) return;
-        addMsg("user", t);
-        input.value = "";
-        askBackend(t);
-      }
-
-      bubble.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (panel.classList.contains("open")) closeChat();
-        else openChat();
-      });
-
-      closeBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
+    }
+    
+    /* ---------- send handling ---------- */
+    function handleSend() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMsg("user", text);
+      input.value = "";
+      askBackend(text);
+    }
+    
+    /* ---------- bindings ---------- */
+    bubble?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      panel.classList.contains("open") ? closeChat() : openChat();
+    });
+    
+    closeBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeChat();
+    });
+    
+    document.addEventListener("click", (e) => {
+      if (!panel.classList.contains("open")) return;
+      if (!panel.contains(e.target) && !bubble.contains(e.target)) {
         closeChat();
-      });
-
-      document.addEventListener("click", (e) => {
-        if (!panel.classList.contains("open")) return;
-        const inPanel = panel.contains(e.target);
-        const inBubble = bubble.contains(e.target);
-        if (!inPanel && !inBubble) closeChat();
-      });
-
-      send.addEventListener("click", () => handleSend(input.value));
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          handleSend(input.value);
-        }
-      });
-
-      // recruiter-first: keep chat empty until user interacts
+      }
+    });
+    
+    send?.addEventListener("click", handleSend);
+    
+    input?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSend();
+      }
     });
   </script>
 
