@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Resume AI</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px;max-width:900px}
+    textarea,input,button{width:100%;padding:10px;font-size:16px;margin:8px 0}
+    textarea{min-height:120px}
+    .card{border:1px solid #3333;border-radius:12px;padding:14px;margin-top:12px}
+    pre{white-space:pre-wrap;word-break:break-word}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <h1>Resume AI</h1>
+
+  <div class="card">
+    <label><b>Question</b></label>
+    <textarea id="question" placeholder="What certifications do you hold?"></textarea>
+
+    <label><b>Job URL (optional)</b></label>
+    <input id="job_url" placeholder="https://www.linkedin.com/jobs/view/..." />
+
+    <div id="pasteBox" class="hidden">
+      <label><b>Paste Job Description (required if LinkedIn blocks)</b></label>
+      <textarea id="job_text" placeholder="Paste the JD text here..."></textarea>
+    </div>
+
+    <button id="askBtn">Ask</button>
+    <div id="status"></div>
+  </div>
+
+  <div class="card">
+    <div class="muted"><b>Answer</b></div>
+    <pre id="answer"></pre>
+  </div>
+
+  <div class="card">
+    <div class="muted"><b>Debug</b></div>
+    <pre id="debug"></pre>
+  </div>
+
+<script>
+const API = "https://resume-ai-backend-sx60.onrender.com/";
+
+function $(id){ return document.getElementById(id); }
+
+async function ask(){
+  $("status").textContent = "Thinking...";
+  $("answer").textContent = "";
+  $("debug").textContent = "";
+  $("pasteBox").classList.add("hidden");
+
+  const payload = {
+    question: $("question").value.trim(),
+    job_url: $("job_url").value.trim() || null,
+    job_text: $("job_text") ? ($("job_text").value.trim() || null) : null
+  };
+
+  const res = await fetch(API + "ask", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json();
+
+  $("answer").textContent = data.answer || "";
+  $("debug").textContent = JSON.stringify({
+    used_claim_ids: data.used_claim_ids,
+    job_text_loaded: data.job_text_loaded,
+    needs_paste_jd: data.needs_paste_jd
+  }, null, 2);
+
+  if (data.needs_paste_jd) {
+    $("pasteBox").classList.remove("hidden");
+    $("status").textContent = "Paste the JD text, then click Ask again.";
+  } else {
+    $("status").textContent = "Done.";
+  }
+}
+
+$("askBtn").addEventListener("click", () => {
+  ask().catch(err => {
+    $("status").textContent = "Error: " + (err?.message || err);
+  });
+});
+</script>
+</body>
+</html>
