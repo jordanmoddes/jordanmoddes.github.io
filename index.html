@@ -163,6 +163,7 @@
       --chat-chip: rgba(255,255,255,0.08);
       --chat-chip-hover: rgba(255,255,255,0.12);
       --chat-input: rgba(255,255,255,0.07);
+      --bulb-color: var(--accent-dark); /* dark mode bulb outline = aqua */
     }
 
     html[data-theme='light'] {
@@ -176,6 +177,7 @@
       --chat-chip: rgba(17,24,39,0.06);
       --chat-chip-hover: rgba(17,24,39,0.10);
       --chat-input: rgba(17,24,39,0.06);
+      --bulb-color: #f5c542; /* light mode bulb outline = yellow */
     }
 
     body {
@@ -369,12 +371,12 @@
     }
 
     /* ===========================
-       THEME TOGGLE + TRANSLATE
+       TRANSLATE TOGGLE
        =========================== */
-    .theme-toggle,
     .translate-toggle {
       position: fixed;
       bottom: 1rem;
+      left: 1rem;
       border: none;
       padding: 0.6rem 1rem;
       border-radius: 20px;
@@ -383,24 +385,54 @@
       z-index: 1000;
     }
 
-    html[data-theme='dark'] .theme-toggle,
     html[data-theme='dark'] .translate-toggle {
       background: #00ffee;
       color: #000;
     }
 
-    html[data-theme='light'] .theme-toggle,
     html[data-theme='light'] .translate-toggle {
       background: #0000ff;
       color: #fff;
     }
 
-    .theme-toggle {
+    /* ===========================
+       THEME TOGGLE (BULB ICON)
+       =========================== */
+    .theme-bulb {
+      position: fixed;
+      bottom: 1rem;
       right: 1rem;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.15);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .translate-toggle {
-      left: 1rem;
+    html[data-theme='light'] .theme-bulb {
+      border: 2px solid rgba(0,0,0,0.12);
+      background: rgba(255,255,255,0.65);
+    }
+
+    .theme-bulb svg {
+      width: 22px;
+      height: 22px;
+      fill: none;                 /* not filled */
+      stroke: var(--bulb-color);  /* theme-aware outline color */
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .theme-bulb:hover {
+      transform: translateY(-1px);
     }
 
     /* ===========================
@@ -604,19 +636,19 @@
     }
 
     /* =========================
-       FLOATING RESUME AI CHAT
+       FLOATING JMOD AI CHAT
        ========================= */
-    .resume-ai-bubble {
+    .jmod-ai-bubble {
       position: fixed;
       right: 1rem;
-      bottom: 4.1rem; /* above theme toggle */
+      bottom: 4.1rem; /* above bulb */
       z-index: 1200;
       border: 2px solid var(--accent);
-      background: transparent;
-      color: var(--accent);
+      background: var(--accent);          /* filled */
+      color: #000;                        /* readable on aqua */
       padding: 0.6rem 0.85rem;
       border-radius: 999px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
       box-shadow: 0 0 10px rgba(0,0,0,0.25);
       display: inline-flex;
@@ -625,11 +657,15 @@
       user-select: none;
     }
 
-    .resume-ai-bubble:hover {
+    html[data-theme='light'] .jmod-ai-bubble {
+      color: #fff; /* readable on blue */
+    }
+
+    .jmod-ai-bubble:hover {
       transform: translateY(-1px);
     }
 
-    .resume-ai-panel {
+    .jmod-ai-panel {
       position: fixed;
       right: 1rem;
       bottom: 7.4rem;
@@ -645,11 +681,11 @@
       overflow: hidden;
     }
 
-    .resume-ai-panel.open {
+    .jmod-ai-panel.open {
       display: flex;
     }
 
-    .resume-ai-header {
+    .jmod-ai-header {
       padding: 0.9rem 0.95rem 0.75rem;
       border-bottom: 1px solid var(--chat-border);
       display: flex;
@@ -658,25 +694,38 @@
       gap: 0.75rem;
     }
 
-    .resume-ai-title {
+    .jmod-ai-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .jmod-ai-title img {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      box-shadow: 0 0 0 1px var(--chat-border);
+    }
+
+    .jmod-ai-title .twrap {
       display: flex;
       flex-direction: column;
       gap: 0.15rem;
     }
 
-    .resume-ai-title strong {
+    .jmod-ai-title strong {
       color: var(--chat-text);
       font-size: 0.95rem;
       letter-spacing: 0.2px;
     }
 
-    .resume-ai-title span {
+    .jmod-ai-title span {
       color: var(--chat-muted);
       font-size: 0.78rem;
       line-height: 1.2;
     }
 
-    .resume-ai-close {
+    .jmod-ai-close {
       border: 1px solid var(--chat-border);
       background: transparent;
       color: var(--chat-text);
@@ -686,50 +735,27 @@
       font-weight: 800;
     }
 
-    .resume-ai-body {
+    .jmod-ai-body {
       padding: 0.85rem 0.95rem;
       overflow-y: auto;
       color: var(--chat-text);
     }
 
-    .resume-ai-systemline {
+    .jmod-ai-systemline {
       color: var(--chat-text);
       font-size: 0.92rem;
       line-height: 1.35;
       margin: 0 0 0.75rem;
     }
 
-    .resume-ai-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0 0 0.85rem;
-    }
-
-    .resume-ai-chip {
-      border: 1px solid var(--chat-border);
-      background: var(--chat-chip);
-      color: var(--chat-text);
-      border-radius: 999px;
-      padding: 0.42rem 0.62rem;
-      cursor: pointer;
-      font-size: 0.82rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .resume-ai-chip:hover {
-      background: var(--chat-chip-hover);
-    }
-
-    .resume-ai-thread {
+    .jmod-ai-thread {
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
       margin-top: 0.25rem;
     }
 
-    .resume-ai-msg {
+    .jmod-ai-msg {
       border: 1px solid var(--chat-border);
       border-radius: 12px;
       padding: 0.65rem 0.7rem;
@@ -739,36 +765,36 @@
       word-break: break-word;
     }
 
-    .resume-ai-msg.user {
+    .jmod-ai-msg.user {
       background: rgba(0,0,0,0.00);
       border-color: rgba(255,255,255,0.10);
       align-self: flex-end;
       max-width: 96%;
     }
 
-    html[data-theme='light'] .resume-ai-msg.user {
+    html[data-theme='light'] .jmod-ai-msg.user {
       border-color: rgba(0,0,0,0.12);
     }
 
-    .resume-ai-msg.bot {
+    .jmod-ai-msg.bot {
       background: rgba(0,0,0,0.00);
       border-color: rgba(255,255,255,0.10);
       align-self: flex-start;
       max-width: 96%;
     }
 
-    html[data-theme='light'] .resume-ai-msg.bot {
+    html[data-theme='light'] .jmod-ai-msg.bot {
       border-color: rgba(0,0,0,0.12);
     }
 
-    .resume-ai-alert {
+    .jmod-ai-alert {
       color: var(--chat-muted);
       font-size: 0.82rem;
       margin-top: 0.5rem;
       line-height: 1.25;
     }
 
-    .resume-ai-footer {
+    .jmod-ai-footer {
       border-top: 1px solid var(--chat-border);
       padding: 0.75rem 0.95rem 0.9rem;
       display: flex;
@@ -776,13 +802,13 @@
       gap: 0.55rem;
     }
 
-    .resume-ai-row {
+    .jmod-ai-row {
       display: flex;
       gap: 0.55rem;
       align-items: center;
     }
 
-    .resume-ai-input {
+    .jmod-ai-input {
       flex: 1 1 auto;
       border: 1px solid var(--chat-border);
       background: var(--chat-input);
@@ -793,7 +819,7 @@
       outline: none;
     }
 
-    .resume-ai-send {
+    .jmod-ai-send {
       flex: 0 0 auto;
       border: 2px solid var(--accent);
       background: transparent;
@@ -804,12 +830,12 @@
       cursor: pointer;
     }
 
-    .resume-ai-send:disabled {
+    .jmod-ai-send:disabled {
       opacity: 0.55;
       cursor: not-allowed;
     }
 
-    .resume-ai-jd {
+    .jmod-ai-jd {
       display: none;
       border: 1px solid var(--chat-border);
       background: var(--chat-input);
@@ -822,11 +848,11 @@
       resize: vertical;
     }
 
-    .resume-ai-jd.show {
+    .jmod-ai-jd.show {
       display: block;
     }
 
-    .resume-ai-mini {
+    .jmod-ai-mini {
       display: flex;
       justify-content: space-between;
       gap: 0.75rem;
@@ -834,21 +860,25 @@
       font-size: 0.78rem;
     }
 
-    .resume-ai-mini a {
+    .jmod-ai-mini a {
       color: var(--accent);
       text-decoration: none;
       font-weight: 800;
     }
 
     @media (max-width: 600px) {
-      .resume-ai-bubble {
+      .jmod-ai-bubble {
         bottom: 4.1rem;
         padding: 0.55rem 0.75rem;
       }
-      .resume-ai-panel {
+      .jmod-ai-panel {
         right: 0.75rem;
         bottom: 7.2rem;
         width: calc(100vw - 1.5rem);
+      }
+      .theme-bulb {
+        width: 42px;
+        height: 42px;
       }
     }
   </style>
@@ -1193,9 +1223,6 @@
         </ul>
       </div>
     </section>
-
-    <!-- THEME TOGGLE BTN -->
-    <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark</button>
   </main>
 
   <!-- FOOTER -->
@@ -1204,51 +1231,59 @@
   </footer>
 
   <!-- ========================= -->
-  <!--  FLOATING RESUME AI CHAT  -->
+  <!--     FLOATING JMOD AI      -->
   <!-- ========================= -->
-  <button class="resume-ai-bubble" id="resumeAiBubble" aria-label="Open Resume AI chat" title="Resume AI">
-    💬 <span>Resume AI</span>
+  <button class="jmod-ai-bubble" id="jmodAiBubble" aria-label="Open Jmod AI chat" title="Jmod AI">
+    💬 <span>Jmod AI</span>
   </button>
 
-  <div class="resume-ai-panel" id="resumeAiPanel" role="dialog" aria-label="Resume AI chat">
-    <div class="resume-ai-header">
-      <div class="resume-ai-title">
-        <strong>Resume AI</strong>
-        <span>Verified experience only.</span>
+  <div class="jmod-ai-panel" id="jmodAiPanel" role="dialog" aria-label="Jmod AI chat">
+    <div class="jmod-ai-header">
+      <div class="jmod-ai-title">
+        <img src="/assets/Signature_WhiteTP.png" alt="Jmod AI logo" id="jmodAiLogo">
+        <div class="twrap">
+          <strong>Jmod AI</strong>
+          <span>Verified experience only.</span>
+        </div>
       </div>
-      <button class="resume-ai-close" id="resumeAiClose" aria-label="Close">✕</button>
+      <button class="jmod-ai-close" id="jmodAiClose" aria-label="Close">✕</button>
     </div>
 
-    <div class="resume-ai-body">
-      <p class="resume-ai-systemline" id="resumeAiWelcome">
-        Want a quick fit check? Paste a job link or ask about results, scope, or certifications.
+    <div class="jmod-ai-body">
+      <p class="jmod-ai-systemline" id="jmodAiWelcome">
+        Ask about scope, results, cost mindset, leadership, or paste a job link.
       </p>
 
-      <div class="resume-ai-chips" id="resumeAiChips">
-        <button class="resume-ai-chip" type="button" data-q="Fit for this role?">Fit for this role?</button>
-        <button class="resume-ai-chip" type="button" data-q="Top quantified results">Top quantified results</button>
-        <button class="resume-ai-chip" type="button" data-q="Leadership scope & team size">Leadership scope & team size</button>
-        <button class="resume-ai-chip" type="button" data-q="Certifications & training">Certifications & training</button>
-      </div>
-
-      <div class="resume-ai-thread" id="resumeAiThread"></div>
-      <div class="resume-ai-alert" id="resumeAiAlert" style="display:none;"></div>
+      <div class="jmod-ai-thread" id="jmodAiThread"></div>
+      <div class="jmod-ai-alert" id="jmodAiAlert" style="display:none;"></div>
     </div>
 
-    <div class="resume-ai-footer">
-      <textarea class="resume-ai-jd" id="resumeAiJobText" placeholder="Paste job description text here (only needed if a job link is blocked)"></textarea>
+    <div class="jmod-ai-footer">
+      <textarea class="jmod-ai-jd" id="jmodAiJobText" placeholder="Paste job description text here (only needed if a job link is blocked)"></textarea>
 
-      <div class="resume-ai-row">
-        <input class="resume-ai-input" id="resumeAiInput" placeholder="Type a question… (optional: paste a job link or JD text)" />
-        <button class="resume-ai-send" id="resumeAiSend">Send</button>
+      <div class="jmod-ai-row">
+        <input class="jmod-ai-input" id="jmodAiInput" placeholder="Type a question… (optional: paste a job link)" />
+        <button class="jmod-ai-send" id="jmodAiSend">Send</button>
       </div>
 
-      <div class="resume-ai-mini">
-        <span id="resumeAiStatus">Ready.</span>
+      <div class="jmod-ai-mini">
+        <span id="jmodAiStatus">Ready.</span>
         <a href="/resume-ai.html" target="_blank" rel="noopener">Open full page</a>
       </div>
     </div>
   </div>
+
+  <!-- ========================= -->
+  <!--   THEME TOGGLE (BULB)     -->
+  <!-- ========================= -->
+  <button class="theme-bulb" id="themeBulb" aria-label="Toggle light/dark" title="Toggle theme">
+    <!-- Outline-only bulb icon -->
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 18h6" />
+      <path d="M10 22h4" />
+      <path d="M8.5 15.5c-1.7-1.3-2.8-3.3-2.8-5.6A6.3 6.3 0 0 1 12 3.8a6.3 6.3 0 0 1 6.3 6.1c0 2.3-1.1 4.3-2.8 5.6-.8.6-1.5 1.8-1.5 2.5H10c0-.7-.7-1.9-1.5-2.5z"/>
+    </svg>
+  </button>
 
   <!-- CORE SCRIPTS -->
   <script>
@@ -1258,6 +1293,12 @@
       const next = current === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
+
+      // swap logo in chat header to match theme (white on dark, black on light)
+      const logo = document.getElementById("jmodAiLogo");
+      if (logo) {
+        logo.src = (next === "dark") ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
+      }
     }
 
     function toggleTranslateWidget() {
@@ -1269,6 +1310,13 @@
       const storedTheme = localStorage.getItem('theme');
       if (storedTheme) {
         document.documentElement.setAttribute('data-theme', storedTheme);
+      }
+
+      // Ensure chat logo matches initial theme
+      const logo = document.getElementById("jmodAiLogo");
+      if (logo) {
+        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+        logo.src = (cur === "dark") ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
       }
 
       function animateValue(id, start, end, duration, suffix = "") {
@@ -1317,19 +1365,24 @@
       }
 
       /* =========================
-         Resume AI Chat Logic
+         Theme bulb binding
+         ========================= */
+      const bulb = document.getElementById("themeBulb");
+      if (bulb) bulb.addEventListener("click", (e) => { e.stopPropagation(); toggleTheme(); });
+
+      /* =========================
+         Jmod AI Chat Logic
          ========================= */
       const API_BASE = "https://resume-ai-backend-sx60.onrender.com/";
-      const bubble = document.getElementById("resumeAiBubble");
-      const panel = document.getElementById("resumeAiPanel");
-      const closeBtn = document.getElementById("resumeAiClose");
-      const input = document.getElementById("resumeAiInput");
-      const send = document.getElementById("resumeAiSend");
-      const thread = document.getElementById("resumeAiThread");
-      const chips = document.getElementById("resumeAiChips");
-      const status = document.getElementById("resumeAiStatus");
-      const alertBox = document.getElementById("resumeAiAlert");
-      const jobTextBox = document.getElementById("resumeAiJobText");
+      const bubble = document.getElementById("jmodAiBubble");
+      const panel = document.getElementById("jmodAiPanel");
+      const closeBtn = document.getElementById("jmodAiClose");
+      const input = document.getElementById("jmodAiInput");
+      const send = document.getElementById("jmodAiSend");
+      const thread = document.getElementById("jmodAiThread");
+      const status = document.getElementById("jmodAiStatus");
+      const alertBox = document.getElementById("jmodAiAlert");
+      const jobTextBox = document.getElementById("jmodAiJobText");
 
       let needsPaste = false;
 
@@ -1345,7 +1398,7 @@
 
       function addMsg(kind, text) {
         const div = document.createElement("div");
-        div.className = "resume-ai-msg " + kind;
+        div.className = "jmod-ai-msg " + kind;
         div.textContent = text;
         thread.appendChild(div);
         thread.parentElement.scrollTop = thread.parentElement.scrollHeight;
@@ -1428,14 +1481,6 @@
         if (!inPanel && !inBubble) closeChat();
       });
 
-      chips.addEventListener("click", (e) => {
-        const btn = e.target.closest("button[data-q]");
-        if (!btn) return;
-        const q = btn.getAttribute("data-q") || "";
-        openChat();
-        handleSend(q);
-      });
-
       send.addEventListener("click", () => handleSend(input.value));
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -1444,7 +1489,7 @@
         }
       });
 
-      // Seed: keep chat empty until user interacts (recruiter-first)
+      // recruiter-first: keep chat empty until user interacts
     });
   </script>
 
