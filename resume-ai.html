@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap">
 
   <style>
-    /* =========================
-       THEME VARIABLES
-       ========================= */
     :root{
       --bg-dark:#121212;
       --text-dark:#ffffff;
@@ -20,71 +17,64 @@
       --bg-light:#ffffff;
       --text-light:#121212;
       --accent-light:#0000ff;
+
+      --panel-dark: rgba(12,12,12,0.75);
+      --panel-light: rgba(255,255,255,0.92);
+
+      --border-dark: rgba(255,255,255,0.12);
+      --border-light: rgba(0,0,0,0.12);
+
+      --input-dark: rgba(255,255,255,0.06);
+      --input-light: rgba(0,0,0,0.04);
     }
 
     html[data-theme='dark']{
       background:var(--bg-dark);
       color:var(--text-dark);
       --accent:var(--accent-dark);
+      --panel:var(--panel-dark);
+      --border:var(--border-dark);
+      --input-bg:var(--input-dark);
     }
 
     html[data-theme='light']{
       background:var(--bg-light);
       color:var(--text-light);
       --accent:var(--accent-light);
+      --panel:var(--panel-light);
+      --border:var(--border-light);
+      --input-bg:var(--input-light);
     }
 
     body{
       font-family:'Inter',system-ui;
       margin:0;
-      padding:0;
       min-height:100vh;
-      position:relative;
-      z-index:1;
+      display:flex;
+      flex-direction:column;
     }
 
     /* =========================
-       WATERMARK
-       ========================= */
-    html[data-theme='dark'] body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      margin:auto;
-      width:min(70vw,600px);
-      background:url("/assets/Signature_WhiteTP.png") center/contain no-repeat;
-      opacity:0.05;
-      pointer-events:none;
-      z-index:0;
-    }
-
-    html[data-theme='light'] body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      margin:auto;
-      width:min(70vw,600px);
-      background:url("/assets/Signature_BlackTP.png") center/contain no-repeat;
-      opacity:0.06;
-      pointer-events:none;
-      z-index:0;
-    }
-
-    /* =========================
-       HEADER
+       HEADER + QUICK LINKS
        ========================= */
     header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:1rem 1.25rem;
-      border-bottom:1px solid rgba(255,255,255,0.12);
-      position:relative;
-      z-index:2;
+      position:sticky;
+      top:0;
+      z-index:5;
+      border-bottom:1px solid var(--border);
+      background:linear-gradient(to right,#00ffee,#71fff5,#ffffff);
+      color:#000;
+    }
+    html[data-theme='light'] header{
+      background:linear-gradient(to right,#0000ff,#5656fc);
+      color:#fff;
     }
 
-    html[data-theme='light'] header{
-      border-bottom:1px solid rgba(0,0,0,0.12);
+    .header-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0.75rem 1.25rem;
     }
 
     .title{
@@ -92,361 +82,214 @@
       align-items:center;
       gap:0.75rem;
     }
+    .title img{width:32px;border-radius:6px}
+    .title strong{font-size:1rem}
 
-    .title img{
-      width:36px;
-      height:36px;
-      border-radius:8px;
-    }
-
-    .title strong{
-      font-size:1.05rem;
-      letter-spacing:0.3px;
-    }
-
-    /* =========================
-       THEME BULB
-       ========================= */
     .theme-bulb{
-      width:44px;
-      height:44px;
+      width:40px;height:40px;
       border-radius:50%;
-      border:2px solid var(--accent);
+      border:2px solid currentColor;
       background:transparent;
-      color:var(--accent);
-      font-size:1.1rem;
       cursor:pointer;
+      font-size:1rem;
     }
 
-    html[data-theme='light'] .theme-bulb{
-      color:#ffd400;
-      border-color:#ffd400;
+    .quick-links{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:0.6rem;
+      padding:0.5rem 0.75rem 0.75rem;
+      font-size:0.85rem;
     }
+
+    .quick-links a{
+      display:inline-flex;
+      align-items:center;
+      gap:0.35rem;
+      font-weight:700;
+      text-decoration:none;
+      color:inherit;
+      padding:0.35rem 0.55rem;
+      border-radius:6px;
+      white-space:nowrap;
+    }
+    .quick-links a:hover{background:rgba(0,0,0,0.1)}
 
     /* =========================
-       MAIN CARD
+       CHAT LAYOUT (IM STYLE)
        ========================= */
     main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
       max-width:900px;
-      margin:2rem auto;
-      padding:0 1.25rem;
-      position:relative;
-      z-index:2;
+      width:100%;
+      margin:0 auto;
     }
 
-    .card{
-      border:1px solid rgba(255,255,255,0.12);
-      border-radius:16px;
+    .chat-thread{
+      flex:1;
+      overflow-y:auto;
       padding:1.25rem;
-      background:rgba(0,0,0,0.35);
     }
 
-    html[data-theme='light'] .card{
-      background:rgba(255,255,255,0.9);
-      border-color:rgba(0,0,0,0.12);
+    .msg{
+      max-width:80%;
+      padding:0.6rem 0.75rem;
+      border-radius:12px;
+      border:1px solid var(--border);
+      margin-bottom:0.65rem;
+      white-space:pre-wrap;
+      line-height:1.4;
+    }
+    .msg.user{align-self:flex-end}
+    .msg.bot{align-self:flex-start}
+
+    .chat-input{
+      border-top:1px solid var(--border);
+      padding:0.75rem;
+      background:var(--panel);
+      display:flex;
+      gap:0.5rem;
     }
 
     textarea,input,button{
-      width:100%;
-      padding:0.7rem 0.75rem;
-      font-size:0.95rem;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.18);
-      background:rgba(255,255,255,0.06);
-      color:inherit;
       font-family:inherit;
-      box-sizing:border-box;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--input-bg);
+      color:inherit;
+      padding:0.6rem;
+      font-size:0.9rem;
     }
 
-    html[data-theme='light'] textarea,
-    html[data-theme='light'] input{
-      background:rgba(0,0,0,0.04);
-      border-color:rgba(0,0,0,0.15);
-    }
-
-    textarea{min-height:110px}
-
+    textarea{flex:1;min-height:48px;resize:none}
     button.primary{
-      margin-top:0.75rem;
       border:2px solid var(--accent);
       background:transparent;
       color:var(--accent);
       font-weight:900;
       cursor:pointer;
+      padding:0.6rem 0.9rem;
     }
-    button.primary:disabled{ opacity:0.55; cursor:not-allowed; }
+    button.primary:disabled{opacity:0.5}
 
     .status{
-      margin-top:0.5rem;
-      font-size:0.85rem;
-      opacity:0.8;
+      font-size:0.75rem;
+      opacity:0.75;
+      margin-top:0.25rem;
     }
 
-    pre{
-      white-space:pre-wrap;
-      word-break:break-word;
-      margin-top:1rem;
-      font-size:0.95rem;
-      line-height:1.45;
-      border-radius:12px;
-      padding:0.85rem 0.9rem;
-      border:1px solid rgba(255,255,255,0.12);
-      background:rgba(255,255,255,0.04);
-      min-height:120px;
-    }
-    html[data-theme='light'] pre{
-      border-color:rgba(0,0,0,0.12);
-      background:rgba(0,0,0,0.03);
-    }
-
-    .hidden{display:none}
-
-    /* =========================
-       FOOTER (MATCH MAIN SITE)
-       ========================= */
     footer{
       text-align:center;
-      margin-top:3rem;
-      font-size:0.9rem;
+      font-size:0.85rem;
       padding:1rem 0;
-      white-space:nowrap;
-      position:relative;
-      z-index:2;
-    }
-
-    footer .spacer{
-      display:block;
-      height:6rem;
+      opacity:0.75;
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <div class="title">
-    <img src="/assets/Signature_WhiteTP.png" alt="JM Logo" id="headerLogo">
-    <strong>Jmod AI · Resume Intelligence</strong>
+<header id="contactHeader">
+  <div class="header-top">
+    <div class="title">
+      <img src="/assets/Signature_WhiteTP.png" id="headerLogo">
+      <strong>Jmod AI · Resume Intelligence</strong>
+    </div>
+    <button class="theme-bulb" id="themeBulb">💡</button>
   </div>
-  <button class="theme-bulb" id="themeBulb" title="Toggle theme" type="button">💡</button>
+
+  <!-- QUICK LINKS STRIP -->
+  <div class="quick-links">
+    <a href="https://www.linkedin.com/in/jordanmoddes/" target="_blank">🔗 LinkedIn</a>
+    <a href="https://calendly.com/jmodwork" target="_blank">📅 Schedule Interview</a>
+    <a href="/Resume-Jordan-Moddes.pdf" target="_blank">📄 Resume</a>
+    <a href="tel:2627050853">📞 Call</a>
+    <a href="sms:2627050853">💬 Text</a>
+    <a href="/vCard.vcf">💾 Save Contact</a>
+  </div>
 </header>
 
 <main>
-  <div class="card">
-    <label><b>Question</b></label>
-    <textarea id="question" placeholder="Ask about scope, results, certifications, leadership…"></textarea>
+  <div class="chat-thread" id="thread"></div>
 
-    <label><b>Job URL (optional)</b></label>
-    <input id="job_url" placeholder="https://www.linkedin.com/jobs/view/..." />
-
-    <div id="pasteBox" class="hidden">
-      <label><b>Paste Job Description</b></label>
-      <textarea id="job_text" placeholder="Paste the JD text here if the link is blocked"></textarea>
-    </div>
-
-    <button class="primary" id="askBtn" type="button">Ask Jmod AI</button>
-    <div class="status" id="status">Ready.</div>
-
-    <label style="display:block; margin-top:0.75rem;"><b>Conversation</b></label>
-    <pre id="answer"></pre>
+  <div class="chat-input">
+    <textarea id="question" placeholder="Ask a direct question…"></textarea>
+    <button class="primary" id="sendBtn">Send</button>
   </div>
+  <div class="status" id="status">Tip: To connect live, use “Schedule Interview” or “Call” above.</div>
 </main>
 
 <footer>
   ✦ Crafted by Jordan Moddes · AI-Partnership ✦
-  <span class="spacer"></span>
 </footer>
 
 <script>
 (() => {
-  const API = "https://resume-ai-backend-sx60.onrender.com/";
-  const $ = (id) => document.getElementById(id);
+  const API="https://resume-ai-backend-sx60.onrender.com/ask";
+  const STORAGE_KEY="jmod_ai_thread_v1";
+  const THEME_KEY="theme";
 
-  // stable shared keys (must match index.html)
-  const STORAGE_KEY_THREAD = "jmod_ai_thread_v1";
-  const STORAGE_KEY_THEME  = "theme";
+  const $=id=>document.getElementById(id);
+  let threadState=[];
 
-  function safe(fn){
-    try { fn(); } catch (e) { console.error(e); }
+  function loadThread(){
+    try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]}catch{return[]}
+  }
+  function saveThread(){localStorage.setItem(STORAGE_KEY,JSON.stringify(threadState))}
+
+  function render(){
+    const t=$("thread"); t.innerHTML="";
+    threadState.forEach(m=>{
+      const d=document.createElement("div");
+      d.className="msg "+m.kind;
+      d.textContent=m.text;
+      t.appendChild(d);
+    });
+    t.scrollTop=t.scrollHeight;
   }
 
-  function loadThreadFromStorage(){
+  function addMsg(kind,text){
+    threadState.push({kind,text,ts:Date.now()});
+    saveThread(); render();
+  }
+
+  async function send(){
+    const q=$("question").value.trim();
+    if(!q) return;
+    $("question").value="";
+    addMsg("user",q);
+    $("status").textContent="Thinking…";
+
     try{
-      const raw = localStorage.getItem(STORAGE_KEY_THREAD);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
+      const res=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q})});
+      const data=await res.json();
+      addMsg("bot",data.answer||"No response.");
+      $("status").textContent="Want to talk live? Schedule an interview or call above.";
     }catch{
-      return [];
+      addMsg("bot","Network error. Try again.");
+      $("status").textContent="Error.";
     }
   }
 
-  function saveThreadToStorage(items){
-    try{ localStorage.setItem(STORAGE_KEY_THREAD, JSON.stringify(items || [])); }catch{}
-  }
-
-  let threadState = [];
-
-  function setAiLogosForTheme(){
-    const theme = document.documentElement.getAttribute("data-theme") || "dark";
-    const src = theme === "dark" ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
-
-    const headerLogo = $("headerLogo");
-    if (headerLogo) headerLogo.src = src;
-
-    const icon = document.querySelector('link[rel="icon"]');
-    if (icon) icon.href = src;
-  }
-
-  function renderStoredThread(){
-    const out = $("answer");
-    if (!out) return;
-
-    if (!threadState || !threadState.length){
-      out.textContent = "";
-      return;
-    }
-
-    // keep this simple and stable: render as a transcript
-    const lines = [];
-    for (const m of threadState){
-      if (!m || !m.kind) continue;
-      const tag = m.kind === "user" ? "You" : (m.kind === "bot" ? "Jmod AI" : m.kind);
-      lines.push(`${tag}:\n${String(m.text || "")}\n`);
-    }
-    out.textContent = lines.join("\n— — —\n\n").trim();
-  }
-
-  function addMsg(kind, text){
-    const msg = { kind, text: String(text || ""), ts: Date.now() };
-    threadState.push(msg);
-    saveThreadToStorage(threadState);
-    renderStoredThread();
-  }
-
-  function toggleTheme(){
-    const html = document.documentElement;
-    const next = (html.getAttribute("data-theme") === "dark") ? "light" : "dark";
-    html.setAttribute("data-theme", next);
-    localStorage.setItem(STORAGE_KEY_THEME, next);
-    setAiLogosForTheme();
-
-    // nudge any listeners (harmless)
-    try { window.dispatchEvent(new Event("storage")); } catch {}
-  }
-
-  async function ask(){
-    const askBtn = $("askBtn");
-    if (askBtn) askBtn.disabled = true;
-
-    $("status").textContent = "Thinking…";
-    $("pasteBox").classList.add("hidden");
-
-    const q = ($("question").value || "").trim();
-    const jobUrl = ($("job_url").value || "").trim();
-    const jobText = ($("job_text") && $("job_text").value ? $("job_text").value.trim() : "") || null;
-
-    if (!q){
-      $("status").textContent = "Type a question.";
-      if (askBtn) askBtn.disabled = false;
-      return;
-    }
-
-    // persist the user message (include job url if provided)
-    const userLine = jobUrl ? `${q}\n\nJob URL: ${jobUrl}` : q;
-    addMsg("user", userLine);
-
-    const payload = {
-      question: q,
-      job_url: jobUrl || null,
-      job_text: jobText
-    };
-
-    try{
-      const res = await fetch(API + "ask", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(payload)
-      });
-
-      let data = null;
-      try { data = await res.json(); } catch { data = null; }
-
-      const answer = (data && data.answer) ? data.answer : (res && !res.ok ? "Server error. Try again." : "No answer returned.");
-      addMsg("bot", answer);
-
-      if (data && data.needs_paste_jd){
-        $("pasteBox").classList.remove("hidden");
-        $("status").textContent = "Paste JD and ask again.";
-      }else{
-        $("status").textContent = "Done.";
-        if ($("question")) $("question").value = "";
-      }
-    }catch(e){
-      $("status").textContent = "Error. Refresh and retry.";
-      addMsg("bot", "Network error. If this persists, refresh the page.");
-    }finally{
-      if (askBtn) askBtn.disabled = false;
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    safe(() => {
-      // restore theme (default dark)
-      const stored = localStorage.getItem(STORAGE_KEY_THEME);
-      if (stored === "light" || stored === "dark") {
-        document.documentElement.setAttribute("data-theme", stored);
-      } else {
-        document.documentElement.setAttribute("data-theme", "dark");
-      }
-      setAiLogosForTheme();
-    });
-
-    safe(() => {
-      // load + render existing thread (no auto-ask, no auto-anything)
-      threadState = loadThreadFromStorage();
-      renderStoredThread();
-    });
-
-    safe(() => {
-      // bind
-      const bulb = $("themeBulb");
-      if (bulb) bulb.addEventListener("click", toggleTheme);
-
-      const askBtn = $("askBtn");
-      if (askBtn) askBtn.addEventListener("click", ask);
-
-      const question = $("question");
-      if (question) {
-        question.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            ask();
-          }
-        });
-      }
-    });
-
-    safe(() => {
-      // cross-tab/page sync
-      window.addEventListener("storage", (e) => {
-        if (!e) return;
-
-        if (e.key === STORAGE_KEY_THEME) {
-          const t = localStorage.getItem(STORAGE_KEY_THEME);
-          if (t === "light" || t === "dark") {
-            document.documentElement.setAttribute("data-theme", t);
-            setAiLogosForTheme();
-          }
-          return;
-        }
-
-        if (e.key === STORAGE_KEY_THREAD) {
-          threadState = loadThreadFromStorage();
-          renderStoredThread();
-        }
-      });
-    });
+  $("sendBtn").onclick=send;
+  $("question").addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}
   });
+
+  // theme
+  function setTheme(t){
+    document.documentElement.setAttribute("data-theme",t);
+    localStorage.setItem(THEME_KEY,t);
+    $("headerLogo").src=t==="dark"?"/assets/Signature_WhiteTP.png":"/assets/Signature_BlackTP.png";
+  }
+  $("themeBulb").onclick=()=>setTheme(document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark");
+  setTheme(localStorage.getItem(THEME_KEY)||"dark");
+
+  // init
+  threadState=loadThread(); render();
 })();
 </script>
 
