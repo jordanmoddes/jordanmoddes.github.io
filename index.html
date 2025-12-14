@@ -146,18 +146,36 @@
       --accent-light: #0000ff;
       --bg-light: #ffffff;
       --text-light: #121212;
+
+      /* Chat widget tokens */
+      --chat-radius: 14px;
+      --chat-shadow: 0 12px 30px rgba(0,0,0,0.35);
     }
 
     html[data-theme='dark'] {
       background-color: var(--bg-dark);
       color: var(--text-dark);
       --accent: var(--accent-dark);
+      --chat-panel: rgba(12,12,12,0.96);
+      --chat-border: rgba(255,255,255,0.10);
+      --chat-text: #ffffff;
+      --chat-muted: rgba(255,255,255,0.72);
+      --chat-chip: rgba(255,255,255,0.08);
+      --chat-chip-hover: rgba(255,255,255,0.12);
+      --chat-input: rgba(255,255,255,0.07);
     }
 
     html[data-theme='light'] {
       background-color: var(--bg-light);
       color: var(--text-light);
       --accent: var(--accent-light);
+      --chat-panel: rgba(255,255,255,0.98);
+      --chat-border: rgba(0,0,0,0.12);
+      --chat-text: #111827;
+      --chat-muted: rgba(17,24,39,0.72);
+      --chat-chip: rgba(17,24,39,0.06);
+      --chat-chip-hover: rgba(17,24,39,0.10);
+      --chat-input: rgba(17,24,39,0.06);
     }
 
     body {
@@ -584,6 +602,255 @@
         transform: translateX(-50%) translateY(0);
       }
     }
+
+    /* =========================
+       FLOATING RESUME AI CHAT
+       ========================= */
+    .resume-ai-bubble {
+      position: fixed;
+      right: 1rem;
+      bottom: 4.1rem; /* above theme toggle */
+      z-index: 1200;
+      border: 2px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      padding: 0.6rem 0.85rem;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+
+    .resume-ai-bubble:hover {
+      transform: translateY(-1px);
+    }
+
+    .resume-ai-panel {
+      position: fixed;
+      right: 1rem;
+      bottom: 7.4rem;
+      z-index: 1201;
+      width: min(360px, calc(100vw - 2rem));
+      max-height: 72vh;
+      display: none;
+      flex-direction: column;
+      border-radius: var(--chat-radius);
+      background: var(--chat-panel);
+      border: 1px solid var(--chat-border);
+      box-shadow: var(--chat-shadow);
+      overflow: hidden;
+    }
+
+    .resume-ai-panel.open {
+      display: flex;
+    }
+
+    .resume-ai-header {
+      padding: 0.9rem 0.95rem 0.75rem;
+      border-bottom: 1px solid var(--chat-border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .resume-ai-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .resume-ai-title strong {
+      color: var(--chat-text);
+      font-size: 0.95rem;
+      letter-spacing: 0.2px;
+    }
+
+    .resume-ai-title span {
+      color: var(--chat-muted);
+      font-size: 0.78rem;
+      line-height: 1.2;
+    }
+
+    .resume-ai-close {
+      border: 1px solid var(--chat-border);
+      background: transparent;
+      color: var(--chat-text);
+      border-radius: 10px;
+      padding: 0.35rem 0.55rem;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .resume-ai-body {
+      padding: 0.85rem 0.95rem;
+      overflow-y: auto;
+      color: var(--chat-text);
+    }
+
+    .resume-ai-systemline {
+      color: var(--chat-text);
+      font-size: 0.92rem;
+      line-height: 1.35;
+      margin: 0 0 0.75rem;
+    }
+
+    .resume-ai-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0 0 0.85rem;
+    }
+
+    .resume-ai-chip {
+      border: 1px solid var(--chat-border);
+      background: var(--chat-chip);
+      color: var(--chat-text);
+      border-radius: 999px;
+      padding: 0.42rem 0.62rem;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .resume-ai-chip:hover {
+      background: var(--chat-chip-hover);
+    }
+
+    .resume-ai-thread {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-top: 0.25rem;
+    }
+
+    .resume-ai-msg {
+      border: 1px solid var(--chat-border);
+      border-radius: 12px;
+      padding: 0.65rem 0.7rem;
+      font-size: 0.9rem;
+      line-height: 1.35;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .resume-ai-msg.user {
+      background: rgba(0,0,0,0.00);
+      border-color: rgba(255,255,255,0.10);
+      align-self: flex-end;
+      max-width: 96%;
+    }
+
+    html[data-theme='light'] .resume-ai-msg.user {
+      border-color: rgba(0,0,0,0.12);
+    }
+
+    .resume-ai-msg.bot {
+      background: rgba(0,0,0,0.00);
+      border-color: rgba(255,255,255,0.10);
+      align-self: flex-start;
+      max-width: 96%;
+    }
+
+    html[data-theme='light'] .resume-ai-msg.bot {
+      border-color: rgba(0,0,0,0.12);
+    }
+
+    .resume-ai-alert {
+      color: var(--chat-muted);
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+      line-height: 1.25;
+    }
+
+    .resume-ai-footer {
+      border-top: 1px solid var(--chat-border);
+      padding: 0.75rem 0.95rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .resume-ai-row {
+      display: flex;
+      gap: 0.55rem;
+      align-items: center;
+    }
+
+    .resume-ai-input {
+      flex: 1 1 auto;
+      border: 1px solid var(--chat-border);
+      background: var(--chat-input);
+      color: var(--chat-text);
+      border-radius: 12px;
+      padding: 0.6rem 0.7rem;
+      font-size: 0.92rem;
+      outline: none;
+    }
+
+    .resume-ai-send {
+      flex: 0 0 auto;
+      border: 2px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      border-radius: 12px;
+      padding: 0.6rem 0.75rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .resume-ai-send:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .resume-ai-jd {
+      display: none;
+      border: 1px solid var(--chat-border);
+      background: var(--chat-input);
+      color: var(--chat-text);
+      border-radius: 12px;
+      padding: 0.6rem 0.7rem;
+      font-size: 0.9rem;
+      outline: none;
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .resume-ai-jd.show {
+      display: block;
+    }
+
+    .resume-ai-mini {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      color: var(--chat-muted);
+      font-size: 0.78rem;
+    }
+
+    .resume-ai-mini a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    @media (max-width: 600px) {
+      .resume-ai-bubble {
+        bottom: 4.1rem;
+        padding: 0.55rem 0.75rem;
+      }
+      .resume-ai-panel {
+        right: 0.75rem;
+        bottom: 7.2rem;
+        width: calc(100vw - 1.5rem);
+      }
+    }
   </style>
 </head>
 <body>
@@ -936,6 +1203,53 @@
     ✦ Crafted by Jordan Moddes · AI-Partnership ✦<br><br><br><br><br><br>
   </footer>
 
+  <!-- ========================= -->
+  <!--  FLOATING RESUME AI CHAT  -->
+  <!-- ========================= -->
+  <button class="resume-ai-bubble" id="resumeAiBubble" aria-label="Open Resume AI chat" title="Resume AI">
+    💬 <span>Resume AI</span>
+  </button>
+
+  <div class="resume-ai-panel" id="resumeAiPanel" role="dialog" aria-label="Resume AI chat">
+    <div class="resume-ai-header">
+      <div class="resume-ai-title">
+        <strong>Resume AI</strong>
+        <span>Verified experience only.</span>
+      </div>
+      <button class="resume-ai-close" id="resumeAiClose" aria-label="Close">✕</button>
+    </div>
+
+    <div class="resume-ai-body">
+      <p class="resume-ai-systemline" id="resumeAiWelcome">
+        Want a quick fit check? Paste a job link or ask about results, scope, or certifications.
+      </p>
+
+      <div class="resume-ai-chips" id="resumeAiChips">
+        <button class="resume-ai-chip" type="button" data-q="Fit for this role?">Fit for this role?</button>
+        <button class="resume-ai-chip" type="button" data-q="Top quantified results">Top quantified results</button>
+        <button class="resume-ai-chip" type="button" data-q="Leadership scope & team size">Leadership scope & team size</button>
+        <button class="resume-ai-chip" type="button" data-q="Certifications & training">Certifications & training</button>
+      </div>
+
+      <div class="resume-ai-thread" id="resumeAiThread"></div>
+      <div class="resume-ai-alert" id="resumeAiAlert" style="display:none;"></div>
+    </div>
+
+    <div class="resume-ai-footer">
+      <textarea class="resume-ai-jd" id="resumeAiJobText" placeholder="Paste job description text here (only needed if a job link is blocked)"></textarea>
+
+      <div class="resume-ai-row">
+        <input class="resume-ai-input" id="resumeAiInput" placeholder="Type a question… (optional: paste a job link or JD text)" />
+        <button class="resume-ai-send" id="resumeAiSend">Send</button>
+      </div>
+
+      <div class="resume-ai-mini">
+        <span id="resumeAiStatus">Ready.</span>
+        <a href="/resume-ai.html" target="_blank" rel="noopener">Open full page</a>
+      </div>
+    </div>
+  </div>
+
   <!-- CORE SCRIPTS -->
   <script>
     function toggleTheme() {
@@ -1001,6 +1315,136 @@
           }
         });
       }
+
+      /* =========================
+         Resume AI Chat Logic
+         ========================= */
+      const API_BASE = "https://resume-ai-backend-sx60.onrender.com/";
+      const bubble = document.getElementById("resumeAiBubble");
+      const panel = document.getElementById("resumeAiPanel");
+      const closeBtn = document.getElementById("resumeAiClose");
+      const input = document.getElementById("resumeAiInput");
+      const send = document.getElementById("resumeAiSend");
+      const thread = document.getElementById("resumeAiThread");
+      const chips = document.getElementById("resumeAiChips");
+      const status = document.getElementById("resumeAiStatus");
+      const alertBox = document.getElementById("resumeAiAlert");
+      const jobTextBox = document.getElementById("resumeAiJobText");
+
+      let needsPaste = false;
+
+      function openChat() {
+        panel.classList.add("open");
+        setTimeout(() => input && input.focus(), 50);
+      }
+
+      function closeChat() {
+        panel.classList.remove("open");
+        alertBox.style.display = "none";
+      }
+
+      function addMsg(kind, text) {
+        const div = document.createElement("div");
+        div.className = "resume-ai-msg " + kind;
+        div.textContent = text;
+        thread.appendChild(div);
+        thread.parentElement.scrollTop = thread.parentElement.scrollHeight;
+      }
+
+      function parseJobUrlFromText(text) {
+        const m = (text || "").match(/https?:\/\/\S+/i);
+        return m ? m[0].replace(/[)\],.]+$/g, "") : "";
+      }
+
+      async function askBackend(questionText) {
+        status.textContent = "Thinking…";
+        send.disabled = true;
+        alertBox.style.display = "none";
+
+        const raw = (questionText || "").trim();
+        const extractedUrl = parseJobUrlFromText(raw);
+        const cleanQuestion = raw.replace(extractedUrl, "").trim() || raw;
+
+        const payload = {
+          question: cleanQuestion,
+          job_url: extractedUrl || null,
+          job_text: (jobTextBox.value || "").trim() || null
+        };
+
+        try {
+          const res = await fetch(API_BASE + "ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await res.json();
+          const answer = (data && data.answer) ? data.answer : "No answer returned.";
+          needsPaste = !!(data && data.needs_paste_jd);
+
+          addMsg("bot", answer);
+
+          if (needsPaste) {
+            jobTextBox.classList.add("show");
+            alertBox.textContent = "This job link is blocked. Paste the job description text to continue.";
+            alertBox.style.display = "block";
+            status.textContent = "Paste JD, then send again.";
+          } else {
+            jobTextBox.classList.remove("show");
+            status.textContent = "Ready.";
+          }
+        } catch (e) {
+          status.textContent = "Error.";
+          alertBox.textContent = "Network error. If this persists, refresh the page.";
+          alertBox.style.display = "block";
+        } finally {
+          send.disabled = false;
+        }
+      }
+
+      function handleSend(text) {
+        const t = (text || "").trim();
+        if (!t) return;
+        addMsg("user", t);
+        input.value = "";
+        askBackend(t);
+      }
+
+      bubble.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (panel.classList.contains("open")) closeChat();
+        else openChat();
+      });
+
+      closeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeChat();
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!panel.classList.contains("open")) return;
+        const inPanel = panel.contains(e.target);
+        const inBubble = bubble.contains(e.target);
+        if (!inPanel && !inBubble) closeChat();
+      });
+
+      chips.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-q]");
+        if (!btn) return;
+        const q = btn.getAttribute("data-q") || "";
+        openChat();
+        handleSend(q);
+      });
+
+      send.addEventListener("click", () => handleSend(input.value));
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSend(input.value);
+        }
+      });
+
+      // Seed: keep chat empty until user interacts (recruiter-first)
     });
   </script>
 
