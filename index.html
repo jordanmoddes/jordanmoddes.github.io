@@ -1083,7 +1083,19 @@
       }
 
       // ====== shared storage keys (stable across pages) ======
-      const STORAGE_KEY_THREAD = "jmod_ai_thread_v1";
+      const VISITOR_KEY = "jmod_visitor_id_v1";
+      
+      function getVisitorId(){
+        let id = localStorage.getItem(VISITOR_KEY);
+        if (!id){
+          id = crypto.randomUUID();
+          localStorage.setItem(VISITOR_KEY, id);
+        }
+        return id;
+      }
+      
+      const VISITOR_ID = getVisitorId();
+      const STORAGE_KEY = `jmod_ai_thread_v1::${VISITOR_ID}`;
       const STORAGE_KEY_THEME = "theme";
 
       // Restore theme (default dark)
