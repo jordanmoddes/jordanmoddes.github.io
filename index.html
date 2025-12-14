@@ -1039,7 +1039,7 @@
 
       <div class="jmod-ai-mini">
         <span id="jmodAiStatus">Ready.</span>
-        <a href="/resume-ai.html" target="_blank" rel="noopener">Open full page</a>
+        <a href="/resume-ai.html?resumeai=1" target="_blank" rel="noopener" id="openFullPageLink">Open full page</a>
       </div>
     </div>
   </div>
@@ -1065,19 +1065,38 @@
       const next = current === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
+
+      // Notify any listeners (resume-ai.html, other pages, etc.)
+      try { window.dispatchEvent(new Event("storage")); } catch {}
     }
 
     function toggleTranslateWidget() {
       const widget = document.getElementById("google_translate_element");
+      if (!widget) return;
       widget.style.display = (widget.style.display === "none" || widget.style.display === "") ? "block" : "none";
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-      // Restore theme
-      const storedTheme = localStorage.getItem('theme');
-      if (storedTheme) document.documentElement.setAttribute('data-theme', storedTheme);
+      // ====== harden: never let one failure kill the rest ======
+      function safe(fn) {
+        try { fn(); } catch (e) { console.error(e); }
+      }
 
-      // Keep translate button theme-aware (matches your old behavior)
+      // ====== shared storage keys (stable across pages) ======
+      const STORAGE_KEY_THREAD = "jmod_ai_thread_v1";
+      const STORAGE_KEY_THEME = "theme";
+
+      // Restore theme (default dark)
+      safe(() => {
+        const storedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+        if (storedTheme === "light" || storedTheme === "dark") {
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      });
+
+      // Keep translate button theme-aware
       const translateBtn = document.getElementById("translateToggle");
       function paintTranslateBtn() {
         const theme = document.documentElement.getAttribute("data-theme") || "dark";
@@ -1085,7 +1104,6 @@
         if (theme === "dark") { translateBtn.style.background = "#00ffee"; translateBtn.style.color = "#000"; }
         else { translateBtn.style.background = "#0000ff"; translateBtn.style.color = "#fff"; }
       }
-      paintTranslateBtn();
 
       // Update logos based on theme
       const jmodAiLogo = document.getElementById("jmodAiLogo");
@@ -1095,205 +1113,301 @@
         const src = theme === "dark" ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
         if (jmodAiLogo) jmodAiLogo.src = src;
         if (jmodAiBubbleLogo) jmodAiBubbleLogo.src = src;
+        // keep favicon in sync too
+        const icon = document.querySelector('link[rel="icon"]');
+        if (icon) icon.href = src;
         paintTranslateBtn();
       }
-      setAiLogosForTheme();
+      safe(setAiLogosForTheme);
+
+      // Listen for theme changes from other tabs/pages
+      safe(() => {
+        window.addEventListener("storage", (e) => {
+          if (!e || (e.key && e.key !== STORAGE_KEY_THEME && e.key !== STORAGE_KEY_THREAD)) return;
+          const storedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+          if (storedTheme === "light" || storedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", storedTheme);
+            setAiLogosForTheme();
+          }
+        });
+      });
 
       // Metrics animation
-      function animateValue(id, start, end, duration, suffix = "") {
-        const obj = document.getElementById(id);
-        if (!obj) return;
-        const range = end - start;
-        if (range === 0) { obj.textContent = end + suffix; return; }
-        const stepTime = Math.max(20, Math.abs(Math.floor(duration / range)));
-        let current = start;
-        const timer = setInterval(() => {
-          current += Math.sign(range);
-          obj.textContent = current + suffix;
-          if ((range > 0 && current >= end) || (range < 0 && current <= end)) clearInterval(timer);
-        }, stepTime);
-      }
-      animateValue("sitesVisited", 0, 53, 1500);
-      animateValue("facilitiesHome", 0, 5, 1500);
-      animateValue("leadersPromoted", 0, 9, 1500);
-      animateValue("associatesPromoted", 0, 22, 1500);
-      animateValue("networkProjects", 0, 3, 1500);
-      animateValue("regionalProjects", 0, 10, 1500);
-      animateValue("performanceGains", 0, 15, 1500, "%");
-      animateValue("VBAMacros", 0, 19, 1500);
-      animateValue("SOPCreated", 0, 5, 1500);
+      safe(() => {
+        function animateValue(id, start, end, duration, suffix = "") {
+          const obj = document.getElementById(id);
+          if (!obj) return;
+          const range = end - start;
+          if (range === 0) { obj.textContent = end + suffix; return; }
+          const stepTime = Math.max(20, Math.abs(Math.floor(duration / range)));
+          let current = start;
+          const timer = setInterval(() => {
+            current += Math.sign(range);
+            obj.textContent = current + suffix;
+            if ((range > 0 && current >= end) || (range < 0 && current <= end)) clearInterval(timer);
+          }, stepTime);
+        }
+        animateValue("sitesVisited", 0, 53, 1500);
+        animateValue("facilitiesHome", 0, 5, 1500);
+        animateValue("leadersPromoted", 0, 9, 1500);
+        animateValue("associatesPromoted", 0, 22, 1500);
+        animateValue("networkProjects", 0, 3, 1500);
+        animateValue("regionalProjects", 0, 10, 1500);
+        animateValue("performanceGains", 0, 15, 1500, "%");
+        animateValue("VBAMacros", 0, 19, 1500);
+        animateValue("SOPCreated", 0, 5, 1500);
+      });
 
       // Share dropdown behavior
-      const shareButton = document.querySelector(".share-button");
-      const shareContent = document.querySelector(".share-content");
+      safe(() => {
+        const shareButton = document.querySelector(".share-button");
+        const shareContent = document.querySelector(".share-content");
 
-      if (shareButton && shareContent) {
-        shareButton.addEventListener("click", function (e) {
-          e.stopPropagation();
-          shareContent.style.display = shareContent.style.display === "block" ? "none" : "block";
-        });
+        if (shareButton && shareContent) {
+          shareButton.addEventListener("click", function (e) {
+            e.stopPropagation();
+            shareContent.style.display = shareContent.style.display === "block" ? "none" : "block";
+          });
 
-        document.addEventListener("click", function (e) {
-          if (!shareContent.contains(e.target) && e.target !== shareButton) shareContent.style.display = "none";
-        });
-      }
+          document.addEventListener("click", function (e) {
+            if (!shareContent.contains(e.target) && e.target !== shareButton) shareContent.style.display = "none";
+          });
+        }
+      });
 
       // Copy link
-      const copyLinkBtn = document.getElementById("copyLinkBtn");
-      if (copyLinkBtn) {
-        copyLinkBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          navigator.clipboard.writeText('https://www.jordanmoddes.com');
-          alert('Link copied to clipboard!');
-        });
-      }
+      safe(() => {
+        const copyLinkBtn = document.getElementById("copyLinkBtn");
+        if (copyLinkBtn) {
+          copyLinkBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            navigator.clipboard.writeText('https://www.jordanmoddes.com');
+            alert('Link copied to clipboard!');
+          });
+        }
+      });
 
       /* =========================
          Theme bulb binding
          ========================= */
-      const bulb = document.getElementById("themeBulb");
-      if (bulb) bulb.addEventListener("click", (e) => {
-        e.stopPropagation();
-        toggleTheme();
-        setAiLogosForTheme();
+      safe(() => {
+        const bulb = document.getElementById("themeBulb");
+        if (bulb) bulb.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleTheme();
+          setAiLogosForTheme();
+        });
       });
 
       /* =========================
          Jmod AI Chat Logic
          ========================= */
-      const API_BASE = "https://resume-ai-backend-sx60.onrender.com/";
-      const bubble = document.getElementById("jmodAiBubble");
-      const panel = document.getElementById("jmodAiPanel");
-      const closeBtn = document.getElementById("jmodAiClose");
-      const input = document.getElementById("jmodAiInput");
-      const send = document.getElementById("jmodAiSend");
-      const thread = document.getElementById("jmodAiThread");
-      const status = document.getElementById("jmodAiStatus");
-      const alertBox = document.getElementById("jmodAiAlert");
-      const jobTextBox = document.getElementById("jmodAiJobText");
+      safe(() => {
+        const API_BASE = "https://resume-ai-backend-sx60.onrender.com/";
+        const bubble = document.getElementById("jmodAiBubble");
+        const panel = document.getElementById("jmodAiPanel");
+        const closeBtn = document.getElementById("jmodAiClose");
+        const input = document.getElementById("jmodAiInput");
+        const send = document.getElementById("jmodAiSend");
+        const thread = document.getElementById("jmodAiThread");
+        const status = document.getElementById("jmodAiStatus");
+        const alertBox = document.getElementById("jmodAiAlert");
+        const jobTextBox = document.getElementById("jmodAiJobText");
+        const openFullPageLink = document.getElementById("openFullPageLink");
 
-      function openChat() {
-        if (!panel) return;
-        panel.classList.add("open");
-        setTimeout(() => input && input.focus(), 50);
-      }
+        // ===== Persisted chat (shared with /resume-ai.html) =====
+        function loadThreadFromStorage() {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY_THREAD);
+            const parsed = raw ? JSON.parse(raw) : [];
+            return Array.isArray(parsed) ? parsed : [];
+          } catch {
+            return [];
+          }
+        }
 
-      function closeChat() {
-        if (!panel) return;
-        panel.classList.remove("open");
-        if (alertBox) alertBox.style.display = "none";
-      }
+        function saveThreadToStorage(items) {
+          try {
+            localStorage.setItem(STORAGE_KEY_THREAD, JSON.stringify(items || []));
+          } catch {}
+        }
 
-      function addMsg(kind, text) {
-        if (!thread) return;
-        const div = document.createElement("div");
-        div.className = "jmod-ai-msg " + kind;
-        div.textContent = text;
-        thread.appendChild(div);
-        // scroll body container
-        const body = panel ? panel.querySelector(".jmod-ai-body") : null;
-        if (body) body.scrollTop = body.scrollHeight;
-      }
+        // in-memory copy
+        let threadState = loadThreadFromStorage();
 
-      function parseJobUrlFromText(text) {
-        const m = (text || "").match(/https?:\/\/\S+/i);
-        return m ? m[0].replace(/[)\],.]+$/g, "") : "";
-      }
+        function renderStoredThread() {
+          if (!thread) return;
+          thread.innerHTML = "";
+          for (const m of (threadState || [])) {
+            if (!m || !m.kind) continue;
+            const div = document.createElement("div");
+            div.className = "jmod-ai-msg " + m.kind;
+            div.textContent = String(m.text || "");
+            thread.appendChild(div);
+          }
+          if (thread.parentElement) {
+            thread.parentElement.scrollTop = thread.parentElement.scrollHeight;
+          }
+        }
 
-      async function askBackend(questionText) {
-        if (!status || !send) return;
+        // render any saved history on load (WITHOUT opening panel)
+        renderStoredThread();
 
-        status.textContent = "Thinking…";
-        send.disabled = true;
-        if (alertBox) alertBox.style.display = "none";
+        // Keep in sync if another tab/page writes to localStorage
+        window.addEventListener("storage", (e) => {
+          if (!e || e.key !== STORAGE_KEY_THREAD) return;
+          threadState = loadThreadFromStorage();
+          renderStoredThread();
+        });
 
-        const raw = (questionText || "").trim();
-        const extractedUrl = parseJobUrlFromText(raw);
-        const cleanQuestion = raw.replace(extractedUrl, "").trim() || raw;
-
-        const payload = {
-          question: cleanQuestion,
-          job_url: extractedUrl || null,
-          job_text: (jobTextBox && jobTextBox.value ? jobTextBox.value.trim() : "") || null
-        };
-
-        try {
-          const res = await fetch(API_BASE + "ask", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+        // Ensure "Open full page" carries history (localStorage already does)
+        // Also pass a flag for the other page to optionally focus; it should not auto-open here.
+        if (openFullPageLink) {
+          openFullPageLink.addEventListener("click", () => {
+            try { localStorage.setItem("jmod_ai_last_opened_from", "index"); } catch {}
           });
+        }
 
-          const data = await res.json();
-          const answer = (data && data.answer) ? data.answer : "No answer returned.";
-          const needsPaste = !!(data && data.needs_paste_jd);
+        function openChat() {
+          if (!panel) return;
+          panel.classList.add("open");
+          setTimeout(() => input && input.focus(), 50);
+        }
 
-          addMsg("bot", answer);
+        function closeChat() {
+          if (!panel) return;
+          panel.classList.remove("open");
+          if (alertBox) alertBox.style.display = "none";
+        }
 
-          if (needsPaste) {
-            if (jobTextBox) jobTextBox.classList.add("show");
+        function addMsg(kind, text) {
+          if (!thread) return;
+          const msg = {
+            kind,
+            text: String(text || ""),
+            ts: Date.now()
+          };
+
+          // store
+          threadState.push(msg);
+          saveThreadToStorage(threadState);
+
+          // render (append)
+          const div = document.createElement("div");
+          div.className = "jmod-ai-msg " + kind;
+          div.textContent = msg.text;
+          thread.appendChild(div);
+          if (thread.parentElement) {
+            thread.parentElement.scrollTop = thread.parentElement.scrollHeight;
+          }
+        }
+
+        function parseJobUrlFromText(text) {
+          const m = (text || "").match(/https?:\/\/\S+/i);
+          return m ? m[0].replace(/[)\],.]+$/g, "") : "";
+        }
+
+        async function askBackend(questionText) {
+          if (!status || !send) return;
+
+          status.textContent = "Thinking…";
+          send.disabled = true;
+          if (alertBox) alertBox.style.display = "none";
+
+          const raw = (questionText || "").trim();
+          const extractedUrl = parseJobUrlFromText(raw);
+          const cleanQuestion = raw.replace(extractedUrl, "").trim() || raw;
+
+          const payload = {
+            question: cleanQuestion,
+            job_url: extractedUrl || null,
+            job_text: (jobTextBox && jobTextBox.value ? jobTextBox.value.trim() : "") || null
+          };
+
+          try {
+            const res = await fetch(API_BASE + "ask", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+
+            let data = null;
+            try { data = await res.json(); } catch { data = null; }
+
+            const answer = (data && data.answer) ? data.answer : (res && !res.ok ? "Server error. Try again." : "No answer returned.");
+            const needsPaste = !!(data && data.needs_paste_jd);
+
+            addMsg("bot", answer);
+
+            if (needsPaste) {
+              if (jobTextBox) jobTextBox.classList.add("show");
+              if (alertBox) {
+                alertBox.textContent = "This job link is blocked. Paste the job description text to continue.";
+                alertBox.style.display = "block";
+              }
+              status.textContent = "Paste JD, then send again.";
+            } else {
+              if (jobTextBox) jobTextBox.classList.remove("show");
+              status.textContent = "Ready.";
+            }
+          } catch (e) {
+            status.textContent = "Error.";
             if (alertBox) {
-              alertBox.textContent = "This job link is blocked. Paste the job description text to continue.";
+              alertBox.textContent = "Network error. If this persists, refresh the page.";
               alertBox.style.display = "block";
             }
-            status.textContent = "Paste JD, then send again.";
-          } else {
-            if (jobTextBox) jobTextBox.classList.remove("show");
-            status.textContent = "Ready.";
+          } finally {
+            send.disabled = false;
           }
-        } catch (e) {
-          status.textContent = "Error.";
-          if (alertBox) {
-            alertBox.textContent = "Network error. If this persists, refresh the page.";
-            alertBox.style.display = "block";
-          }
-        } finally {
-          send.disabled = false;
         }
-      }
 
-      function handleSend(text) {
-        const t = (text || "").trim();
-        if (!t) return;
-        addMsg("user", t);
-        if (input) input.value = "";
-        askBackend(t);
-      }
+        function handleSend(text) {
+          const t = (text || "").trim();
+          if (!t) return;
+          addMsg("user", t);
+          if (input) input.value = "";
+          askBackend(t);
+        }
 
-      if (bubble) {
-        bubble.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (!panel) return;
-          if (panel.classList.contains("open")) closeChat();
-          else openChat();
+        if (bubble) {
+          bubble.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (!panel) return;
+            if (panel.classList.contains("open")) closeChat();
+            else openChat();
+          });
+        }
+
+        if (closeBtn) {
+          closeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            closeChat();
+          });
+        }
+
+        document.addEventListener("click", (e) => {
+          if (!panel || !panel.classList.contains("open")) return;
+          const inPanel = panel.contains(e.target);
+          const inBubble = bubble && bubble.contains(e.target);
+          if (!inPanel && !inBubble) closeChat();
         });
-      }
 
-      if (closeBtn) {
-        closeBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          closeChat();
-        });
-      }
-
-      document.addEventListener("click", (e) => {
-        if (!panel || !panel.classList.contains("open")) return;
-        const inPanel = panel.contains(e.target);
-        const inBubble = bubble && bubble.contains(e.target);
-        if (!inPanel && !inBubble) closeChat();
+        if (send) send.addEventListener("click", () => handleSend(input ? input.value : ""));
+        if (input) {
+          input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSend(input.value);
+            }
+          });
+        }
       });
 
-      if (send) send.addEventListener("click", () => handleSend(input ? input.value : ""));
-      if (input) {
-        input.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            handleSend(input.value);
-          }
-        });
-      }
-
-      // Recruiter-first: keep chat empty until user interacts (no preset chips)
+      // Final paint pass (theme + logos + translate button)
+      safe(() => {
+        paintTranslateBtn();
+        setAiLogosForTheme();
+      });
     });
   </script>
 </body>
