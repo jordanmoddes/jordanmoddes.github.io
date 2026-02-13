@@ -1,1 +1,177 @@
-Here
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burros Tex-Mex Bar & Grill - Home</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5dc; /* Beige background */
+            color: #000000;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #a52a2a; /* Rustic red */
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        header img.logo {
+            max-width: 300px;
+            height: auto;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .images img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .images img:hover {
+            transform: scale(1.05);
+        }
+        .thick-line {
+            border: none;
+            height: 5px;
+            background-color: #a52a2a; /* Thick red line */
+            margin: 40px 0;
+        }
+        .info-section {
+            margin-bottom: 40px;
+        }
+        .info-section h2 {
+            color: #a52a2a;
+            font-size: 1.8em;
+        }
+        .menu-categories {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 15px;
+        }
+        .menu-categories a {
+            background-color: #228b22; /* Green buttons */
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: block;
+        }
+        .menu-categories a:hover {
+            background-color: #006400; /* Darker green on hover */
+        }
+        footer {
+            background-color: #a52a2a;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            margin-top: 40px;
+        }
+
+        /* Desktop responsive styles */
+        @media (min-width: 768px) {
+            .images {
+                flex-direction: row;
+            }
+            .images img {
+                max-width: 45%;
+            }
+            .menu-categories {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/BurrosTexMexBarandGrill_900_Round_Rock_TX.png" alt="Burros Tex-Mex Bar & Grill Logo" class="logo">
+        <h1>Welcome to Burros Tex-Mex Bar & Grill</h1>
+        <p>Just be you!!</p>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <p>Enjoy authentic Tex-Mex flavors in Round Rock, TX. Join us for flame-grilled favorites, fresh margaritas, and a welcoming vibe.</p>
+        </section>
+
+        <section class="images">
+            <img src="https://static.wixstatic.com/media/dbcf98_0210ffa418104c788a40887a926d5d59\~mv2.jpg/v1/fill/w_262,h_785,al_c,q_80,enc_avif,quality_auto/dbcf98_0210ffa418104c788a40887a926d5d59\~mv2.jpg" alt="Burros food item 1">
+            <img src="https://static.wixstatic.com/media/dbcf98_bbc4bc3e9022469d98ef9c5181ce30aa\~mv2.jpg/v1/fill/w_262,h_785,al_c,q_80,enc_avif,quality_auto/dbcf98_bbc4bc3e9022469d98ef9c5181ce30aa\~mv2.jpg" alt="Burros food item 2">
+        </section>
+
+        <hr class="thick-line">
+
+        <section class="info-section">
+            <h2>Our Hours</h2>
+            <p>Sunday-Thursday: 11 AM - 9 PM<br>Friday-Saturday: 11 AM - 10 PM</p>
+        </section>
+
+        <section class="info-section">
+            <h2>Daily Specials</h2>
+            <ul>
+                <li>Monday: Happy Hour All Day</li>
+                <li>Tuesday: House Mexican Martini $9.49</li>
+                <li>Wednesday: Strawberry Rita $5</li>
+                <li>Thursday: Sangria Rita $5</li>
+            </ul>
+            <p>Lunch Specials (11 AM - 4 PM Mon-Fri): From $7.59 (e.g., Enchiladas) to $8.99 (e.g., Fajitas). Add soup/salad for $1.99.</p>
+        </section>
+
+        <section class="info-section">
+            <h2>Menu Categories</h2>
+            <div class="menu-categories">
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/appetizers">Appetizers</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/soups-salads">Soups</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/soups-salads">Salads</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/combo">Combos</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/burros">Burros</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/enchiladas">Enchiladas</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/tostadas">Tostadas</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/fajitas">Fajitas</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/rellenos">Chile Relleno</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/grilled-pechugas">Pechugas</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/taco-plates">Taco Plates</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/fried-specialties">Fried Specialties</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/seafood">Seafood</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/platos-especiales">Platos Especiales</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/southern-plates">Southern Plates</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/lunch-specials-1">Lunch Specials</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/dessert">Dessert</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/beverages">Beverages</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/kid-s-menu">Kids Menu</a>
+                <a href="https://burrosbarandgrill.wixsite.com/burrosbarandgrill/bar-menu">Bar Menu</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>900 E Palm Valley Blvd, Round Rock, TX 78664 | (512) 305-3881<br>© 2026 Burros Tex-Mex Bar & Grill</p>
+    </footer>
+</body>
+</html>
