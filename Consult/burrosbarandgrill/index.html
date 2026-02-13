@@ -10,10 +10,18 @@
     :root{
       --accent-red:#a52a2a;
       --accent-green:#228b22;
+
       --bg-cream:#f5f5dc;
       --text:#111;
       --muted:#444;
-      --card:#fffaf0;
+
+      /* pink system */
+      --bubble-normal: rgba(245,245,220,.60);
+      --bubble-margin: rgba(255,230,235,.86);  /* soft pink */
+      --bubble-special: rgba(255,211,221,.92); /* stronger pink */
+      --bubble-special-border: rgba(165,42,42,.55);
+
+      --card: rgba(255,250,240,.92);
       --shadow: 0 10px 28px rgba(0,0,0,.12);
       --radius: 18px;
       --max: 1120px;
@@ -31,34 +39,28 @@
     }
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
-    .sr-only{
-      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
-    }
 
-    /* Top bar */
+    /* Sticky top bar */
     .topbar{
-      position:sticky; top:0; z-index:50;
+      position:sticky; top:0; z-index:60;
       backdrop-filter: blur(10px);
-      background: rgba(245,245,220,.82);
+      background: rgba(245,245,220,.86);
       border-bottom: 2px solid rgba(165,42,42,.25);
     }
     .topbar-inner{
       display:flex; align-items:center; justify-content:space-between;
-      padding:12px 0;
-      gap:12px;
+      padding:12px 0; gap:12px;
     }
     .brand-mini{
       display:flex; align-items:center; gap:10px;
       text-decoration:none;
     }
-    .brand-mini img{width:38px; height:38px; border-radius:10px; object-fit:contain; background:#fff; box-shadow: var(--shadow)}
-    .brand-mini .t{
-      font-weight:800; letter-spacing:.2px;
+    .brand-mini img{
+      width:38px; height:38px; border-radius:10px; object-fit:contain;
+      background:#fff; box-shadow: var(--shadow); padding:4px;
     }
-    .lang{
-      display:flex; align-items:center; gap:8px;
-    }
+    .brand-mini .t{font-weight:900; letter-spacing:.2px}
+    .lang{display:flex; align-items:center; gap:10px}
     .lang .pill{
       display:inline-flex; border:1.5px solid rgba(0,0,0,.18);
       border-radius:999px; overflow:hidden; background:#fff;
@@ -67,34 +69,29 @@
     .lang button{
       border:0; background:transparent;
       padding:9px 12px;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.5px;
       cursor:pointer;
     }
-    .lang button[aria-pressed="true"]{
-      background: var(--accent-green);
-      color:#fff;
-    }
+    .lang button[aria-pressed="true"]{background: var(--accent-green); color:#fff}
     .lang button:focus-visible{outline:none; box-shadow: var(--focus)}
     .cta-call{
       text-decoration:none;
       display:inline-flex; align-items:center; gap:10px;
       padding:10px 14px;
       border-radius:999px;
-      background: #111;
-      color:#fff;
-      font-weight:800;
+      background:#111; color:#fff;
+      font-weight:900;
       border:1px solid rgba(255,255,255,.18);
       transition: transform .18s ease, box-shadow .18s ease;
+      white-space:nowrap;
     }
     .cta-call:hover{transform: translateY(-1px); box-shadow: var(--shadow)}
     .cta-call:focus-visible{outline:none; box-shadow: var(--focus)}
-    .cta-call small{opacity:.8; font-weight:700}
+    .cta-call small{opacity:.82; font-weight:800}
 
     /* Hero */
-    header.hero{
-      padding:26px 0 18px;
-    }
+    header.hero{padding:26px 0 14px}
     .hero-grid{
       display:grid;
       grid-template-columns: 1.2fr .8fr;
@@ -102,7 +99,7 @@
       align-items:stretch;
     }
     .hero-card{
-      background: rgba(255,250,240,.92);
+      background: var(--card);
       border: 1.5px solid rgba(165,42,42,.18);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -123,58 +120,33 @@
       margin:14px 0 6px;
       font-size: clamp(1.55rem, 1.2rem + 1.6vw, 2.35rem);
       letter-spacing:.2px;
+      font-weight:1000;
     }
     .tagline{
+      margin:0 0 10px;
+      color: var(--accent-red);
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+    .trust-row{
+      display:flex; flex-wrap:wrap; gap:10px;
+      align-items:center;
       margin:0 0 12px;
-      color: var(--accent-red);
+    }
+    .trust-chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.12);
+      box-shadow: 0 10px 18px rgba(0,0,0,.08);
       font-weight:900;
-      letter-spacing:.2px;
     }
-    .intro{
-      margin:0;
-      color: var(--muted);
-      font-size: 1.02rem;
-      max-width: 68ch;
-    }
+    .trust-chip .muted{font-weight:800; color:var(--muted)}
+    .trust-chip .star{color:#b8860b}
+    .intro{margin:0; color:var(--muted); font-size:1.02rem; max-width:68ch}
 
-    .info-card{
-      background: rgba(255,250,240,.92);
-      border: 1.5px solid rgba(0,0,0,.10);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      gap:14px;
-    }
-    .info-grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-    }
-    .info-item{
-      border: 1px dashed rgba(165,42,42,.35);
-      border-radius: 14px;
-      padding:12px;
-      background: rgba(245,245,220,.55);
-    }
-    .info-item h3{
-      margin:0 0 6px;
-      color: var(--accent-red);
-      font-size: 1.02rem;
-      letter-spacing:.2px;
-    }
-    .info-item p{margin:0; color: var(--text)}
-    .info-item a{color: var(--text); font-weight:800; text-decoration:none}
-    .info-item a:hover{text-decoration:underline}
-    .specials ul{
-      margin:8px 0 0 18px;
-      padding:0;
-      color: var(--text);
-    }
-
-    /* Images */
+    /* Photos */
     .photo-row{
       margin-top:16px;
       display:grid;
@@ -207,15 +179,91 @@
       box-shadow: 0 8px 18px rgba(165,42,42,.25);
     }
 
-    /* Menu nav buttons */
-    section.menu-nav{
-      padding:20px 0 6px;
+    /* Action cards (Hours/Address/Phone/Specials) */
+    .info-card{
+      background: var(--card);
+      border: 1.5px solid rgba(0,0,0,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:14px;
     }
+    .info-grid{display:grid; grid-template-columns: 1fr; gap:12px}
+    .action-card{
+      border-radius: 16px;
+      padding:12px;
+      background: rgba(255,230,235,.45);
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 10px 18px rgba(0,0,0,.06);
+      position:relative;
+      overflow:hidden;
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+    .action-card:before{
+      content:"";
+      position:absolute; left:0; top:0; bottom:0;
+      width:7px;
+      background: linear-gradient(180deg, rgba(165,42,42,.95), rgba(34,139,34,.85));
+    }
+    .action-card:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.10);
+      background: rgba(255,211,221,.52);
+    }
+    .action-head{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:6px;
+      padding-left:10px;
+    }
+    .action-head h3{
+      margin:0;
+      color: var(--accent-red);
+      font-size: 1.03rem;
+      letter-spacing:.2px;
+      font-weight:1000;
+      display:flex; align-items:center; gap:8px;
+    }
+    .action-body{padding-left:10px}
+    .action-body p{margin:0; color:var(--text)}
+    .action-body a{color:var(--text); font-weight:1000; text-decoration:none}
+    .action-body a:hover{text-decoration:underline}
+    .mini-cta-row{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-top:10px;
+      padding-left:10px;
+    }
+    .mini-cta{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border-radius: 12px;
+      background: var(--accent-green);
+      color:#fff;
+      text-decoration:none;
+      font-weight:1000;
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 12px 22px rgba(34,139,34,.16);
+      transition: transform .16s ease, filter .16s ease, box-shadow .16s ease;
+      min-height:44px;
+      flex: 1 1 auto;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .mini-cta:hover{transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 14px 28px rgba(34,139,34,.22)}
+    .mini-cta:focus-visible{outline:none; box-shadow: var(--focus)}
+    .mini-cta.alt{background:#111; box-shadow: 0 12px 22px rgba(0,0,0,.16)}
+    .mini-cta.alt:hover{box-shadow: 0 14px 28px rgba(0,0,0,.20)}
+
+    /* Menu nav buttons */
+    section.menu-nav{padding:16px 0 6px}
     .section-title{
       margin:0 0 10px;
       font-size: 1.35rem;
       color: var(--accent-red);
       letter-spacing:.2px;
+      font-weight:1000;
     }
     .menu-buttons{
       display:grid;
@@ -232,7 +280,7 @@
       border-radius: 14px;
       background: var(--accent-green);
       color:#fff;
-      font-weight:900;
+      font-weight:1000;
       border: 1px solid rgba(255,255,255,.18);
       box-shadow: 0 12px 22px rgba(34,139,34,.18);
       transition: transform .16s ease, filter .16s ease, box-shadow .16s ease;
@@ -240,20 +288,16 @@
     }
     .menu-buttons a:hover{transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 14px 28px rgba(34,139,34,.22)}
     .menu-buttons a:focus-visible{outline:none; box-shadow: var(--focus)}
-    .hint{
-      margin:10px 0 0;
-      color: var(--muted);
-      font-size:.95rem;
-    }
+    .hint{margin:10px 0 0; color:var(--muted); font-size:.95rem}
 
     /* Menu sections */
-    main{padding:10px 0 28px}
+    main{padding:10px 0 90px} /* extra bottom space for sticky bar */
     .menu-section{
       scroll-margin-top: 90px;
       margin-top:18px;
       border-radius: var(--radius);
       border: 1.5px solid rgba(0,0,0,.10);
-      background: rgba(255,250,240,.92);
+      background: var(--card);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
@@ -268,6 +312,11 @@
       color: var(--accent-red);
       font-size: 1.22rem;
       letter-spacing:.2px;
+      font-weight:1000;
+      display:flex; align-items:center; gap:10px;
+    }
+    .menu-section header h2 .sub{
+      font-size:.92rem; color:var(--muted); font-weight:900;
     }
     .backtop{
       display:inline-flex; align-items:center; gap:8px;
@@ -276,48 +325,161 @@
       background:#fff;
       border: 1px solid rgba(0,0,0,.12);
       text-decoration:none;
-      font-weight:900;
+      font-weight:1000;
       white-space:nowrap;
     }
     .backtop:hover{background: var(--bg-cream)}
     .backtop:focus-visible{outline:none; box-shadow: var(--focus)}
-    .menu-body{
-      padding:14px 16px 16px;
-    }
+    .menu-body{padding:14px 16px 16px}
+    .note{margin:0 0 12px; color:var(--muted); font-size:.98rem}
 
     .items{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px 16px;
     }
+
     .item{
       border: 1px solid rgba(0,0,0,.10);
       border-radius: 14px;
       padding:12px;
-      background: rgba(245,245,220,.55);
+      background: var(--bubble-normal);
+      position:relative;
+      overflow:hidden;
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease;
     }
+    .item:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.10);
+    }
+
+    /* Margin vs Special bubble system */
+    .item[data-bubble="margin"]{
+      background: var(--bubble-margin);
+    }
+    .item[data-bubble="special"]{
+      background: var(--bubble-special);
+      border-color: var(--bubble-special-border);
+      box-shadow: 0 16px 34px rgba(165,42,42,.14);
+    }
+    .item[data-bubble="special"]::before{
+      content:"";
+      position:absolute; inset:0;
+      border: 2px solid rgba(165,42,42,.35);
+      border-radius: 14px;
+      pointer-events:none;
+    }
+
     .item-top{
       display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
     }
-    .item .name{
+    .name{
       font-weight:1000;
       letter-spacing:.15px;
     }
-    .item .price{
-      font-weight:1000;
-      white-space:nowrap;
-      color: var(--accent-red);
-    }
-    .item .desc{
+    .desc{
       margin:6px 0 0;
       color: var(--muted);
       font-size:.96rem;
     }
-    .note{
-      margin:0 0 12px;
-      color: var(--muted);
-      font-size:.98rem;
+    .price{
+      font-weight:1000;
+      white-space:nowrap;
+      color: var(--accent-red);
+      font-size: 1.02rem;
     }
+    .item[data-bubble="margin"] .price{font-size:1.06rem}
+    .item[data-bubble="special"] .price{font-size:1.10rem}
+
+    .badge{
+      display:none;
+      margin-top:10px;
+      width:fit-content;
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:1000;
+      font-size:.86rem;
+      letter-spacing:.2px;
+      border:1px solid rgba(0,0,0,.12);
+      background:#fff;
+      box-shadow: 0 10px 18px rgba(0,0,0,.08);
+    }
+    .item[data-bubble="margin"] .badge{
+      display:inline-flex;
+    }
+    .item[data-bubble="special"] .badge{
+      display:inline-flex;
+      background: rgba(255,255,255,.98);
+      border-color: rgba(184,134,11,.45);
+    }
+
+    /* Most Popular (top of menu) */
+    .popular-banner{
+      margin-top:18px;
+      border-radius: var(--radius);
+      border: 1.5px solid rgba(184,134,11,.25);
+      background: rgba(255,250,240,.95);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .popular-banner header{
+      padding:14px 16px;
+      background: linear-gradient(90deg, rgba(184,134,11,.14), rgba(165,42,42,.10));
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+    }
+    .popular-banner header h2{
+      margin:0; font-weight:1000; letter-spacing:.2px;
+      color: var(--accent-red);
+      display:flex; align-items:center; gap:10px;
+    }
+    .popular-banner .body{padding:14px 16px 16px}
+
+    /* Sticky action bar (conversion) */
+    .stickybar{
+      position:fixed;
+      left:0; right:0; bottom:0;
+      z-index:80;
+      padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(245,245,220,.92);
+      border-top: 2px solid rgba(165,42,42,.25);
+      backdrop-filter: blur(10px);
+    }
+    .stickybar .row{
+      max-width: var(--max);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+      padding:0 6px;
+    }
+    .stickybtn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 10px;
+      border-radius: 14px;
+      text-decoration:none;
+      font-weight:1000;
+      border:1px solid rgba(0,0,0,.10);
+      background:#fff;
+      box-shadow: 0 12px 22px rgba(0,0,0,.10);
+      min-height: 48px;
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .stickybtn.primary{
+      background: var(--accent-green);
+      color:#fff;
+      box-shadow: 0 12px 22px rgba(34,139,34,.18);
+    }
+    .stickybtn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.14);
+    }
+    .stickybtn.primary:hover{
+      box-shadow: 0 14px 28px rgba(34,139,34,.22);
+    }
+    .stickybtn:focus-visible{outline:none; box-shadow: var(--focus)}
 
     /* Footer */
     footer{
@@ -329,13 +491,6 @@
       display:flex; flex-wrap:wrap; gap:10px 18px;
       align-items:center; justify-content:space-between;
     }
-    .foot small{color:var(--muted)}
-    .consulted a{
-      color: var(--accent-red);
-      font-weight:1000;
-      text-decoration:none;
-    }
-    .consulted a:hover{text-decoration:underline}
     .chip{
       display:inline-flex; align-items:center;
       padding:8px 12px;
@@ -343,7 +498,16 @@
       background:#fff;
       border:1px solid rgba(0,0,0,.12);
       box-shadow: 0 10px 18px rgba(0,0,0,.08);
+      flex-wrap:wrap;
+      gap:6px;
     }
+    .foot small{color:var(--muted)}
+    .consulted a{
+      color: var(--accent-red);
+      font-weight:1000;
+      text-decoration:none;
+    }
+    .consulted a:hover{text-decoration:underline}
 
     /* Responsive */
     @media (max-width: 980px){
@@ -352,6 +516,7 @@
       .menu-buttons{grid-template-columns: 1fr 1fr}
       .items{grid-template-columns: 1fr}
       .cta-call{display:none}
+      .stickybar .row{grid-template-columns: 1fr 1fr}
     }
     @media (max-width: 520px){
       .menu-buttons{grid-template-columns: 1fr}
@@ -363,7 +528,7 @@
 <body>
   <div class="topbar" id="top">
     <div class="wrap topbar-inner">
-      <a class="brand-mini" href="#top" aria-label="Back to top">
+      <a class="brand-mini" href="#menu" aria-label="Jump to menu navigation">
         <img alt="Burros logo" src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/BurrosTexMexBarandGrill_900_Round_Rock_TX.png" />
         <div class="t">BURROS</div>
       </a>
@@ -381,7 +546,7 @@
     </div>
   </div>
 
-  <header class="hero">
+  <header class="hero" aria-label="Hero">
     <div class="wrap hero-grid">
       <div class="hero-card">
         <img class="logo" alt="Burros Tex-Mex Bar & Grill logo"
@@ -389,6 +554,17 @@
 
         <h1 class="hero-title" data-i18n="heroTitle">Welcome to Burros Tex-Mex Bar &amp; Grill</h1>
         <p class="tagline" data-i18n="tagline">Just be you!!</p>
+
+        <div class="trust-row" aria-label="Trust badges">
+          <div class="trust-chip" id="googleRatingChip" title="Google rating">
+            <span class="star">★</span>
+            <span id="googleRatingText">—</span>
+            <span class="muted" id="googleRatingSub" data-i18n="ratingSub">Google Rating</span>
+          </div>
+          <div class="trust-chip" data-i18n="trustFamily">Family-owned</div>
+          <div class="trust-chip" data-i18n="trustLocal">Round Rock favorite</div>
+        </div>
+
         <p class="intro" data-i18n="intro">
           Enjoy authentic Tex-Mex flavors in Round Rock, TX. Join us for flame-grilled favorites, fresh margaritas, and a welcoming vibe.
         </p>
@@ -413,49 +589,74 @@
         <div class="divider" aria-hidden="true"></div>
       </div>
 
-      <aside class="info-card" aria-label="Location, hours, and specials">
+      <aside class="info-card" aria-label="Hours, address, phone, specials">
         <div class="info-grid">
-          <div class="info-item">
-            <h3 data-i18n="hoursTitle">Hours</h3>
-            <p><strong data-i18n="hoursLine1">Sun–Thu</strong>: <span>11AM–9PM</span></p>
-            <p><strong data-i18n="hoursLine2">Fri–Sat</strong>: <span>11AM–10PM</span></p>
+          <div class="action-card">
+            <div class="action-head">
+              <h3><span aria-hidden="true">🕒</span> <span data-i18n="hoursTitle">Hours</span></h3>
+            </div>
+            <div class="action-body">
+              <p><strong data-i18n="hoursLine1">Sun–Thu</strong>: <span>11AM–9PM</span></p>
+              <p><strong data-i18n="hoursLine2">Fri–Sat</strong>: <span>11AM–10PM</span></p>
+            </div>
           </div>
 
-          <div class="info-item">
-            <h3 data-i18n="addressTitle">Address</h3>
-            <p>
-              <a href="https://maps.google.com/?q=900%20E%20Palm%20Valley%20Blvd%2C%20Round%20Rock%2C%20TX%2078664"
-                 target="_blank" rel="noreferrer"
-                 aria-label="Open address in Google Maps">
-                900 E Palm Valley Blvd, Round Rock, TX 78664
-              </a>
-            </p>
+          <div class="action-card">
+            <div class="action-head">
+              <h3><span aria-hidden="true">📍</span> <span data-i18n="addressTitle">Address</span></h3>
+            </div>
+            <div class="action-body">
+              <p>
+                <a id="mapsLink"
+                   href="https://maps.google.com/?q=900%20E%20Palm%20Valley%20Blvd%2C%20Round%20Rock%2C%20TX%2078664"
+                   target="_blank" rel="noreferrer"
+                   aria-label="Open address in Google Maps">
+                  900 E Palm Valley Blvd, Round Rock, TX 78664
+                </a>
+              </p>
+              <div class="mini-cta-row">
+                <a class="mini-cta" id="directionsBtn"
+                   href="https://maps.google.com/?q=900%20E%20Palm%20Valley%20Blvd%2C%20Round%20Rock%2C%20TX%2078664"
+                   target="_blank" rel="noreferrer"
+                   data-i18n="getDirections">Get Directions</a>
+              </div>
+            </div>
           </div>
 
-          <div class="info-item">
-            <h3 data-i18n="phoneTitle">Phone</h3>
-            <p><a href="tel:+15123053881">(512) 305-3881</a></p>
+          <div class="action-card">
+            <div class="action-head">
+              <h3><span aria-hidden="true">📞</span> <span data-i18n="phoneTitle">Phone</span></h3>
+            </div>
+            <div class="action-body">
+              <p><a href="tel:+15123053881">(512) 305-3881</a></p>
+              <div class="mini-cta-row">
+                <a class="mini-cta alt" href="tel:+15123053881" data-i18n="callNow">Call Now</a>
+              </div>
+            </div>
           </div>
 
-          <div class="info-item specials">
-            <h3 data-i18n="specialsTitle">Daily Specials</h3>
-            <ul>
-              <li data-i18n="specMon">Monday: Happy Hour all day</li>
-              <li data-i18n="specTue">Tuesday: House Mexican Martini $12.49</li>
-              <li data-i18n="specWed">Wednesday: Strawberry Rita $5</li>
-              <li data-i18n="specThu">Thursday: Sangria Rita $5</li>
-              <li data-i18n="specFri">Friday: Bottled beer happy hour price</li>
-              <li data-i18n="specWeekend">Sat &amp; Sun: Mimosa $4.50 and Bloody Mary $6</li>
-            </ul>
-            <p class="note" style="margin-top:10px" data-i18n="lunchNote">
-              Lunch Specials served Monday–Friday, 11AM–4PM.
-            </p>
+          <div class="action-card">
+            <div class="action-head">
+              <h3><span aria-hidden="true">⭐</span> <span data-i18n="specialsTitle">Daily Specials</span></h3>
+            </div>
+            <div class="action-body">
+              <p><strong data-i18n="specMon">Monday:</strong> <span data-i18n="specMonText">Happy Hour all day</span></p>
+              <p><strong data-i18n="specTue">Tuesday:</strong> <span data-i18n="specTueText">House Mexican Martini</span> <span style="color:var(--accent-green); font-weight:1000">$12.49</span></p>
+              <p><strong data-i18n="specWed">Wednesday:</strong> <span data-i18n="specWedText">Strawberry Rita</span> <span style="color:var(--accent-green); font-weight:1000">$5</span></p>
+              <p><strong data-i18n="specThu">Thursday:</strong> <span data-i18n="specThuText">Sangria Rita</span> <span style="color:var(--accent-green); font-weight:1000">$5</span></p>
+              <p><strong data-i18n="specFri">Friday:</strong> <span data-i18n="specFriText">Bottled beer happy hour price</span></p>
+              <p><strong data-i18n="specWeekend">Sat &amp; Sun:</strong> <span data-i18n="specWeekendText">Mimosa $4.50 and Bloody Mary $6</span></p>
+
+              <p class="note" style="margin-top:10px" data-i18n="lunchNote">
+                Lunch Specials served Monday–Friday, 11AM–4PM.
+              </p>
+              <div class="mini-cta-row">
+                <a class="mini-cta" id="orderBtn" href="https://www.doordash.com/en/store/burros-tex-mex-bar-and-grill-round-rock-124979/"
+                   target="_blank" rel="noreferrer" data-i18n="orderOnline">Order Online</a>
+              </div>
+            </div>
           </div>
         </div>
-
-        <a class="cta-call" href="#menu" style="justify-content:center; background:var(--accent-green); border-color:rgba(0,0,0,.12)">
-          <span data-i18n="viewMenu">View Menu</span>
-        </a>
       </aside>
     </div>
   </header>
@@ -463,6 +664,7 @@
   <section class="menu-nav" id="menu">
     <div class="wrap">
       <h2 class="section-title" data-i18n="menuTitle">Menu</h2>
+
       <nav class="menu-buttons" aria-label="Menu category links">
         <a href="#appetizers" data-i18n="catAppetizers">Appetizers</a>
         <a href="#soups-salads" data-i18n="catSoupsSalads">Soups &amp; Salads</a>
@@ -488,7 +690,10 @@
         <a href="#kids" data-i18n="catKids">Kids Menu</a>
         <a href="#bar" data-i18n="catBar">Bar Menu</a>
       </nav>
+
       <p class="hint" data-i18n="hint">Tap a category to jump. Scroll for the full menu.</p>
+
+      <div id="popularMount"></div>
     </div>
   </section>
 
@@ -499,8 +704,10 @@
   <footer>
     <div class="wrap foot">
       <div class="chip">
-        <strong>Burros Tex-Mex Bar &amp; Grill</strong>&nbsp;•&nbsp;
-        <span>900 E Palm Valley Blvd, Round Rock, TX 78664</span>&nbsp;•&nbsp;
+        <strong>Burros Tex-Mex Bar &amp; Grill</strong>
+        <span>•</span>
+        <span>900 E Palm Valley Blvd, Round Rock, TX 78664</span>
+        <span>•</span>
         <a href="tel:+15123053881" style="font-weight:1000; text-decoration:none">(512) 305-3881</a>
       </div>
 
@@ -512,29 +719,96 @@
     </div>
   </footer>
 
+  <!-- Sticky conversion bar -->
+  <div class="stickybar" aria-label="Quick actions">
+    <div class="row">
+      <a class="stickybtn primary" href="#menu" data-i18n="stickyMenu">Menu</a>
+      <a class="stickybtn" href="tel:+15123053881" data-i18n="stickyCall">Call</a>
+      <a class="stickybtn" id="stickyDirections"
+         href="https://maps.google.com/?q=900%20E%20Palm%20Valley%20Blvd%2C%20Round%20Rock%2C%20TX%2078664"
+         target="_blank" rel="noreferrer" data-i18n="stickyDirections">Directions</a>
+      <a class="stickybtn" id="stickyOrder"
+         href="https://www.doordash.com/en/store/burros-tex-mex-bar-and-grill-round-rock-124979/"
+         target="_blank" rel="noreferrer" data-i18n="stickyOrder">Order</a>
+    </div>
+  </div>
+
   <script>
-    // ---- i18n (simple, deterministic toggle) ----
+    /**********************************************************************
+     * CONFIG (edit these 3 sections only)
+     **********************************************************************/
+
+    // 1) Google rating pull (Places API New)
+    // Option A (recommended): Use a tiny serverless proxy so you never expose the key.
+    //   - Set PLACES_PROXY_URL to your endpoint, returning:
+    //       { "rating": 4.6, "userRatingCount": 4000, "googleMapsUri": "..." }
+    // Option B: Set GOOGLE_PLACES_API_KEY + GOOGLE_PLACE_ID (browser call).
+    const PLACES_PROXY_URL = "";            // e.g. "/api/google-place"
+    const GOOGLE_PLACES_API_KEY = "";       // if no proxy (restrict key to your domain)
+    const GOOGLE_PLACE_ID = "";             // Place Details (New) placeId (id)
+
+    // 2) Quick links
+    const ORDER_ONLINE_URL = "https://www.doordash.com/en/store/burros-tex-mex-bar-and-grill-round-rock-124979/";
+
+    // 3) Menu engineering toggles (easy)
+    // - MARGIN: 2 items per section max (you choose)
+    // - SPECIAL: max 3 items total across the whole menu (you choose)
+    //
+    // Matching is by item NAME (case-insensitive). Keep names exact-ish.
+    const FEATURED = {
+      special: [
+        // "Beef Fajitas or Mixed Fajitas (For One)",
+        // "Ground Beef or Cheese Enchilada Plate",
+        // "Burros House Rita"
+      ],
+      marginBySection: {
+        // appetizers: ["Dips: Burros Queso", "Nachos (Smoked Beef Brisket)"],
+        // fajitas: ["Fajitas Burras (For One)", "Make it “Fajitas Diablas” (For One)"],
+      }
+    };
+
+    /**********************************************************************
+     * i18n
+     **********************************************************************/
     const I18N = {
       en: {
         heroTitle: "Welcome to Burros Tex-Mex Bar & Grill",
         tagline: "Just be you!!",
         intro: "Enjoy authentic Tex-Mex flavors in Round Rock, TX. Join us for flame-grilled favorites, fresh margaritas, and a welcoming vibe.",
+
+        ratingSub: "Google Rating",
+        trustFamily: "Family-owned",
+        trustLocal: "Round Rock favorite",
+
         hoursTitle: "Hours",
         hoursLine1: "Sun–Thu",
         hoursLine2: "Fri–Sat",
         addressTitle: "Address",
         phoneTitle: "Phone",
         specialsTitle: "Daily Specials",
-        specMon: "Monday: Happy Hour all day",
-        specTue: "Tuesday: House Mexican Martini $12.49",
-        specWed: "Wednesday: Strawberry Rita $5",
-        specThu: "Thursday: Sangria Rita $5",
-        specFri: "Friday: Bottled beer happy hour price",
-        specWeekend: "Sat & Sun: Mimosa $4.50 and Bloody Mary $6",
+
+        specMon: "Monday:",
+        specMonText: "Happy Hour all day",
+        specTue: "Tuesday:",
+        specTueText: "House Mexican Martini",
+        specWed: "Wednesday:",
+        specWedText: "Strawberry Rita",
+        specThu: "Thursday:",
+        specThuText: "Sangria Rita",
+        specFri: "Friday:",
+        specFriText: "Bottled beer happy hour price",
+        specWeekend: "Sat & Sun:",
+        specWeekendText: "Mimosa $4.50 and Bloody Mary $6",
+
         lunchNote: "Lunch Specials served Monday–Friday, 11AM–4PM.",
-        viewMenu: "View Menu",
+
+        getDirections: "Get Directions",
+        callNow: "Call Now",
+        orderOnline: "Order Online",
+
         menuTitle: "Menu",
         hint: "Tap a category to jump. Scroll for the full menu.",
+
         catAppetizers: "Appetizers",
         catSoupsSalads: "Soups & Salads",
         catCombos: "Combos",
@@ -554,29 +828,57 @@
         catBeverages: "Beverages",
         catKids: "Kids Menu",
         catBar: "Bar Menu",
-        backTop: "Top",
-        pricesNote: "Prices shown as listed."
+
+        backToMenu: "Menu",
+        badgeMargin: "House Favorite",
+        badgeSpecial: "★ Best Seller",
+
+        popularTitle: "Most Popular",
+        popularSub: "Top picks customers love",
+
+        stickyMenu: "Menu",
+        stickyCall: "Call",
+        stickyDirections: "Directions",
+        stickyOrder: "Order"
       },
       es: {
         heroTitle: "Bienvenido a Burros Tex-Mex Bar & Grill",
         tagline: "¡Solo sé tú!",
         intro: "Disfruta sabores auténticos Tex-Mex en Round Rock, TX. Acompáñanos para favoritos a la parrilla, margaritas frescas y un ambiente acogedor.",
+
+        ratingSub: "Calificación Google",
+        trustFamily: "Negocio familiar",
+        trustLocal: "Favorito de Round Rock",
+
         hoursTitle: "Horario",
         hoursLine1: "Dom–Jue",
         hoursLine2: "Vie–Sáb",
         addressTitle: "Dirección",
         phoneTitle: "Teléfono",
         specialsTitle: "Especiales del Día",
-        specMon: "Lunes: Happy Hour todo el día",
-        specTue: "Martes: Martini Mexicano de la casa $12.49",
-        specWed: "Miércoles: Margarita de fresa $5",
-        specThu: "Jueves: Sangría Rita $5",
-        specFri: "Viernes: Cerveza embotellada a precio de Happy Hour",
-        specWeekend: "Sáb y Dom: Mimosa $4.50 y Bloody Mary $6",
+
+        specMon: "Lunes:",
+        specMonText: "Happy Hour todo el día",
+        specTue: "Martes:",
+        specTueText: "Martini Mexicano de la casa",
+        specWed: "Miércoles:",
+        specWedText: "Margarita de fresa",
+        specThu: "Jueves:",
+        specThuText: "Sangría Rita",
+        specFri: "Viernes:",
+        specFriText: "Cerveza embotellada a precio de Happy Hour",
+        specWeekend: "Sáb y Dom:",
+        specWeekendText: "Mimosa $4.50 y Bloody Mary $6",
+
         lunchNote: "Especiales de lunch lunes–viernes, 11AM–4PM.",
-        viewMenu: "Ver Menú",
+
+        getDirections: "Cómo llegar",
+        callNow: "Llamar",
+        orderOnline: "Ordenar en línea",
+
         menuTitle: "Menú",
         hint: "Toca una categoría para saltar. Desplázate para ver todo el menú.",
+
         catAppetizers: "Entradas",
         catSoupsSalads: "Sopas y Ensaladas",
         catCombos: "Combos",
@@ -596,20 +898,29 @@
         catBeverages: "Bebidas",
         catKids: "Menú de Niños",
         catBar: "Menú de Bar",
-        backTop: "Arriba",
-        pricesNote: "Precios tal como aparecen."
+
+        backToMenu: "Menú",
+        badgeMargin: "Recomendado",
+        badgeSpecial: "★ Más vendido",
+
+        popularTitle: "Más populares",
+        popularSub: "Top opciones favoritas",
+
+        stickyMenu: "Menú",
+        stickyCall: "Llamar",
+        stickyDirections: "Dirección",
+        stickyOrder: "Ordenar"
       }
     };
 
-    // ---- Menu data (sourced from the original Wix menu pages) ----
-    // Notes:
-    // - Core menu text pulled from the combined menu page.
-    // - Beverages and Dessert included from their dedicated pages.
+    /**********************************************************************
+     * MENU DATA
+     **********************************************************************/
     const MENU = [
       {
         id: "appetizers",
         title: { en: "Appetizers", es: "Entradas" },
-        note: { en: "All topped with refried beans, mixed cheese, shredded lettuce, diced tomatoes, chopped onions, and sliced pickled jalapeños (Nachos).", es: "Nachos: frijoles refritos, queso mixto, lechuga, tomate, cebolla y jalapeños en escabeche." },
+        note: { en: "Nachos topped with refried beans, mixed cheese, shredded lettuce, diced tomatoes, chopped onions, and sliced pickled jalapeños.", es: "Nachos: frijoles refritos, queso mixto, lechuga, tomate, cebolla y jalapeños en escabeche." },
         items: [
           { n: "Nachos (Bean & Cheese)", d: "", p: "$9.99" },
           { n: "Nachos (Ground Beef or Shredded Chicken)", d: "", p: "$13.49" },
@@ -844,7 +1155,7 @@
       {
         id: "lunch",
         title: { en: "Lunch Specials", es: "Especiales de Lunch" },
-        note: { en: "Served 11AM–4PM Monday to Friday. Served with rice and choice of beans. Add a cup of tortilla soup or a small salad to any lunch special for $2.50.", es: "Lun–Vie 11AM–4PM. Con arroz y frijoles. Agrega sopa o ensalada chica por $2.50." },
+        note: { en: "Served 11AM–4PM Monday to Friday. Add a cup of tortilla soup or a small salad to any lunch special for $2.50.", es: "Lun–Vie 11AM–4PM. Agrega sopa o ensalada chica por $2.50." },
         items: [
           { n: "#1 Beef or Cheese Enchiladas", d: "(2) enchiladas topped with chili gravy and mixed cheese.", p: "$10.49" },
           { n: "#2 Chicken Enchiladas", d: "(2) enchiladas topped with tomatillo sauce and Monterey jack.", p: "$10.49" },
@@ -908,57 +1219,90 @@
       {
         id: "bar",
         title: { en: "Bar Menu", es: "Menú de Bar" },
-        note: { en: "Happy Hour: All day Monday; Tue–Fri 3:00PM–7:00PM. Substitutions may cost extra.", es: "Happy Hour: lunes todo el día; mar–vie 3:00PM–7:00PM. Sustituciones pueden costar extra." },
+        note: { en: "Happy Hour: All day Monday; Tue–Fri 3:00PM–7:00PM.", es: "Happy Hour: lunes todo el día; mar–vie 3:00PM–7:00PM." },
         items: [
-          { n: "Daily Specials (Mon)", d: "Happy Hour all day", p: "" },
-          { n: "Daily Specials (Tue)", d: "House Mexican Martini", p: "$12.49" },
-          { n: "Daily Specials (Wed)", d: "Strawberry Rita", p: "$5.00" },
-          { n: "Daily Specials (Thu)", d: "Sangria Rita", p: "$5.00" },
-          { n: "Daily Specials (Fri)", d: "Bottle beer happy hour price", p: "" },
-          { n: "Daily Specials (Sat & Sun)", d: "Mimosa $4.50 and Bloody Mary $6", p: "" },
-
-          { n: "Mimosa (orange, cranberry, or pineapple)", d: "", p: "$4.00" },
-          { n: "Burros Margarita (lime only; rocks or frozen)", d: "", p: "$5.99" },
-          { n: "Burros Mexican Martini (lime only)", d: "", p: "$12.49" },
-          { n: "Wells, soda and water mixes", d: "", p: "$5.99" },
-
-          { n: "Draft Beer (Domestic) Small / Large", d: "Bud Light, Miller Lite", p: "$4.49 / $5.49" },
-          { n: "Draft Beer (Import) Small / Large", d: "Dos XX Lager, Modelo Especial", p: "$4.99 / $5.99" },
-          { n: "Bottled Beer", d: "Budweiser, Bud Light, Coors Light, Miller Lite, Michelob Ultra", p: "$4.75" },
-          { n: "Imported Bottled Beer", d: "Shiner Bock, Corona, Corona Light, Pacifico, Dos XX Lager, Dos XX Ambar, Modelo Especial, Negra Modelo", p: "$5.50" },
-
-          { n: "Pepino Sour", d: "Cucumber vodka, fresh lime juice, agave nectar, splash of lime soda; chili salt rim.", p: "$8.99" },
-          { n: "Grapefruit Tini", d: "Deep Eddy Ruby Red vodka, lime juice, simple syrup, club soda.", p: "$9.99" },
-          { n: "Pina Colada", d: "House rum and pina colada mix.", p: "$8.99" },
-          { n: "Texas Size Jack and Coke", d: "Jack Daniel's + coke.", p: "$13.00" },
-          { n: "Renee's Cosmo", d: "House vodka, triple sec, lime juice, cranberry juice, splash of soda; served on the rocks.", p: "$10.99" },
-
           { n: "Burros House Rita", d: "Swirl/add fruit flavor $1 each: strawberry, mango, sangria, watermelon, blue curaçao, chamoy.", p: "$6.99" },
+          { n: "Burros Mexican Martini", d: "", p: "$13.99" },
           { n: "Burros Top Shelf Margarita", d: "Made with Exotico Reposado.", p: "$9.49" },
           { n: "Jumbo Margarita", d: "For $2 add 7oz coronita, Dos XX Lager, or Big Red. Add fruit flavor $1.50.", p: "$12.99" },
-          { n: "Burros Mexican Martini", d: "", p: "$13.99" },
           { n: "Premium Margarita", d: "", p: "$14.49" },
           { n: "Brad's Rita", d: "Herradura silver, Presidente Brandy, Gran Gala, triple sec, agave nectar, lime juice, orange juice, sweet & sour.", p: "$15.49" },
           { n: "Spicy Pineapple Martini", d: "Tequila, serrano peppers, pineapple juice, lime juice, agave nectar.", p: "$13.99" },
-          { n: "La Morada Rita", d: "Tequila, prickly pear, lime juice, curaçao.", p: "$9.99" },
           { n: "La Paloma", d: "Tequila, fresh lime juice, grapefruit soda.", p: "$9.99" },
-          { n: "La Flaca", d: "Milagro reposado, fresh lime juice, agave nectar; on the rocks.", p: "$9.99" },
-          { n: "Cranberry Rita", d: "House tequila, agave nectar, cranberry juice, lime juice, splash of soda.", p: "$7.99" },
-          { n: "Jumbo Mango Chamoy Margarita", d: "Frozen margarita with mango chamoy puree swirl and tajin rim.", p: "$13.99" },
-          { n: "Michelada", d: "Choice of beer with secret mix.", p: "$8.00" },
-          { n: "Texas Bloody Mary", d: "Made with Deep Eddy regular vodka.", p: "$7.50" },
-          { n: "Mimosa", d: "Choose pineapple, cranberry, or orange.", p: "$4.50" },
-          { n: "Tequila Sunrise", d: "House tequila and orange juice.", p: "$7.00" },
           { n: "Wine", d: "Woodbridge Merlot, Cabernet, Chardonnay.", p: "$6.00" }
         ]
       }
     ];
 
-    // ---- render ----
+    /**********************************************************************
+     * Helpers
+     **********************************************************************/
     const mount = document.getElementById("menuMount");
+    const popularMount = document.getElementById("popularMount");
 
-    function esc(s){ return (s ?? "").toString()
-      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;"); }
+    const norm = (s) => (s || "").toString().trim().toLowerCase().replace(/\s+/g," ");
+    const esc = (s) => (s ?? "").toString()
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+
+    function isFeatured(type, sectionId, itemName){
+      const key = norm(itemName);
+      if (type === "special"){
+        return FEATURED.special.map(norm).includes(key);
+      }
+      if (type === "margin"){
+        const arr = FEATURED.marginBySection?.[sectionId] || [];
+        return arr.map(norm).includes(key);
+      }
+      return false;
+    }
+
+    function bubbleType(sectionId, itemName){
+      if (isFeatured("special", sectionId, itemName)) return "special";
+      if (isFeatured("margin", sectionId, itemName)) return "margin";
+      return "normal";
+    }
+
+    function renderPopular(lang){
+      const specials = [];
+      MENU.forEach(sec=>{
+        sec.items.forEach(it=>{
+          if (bubbleType(sec.id, it.n) === "special"){
+            specials.push({secId: sec.id, secTitle: sec.title?.[lang] || sec.title?.en || "", ...it});
+          }
+        });
+      });
+
+      popularMount.innerHTML = "";
+      if (!specials.length) return;
+
+      const html = `
+        <section class="popular-banner" aria-label="${esc(I18N[lang].popularTitle)}">
+          <header>
+            <h2>★ ${esc(I18N[lang].popularTitle)} <span class="sub">— ${esc(I18N[lang].popularSub)}</span></h2>
+            <a class="backtop" href="#menu">${esc(I18N[lang].backToMenu)} ↑</a>
+          </header>
+          <div class="body">
+            <div class="items">
+              ${specials.slice(0,3).map(it => `
+                <article class="item" data-bubble="special">
+                  <div class="item-top">
+                    <div>
+                      <div class="name">${esc(it.n)}</div>
+                      <div class="desc">${esc(it.secTitle)} • <a href="#${esc(it.secId)}" style="font-weight:1000">View section</a></div>
+                    </div>
+                    <div class="price">${esc(it.p || "")}</div>
+                  </div>
+                  ${it.d ? `<p class="desc">${esc(it.d)}</p>` : ``}
+                  <div class="badge">${esc(I18N[lang].badgeSpecial)}</div>
+                </article>
+              `).join("")}
+            </div>
+          </div>
+        </section>
+      `;
+      popularMount.insertAdjacentHTML("beforeend", html);
+    }
 
     function renderMenu(lang){
       mount.innerHTML = "";
@@ -973,20 +1317,28 @@
         section.innerHTML = `
           <header>
             <h2>${esc(title)}</h2>
-            <a class="backtop" href="#top" aria-label="${esc(I18N[lang].backTop)}">${esc(I18N[lang].backTop)} ↑</a>
+            <!-- "Top" now goes to #menu (requested) -->
+            <a class="backtop" href="#menu" aria-label="Back to menu navigation">${esc(I18N[lang].backToMenu)} ↑</a>
           </header>
           <div class="menu-body">
             ${note ? `<p class="note">${esc(note)}</p>` : ``}
             <div class="items">
-              ${sec.items.map(it => `
-                <article class="item">
-                  <div class="item-top">
-                    <div class="name">${esc(it.n)}</div>
-                    <div class="price">${esc(it.p || "")}</div>
-                  </div>
-                  ${it.d ? `<p class="desc">${esc(it.d)}</p>` : ``}
-                </article>
-              `).join("")}
+              ${sec.items.map(it => {
+                const bt = bubbleType(sec.id, it.n);
+                const badge = bt === "special" ? I18N[lang].badgeSpecial
+                            : bt === "margin" ? I18N[lang].badgeMargin
+                            : "";
+                return `
+                  <article class="item" data-bubble="${bt}">
+                    <div class="item-top">
+                      <div class="name">${esc(it.n)}</div>
+                      <div class="price">${esc(it.p || "")}</div>
+                    </div>
+                    ${it.d ? `<p class="desc">${esc(it.d)}</p>` : ``}
+                    ${badge ? `<div class="badge">${esc(badge)}</div>` : ``}
+                  </article>
+                `;
+              }).join("")}
             </div>
           </div>
         `;
@@ -1005,11 +1357,76 @@
       document.getElementById("btnEN").setAttribute("aria-pressed", lang === "en" ? "true" : "false");
       document.getElementById("btnES").setAttribute("aria-pressed", lang === "es" ? "true" : "false");
 
+      // set URLs
+      document.getElementById("orderBtn").href = ORDER_ONLINE_URL;
+      document.getElementById("stickyOrder").href = ORDER_ONLINE_URL;
+
+      renderPopular(lang);
       renderMenu(lang);
+
       localStorage.setItem("burros_lang", lang);
     }
 
-    // ---- wire ----
+    /**********************************************************************
+     * Google rating pull (Places API New)
+     *
+     * Place Details (New) endpoint: https://places.googleapis.com/v1/places/PLACE_ID
+     * Requires FieldMask header (rating,userRatingCount,googleMapsUri,displayName,...)
+     * Docs: https://developers.google.com/maps/documentation/places/web-service/place-details
+     **********************************************************************/
+    async function loadGoogleRating(){
+      const ratingText = document.getElementById("googleRatingText");
+      const sub = document.getElementById("googleRatingSub");
+      const chip = document.getElementById("googleRatingChip");
+      const mapsLink = document.getElementById("mapsLink");
+
+      try{
+        let data = null;
+
+        if (PLACES_PROXY_URL){
+          const res = await fetch(PLACES_PROXY_URL, {cache:"no-store"});
+          if (!res.ok) throw new Error("Proxy failed");
+          data = await res.json();
+        } else if (GOOGLE_PLACES_API_KEY && GOOGLE_PLACE_ID){
+          const url = `https://places.googleapis.com/v1/places/${encodeURIComponent(GOOGLE_PLACE_ID)}`;
+          const res = await fetch(url, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Goog-Api-Key": GOOGLE_PLACES_API_KEY,
+              "X-Goog-FieldMask": "rating,userRatingCount,googleMapsUri"
+            },
+            cache: "no-store"
+          });
+          if (!res.ok) throw new Error("Places API failed");
+          data = await res.json();
+        }
+
+        if (!data) return;
+
+        const r = data.rating;
+        const c = data.userRatingCount;
+        const uri = data.googleMapsUri;
+
+        if (typeof r === "number"){
+          const countTxt = (typeof c === "number") ? ` (${c.toLocaleString()}+)` : "";
+          ratingText.textContent = `${r.toFixed(1)}${countTxt}`;
+          chip.style.cursor = uri ? "pointer" : "default";
+          if (uri){
+            chip.addEventListener("click", ()=> window.open(uri, "_blank", "noreferrer"));
+            mapsLink.href = uri;
+            document.getElementById("directionsBtn").href = uri;
+            document.getElementById("stickyDirections").href = uri;
+          }
+        }
+      } catch(e){
+        // fail silent (keeps UI clean)
+      }
+    }
+
+    /**********************************************************************
+     * Boot
+     **********************************************************************/
     const saved = localStorage.getItem("burros_lang");
     let current = (saved === "es" || saved === "en") ? saved : "en";
 
@@ -1017,6 +1434,7 @@
     document.getElementById("btnES").addEventListener("click", ()=>{ current="es"; applyI18n("es"); });
 
     applyI18n(current);
+    loadGoogleRating();
   </script>
 </body>
 </html>
