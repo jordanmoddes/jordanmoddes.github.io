@@ -1,522 +1,1022 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burros Tex-Mex Bar & Grill - Home</title>
-    <style>
-        /* Global styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5dc; /* Beige background */
-            color: #000000;
-            line-height: 1.6;
-        }
-        header {
-            background-color: #a52a2a; /* Rustic red */
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-        header img.logo {
-            max-width: 300px;
-            height: auto;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .hero {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .images {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .images img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .images img:hover {
-            transform: scale(1.05);
-        }
-        .thick-line {
-            border: none;
-            height: 5px;
-            background-color: #a52a2a; /* Thick red line */
-            margin: 40px 0;
-        }
-        .info-section {
-            margin-bottom: 40px;
-        }
-        .info-section h2 {
-            color: #a52a2a;
-            font-size: 1.8em;
-        }
-        .menu-categories {
-            display: grid;
-            grid-template-columns: 1fr; /* Single column on mobile */
-            gap: 15px;
-            margin-bottom: 60px;
-        }
-        .menu-categories a {
-            background-color: #228b22; /* Green buttons */
-            color: #ffffff;
-            text-decoration: none;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            display: block;
-        }
-        .menu-categories a:hover {
-            background-color: #006400; /* Darker green on hover */
-        }
-        .menu-section {
-            margin-bottom: 60px;
-        }
-        .menu-section h2 {
-            color: #a52a2a;
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        .menu-section ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .menu-section li {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        footer {
-            background-color: #a52a2a;
-            color: #ffffff;
-            text-align: center;
-            padding: 10px;
-            margin-top: 40px;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Burros Tex-Mex Bar & Grill in Round Rock, TX. Menu, hours, specials, and contact." />
+  <title>Burros Tex-Mex Bar & Grill | Round Rock, TX</title>
 
-        /* Desktop responsive styles */
-        @media (min-width: 768px) {
-            .images {
-                flex-direction: row;
-            }
-            .images img {
-                max-width: 45%;
-            }
-            .menu-categories {
-                grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
-            }
-            .menu-section ul {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-        }
-    </style>
+  <style>
+    :root{
+      --accent-red:#a52a2a;
+      --accent-green:#228b22;
+      --bg-cream:#f5f5dc;
+      --text:#111;
+      --muted:#444;
+      --card:#fffaf0;
+      --shadow: 0 10px 28px rgba(0,0,0,.12);
+      --radius: 18px;
+      --max: 1120px;
+      --focus: 0 0 0 3px rgba(34,139,34,.35);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: linear-gradient(180deg, var(--bg-cream), #fff 45%, var(--bg-cream));
+      line-height:1.45;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    }
+
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(245,245,220,.82);
+      border-bottom: 2px solid rgba(165,42,42,.25);
+    }
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 0;
+      gap:12px;
+    }
+    .brand-mini{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none;
+    }
+    .brand-mini img{width:38px; height:38px; border-radius:10px; object-fit:contain; background:#fff; box-shadow: var(--shadow)}
+    .brand-mini .t{
+      font-weight:800; letter-spacing:.2px;
+    }
+    .lang{
+      display:flex; align-items:center; gap:8px;
+    }
+    .lang .pill{
+      display:inline-flex; border:1.5px solid rgba(0,0,0,.18);
+      border-radius:999px; overflow:hidden; background:#fff;
+      box-shadow: 0 8px 18px rgba(0,0,0,.08);
+    }
+    .lang button{
+      border:0; background:transparent;
+      padding:9px 12px;
+      font-weight:800;
+      letter-spacing:.5px;
+      cursor:pointer;
+    }
+    .lang button[aria-pressed="true"]{
+      background: var(--accent-green);
+      color:#fff;
+    }
+    .lang button:focus-visible{outline:none; box-shadow: var(--focus)}
+    .cta-call{
+      text-decoration:none;
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: #111;
+      color:#fff;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,.18);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .cta-call:hover{transform: translateY(-1px); box-shadow: var(--shadow)}
+    .cta-call:focus-visible{outline:none; box-shadow: var(--focus)}
+    .cta-call small{opacity:.8; font-weight:700}
+
+    /* Hero */
+    header.hero{
+      padding:26px 0 18px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .hero-card{
+      background: rgba(255,250,240,.92);
+      border: 1.5px solid rgba(165,42,42,.18);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+    .logo{
+      width:100%;
+      height:auto;
+      max-height:180px;
+      object-fit:contain;
+      display:block;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.10));
+      border-radius: 14px;
+      background:#fff;
+      padding:8px;
+    }
+    .hero-title{
+      margin:14px 0 6px;
+      font-size: clamp(1.55rem, 1.2rem + 1.6vw, 2.35rem);
+      letter-spacing:.2px;
+    }
+    .tagline{
+      margin:0 0 12px;
+      color: var(--accent-red);
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .intro{
+      margin:0;
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 68ch;
+    }
+
+    .info-card{
+      background: rgba(255,250,240,.92);
+      border: 1.5px solid rgba(0,0,0,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:14px;
+    }
+    .info-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    .info-item{
+      border: 1px dashed rgba(165,42,42,.35);
+      border-radius: 14px;
+      padding:12px;
+      background: rgba(245,245,220,.55);
+    }
+    .info-item h3{
+      margin:0 0 6px;
+      color: var(--accent-red);
+      font-size: 1.02rem;
+      letter-spacing:.2px;
+    }
+    .info-item p{margin:0; color: var(--text)}
+    .info-item a{color: var(--text); font-weight:800; text-decoration:none}
+    .info-item a:hover{text-decoration:underline}
+    .specials ul{
+      margin:8px 0 0 18px;
+      padding:0;
+      color: var(--text);
+    }
+
+    /* Images */
+    .photo-row{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    .photo{
+      border-radius: var(--radius);
+      overflow:hidden;
+      border: 2px solid rgba(0,0,0,.08);
+      box-shadow: var(--shadow);
+      background:#fff;
+      position:relative;
+    }
+    .photo img{
+      width:100%;
+      height:100%;
+      min-height: 240px;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.01);
+      transition: transform .35s ease;
+    }
+    .photo:hover img{transform: scale(1.06)}
+    .divider{
+      height:5px;
+      background: var(--accent-red);
+      margin:18px 0 0;
+      border-radius: 999px;
+      box-shadow: 0 8px 18px rgba(165,42,42,.25);
+    }
+
+    /* Menu nav buttons */
+    section.menu-nav{
+      padding:20px 0 6px;
+    }
+    .section-title{
+      margin:0 0 10px;
+      font-size: 1.35rem;
+      color: var(--accent-red);
+      letter-spacing:.2px;
+    }
+    .menu-buttons{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+    }
+    .menu-buttons a{
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      text-decoration:none;
+      padding:12px 12px;
+      border-radius: 14px;
+      background: var(--accent-green);
+      color:#fff;
+      font-weight:900;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 12px 22px rgba(34,139,34,.18);
+      transition: transform .16s ease, filter .16s ease, box-shadow .16s ease;
+      min-height: 48px;
+    }
+    .menu-buttons a:hover{transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 14px 28px rgba(34,139,34,.22)}
+    .menu-buttons a:focus-visible{outline:none; box-shadow: var(--focus)}
+    .hint{
+      margin:10px 0 0;
+      color: var(--muted);
+      font-size:.95rem;
+    }
+
+    /* Menu sections */
+    main{padding:10px 0 28px}
+    .menu-section{
+      scroll-margin-top: 90px;
+      margin-top:18px;
+      border-radius: var(--radius);
+      border: 1.5px solid rgba(0,0,0,.10);
+      background: rgba(255,250,240,.92);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .menu-section header{
+      padding:14px 16px;
+      background: linear-gradient(90deg, rgba(165,42,42,.12), rgba(34,139,34,.10));
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+    }
+    .menu-section header h2{
+      margin:0;
+      color: var(--accent-red);
+      font-size: 1.22rem;
+      letter-spacing:.2px;
+    }
+    .backtop{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius: 999px;
+      background:#fff;
+      border: 1px solid rgba(0,0,0,.12);
+      text-decoration:none;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .backtop:hover{background: var(--bg-cream)}
+    .backtop:focus-visible{outline:none; box-shadow: var(--focus)}
+    .menu-body{
+      padding:14px 16px 16px;
+    }
+
+    .items{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px 16px;
+    }
+    .item{
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding:12px;
+      background: rgba(245,245,220,.55);
+    }
+    .item-top{
+      display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
+    }
+    .item .name{
+      font-weight:1000;
+      letter-spacing:.15px;
+    }
+    .item .price{
+      font-weight:1000;
+      white-space:nowrap;
+      color: var(--accent-red);
+    }
+    .item .desc{
+      margin:6px 0 0;
+      color: var(--muted);
+      font-size:.96rem;
+    }
+    .note{
+      margin:0 0 12px;
+      color: var(--muted);
+      font-size:.98rem;
+    }
+
+    /* Footer */
+    footer{
+      padding:18px 0 26px;
+      border-top: 2px solid rgba(165,42,42,.25);
+      background: rgba(245,245,220,.75);
+    }
+    .foot{
+      display:flex; flex-wrap:wrap; gap:10px 18px;
+      align-items:center; justify-content:space-between;
+    }
+    .foot small{color:var(--muted)}
+    .consulted a{
+      color: var(--accent-red);
+      font-weight:1000;
+      text-decoration:none;
+    }
+    .consulted a:hover{text-decoration:underline}
+    .chip{
+      display:inline-flex; align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.12);
+      box-shadow: 0 10px 18px rgba(0,0,0,.08);
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns: 1fr}
+      .photo-row{grid-template-columns: 1fr}
+      .menu-buttons{grid-template-columns: 1fr 1fr}
+      .items{grid-template-columns: 1fr}
+      .cta-call{display:none}
+    }
+    @media (max-width: 520px){
+      .menu-buttons{grid-template-columns: 1fr}
+      .brand-mini .t{display:none}
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/BurrosTexMexBarandGrill_900_Round_Rock_TX.png" alt="Burros Tex-Mex Bar & Grill Logo" class="logo">
-        <h1>Welcome to Burros Tex-Mex Bar & Grill</h1>
-        <p>Just be you!!</p>
-    </header>
+  <div class="topbar" id="top">
+    <div class="wrap topbar-inner">
+      <a class="brand-mini" href="#top" aria-label="Back to top">
+        <img alt="Burros logo" src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/BurrosTexMexBarandGrill_900_Round_Rock_TX.png" />
+        <div class="t">BURROS</div>
+      </a>
 
-    <div class="container">
-        <section class="hero">
-            <p>Enjoy authentic Tex-Mex flavors in Round Rock, TX. Join us for flame-grilled favorites, fresh margaritas, and a welcoming vibe.</p>
-        </section>
+      <div class="lang" aria-label="Language toggle">
+        <div class="pill" role="group" aria-label="Select language">
+          <button type="button" id="btnEN" aria-pressed="true">EN</button>
+          <button type="button" id="btnES" aria-pressed="false">SP</button>
+        </div>
 
-        <section class="images">
-            <img src="https://static.wixstatic.com/media/dbcf98_0210ffa418104c788a40887a926d5d59\~mv2.jpg" alt="Burros food item 1">
-            <img src="https://static.wixstatic.com/media/dbcf98_bbc4bc3e9022469d98ef9c5181ce30aa\~mv2.jpg" alt="Burros food item 2">
-        </section>
-
-        <hr class="thick-line">
-
-        <section class="info-section">
-            <h2>Our Hours</h2>
-            <p>Sunday-Thursday: 11 AM - 9 PM<br>Friday-Saturday: 11 AM - 10 PM</p>
-        </section>
-
-        <section class="info-section">
-            <h2>Daily Specials</h2>
-            <ul>
-                <li>Monday: Happy Hour All Day</li>
-                <li>Tuesday: House Mexican Martini $9.49</li>
-                <li>Wednesday: Strawberry Rita $5</li>
-                <li>Thursday: Sangria Rita $5</li>
-            </ul>
-            <p>Lunch Specials (11 AM - 4 PM Mon-Fri): From $7.59 (e.g., Enchiladas) to $8.99 (e.g., Fajitas). Add soup/salad for $1.99.</p>
-        </section>
-
-        <section class="info-section">
-            <h2>Menu Categories</h2>
-            <div class="menu-categories">
-                <a href="#appetizers">Appetizers</a>
-                <a href="#soups-salads">Soups</a>
-                <a href="#soups-salads">Salads</a>
-                <a href="#combos">Combos</a>
-                <a href="#burros">Burros</a>
-                <a href="#enchiladas">Enchiladas</a>
-                <a href="#tostadas">Tostadas</a>
-                <a href="#fajitas">Fajitas</a>
-                <a href="#chile-relleno">Chile Relleno</a>
-                <a href="#pechugas">Pechugas</a>
-                <a href="#taco-plates">Taco Plates</a>
-                <a href="#fried-specialties">Fried Specialties</a>
-                <a href="#seafood">Seafood</a>
-                <a href="#platos-especiales">Platos Especiales</a>
-                <a href="#southern-plates">Southern Plates</a>
-                <a href="#lunch-specials">Lunch Specials</a>
-                <a href="#dessert">Dessert</a>
-                <a href="#beverages">Beverages</a>
-                <a href="#kids-menu">Kids Menu</a>
-                <a href="#bar-menu">Bar Menu</a>
-            </div>
-        </section>
-
-        <!-- Menu Sections Start Here -->
-        <section id="appetizers" class="menu-section">
-            <h2>Appetizers</h2>
-            <ul>
-                <li><strong>Nachos</strong>: (all topped with refried beans, mixed cheese, served w/ shredded lettuce, diced tomatoes, chopped onions, and sliced pickled jalapenos) - Bean and cheese 10.99, Ground Beef or Shredded Chicken 14.49, Beef Fajita or Chicken Fajita 17.49, Smoked Beef Brisket 18.99, Sautéed Shrimp & Jack Cheese 17.49, Veggie Nachos (spinach mushroom black bean and jack cheese.) 14.49</li>
-                <li><strong>Botana Plate</strong>: Bean and mixed cheese nachos (2), beef flaquitas (2), chicken flautitas (2), buffalo chicken wings (4), chile con queso, guacamole, sour cream and pico de gallo. - 18.99</li>
-                <li><strong>Wings (w/ buffalo Sauce)</strong>: (served w/ celery and ranch dressing.) - (5) 10.99, (7) 13.49, (9) 15.49</li>
-                <li><strong>Quesadillas</strong>: (all served with jack cheese between two 10" flour tortilla divided into 8 pieces, served w/ pico de gallo, sour cream and guacamole.) - Cheese 12.99, Ground Beef or Shredded Chicken 15.99, Beef Fajita or Chicken Fajita 17.99, Smoked Beef Brisket 18.99, Shrimp 17.99, Spinach, & Mushrooms 15.99</li>
-                <li><strong>Stuffed Jalapenos</strong>: (fresh jalapenos stuffed w/ mixed cheese hand breaded, deep fried served w/ jalapeno ranch.) - (4) 10.99, (6) 12.99</li>
-                <li><strong>Street Tacos</strong>: (4) Double small 4" corn tortilla tacos. (Served w/cilantro, onions and creamy jalapeno sauce.) - Beef fajita 14.99, chicken fajita 14.99</li>
-                <li><strong>Dips - Chile Con Queso</strong>: - Small 8.99, Large 9.99</li>
-                <li><strong>Burros Queso</strong>: (Large chile con queso topped with ground beef, guacamole and pico de gallo.) - 11.49</li>
-                <li><strong>Guacamole</strong>: - Small 5.5, Large 8</li>
-                <li><strong>Burros Bean Dip</strong>: (Beans, chorizo, cheese, pico de gallo, and guacamole.) - 8.99, Add ground beef 1.50</li>
-                <li><strong>ONE SINGLE TOSTADA - Shrimp</strong>: (topped w/ avocado slices and pico de gallo.) - 8.49</li>
-                <li><strong>ONE SINGLE TOSTADA - Ceviche</strong>: (topped w/ avocado slices and pico de gallo.) - 8.49</li>
-                <li><strong>Shrimp Cocktail Cup</strong>: (topped with avocado and pico de gallo, served with crackers.) - 10.99</li>
-                <li><strong>Ceviche Cup</strong>: (topped with avocado and pico de gallo, served with crackers.) - 10.99</li>
-            </ul>
-        </section>
-
-        <section id="soups-salads" class="menu-section">
-            <h2>Soups & Salads</h2>
-            <ul>
-                <li><strong>Taco Salad</strong>: (a fried tortilla taco bowl filled w/ garden mix, chopped tomatoes and shredded mixed cheese. Topped w/ guacamole.) - Ground Beef or Shredded Chicken 10.99, Beef fajita 12.99, Chicken Fajita 12.99, Sautéed Shrimp 12.99</li>
-                <li><strong>Special Salad</strong>: Garden mix, strawberries, candied pecans, and shaved parmesan. Topped with crispy chicken or grilled chicken - 12.99</li>
-                <li><strong>Shrimp Salad</strong>: Garden mix, sliced tomatoes, slice avocados and shredded Monterey jack cheese. Topped with shrimp sautéed in pico de gallo. - 12.99</li>
-                <li><strong>Side Salad</strong>: Garden mix, sliced tomatoes, mixed cheese. - 4</li>
-                <li><strong>Guacamole Salad</strong>: Garden mix, sliced tomatoes, mixed cheese. topped with guacamole. - 2 scoops 4.70, 3 scoops 6.50, 5 scoops 9.00</li>
-                <li><strong>Burros Shredded Chicken Tortilla Soup</strong>: Cup (topped with jack cheese and tortilla strips.) - 4.49, Bowl (served with mexican rice, lettuce, pico de gallo, jack cheese, and tortilla strips.) - 11.49</li>
-                <li><strong>Menudo</strong>: served w/ choice of tortillas, cilantro, onion, serranos and lime. - SM 8.49, Lg 13.99</li>
-            </ul>
-        </section>
-
-        <section id="combos" class="menu-section">
-            <h2>Combos</h2>
-            <ul>
-                <li><strong>Pick 4 (House Combo)</strong>: Choose 4 different items, repeated items selections are subject to extra charge. Options include: Crispy beef taco, cheese enchilada, ground beef tostada, guacamole salad, chile con queso, tamale, rice, or choice of beans. - $13.99</li>
-                <li><strong>Combo 1</strong>: (2) mixed cheese enchiladas topped w/ chili gravy and cheese, (1) beef fajita soft taco, guacamole salad, side of chili con queso, rice, and a choice of beans. - $16.49</li>
-                <li><strong>Combo 2</strong>: (2) mixed cheese enchiladas topped w/ chili gravy and cheese, (1) pork colorado soft taco, guacamole salad, rice, and choice of beans. - $14.99</li>
-                <li><strong>Combo 3</strong>: (1) tamale, (1) mixed cheese enchilada topped w/ chili gravy and mixed cheese, (1) beef tostada, rice, and a choice of beans. - $13.99</li>
-                <li><strong>Combo 4</strong>: (2) chicken enchiladas topped w/ mole sauce and monty jack cheese, (1) crispy chicken taco, served w/ lettuce, tomatoes, and mixed cheese. a side of chile con queso, rice and a choice of beans. - $14.99</li>
-                <li><strong>Tamale Plate (Combo 5)</strong>: (3) tamales topped w/ chili gravy and mixed cheese, rice, and a choice of beans. - $12.49</li>
-            </ul>
-        </section>
-
-        <section id="burros" class="menu-section">
-            <h2>Burros</h2>
-            <ul>
-                <li><strong>Wrapped Burro (Ground Beef)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 6.99, Medium 10.99, Large 11.99</li>
-                <li><strong>Wrapped Burro (Shredded Chicken)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 6.99, Medium 10.99, Large 11.99</li>
-                <li><strong>Wrapped Burro (Chicken Fajita)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Wrapped Burro (Beef Fajita)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Wrapped Burro (Beef Brisket)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Wrapped Burro (Sautéed Shrimp)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Compadres Burro</strong>: Wrapped, stuffed with grilled steak, guacamole, sour cream, & pico de gallo. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Smothered Burro (Americano)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ queso. - 12.49</li>
-                <li><strong>Smothered Burro (Ground Beef)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ chili gravy and mixed cheese. - 13.99</li>
-                <li><strong>Smothered Burro (Shredded Chicken)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ tomatillo sauce and jack cheese. - 13.99</li>
-                <li><strong>Smothered Burro (Chicken Fajita)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ tomatillo sauce and jack cheese. - 15.99</li>
-                <li><strong>Smothered Burro (Smoked Beef Brisket)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ chipotle sauce and jack cheese. - 17.99</li>
-                <li><strong>Smothered Burro (Beef Fajita)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ chilli gravy and mixed cheese. - 15.99</li>
-                <li><strong>Changa (Ground Beef)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/chilli gravy and mixed cheese. - 13.99</li>
-                <li><strong>Changa (Shredded Chicken)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/ tomatillo sauce and jack cheese. - 13.99</li>
-                <li><strong>Changa (Chicken Fajita)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/ tomatillo sauce and jack cheese. - 15.99</li>
-                <li><strong>Changa (Smoked Beef Brisket)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/ chipotle sauce and jack cheese. - 17.99</li>
-                <li><strong>Changa (Beef Fajita)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/ chilli gravy and mixed cheese. - 14.99</li>
-            </ul>
-        </section>
-
-        <section id="enchiladas" class="menu-section">
-            <h2>Enchiladas</h2>
-            <ul>
-                <li><strong>Chicken Mole Enchilada plate</strong>: Topped with mole sauce and jack cheese. Served with Mexican rice and choice of beans. - 14.49</li>
-                <li><strong>Ground Beef or Cheese Enchilada plate</strong>: Topped with chili gravy and mixed cheese. Served with Mexican rice and choice of beans. - 12.99</li>
-                <li><strong>Chicken enchilada plate</strong>: Topped with tomatillo sauce and jack cheese. Served with Mexican rice and choice of beans. - 12.99</li>
-                <li><strong>Brisket Enchilada Plate</strong>: Topped with chipotle sauce and jack cheese. Served with Mexican rice and choice of beans. - 17.99</li>
-                <li><strong>Mushroom & Spinach Enchilada plate</strong>: Served with black beans, topped with Monterey Jack cheese, a side of white rice. Enchiladas are topped with creamy poblano sauce and Jack cheese. - 12.99</li>
-                <li><strong>Bandera Enchiladas</strong>: 3 enchiladas (1 cheese topped with poblano sauce and Monterey Jack cheese, 1 shredded chicken topped with tomatillo sauce and Monterey Jack cheese, 1 ground beef topped with chili gravy and mixed cheese). - 13.99</li>
-                <li><strong>Beef Fajita Enchiladas</strong>: 2 enchiladas topped with chili gravy and mixed cheese. - 14.99</li>
-                <li><strong>Chicken Fajita Enchiladas</strong>: 2 enchiladas topped with chili gravy and mixed cheese. - 14.99</li>
-                <li><strong>Twin Chicken Fajita Enchiladas</strong>: 2 enchiladas in flour tortilla, topped with chile con queso. - 16.49</li>
-                <li><strong>Twin Beef Fajita Enchiladas</strong>: 2 enchiladas in flour tortilla, topped with chile con queso. - 16.49</li>
-            </ul>
-        </section>
-
-        <section id="tostadas" class="menu-section">
-            <h2>Tostadas</h2>
-            <ul>
-                <li><strong>Tostada plate</strong>: (2 flat corn tortillas topped w/ refried beans, shredded mixed cheese, shredded lettuce, diced tomatoes, guacamole and sour cream. served w/ rice.) - Bean and cheese: 10.99, ground beef or shredded chicken: 12.99</li>
-            </ul>
-        </section>
-
-        <section id="fajitas" class="menu-section">
-            <h2>Fajitas</h2>
-            <ul>
-                <li><strong>Chicken Fajitas</strong>: Your choice of meat sautéed w/ grilled onions and poblano peppers. Served w/ lettuce, guacamole, sour cream, shredded mixed cheese, pico de gallo, rice, and a choice of beans. - For One 20.99 For Two 38.99</li>
-                <li><strong>Beef Fajitas or Mixed Fajitas</strong>: Your choice of meat sautéed w/ grilled onions and poblano peppers. Served w/ lettuce, guacamole, sour cream, shredded mixed cheese, pico de gallo, rice, and a choice of beans. - For one 20.99 For two 38.99</li>
-                <li><strong>Shrimp Fajitas</strong>: Your choice of meat sautéed w/ grilled onions and poblano peppers. Served w/ lettuce, guacamole, sour cream, shredded mixed cheese, pico de gallo, rice, and a choice of beans. - For One 20.99 For Two 38.99</li>
-                <li><strong>Fajitas Burras</strong>: Combination of beef, chicken, large shrimp, and jalapeño sausage. - For One 24.49 For Two 44.49</li>
-                <li><strong>Fajitas Diablas</strong>: Topped with spicy diablo sauce and melted Monterey jack cheese. - Add 3.50 for one Add 4.50 for two</li>
-            </ul>
-        </section>
-
-        <section id="chile-relleno" class="menu-section">
-            <h2>Chile Relleno</h2>
-            <ul>
-                <li><strong>Cheese Relleno</strong>: Roasted poblano pepper stuffed with cheese, covered with Ranchero Sauce and Jack cheese. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 14.99</li>
-                <li><strong>Shredded Chicken Relleno</strong>: Roasted poblano pepper stuffed with shredded chicken, covered with Tomatillo Sauce and Jack cheese. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 14.99</li>
-                <li><strong>Ground Beef Relleno</strong>: Roasted poblano pepper stuffed with ground beef, covered with Chipotle and Jack cheese. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 14.99</li>
-                <li><strong>Beef Brisket Relleno</strong>: Roasted poblano pepper stuffed with beef brisket, covered with Chipotle and Jack cheese. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 18.49</li>
-                <li><strong>Chicken Fajita or Beef Fajita Relleno</strong>: Roasted poblano pepper stuffed with chicken fajita or beef fajita, covered with Queso and served with guac salad. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 16.99</li>
-            </ul>
-        </section>
-
-        <section id="pechugas" class="menu-section">
-            <h2>Pechugas</h2>
-            <ul>
-                <li><strong>Pechuga Especial</strong>: Chicken breast topped with diced tomatoes, onions, jalapeño, red bell peppers and corn. - 16.99</li>
-                <li><strong>Pechuga Completa</strong>: Topped with grilled onions, serano and grilled poblano peppers, mushrooms, and tomatoes. - 16.99</li>
-                <li><strong>Pechuga Chipotle</strong>: Topped w/ grilled onions, grilled poblano peppers and chipotle suace. - 16.99</li>
-            </ul>
-        </section>
-
-        <section id="taco-plates" class="menu-section">
-            <h2>Taco Plates</h2>
-            <ul>
-                <li><strong>Crispy Ground Beef or Shredded Chicken</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served on soft flour tortillas. - 10.49</li>
-                <li><strong>Carnitas or Barbacoa</strong>: Served with chopped onions, lettuce, pico de gallo, and jalapenos. Served on soft flour tortillas. - 14.99</li>
-                <li><strong>Chicken Fajita</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served soft on flour tortillas. - 14.99</li>
-                <li><strong>Beef Fajita</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served soft on flour tortillas. - 14.99</li>
-                <li><strong>Pork Red Chile Colorado or Carne Guisada</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served soft on flour tortillas. - 14.99</li>
-                <li><strong>Beef Brisket</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served soft on flour tortillas. - 15.99</li>
-                <li><strong>Fried Avocado Tacos</strong>: Batter-fried avocado slices served with lettuce, tomatoes, and shredded jack cheese. Served soft on flour tortillas. Choice of creamy poblano or diablo sauce. Served with black beans and white rice. - 14.99</li>
-            </ul>
-        </section>
-
-        <section id="fried-specialties" class="menu-section">
-            <h2>Fried Specialties</h2>
-            <ul>
-                <li><strong>Flautas plate (corn tortilla)</strong>: Deep fried, chicken wrapped in CORN tortilla. Served w/ rice, choice of beans, guacamole and sour cream. - 11.99</li>
-                <li><strong>Flautas plate (flour tortilla)</strong>: Deep fried, chicken wrapped in FLOUR tortillas, topped with chile con queso. Served w/ rice, choice of beans, guacamole and sour cream. - 13.49</li>
-                <li><strong>Fried Stuffed Avocado (Chicken Fajita)</strong>: stuffed with your choice of meat and mixed cheese W/ ranchero sauce or chipotle sauce on the side. - 14.99</li>
-                <li><strong>Fried Stuffed Avocado (Beef Fajita)</strong>: stuffed with your choice of meat and mixed cheese W/ ranchero sauce or chipotle sauce on the side. - 14.99</li>
-                <li><strong>Fried Stuffed Avocado (Sautéed Shrimp)</strong>: stuffed with your choice of meat and mixed cheese W/ ranchero sauce or chipotle sauce on the side. - 14.99</li>
-            </ul>
-        </section>
-
-        <section id="seafood" class="menu-section">
-            <h2>Seafood</h2>
-            <ul>
-                <li><strong>Shrimp Enchilada plate</strong>: (2) Shrimp enchiladas (topped w/ creamy poblano sauce and jack cheese.) - 15.99</li>
-                <li><strong>Shrimp Relleno plate</strong>: (topped w/ creamy poblano sauce and jack cheese.) - 16.99</li>
-                <li><strong>Besito s plate</strong>: Shrimp and jalapeno pepper strips wrapped w/ bacon and then deep fried. w/ diablo sauce on the side and melted Monterey jack cheese on top. - (6) 15.49, (8) 18.49</li>
-                <li><strong>Fish Tacos plate</strong>: (Corn or flour tortilla) Grilled or fried tilapia (served w/creamy poblano sauce and sliced avacados.) - 15.99</li>
-                <li><strong>Leo's Especial plate</strong>: Pan seared tilapia filet or (8) sautéed shrimp topped w/ sautéed diced tomatoes, onions, jalapeno peppers, red bell peppers, and corn. - 17.49</li>
-                <li><strong>Camaron Especial plate</strong>: Shrimp sautéed with onions, tomatoes, mushrooms, and poblano peppers. topped w/ melted Monterey jack cheese. - 18.49 (Add diablo sauce for 1.5)</li>
-                <li><strong>Shrimp Cocktail</strong>: (topped with avacado and pico de gallo, served with crackers.) - 19.99</li>
-                <li><strong>Ceviche</strong>: (topped with avacado and pico de gallo, served with crackers.) - 19.99</li>
-                <li><strong>Grilled Shrimp Tacos plate</strong>: (W/ creamy poblano sauce and sliced avocados.) - 15.99</li>
-                <li><strong>Pescado Especial plate</strong>: Pan seared tilapia filet topped w/ sautéed onions, tomatoes, mushrooms, and poblano peppers. Topped w/ melted Monterey jack cheese. - 18.49 (Add diablo sauce for 1.50)</li>
-                <li><strong>AL Mojo de Ajo plate</strong>: choice of Pescado (tellapia) or Camaron (jumbo shrimp) drenched in garlic suace on a bed of white rice. served w/ a side of sauteed veggies. - 18.49</li>
-            </ul>
-        </section>
-
-        <section id="platos-especiales" class="menu-section">
-            <h2>Platos Especiales</h2>
-            <ul>
-                <li><strong>Carne Asada</strong>: whole grilled skirt steak served w/ side of grilled onions, grilled poblano peppers and un chile toreado - 18.99</li>
-                <li><strong>Chile Colorado</strong>: (cubed pork, beef fajita, or chicken fajita) in mildly spicy red chile sauce. Available w/ spicy ranchero or spicy verde sauce - 18.99</li>
-                <li><strong>Carne Guisada</strong>: Beef cubes stewed w/ carrots, onions, and tomatoes in brown gravy - 18.99</li>
-                <li><strong>Javier's Plate</strong>: Small diced skirt steak or grilled chicken breast sautéed with onion, tomatoes, serano pepper, mushrooms and zucchini - 18.99</li>
-                <li><strong>Barbacoa Plate</strong>: slow cooked beef cheek - 18.99</li>
-                <li><strong>Carnitas Plate</strong>: seared cubed pork - 18.99</li>
-                <li><strong>Chuck's Plate</strong>: A piece of grilled Skirt Steak. And (2) brisket ehcnhiladas topped w/ chipottle sauce and monty jack cheese - 21.99</li>
-            </ul>
-        </section>
-
-        <section id="southern-plates" class="menu-section">
-            <h2>Southern Plates</h2>
-            <ul>
-                <li><strong>Chicken Fried Steak</strong>: (topped w/ white gravy, side of texas toast, side of french fries) - 12.99</li>
-                <li><strong>Grilled Chicken Sandwich</strong>: (served on toasted bun with mayonnaise, lettuce tomato and pickles, served with french fries.) - 12.49</li>
-                <li><strong>Chicken Fried Chicken Sandwich</strong>: (served on a toasted bun w/ mayonnaise, lettuce, tomato, and pickles, served w/ french fries.) - 12.49</li>
-                <li><strong>Spicy Chicken Fried Chicken</strong>: (hand breaded and deep fried chicken breast topped w/ ranchero sauce and melted jack cheese, served w/ french fries.) - 13.99</li>
-                <li><strong>Buffalo Chicken Tender Sandwich</strong>: (two fried chicken tenders coated w/ buffalo sauce. served between texas toast w/ lettuce and tomatoes. served w/ french fries.) - 12.49</li>
-                <li><strong>Hamburger</strong>: (Two quarter pound fresh ground beef patties served on toasted bun, w/ mayonnaise, mustard, pickles, lettuce, tomato, and onion. served w/ french fries.) - 12.49</li>
-            </ul>
-        </section>
-
-        <section id="lunch-specials" class="menu-section">
-            <h2>Lunch Specials</h2>
-            <ul>
-                <li><strong>#1 BEEF OR CHEESE ENCHILADAS</strong>: (2 enchiladas topped w/ chilli gravy and mixed cheese.) - $10.49</li>
-                <li><strong>#2 CHICKEN ENCHILADAS</strong>: (2 enchiladas topped w/ tomatillo sauce and monterrey jack cheese.) - $10.49</li>
-                <li><strong>#3 BRISKET ENCHILADAS</strong>: (2 enchiladas topped w/ chipotle sauce and monterry jack cheese.) - $13.99</li>
-                <li><strong>#4 MUSHROOM AND SPINACH ENCHILADAS</strong>: (2 enchiladas topped w/ creamy poblano sauce and topped w/ monty jack cheese. Served w/ white rice and black beans topped w/ monty jack cheese.) - $10.49</li>
-                <li><strong>#5 GRILLED CHICKEN BREAST</strong>: (Chicken breast topped w/ grilled onions, grilled poblano peppers, mushrooms and monterrey jack cheese.) - $11.99</li>
-                <li><strong>#6 BEEF OR CHICKEN CRISPY TACOS</strong>: (2 crispy shelled tacos, served w/ lettuce, tomatoes and mixed cheese.) - $9.99</li>
-                <li><strong>#7 BEEF FAJITA TACOS</strong>: (2 soft served flour tacos, served w/ lettuce, tomatoes and mixed cheese.) - $13.99</li>
-                <li><strong>#7 CHICKEN FAJITA TACOS</strong>: (2 soft served flour tacos, served w/ lettuce, tomatoes and mixed cheese.) - $13.99</li>
-                <li><strong>#8 LUNCH CHICKEN FAJITAS</strong>: (mixed w/ grilled poblano peppers and grilled onions. served w/ lettuce, pico de gallo, scoop of gucamole and 2 tortillas flour or corn.) - $13.99</li>
-                <li><strong>#8 LUNCH BEEF OR MIXED FAJITAS</strong>: (mixed w/ grilled poblano peppers and grilled onions. served w/ lettuce, pico de gallo, scoop of gucamole and 2 tortillas flour or corn.) - $13.99</li>
-                <li><strong>#9 TAMALES</strong>: (2 tamles topped w/ chilli gravy and mixed cheese.) - $9.99</li>
-                <li><strong>#10 LUNCH COMBO</strong>: (1) crispy beef taco (served w/ lettuce, tomatoes and mixed cheese.) and (1) cheese enchilada (topped with chilli gravy and mixed cheese.) - $10.49</li>
-            </ul>
-        </section>
-
-        <section id="dessert" class="menu-section">
-            <h2>Dessert</h2>
-            <ul>
-                <li><strong>Sopapillas</strong>: Full (4) 4.99, Half (2) 3.5, Single (1) 2.0</li>
-                <li><strong>Flan</strong>: 5.99</li>
-                <li><strong>Tres Leches</strong>: 6.99</li>
-                <li><strong>Fried Ice Cream</strong>: 4.99</li>
-                <li><strong>Scoop of Ice Cream</strong>: 1.99</li>
-                <li><strong>Chocolate Cake</strong>: 6.49</li>
-                <li><strong>Churros</strong>: 4.99</li>
-            </ul>
-        </section>
-
-        <section id="beverages" class="menu-section">
-            <h2>Beverages</h2>
-            <ul>
-                <li><strong>Sweet/Unsweet Tea</strong>: No description - No price listed</li>
-                <li><strong>Hot Cocoa</strong>: No refills - No price listed</li>
-                <li><strong>Coffee/Decaf</strong>: No description - No price listed</li>
-                <li><strong>Milk</strong>: No refills - No price listed</li>
-                <li><strong>Hot Tea (Chamomile)</strong>: No description - $3.59</li>
-                <li><strong>Horchata</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Soursop (Guanabana)</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Tamarind(o)</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Passion Fruit (Maracuya)</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Watermelon (Sandia)</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Mango</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Pineapple</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Guava</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Strawberry</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Orange</strong>: Juice, no refills - $3.59</li>
-                <li><strong>Pineapple</strong>: Juice, no refills - $3.59</li>
-                <li><strong>Apple Juice</strong>: No description - $3.59</li>
-                <li><strong>Cranberry</strong>: No description - $3.59</li>
-                <li><strong>Bottle of Topo Chico</strong>: No description - $3.99</li>
-                <li><strong>Bottle of Mexican Coke</strong>: No description - $4.99</li>
-            </ul>
-        </section>
-
-        <section id="kids-menu" class="menu-section">
-            <h2>Kids Menu</h2>
-            <ul>
-                <li><strong>Bean and cheese taco</strong>: mixed cheese and refied beans in a flour tortilla served w/ a side of queso and rice - $7</li>
-                <li><strong>cheese enchilada</strong>: topped w/ chilli gravy and misxed cheese served w/ rice and refried beans - $7</li>
-                <li><strong>crispy beef taco</strong>: w/ lettuce, tomaotes mixed cheese, served w/ rice and beans - $7</li>
-                <li><strong>3 bean and cheese nachos</strong>: topped w/ refried beans and mixed,served w/ rice and refried beans - $7</li>
-                <li><strong>cheese quesadillas</strong>: mixed cheese in a soft flour tortilla, served w/ rice and refried beans - $7</li>
-                <li><strong>two scrambled eggs</strong>: served w/ rice and refried beans - $7</li>
-                <li><strong>chicken tenders</strong>: served w/ french fries - $7</li>
-                <li><strong>Hamburger (add cheese $1)</strong>: served w/ french fries - $7</li>
-                <li><strong>grilled cheese</strong>: mixed cheese in 2 slices of bread, served w/ french fries - $7</li>
-            </ul>
-        </section>
-
-        <section id="bar-menu" class="menu-section">
-            <h2>Bar Menu</h2>
-            <ul>
-                <li><strong>House Mexican Martini</strong>: - $12.49</li>
-                <li><strong>Sangria Rita</strong>: - $5</li>
-                <li><strong>Strawberry Rita</strong>: - $5</li>
-                <li><strong>Mimosa</strong>: choose your flavor pineapple, cranberry or orange - $4</li>
-                <li><strong>Bloody Mary</strong>: - $6</li>
-                <li><strong>Burros Margarita</strong>: Lime only, rocks or frozen - $5.99</li>
-                <li><strong>Burros Mexican Martini</strong>: Lime Only - $12.49</li>
-                <li><strong>Wells, Soda and Water Mixes</strong>: - $5.99</li>
-                <li><strong>Bud Light</strong>: Domestic draft small - $4.49</li>
-                <li><strong>Bud Light</strong>: Domestic draft large - $5.49</li>
-                <li><strong>Miller Lite</strong>: Domestic draft small - $4.49</li>
-                <li><strong>Miller Lite</strong>: Domestic draft large - $5.49</li>
-                <li><strong>Dos XX Lager</strong>: Imported draft small - $4.99</li>
-                <li><strong>Dos XX Lager</strong>: Imported draft large - $5.99</li>
-                <li><strong>Modelo Especial</strong>: Imported draft small - $4.99</li>
-                <li><strong>Modelo Especial</strong>: Imported draft large - $5.99</li>
-                <li><strong>Budweiser</strong>: Bottled - $4.75</li>
-                <li><strong>Bud Light</strong>: Bottled - $4.75</li>
-                <li><strong>Coors Light</strong>: Bottled - $4.75</li>
-                <li><strong>Miller Lite</strong>: Bottled - $4.75</li>
-                <li><strong>Michelob Ultra</strong>: Bottled - $4.75</li>
-                <li><strong>Shiner Bock</strong>: Imported bottled - $5.50</li>
-                <li><strong>Corona</strong>: Imported bottled - $5.50</li>
-                <li><strong>Corona Light</strong>: Imported bottled - $5.50</li>
-                <li><strong>Pacifico</strong>: Imported bottled - $5.50</li>
-                <li><strong>Dos XX Lager</strong>: Imported bottled - $5.50</li>
-                <li><strong>Dos XX Amber</strong>: Imported bottled - $5.50</li>
-                <li><strong>Modelo Especial</strong>: Imported bottled - $5.50</li>
-                <li><strong>Negra Modelo</strong>: Imported bottled - $5.50</li>
-                <li><strong>Pepino Sour</strong>: cucumber vodka, fresh lime juice, agave nectar and a splash of lime soda w/ chili salt rim - $8.99</li>
-                <li><strong>Grapefruitini</strong>: Deep Eddy Ruby Red Vodka, lime juice, simple syrup and club soda - $9.99</li>
-                <li><strong>Pina Colada</strong>: house rum and pina colada mix - $8.99</li>
-                <li><strong>Texas Size Jack and Coke</strong>: Classic jack Daniel's and regular coke - $13</li>
-                <li><strong>Renee's Cosmo</strong>: House Vodka, triple sec, lime juice, cranberry juice and a splash of soda. served in a shaker on the rocks - $10.99</li>
-                <li><strong>Michelada</strong>: Choice of beer in a mug combined w/ our perfect secret mix - $8</li>
-                <li><strong>Texas Bloody Mary</strong>: made w/ deep eddy regular vodka - $7.50</li>
-                <li><strong>Mimosa</strong>: choose your flavor pineapple, cranberry or orange - $4.50</li>
-                <li><strong>Tequila Sunrise</strong>: house tequila and orange juice - $7.00</li>
-                <li><strong>Burros House Rita</strong>: SWIRL OR ADD FRUIT FLAVOR $1 EACH strawberry. mango, sangria. watermelon, blue curaçao, or chamoy - $6.99</li>
-                <li><strong>Burros Top Shelf Margarita</strong>: Made with Exotico Reposado - $9.49</li>
-                <li><strong>Jumbo Margarita</strong>: FOR $2 ADD 7oz. coronita, Dos XX Lager, or Big Red ADD FRUIT FLAVOR FOR$1.50 - $12.99</li>
-                <li><strong>Burros Mexican Martini</strong>: - $13.99</li>
-                <li><strong>Premium Margarita</strong>: - $14.49</li>
-                <li><strong>Brad's Rita</strong>: Herradura silver, Presidenete Brandy, Gran Gala, triple sec, agave nectar, lime juice, orange juice, and sweet and sour served on the rocks - $15.49</li>
-                <li><strong>Spicy Pineapple Martini</strong>: Tequila, serrano peppers, pineapple juice, lime juice & agave nectar - $13.99</li>
-                <li><strong>La Morada Rita</strong>: Tequila, prickly pear, lime juice and curacao - $9.99</li>
-                <li><strong>La Paloma</strong>: Tequila, fresh lime juice, and grapefruit soda on the rocks - $9.99</li>
-                <li><strong>La Flaca</strong>: Milagro reposado tequila, fresh lime juice, and natural agave nectar. served on the rocks - $9.99</li>
-                <li><strong>Cranberry Rita</strong>: House tequila, agave nectar, cranberry juice, lime juice and a splash of soda - $7.99</li>
-                <li><strong>Jumbo Mango Chamoy Margarita</strong>: Frozen margarita w/ swirl of mango chamoy puree and tajin rim - $13.99</li>
-                <li><strong>Woodbridge Merlot</strong>: - $6</li>
-                <li><strong>Woodbridge Cabernet</strong>: - $6</li>
-                <li><strong>Woodbridge Chardonnay</strong>: - $6</li>
-            </ul>
-        </section>
-
+        <a class="cta-call" href="tel:+15123053881" aria-label="Call Burros Tex Mex Bar and Grill">
+          Call <small>(512) 305-3881</small>
+        </a>
+      </div>
     </div>
+  </div>
 
-    <footer>
-        <p>900 E Palm Valley Blvd, Round Rock, TX 78664 | (512) 305-3881<br>© 2026 Burros Tex-Mex Bar & Grill</p>
-    </footer>
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-card">
+        <img class="logo" alt="Burros Tex-Mex Bar & Grill logo"
+             src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/BurrosTexMexBarandGrill_900_Round_Rock_TX.png" />
+
+        <h1 class="hero-title" data-i18n="heroTitle">Welcome to Burros Tex-Mex Bar &amp; Grill</h1>
+        <p class="tagline" data-i18n="tagline">Just be you!!</p>
+        <p class="intro" data-i18n="intro">
+          Enjoy authentic Tex-Mex flavors in Round Rock, TX. Join us for flame-grilled favorites, fresh margaritas, and a welcoming vibe.
+        </p>
+
+        <div class="photo-row" aria-label="Food photos">
+          <figure class="photo">
+            <img
+              src="https://static.wixstatic.com/media/dbcf98_0210ffa418104c788a40887a926d5d59~mv2.jpg"
+              alt="Tex-Mex dish photo from Burros"
+              loading="lazy"
+            />
+          </figure>
+          <figure class="photo">
+            <img
+              src="https://static.wixstatic.com/media/dbcf98_bbc4bc3e9022469d98ef9c5181ce30aa~mv2.jpg"
+              alt="Tex-Mex dish photo from Burros"
+              loading="lazy"
+            />
+          </figure>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+      </div>
+
+      <aside class="info-card" aria-label="Location, hours, and specials">
+        <div class="info-grid">
+          <div class="info-item">
+            <h3 data-i18n="hoursTitle">Hours</h3>
+            <p><strong data-i18n="hoursLine1">Sun–Thu</strong>: <span>11AM–9PM</span></p>
+            <p><strong data-i18n="hoursLine2">Fri–Sat</strong>: <span>11AM–10PM</span></p>
+          </div>
+
+          <div class="info-item">
+            <h3 data-i18n="addressTitle">Address</h3>
+            <p>
+              <a href="https://maps.google.com/?q=900%20E%20Palm%20Valley%20Blvd%2C%20Round%20Rock%2C%20TX%2078664"
+                 target="_blank" rel="noreferrer"
+                 aria-label="Open address in Google Maps">
+                900 E Palm Valley Blvd, Round Rock, TX 78664
+              </a>
+            </p>
+          </div>
+
+          <div class="info-item">
+            <h3 data-i18n="phoneTitle">Phone</h3>
+            <p><a href="tel:+15123053881">(512) 305-3881</a></p>
+          </div>
+
+          <div class="info-item specials">
+            <h3 data-i18n="specialsTitle">Daily Specials</h3>
+            <ul>
+              <li data-i18n="specMon">Monday: Happy Hour all day</li>
+              <li data-i18n="specTue">Tuesday: House Mexican Martini $12.49</li>
+              <li data-i18n="specWed">Wednesday: Strawberry Rita $5</li>
+              <li data-i18n="specThu">Thursday: Sangria Rita $5</li>
+              <li data-i18n="specFri">Friday: Bottled beer happy hour price</li>
+              <li data-i18n="specWeekend">Sat &amp; Sun: Mimosa $4.50 and Bloody Mary $6</li>
+            </ul>
+            <p class="note" style="margin-top:10px" data-i18n="lunchNote">
+              Lunch Specials served Monday–Friday, 11AM–4PM.
+            </p>
+          </div>
+        </div>
+
+        <a class="cta-call" href="#menu" style="justify-content:center; background:var(--accent-green); border-color:rgba(0,0,0,.12)">
+          <span data-i18n="viewMenu">View Menu</span>
+        </a>
+      </aside>
+    </div>
+  </header>
+
+  <section class="menu-nav" id="menu">
+    <div class="wrap">
+      <h2 class="section-title" data-i18n="menuTitle">Menu</h2>
+      <nav class="menu-buttons" aria-label="Menu category links">
+        <a href="#appetizers" data-i18n="catAppetizers">Appetizers</a>
+        <a href="#soups-salads" data-i18n="catSoupsSalads">Soups &amp; Salads</a>
+        <a href="#combos" data-i18n="catCombos">Combos</a>
+        <a href="#burros" data-i18n="catBurros">Burros</a>
+
+        <a href="#enchiladas" data-i18n="catEnchiladas">Enchiladas</a>
+        <a href="#tostadas" data-i18n="catTostadas">Tostadas</a>
+        <a href="#fajitas" data-i18n="catFajitas">Fajitas</a>
+        <a href="#chile-relleno" data-i18n="catRelleno">Chile Relleno</a>
+
+        <a href="#pechugas" data-i18n="catPechugas">Pechugas</a>
+        <a href="#taco-plates" data-i18n="catTacoPlates">Taco Plates</a>
+        <a href="#fried" data-i18n="catFried">Fried Specialties</a>
+        <a href="#seafood" data-i18n="catSeafood">Seafood</a>
+
+        <a href="#platos" data-i18n="catPlatos">Platos Especiales</a>
+        <a href="#southern" data-i18n="catSouthern">Southern Plates</a>
+        <a href="#lunch" data-i18n="catLunch">Lunch Specials</a>
+        <a href="#dessert" data-i18n="catDessert">Dessert</a>
+
+        <a href="#beverages" data-i18n="catBeverages">Beverages</a>
+        <a href="#kids" data-i18n="catKids">Kids Menu</a>
+        <a href="#bar" data-i18n="catBar">Bar Menu</a>
+      </nav>
+      <p class="hint" data-i18n="hint">Tap a category to jump. Scroll for the full menu.</p>
+    </div>
+  </section>
+
+  <main>
+    <div class="wrap" id="menuMount" aria-label="Full menu sections"></div>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div class="chip">
+        <strong>Burros Tex-Mex Bar &amp; Grill</strong>&nbsp;•&nbsp;
+        <span>900 E Palm Valley Blvd, Round Rock, TX 78664</span>&nbsp;•&nbsp;
+        <a href="tel:+15123053881" style="font-weight:1000; text-decoration:none">(512) 305-3881</a>
+      </div>
+
+      <small>© 2026 Burros Tex-Mex Bar &amp; Grill</small>
+
+      <small class="consulted">
+        <a href="https://www.jordanmoddes.com/jmodco" target="_blank" rel="noreferrer">Consulted by Jmod Co.</a>
+      </small>
+    </div>
+  </footer>
+
+  <script>
+    // ---- i18n (simple, deterministic toggle) ----
+    const I18N = {
+      en: {
+        heroTitle: "Welcome to Burros Tex-Mex Bar & Grill",
+        tagline: "Just be you!!",
+        intro: "Enjoy authentic Tex-Mex flavors in Round Rock, TX. Join us for flame-grilled favorites, fresh margaritas, and a welcoming vibe.",
+        hoursTitle: "Hours",
+        hoursLine1: "Sun–Thu",
+        hoursLine2: "Fri–Sat",
+        addressTitle: "Address",
+        phoneTitle: "Phone",
+        specialsTitle: "Daily Specials",
+        specMon: "Monday: Happy Hour all day",
+        specTue: "Tuesday: House Mexican Martini $12.49",
+        specWed: "Wednesday: Strawberry Rita $5",
+        specThu: "Thursday: Sangria Rita $5",
+        specFri: "Friday: Bottled beer happy hour price",
+        specWeekend: "Sat & Sun: Mimosa $4.50 and Bloody Mary $6",
+        lunchNote: "Lunch Specials served Monday–Friday, 11AM–4PM.",
+        viewMenu: "View Menu",
+        menuTitle: "Menu",
+        hint: "Tap a category to jump. Scroll for the full menu.",
+        catAppetizers: "Appetizers",
+        catSoupsSalads: "Soups & Salads",
+        catCombos: "Combos",
+        catBurros: "Burros",
+        catEnchiladas: "Enchiladas",
+        catTostadas: "Tostadas",
+        catFajitas: "Fajitas",
+        catRelleno: "Chile Relleno",
+        catPechugas: "Pechugas",
+        catTacoPlates: "Taco Plates",
+        catFried: "Fried Specialties",
+        catSeafood: "Seafood",
+        catPlatos: "Platos Especiales",
+        catSouthern: "Southern Plates",
+        catLunch: "Lunch Specials",
+        catDessert: "Dessert",
+        catBeverages: "Beverages",
+        catKids: "Kids Menu",
+        catBar: "Bar Menu",
+        backTop: "Top",
+        pricesNote: "Prices shown as listed."
+      },
+      es: {
+        heroTitle: "Bienvenido a Burros Tex-Mex Bar & Grill",
+        tagline: "¡Solo sé tú!",
+        intro: "Disfruta sabores auténticos Tex-Mex en Round Rock, TX. Acompáñanos para favoritos a la parrilla, margaritas frescas y un ambiente acogedor.",
+        hoursTitle: "Horario",
+        hoursLine1: "Dom–Jue",
+        hoursLine2: "Vie–Sáb",
+        addressTitle: "Dirección",
+        phoneTitle: "Teléfono",
+        specialsTitle: "Especiales del Día",
+        specMon: "Lunes: Happy Hour todo el día",
+        specTue: "Martes: Martini Mexicano de la casa $12.49",
+        specWed: "Miércoles: Margarita de fresa $5",
+        specThu: "Jueves: Sangría Rita $5",
+        specFri: "Viernes: Cerveza embotellada a precio de Happy Hour",
+        specWeekend: "Sáb y Dom: Mimosa $4.50 y Bloody Mary $6",
+        lunchNote: "Especiales de lunch lunes–viernes, 11AM–4PM.",
+        viewMenu: "Ver Menú",
+        menuTitle: "Menú",
+        hint: "Toca una categoría para saltar. Desplázate para ver todo el menú.",
+        catAppetizers: "Entradas",
+        catSoupsSalads: "Sopas y Ensaladas",
+        catCombos: "Combos",
+        catBurros: "Burros",
+        catEnchiladas: "Enchiladas",
+        catTostadas: "Tostadas",
+        catFajitas: "Fajitas",
+        catRelleno: "Chile Relleno",
+        catPechugas: "Pechugas",
+        catTacoPlates: "Platos de Tacos",
+        catFried: "Especialidades Fritas",
+        catSeafood: "Mariscos",
+        catPlatos: "Platos Especiales",
+        catSouthern: "Platos del Sur",
+        catLunch: "Especiales de Lunch",
+        catDessert: "Postre",
+        catBeverages: "Bebidas",
+        catKids: "Menú de Niños",
+        catBar: "Menú de Bar",
+        backTop: "Arriba",
+        pricesNote: "Precios tal como aparecen."
+      }
+    };
+
+    // ---- Menu data (sourced from the original Wix menu pages) ----
+    // Notes:
+    // - Core menu text pulled from the combined menu page.
+    // - Beverages and Dessert included from their dedicated pages.
+    const MENU = [
+      {
+        id: "appetizers",
+        title: { en: "Appetizers", es: "Entradas" },
+        note: { en: "All topped with refried beans, mixed cheese, shredded lettuce, diced tomatoes, chopped onions, and sliced pickled jalapeños (Nachos).", es: "Nachos: frijoles refritos, queso mixto, lechuga, tomate, cebolla y jalapeños en escabeche." },
+        items: [
+          { n: "Nachos (Bean & Cheese)", d: "", p: "$9.99" },
+          { n: "Nachos (Ground Beef or Shredded Chicken)", d: "", p: "$13.49" },
+          { n: "Nachos (Beef Fajita or Chicken Fajita)", d: "", p: "$16.49" },
+          { n: "Nachos (Smoked Beef Brisket)", d: "", p: "$17.99" },
+          { n: "Nachos (Sautéed Shrimp & Jack Cheese)", d: "", p: "$16.49" },
+          { n: "Veggie Nachos", d: "Spinach, mushroom, black bean, and jack cheese.", p: "$13.49" },
+          { n: "Botana Plate", d: "Bean & mixed cheese nachos (2), beef flautitas (2), chicken flautitas (2), buffalo wings (4), chile con queso, guacamole, sour cream, pico de gallo.", p: "$17.99" },
+          { n: "Wings (Buffalo) (5)", d: "Served with celery and ranch dressing.", p: "$9.99" },
+          { n: "Wings (Buffalo) (7)", d: "Served with celery and ranch dressing.", p: "$12.49" },
+          { n: "Wings (Buffalo) (9)", d: "Served with celery and ranch dressing.", p: "$14.49" },
+          { n: "Quesadillas (Cheese)", d: "Jack cheese between two 10\" flour tortillas; served with pico, sour cream, guacamole.", p: "$11.99" },
+          { n: "Quesadillas (Ground Beef or Shredded Chicken)", d: "Served with pico, sour cream, guacamole.", p: "$14.99" },
+          { n: "Quesadillas (Beef Fajita or Chicken Fajita)", d: "Served with pico, sour cream, guacamole.", p: "$16.99" },
+          { n: "Quesadillas (Smoked Beef Brisket)", d: "Served with pico, sour cream, guacamole.", p: "$17.99" },
+          { n: "Quesadillas (Shrimp)", d: "Served with pico, sour cream, guacamole.", p: "$16.99" },
+          { n: "Quesadillas (Spinach & Mushrooms)", d: "Served with pico, sour cream, guacamole.", p: "$14.99" },
+          { n: "Stuffed Jalapeños (4)", d: "Fresh jalapeños stuffed with mixed cheese, hand-breaded, deep-fried; served with jalapeño ranch.", p: "$9.99" },
+          { n: "Stuffed Jalapeños (6)", d: "Fresh jalapeños stuffed with mixed cheese, hand-breaded, deep-fried; served with jalapeño ranch.", p: "$11.99" },
+          { n: "Dips: Chile Con Queso (Small)", d: "", p: "$7.99" },
+          { n: "Dips: Chile Con Queso (Large)", d: "", p: "$8.99" },
+          { n: "Dips: Burros Queso", d: "Large chile con queso topped with ground beef, guacamole, pico.", p: "$10.49" },
+          { n: "Dips: Guacamole (Small)", d: "", p: "$5.50" },
+          { n: "Dips: Guacamole (Large)", d: "", p: "$8.00" },
+          { n: "Dips: Burros Dip", d: "Beans, chorizo, cheese, pico de gallo, guacamole.", p: "$7.99" },
+          { n: "Add ground beef", d: "", p: "$1.50" }
+        ]
+      },
+      {
+        id: "soups-salads",
+        title: { en: "Soups & Salads", es: "Sopas y Ensaladas" },
+        items: [
+          { n: "Taco Salad (Ground Beef or Shredded Chicken)", d: "Fried tortilla bowl, garden mix, tomatoes, mixed cheese; topped with guacamole.", p: "$10.99" },
+          { n: "Taco Salad (Beef Fajita)", d: "Topped with guacamole.", p: "$12.99" },
+          { n: "Taco Salad (Chicken Fajita)", d: "Topped with guacamole.", p: "$12.99" },
+          { n: "Taco Salad (Sautéed Shrimp)", d: "Topped with guacamole.", p: "$12.99" },
+          { n: "Special Salad", d: "Garden mix, strawberries, candied pecans, shaved parmesan; topped with crispy or grilled chicken.", p: "$12.99" },
+          { n: "Shrimp Salad", d: "Garden mix, tomatoes, avocado slices, Monterey jack; topped with shrimp sautéed in pico de gallo.", p: "$12.99" },
+          { n: "Side Salad", d: "Garden mix, tomatoes, mixed cheese.", p: "$4.00" },
+          { n: "Guacamole Salad (2 scoops)", d: "Garden mix, tomatoes, mixed cheese; topped with guacamole.", p: "$4.70" },
+          { n: "Guacamole Salad (3 scoops)", d: "", p: "$6.50" },
+          { n: "Guacamole Salad (5 scoops)", d: "", p: "$9.00" },
+          { n: "Burros Shredded Chicken Tortilla Soup (Cup)", d: "Topped with jack cheese and tortilla strips.", p: "$4.49" },
+          { n: "Burros Shredded Chicken Tortilla Soup (Bowl)", d: "Served with mexican rice, lettuce, pico, jack cheese, tortilla strips.", p: "$11.49" },
+          { n: "Add two small chicken flautas", d: "", p: "$4.00" }
+        ]
+      },
+      {
+        id: "combos",
+        title: { en: "Combos", es: "Combos" },
+        items: [
+          { n: "Choose 4 (House Combo)", d: "Choose 4 different items (repeat selections may cost extra): crispy beef taco, cheese enchilada, ground beef tostada, guacamole salad, chile con queso, tamale, rice, or choice of beans.", p: "$13.99" },
+          { n: "Combo #1", d: "(2) mixed cheese enchiladas + (1) beef fajita soft taco + guacamole salad + chile con queso + rice + choice of beans.", p: "$16.49" },
+          { n: "Combo #2", d: "(2) mixed cheese enchiladas + (1) pork colorado soft taco + guacamole salad + rice + choice of beans.", p: "$14.99" },
+          { n: "Combo #3", d: "(1) tamale + (1) mixed cheese enchilada + (1) beef tostada + rice + choice of beans.", p: "$13.99" },
+          { n: "Combo #4", d: "(2) chicken mole enchiladas + (1) crispy chicken taco + chile con queso + rice + choice of beans.", p: "$14.99" },
+          { n: "Tamale Plate (Combo #5)", d: "(3) tamales topped with chili gravy and mixed cheese; served with rice and choice of beans.", p: "$12.49" }
+        ]
+      },
+      {
+        id: "burros",
+        title: { en: "Burros", es: "Burros" },
+        note: { en: "Wrapped, Smothered, and Changas.", es: "Wrapped, Smothered y Changas." },
+        items: [
+          { n: "Wrapped Burro (Ground Beef / Shredded Chicken) — Small", d: "Stuffed with black/refried/charro beans, mixed cheese, lettuce, tomatoes, rice; choice of sauce/guac/queso/sour cream on the side.", p: "$6.99" },
+          { n: "Wrapped Burro (Ground Beef / Shredded Chicken) — Medium", d: "", p: "$10.99" },
+          { n: "Wrapped Burro (Ground Beef / Shredded Chicken) — Large", d: "", p: "$11.99" },
+          { n: "Wrapped Burro (Chicken Fajita / Beef Fajita / Brisket / Shrimp) — Small", d: "Same build as above.", p: "$9.99" },
+          { n: "Wrapped Burro (Chicken Fajita / Beef Fajita / Brisket / Shrimp) — Medium", d: "", p: "$13.99" },
+          { n: "Wrapped Burro (Chicken Fajita / Beef Fajita / Brisket / Shrimp) — Large", d: "", p: "$14.99" },
+          { n: "Compadres Burro — Small", d: "Wrapped burrito stuffed with grilled steak, guacamole, sour cream, pico de gallo.", p: "$9.99" },
+          { n: "Compadres Burro — Medium", d: "", p: "$13.99" },
+          { n: "Compadres Burro — Large", d: "", p: "$14.99" },
+
+          { n: "Smothered Burro — Americano", d: "Stuffed with refried beans and mixed cheese; served with rice and guacamole salad. Topped with queso.", p: "$12.49" },
+          { n: "Smothered Burro — Ground Beef", d: "Topped with chili gravy and mixed cheese.", p: "$13.99" },
+          { n: "Smothered Burro — Shredded Chicken", d: "Topped with tomatillo sauce and jack cheese.", p: "$13.99" },
+          { n: "Smothered Burro — Chicken Fajita", d: "Topped with tomatillo sauce and jack cheese.", p: "$15.99" },
+          { n: "Smothered Burro — Smoked Beef Brisket", d: "Topped with chipotle sauce and jack cheese.", p: "$17.99" },
+          { n: "Smothered Burro — Beef Fajita", d: "Topped with chili gravy and mixed cheese.", p: "$15.99" },
+
+          { n: "Changas — Ground Beef", d: "Deep-fried burrito filled with rice and mixed cheese; served with choice of beans and guacamole salad. Topped with chili gravy and mixed cheese.", p: "$13.99" },
+          { n: "Changas — Shredded Chicken", d: "Topped with tomatillo sauce and jack cheese.", p: "$13.99" },
+          { n: "Changas — Chicken Fajita", d: "Topped with tomatillo sauce and jack cheese.", p: "$15.99" },
+          { n: "Changas — Smoked Beef Brisket", d: "Topped with chipotle sauce and jack cheese.", p: "$17.99" },
+          { n: "Changas — Beef Fajita", d: "Topped with chili gravy and mixed cheese.", p: "$14.99" },
+          { n: "Substitute/add chile con queso for sauce", d: "", p: "$1.00" }
+        ]
+      },
+      {
+        id: "enchiladas",
+        title: { en: "Enchiladas", es: "Enchiladas" },
+        note: { en: "All enchilada plates include 3 enchiladas; served with mexican rice and choice of beans (unless noted).", es: "Platos incluyen 3 enchiladas; con arroz y frijoles (salvo nota)." },
+        items: [
+          { n: "Chicken Mole Enchilada Plate", d: "Topped with mole sauce and jack cheese.", p: "$14.49" },
+          { n: "Ground Beef or Cheese Enchilada Plate", d: "Topped with chili gravy and mixed cheese.", p: "$12.99" },
+          { n: "Chicken Enchilada Plate", d: "Topped with tomatillo sauce and jack cheese.", p: "$12.99" },
+          { n: "Brisket Enchilada Plate", d: "Topped with chipotle sauce and jack cheese.", p: "$17.99" },
+          { n: "Mushroom & Spinach Enchilada Plate", d: "Served with black beans topped with Monterey jack + side of white rice; topped with creamy poblano sauce and jack cheese.", p: "$12.99" },
+          { n: "Bandera Enchiladas", d: "3 enchiladas: (1) cheese w/ poblano + Monterey jack, (1) shredded chicken w/ tomatillo + Monterey jack, (1) ground beef w/ chili gravy + mixed cheese.", p: "$13.99" },
+          { n: "Fajita Enchiladas (Beef Fajita)", d: "(2) enchiladas topped with chili gravy and mixed cheese.", p: "$14.99" },
+          { n: "Fajita Enchiladas (Chicken Fajita)", d: "(2) enchiladas topped with chili gravy and mixed cheese.", p: "$14.99" },
+          { n: "Twin Enchiladas (Chicken Fajita)", d: "2 enchiladas in flour tortilla, topped with chile con queso.", p: "$16.49" },
+          { n: "Twin Enchiladas (Beef Fajita)", d: "2 enchiladas in flour tortilla, topped with chile con queso.", p: "$16.49" }
+        ]
+      },
+      {
+        id: "tostadas",
+        title: { en: "Tostadas", es: "Tostadas" },
+        items: [
+          { n: "Tostada Plate (Bean & Cheese)", d: "2 flat corn tortillas topped with refried beans, mixed cheese, lettuce, tomatoes, guacamole, sour cream; served with rice.", p: "$10.99" },
+          { n: "Tostada Plate (Ground Beef or Shredded Chicken)", d: "Served with rice.", p: "$12.99" },
+          { n: "Single Tostada (Shrimp)", d: "Topped with avocado slices and pico de gallo.", p: "$7.49" }
+        ]
+      },
+      {
+        id: "fajitas",
+        title: { en: "Fajitas", es: "Fajitas" },
+        note: { en: "Sautéed with grilled onions and poblano peppers. Served with lettuce, guacamole, sour cream, shredded mixed cheese, pico de gallo, rice, and choice of beans.", es: "Con cebolla asada y chile poblano. Incluye lechuga, guacamole, crema, queso, pico, arroz y frijoles." },
+        items: [
+          { n: "Chicken Fajitas (For One)", d: "", p: "$20.99" },
+          { n: "Chicken Fajitas (For Two)", d: "", p: "$38.99" },
+          { n: "Beef Fajitas or Mixed Fajitas (For One)", d: "", p: "$20.99" },
+          { n: "Beef Fajitas or Mixed Fajitas (For Two)", d: "", p: "$38.99" },
+          { n: "Shrimp Fajitas (For One)", d: "", p: "$20.99" },
+          { n: "Shrimp Fajitas (For Two)", d: "", p: "$38.99" },
+          { n: "Fajitas Burras (For One)", d: "Combination of beef, chicken, large shrimp, and jalapeño sausage.", p: "$24.49" },
+          { n: "Fajitas Burras (For Two)", d: "Combination of beef, chicken, large shrimp, and jalapeño sausage.", p: "$44.49" },
+          { n: "Make it “Fajitas Diablas” (For One)", d: "Topped with spicy diablo sauce and melted Monterey jack.", p: "$3.50" },
+          { n: "Make it “Fajitas Diablas” (For Two)", d: "Topped with spicy diablo sauce and melted Monterey jack.", p: "$4.50" }
+        ]
+      },
+      {
+        id: "chile-relleno",
+        title: { en: "Chile Relleno", es: "Chile Relleno" },
+        note: { en: "Roasted poblano pepper stuffed, battered, deep-fried. Served with rice, choice of beans, lettuce & diced tomatoes.", es: "Chile poblano asado relleno, empanizado y frito. Con arroz, frijoles, lechuga y tomate." },
+        items: [
+          { n: "Cheese Relleno", d: "Covered with ranchero sauce and jack cheese.", p: "$14.99" },
+          { n: "Shredded Chicken Relleno", d: "Covered with tomatillo sauce and jack cheese.", p: "$14.99" },
+          { n: "Ground Beef Relleno", d: "Covered with chipotle sauce and jack cheese.", p: "$14.99" },
+          { n: "Beef Brisket Relleno", d: "Covered with chipotle sauce and jack cheese.", p: "$18.49" },
+          { n: "Chicken Fajita or Beef Fajita Relleno", d: "Covered with queso and served with guacamole salad.", p: "$16.99" }
+        ]
+      },
+      {
+        id: "pechugas",
+        title: { en: "Pechugas", es: "Pechugas" },
+        note: { en: "Grilled chicken breasts served with rice, choice of beans; topped with Monterey jack cheese and avocado slices.", es: "Pechugas asadas con arroz y frijoles; con queso Monterey jack y aguacate." },
+        items: [
+          { n: "Add a choice of sauce", d: "", p: "$2.00" },
+          { n: "Add bacon", d: "", p: "$2.00" },
+          { n: "Pechuga Especial", d: "Topped with diced tomatoes, onions, jalapeño, red bell peppers, and corn.", p: "$16.99" },
+          { n: "Pechuga Completa", d: "Topped with grilled onions, serrano, grilled poblano peppers, mushrooms, and tomatoes.", p: "$16.99" },
+          { n: "Pechuga Chipotle", d: "Topped with grilled onions, grilled poblano peppers, and chipotle sauce.", p: "$16.99" },
+          { n: "Upgrade your Pechuga", d: "Swap beans/rice for sautéed mixed vegetables + tortilla soup or side salad.", p: "$4.00" }
+        ]
+      },
+      {
+        id: "taco-plates",
+        title: { en: "Taco Plates", es: "Platos de Tacos" },
+        note: { en: "All taco plates are served with (2) tacos, rice, and choice of beans.", es: "Todos los platos incluyen 2 tacos, arroz y frijoles." },
+        items: [
+          { n: "Street Tacos (4) Beef Fajita", d: "Double small 4\" corn tortillas; served with cilantro, onions, creamy serrano sauce.", p: "$13.99" },
+          { n: "Street Tacos (4) Chicken Fajita", d: "Double small 4\" corn tortillas; served with cilantro, onions, creamy serrano sauce.", p: "$13.99" },
+          { n: "Crispy Ground Beef or Shredded Chicken Tacos", d: "Served with lettuce, tomatoes, shredded mixed cheese.", p: "$10.49" },
+          { n: "Carnitas or Barbacoa Tacos", d: "Served with chopped onions, lettuce, pico de gallo, jalapeños; soft flour tortillas.", p: "$14.99" },
+          { n: "Chicken Fajita Tacos", d: "Soft flour tortillas; served with lettuce, tomatoes, shredded mixed cheese.", p: "$14.99" },
+          { n: "Beef Fajita Tacos", d: "Soft flour tortillas; served with lettuce, tomatoes, shredded mixed cheese.", p: "$14.99" },
+          { n: "Pork Red Chile Colorado or Carne Guisada Tacos", d: "Soft flour tortillas; served with lettuce, tomatoes, shredded mixed cheese.", p: "$14.99" },
+          { n: "Beef Brisket Tacos", d: "Soft flour tortillas; served with lettuce, tomatoes, shredded mixed cheese.", p: "$15.99" },
+          { n: "Fried Avocado Tacos", d: "Battered & fried avocado slices. Served with black beans and white rice. Choice of creamy poblano or diablo sauce.", p: "$14.99" }
+        ]
+      },
+      {
+        id: "fried",
+        title: { en: "Fried Specialties", es: "Especialidades Fritas" },
+        items: [
+          { n: "Flautas Plate (Corn tortilla)", d: "Deep-fried chicken wrapped in corn tortilla. Served with rice, choice of beans, guacamole, sour cream.", p: "$11.99" },
+          { n: "Flautas Plate (Flour tortillas)", d: "Deep-fried chicken wrapped in flour tortillas; topped with chile con queso. Served with rice, choice of beans, guacamole, sour cream.", p: "$13.49" },
+          { n: "Fried Stuffed Avocado (Chicken Fajita)", d: "Stuffed with choice of meat and mixed cheese; ranchero or chipotle sauce on the side.", p: "$14.99" },
+          { n: "Fried Stuffed Avocado (Beef Fajita)", d: "Ranchero or chipotle sauce on the side.", p: "$14.99" },
+          { n: "Fried Stuffed Avocado (Sautéed Shrimp)", d: "Ranchero or chipotle sauce on the side.", p: "$14.99" }
+        ]
+      },
+      {
+        id: "seafood",
+        title: { en: "Seafood", es: "Mariscos" },
+        note: { en: "All seafood plates served with white rice and sautéed vegetables.", es: "Platos con arroz blanco y verduras salteadas." },
+        items: [
+          { n: "Shrimp Enchilada Plate", d: "(2) shrimp enchiladas topped with creamy poblano sauce and jack cheese.", p: "$15.99" },
+          { n: "Shrimp Relleno Plate", d: "Topped with creamy poblano sauce and jack cheese.", p: "$16.99" },
+          { n: "Besitos Plate (6)", d: "Shrimp + jalapeño strips wrapped with bacon, deep-fried; diablo sauce on side; Monterey jack on top.", p: "$15.49" },
+          { n: "Besitos Plate (8)", d: "Shrimp + jalapeño strips wrapped with bacon, deep-fried; diablo sauce on side; Monterey jack on top.", p: "$18.49" },
+          { n: "Fish Tacos Plate", d: "Corn or flour tortilla. Grilled or fried tilapia; served with creamy poblano sauce and avocado slices.", p: "$15.99" },
+          { n: "Leo's Especial Plate", d: "Pan-seared tilapia filet or (8) sautéed shrimp topped with sautéed tomatoes, onions, jalapeño, red bell peppers, and corn.", p: "$17.49" },
+          { n: "Camaron Especial Plate", d: "Shrimp sautéed with onions, tomatoes, mushrooms, poblano peppers; topped with Monterey jack. Add diablo sauce $1.50.", p: "$18.49" },
+          { n: "Shrimp Cocktail", d: "Topped with avocado and pico de gallo; served with crackers.", p: "$18.49" },
+          { n: "Ceviche", d: "Topped with avocado and pico de gallo; served with crackers.", p: "$18.49" },
+          { n: "Shrimp Cocktail Cup", d: "Served with crackers.", p: "$9.99" },
+          { n: "Ceviche Cup", d: "Served with crackers.", p: "$9.99" },
+          { n: "Grilled Shrimp Tacos Plate", d: "With creamy poblano sauce and sliced avocados.", p: "$15.99" },
+          { n: "Pescado Especial Plate", d: "Pan-seared tilapia topped with sautéed onions, tomatoes, mushrooms, poblano peppers; topped with Monterey jack. Add diablo sauce $1.50.", p: "$18.49" },
+          { n: "Al Mojo de Ajo Plate", d: "Choice of pescado (tilapia) or camaron (jumbo shrimp) in garlic sauce over white rice with sautéed veggies.", p: "$18.49" }
+        ]
+      },
+      {
+        id: "platos",
+        title: { en: "Platos Especiales", es: "Platos Especiales" },
+        note: { en: "Served with rice, choice of beans, tortillas, and guacamole salad. Add jack cheese on top $2.", es: "Con arroz, frijoles, tortillas y ensalada de guacamole. Queso Monterey jack $2." },
+        items: [
+          { n: "Carne Asada", d: "Whole grilled skirt steak with grilled onions, grilled poblano peppers, and a chile toreado.", p: "$17.49" },
+          { n: "Chile Colorado", d: "Cubed pork, beef fajita, or chicken fajita in mildly spicy red chile sauce. Available with spicy ranchero or spicy verde.", p: "$17.49" },
+          { n: "Carne Guisada", d: "Beef cubes stewed with carrots, onions, and tomatoes in brown gravy.", p: "$17.49" },
+          { n: "Javier's Plate", d: "Small diced skirt steak OR grilled chicken breast sautéed with onion, tomatoes, serrano, mushrooms, zucchini.", p: "$17.49" },
+          { n: "Barbacoa Plate", d: "Slow cooked beef cheek.", p: "$17.49" },
+          { n: "Carnitas Plate", d: "Seared cubed pork.", p: "$17.49" },
+          { n: "Chuck's Plate", d: "Grilled skirt steak + (2) brisket enchiladas topped with chipotle sauce and Monterey jack.", p: "$21.99" }
+        ]
+      },
+      {
+        id: "southern",
+        title: { en: "Southern Plates", es: "Platos del Sur" },
+        items: [
+          { n: "Chicken Fried Steak", d: "Topped with white gravy; Texas toast + french fries.", p: "$11.49" },
+          { n: "Grilled Chicken Sandwich", d: "Toasted bun with mayo, lettuce, tomato, pickles; served with fries.", p: "$11.49" },
+          { n: "Chicken Fried Chicken Sandwich", d: "Toasted bun with mayo, lettuce, tomato, pickles; served with fries. Add buffalo sauce $1.", p: "$11.49" },
+          { n: "Spicy Chicken Fried Chicken", d: "Hand-breaded fried chicken breast topped with ranchero sauce and melted jack; served with fries.", p: "$12.99" },
+          { n: "Buffalo Chicken Tender Sandwich", d: "Two fried tenders coated with buffalo sauce between Texas toast; lettuce + tomatoes; fries. Add cheese $1 / bacon $1.50.", p: "$11.49" },
+          { n: "Hamburger", d: "Two quarter-pound patties on toasted bun with mayo, mustard, pickles, lettuce, tomato, onion; fries. Add cheese $2 / bacon $2.", p: "$11.49" }
+        ]
+      },
+      {
+        id: "lunch",
+        title: { en: "Lunch Specials", es: "Especiales de Lunch" },
+        note: { en: "Served 11AM–4PM Monday to Friday. Served with rice and choice of beans. Add a cup of tortilla soup or a small salad to any lunch special for $2.50.", es: "Lun–Vie 11AM–4PM. Con arroz y frijoles. Agrega sopa o ensalada chica por $2.50." },
+        items: [
+          { n: "#1 Beef or Cheese Enchiladas", d: "(2) enchiladas topped with chili gravy and mixed cheese.", p: "$10.49" },
+          { n: "#2 Chicken Enchiladas", d: "(2) enchiladas topped with tomatillo sauce and Monterey jack.", p: "$10.49" },
+          { n: "#3 Brisket Enchiladas", d: "(2) enchiladas topped with chipotle sauce and Monterey jack.", p: "$13.99" },
+          { n: "#4 Mushroom & Spinach Enchiladas", d: "(2) enchiladas topped with creamy poblano and Monterey jack; served with white rice and black beans topped with Monterey jack.", p: "$10.49" },
+          { n: "#5 Grilled Chicken Breast", d: "Chicken breast topped with grilled onions, grilled poblano peppers, mushrooms, Monterey jack.", p: "$11.99" },
+          { n: "#6 Beef or Chicken Crispy Tacos", d: "(2) crispy tacos with lettuce, tomatoes, mixed cheese.", p: "$9.99" },
+          { n: "#7 Beef Fajita Tacos / Chicken Fajita Tacos", d: "(2) soft flour tacos with lettuce, tomatoes, mixed cheese.", p: "$13.99" },
+          { n: "#8 Lunch Chicken Fajitas / Beef or Mixed Fajitas", d: "With grilled poblano peppers and onions; served with lettuce, pico, scoop of guacamole, 2 tortillas (flour or corn).", p: "$13.99" },
+          { n: "#9 Tamales", d: "(2) tamales topped with chili gravy and mixed cheese.", p: "$9.99" },
+          { n: "#10 Lunch Combo", d: "(1) crispy beef taco + (1) cheese enchilada.", p: "$10.49" }
+        ]
+      },
+      {
+        id: "dessert",
+        title: { en: "Dessert", es: "Postre" },
+        items: [
+          { n: "Sopapillas (Full 4)", d: "", p: "$4.99" },
+          { n: "Sopapillas (Half 2)", d: "", p: "$3.50" },
+          { n: "Sopapillas (Single 1)", d: "", p: "$2.00" },
+          { n: "Flan", d: "", p: "$5.99" },
+          { n: "Tres Leches", d: "", p: "$6.99" },
+          { n: "Fried Ice Cream", d: "", p: "$4.99" },
+          { n: "Scoop of Ice Cream", d: "", p: "$1.99" },
+          { n: "Chocolate Cake", d: "", p: "$6.49" },
+          { n: "Churros", d: "", p: "$4.99" }
+        ]
+      },
+      {
+        id: "beverages",
+        title: { en: "Beverages", es: "Bebidas" },
+        note: { en: "Some items have no refills as noted.", es: "Algunas bebidas sin refill (según nota)." },
+        items: [
+          { n: "Sweet/Unsweet Tea", d: "", p: "$3.59" },
+          { n: "Hot Cocoa (no refills)", d: "", p: "$3.59" },
+          { n: "Coffee / Decaf", d: "", p: "$3.59" },
+          { n: "Milk (no refills)", d: "", p: "$3.59" },
+          { n: "Hot Tea (chamomile)", d: "", p: "$3.59" },
+          { n: "Aguas Frescas (no refills)", d: "Horchata, Soursop (Guanabana), Tamarindo, Passion Fruit (Maracuya), Watermelon (Sandia), Mango, Pineapple, Guava, Strawberry.", p: "$4.99" },
+          { n: "Juices (no refills)", d: "Orange, pineapple, apple juice, cranberry.", p: "$3.59" },
+          { n: "Bottle of Topo Chico", d: "", p: "$3.99" },
+          { n: "Bottle of Mexican Coke", d: "", p: "$4.99" }
+        ]
+      },
+      {
+        id: "kids",
+        title: { en: "Kids Menu", es: "Menú de Niños" },
+        note: { en: "$7 served with a soft drink (kids 12 and under).", es: "$7 incluye refresco (niños 12 y menores)." },
+        items: [
+          { n: "Bean and cheese taco", d: "Mixed cheese and refried beans in a flour tortilla; side of queso and rice.", p: "$7.00" },
+          { n: "Cheese enchilada", d: "Topped with chili gravy and mixed cheese; rice and refried beans.", p: "$7.00" },
+          { n: "Crispy beef taco", d: "With lettuce, tomatoes, mixed cheese; rice and beans.", p: "$7.00" },
+          { n: "3 bean and cheese nachos", d: "Topped with refried beans and mixed cheese; rice and refried beans.", p: "$7.00" },
+          { n: "Cheese quesadillas", d: "Mixed cheese in a soft flour tortilla; rice and refried beans.", p: "$7.00" },
+          { n: "Two scrambled eggs", d: "Served with rice and refried beans.", p: "$7.00" },
+          { n: "Chicken tenders", d: "Served with french fries.", p: "$7.00" },
+          { n: "Hamburger", d: "Served with french fries. Add cheese $1.", p: "$7.00" },
+          { n: "Grilled cheese", d: "Mixed cheese on bread; served with french fries.", p: "$7.00" }
+        ]
+      },
+      {
+        id: "bar",
+        title: { en: "Bar Menu", es: "Menú de Bar" },
+        note: { en: "Happy Hour: All day Monday; Tue–Fri 3:00PM–7:00PM. Substitutions may cost extra.", es: "Happy Hour: lunes todo el día; mar–vie 3:00PM–7:00PM. Sustituciones pueden costar extra." },
+        items: [
+          { n: "Daily Specials (Mon)", d: "Happy Hour all day", p: "" },
+          { n: "Daily Specials (Tue)", d: "House Mexican Martini", p: "$12.49" },
+          { n: "Daily Specials (Wed)", d: "Strawberry Rita", p: "$5.00" },
+          { n: "Daily Specials (Thu)", d: "Sangria Rita", p: "$5.00" },
+          { n: "Daily Specials (Fri)", d: "Bottle beer happy hour price", p: "" },
+          { n: "Daily Specials (Sat & Sun)", d: "Mimosa $4.50 and Bloody Mary $6", p: "" },
+
+          { n: "Mimosa (orange, cranberry, or pineapple)", d: "", p: "$4.00" },
+          { n: "Burros Margarita (lime only; rocks or frozen)", d: "", p: "$5.99" },
+          { n: "Burros Mexican Martini (lime only)", d: "", p: "$12.49" },
+          { n: "Wells, soda and water mixes", d: "", p: "$5.99" },
+
+          { n: "Draft Beer (Domestic) Small / Large", d: "Bud Light, Miller Lite", p: "$4.49 / $5.49" },
+          { n: "Draft Beer (Import) Small / Large", d: "Dos XX Lager, Modelo Especial", p: "$4.99 / $5.99" },
+          { n: "Bottled Beer", d: "Budweiser, Bud Light, Coors Light, Miller Lite, Michelob Ultra", p: "$4.75" },
+          { n: "Imported Bottled Beer", d: "Shiner Bock, Corona, Corona Light, Pacifico, Dos XX Lager, Dos XX Ambar, Modelo Especial, Negra Modelo", p: "$5.50" },
+
+          { n: "Pepino Sour", d: "Cucumber vodka, fresh lime juice, agave nectar, splash of lime soda; chili salt rim.", p: "$8.99" },
+          { n: "Grapefruit Tini", d: "Deep Eddy Ruby Red vodka, lime juice, simple syrup, club soda.", p: "$9.99" },
+          { n: "Pina Colada", d: "House rum and pina colada mix.", p: "$8.99" },
+          { n: "Texas Size Jack and Coke", d: "Jack Daniel's + coke.", p: "$13.00" },
+          { n: "Renee's Cosmo", d: "House vodka, triple sec, lime juice, cranberry juice, splash of soda; served on the rocks.", p: "$10.99" },
+
+          { n: "Burros House Rita", d: "Swirl/add fruit flavor $1 each: strawberry, mango, sangria, watermelon, blue curaçao, chamoy.", p: "$6.99" },
+          { n: "Burros Top Shelf Margarita", d: "Made with Exotico Reposado.", p: "$9.49" },
+          { n: "Jumbo Margarita", d: "For $2 add 7oz coronita, Dos XX Lager, or Big Red. Add fruit flavor $1.50.", p: "$12.99" },
+          { n: "Burros Mexican Martini", d: "", p: "$13.99" },
+          { n: "Premium Margarita", d: "", p: "$14.49" },
+          { n: "Brad's Rita", d: "Herradura silver, Presidente Brandy, Gran Gala, triple sec, agave nectar, lime juice, orange juice, sweet & sour.", p: "$15.49" },
+          { n: "Spicy Pineapple Martini", d: "Tequila, serrano peppers, pineapple juice, lime juice, agave nectar.", p: "$13.99" },
+          { n: "La Morada Rita", d: "Tequila, prickly pear, lime juice, curaçao.", p: "$9.99" },
+          { n: "La Paloma", d: "Tequila, fresh lime juice, grapefruit soda.", p: "$9.99" },
+          { n: "La Flaca", d: "Milagro reposado, fresh lime juice, agave nectar; on the rocks.", p: "$9.99" },
+          { n: "Cranberry Rita", d: "House tequila, agave nectar, cranberry juice, lime juice, splash of soda.", p: "$7.99" },
+          { n: "Jumbo Mango Chamoy Margarita", d: "Frozen margarita with mango chamoy puree swirl and tajin rim.", p: "$13.99" },
+          { n: "Michelada", d: "Choice of beer with secret mix.", p: "$8.00" },
+          { n: "Texas Bloody Mary", d: "Made with Deep Eddy regular vodka.", p: "$7.50" },
+          { n: "Mimosa", d: "Choose pineapple, cranberry, or orange.", p: "$4.50" },
+          { n: "Tequila Sunrise", d: "House tequila and orange juice.", p: "$7.00" },
+          { n: "Wine", d: "Woodbridge Merlot, Cabernet, Chardonnay.", p: "$6.00" }
+        ]
+      }
+    ];
+
+    // ---- render ----
+    const mount = document.getElementById("menuMount");
+
+    function esc(s){ return (s ?? "").toString()
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;"); }
+
+    function renderMenu(lang){
+      mount.innerHTML = "";
+      MENU.forEach(sec => {
+        const title = sec.title?.[lang] || sec.title?.en || "";
+        const note = sec.note?.[lang] || sec.note?.en || "";
+
+        const section = document.createElement("section");
+        section.className = "menu-section";
+        section.id = sec.id;
+
+        section.innerHTML = `
+          <header>
+            <h2>${esc(title)}</h2>
+            <a class="backtop" href="#top" aria-label="${esc(I18N[lang].backTop)}">${esc(I18N[lang].backTop)} ↑</a>
+          </header>
+          <div class="menu-body">
+            ${note ? `<p class="note">${esc(note)}</p>` : ``}
+            <div class="items">
+              ${sec.items.map(it => `
+                <article class="item">
+                  <div class="item-top">
+                    <div class="name">${esc(it.n)}</div>
+                    <div class="price">${esc(it.p || "")}</div>
+                  </div>
+                  ${it.d ? `<p class="desc">${esc(it.d)}</p>` : ``}
+                </article>
+              `).join("")}
+            </div>
+          </div>
+        `;
+        mount.appendChild(section);
+      });
+    }
+
+    function applyI18n(lang){
+      document.documentElement.lang = lang === "es" ? "es" : "en";
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        const val = I18N[lang]?.[key];
+        if (val) el.textContent = val;
+      });
+
+      document.getElementById("btnEN").setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+      document.getElementById("btnES").setAttribute("aria-pressed", lang === "es" ? "true" : "false");
+
+      renderMenu(lang);
+      localStorage.setItem("burros_lang", lang);
+    }
+
+    // ---- wire ----
+    const saved = localStorage.getItem("burros_lang");
+    let current = (saved === "es" || saved === "en") ? saved : "en";
+
+    document.getElementById("btnEN").addEventListener("click", ()=>{ current="en"; applyI18n("en"); });
+    document.getElementById("btnES").addEventListener("click", ()=>{ current="es"; applyI18n("es"); });
+
+    applyI18n(current);
+  </script>
 </body>
 </html>
