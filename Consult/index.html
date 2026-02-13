@@ -1,522 +1,834 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burros Tex-Mex Bar & Grill - Home</title>
-    <style>
-        /* Global styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5dc; /* Beige background */
-            color: #000000;
-            line-height: 1.6;
-        }
-        header {
-            background-color: #a52a2a; /* Rustic red */
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-        header img.logo {
-            max-width: 300px;
-            height: auto;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .hero {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .images {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .images img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .images img:hover {
-            transform: scale(1.05);
-        }
-        .thick-line {
-            border: none;
-            height: 5px;
-            background-color: #a52a2a; /* Thick red line */
-            margin: 40px 0;
-        }
-        .info-section {
-            margin-bottom: 40px;
-        }
-        .info-section h2 {
-            color: #a52a2a;
-            font-size: 1.8em;
-        }
-        .menu-categories {
-            display: grid;
-            grid-template-columns: 1fr; /* Single column on mobile */
-            gap: 15px;
-            margin-bottom: 60px;
-        }
-        .menu-categories a {
-            background-color: #228b22; /* Green buttons */
-            color: #ffffff;
-            text-decoration: none;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            display: block;
-        }
-        .menu-categories a:hover {
-            background-color: #006400; /* Darker green on hover */
-        }
-        .menu-section {
-            margin-bottom: 60px;
-        }
-        .menu-section h2 {
-            color: #a52a2a;
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        .menu-section ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .menu-section li {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        footer {
-            background-color: #a52a2a;
-            color: #ffffff;
-            text-align: center;
-            padding: 10px;
-            margin-top: 40px;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consult | Jordan Moddes | Jmod Co.</title>
+  <meta name="description" content="Operations + systems consulting. Fix bottlenecks, build dashboards, automate workflows, ship measurable outcomes." />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="Consult | Jordan Moddes" />
+  <meta property="og:description" content="Operations + systems consulting. Fix bottlenecks, build dashboards, automate workflows, ship measurable outcomes." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.jordanmoddes.com/Consult/" />
+  <meta name="theme-color" content="#0b1220" />
 
-        /* Desktop responsive styles */
-        @media (min-width: 768px) {
-            .images {
-                flex-direction: row;
-            }
-            .images img {
-                max-width: 45%;
-            }
-            .menu-categories {
-                grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
-            }
-            .menu-section ul {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-        }
-    </style>
+  <style>
+    :root{
+      --bg0:#070b14;
+      --bg1:#0b1220;
+      --card:#0f1a2f;
+      --card2:#0c1528;
+      --text:#e8eefc;
+      --muted:#a9b7dd;
+      --muted2:#7f92c7;
+      --line:rgba(149,173,255,.18);
+      --chip:rgba(149,173,255,.14);
+      --glow:rgba(99,135,255,.22);
+      --accent:#8fb2ff;
+      --accent2:#59d5ff;
+      --good:#7cf0c4;
+      --warn:#ffd27a;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(99,135,255,.18), transparent 60%),
+        radial-gradient(1000px 600px at 80% 20%, rgba(89,213,255,.10), transparent 55%),
+        radial-gradient(900px 600px at 50% 100%, rgba(124,240,196,.06), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+    .topbar{
+      position:sticky; top:0; z-index:20;
+      backdrop-filter: blur(14px);
+      background: rgba(7,11,20,.55);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar .row{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width:240px;
+    }
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background:
+        radial-gradient(18px 18px at 30% 35%, rgba(143,178,255,.9), rgba(143,178,255,.12) 60%, transparent 70%),
+        radial-gradient(22px 22px at 70% 65%, rgba(89,213,255,.8), rgba(89,213,255,.10) 60%, transparent 70%),
+        linear-gradient(135deg, rgba(149,173,255,.22), rgba(89,213,255,.12));
+      border:1px solid rgba(149,173,255,.28);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 180deg, transparent 0 40%, rgba(143,178,255,.35) 55%, transparent 70% 100%);
+      opacity:.55;
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .brand .t{
+      display:flex; flex-direction:column; line-height:1.05;
+    }
+    .brand .t b{font-size:14px; letter-spacing:.4px}
+    .brand .t span{font-size:12px; color:var(--muted); font-family:var(--mono)}
+    nav{
+      display:flex; gap:10px; flex-wrap:wrap;
+      justify-content:center;
+    }
+    .navlink{
+      padding:9px 12px;
+      border:1px solid transparent;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .navlink:hover{
+      border-color:var(--line);
+      background:rgba(149,173,255,.06);
+      color:var(--text);
+    }
+    .cta{
+      display:flex; gap:10px; align-items:center; justify-content:flex-end;
+      min-width:240px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(149,173,255,.06);
+      color:var(--text);
+      font-size:13px;
+      gap:8px;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-1px); border-color:rgba(143,178,255,.55); background:rgba(149,173,255,.10)}
+    .btn.primary{
+      border-color: rgba(89,213,255,.45);
+      background: linear-gradient(135deg, rgba(143,178,255,.20), rgba(89,213,255,.12));
+      box-shadow: 0 18px 60px rgba(89,213,255,.12);
+    }
+    .btn.primary:hover{border-color: rgba(89,213,255,.75)}
+    .btn .dot{
+      width:8px; height:8px; border-radius:99px;
+      background: var(--accent2);
+      box-shadow:0 0 0 6px rgba(89,213,255,.12);
+    }
+
+    header.hero{
+      padding:56px 0 28px;
+      position:relative;
+    }
+    .gridfx{
+      position:absolute; inset:-160px -140px auto;
+      height:420px;
+      background:
+        linear-gradient(transparent 0 24px, rgba(149,173,255,.08) 24px 25px, transparent 25px 48px),
+        linear-gradient(90deg, transparent 0 24px, rgba(149,173,255,.08) 24px 25px, transparent 25px 48px);
+      background-size:48px 48px;
+      mask-image: radial-gradient(closest-side at 50% 50%, rgba(0,0,0,.85), transparent 70%);
+      opacity:.55;
+      pointer-events:none;
+      transform: translateY(10px);
+    }
+    .hero .row{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    .panel{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,26,47,.72), rgba(12,21,40,.72));
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .panel:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(600px 180px at 20% 0%, rgba(143,178,255,.22), transparent 55%),
+                  radial-gradient(520px 180px at 90% 20%, rgba(89,213,255,.16), transparent 55%);
+      pointer-events:none;
+      opacity:.95;
+    }
+    .panel .in{position:relative; padding:26px}
+    .chips{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-bottom:14px;
+    }
+    .chip{
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(149,173,255,.06);
+    }
+    h1{
+      margin:10px 0 10px;
+      font-size:40px;
+      line-height:1.05;
+      letter-spacing:-.5px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.55;
+      max-width:60ch;
+    }
+    .heroactions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+      align-items:center;
+    }
+
+    .mini{
+      display:grid;
+      grid-template-rows:auto 1fr;
+    }
+    .mini .in{padding:22px}
+    .kpis{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:14px;
+    }
+    .kpi{
+      border:1px solid var(--line);
+      background: rgba(149,173,255,.05);
+      border-radius:14px;
+      padding:12px;
+    }
+    .kpi b{
+      display:block;
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .kpi span{
+      display:block;
+      font-size:16px;
+      letter-spacing:.1px;
+    }
+    .kpi .tag{
+      margin-top:8px;
+      font-family:var(--mono);
+      font-size:11px;
+      color:var(--muted2);
+    }
+
+    section{
+      padding:20px 0;
+    }
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:12px;
+      margin:6px 0 12px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:20px;
+      letter-spacing:-.2px;
+    }
+    .section-title .hint{
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--muted2);
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .card{
+      border:1px solid var(--line);
+      background: rgba(15,26,47,.55);
+      border-radius: var(--radius);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(420px 120px at 20% 0%, rgba(143,178,255,.12), transparent 55%),
+                  radial-gradient(360px 140px at 90% 20%, rgba(89,213,255,.09), transparent 55%);
+      opacity:.8;
+      pointer-events:none;
+    }
+    .card .in{position:relative}
+    .card h3{
+      margin:0 0 8px;
+      font-size:15px;
+      letter-spacing:-.2px;
+    }
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+    .bullet{
+      margin-top:12px;
+      display:grid;
+      gap:8px;
+    }
+    .bullet div{
+      display:flex;
+      gap:8px;
+      align-items:flex-start;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.45;
+    }
+    .tick{
+      width:18px; height:18px; flex:0 0 18px;
+      border-radius:6px;
+      border:1px solid var(--line);
+      background: rgba(124,240,196,.08);
+      position:relative;
+      margin-top:1px;
+    }
+    .tick:after{
+      content:"";
+      position:absolute;
+      left:5px; top:4px;
+      width:6px; height:3px;
+      border-left:2px solid rgba(124,240,196,.95);
+      border-bottom:2px solid rgba(124,240,196,.95);
+      transform: rotate(-45deg);
+    }
+
+    .twocol{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .steps{
+      display:grid;
+      gap:10px;
+    }
+    .step{
+      border:1px solid var(--line);
+      background: rgba(12,21,40,.55);
+      border-radius: var(--radius);
+      padding:14px;
+      display:grid;
+      grid-template-columns: 44px 1fr;
+      gap:12px;
+      align-items:start;
+    }
+    .num{
+      width:44px; height:44px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background: rgba(149,173,255,.06);
+      display:grid; place-items:center;
+      font-family:var(--mono);
+      color:var(--accent);
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+    }
+    .step b{display:block; margin:2px 0 6px; font-size:14px}
+    .step span{display:block; color:var(--muted); font-size:13px; line-height:1.5}
+
+    .proof{
+      display:grid;
+      gap:10px;
+    }
+    .proof .card{padding:14px}
+    .proof .metric{
+      display:flex; justify-content:space-between; gap:10px; align-items:baseline;
+      margin-bottom:6px;
+    }
+    .proof .metric b{font-size:13px}
+    .proof .metric i{
+      font-style:normal;
+      font-family:var(--mono);
+      color:var(--good);
+      font-size:12px;
+    }
+    .proof p{font-size:13px}
+
+    .faq{
+      display:grid;
+      gap:10px;
+    }
+    details{
+      border:1px solid var(--line);
+      background: rgba(15,26,47,.48);
+      border-radius: var(--radius);
+      padding:14px 14px;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px;
+      font-size:14px;
+    }
+    summary::-webkit-details-marker{display:none}
+    .chev{
+      width:26px; height:26px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      display:grid; place-items:center;
+      background: rgba(149,173,255,.06);
+      flex:0 0 26px;
+      transition: transform .15s ease;
+    }
+    details[open] .chev{transform: rotate(180deg)}
+    details p{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    footer{
+      padding:28px 0 46px;
+      color:var(--muted2);
+      font-size:12px;
+      border-top:1px solid var(--line);
+      margin-top:24px;
+    }
+    .foot{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    }
+    .foot .small{
+      font-family:var(--mono);
+    }
+
+    .badge{
+      display:inline-flex; gap:8px; align-items:center;
+      border:1px solid var(--line);
+      background: rgba(149,173,255,.06);
+      padding:8px 10px;
+      border-radius:999px;
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .pulse{
+      width:8px; height:8px; border-radius:99px;
+      background: var(--good);
+      box-shadow:0 0 0 0 rgba(124,240,196,.22);
+      animation: pulse 1.8s ease-out infinite;
+    }
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(124,240,196,.22)}
+      70%{box-shadow:0 0 0 10px rgba(124,240,196,0)}
+      100%{box-shadow:0 0 0 0 rgba(124,240,196,0)}
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero .row{grid-template-columns:1fr; }
+      .cta{min-width:auto}
+      .brand{min-width:auto}
+      .cards{grid-template-columns:1fr; }
+      .twocol{grid-template-columns:1fr; }
+      nav{display:none}
+    }
+    @media (max-width: 520px){
+      h1{font-size:32px}
+      .kpis{grid-template-columns:1fr}
+      .btn{width:100%; justify-content:center}
+      .heroactions{flex-direction:column; align-items:stretch}
+      .topbar .row{gap:10px}
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Consult | Jordan Moddes",
+    "url": "https://www.jordanmoddes.com/Consult/",
+    "description": "Operations + systems consulting. Fix bottlenecks, build dashboards, automate workflows, ship measurable outcomes.",
+    "publisher": { "@type": "Organization", "name": "Jmod Co." }
+  }
+  </script>
 </head>
+
 <body>
-    <header>
-        <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/BurrosTexMexBarandGrill_900_Round_Rock_TX.png" alt="Burros Tex-Mex Bar & Grill Logo" class="logo">
-        <h1>Welcome to Burros Tex-Mex Bar & Grill</h1>
-        <p>Just be you!!</p>
-    </header>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="row">
+        <a class="brand" href="/">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="t">
+            <b>Jordan Moddes</b>
+            <span>Jmod Co. | Consulting</span>
+          </div>
+        </a>
 
-    <div class="container">
-        <section class="hero">
-            <p>Enjoy authentic Tex-Mex flavors in Round Rock, TX. Join us for flame-grilled favorites, fresh margaritas, and a welcoming vibe.</p>
-        </section>
+        <nav aria-label="Primary">
+          <a class="navlink" href="#services">Services</a>
+          <a class="navlink" href="#process">Process</a>
+          <a class="navlink" href="#proof">Proof</a>
+          <a class="navlink" href="#faq">FAQ</a>
+        </nav>
 
-        <section class="images">
-            <img src="https://static.wixstatic.com/media/dbcf98_0210ffa418104c788a40887a926d5d59\~mv2.jpg" alt="Burros food item 1">
-            <img src="https://static.wixstatic.com/media/dbcf98_bbc4bc3e9022469d98ef9c5181ce30aa\~mv2.jpg" alt="Burros food item 2">
-        </section>
-
-        <hr class="thick-line">
-
-        <section class="info-section">
-            <h2>Our Hours</h2>
-            <p>Sunday-Thursday: 11 AM - 9 PM<br>Friday-Saturday: 11 AM - 10 PM</p>
-        </section>
-
-        <section class="info-section">
-            <h2>Daily Specials</h2>
-            <ul>
-                <li>Monday: Happy Hour All Day</li>
-                <li>Tuesday: House Mexican Martini $9.49</li>
-                <li>Wednesday: Strawberry Rita $5</li>
-                <li>Thursday: Sangria Rita $5</li>
-            </ul>
-            <p>Lunch Specials (11 AM - 4 PM Mon-Fri): From $7.59 (e.g., Enchiladas) to $8.99 (e.g., Fajitas). Add soup/salad for $1.99.</p>
-        </section>
-
-        <section class="info-section">
-            <h2>Menu Categories</h2>
-            <div class="menu-categories">
-                <a href="#appetizers">Appetizers</a>
-                <a href="#soups-salads">Soups</a>
-                <a href="#soups-salads">Salads</a>
-                <a href="#combos">Combos</a>
-                <a href="#burros">Burros</a>
-                <a href="#enchiladas">Enchiladas</a>
-                <a href="#tostadas">Tostadas</a>
-                <a href="#fajitas">Fajitas</a>
-                <a href="#chile-relleno">Chile Relleno</a>
-                <a href="#pechugas">Pechugas</a>
-                <a href="#taco-plates">Taco Plates</a>
-                <a href="#fried-specialties">Fried Specialties</a>
-                <a href="#seafood">Seafood</a>
-                <a href="#platos-especiales">Platos Especiales</a>
-                <a href="#southern-plates">Southern Plates</a>
-                <a href="#lunch-specials">Lunch Specials</a>
-                <a href="#dessert">Dessert</a>
-                <a href="#beverages">Beverages</a>
-                <a href="#kids-menu">Kids Menu</a>
-                <a href="#bar-menu">Bar Menu</a>
-            </div>
-        </section>
-
-        <!-- Menu Sections Start Here -->
-        <section id="appetizers" class="menu-section">
-            <h2>Appetizers</h2>
-            <ul>
-                <li><strong>Nachos</strong>: (all topped with refried beans, mixed cheese, served w/ shredded lettuce, diced tomatoes, chopped onions, and sliced pickled jalapenos) - Bean and cheese 10.99, Ground Beef or Shredded Chicken 14.49, Beef Fajita or Chicken Fajita 17.49, Smoked Beef Brisket 18.99, Sautéed Shrimp & Jack Cheese 17.49, Veggie Nachos (spinach mushroom black bean and jack cheese.) 14.49</li>
-                <li><strong>Botana Plate</strong>: Bean and mixed cheese nachos (2), beef flaquitas (2), chicken flautitas (2), buffalo chicken wings (4), chile con queso, guacamole, sour cream and pico de gallo. - 18.99</li>
-                <li><strong>Wings (w/ buffalo Sauce)</strong>: (served w/ celery and ranch dressing.) - (5) 10.99, (7) 13.49, (9) 15.49</li>
-                <li><strong>Quesadillas</strong>: (all served with jack cheese between two 10" flour tortilla divided into 8 pieces, served w/ pico de gallo, sour cream and guacamole.) - Cheese 12.99, Ground Beef or Shredded Chicken 15.99, Beef Fajita or Chicken Fajita 17.99, Smoked Beef Brisket 18.99, Shrimp 17.99, Spinach, & Mushrooms 15.99</li>
-                <li><strong>Stuffed Jalapenos</strong>: (fresh jalapenos stuffed w/ mixed cheese hand breaded, deep fried served w/ jalapeno ranch.) - (4) 10.99, (6) 12.99</li>
-                <li><strong>Street Tacos</strong>: (4) Double small 4" corn tortilla tacos. (Served w/cilantro, onions and creamy jalapeno sauce.) - Beef fajita 14.99, chicken fajita 14.99</li>
-                <li><strong>Dips - Chile Con Queso</strong>: - Small 8.99, Large 9.99</li>
-                <li><strong>Burros Queso</strong>: (Large chile con queso topped with ground beef, guacamole and pico de gallo.) - 11.49</li>
-                <li><strong>Guacamole</strong>: - Small 5.5, Large 8</li>
-                <li><strong>Burros Bean Dip</strong>: (Beans, chorizo, cheese, pico de gallo, and guacamole.) - 8.99, Add ground beef 1.50</li>
-                <li><strong>ONE SINGLE TOSTADA - Shrimp</strong>: (topped w/ avocado slices and pico de gallo.) - 8.49</li>
-                <li><strong>ONE SINGLE TOSTADA - Ceviche</strong>: (topped w/ avocado slices and pico de gallo.) - 8.49</li>
-                <li><strong>Shrimp Cocktail Cup</strong>: (topped with avocado and pico de gallo, served with crackers.) - 10.99</li>
-                <li><strong>Ceviche Cup</strong>: (topped with avocado and pico de gallo, served with crackers.) - 10.99</li>
-            </ul>
-        </section>
-
-        <section id="soups-salads" class="menu-section">
-            <h2>Soups & Salads</h2>
-            <ul>
-                <li><strong>Taco Salad</strong>: (a fried tortilla taco bowl filled w/ garden mix, chopped tomatoes and shredded mixed cheese. Topped w/ guacamole.) - Ground Beef or Shredded Chicken 10.99, Beef fajita 12.99, Chicken Fajita 12.99, Sautéed Shrimp 12.99</li>
-                <li><strong>Special Salad</strong>: Garden mix, strawberries, candied pecans, and shaved parmesan. Topped with crispy chicken or grilled chicken - 12.99</li>
-                <li><strong>Shrimp Salad</strong>: Garden mix, sliced tomatoes, slice avocados and shredded Monterey jack cheese. Topped with shrimp sautéed in pico de gallo. - 12.99</li>
-                <li><strong>Side Salad</strong>: Garden mix, sliced tomatoes, mixed cheese. - 4</li>
-                <li><strong>Guacamole Salad</strong>: Garden mix, sliced tomatoes, mixed cheese. topped with guacamole. - 2 scoops 4.70, 3 scoops 6.50, 5 scoops 9.00</li>
-                <li><strong>Burros Shredded Chicken Tortilla Soup</strong>: Cup (topped with jack cheese and tortilla strips.) - 4.49, Bowl (served with mexican rice, lettuce, pico de gallo, jack cheese, and tortilla strips.) - 11.49</li>
-                <li><strong>Menudo</strong>: served w/ choice of tortillas, cilantro, onion, serranos and lime. - SM 8.49, Lg 13.99</li>
-            </ul>
-        </section>
-
-        <section id="combos" class="menu-section">
-            <h2>Combos</h2>
-            <ul>
-                <li><strong>Pick 4 (House Combo)</strong>: Choose 4 different items, repeated items selections are subject to extra charge. Options include: Crispy beef taco, cheese enchilada, ground beef tostada, guacamole salad, chile con queso, tamale, rice, or choice of beans. - $13.99</li>
-                <li><strong>Combo 1</strong>: (2) mixed cheese enchiladas topped w/ chili gravy and cheese, (1) beef fajita soft taco, guacamole salad, side of chili con queso, rice, and a choice of beans. - $16.49</li>
-                <li><strong>Combo 2</strong>: (2) mixed cheese enchiladas topped w/ chili gravy and cheese, (1) pork colorado soft taco, guacamole salad, rice, and choice of beans. - $14.99</li>
-                <li><strong>Combo 3</strong>: (1) tamale, (1) mixed cheese enchilada topped w/ chili gravy and mixed cheese, (1) beef tostada, rice, and a choice of beans. - $13.99</li>
-                <li><strong>Combo 4</strong>: (2) chicken enchiladas topped w/ mole sauce and monty jack cheese, (1) crispy chicken taco, served w/ lettuce, tomatoes, and mixed cheese. a side of chile con queso, rice and a choice of beans. - $14.99</li>
-                <li><strong>Tamale Plate (Combo 5)</strong>: (3) tamales topped w/ chili gravy and mixed cheese, rice, and a choice of beans. - $12.49</li>
-            </ul>
-        </section>
-
-        <section id="burros" class="menu-section">
-            <h2>Burros</h2>
-            <ul>
-                <li><strong>Wrapped Burro (Ground Beef)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 6.99, Medium 10.99, Large 11.99</li>
-                <li><strong>Wrapped Burro (Shredded Chicken)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 6.99, Medium 10.99, Large 11.99</li>
-                <li><strong>Wrapped Burro (Chicken Fajita)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Wrapped Burro (Beef Fajita)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Wrapped Burro (Beef Brisket)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Wrapped Burro (Sautéed Shrimp)</strong>: Stuffed w/ black, refired or charro beans, mixed cheese, lettuce, tomatoes, and rice. w/ choice side of sauce, guacamole, queso, or sour cream on the side. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Compadres Burro</strong>: Wrapped, stuffed with grilled steak, guacamole, sour cream, & pico de gallo. - Small 9.99, Medium 13.99, Large 14.99</li>
-                <li><strong>Smothered Burro (Americano)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ queso. - 12.49</li>
-                <li><strong>Smothered Burro (Ground Beef)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ chili gravy and mixed cheese. - 13.99</li>
-                <li><strong>Smothered Burro (Shredded Chicken)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ tomatillo sauce and jack cheese. - 13.99</li>
-                <li><strong>Smothered Burro (Chicken Fajita)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ tomatillo sauce and jack cheese. - 15.99</li>
-                <li><strong>Smothered Burro (Smoked Beef Brisket)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ chipotle sauce and jack cheese. - 17.99</li>
-                <li><strong>Smothered Burro (Beef Fajita)</strong>: All smothered burros are stuffed w/ refried beans and mixed cheese, w/ side of rice and guacamole salad. Topped w/ chilli gravy and mixed cheese. - 15.99</li>
-                <li><strong>Changa (Ground Beef)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/chilli gravy and mixed cheese. - 13.99</li>
-                <li><strong>Changa (Shredded Chicken)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/ tomatillo sauce and jack cheese. - 13.99</li>
-                <li><strong>Changa (Chicken Fajita)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/ tomatillo sauce and jack cheese. - 15.99</li>
-                <li><strong>Changa (Smoked Beef Brisket)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/ chipotle sauce and jack cheese. - 17.99</li>
-                <li><strong>Changa (Beef Fajita)</strong>: Deep fried burrito filled with rice and mixed cheese. served w/ choice of beans and guacamole salad. Topped w/ chilli gravy and mixed cheese. - 14.99</li>
-            </ul>
-        </section>
-
-        <section id="enchiladas" class="menu-section">
-            <h2>Enchiladas</h2>
-            <ul>
-                <li><strong>Chicken Mole Enchilada plate</strong>: Topped with mole sauce and jack cheese. Served with Mexican rice and choice of beans. - 14.49</li>
-                <li><strong>Ground Beef or Cheese Enchilada plate</strong>: Topped with chili gravy and mixed cheese. Served with Mexican rice and choice of beans. - 12.99</li>
-                <li><strong>Chicken enchilada plate</strong>: Topped with tomatillo sauce and jack cheese. Served with Mexican rice and choice of beans. - 12.99</li>
-                <li><strong>Brisket Enchilada Plate</strong>: Topped with chipotle sauce and jack cheese. Served with Mexican rice and choice of beans. - 17.99</li>
-                <li><strong>Mushroom & Spinach Enchilada plate</strong>: Served with black beans, topped with Monterey Jack cheese, a side of white rice. Enchiladas are topped with creamy poblano sauce and Jack cheese. - 12.99</li>
-                <li><strong>Bandera Enchiladas</strong>: 3 enchiladas (1 cheese topped with poblano sauce and Monterey Jack cheese, 1 shredded chicken topped with tomatillo sauce and Monterey Jack cheese, 1 ground beef topped with chili gravy and mixed cheese). - 13.99</li>
-                <li><strong>Beef Fajita Enchiladas</strong>: 2 enchiladas topped with chili gravy and mixed cheese. - 14.99</li>
-                <li><strong>Chicken Fajita Enchiladas</strong>: 2 enchiladas topped with chili gravy and mixed cheese. - 14.99</li>
-                <li><strong>Twin Chicken Fajita Enchiladas</strong>: 2 enchiladas in flour tortilla, topped with chile con queso. - 16.49</li>
-                <li><strong>Twin Beef Fajita Enchiladas</strong>: 2 enchiladas in flour tortilla, topped with chile con queso. - 16.49</li>
-            </ul>
-        </section>
-
-        <section id="tostadas" class="menu-section">
-            <h2>Tostadas</h2>
-            <ul>
-                <li><strong>Tostada plate</strong>: (2 flat corn tortillas topped w/ refried beans, shredded mixed cheese, shredded lettuce, diced tomatoes, guacamole and sour cream. served w/ rice.) - Bean and cheese: 10.99, ground beef or shredded chicken: 12.99</li>
-            </ul>
-        </section>
-
-        <section id="fajitas" class="menu-section">
-            <h2>Fajitas</h2>
-            <ul>
-                <li><strong>Chicken Fajitas</strong>: Your choice of meat sautéed w/ grilled onions and poblano peppers. Served w/ lettuce, guacamole, sour cream, shredded mixed cheese, pico de gallo, rice, and a choice of beans. - For One 20.99 For Two 38.99</li>
-                <li><strong>Beef Fajitas or Mixed Fajitas</strong>: Your choice of meat sautéed w/ grilled onions and poblano peppers. Served w/ lettuce, guacamole, sour cream, shredded mixed cheese, pico de gallo, rice, and a choice of beans. - For one 20.99 For two 38.99</li>
-                <li><strong>Shrimp Fajitas</strong>: Your choice of meat sautéed w/ grilled onions and poblano peppers. Served w/ lettuce, guacamole, sour cream, shredded mixed cheese, pico de gallo, rice, and a choice of beans. - For One 20.99 For Two 38.99</li>
-                <li><strong>Fajitas Burras</strong>: Combination of beef, chicken, large shrimp, and jalapeño sausage. - For One 24.49 For Two 44.49</li>
-                <li><strong>Fajitas Diablas</strong>: Topped with spicy diablo sauce and melted Monterey jack cheese. - Add 3.50 for one Add 4.50 for two</li>
-            </ul>
-        </section>
-
-        <section id="chile-relleno" class="menu-section">
-            <h2>Chile Relleno</h2>
-            <ul>
-                <li><strong>Cheese Relleno</strong>: Roasted poblano pepper stuffed with cheese, covered with Ranchero Sauce and Jack cheese. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 14.99</li>
-                <li><strong>Shredded Chicken Relleno</strong>: Roasted poblano pepper stuffed with shredded chicken, covered with Tomatillo Sauce and Jack cheese. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 14.99</li>
-                <li><strong>Ground Beef Relleno</strong>: Roasted poblano pepper stuffed with ground beef, covered with Chipotle and Jack cheese. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 14.99</li>
-                <li><strong>Beef Brisket Relleno</strong>: Roasted poblano pepper stuffed with beef brisket, covered with Chipotle and Jack cheese. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 18.49</li>
-                <li><strong>Chicken Fajita or Beef Fajita Relleno</strong>: Roasted poblano pepper stuffed with chicken fajita or beef fajita, covered with Queso and served with guac salad. Served with rice, a choice of beans, side of lettuce and diced tomatoes. - 16.99</li>
-            </ul>
-        </section>
-
-        <section id="pechugas" class="menu-section">
-            <h2>Pechugas</h2>
-            <ul>
-                <li><strong>Pechuga Especial</strong>: Chicken breast topped with diced tomatoes, onions, jalapeño, red bell peppers and corn. - 16.99</li>
-                <li><strong>Pechuga Completa</strong>: Topped with grilled onions, serano and grilled poblano peppers, mushrooms, and tomatoes. - 16.99</li>
-                <li><strong>Pechuga Chipotle</strong>: Topped w/ grilled onions, grilled poblano peppers and chipotle suace. - 16.99</li>
-            </ul>
-        </section>
-
-        <section id="taco-plates" class="menu-section">
-            <h2>Taco Plates</h2>
-            <ul>
-                <li><strong>Crispy Ground Beef or Shredded Chicken</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served on soft flour tortillas. - 10.49</li>
-                <li><strong>Carnitas or Barbacoa</strong>: Served with chopped onions, lettuce, pico de gallo, and jalapenos. Served on soft flour tortillas. - 14.99</li>
-                <li><strong>Chicken Fajita</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served soft on flour tortillas. - 14.99</li>
-                <li><strong>Beef Fajita</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served soft on flour tortillas. - 14.99</li>
-                <li><strong>Pork Red Chile Colorado or Carne Guisada</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served soft on flour tortillas. - 14.99</li>
-                <li><strong>Beef Brisket</strong>: Served with lettuce, tomatoes, and shredded mixed cheese. Served soft on flour tortillas. - 15.99</li>
-                <li><strong>Fried Avocado Tacos</strong>: Batter-fried avocado slices served with lettuce, tomatoes, and shredded jack cheese. Served soft on flour tortillas. Choice of creamy poblano or diablo sauce. Served with black beans and white rice. - 14.99</li>
-            </ul>
-        </section>
-
-        <section id="fried-specialties" class="menu-section">
-            <h2>Fried Specialties</h2>
-            <ul>
-                <li><strong>Flautas plate (corn tortilla)</strong>: Deep fried, chicken wrapped in CORN tortilla. Served w/ rice, choice of beans, guacamole and sour cream. - 11.99</li>
-                <li><strong>Flautas plate (flour tortilla)</strong>: Deep fried, chicken wrapped in FLOUR tortillas, topped with chile con queso. Served w/ rice, choice of beans, guacamole and sour cream. - 13.49</li>
-                <li><strong>Fried Stuffed Avocado (Chicken Fajita)</strong>: stuffed with your choice of meat and mixed cheese W/ ranchero sauce or chipotle sauce on the side. - 14.99</li>
-                <li><strong>Fried Stuffed Avocado (Beef Fajita)</strong>: stuffed with your choice of meat and mixed cheese W/ ranchero sauce or chipotle sauce on the side. - 14.99</li>
-                <li><strong>Fried Stuffed Avocado (Sautéed Shrimp)</strong>: stuffed with your choice of meat and mixed cheese W/ ranchero sauce or chipotle sauce on the side. - 14.99</li>
-            </ul>
-        </section>
-
-        <section id="seafood" class="menu-section">
-            <h2>Seafood</h2>
-            <ul>
-                <li><strong>Shrimp Enchilada plate</strong>: (2) Shrimp enchiladas (topped w/ creamy poblano sauce and jack cheese.) - 15.99</li>
-                <li><strong>Shrimp Relleno plate</strong>: (topped w/ creamy poblano sauce and jack cheese.) - 16.99</li>
-                <li><strong>Besito s plate</strong>: Shrimp and jalapeno pepper strips wrapped w/ bacon and then deep fried. w/ diablo sauce on the side and melted Monterey jack cheese on top. - (6) 15.49, (8) 18.49</li>
-                <li><strong>Fish Tacos plate</strong>: (Corn or flour tortilla) Grilled or fried tilapia (served w/creamy poblano sauce and sliced avacados.) - 15.99</li>
-                <li><strong>Leo's Especial plate</strong>: Pan seared tilapia filet or (8) sautéed shrimp topped w/ sautéed diced tomatoes, onions, jalapeno peppers, red bell peppers, and corn. - 17.49</li>
-                <li><strong>Camaron Especial plate</strong>: Shrimp sautéed with onions, tomatoes, mushrooms, and poblano peppers. topped w/ melted Monterey jack cheese. - 18.49 (Add diablo sauce for 1.5)</li>
-                <li><strong>Shrimp Cocktail</strong>: (topped with avacado and pico de gallo, served with crackers.) - 19.99</li>
-                <li><strong>Ceviche</strong>: (topped with avacado and pico de gallo, served with crackers.) - 19.99</li>
-                <li><strong>Grilled Shrimp Tacos plate</strong>: (W/ creamy poblano sauce and sliced avocados.) - 15.99</li>
-                <li><strong>Pescado Especial plate</strong>: Pan seared tilapia filet topped w/ sautéed onions, tomatoes, mushrooms, and poblano peppers. Topped w/ melted Monterey jack cheese. - 18.49 (Add diablo sauce for 1.50)</li>
-                <li><strong>AL Mojo de Ajo plate</strong>: choice of Pescado (tellapia) or Camaron (jumbo shrimp) drenched in garlic suace on a bed of white rice. served w/ a side of sauteed veggies. - 18.49</li>
-            </ul>
-        </section>
-
-        <section id="platos-especiales" class="menu-section">
-            <h2>Platos Especiales</h2>
-            <ul>
-                <li><strong>Carne Asada</strong>: whole grilled skirt steak served w/ side of grilled onions, grilled poblano peppers and un chile toreado - 18.99</li>
-                <li><strong>Chile Colorado</strong>: (cubed pork, beef fajita, or chicken fajita) in mildly spicy red chile sauce. Available w/ spicy ranchero or spicy verde sauce - 18.99</li>
-                <li><strong>Carne Guisada</strong>: Beef cubes stewed w/ carrots, onions, and tomatoes in brown gravy - 18.99</li>
-                <li><strong>Javier's Plate</strong>: Small diced skirt steak or grilled chicken breast sautéed with onion, tomatoes, serano pepper, mushrooms and zucchini - 18.99</li>
-                <li><strong>Barbacoa Plate</strong>: slow cooked beef cheek - 18.99</li>
-                <li><strong>Carnitas Plate</strong>: seared cubed pork - 18.99</li>
-                <li><strong>Chuck's Plate</strong>: A piece of grilled Skirt Steak. And (2) brisket ehcnhiladas topped w/ chipottle sauce and monty jack cheese - 21.99</li>
-            </ul>
-        </section>
-
-        <section id="southern-plates" class="menu-section">
-            <h2>Southern Plates</h2>
-            <ul>
-                <li><strong>Chicken Fried Steak</strong>: (topped w/ white gravy, side of texas toast, side of french fries) - 12.99</li>
-                <li><strong>Grilled Chicken Sandwich</strong>: (served on toasted bun with mayonnaise, lettuce tomato and pickles, served with french fries.) - 12.49</li>
-                <li><strong>Chicken Fried Chicken Sandwich</strong>: (served on a toasted bun w/ mayonnaise, lettuce, tomato, and pickles, served w/ french fries.) - 12.49</li>
-                <li><strong>Spicy Chicken Fried Chicken</strong>: (hand breaded and deep fried chicken breast topped w/ ranchero sauce and melted jack cheese, served w/ french fries.) - 13.99</li>
-                <li><strong>Buffalo Chicken Tender Sandwich</strong>: (two fried chicken tenders coated w/ buffalo sauce. served between texas toast w/ lettuce and tomatoes. served w/ french fries.) - 12.49</li>
-                <li><strong>Hamburger</strong>: (Two quarter pound fresh ground beef patties served on toasted bun, w/ mayonnaise, mustard, pickles, lettuce, tomato, and onion. served w/ french fries.) - 12.49</li>
-            </ul>
-        </section>
-
-        <section id="lunch-specials" class="menu-section">
-            <h2>Lunch Specials</h2>
-            <ul>
-                <li><strong>#1 BEEF OR CHEESE ENCHILADAS</strong>: (2 enchiladas topped w/ chilli gravy and mixed cheese.) - $10.49</li>
-                <li><strong>#2 CHICKEN ENCHILADAS</strong>: (2 enchiladas topped w/ tomatillo sauce and monterrey jack cheese.) - $10.49</li>
-                <li><strong>#3 BRISKET ENCHILADAS</strong>: (2 enchiladas topped w/ chipotle sauce and monterry jack cheese.) - $13.99</li>
-                <li><strong>#4 MUSHROOM AND SPINACH ENCHILADAS</strong>: (2 enchiladas topped w/ creamy poblano sauce and topped w/ monty jack cheese. Served w/ white rice and black beans topped w/ monty jack cheese.) - $10.49</li>
-                <li><strong>#5 GRILLED CHICKEN BREAST</strong>: (Chicken breast topped w/ grilled onions, grilled poblano peppers, mushrooms and monterrey jack cheese.) - $11.99</li>
-                <li><strong>#6 BEEF OR CHICKEN CRISPY TACOS</strong>: (2 crispy shelled tacos, served w/ lettuce, tomatoes and mixed cheese.) - $9.99</li>
-                <li><strong>#7 BEEF FAJITA TACOS</strong>: (2 soft served flour tacos, served w/ lettuce, tomatoes and mixed cheese.) - $13.99</li>
-                <li><strong>#7 CHICKEN FAJITA TACOS</strong>: (2 soft served flour tacos, served w/ lettuce, tomatoes and mixed cheese.) - $13.99</li>
-                <li><strong>#8 LUNCH CHICKEN FAJITAS</strong>: (mixed w/ grilled poblano peppers and grilled onions. served w/ lettuce, pico de gallo, scoop of gucamole and 2 tortillas flour or corn.) - $13.99</li>
-                <li><strong>#8 LUNCH BEEF OR MIXED FAJITAS</strong>: (mixed w/ grilled poblano peppers and grilled onions. served w/ lettuce, pico de gallo, scoop of gucamole and 2 tortillas flour or corn.) - $13.99</li>
-                <li><strong>#9 TAMALES</strong>: (2 tamles topped w/ chilli gravy and mixed cheese.) - $9.99</li>
-                <li><strong>#10 LUNCH COMBO</strong>: (1) crispy beef taco (served w/ lettuce, tomatoes and mixed cheese.) and (1) cheese enchilada (topped with chilli gravy and mixed cheese.) - $10.49</li>
-            </ul>
-        </section>
-
-        <section id="dessert" class="menu-section">
-            <h2>Dessert</h2>
-            <ul>
-                <li><strong>Sopapillas</strong>: Full (4) 4.99, Half (2) 3.5, Single (1) 2.0</li>
-                <li><strong>Flan</strong>: 5.99</li>
-                <li><strong>Tres Leches</strong>: 6.99</li>
-                <li><strong>Fried Ice Cream</strong>: 4.99</li>
-                <li><strong>Scoop of Ice Cream</strong>: 1.99</li>
-                <li><strong>Chocolate Cake</strong>: 6.49</li>
-                <li><strong>Churros</strong>: 4.99</li>
-            </ul>
-        </section>
-
-        <section id="beverages" class="menu-section">
-            <h2>Beverages</h2>
-            <ul>
-                <li><strong>Sweet/Unsweet Tea</strong>: No description - No price listed</li>
-                <li><strong>Hot Cocoa</strong>: No refills - No price listed</li>
-                <li><strong>Coffee/Decaf</strong>: No description - No price listed</li>
-                <li><strong>Milk</strong>: No refills - No price listed</li>
-                <li><strong>Hot Tea (Chamomile)</strong>: No description - $3.59</li>
-                <li><strong>Horchata</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Soursop (Guanabana)</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Tamarind(o)</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Passion Fruit (Maracuya)</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Watermelon (Sandia)</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Mango</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Pineapple</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Guava</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Strawberry</strong>: Agua fresca, no refills - $4.99</li>
-                <li><strong>Orange</strong>: Juice, no refills - $3.59</li>
-                <li><strong>Pineapple</strong>: Juice, no refills - $3.59</li>
-                <li><strong>Apple Juice</strong>: No description - $3.59</li>
-                <li><strong>Cranberry</strong>: No description - $3.59</li>
-                <li><strong>Bottle of Topo Chico</strong>: No description - $3.99</li>
-                <li><strong>Bottle of Mexican Coke</strong>: No description - $4.99</li>
-            </ul>
-        </section>
-
-        <section id="kids-menu" class="menu-section">
-            <h2>Kids Menu</h2>
-            <ul>
-                <li><strong>Bean and cheese taco</strong>: mixed cheese and refied beans in a flour tortilla served w/ a side of queso and rice - $7</li>
-                <li><strong>cheese enchilada</strong>: topped w/ chilli gravy and misxed cheese served w/ rice and refried beans - $7</li>
-                <li><strong>crispy beef taco</strong>: w/ lettuce, tomaotes mixed cheese, served w/ rice and beans - $7</li>
-                <li><strong>3 bean and cheese nachos</strong>: topped w/ refried beans and mixed,served w/ rice and refried beans - $7</li>
-                <li><strong>cheese quesadillas</strong>: mixed cheese in a soft flour tortilla, served w/ rice and refried beans - $7</li>
-                <li><strong>two scrambled eggs</strong>: served w/ rice and refried beans - $7</li>
-                <li><strong>chicken tenders</strong>: served w/ french fries - $7</li>
-                <li><strong>Hamburger (add cheese $1)</strong>: served w/ french fries - $7</li>
-                <li><strong>grilled cheese</strong>: mixed cheese in 2 slices of bread, served w/ french fries - $7</li>
-            </ul>
-        </section>
-
-        <section id="bar-menu" class="menu-section">
-            <h2>Bar Menu</h2>
-            <ul>
-                <li><strong>House Mexican Martini</strong>: - $12.49</li>
-                <li><strong>Sangria Rita</strong>: - $5</li>
-                <li><strong>Strawberry Rita</strong>: - $5</li>
-                <li><strong>Mimosa</strong>: choose your flavor pineapple, cranberry or orange - $4</li>
-                <li><strong>Bloody Mary</strong>: - $6</li>
-                <li><strong>Burros Margarita</strong>: Lime only, rocks or frozen - $5.99</li>
-                <li><strong>Burros Mexican Martini</strong>: Lime Only - $12.49</li>
-                <li><strong>Wells, Soda and Water Mixes</strong>: - $5.99</li>
-                <li><strong>Bud Light</strong>: Domestic draft small - $4.49</li>
-                <li><strong>Bud Light</strong>: Domestic draft large - $5.49</li>
-                <li><strong>Miller Lite</strong>: Domestic draft small - $4.49</li>
-                <li><strong>Miller Lite</strong>: Domestic draft large - $5.49</li>
-                <li><strong>Dos XX Lager</strong>: Imported draft small - $4.99</li>
-                <li><strong>Dos XX Lager</strong>: Imported draft large - $5.99</li>
-                <li><strong>Modelo Especial</strong>: Imported draft small - $4.99</li>
-                <li><strong>Modelo Especial</strong>: Imported draft large - $5.99</li>
-                <li><strong>Budweiser</strong>: Bottled - $4.75</li>
-                <li><strong>Bud Light</strong>: Bottled - $4.75</li>
-                <li><strong>Coors Light</strong>: Bottled - $4.75</li>
-                <li><strong>Miller Lite</strong>: Bottled - $4.75</li>
-                <li><strong>Michelob Ultra</strong>: Bottled - $4.75</li>
-                <li><strong>Shiner Bock</strong>: Imported bottled - $5.50</li>
-                <li><strong>Corona</strong>: Imported bottled - $5.50</li>
-                <li><strong>Corona Light</strong>: Imported bottled - $5.50</li>
-                <li><strong>Pacifico</strong>: Imported bottled - $5.50</li>
-                <li><strong>Dos XX Lager</strong>: Imported bottled - $5.50</li>
-                <li><strong>Dos XX Amber</strong>: Imported bottled - $5.50</li>
-                <li><strong>Modelo Especial</strong>: Imported bottled - $5.50</li>
-                <li><strong>Negra Modelo</strong>: Imported bottled - $5.50</li>
-                <li><strong>Pepino Sour</strong>: cucumber vodka, fresh lime juice, agave nectar and a splash of lime soda w/ chili salt rim - $8.99</li>
-                <li><strong>Grapefruitini</strong>: Deep Eddy Ruby Red Vodka, lime juice, simple syrup and club soda - $9.99</li>
-                <li><strong>Pina Colada</strong>: house rum and pina colada mix - $8.99</li>
-                <li><strong>Texas Size Jack and Coke</strong>: Classic jack Daniel's and regular coke - $13</li>
-                <li><strong>Renee's Cosmo</strong>: House Vodka, triple sec, lime juice, cranberry juice and a splash of soda. served in a shaker on the rocks - $10.99</li>
-                <li><strong>Michelada</strong>: Choice of beer in a mug combined w/ our perfect secret mix - $8</li>
-                <li><strong>Texas Bloody Mary</strong>: made w/ deep eddy regular vodka - $7.50</li>
-                <li><strong>Mimosa</strong>: choose your flavor pineapple, cranberry or orange - $4.50</li>
-                <li><strong>Tequila Sunrise</strong>: house tequila and orange juice - $7.00</li>
-                <li><strong>Burros House Rita</strong>: SWIRL OR ADD FRUIT FLAVOR $1 EACH strawberry. mango, sangria. watermelon, blue curaçao, or chamoy - $6.99</li>
-                <li><strong>Burros Top Shelf Margarita</strong>: Made with Exotico Reposado - $9.49</li>
-                <li><strong>Jumbo Margarita</strong>: FOR $2 ADD 7oz. coronita, Dos XX Lager, or Big Red ADD FRUIT FLAVOR FOR$1.50 - $12.99</li>
-                <li><strong>Burros Mexican Martini</strong>: - $13.99</li>
-                <li><strong>Premium Margarita</strong>: - $14.49</li>
-                <li><strong>Brad's Rita</strong>: Herradura silver, Presidenete Brandy, Gran Gala, triple sec, agave nectar, lime juice, orange juice, and sweet and sour served on the rocks - $15.49</li>
-                <li><strong>Spicy Pineapple Martini</strong>: Tequila, serrano peppers, pineapple juice, lime juice & agave nectar - $13.99</li>
-                <li><strong>La Morada Rita</strong>: Tequila, prickly pear, lime juice and curacao - $9.99</li>
-                <li><strong>La Paloma</strong>: Tequila, fresh lime juice, and grapefruit soda on the rocks - $9.99</li>
-                <li><strong>La Flaca</strong>: Milagro reposado tequila, fresh lime juice, and natural agave nectar. served on the rocks - $9.99</li>
-                <li><strong>Cranberry Rita</strong>: House tequila, agave nectar, cranberry juice, lime juice and a splash of soda - $7.99</li>
-                <li><strong>Jumbo Mango Chamoy Margarita</strong>: Frozen margarita w/ swirl of mango chamoy puree and tajin rim - $13.99</li>
-                <li><strong>Woodbridge Merlot</strong>: - $6</li>
-                <li><strong>Woodbridge Cabernet</strong>: - $6</li>
-                <li><strong>Woodbridge Chardonnay</strong>: - $6</li>
-            </ul>
-        </section>
-
+        <div class="cta">
+          <a class="btn" href="mailto:jmodwork@gmail.com?subject=Consulting%20Inquiry%20-%20JordanModdes.com&body=Goal%3A%0AContext%3A%0ATimeline%3A%0ABudget%3A%0AData%20sources%3A%0A">Email</a>
+          <a class="btn primary" href="#contact"><span class="dot"></span>Request a consult</a>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <footer>
-        <p>900 E Palm Valley Blvd, Round Rock, TX 78664 | (512) 305-3881<br>© 2026 Burros Tex-Mex Bar & Grill</p>
-    </footer>
+  <header class="hero">
+    <div class="gridfx" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="row">
+        <div class="panel">
+          <div class="in">
+            <div class="chips">
+              <span class="chip">Ops → Systems</span>
+              <span class="chip">Dashboards</span>
+              <span class="chip">Automation</span>
+              <span class="chip">Root-cause</span>
+              <span class="chip">Exec-ready</span>
+            </div>
+
+            <h1>Consulting that ships outcomes.</h1>
+            <p class="sub">
+              I help operators and builders remove bottlenecks, harden processes, and stand up reporting + automation that actually gets used.
+              If it can’t be measured, it doesn’t count.
+            </p>
+
+            <div class="heroactions">
+              <a class="btn primary" href="#contact"><span class="dot"></span>Book a call</a>
+              <a class="btn" href="#services">See packages</a>
+              <span class="badge"><span class="pulse"></span>Availability: limited slots</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel mini">
+          <div class="in">
+            <div class="chips">
+              <span class="chip">What you get</span>
+              <span class="chip">Fast + blunt</span>
+            </div>
+            <div class="kpis">
+              <div class="kpi">
+                <b>Deliverable</b>
+                <span>Clear plan + owner map</span>
+                <div class="tag">PDF + action checklist</div>
+              </div>
+              <div class="kpi">
+                <b>Speed</b>
+                <span>Days, not months</span>
+                <div class="tag">Depends on scope</div>
+              </div>
+              <div class="kpi">
+                <b>Focus</b>
+                <span>Cost / time / quality</span>
+                <div class="tag">No vanity metrics</div>
+              </div>
+              <div class="kpi">
+                <b>Tooling</b>
+                <span>Sheets • BI • Scripts</span>
+                <div class="tag">Low-friction stack</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="services">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>Services</h2>
+          <div class="hint">Pick a lane. Don’t boil the ocean.</div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="in">
+              <h3>Ops Diagnosis (1–2 sessions)</h3>
+              <p>Find the constraint, quantify it, and turn it into a clean execution plan.</p>
+              <div class="bullet">
+                <div><span class="tick"></span><span>Process map + failure points</span></div>
+                <div><span class="tick"></span><span>KPI set that actually indicates health</span></div>
+                <div><span class="tick"></span><span>30-day action plan with owners</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="in">
+              <h3>Dashboards + Reporting</h3>
+              <p>One source of truth. Exec-ready. Zero nonsense.</p>
+              <div class="bullet">
+                <div><span class="tick"></span><span>Metric definitions + data dictionary</span></div>
+                <div><span class="tick"></span><span>Daily/weekly views + drilldowns</span></div>
+                <div><span class="tick"></span><span>Alerting + SLA tracking where needed</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="in">
+              <h3>Automation + Workflow</h3>
+              <p>Remove manual steps. Reduce error rate. Make it idiot-proof.</p>
+              <div class="bullet">
+                <div><span class="tick"></span><span>Intake → triage → execution loop</span></div>
+                <div><span class="tick"></span><span>Integrations (email/forms/sheets)</span></div>
+                <div><span class="tick"></span><span>Governance: logs, roles, guardrails</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>Process</h2>
+          <div class="hint">Simple. Fast. Measurable.</div>
+        </div>
+
+        <div class="twocol">
+          <div class="steps">
+            <div class="step">
+              <div class="num">01</div>
+              <div>
+                <b>Scope in 15 minutes</b>
+                <span>What’s broken, what it costs, what “fixed” looks like. We lock deliverables.</span>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">02</div>
+              <div>
+                <b>Diagnose the constraint</b>
+                <span>We identify the bottleneck and the drivers. No broad “process improvement” fluff.</span>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">03</div>
+              <div>
+                <b>Ship the fix</b>
+                <span>Plan, dashboard, automation, SOP, training — whatever closes the loop.</span>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">04</div>
+              <div>
+                <b>Prove impact</b>
+                <span>Before/after, KPI movement, and a maintenance plan so it doesn’t decay.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="in">
+              <h3>Typical engagements</h3>
+              <p>Choose a shape that matches reality.</p>
+              <div class="bullet">
+                <div><span class="tick"></span><span><b style="color:var(--text)">One-time:</b>&nbsp;diagnosis + plan + deliverable package</span></div>
+                <div><span class="tick"></span><span><b style="color:var(--text)">Sprint:</b>&nbsp;1–3 weeks to implement + handoff</span></div>
+                <div><span class="tick"></span><span><b style="color:var(--text)">Retainer:</b>&nbsp;monthly ops + systems support</span></div>
+              </div>
+
+              <div style="margin-top:14px; border-top:1px solid var(--line); padding-top:14px;">
+                <div class="badge"><span class="pulse"></span>Preferred: sprint + handoff</div>
+                <div style="height:10px"></div>
+                <a class="btn primary" href="#contact"><span class="dot"></span>Start intake</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="proof">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>Proof</h2>
+          <div class="hint">Real numbers, not adjectives.</div>
+        </div>
+
+        <div class="twocol">
+          <div class="proof">
+            <div class="card">
+              <div class="in">
+                <div class="metric"><b>Lane Dash investment case</b><i>ROI: 5.5 months</i></div>
+                <p>$1.28M investment with forecasted annual entitlement ~ $3.6M. Built the logic, alignment, and execution path.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="in">
+                <div class="metric"><b>Outbound putbacks reduction</b><i>3 pallets → ¼ pallet / 10 hrs</i></div>
+                <p>Found root cause (bad damage classification), rebuilt training, and stabilized quality + labor loss.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="in">
+                <div class="metric"><b>Rapid Improvement Team turnaround</b><i>31% → 89% in 2 months</i></div>
+                <p>Revamped inbound controls and execution cadence; moved audit compliance from failing to stable.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="in">
+              <h3>What I’m good at</h3>
+              <p>Fast pattern recognition + ruthless simplification.</p>
+              <div class="bullet">
+                <div><span class="tick"></span><span>Translating chaos into a plan leadership will fund</span></div>
+                <div><span class="tick"></span><span>Building dashboards that teams actually use</span></div>
+                <div><span class="tick"></span><span>Automation that reduces manual touch + errors</span></div>
+                <div><span class="tick"></span><span>Handoffs: SOPs, training, and ownership clarity</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>FAQ</h2>
+          <div class="hint">If you’re unsure, start with diagnosis.</div>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>
+              What kinds of clients do you work with?
+              <span class="chev">⌄</span>
+            </summary>
+            <p>Operators: warehouses, manufacturing, supply chain, logistics, and any team drowning in manual workflows + unclear metrics.</p>
+          </details>
+
+          <details>
+            <summary>
+              Do you write code / build automation?
+              <span class="chev">⌄</span>
+            </summary>
+            <p>Yes when it’s the fastest path to impact. If code adds friction, I’ll use a simpler stack. Outcome > tech flex.</p>
+          </details>
+
+          <details>
+            <summary>
+              What do you need from me to start?
+              <span class="chev">⌄</span>
+            </summary>
+            <p>A clear goal, current workflow, data sources (even messy), and who owns decisions. If you have nothing, we start with a 15-minute scoping call.</p>
+          </details>
+
+          <details>
+            <summary>
+              How do you price work?
+              <span class="chev">⌄</span>
+            </summary>
+            <p>By engagement shape: one-time diagnosis, sprint implementation, or monthly retainer. I’ll quote after scoping.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>Contact</h2>
+          <div class="hint">Email is fastest. Include goal + timeline.</div>
+        </div>
+
+        <div class="card">
+          <div class="in">
+            <div class="twocol">
+              <div>
+                <h3>Send the intake</h3>
+                <p>Keep it short. I’ll reply with next steps and a scope proposal.</p>
+                <div style="height:12px"></div>
+                <a class="btn primary" href="mailto:jmodwork@gmail.com?subject=Consulting%20Intake%20-%20JordanModdes.com&body=Goal%3A%0A%0AWhat%27s%20broken%20(today)%3A%0A%0AWhat%20it%20costs%20(time%2F%24%2Frisk)%3A%0A%0ATimeline%3A%0A%0ABudget%3A%0A%0ATools%2FData%20sources%3A%0A%0AStakeholders%2FOwners%3A%0A">
+                  <span class="dot"></span> Email consulting intake
+                </a>
+                <div style="height:10px"></div>
+                <a class="btn" href="/">Back to home</a>
+              </div>
+
+              <div>
+                <h3>What to include</h3>
+                <div class="bullet">
+                  <div><span class="tick"></span><span>1–2 sentence goal + success criteria</span></div>
+                  <div><span class="tick"></span><span>Current state + where it breaks</span></div>
+                  <div><span class="tick"></span><span>Any numbers you have (volume, SLA, costs)</span></div>
+                  <div><span class="tick"></span><span>Timeline + decision maker</span></div>
+                </div>
+
+                <div style="margin-top:14px; border-top:1px solid var(--line); padding-top:14px;">
+                  <span class="badge">Note: I don’t take “open-ended” scope.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <div>
+          <div class="small">© <span id="y"></span> Jordan Moddes • Jmod Co.</div>
+          <div style="height:6px"></div>
+          <div>Ops + systems consulting. Built for measurable impact.</div>
+        </div>
+        <div class="small">
+          <div>Contact: <a class="navlink" style="padding:0" href="mailto:jmodwork@gmail.com">jmodwork@gmail.com</a></div>
+          <div style="height:6px"></div>
+          <div><a class="navlink" style="padding:0" href="/Consult/">/Consult/</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
