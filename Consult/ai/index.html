@@ -1,0 +1,1898 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>AI Capability Showcase — Dedicated Page</title>
+  <style>
+    /* =========================
+       ZERO-LIB, SINGLE-FILE UI
+       Fast, responsive, flashy.
+       ========================= */
+
+    :root{
+      --bg0:#070b14;
+      --bg1:#0b1220;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.09);
+      --stroke:rgba(255,255,255,.14);
+      --stroke2:rgba(255,255,255,.22);
+      --text:#eaf0ff;
+      --muted:rgba(234,240,255,.68);
+
+      --a:#7c3aed; /* violet */
+      --b:#22c55e; /* green */
+      --c:#06b6d4; /* cyan */
+      --d:#f97316; /* orange */
+      --e:#ef4444; /* red */
+
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --shadow2: 0 10px 30px rgba(0,0,0,.42);
+
+      --radius: 22px;
+      --radius2: 16px;
+
+      --max: 1220px;
+      --pad: clamp(16px, 3vw, 28px);
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    /* Light theme (still dark-ish, just cleaner) */
+    [data-theme="ice"]{
+      --bg0:#f6f8ff;
+      --bg1:#eef3ff;
+      --card:rgba(0,0,0,.05);
+      --card2:rgba(0,0,0,.08);
+      --stroke:rgba(0,0,0,.12);
+      --stroke2:rgba(0,0,0,.20);
+      --text:#0b1220;
+      --muted:rgba(11,18,32,.72);
+      --shadow: 0 20px 70px rgba(8,12,18,.20);
+      --shadow2: 0 10px 28px rgba(8,12,18,.14);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 900px at 10% 15%, rgba(124,58,237,.22), transparent 55%),
+        radial-gradient(900px 700px at 85% 20%, rgba(6,182,212,.18), transparent 55%),
+        radial-gradient(1100px 900px at 35% 95%, rgba(34,197,94,.14), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    /* Subtle moving aurora overlay */
+    .aurora{
+      position:fixed; inset:-40vmax;
+      pointer-events:none;
+      background:
+        radial-gradient(closest-side at 20% 30%, rgba(124,58,237,.18), transparent 70%),
+        radial-gradient(closest-side at 80% 25%, rgba(6,182,212,.16), transparent 70%),
+        radial-gradient(closest-side at 55% 85%, rgba(34,197,94,.14), transparent 70%),
+        radial-gradient(closest-side at 30% 75%, rgba(249,115,22,.11), transparent 70%);
+      filter: blur(40px) saturate(1.25);
+      opacity:.9;
+      mix-blend-mode: screen;
+      transform: translate3d(0,0,0);
+      animation: drift 18s ease-in-out infinite;
+    }
+
+    @keyframes drift{
+      0%   { transform: translate3d(-2%, -1%, 0) rotate(0deg); }
+      50%  { transform: translate3d(2%, 1.5%, 0) rotate(6deg); }
+      100% { transform: translate3d(-2%, -1%, 0) rotate(0deg); }
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ width:min(var(--max), 100%); margin:0 auto; padding: var(--pad); }
+
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(10,14,26,.72), rgba(10,14,26,.28));
+      border-bottom: 1px solid var(--stroke);
+    }
+    [data-theme="ice"] .topbar{
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.28));
+    }
+
+    .topbar .wrap{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px; min-width:260px;
+    }
+    .mark{
+      width:42px; height:42px; border-radius:14px;
+      background:
+        radial-gradient(circle at 25% 30%, rgba(255,255,255,.18), transparent 45%),
+        linear-gradient(135deg, rgba(124,58,237,1), rgba(6,182,212,1));
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.18);
+      display:grid; place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .mark::after{
+      content:"";
+      position:absolute; inset:-30%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      transform: rotate(25deg) translateX(-60%);
+      animation: sheen 3.6s ease-in-out infinite;
+    }
+    @keyframes sheen{
+      0%,55%{ transform: rotate(25deg) translateX(-70%); opacity:.0; }
+      65%{ opacity:.55; }
+      100%{ transform: rotate(25deg) translateX(70%); opacity:.0; }
+    }
+    .brand h1{
+      margin:0; font-size:14px; letter-spacing:.08em; text-transform:uppercase;
+      font-weight:700;
+    }
+    .brand .sub{
+      font-size:12px; color:var(--muted); margin-top:2px;
+    }
+    .brandtext{ display:flex; flex-direction:column; line-height:1.1; }
+
+    .actions{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+
+    .btn{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      color:var(--text);
+      padding:10px 12px;
+      border-radius: 14px;
+      font-size:12px;
+      cursor:pointer;
+      display:flex; align-items:center; gap:8px;
+      box-shadow: var(--shadow2);
+      user-select:none;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: var(--stroke2); }
+    .btn:active{ transform: translateY(0px); }
+    .kbd{
+      font-family:var(--mono);
+      font-size:11px;
+      padding:2px 6px;
+      border:1px solid var(--stroke);
+      border-bottom-color: rgba(0,0,0,.25);
+      border-radius:8px;
+      background: rgba(0,0,0,.14);
+      color:var(--muted);
+    }
+    [data-theme="ice"] .kbd{ background: rgba(255,255,255,.55); border-bottom-color: rgba(0,0,0,.1); }
+
+    /* Hero */
+    .hero{
+      padding: clamp(18px, 4vw, 42px) 0 10px;
+      position:relative;
+    }
+
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items:stretch;
+    }
+
+    @media (max-width: 980px){
+      .heroGrid{ grid-template-columns:1fr; }
+      .brand{ min-width:auto; }
+    }
+
+    .panel{
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.03));
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .panel::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 320px at 20% 20%, rgba(124,58,237,.22), transparent 60%),
+        radial-gradient(600px 320px at 80% 30%, rgba(6,182,212,.18), transparent 60%),
+        radial-gradient(700px 360px at 60% 90%, rgba(34,197,94,.14), transparent 60%);
+      opacity:.9;
+      filter: blur(0px);
+      pointer-events:none;
+    }
+
+    .panelInner{ position:relative; padding: clamp(16px, 2.6vw, 26px); }
+
+    .heroTitle{
+      font-size: clamp(30px, 4vw, 52px);
+      line-height: 1.02;
+      margin:0;
+      letter-spacing:-.02em;
+    }
+    .heroTitle .glow{
+      background: linear-gradient(90deg, rgba(124,58,237,1), rgba(6,182,212,1), rgba(34,197,94,1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      filter: drop-shadow(0 12px 28px rgba(124,58,237,.22));
+    }
+
+    .heroP{
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height:1.55;
+      max-width: 70ch;
+    }
+
+    .chips{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-top:18px;
+    }
+    .chip{
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.12);
+      padding:8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      display:flex; gap:8px; align-items:center;
+      user-select:none;
+    }
+    [data-theme="ice"] .chip{ background: rgba(255,255,255,.45); }
+
+    .dot{
+      width:8px; height:8px; border-radius: 999px;
+      background: rgba(34,197,94,.95);
+      box-shadow: 0 0 0 5px rgba(34,197,94,.12);
+    }
+    .dot.warn{
+      background: rgba(249,115,22,.95);
+      box-shadow: 0 0 0 5px rgba(249,115,22,.12);
+    }
+    .dot.err{
+      background: rgba(239,68,68,.95);
+      box-shadow: 0 0 0 5px rgba(239,68,68,.12);
+    }
+
+    /* Right hero panel (canvas + quick stats) */
+    .miniHeader{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      margin-bottom:12px;
+    }
+    .miniHeader h3{
+      margin:0;
+      font-size: 13px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color: var(--muted);
+    }
+    .miniHeader .pill{
+      font-family: var(--mono);
+      font-size: 11px;
+      border:1px solid var(--stroke);
+      border-radius: 999px;
+      padding:6px 10px;
+      background: rgba(0,0,0,.12);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    [data-theme="ice"] .miniHeader .pill{ background: rgba(255,255,255,.55); }
+
+    .viz{
+      border-radius: 18px;
+      border:1px solid var(--stroke);
+      background:
+        radial-gradient(600px 280px at 30% 20%, rgba(124,58,237,.20), transparent 65%),
+        radial-gradient(560px 260px at 75% 50%, rgba(6,182,212,.18), transparent 68%),
+        radial-gradient(640px 320px at 45% 88%, rgba(34,197,94,.12), transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      overflow:hidden;
+      position:relative;
+      height: 220px;
+    }
+    canvas{ display:block; width:100%; height:100%; }
+
+    .statsRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .stat{
+      border:1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 12px 12px;
+      background: rgba(0,0,0,.10);
+      min-height:72px;
+    }
+    [data-theme="ice"] .stat{ background: rgba(255,255,255,.45); }
+    .stat .k{
+      font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+      color: var(--muted);
+    }
+    .stat .v{
+      font-family: var(--mono);
+      font-size: 16px;
+      margin-top: 6px;
+    }
+
+    /* Sections */
+    .section{
+      margin-top: 18px;
+      padding: 12px 0 0;
+    }
+    .sectionHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      margin: 22px 0 12px;
+    }
+    .sectionHead h2{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.02em;
+    }
+    .sectionHead p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 70ch;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .col-6{ grid-column: span 6; }
+    .col-4{ grid-column: span 4; }
+    .col-8{ grid-column: span 8; }
+    .col-12{ grid-column: span 12; }
+
+    @media (max-width: 980px){
+      .col-6,.col-4,.col-8{ grid-column: span 12; }
+    }
+
+    .card{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      position:relative;
+    }
+    .cardInner{ padding: 16px; position:relative; }
+    .card h3{
+      margin:0 0 8px;
+      font-size: 14px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color: var(--muted);
+    }
+    .card p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.55;
+    }
+
+    .toolbar{
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      gap:10px;
+      margin: 12px 0 0;
+    }
+    .input, textarea{
+      width:100%;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.12);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 12px;
+      outline:none;
+      font-size: 13px;
+      font-family: var(--sans);
+    }
+    [data-theme="ice"] .input, [data-theme="ice"] textarea{ background: rgba(255,255,255,.55); }
+    textarea{ min-height: 140px; resize: vertical; }
+
+    .row{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .row > *{ flex:1 1 auto; }
+    .row .btn{ flex: 0 0 auto; }
+
+    .split{
+      display:grid; grid-template-columns: 1fr 1fr; gap:12px;
+    }
+    @media (max-width: 980px){ .split{ grid-template-columns:1fr; } }
+
+    .mono{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      line-height:1.55;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+    .resultBox{
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      border-radius: 16px;
+      padding: 12px;
+      min-height: 140px;
+    }
+    [data-theme="ice"] .resultBox{ background: rgba(255,255,255,.45); }
+
+    /* Decision Engine */
+    .table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border:1px solid var(--stroke);
+      border-radius: 16px;
+    }
+    .table th, .table td{
+      text-align:left;
+      padding: 10px 10px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--stroke);
+      background: rgba(0,0,0,.08);
+    }
+    [data-theme="ice"] .table th, [data-theme="ice"] .table td{ background: rgba(255,255,255,.55); }
+    .table th{
+      font-size: 11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color: var(--muted);
+    }
+    .table tr:last-child td{ border-bottom: none; }
+    .num{
+      width: 92px;
+      font-family: var(--mono);
+      text-align:right;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      color:var(--text);
+      border-radius: 12px;
+      padding: 8px 10px;
+      outline:none;
+    }
+    [data-theme="ice"] .num{ background: rgba(255,255,255,.55); }
+    .name{
+      width: 100%;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      color:var(--text);
+      border-radius: 12px;
+      padding: 8px 10px;
+      outline:none;
+      font-size: 13px;
+    }
+    [data-theme="ice"] .name{ background: rgba(255,255,255,.55); }
+
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      color: var(--muted);
+      font-size: 12px;
+      user-select:none;
+    }
+    [data-theme="ice"] .badge{ background: rgba(255,255,255,.55); }
+
+    /* Live stream */
+    .stream{
+      display:grid; grid-template-columns: 1fr; gap:10px;
+    }
+    .streamLog{
+      height: 180px;
+      overflow:auto;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      border-radius: 16px;
+      padding: 10px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      line-height:1.55;
+    }
+    [data-theme="ice"] .streamLog{ background: rgba(255,255,255,.45); }
+
+    .spark{
+      height: 70px;
+      border:1px solid var(--stroke);
+      border-radius: 16px;
+      background: rgba(0,0,0,.08);
+      overflow:hidden;
+      position:relative;
+    }
+    [data-theme="ice"] .spark{ background: rgba(255,255,255,.55); }
+
+    /* Footer */
+    footer{
+      margin: 26px 0 38px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+    }
+
+    /* Reveal anim (IntersectionObserver) */
+    .reveal{
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .reveal.in{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Command palette */
+    .modal{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      z-index: 100;
+    }
+    .modal.on{ display:flex; }
+    .palette{
+      width:min(720px, 100%);
+      border:1px solid var(--stroke2);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(10,14,26,.92), rgba(10,14,26,.72));
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    [data-theme="ice"] .palette{
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
+    }
+    .paletteTop{
+      padding: 12px;
+      border-bottom: 1px solid var(--stroke);
+      display:flex; gap:10px; align-items:center;
+    }
+    .paletteList{
+      max-height: 340px;
+      overflow:auto;
+    }
+    .cmd{
+      padding: 12px;
+      border-bottom: 1px solid var(--stroke);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      cursor:pointer;
+      user-select:none;
+      background: rgba(255,255,255,.02);
+    }
+    .cmd:hover{ background: rgba(255,255,255,.06); }
+    [data-theme="ice"] .cmd{ background: rgba(0,0,0,.02); }
+    [data-theme="ice"] .cmd:hover{ background: rgba(0,0,0,.05); }
+    .cmd .left{
+      display:flex; flex-direction:column; gap:3px;
+    }
+    .cmd .t{ font-size: 13px; }
+    .cmd .d{ font-size: 12px; color: var(--muted); }
+    .cmd .right{ display:flex; gap:8px; align-items:center; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .aurora{ animation:none; }
+      .mark::after{ animation:none; }
+      .btn{ transition:none; }
+      .reveal{ transition:none; opacity:1; transform:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2c4.6 0 8.4 3.7 8.4 8.3 0 3.7-2.4 6.9-5.8 8.0v1.9H9.4v-1.9C6 17.2 3.6 14 3.6 10.3 3.6 5.7 7.4 2 12 2Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+            <path d="M8.4 10.3h7.2M9.3 7.8h5.4M9.1 12.8h5.8" stroke="rgba(255,255,255,.65)" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brandtext">
+          <h1>Dedicated AI Page</h1>
+          <div class="sub">Single-file capability showcase • HTML/CSS/JS only</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="btnPalette" title="Command palette">
+          Command
+          <span class="kbd">Ctrl</span><span class="kbd">K</span>
+        </button>
+        <button class="btn" id="btnTheme" title="Toggle theme">
+          Theme
+          <span class="kbd">T</span>
+        </button>
+        <button class="btn" id="btnFocus" title="Focus mode (hide aurora)">
+          Focus
+          <span class="kbd">F</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="heroGrid">
+        <div class="panel reveal">
+          <div class="panelInner">
+            <h2 class="heroTitle">
+              A page that proves <span class="glow">capability</span>.
+            </h2>
+            <p class="heroP">
+              This is a client-side demonstration of what an AI assistant can help build: fast interfaces, interactive tools,
+              decision logic, simulated telemetry, and a living “agent graph” — all in a single file.
+              <br/><br/>
+              Bonus: a subtle nod to Jordan’s ecosystem (Jmod Co. + MODDES™-style multi-agent thinking) without needing any real client data.
+            </p>
+
+            <div class="chips" aria-label="live status">
+              <div class="chip"><span class="dot" id="dotRun"></span> Runtime: <span id="runState">ACTIVE</span></div>
+              <div class="chip"><span class="dot warn" id="dotNet"></span> Network: <span id="netState">OFFLINE-SAFE</span></div>
+              <div class="chip"><span class="dot" id="dotFPS"></span> Render: <span id="fpsState">~60</span> fps</div>
+              <div class="chip"><span class="dot" id="dotMem"></span> Load: <span id="loadState">LIGHT</span></div>
+            </div>
+
+            <div class="toolbar" style="margin-top:16px;">
+              <div class="row">
+                <button class="btn" data-jump="#playground">Jump: Playground</button>
+                <button class="btn" data-jump="#decision">Jump: Decision Engine</button>
+                <button class="btn" data-jump="#stream">Jump: Live Stream</button>
+                <button class="btn" data-jump="#graph">Jump: Agent Graph</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel reveal">
+          <div class="panelInner">
+            <div class="miniHeader">
+              <h3>Neural Grid</h3>
+              <div class="pill"><span id="clock">—</span> • local</div>
+            </div>
+
+            <div class="viz" aria-label="animated hero canvas">
+              <canvas id="heroCanvas"></canvas>
+            </div>
+
+            <div class="statsRow">
+              <div class="stat">
+                <div class="k">Mode</div>
+                <div class="v" id="modeVal">Fast • Local</div>
+              </div>
+              <div class="stat">
+                <div class="k">Build</div>
+                <div class="v" id="buildVal">1 file</div>
+              </div>
+              <div class="stat">
+                <div class="k">Demos</div>
+                <div class="v" id="demosVal">4 modules</div>
+              </div>
+              <div class="stat">
+                <div class="k">State</div>
+                <div class="v" id="stateVal">Stable</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAPABILITIES -->
+    <section class="section">
+      <div class="sectionHead reveal">
+        <div>
+          <h2>What this page demonstrates</h2>
+          <p>Not claims about the entire world. Actual, visible mechanics running in your browser right now.</p>
+        </div>
+        <div class="badge" id="capBadge">Systems • UI • Logic • Visualization</div>
+      </div>
+
+      <div class="grid">
+        <div class="card col-4 reveal">
+          <div class="cardInner">
+            <h3>Interface Engineering</h3>
+            <p>Responsive layout, GPU-friendly motion, command palette, keyboard shortcuts, and progressive enhancement.</p>
+          </div>
+        </div>
+
+        <div class="card col-4 reveal">
+          <div class="cardInner">
+            <h3>Decision Logic</h3>
+            <p>Weighted scoring, editable constraints, and deterministic output you can validate and tune.</p>
+          </div>
+        </div>
+
+        <div class="card col-4 reveal">
+          <div class="cardInner">
+            <h3>Visualization</h3>
+            <p>Canvas rendering for a neural grid and a draggable agent graph — efficient and library-free.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAYGROUND -->
+    <section class="section" id="playground">
+      <div class="sectionHead reveal">
+        <div>
+          <h2>Playground: Text Synth</h2>
+          <p>Drop any text. Get a brief + extracted signals (keywords + “intent” guess). Heuristic on purpose: fast, inspectable.</p>
+        </div>
+        <div class="badge">Ctrl/Cmd+Enter to run</div>
+      </div>
+
+      <div class="card reveal">
+        <div class="cardInner">
+          <div class="split">
+            <div>
+              <textarea id="txtIn" spellcheck="false">Paste a messy paragraph here.
+
+Example: "I want an interactive, jaw-dropping single-page site that shows advanced JS + CSS techniques, but it must stay fast on GitHub Pages. I also want a section that nods to Jmod Co. and a multi-agent architecture vibe."</textarea>
+              <div class="toolbar">
+                <div class="row">
+                  <button class="btn" id="btnAnalyze">Run Synth</button>
+                  <button class="btn" id="btnSample">Load Sample</button>
+                  <button class="btn" id="btnClear">Clear</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="resultBox">
+              <div class="mono" id="txtOut">Output will appear here.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DECISION ENGINE -->
+    <section class="section" id="decision">
+      <div class="sectionHead reveal">
+        <div>
+          <h2>Decision Engine</h2>
+          <p>Edit weights. Edit scores. Get ranked output. Deterministic. Transparent.</p>
+        </div>
+        <div class="badge" id="rankBadge">Ranked • Weighted</div>
+      </div>
+
+      <div class="grid">
+        <div class="card col-8 reveal">
+          <div class="cardInner">
+            <h3>Options + Scores (0–10)</h3>
+            <table class="table" aria-label="decision table">
+              <thead>
+                <tr>
+                  <th style="width:36%;">Option</th>
+                  <th>Impact</th>
+                  <th>Speed</th>
+                  <th>Risk</th>
+                  <th>Polish</th>
+                </tr>
+              </thead>
+              <tbody id="optBody"></tbody>
+            </table>
+
+            <div class="toolbar">
+              <div class="row">
+                <button class="btn" id="btnAddOpt">Add Option</button>
+                <button class="btn" id="btnCalc">Recalculate</button>
+                <button class="btn" id="btnResetDecision">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card col-4 reveal">
+          <div class="cardInner">
+            <h3>Weights</h3>
+            <div class="mono" style="margin-bottom:10px;">Higher = matters more. Risk is inverted automatically (lower risk scores higher).</div>
+
+            <div class="row" style="gap:10px;">
+              <label style="flex:1 1 48%;">
+                <div class="mono">Impact</div>
+                <input class="num" id="wImpact" type="number" min="0" step="0.25" value="1.25" />
+              </label>
+              <label style="flex:1 1 48%;">
+                <div class="mono">Speed</div>
+                <input class="num" id="wSpeed" type="number" min="0" step="0.25" value="1.00" />
+              </label>
+              <label style="flex:1 1 48%;">
+                <div class="mono">Risk</div>
+                <input class="num" id="wRisk" type="number" min="0" step="0.25" value="0.85" />
+              </label>
+              <label style="flex:1 1 48%;">
+                <div class="mono">Polish</div>
+                <input class="num" id="wPolish" type="number" min="0" step="0.25" value="0.75" />
+              </label>
+            </div>
+
+            <div class="resultBox" style="margin-top:12px; min-height: 210px;">
+              <div class="mono" id="decisionOut">Click Recalculate.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE STREAM -->
+    <section class="section" id="stream">
+      <div class="sectionHead reveal">
+        <div>
+          <h2>Live Stream: Telemetry Simulation</h2>
+          <p>Simulated events + sparklines. Pause, step, reset. Demonstrates state, rendering, and log discipline.</p>
+        </div>
+        <div class="badge" id="streamBadge">Streaming • Local</div>
+      </div>
+
+      <div class="grid">
+        <div class="card col-8 reveal">
+          <div class="cardInner">
+            <h3>Event Log</h3>
+            <div class="stream">
+              <div class="streamLog" id="log"></div>
+              <div class="toolbar">
+                <div class="row">
+                  <button class="btn" id="btnPause">Pause</button>
+                  <button class="btn" id="btnStep">Step</button>
+                  <button class="btn" id="btnResetStream">Reset</button>
+                </div>
+                <div class="badge" id="evtRate">rate: —</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card col-4 reveal">
+          <div class="cardInner">
+            <h3>Sparklines</h3>
+            <div class="mono" style="margin-bottom:10px;">No libs. Canvas-only. Low overhead.</div>
+            <div class="spark"><canvas id="sparkA"></canvas></div>
+            <div style="height:10px;"></div>
+            <div class="spark"><canvas id="sparkB"></canvas></div>
+            <div style="height:10px;"></div>
+            <div class="spark"><canvas id="sparkC"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AGENT GRAPH -->
+    <section class="section" id="graph">
+      <div class="sectionHead reveal">
+        <div>
+          <h2>Agent Graph: Multi-Module Architecture</h2>
+          <p>Drag nodes. Watch the system settle. This is the “MODDES™-style” vibe: specialized agents + routed signals.</p>
+        </div>
+        <div class="badge">Drag nodes • Press R to re-seed</div>
+      </div>
+
+      <div class="card reveal">
+        <div class="cardInner">
+          <div class="miniHeader">
+            <h3>Force Graph (Canvas)</h3>
+            <div class="pill">Nodes: <span id="nodeCount">—</span> • Links: <span id="linkCount">—</span></div>
+          </div>
+          <div class="viz" style="height: 360px;">
+            <canvas id="graphCanvas"></canvas>
+          </div>
+          <div class="toolbar">
+            <div class="row">
+              <button class="btn" id="btnReseed">Reseed Graph</button>
+              <button class="btn" id="btnCenter">Center</button>
+              <button class="btn" id="btnFreeze">Freeze</button>
+            </div>
+            <div class="badge" id="graphState">state: running</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="reveal">
+      Built as a single-file demo for GitHub Pages. You can rebrand this as a “Dedicated AI Page” inside <strong>Jmod Co.</strong> and wire real feeds later.
+      <br/>
+      Shortcuts: <span class="kbd">Ctrl/Cmd+K</span> palette • <span class="kbd">T</span> theme • <span class="kbd">F</span> focus • <span class="kbd">R</span> reseed graph
+    </footer>
+  </main>
+
+  <!-- Command Palette -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="paletteTop">
+        <input class="input" id="cmdSearch" placeholder="Type a command… (ex: theme, stream, graph)" />
+        <button class="btn" id="btnClose">Close <span class="kbd">Esc</span></button>
+      </div>
+      <div class="paletteList" id="cmdList"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      // =========================
+      // Small utilities
+      // =========================
+      const $ = (q, el=document) => el.querySelector(q);
+      const $$ = (q, el=document) => Array.from(el.querySelectorAll(q));
+      const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+      const now = () => performance.now();
+
+      // =========================
+      // Theme + focus mode
+      // =========================
+      const root = document.documentElement;
+      const aurora = document.querySelector(".aurora");
+      const THEME_KEY = "dedicated_ai_theme";
+      const FOCUS_KEY = "dedicated_ai_focus";
+
+      function setTheme(theme){
+        if(theme) root.setAttribute("data-theme", theme);
+        else root.removeAttribute("data-theme");
+        localStorage.setItem(THEME_KEY, theme || "");
+      }
+      function toggleTheme(){
+        const cur = root.getAttribute("data-theme");
+        setTheme(cur === "ice" ? "" : "ice");
+      }
+
+      function setFocus(on){
+        aurora.style.display = on ? "none" : "";
+        localStorage.setItem(FOCUS_KEY, on ? "1" : "0");
+      }
+      function toggleFocus(){
+        const on = (localStorage.getItem(FOCUS_KEY) === "1");
+        setFocus(!on);
+      }
+
+      // restore
+      const savedTheme = localStorage.getItem(THEME_KEY) || "";
+      if(savedTheme) setTheme(savedTheme);
+      setFocus(localStorage.getItem(FOCUS_KEY) === "1");
+
+      $("#btnTheme").addEventListener("click", toggleTheme);
+      $("#btnFocus").addEventListener("click", toggleFocus);
+
+      // =========================
+      // Smooth jumps
+      // =========================
+      $$("[data-jump]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-jump");
+          const target = document.querySelector(id);
+          if(target) target.scrollIntoView({ behavior:"smooth", block:"start" });
+        });
+      });
+
+      // =========================
+      // Reveal animation
+      // =========================
+      const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(!reduceMotion){
+        const io = new IntersectionObserver((entries) => {
+          for(const e of entries){
+            if(e.isIntersecting){
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          }
+        }, { threshold: 0.12 });
+        $$(".reveal").forEach(el => io.observe(el));
+      } else {
+        $$(".reveal").forEach(el => el.classList.add("in"));
+      }
+
+      // =========================
+      // Clock + status
+      // =========================
+      function tickClock(){
+        const d = new Date();
+        const hh = String(d.getHours()).padStart(2,"0");
+        const mm = String(d.getMinutes()).padStart(2,"0");
+        const ss = String(d.getSeconds()).padStart(2,"0");
+        $("#clock").textContent = `${hh}:${mm}:${ss}`;
+      }
+      setInterval(tickClock, 250);
+      tickClock();
+
+      // =========================
+      // HERO CANVAS: Neural grid
+      // =========================
+      const heroCanvas = $("#heroCanvas");
+      const hctx = heroCanvas.getContext("2d", { alpha:true });
+      let hW=0,hH=0, hDPR=1;
+
+      const nodes = [];
+      const LINKS = 56;
+
+      function resizeCanvas(c, ctx){
+        const rect = c.getBoundingClientRect();
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        c.width = Math.floor(rect.width * dpr);
+        c.height = Math.floor(rect.height * dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        return { w: rect.width, h: rect.height, dpr };
+      }
+
+      function seedHero(){
+        const r = resizeCanvas(heroCanvas, hctx);
+        hW = r.w; hH = r.h; hDPR = r.dpr;
+
+        nodes.length = 0;
+        const N = 24;
+        for(let i=0;i<N;i++){
+          nodes.push({
+            x: Math.random()*hW,
+            y: Math.random()*hH,
+            vx: (Math.random()-.5)*0.35,
+            vy: (Math.random()-.5)*0.35,
+            r: 2 + Math.random()*1.2,
+          });
+        }
+      }
+
+      function heroFrame(t){
+        // background subtle grid
+        hctx.clearRect(0,0,hW,hH);
+
+        // animate nodes
+        for(const n of nodes){
+          n.x += n.vx;
+          n.y += n.vy;
+          if(n.x < 0 || n.x > hW) n.vx *= -1;
+          if(n.y < 0 || n.y > hH) n.vy *= -1;
+        }
+
+        // draw links
+        const maxDist = 120;
+        for(let i=0;i<nodes.length;i++){
+          for(let j=i+1;j<nodes.length;j++){
+            const a = nodes[i], b = nodes[j];
+            const dx = a.x-b.x, dy = a.y-b.y;
+            const dist = Math.hypot(dx,dy);
+            if(dist < maxDist){
+              const alpha = (1 - dist/maxDist) * 0.35;
+              const grad = hctx.createLinearGradient(a.x,a.y,b.x,b.y);
+              grad.addColorStop(0, `rgba(124,58,237,${alpha})`);
+              grad.addColorStop(.5, `rgba(6,182,212,${alpha})`);
+              grad.addColorStop(1, `rgba(34,197,94,${alpha})`);
+              hctx.strokeStyle = grad;
+              hctx.lineWidth = 1;
+              hctx.beginPath();
+              hctx.moveTo(a.x,a.y);
+              hctx.lineTo(b.x,b.y);
+              hctx.stroke();
+            }
+          }
+        }
+
+        // draw nodes
+        for(const n of nodes){
+          const pulse = 0.6 + 0.4*Math.sin((t/350) + n.x*0.02);
+          hctx.fillStyle = `rgba(234,240,255,${0.5 + 0.35*pulse})`;
+          hctx.beginPath();
+          hctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+          hctx.fill();
+        }
+
+        if(!reduceMotion) requestAnimationFrame(heroFrame);
+      }
+
+      seedHero();
+      if(!reduceMotion) requestAnimationFrame(heroFrame);
+      window.addEventListener("resize", () => { seedHero(); });
+
+      // =========================
+      // FPS estimate for status chip
+      // =========================
+      let fps = 60, lastFpsT = now(), frames = 0;
+      function fpsLoop(t){
+        frames++;
+        if(t - lastFpsT > 700){
+          fps = Math.round((frames * 1000) / (t - lastFpsT));
+          frames = 0;
+          lastFpsT = t;
+          $("#fpsState").textContent = `~${clamp(fps,10,144)}`;
+          $("#loadState").textContent = fps < 45 ? "MED" : "LIGHT";
+          $("#dotFPS").className = "dot" + (fps < 45 ? " warn" : "");
+        }
+        requestAnimationFrame(fpsLoop);
+      }
+      requestAnimationFrame(fpsLoop);
+
+      // =========================
+      // TEXT SYNTH (heuristic, fast)
+      // =========================
+      const stop = new Set(("a an the and or but if then else when while to of in on for from by with without into onto over under " +
+        "is are was were be been being this that those these it its as at we you i they them he she his her our your their " +
+        "can could would should will just not no yes do does did done have has had make made build built").split(/\s+/));
+
+      function tokenize(text){
+        return text
+          .toLowerCase()
+          .replace(/https?:\/\/\S+/g, " ")
+          .replace(/[^a-z0-9\s\-']/g, " ")
+          .split(/\s+/)
+          .map(s => s.trim())
+          .filter(Boolean);
+      }
+
+      function topKeywords(text, k=10){
+        const toks = tokenize(text).filter(w => w.length>2 && !stop.has(w));
+        const freq = new Map();
+        for(const w of toks) freq.set(w, (freq.get(w)||0)+1);
+        const arr = [...freq.entries()].sort((a,b) => b[1]-a[1]).slice(0,k);
+        return arr;
+      }
+
+      function guessIntent(text){
+        const t = text.toLowerCase();
+        const intents = [
+          ["build a website", /website|landing|page|github|html|css|javascript/],
+          ["optimize / performance", /fast|performance|load|optimi|fps|lag|bloat/],
+          ["visual wow factor", /flashy|jaw|wow|eye|animation|interactive/],
+          ["systems / agents", /agent|architecture|module|orchestr|pipeline|engine/],
+          ["data / dashboard", /data|metrics|dashboard|telemetry|stream|api/],
+        ];
+        const hits = [];
+        for(const [label, re] of intents){
+          const m = t.match(re);
+          if(m) hits.push(label);
+        }
+        return hits.length ? hits : ["general synthesis"];
+      }
+
+      function briefSummary(text){
+        // Simple: pick 1–3 strongest sentences by keyword density
+        const sentences = text
+          .replace(/\s+/g," ")
+          .split(/(?<=[.!?])\s+/)
+          .map(s => s.trim())
+          .filter(s => s.length > 20);
+
+        if(!sentences.length) return "No usable sentences found.";
+
+        const kw = new Map(topKeywords(text, 16));
+        const scored = sentences.map(s => {
+          const toks = tokenize(s);
+          let score = 0;
+          for(const w of toks) score += (kw.get(w)||0);
+          score += Math.min(8, s.length/60); // slight preference for informative length
+          return { s, score };
+        }).sort((a,b)=>b.score-a.score);
+
+        const pick = scored.slice(0, Math.min(3, scored.length)).map(x => x.s);
+        return pick.join(" ");
+      }
+
+      function runSynth(){
+        const input = $("#txtIn").value.trim();
+        if(!input){
+          $("#txtOut").textContent = "Provide input text.";
+          return;
+        }
+
+        const kws = topKeywords(input, 12);
+        const intent = guessIntent(input);
+        const summary = briefSummary(input);
+
+        const out =
+`SUMMARY:
+- ${summary}
+
+SIGNALS:
+- intent: ${intent.join(" | ")}
+- length: ${input.length.toLocaleString()} chars
+- keywords: ${kws.map(([w,n]) => `${w}(${n})`).join(", ")}
+
+NEXT ACTIONS (generic):
+- pick 1 primary objective
+- list 3 constraints
+- choose 2 interactive modules to prioritize`;
+        $("#txtOut").textContent = out;
+      }
+
+      $("#btnAnalyze").addEventListener("click", runSynth);
+      $("#btnClear").addEventListener("click", () => {
+        $("#txtIn").value = "";
+        $("#txtOut").textContent = "Output will appear here.";
+      });
+      $("#btnSample").addEventListener("click", () => {
+        $("#txtIn").value =
+`Jordan wants an extremely impressive single-page website (HTML/CSS/JS only) for GitHub Pages. It should feel jaw-dropping but load fast. The page should showcase advanced UI patterns, a multi-agent architecture vibe (MODDES-style), interactive demos, and a data-like dashboard—even if the data is simulated. Keep it clean, responsive, and easy to extend later with real APIs.`;
+        runSynth();
+      });
+
+      // Ctrl/Cmd+Enter triggers synth while textarea focused
+      $("#txtIn").addEventListener("keydown", (e) => {
+        const isEnter = e.key === "Enter";
+        const accel = (e.ctrlKey || e.metaKey);
+        if(isEnter && accel){
+          e.preventDefault();
+          runSynth();
+        }
+      });
+
+      // =========================
+      // DECISION ENGINE
+      // =========================
+      const defaults = [
+        { name: "Ship this page as-is", impact: 8, speed: 9, risk: 2, polish: 7 },
+        { name: "Add real API feeds", impact: 9, speed: 6, risk: 5, polish: 8 },
+        { name: "Add heavier visuals (particles)", impact: 7, speed: 5, risk: 6, polish: 9 },
+      ];
+
+      function rowTemplate(opt){
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><input class="name" value="${escapeHtml(opt.name)}" /></td>
+          <td><input class="num" type="number" min="0" max="10" step="1" value="${opt.impact}" /></td>
+          <td><input class="num" type="number" min="0" max="10" step="1" value="${opt.speed}" /></td>
+          <td><input class="num" type="number" min="0" max="10" step="1" value="${opt.risk}" /></td>
+          <td><input class="num" type="number" min="0" max="10" step="1" value="${opt.polish}" /></td>
+        `;
+        return tr;
+      }
+
+      function escapeHtml(s){
+        return String(s)
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;")
+          .replaceAll("'","&#039;");
+      }
+
+      function loadDecision(opts){
+        const body = $("#optBody");
+        body.innerHTML = "";
+        for(const o of opts){
+          body.appendChild(rowTemplate(o));
+        }
+      }
+
+      function getWeights(){
+        return {
+          impact: parseFloat($("#wImpact").value || "0") || 0,
+          speed: parseFloat($("#wSpeed").value || "0") || 0,
+          risk: parseFloat($("#wRisk").value || "0") || 0,
+          polish: parseFloat($("#wPolish").value || "0") || 0,
+        };
+      }
+
+      function readDecision(){
+        const rows = $$("#optBody tr");
+        return rows.map(r => {
+          const inputs = r.querySelectorAll("input");
+          const name = inputs[0].value.trim() || "Unnamed";
+          const impact = clamp(parseFloat(inputs[1].value||"0")||0, 0, 10);
+          const speed  = clamp(parseFloat(inputs[2].value||"0")||0, 0, 10);
+          const risk   = clamp(parseFloat(inputs[3].value||"0")||0, 0, 10);
+          const polish = clamp(parseFloat(inputs[4].value||"0")||0, 0, 10);
+          return { name, impact, speed, risk, polish };
+        });
+      }
+
+      function scoreOption(o, w){
+        // Risk inverted: lower risk => higher contribution
+        const riskScore = 10 - o.risk;
+        const totalW = (w.impact + w.speed + w.risk + w.polish) || 1;
+        const raw = (o.impact*w.impact) + (o.speed*w.speed) + (riskScore*w.risk) + (o.polish*w.polish);
+        return raw / totalW;
+      }
+
+      function recalcDecision(){
+        const w = getWeights();
+        const opts = readDecision();
+        const ranked = opts
+          .map(o => ({...o, score: scoreOption(o,w)}))
+          .sort((a,b) => b.score - a.score);
+
+        const lines = ranked.map((o,i) => {
+          const s = o.score.toFixed(2);
+          return `${String(i+1).padStart(2,"0")}. ${o.name}\n    score=${s}  | impact=${o.impact} speed=${o.speed} risk=${o.risk} polish=${o.polish}`;
+        }).join("\n\n");
+
+        $("#decisionOut").textContent =
+`RANKING (weighted average):
+${lines}
+
+NOTE:
+- Risk is inverted (lower risk scores higher).
+- Edit weights + scores, then recalc.`;
+      }
+
+      $("#btnCalc").addEventListener("click", recalcDecision);
+      $("#btnAddOpt").addEventListener("click", () => {
+        $("#optBody").appendChild(rowTemplate({ name:"New Option", impact:6, speed:6, risk:5, polish:6 }));
+      });
+      $("#btnResetDecision").addEventListener("click", () => {
+        $("#wImpact").value = "1.25";
+        $("#wSpeed").value = "1.00";
+        $("#wRisk").value = "0.85";
+        $("#wPolish").value = "0.75";
+        loadDecision(defaults);
+        recalcDecision();
+      });
+
+      loadDecision(defaults);
+      recalcDecision();
+
+      // =========================
+      // LIVE STREAM: telemetry sim + sparklines
+      // =========================
+      const logEl = $("#log");
+      const evtRateEl = $("#evtRate");
+      let streamOn = true;
+      let lastEvtT = now();
+      let evtCount = 0;
+      let startT = now();
+
+      const seriesA = new Float32Array(120);
+      const seriesB = new Float32Array(120);
+      const seriesC = new Float32Array(120);
+      let seriesIdx = 0;
+
+      function pushSeries(arr, v){
+        arr[seriesIdx] = v;
+      }
+
+      function randn(){ // quick-ish normal-ish
+        let u=0, v=0;
+        while(u===0) u=Math.random();
+        while(v===0) v=Math.random();
+        return Math.sqrt(-2.0*Math.log(u))*Math.cos(2.0*Math.PI*v);
+      }
+
+      function genEvent(){
+        const t = (now() - startT) / 1000;
+        const load = clamp(0.55 + 0.12*Math.sin(t*0.9) + 0.08*randn(), 0.1, 0.95);
+        const qps  = clamp(0.50 + 0.20*Math.sin(t*0.55+1.2) + 0.12*randn(), 0.05, 0.98);
+        const risk = clamp(0.35 + 0.18*Math.sin(t*0.75+2.1) + 0.10*randn(), 0.05, 0.98);
+
+        pushSeries(seriesA, load);
+        pushSeries(seriesB, qps);
+        pushSeries(seriesC, risk);
+
+        const tag = risk > 0.78 ? "WARN" : (load > 0.86 ? "HOT" : "OK");
+        const msg = tag === "WARN" ? "constraint hit: risk spike" :
+                    tag === "HOT"  ? "throughput up: thermal margin tight" :
+                                     "stable: routing nominal";
+
+        const stamp = new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+        const line = `[${stamp}] ${tag.padEnd(4)}  load=${(load*100).toFixed(0)}%  qps=${(qps*100).toFixed(0)}  risk=${(risk*100).toFixed(0)}  • ${msg}`;
+
+        // prepend with max lines ~160
+        const cur = logEl.textContent.split("\n").filter(Boolean);
+        cur.push(line);
+        const trimmed = cur.slice(-160);
+        logEl.textContent = trimmed.join("\n");
+        logEl.scrollTop = logEl.scrollHeight;
+
+        evtCount++;
+      }
+
+      function drawSpark(canvas, arr){
+        const ctx = canvas.getContext("2d", { alpha:true });
+        const rect = canvas.getBoundingClientRect();
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        canvas.width = Math.floor(rect.width * dpr);
+        canvas.height = Math.floor(rect.height * dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+
+        const W = rect.width, H = rect.height;
+        ctx.clearRect(0,0,W,H);
+
+        // background faint grid
+        ctx.globalAlpha = 0.25;
+        ctx.strokeStyle = getComputedStyle(root).getPropertyValue("--stroke");
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for(let x=0;x<=W;x+=W/6){ ctx.moveTo(x,0); ctx.lineTo(x,H); }
+        for(let y=0;y<=H;y+=H/3){ ctx.moveTo(0,y); ctx.lineTo(W,y); }
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // line
+        const n = arr.length;
+        ctx.lineWidth = 2;
+        const grad = ctx.createLinearGradient(0,0,W,0);
+        grad.addColorStop(0, "rgba(124,58,237,.85)");
+        grad.addColorStop(.5,"rgba(6,182,212,.85)");
+        grad.addColorStop(1, "rgba(34,197,94,.85)");
+        ctx.strokeStyle = grad;
+
+        ctx.beginPath();
+        for(let i=0;i<n;i++){
+          const idx = (seriesIdx + i) % n;
+          const v = arr[idx];
+          const x = (i/(n-1)) * W;
+          const y = H - (v * (H-10)) - 5;
+          if(i===0) ctx.moveTo(x,y);
+          else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+
+        // end dot
+        const last = arr[(seriesIdx + n - 1) % n];
+        const ex = W, ey = H - (last*(H-10)) - 5;
+        ctx.fillStyle = "rgba(234,240,255,.85)";
+        ctx.beginPath();
+        ctx.arc(ex, ey, 3, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      function streamTick(){
+        if(streamOn){
+          genEvent();
+          seriesIdx = (seriesIdx + 1) % seriesA.length;
+          drawSpark($("#sparkA"), seriesA);
+          drawSpark($("#sparkB"), seriesB);
+          drawSpark($("#sparkC"), seriesC);
+        }
+
+        const t = now();
+        if(t - lastEvtT > 1000){
+          const rate = evtCount / ((t - lastEvtT)/1000);
+          evtRateEl.textContent = `rate: ${(rate).toFixed(1)}/s`;
+          evtCount = 0;
+          lastEvtT = t;
+        }
+      }
+
+      // start with some data
+      for(let i=0;i<90;i++){ genEvent(); seriesIdx=(seriesIdx+1)%seriesA.length; }
+      drawSpark($("#sparkA"), seriesA);
+      drawSpark($("#sparkB"), seriesB);
+      drawSpark($("#sparkC"), seriesC);
+
+      let streamTimer = setInterval(streamTick, 220);
+
+      $("#btnPause").addEventListener("click", () => {
+        streamOn = !streamOn;
+        $("#btnPause").textContent = streamOn ? "Pause" : "Resume";
+        $("#streamBadge").textContent = streamOn ? "Streaming • Local" : "Paused • Local";
+        $("#dotRun").className = "dot" + (streamOn ? "" : " warn");
+        $("#runState").textContent = streamOn ? "ACTIVE" : "PAUSED";
+      });
+
+      $("#btnStep").addEventListener("click", () => {
+        if(streamOn) return;
+        streamTick();
+      });
+
+      $("#btnResetStream").addEventListener("click", () => {
+        logEl.textContent = "";
+        seriesA.fill(0); seriesB.fill(0); seriesC.fill(0);
+        seriesIdx = 0;
+        startT = now();
+        for(let i=0;i<90;i++){ genEvent(); seriesIdx=(seriesIdx+1)%seriesA.length; }
+        drawSpark($("#sparkA"), seriesA);
+        drawSpark($("#sparkB"), seriesB);
+        drawSpark($("#sparkC"), seriesC);
+      });
+
+      // =========================
+      // AGENT GRAPH: force layout + drag
+      // =========================
+      const gCanvas = $("#graphCanvas");
+      const gctx = gCanvas.getContext("2d", { alpha:true });
+      let gW=0,gH=0;
+      let graphFrozen = false;
+      let dragging = null;
+      let dragOffset = {x:0,y:0};
+
+      const graph = { nodes: [], links: [] };
+
+      function resizeGraph(){
+        const r = resizeCanvas(gCanvas, gctx);
+        gW = r.w; gH = r.h;
+      }
+
+      function seedGraph(){
+        resizeGraph();
+        graph.nodes.length = 0;
+        graph.links.length = 0;
+
+        // Core + specialized agents (nod to multi-agent architectures)
+        const labels = [
+          "Orchestrator",
+          "Planner",
+          "Builder",
+          "Verifier",
+          "UI-Agent",
+          "Data-Agent",
+          "Ops-Agent",
+          "Security",
+          "Docs",
+          "Edge Cases",
+          "Telemetry",
+          "Refactor",
+          "Ship"
+        ];
+
+        for(let i=0;i<labels.length;i++){
+          graph.nodes.push({
+            id: i,
+            label: labels[i],
+            x: Math.random()*gW,
+            y: Math.random()*gH,
+            vx: (Math.random()-.5)*0.6,
+            vy: (Math.random()-.5)*0.6,
+            r: (i===0 ? 16 : 12) + Math.random()*2,
+          });
+        }
+
+        function link(a,b, w=1){
+          graph.links.push({ a, b, w });
+        }
+
+        // spine
+        link(0,1,1.2); link(1,2,1.1); link(2,3,1.1);
+        // branches
+        link(1,4,1); link(1,5,1); link(1,6,1);
+        link(6,10,1); link(10,11,1);
+        link(2,9,1); link(9,3,1);
+        link(3,7,1); link(3,8,1);
+        link(2,12,1); link(12,13,1);
+
+        // some cross-links
+        link(5,10,0.9);
+        link(4,8,0.9);
+        link(7,9,0.8);
+
+        $("#nodeCount").textContent = graph.nodes.length;
+        $("#linkCount").textContent = graph.links.length;
+      }
+
+      function drawGraph(){
+        gctx.clearRect(0,0,gW,gH);
+
+        // faint background
+        gctx.globalAlpha = 0.18;
+        gctx.strokeStyle = getComputedStyle(root).getPropertyValue("--stroke");
+        gctx.lineWidth = 1;
+        gctx.beginPath();
+        for(let x=0;x<=gW;x+=gW/10){ gctx.moveTo(x,0); gctx.lineTo(x,gH); }
+        for(let y=0;y<=gH;y+=gH/6){ gctx.moveTo(0,y); gctx.lineTo(gW,y); }
+        gctx.stroke();
+        gctx.globalAlpha = 1;
+
+        // links
+        for(const L of graph.links){
+          const A = graph.nodes[L.a], B = graph.nodes[L.b];
+          const dx = A.x - B.x, dy = A.y - B.y;
+          const dist = Math.hypot(dx,dy);
+          const alpha = clamp(0.55 - dist/900, 0.08, 0.42);
+          const grad = gctx.createLinearGradient(A.x,A.y,B.x,B.y);
+          grad.addColorStop(0, `rgba(124,58,237,${alpha})`);
+          grad.addColorStop(.5, `rgba(6,182,212,${alpha})`);
+          grad.addColorStop(1, `rgba(34,197,94,${alpha})`);
+          gctx.strokeStyle = grad;
+          gctx.lineWidth = 1.2 * L.w;
+          gctx.beginPath();
+          gctx.moveTo(A.x,A.y);
+          gctx.lineTo(B.x,B.y);
+          gctx.stroke();
+        }
+
+        // nodes
+        for(const n of graph.nodes){
+          const isCore = n.id === 0;
+          const isDrag = dragging && dragging.id === n.id;
+
+          // glow
+          gctx.fillStyle = isCore ? "rgba(124,58,237,.18)" : "rgba(6,182,212,.12)";
+          gctx.beginPath();
+          gctx.arc(n.x,n.y,n.r*2.2,0,Math.PI*2);
+          gctx.fill();
+
+          // body
+          const grad = gctx.createRadialGradient(n.x-n.r*0.3, n.y-n.r*0.3, 2, n.x, n.y, n.r*1.8);
+          grad.addColorStop(0, "rgba(234,240,255,.90)");
+          grad.addColorStop(1, isCore ? "rgba(124,58,237,.70)" : "rgba(6,182,212,.62)");
+          gctx.fillStyle = grad;
+          gctx.beginPath();
+          gctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+          gctx.fill();
+
+          // ring
+          gctx.strokeStyle = isDrag ? "rgba(249,115,22,.85)" : "rgba(255,255,255,.22)";
+          gctx.lineWidth = isDrag ? 2.2 : 1.2;
+          gctx.beginPath();
+          gctx.arc(n.x,n.y,n.r+1.2,0,Math.PI*2);
+          gctx.stroke();
+
+          // label
+          gctx.font = `600 12px ${getComputedStyle(document.body).fontFamily}`;
+          gctx.fillStyle = getComputedStyle(root).getPropertyValue("--text").trim() || "#eaf0ff";
+          gctx.textAlign = "center";
+          gctx.textBaseline = "top";
+          gctx.fillText(n.label, n.x, n.y + n.r + 6);
+        }
+      }
+
+      function stepPhysics(){
+        if(graphFrozen) return;
+
+        // force parameters
+        const repulse = 1900;
+        const spring = 0.012;
+        const damp = 0.86;
+        const centerPull = 0.0018;
+
+        // repulsion
+        for(let i=0;i<graph.nodes.length;i++){
+          const a = graph.nodes[i];
+          for(let j=i+1;j<graph.nodes.length;j++){
+            const b = graph.nodes[j];
+            let dx = a.x - b.x, dy = a.y - b.y;
+            let d2 = dx*dx + dy*dy + 0.01;
+            let f = repulse / d2;
+            let d = Math.sqrt(d2);
+            let fx = (dx/d) * f;
+            let fy = (dy/d) * f;
+            a.vx += fx; a.vy += fy;
+            b.vx -= fx; b.vy -= fy;
+          }
+        }
+
+        // springs
+        for(const L of graph.links){
+          const A = graph.nodes[L.a], B = graph.nodes[L.b];
+          const dx = B.x - A.x, dy = B.y - A.y;
+          const dist = Math.hypot(dx,dy) + 0.001;
+          const target = 150 / L.w;
+          const diff = dist - target;
+          const fx = (dx/dist) * diff * spring;
+          const fy = (dy/dist) * diff * spring;
+          A.vx += fx; A.vy += fy;
+          B.vx -= fx; B.vy -= fy;
+        }
+
+        // integrate
+        for(const n of graph.nodes){
+          if(dragging && dragging.id === n.id) continue;
+          // pull toward center
+          n.vx += (gW/2 - n.x) * centerPull;
+          n.vy += (gH/2 - n.y) * centerPull;
+
+          n.vx *= damp;
+          n.vy *= damp;
+          n.x += n.vx;
+          n.y += n.vy;
+
+          // bounds
+          n.x = clamp(n.x, 22, gW-22);
+          n.y = clamp(n.y, 22, gH-22);
+        }
+      }
+
+      function graphLoop(){
+        stepPhysics();
+        drawGraph();
+        requestAnimationFrame(graphLoop);
+      }
+
+      function pickNode(x,y){
+        for(let i=graph.nodes.length-1;i>=0;i--){
+          const n = graph.nodes[i];
+          const d = Math.hypot(n.x-x, n.y-y);
+          if(d <= n.r+6) return n;
+        }
+        return null;
+      }
+
+      function canvasXY(ev, canvas){
+        const rect = canvas.getBoundingClientRect();
+        const x = (ev.clientX - rect.left);
+        const y = (ev.clientY - rect.top);
+        return {x,y};
+      }
+
+      gCanvas.addEventListener("pointerdown", (ev) => {
+        const {x,y} = canvasXY(ev, gCanvas);
+        const n = pickNode(x,y);
+        if(!n) return;
+        dragging = n;
+        dragOffset.x = n.x - x;
+        dragOffset.y = n.y - y;
+        gCanvas.setPointerCapture(ev.pointerId);
+      });
+
+      gCanvas.addEventListener("pointermove", (ev) => {
+        if(!dragging) return;
+        const {x,y} = canvasXY(ev, gCanvas);
+        dragging.x = clamp(x + dragOffset.x, 22, gW-22);
+        dragging.y = clamp(y + dragOffset.y, 22, gH-22);
+        dragging.vx = 0; dragging.vy = 0;
+      });
+
+      gCanvas.addEventListener("pointerup", (ev) => {
+        if(!dragging) return;
+        dragging = null;
+        try{ gCanvas.releasePointerCapture(ev.pointerId); } catch {}
+      });
+
+      $("#btnReseed").addEventListener("click", () => {
+        seedGraph();
+      });
+      $("#btnCenter").addEventListener("click", () => {
+        for(const n of graph.nodes){
+          n.x = gW/2 + (Math.random()-.5)*120;
+          n.y = gH/2 + (Math.random()-.5)*120;
+          n.vx = (Math.random()-.5)*0.6;
+          n.vy = (Math.random()-.5)*0.6;
+        }
+      });
+      $("#btnFreeze").addEventListener("click", () => {
+        graphFrozen = !graphFrozen;
+        $("#btnFreeze").textContent = graphFrozen ? "Unfreeze" : "Freeze";
+        $("#graphState").textContent = `state: ${graphFrozen ? "frozen" : "running"}`;
+      });
+
+      seedGraph();
+      graphLoop();
+      window.addEventListener("resize", () => {
+        seedGraph();
+      });
+
+      // =========================
+      // Command palette
+      // =========================
+      const modal = $("#modal");
+      const cmdSearch = $("#cmdSearch");
+      const cmdList = $("#cmdList");
+      const btnPalette = $("#btnPalette");
+      const btnClose = $("#btnClose");
+
+      const commands = [
+        { t:"Toggle theme", d:"Switch between default and ice theme", k:"T", run: toggleTheme },
+        { t:"Toggle focus", d:"Hide/show the aurora layer", k:"F", run: toggleFocus },
+        { t:"Jump: Playground", d:"Scroll to Text Synth module", k:"", run: () => $("#playground").scrollIntoView({behavior:"smooth"}) },
+        { t:"Jump: Decision Engine", d:"Scroll to Decision module", k:"", run: () => $("#decision").scrollIntoView({behavior:"smooth"}) },
+        { t:"Jump: Live Stream", d:"Scroll to Telemetry module", k:"", run: () => $("#stream").scrollIntoView({behavior:"smooth"}) },
+        { t:"Jump: Agent Graph", d:"Scroll to Graph module", k:"", run: () => $("#graph").scrollIntoView({behavior:"smooth"}) },
+        { t:"Stream: Pause/Resume", d:"Toggle telemetry running state", k:"", run: () => $("#btnPause").click() },
+        { t:"Graph: Reseed", d:"Randomize the agent graph layout", k:"R", run: () => $("#btnReseed").click() },
+      ];
+
+      function renderCmds(filter=""){
+        const f = filter.trim().toLowerCase();
+        const items = commands.filter(c =>
+          !f || (c.t.toLowerCase().includes(f) || c.d.toLowerCase().includes(f))
+        );
+
+        cmdList.innerHTML = "";
+        for(const c of items){
+          const el = document.createElement("div");
+          el.className = "cmd";
+          el.innerHTML = `
+            <div class="left">
+              <div class="t">${escapeHtml(c.t)}</div>
+              <div class="d">${escapeHtml(c.d)}</div>
+            </div>
+            <div class="right">
+              ${c.k ? `<span class="kbd">${escapeHtml(c.k)}</span>` : ""}
+            </div>
+          `;
+          el.addEventListener("click", () => {
+            closePalette();
+            c.run();
+          });
+          cmdList.appendChild(el);
+        }
+
+        if(!items.length){
+          const empty = document.createElement("div");
+          empty.className = "cmd";
+          empty.innerHTML = `<div class="left"><div class="t">No matches</div><div class="d">Try: theme, stream, graph</div></div>`;
+          cmdList.appendChild(empty);
+        }
+      }
+
+      function openPalette(){
+        modal.classList.add("on");
+        modal.setAttribute("aria-hidden","false");
+        cmdSearch.value = "";
+        renderCmds("");
+        setTimeout(() => cmdSearch.focus(), 0);
+      }
+      function closePalette(){
+        modal.classList.remove("on");
+        modal.setAttribute("aria-hidden","true");
+      }
+
+      btnPalette.addEventListener("click", openPalette);
+      btnClose.addEventListener("click", closePalette);
+
+      cmdSearch.addEventListener("input", () => renderCmds(cmdSearch.value));
+
+      modal.addEventListener("click", (e) => {
+        if(e.target === modal) closePalette();
+      });
+
+      // =========================
+      // Keyboard shortcuts
+      // =========================
+      document.addEventListener("keydown", (e) => {
+        const key = e.key.toLowerCase();
+
+        // Esc closes palette
+        if(key === "escape"){
+          if(modal.classList.contains("on")) closePalette();
+          return;
+        }
+
+        // Ctrl/Cmd+K opens palette
+        if((e.ctrlKey || e.metaKey) && key === "k"){
+          e.preventDefault();
+          if(modal.classList.contains("on")) closePalette();
+          else openPalette();
+          return;
+        }
+
+        // single-key commands (ignore if typing in inputs)
+        const tag = (document.activeElement && document.activeElement.tagName) || "";
+        const typing = ["INPUT","TEXTAREA"].includes(tag);
+        if(typing) return;
+
+        if(key === "t") toggleTheme();
+        if(key === "f") toggleFocus();
+        if(key === "r") $("#btnReseed").click();
+      });
+
+      // =========================
+      // Network state (offline-safe indicator)
+      // =========================
+      function updateNet(){
+        const online = navigator.onLine;
+        $("#netState").textContent = online ? "ONLINE" : "OFFLINE-SAFE";
+        $("#dotNet").className = "dot" + (online ? "" : " warn");
+      }
+      window.addEventListener("online", updateNet);
+      window.addEventListener("offline", updateNet);
+      updateNet();
+
+      // Small text in hero stats
+      $("#modeVal").textContent = reduceMotion ? "Reduced Motion" : "Fast • Local";
+      $("#buildVal").textContent = "HTML • CSS • JS";
+      $("#demosVal").textContent = "Text • Decision • Stream • Graph";
+      $("#stateVal").textContent = "Stable";
+
+      // Default synth output
+      runSynth();
+    })();
+  </script>
+</body>
+</html>
