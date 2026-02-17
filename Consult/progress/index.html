@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MODDES™ Progress</title>
+<title>MODDES™ Progress (Editable Status)</title>
 
 <style>
 :root{
@@ -103,6 +103,7 @@ main{
   position: relative;
   margin-left: 10px;
   border-left-width: 6px;
+  align-items: center;
 }
 
 .card.p1 { border-left-color: var(--p1); }
@@ -128,6 +129,7 @@ main{
   display:flex;
   flex-direction:column;
   gap:4px;
+  flex-grow: 1;
 }
 
 .card .task{
@@ -137,15 +139,31 @@ main{
 .card .sub{
   font-size:.85rem;
   color:var(--muted);
+  user-select:none;
 }
 
-.badge{
+.badge, .badge select {
   font-size:.7rem;
   padding:4px 8px;
   border-radius:999px;
   border:1px solid var(--stroke);
   color:var(--muted);
   white-space:nowrap;
+  background: transparent;
+  cursor: pointer;
+  min-width: 90px;
+  text-align: center;
+}
+
+.badge select {
+  color: var(--text);
+  cursor: default;
+  background: var(--card);
+  border-radius: 8px;
+  border: 1px solid var(--stroke);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .hidden{display:none}
@@ -155,7 +173,7 @@ main{
 <body>
 
 <header>
-  <h1>MODDES™ Progress Board</h1>
+  <h1>MODDES™ Progress Board (Editable Status)</h1>
   <div class="controls">
     <select id="priorityFilter">
       <option value="all">All Priorities</option>
@@ -312,19 +330,35 @@ function render(){
     const cards = document.createElement("div");
     cards.className = "cards";
 
-    section.items.forEach(item=>{
+    section.items.forEach((item, index)=>{
       if(pFilter.value!=="all" && item.priority!==pFilter.value) return;
       if(sFilter.value!=="all" && item.status!==sFilter.value) return;
 
       const card = document.createElement("div");
       card.className = `card ${item.priority}`;
+      card.dataset.section = section.area;
+      card.dataset.index = index;
+
       card.innerHTML = `
         <div class="left">
           <div class="task">${item.task}</div>
           <div class="sub">${item.sub}</div>
         </div>
-        <div class="badge">${item.status}</div>
+        <div class="badge" tabindex="0">${item.status}</div>
       `;
+
+      // Make badge clickable to edit status
+      const badge = card.querySelector(".badge");
+      badge.addEventListener("click", () => {
+        showStatusSelect(card, item);
+      });
+      badge.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          showStatusSelect(card, item);
+        }
+      });
+
       cards.appendChild(card);
     });
 
@@ -334,309 +368,30 @@ function render(){
   });
 }
 
-pFilter.onchange = render;
-sFilter.onchange = render;
-render();
-</script>
+function showStatusSelect(card, item) {
+  const badge = card.querySelector(".badge");
+  const select = document.createElement("select");
 
-</body>
-</html>
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MODDES™ Progress · Jmod Co.</title>
+  ["Not Started", "In Progress", "Done", "Blocked"].forEach(statusOption => {
+    const option = document.createElement("option");
+    option.value = statusOption;
+    option.textContent = statusOption;
+    if(statusOption === item.status) option.selected = true;
+    select.appendChild(option);
+  });
 
-<link rel="icon" type="image/png" href="/assets/JmodCo_Icon.png">
-<link rel="apple-touch-icon" href="/assets/JmodCo_Icon.png">
+  // Replace badge with select
+  badge.replaceWith(select);
+  select.focus();
 
-<style>
-:root{
-  --bg:#070b14;
-  --panel:#0b1220;
-  --card:#111827;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --stroke:rgba(255,255,255,.08);
-
-  --p1:#c00000;
-  --p2:#ed7d31;
-  --p3:#ffd966;
-  --p4:#5b9bd5;
-  --p5:#bfbfbf;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-}
-
-/* WATERMARK */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:url("/assets/JmodCo_Icon.png") center/420px no-repeat;
-  opacity:.035;
-  pointer-events:none;
-  z-index:0;
-}
-
-header, main{
-  position:relative;
-  z-index:1;
-}
-
-/* HEADER */
-header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:#0b1220;
-  border-bottom:2px solid rgba(255,255,255,.12);
-  padding:14px 16px;
-}
-
-.brand-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
-}
-
-.brand-row img{
-  height:26px;
-}
-
-.brand-row h1{
-  margin:0;
-  font-size:1.2rem;
-  letter-spacing:.04em;
-}
-
-/* FILTERS */
-.controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-select{
-  background:#0f172a;
-  color:var(--text);
-  border:1px solid var(--stroke);
-  padding:6px 10px;
-  border-radius:8px;
-}
-
-/* MAIN */
-main{
-  max-width:1100px;
-  margin:0 auto;
-  padding:20px;
-}
-
-.area{
-  margin-bottom:22px;
-  border:1px solid var(--stroke);
-  border-radius:14px;
-  overflow:hidden;
-  background:var(--panel);
-}
-
-.area-header{
-  padding:14px 16px;
-  font-weight:600;
-  cursor:pointer;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#0f172a;
-}
-
-.area-header span{
-  color:var(--muted);
-  font-size:.85rem;
-}
-
-.cards{
-  padding:14px;
-  display:grid;
-  gap:10px;
-}
-
-.card{
-  background:var(--card);
-  border-left:6px solid var(--p3);
-  padding:12px 14px;
-  border-radius:10px;
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.card .left{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-
-.card .task{
-  font-weight:500;
-}
-
-.card .sub{
-  font-size:.85rem;
-  color:var(--muted);
-}
-
-.badge{
-  font-size:.7rem;
-  padding:4px 8px;
-  border-radius:999px;
-  border:1px solid var(--stroke);
-  color:var(--muted);
-  white-space:nowrap;
-}
-
-.hidden{display:none}
-
-/* PRIORITIES */
-.p1{border-color:var(--p1)}
-.p2{border-color:var(--p2)}
-.p3{border-color:var(--p3)}
-.p4{border-color:var(--p4)}
-.p5{border-color:var(--p5)}
-</style>
-</head>
-
-<body>
-
-<header>
-  <div class="brand-row">
-    <img src="/assets/JmodCo_Icon.png" alt="Jmod Co">
-    <h1>MODDES™ Progress Board</h1>
-  </div>
-
-  <div class="controls">
-    <select id="priorityFilter">
-      <option value="all">All Priorities</option>
-      <option value="p1">P1 Critical</option>
-      <option value="p2">P2 High</option>
-      <option value="p3">P3 Medium</option>
-      <option value="p4">P4 Low</option>
-      <option value="p5">P5 Lowest</option>
-    </select>
-
-    <select id="statusFilter">
-      <option value="all">All Status</option>
-      <option value="Not Started">Not Started</option>
-      <option value="In Progress">In Progress</option>
-      <option value="Done">Done</option>
-      <option value="Blocked">Blocked</option>
-    </select>
-  </div>
-</header>
-
-<main id="board"></main>
-
-<script>
-const DATA = [
-  {
-    area:"Repo / Foundation",
-    items:[
-      {task:"Initialize repository structure", sub:"Repo", priority:"p1", status:"Not Started"},
-      {task:"Create pyproject.toml", sub:"Repo", priority:"p1", status:"Not Started"},
-      {task:"Add .gitignore", sub:"Repo", priority:"p1", status:"Not Started"},
-      {task:"Write README (vision + scope)", sub:"Docs", priority:"p2", status:"Not Started"},
-      {task:"Create .env.example", sub:"Env", priority:"p2", status:"Not Started"}
-    ]
-  },
-  {
-    area:"Core Runtime",
-    items:[
-      {task:"Build execution loop", sub:"runtime.py", priority:"p1", status:"Not Started"},
-      {task:"Intent routing", sub:"router.py", priority:"p1", status:"Not Started"},
-      {task:"Guardrail policies", sub:"policies.py", priority:"p1", status:"Not Started"},
-      {task:"Deterministic mode flag", sub:"runtime.py", priority:"p2", status:"Not Started"}
-    ]
-  },
-  {
-    area:"Memory System",
-    items:[
-      {task:"Define memory schema", sub:"schema.py", priority:"p1", status:"Not Started"},
-      {task:"Persistence layer", sub:"store.py", priority:"p1", status:"Not Started"},
-      {task:"Read/write API", sub:"Memory", priority:"p1", status:"Not Started"},
-      {task:"Memory versioning", sub:"Memory", priority:"p2", status:"Not Started"},
-      {task:"Pruning rules", sub:"Maintenance", priority:"p3", status:"Not Started"}
-    ]
-  },
-  {
-    area:"Task Engine",
-    items:[
-      {task:"Task models", sub:"models.py", priority:"p1", status:"Not Started"},
-      {task:"Task lifecycle engine", sub:"engine.py", priority:"p1", status:"Not Started"},
-      {task:"Task queue", sub:"Queue", priority:"p1", status:"Not Started"},
-      {task:"Retry logic", sub:"Retry", priority:"p2", status:"Not Started"},
-      {task:"Dependency resolution", sub:"Deps", priority:"p2", status:"Not Started"}
-    ]
-  },
-  {
-    area:"Tools",
-    items:[
-      {task:"Tool registry", sub:"registry.py", priority:"p1", status:"Not Started"},
-      {task:"File read/write tool", sub:"file_tool.py", priority:"p1", status:"Not Started"},
-      {task:"Shell execution tool", sub:"shell_tool.py", priority:"p1", status:"Not Started"},
-      {task:"Permission enforcement", sub:"Security", priority:"p1", status:"Not Started"}
-    ]
+  // When user changes or blurs, update status and restore badge
+  function restoreBadge() {
+    item.status = select.value;
+    render(); // re-render to update UI and filters
   }
-];
 
-const board = document.getElementById("board");
-const pFilter = document.getElementById("priorityFilter");
-const sFilter = document.getElementById("statusFilter");
-
-function render(){
-  board.innerHTML = "";
-
-  DATA.forEach(section=>{
-    const area = document.createElement("div");
-    area.className = "area";
-
-    const header = document.createElement("div");
-    header.className = "area-header";
-    header.innerHTML = ${section.area} <span>${section.items.length} items</span>;
-    
-    const cards = document.createElement("div");
-    cards.className = "cards";
-
-    header.onclick = ()=>cards.classList.toggle("hidden");
-
-    section.items.forEach(item=>{
-      if(pFilter.value!=="all" && item.priority!==pFilter.value) return;
-      if(sFilter.value!=="all" && item.status!==sFilter.value) return;
-
-      const card = document.createElement("div");
-      card.className = card ${item.priority};
-      card.innerHTML = `
-        <div class="left">
-          <div class="task">${item.task}</div>
-          <div class="sub">${item.sub}</div>
-        </div>
-        <div class="badge">${item.status}</div>
-      `;
-      cards.appendChild(card);
-    });
-
-    area.appendChild(header);
-    area.appendChild(cards);
-    board.appendChild(area);
-  });
+  select.addEventListener("change", restoreBadge);
+  select.addEventListener("blur", restoreBadge);
 }
 
 pFilter.onchange = render;
