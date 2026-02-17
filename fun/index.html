@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STOP</title>
+  <style>
+    :root { color-scheme: light; }
+    body{
+      margin:0; min-height:100vh; display:grid; place-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at 20% 20%, #fff3c4, #ffd6f6 35%, #c7f0ff 70%, #e8fff1);
+      padding: 24px;
+    }
+    .card{
+      width:min(720px, 100%);
+      background: rgba(255,255,255,0.75);
+      border: 2px solid rgba(0,0,0,0.08);
+      border-radius: 20px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+      padding: 28px 22px;
+      text-align:center;
+      backdrop-filter: blur(8px);
+    }
+    h1{ margin: 0 0 14px; letter-spacing: 0.06em; }
+    .stop-btn{
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      width: min(360px, 92%);
+      height: 140px;
+      border-radius: 999px;
+      font-size: 44px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: white;
+      background: linear-gradient(180deg, #ff4b4b, #c40000);
+      box-shadow: 0 14px 0 #7f0000, 0 26px 40px rgba(0,0,0,0.22);
+      transition: transform 80ms ease, box-shadow 80ms ease, filter 200ms ease;
+      user-select:none;
+    }
+    .stop-btn:active{
+      transform: translateY(10px);
+      box-shadow: 0 4px 0 #7f0000, 0 14px 22px rgba(0,0,0,0.18);
+    }
+    .phrase{
+      margin: 18px 0 6px;
+      font-size: 20px;
+      min-height: 2.6em;
+    }
+    .sub{
+      margin: 14px 0 0;
+      font-size: 16px;
+      color: rgba(0,0,0,0.70);
+    }
+    .countline{
+      margin-top: 10px;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+    }
+    .timer{
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.06);
+      margin-top: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .tiny{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(0,0,0,0.55);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🚦 PLEASE STOP 🚦</h1>
+
+    <button id="stopBtn" class="stop-btn" type="button" aria-label="Stop button">
+      STOP
+    </button>
+
+    <div id="phrase" class="phrase">Click STOP for an important announcement.</div>
+
+    <div class="countline">COME BACK IN</div>
+    <div class="timer" id="timer">Calculating…</div>
+
+    <div class="tiny" id="tzNote"></div>
+  </div>
+
+  <script>
+    // --- Random silly phrases ---
+    const phrases = [
+      "STOP! You’re speeding in a no-fun zone. 🚓",
+      "HALT! Time for a hydration break.",
+      "STOP RIGHT THERE… and admire your excellent choices.",
+      "Cease and desist… from being so productive for 3 seconds.",
+      "STOP! A wild idea appears. It’s super effective!",
+      "Hold up—your vibe is too powerful. Please recalibrate.",
+      "STOP. Breathe in. Breathe out. Carry on dramatically.",
+      "Freeze! You’ve been caught being iconic.",
+      "STOP! This is a reminder to unclench your jaw.",
+      "Emergency announcement: you’re doing fine. Proceed.",
+      "STOP! Someone somewhere is proud of you. (Probably me.)",
+      "Pause! Insert celebratory wiggle here."
+    ];
+
+    const phraseEl = document.getElementById("phrase");
+    const btn = document.getElementById("stopBtn");
+
+    btn.addEventListener("click", () => {
+      const pick = phrases[Math.floor(Math.random() * phrases.length)];
+      phraseEl.textContent = pick;
+
+      // Tiny fun effect
+      btn.style.filter = "brightness(1.1) saturate(1.15)";
+      setTimeout(() => btn.style.filter = "", 150);
+    });
+
+    // --- Countdown to 9:30 AM CST on 2/17/2026 ---
+    // We'll anchor the target using America/Chicago (CST on Feb 17, 2026).
+    const timerEl = document.getElementById("timer");
+    const tzNote = document.getElementById("tzNote");
+
+    const targetParts = {
+      year: 2026, month: 2, day: 17,
+      hour: 9, minute: 30, second: 0
+    };
+
+    const targetTimeZone = "America/Chicago";
+
+    // Convert a (date-time in a named IANA timezone) -> UTC timestamp (ms)
+    // Using Intl to get the offset at that instant.
+    function zonedTimeToUtcMs(parts, timeZone) {
+      // Start with a naive UTC date from the components
+      const naiveUtc = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+
+      // Figure out what local time that UTC instant corresponds to in the target tz.
+      // Then compute the difference between desired local and actual local to adjust.
+      const dtf = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit",
+        hour12: false
+      });
+
+      const asLocal = dtf.formatToParts(new Date(naiveUtc)).reduce((acc, p) => {
+        if (p.type !== "literal") acc[p.type] = p.value;
+        return acc;
+      }, {});
+
+      const actualLocalAsUtc = Date.UTC(
+        Number(asLocal.year),
+        Number(asLocal.month) - 1,
+        Number(asLocal.day),
+        Number(asLocal.hour),
+        Number(asLocal.minute),
+        Number(asLocal.second)
+      );
+
+      // Adjust naive UTC by the offset difference
+      const offsetMs = actualLocalAsUtc - naiveUtc;
+      return naiveUtc - offsetMs;
+    }
+
+    const targetUtcMs = zonedTimeToUtcMs(targetParts, targetTimeZone);
+
+    function pad(n){ return String(n).padStart(2, "0"); }
+
+    function tick() {
+      const now = Date.now();
+      let diff = targetUtcMs - now;
+
+      if (diff <= 0) {
+        timerEl.textContent = "0d 00h 00m 00s — you may return now.";
+        return;
+      }
+
+      const sec = Math.floor(diff / 1000);
+      const days = Math.floor(sec / 86400);
+      const hours = Math.floor((sec % 86400) / 3600);
+      const mins = Math.floor((sec % 3600) / 60);
+      const secs = sec % 60;
+
+      timerEl.textContent = `${days}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
+    }
+
+    // Show what the user's browser thinks "America/Chicago" time is right now (for clarity)
+    try {
+      const nowChicago = new Intl.DateTimeFormat("en-US", {
+        timeZone: targetTimeZone,
+        weekday: "short", year: "numeric", month: "short", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit",
+        timeZoneName: "short"
+      }).format(new Date());
+
+      tzNote.textContent = `Countdown target: Feb 17, 2026 9:30 AM CST (America/Chicago). Current Chicago time: ${nowChicago}.`;
+    } catch {
+      tzNote.textContent = "Timezone note: your browser may not support IANA timezones; countdown will still run, but CST accuracy may vary.";
+    }
+
+    tick();
+    setInterval(tick, 250);
+  </script>
+</body>
+</html>
