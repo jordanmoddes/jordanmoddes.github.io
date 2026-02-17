@@ -1,9 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MODDES™ Progress</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MODDES™ Progress · Jmod Co.</title>
+
+<link rel="icon" type="image/png" href="/assets/JmodCo_Icon.png">
+<link rel="apple-touch-icon" href="/assets/JmodCo_Icon.png">
 
 <style>
 :root{
@@ -22,6 +25,7 @@
 }
 
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:var(--bg);
@@ -29,20 +33,50 @@ body{
   font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
 }
 
+/* WATERMARK */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:url("/assets/JmodCo_Icon.png") center/420px no-repeat;
+  opacity:.035;
+  pointer-events:none;
+  z-index:0;
+}
+
+header, main{
+  position:relative;
+  z-index:1;
+}
+
+/* HEADER */
 header{
   position:sticky;
   top:0;
   z-index:10;
-  background:linear-gradient(180deg,var(--panel),rgba(11,18,32,.92));
-  border-bottom:1px solid var(--stroke);
-  padding:16px;
+  background:#0b1220;
+  border-bottom:2px solid rgba(255,255,255,.12);
+  padding:14px 16px;
 }
 
-header h1{
-  margin:0 0 10px;
+.brand-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.brand-row img{
+  height:26px;
+}
+
+.brand-row h1{
+  margin:0;
   font-size:1.2rem;
+  letter-spacing:.04em;
 }
 
+/* FILTERS */
 .controls{
   display:flex;
   gap:10px;
@@ -57,6 +91,7 @@ select{
   border-radius:8px;
 }
 
+/* MAIN */
 main{
   max-width:1100px;
   margin:0 auto;
@@ -127,6 +162,8 @@ main{
 }
 
 .hidden{display:none}
+
+/* PRIORITIES */
 .p1{border-color:var(--p1)}
 .p2{border-color:var(--p2)}
 .p3{border-color:var(--p3)}
@@ -138,7 +175,11 @@ main{
 <body>
 
 <header>
-  <h1>MODDES™ Progress Board</h1>
+  <div class="brand-row">
+    <img src="/assets/JmodCo_Icon.png" alt="Jmod Co">
+    <h1>MODDES™ Progress Board</h1>
+  </div>
+
   <div class="controls">
     <select id="priorityFilter">
       <option value="all">All Priorities</option>
@@ -164,27 +205,51 @@ main{
 <script>
 const DATA = [
   {
-    area:"Core",
+    area:"Repo / Foundation",
     items:[
-      {task:"Build execution loop", sub:"runtime.py", priority:"p1", status:"Not Started"},
-      {task:"Route intent to handlers", sub:"router.py", priority:"p1", status:"Not Started"},
-      {task:"Define guardrail policies", sub:"policies.py", priority:"p1", status:"Not Started"}
+      {task:"Initialize repository structure", sub:"Repo", priority:"p1", status:"Not Started"},
+      {task:"Create pyproject.toml", sub:"Repo", priority:"p1", status:"Not Started"},
+      {task:"Add .gitignore", sub:"Repo", priority:"p1", status:"Not Started"},
+      {task:"Write README (vision + scope)", sub:"Docs", priority:"p2", status:"Not Started"},
+      {task:"Create .env.example", sub:"Env", priority:"p2", status:"Not Started"}
     ]
   },
   {
-    area:"Memory",
+    area:"Core Runtime",
+    items:[
+      {task:"Build execution loop", sub:"runtime.py", priority:"p1", status:"Not Started"},
+      {task:"Intent routing", sub:"router.py", priority:"p1", status:"Not Started"},
+      {task:"Guardrail policies", sub:"policies.py", priority:"p1", status:"Not Started"},
+      {task:"Deterministic mode flag", sub:"runtime.py", priority:"p2", status:"Not Started"}
+    ]
+  },
+  {
+    area:"Memory System",
     items:[
       {task:"Define memory schema", sub:"schema.py", priority:"p1", status:"Not Started"},
-      {task:"Implement persistence layer", sub:"store.py", priority:"p1", status:"Not Started"},
-      {task:"Add pruning rules", sub:"maintenance", priority:"p3", status:"Not Started"}
+      {task:"Persistence layer", sub:"store.py", priority:"p1", status:"Not Started"},
+      {task:"Read/write API", sub:"Memory", priority:"p1", status:"Not Started"},
+      {task:"Memory versioning", sub:"Memory", priority:"p2", status:"Not Started"},
+      {task:"Pruning rules", sub:"Maintenance", priority:"p3", status:"Not Started"}
+    ]
+  },
+  {
+    area:"Task Engine",
+    items:[
+      {task:"Task models", sub:"models.py", priority:"p1", status:"Not Started"},
+      {task:"Task lifecycle engine", sub:"engine.py", priority:"p1", status:"Not Started"},
+      {task:"Task queue", sub:"Queue", priority:"p1", status:"Not Started"},
+      {task:"Retry logic", sub:"Retry", priority:"p2", status:"Not Started"},
+      {task:"Dependency resolution", sub:"Deps", priority:"p2", status:"Not Started"}
     ]
   },
   {
     area:"Tools",
     items:[
       {task:"Tool registry", sub:"registry.py", priority:"p1", status:"Not Started"},
-      {task:"File tool", sub:"file_tool.py", priority:"p1", status:"Not Started"},
-      {task:"Shell execution tool", sub:"shell_tool.py", priority:"p1", status:"Not Started"}
+      {task:"File read/write tool", sub:"file_tool.py", priority:"p1", status:"Not Started"},
+      {task:"Shell execution tool", sub:"shell_tool.py", priority:"p1", status:"Not Started"},
+      {task:"Permission enforcement", sub:"Security", priority:"p1", status:"Not Started"}
     ]
   }
 ];
@@ -203,10 +268,11 @@ function render(){
     const header = document.createElement("div");
     header.className = "area-header";
     header.innerHTML = ${section.area} <span>${section.items.length} items</span>;
-    header.onclick = () => cards.classList.toggle("hidden");
-
+    
     const cards = document.createElement("div");
     cards.className = "cards";
+
+    header.onclick = ()=>cards.classList.toggle("hidden");
 
     section.items.forEach(item=>{
       if(pFilter.value!=="all" && item.priority!==pFilter.value) return;
