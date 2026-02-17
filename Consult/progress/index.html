@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MODDES Core Progress Board</title>
 <style>
   @page {
@@ -12,6 +13,10 @@
     font-size: 11pt;
     margin: 0;
     padding: 0.2in;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 0.5em;
   }
   table {
     border-collapse: collapse;
@@ -29,53 +34,76 @@
   tr:nth-child(even) {
     background: #fafafa;
   }
-  /* Optional: multi-column layout for wider screens */
-  .container {
-    column-count: 2;
-    column-gap: 1em;
-  }
-  @media print {
-    .container {
-      column-count: 1; /* single column for printing */
-    }
-  }
 </style>
 </head>
 <body>
   <h1>MODDES Core Progress Board</h1>
-  <div class="container">
-    <table>
-      <thead>
-        <tr>
-          <th>Area</th>
-          <th>Subsystem</th>
-          <th>Task / Deliverable</th>
-          <th>Priority</th>
-          <th>Status</th>
-          <th>Owner</th>
-          <th>Day Planned</th>
-          <th>Date Started</th>
-          <th>Date Completed</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Repeat rows here -->
-        <tr>
-          <td>Repo</td>
-          <td>Foundation</td>
-          <td>Initialize repository structure</td>
-          <td>P1</td>
-          <td>Not Started</td>
-          <td>Jordan</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <!-- Add other rows similarly -->
-      </tbody>
-    </table>
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Area</th>
+        <th>Subsystem</th>
+        <th>Task / Deliverable</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Repo</td><td>Foundation</td><td>Initialize repository structure</td><td>P1</td></tr>
+      <tr><td>Repo</td><td>Config</td><td>Create pyproject.toml</td><td>P1</td></tr>
+      <tr><td>Repo</td><td>Config</td><td>Add .gitignore</td><td>P1</td></tr>
+      <tr><td>Repo</td><td>Docs</td><td>Write README (vision, scope, non-goals)</td><td>P2</td></tr>
+      <tr><td>Repo</td><td>Env</td><td>Create .env.example</td><td>P2</td></tr>
+      <tr><td>Core</td><td>runtime.py</td><td>Build execution loop</td><td>P1</td></tr>
+      <tr><td>Core</td><td>runtime.py</td><td>Add deterministic mode flag</td><td>P2</td></tr>
+      <tr><td>Core</td><td>router.py</td><td>Route intent to handlers</td><td>P1</td></tr>
+      <tr><td>Core</td><td>policies.py</td><td>Define safety & constraint policies</td><td>P1</td></tr>
+      <tr><td>Core</td><td>Error</td><td>Centralized error handling</td><td>P1</td></tr>
+      <tr><td>Memory</td><td>schema.py</td><td>Define memory schema</td><td>P1</td></tr>
+      <tr><td>Memory</td><td>store.py</td><td>Implement memory persistence</td><td>P1</td></tr>
+      <tr><td>Memory</td><td>API</td><td>Read/write memory interface</td><td>P1</td></tr>
+      <tr><td>Memory</td><td>Versioning</td><td>Add memory version control</td><td>P2</td></tr>
+      <tr><td>Memory</td><td>Maintenance</td><td>Memory pruning rules</td><td>P3</td></tr>
+      <tr><td>Tasks</td><td>models.py</td><td>Define task models</td><td>P1</td></tr>
+      <tr><td>Tasks</td><td>engine.py</td><td>Implement task lifecycle engine</td><td>P1</td></tr>
+      <tr><td>Tasks</td><td>Queue</td><td>Add task queue support</td><td>P1</td></tr>
+      <tr><td>Tasks</td><td>Retry</td><td>Retry & failure logic</td><td>P2</td></tr>
+      <tr><td>Tasks</td><td>Deps</td><td>Task dependency resolution</td><td>P2</td></tr>
+      <tr><td>Tools</td><td>registry.py</td><td>Build tool registry</td><td>P1</td></tr>
+      <tr><td>Tools</td><td>file_tool.py</td><td>File read/write tool</td><td>P1</td></tr>
+      <tr><td>Tools</td><td>shell_tool.py</td><td>Shell execution tool</td><td>P1</td></tr>
+      <tr><td>Tools</td><td>Security</td><td>Tool permission enforcement</td><td>P1</td></tr>
+      <tr><td>Tools</td><td>Audit</td><td>Tool invocation logging</td><td>P2</td></tr>
+      <tr><td>LLM</td><td>base.py</td><td>LLM abstract interface</td><td>P1</td></tr>
+      <tr><td>LLM</td><td>openai_compat.py</td><td>OpenAI-compatible adapter</td><td>P1</td></tr>
+      <tr><td>LLM</td><td>mock.py</td><td>Offline mock LLM</td><td>P2</td></tr>
+      <tr><td>LLM</td><td>Usage</td><td>Token usage tracking</td><td>P2</td></tr>
+      <tr><td>LLM</td><td>Fallback</td><td>Failover / fallback logic</td><td>P2</td></tr>
+      <tr><td>Improve</td><td>proposer.py</td><td>Generate improvement proposals</td><td>P2</td></tr>
+      <tr><td>Improve</td><td>validator.py</td><td>Validate proposals safely</td><td>P1</td></tr>
+      <tr><td>Improve</td><td>applier.py</td><td>Apply approved patches</td><td>P1</td></tr>
+      <tr><td>Improve</td><td>Rollback</td><td>Rollback failed patches</td><td>P1</td></tr>
+      <tr><td>Improve</td><td>Human Gate</td><td>Human approval flag</td><td>P3</td></tr>
+      <tr><td>Audit</td><td>logger.py</td><td>Structured logging system</td><td>P1</td></tr>
+      <tr><td>Audit</td><td>Trace</td><td>Execution trace per run</td><td>P1</td></tr>
+      <tr><td>Audit</td><td>Decision</td><td>Decision logging</td><td>P2</td></tr>
+      <tr><td>Audit</td><td>Integrity</td><td>Immutable audit option</td><td>P3</td></tr>
+      <tr><td>Config</td><td>settings.py</td><td>Central config loader</td><td>P1</td></tr>
+      <tr><td>Config</td><td>Env</td><td>Environment overrides</td><td>P2</td></tr>
+      <tr><td>Config</td><td>Validation</td><td>Config validation rules</td><td>P2</td></tr>
+      <tr><td>CLI</td><td>main.py</td><td>CLI entrypoint</td><td>P1</td></tr>
+      <tr><td>CLI</td><td>Commands</td><td>Run engine command</td><td>P1</td></tr>
+      <tr><td>CLI</td><td>Commands</td><td>Inspect memory command</td><td>P2</td></tr>
+      <tr><td>CLI</td><td>Commands</td><td>Inspect tasks command</td><td>P2</td></tr>
+      <tr><td>CLI</td><td>Debug</td><td>Dry-run mode</td><td>P3</td></tr>
+      <tr><td>Tests</td><td>Memory</td><td>Memory unit tests</td><td>P1</td></tr>
+      <tr><td>Tests</td><td>Tasks</td><td>Task engine tests</td><td>P1</td></tr>
+      <tr><td>Tests</td><td>Tools</td><td>Tool tests</td><td>P1</td></tr>
+      <tr><td>Tests</td><td>Improve</td><td>Self-improve tests</td><td>P2</td></tr>
+      <tr><td>Tests</td><td>Integration</td><td>End-to-end test</td><td>P1</td></tr>
+      <tr><td>Release</td><td>Stability</td><td>Verify deterministic behavior</td><td>P1</td></tr>
+      <tr><td>Release</td><td>Recovery</td><td>Crash recovery validation</td><td>P1</td></tr>
+      <tr><td>Release</td><td>Demo</td><td>Minimal working demo scenario</td><td>P1</td></tr>
+    </tbody>
+  </table>
 </body>
 </html>
