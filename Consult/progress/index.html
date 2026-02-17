@@ -1,6 +1,349 @@
 <!doctype html>
 <html lang="en">
 <head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MODDES™ Progress</title>
+
+<style>
+:root{
+  --bg:#070b14;
+  --panel:#0b1220;
+  --card:#111827;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --stroke:rgba(255,255,255,.08);
+
+  --p1:#c00000;
+  --p2:#ed7d31;
+  --p3:#ffd966;
+  --p4:#5b9bd5;
+  --p5:#bfbfbf;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:linear-gradient(180deg,var(--panel),rgba(11,18,32,.92));
+  border-bottom:1px solid var(--stroke);
+  padding:16px;
+}
+
+header h1{
+  margin:0 0 10px;
+  font-size:1.2rem;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+select{
+  background:#0f172a;
+  color:var(--text);
+  border:1px solid var(--stroke);
+  padding:6px 10px;
+  border-radius:8px;
+}
+
+main{
+  max-width:1100px;
+  margin:0 auto;
+  padding:20px;
+}
+
+.area{
+  margin-bottom:22px;
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--panel);
+}
+
+.area-header{
+  padding:14px 16px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#0f172a;
+}
+
+.area-header span{
+  color:var(--muted);
+  font-size:.85rem;
+}
+
+.cards {
+  position: relative;
+  padding-left: 20px;
+  border-left: 2px solid var(--stroke);
+}
+
+.card {
+  background:var(--card);
+  border-left:6px solid var(--p3);
+  padding:12px 14px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  position: relative;
+  margin-left: 10px;
+  border-left-width: 6px;
+}
+
+.card.p1 { border-left-color: var(--p1); }
+.card.p2 { border-left-color: var(--p2); }
+.card.p3 { border-left-color: var(--p3); }
+.card.p4 { border-left-color: var(--p4); }
+.card.p5 { border-left-color: var(--p5); }
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  width: 20px;
+  height: 2px;
+  background: var(--stroke);
+  transform: translateY(-50%);
+  border-radius: 1px;
+  z-index: 0;
+}
+
+.card .left{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.card .task{
+  font-weight:500;
+}
+
+.card .sub{
+  font-size:.85rem;
+  color:var(--muted);
+}
+
+.badge{
+  font-size:.7rem;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid var(--stroke);
+  color:var(--muted);
+  white-space:nowrap;
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>MODDES™ Progress Board</h1>
+  <div class="controls">
+    <select id="priorityFilter">
+      <option value="all">All Priorities</option>
+      <option value="p1">P1 Critical</option>
+      <option value="p2">P2 High</option>
+      <option value="p3">P3 Medium</option>
+      <option value="p4">P4 Low</option>
+      <option value="p5">P5 Lowest</option>
+    </select>
+
+    <select id="statusFilter">
+      <option value="all">All Status</option>
+      <option value="Not Started">Not Started</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Done">Done</option>
+      <option value="Blocked">Blocked</option>
+    </select>
+  </div>
+</header>
+
+<main id="board"></main>
+
+<script>
+const DATA = [
+  {
+    area: "moddes_core/__init__.py",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "moddes_core/core",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "runtime.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "router.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "policies.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "moddes_core/memory",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "schema.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "store.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "moddes_core/tasks",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "models.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "engine.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "moddes_core/tools",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "registry.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "file_tool.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "shell_tool.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "moddes_core/llm",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "base.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "openai_compat.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "mock.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "moddes_core/improve",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "proposer.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "validator.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "applier.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "moddes_core/audit",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "logger.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "moddes_core/config",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "settings.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "cli",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "main.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "tests",
+    items: [
+      { task: "__init__.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "test_memory.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "test_tasks.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "test_tools.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "test_improve.py", sub: "", priority: "p1", status: "Not Started" },
+      { task: "conftest.py", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "patches",
+    items: [
+      { task: ".gitkeep", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "workspace",
+    items: [
+      { task: ".gitkeep", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  },
+  {
+    area: "root files",
+    items: [
+      { task: ".env.example", sub: "", priority: "p1", status: "Not Started" },
+      { task: ".gitignore", sub: "", priority: "p1", status: "Not Started" },
+      { task: "pyproject.toml", sub: "", priority: "p1", status: "Not Started" },
+      { task: "README.md", sub: "", priority: "p1", status: "Not Started" }
+    ]
+  }
+];
+
+const board = document.getElementById("board");
+const pFilter = document.getElementById("priorityFilter");
+const sFilter = document.getElementById("statusFilter");
+
+function render(){
+  board.innerHTML = "";
+
+  DATA.forEach(section=>{
+    const area = document.createElement("div");
+    area.className = "area";
+
+    const header = document.createElement("div");
+    header.className = "area-header";
+    header.innerHTML = `${section.area} <span>${section.items.length} items</span>`;
+    header.onclick = () => cards.classList.toggle("hidden");
+
+    const cards = document.createElement("div");
+    cards.className = "cards";
+
+    section.items.forEach(item=>{
+      if(pFilter.value!=="all" && item.priority!==pFilter.value) return;
+      if(sFilter.value!=="all" && item.status!==sFilter.value) return;
+
+      const card = document.createElement("div");
+      card.className = `card ${item.priority}`;
+      card.innerHTML = `
+        <div class="left">
+          <div class="task">${item.task}</div>
+          <div class="sub">${item.sub}</div>
+        </div>
+        <div class="badge">${item.status}</div>
+      `;
+      cards.appendChild(card);
+    });
+
+    area.appendChild(header);
+    area.appendChild(cards);
+    board.appendChild(area);
+  });
+}
+
+pFilter.onchange = render;
+sFilter.onchange = render;
+render();
+</script>
+
+</body>
+</html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MODDES™ Progress · Jmod Co.</title>
