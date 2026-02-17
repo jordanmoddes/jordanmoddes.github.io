@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>MODDES Core Progress Board</title>
+<style>
+  @page {
+    margin: 0.5in;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+    margin: 0;
+    padding: 0.2in;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 6px 8px;
+    text-align: left;
+  }
+  th {
+    background: #f4f4f4;
+  }
+  tr:nth-child(even) {
+    background: #fafafa;
+  }
+  /* Optional: multi-column layout for wider screens */
+  .container {
+    column-count: 2;
+    column-gap: 1em;
+  }
+  @media print {
+    .container {
+      column-count: 1; /* single column for printing */
+    }
+  }
+</style>
+</head>
+<body>
+  <h1>MODDES Core Progress Board</h1>
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Subsystem</th>
+          <th>Task / Deliverable</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Owner</th>
+          <th>Day Planned</th>
+          <th>Date Started</th>
+          <th>Date Completed</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Repeat rows here -->
+        <tr>
+          <td>Repo</td>
+          <td>Foundation</td>
+          <td>Initialize repository structure</td>
+          <td>P1</td>
+          <td>Not Started</td>
+          <td>Jordan</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <!-- Add other rows similarly -->
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
