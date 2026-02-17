@@ -384,6 +384,19 @@
 
     /* ======= subtle glow on hover ======= */
     .glow:hover{box-shadow: 0 18px 70px rgba(0,0,0,.52), 0 0 0 1px rgba(255,255,255,.16), 0 0 40px rgba(34,211,238,.12)}
+
+    select{
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(246,248,255,.92);
+  padding:10px 12px;
+  font-family: var(--sans);
+  font-size:14px;
+  outline:none;
+}
+select:focus{box-shadow: 0 0 0 3px rgba(34,211,238,.22)}
+option{color:#111}
   </style>
 </head>
 
@@ -620,27 +633,69 @@
         </div>
       </div>
 
-      <div class="card span-6 glow">
+     <div class="card span-6 glow">
         <div class="in">
-          <div class="kicker"><span class="dot" style="background:rgba(124,58,237,.95); box-shadow:0 0 18px rgba(124,58,237,.55)"></span> “BADASS” CONSOLE • FUN ONLY</div>
-          <h3>Internal Console (fake)</h3>
-          <p class="muted" style="margin:0 0 12px">This is pure vibes. No data. Looks sick.</p>
-
-          <div class="console" id="ops">
-            <div><span class="cyan">[boot]</span> sales_engine: <span class="ok">online</span></div>
-            <div><span class="cyan">[queue]</span> followups_due: <span class="ok" id="qFollow">7</span> <span class="dim">(sim)</span></div>
-            <div><span class="cyan">[pipeline]</span> stage_health: <span class="ok" id="pHealth">green</span></div>
-            <div><span class="cyan">[ai]</span> copilot_assist: <span class="ok">enabled</span></div>
-            <div><span class="cyan">[signal]</span> deal_momentum: <span class="ok" id="momentum">+12%</span></div>
-            <div><span class="cyan">[note]</span> rule_01: <span class="warn">no wasted motion</span></div>
-            <div><span class="cyan">[note]</span> rule_02: <span class="warn">next step always exists</span></div>
+          <div class="kicker"><span class="dot" style="background:rgba(34,197,94,.95); box-shadow:0 0 18px rgba(34,197,94,.55)"></span> COPILOT • SALES MODE</div>
+          <h3>Copilot prompt builder</h3>
+          <p class="muted" style="margin:0 0 12px">
+            Pick a mode, channel, and tone. Paste context. Generate a prompt that outputs something you can paste immediately.
+          </p>
+      
+          <div class="inputRow" style="margin-top:0">
+            <select id="mode" style="flex:1 1 220px">
+              <option value="idea">Idea (what to do)</option>
+              <option value="research">Research (account intel)</option>
+              <option value="outreach">Outreach (first message)</option>
+              <option value="followup">Follow-up (no response)</option>
+              <option value="reengage">Re-engage (cold account)</option>
+              <option value="call">Call script</option>
+              <option value="objection">Objections + rebuttals</option>
+              <option value="meeting">Meeting agenda</option>
+              <option value="recap">Meeting recap + next steps</option>
+              <option value="proposal">Proposal outline</option>
+            </select>
+      
+            <select id="channel" style="flex:1 1 170px">
+              <option value="email">Email</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="phone">Phone</option>
+              <option value="text">Text</option>
+            </select>
+      
+            <select id="tone" style="flex:1 1 170px">
+              <option value="direct">Direct</option>
+              <option value="warm">Warm</option>
+              <option value="executive">Executive</option>
+              <option value="playful">Playful</option>
+            </select>
+      
+            <button id="generate" style="flex:0 0 auto">Generate</button>
+            <button class="copy" id="copyBtn" style="flex:0 0 auto">Copy</button>
           </div>
-
-          <div class="row">
-            <button id="reroll">Reroll metrics</button>
-            <button id="alarm" class="copy">Do Not Press</button>
-          </div>
-          <div class="small">“Do Not Press” triggers a harmless dramatic countdown.</div>
+      
+          <input id="product" placeholder="Product / category (ex: chili blends, paprika, seasoning, bulk spices)" style="width:100%; margin-top:10px" />
+          <input id="goal" placeholder="Goal (ex: set a call, upsell, fix quality concern, win reorder, land trial)" style="width:100%; margin-top:10px" />
+      
+          <textarea id="context" spellcheck="false" placeholder="Paste context: account notes, last email, objections, order history, pricing constraints, who the buyer is, etc."></textarea>
+      
+          <textarea id="promptBox" spellcheck="false" placeholder="Generated prompt appears here..."></textarea>
+          <div class="small" id="copyStatus"></div>
+      
+          <details style="margin-top:12px">
+            <summary>
+              Quick presets (one-click)
+              <span class="chev" aria-hidden="true"></span>
+            </summary>
+            <div class="dIn">
+              <div class="row" style="margin-top:0">
+                <button class="preset" data-mode="outreach" data-channel="email" data-tone="direct">Direct Outreach Email</button>
+                <button class="preset" data-mode="followup" data-channel="email" data-tone="direct">Follow-up Email</button>
+                <button class="preset" data-mode="call" data-channel="phone" data-tone="direct">Call Script</button>
+                <button class="preset" data-mode="objection" data-channel="email" data-tone="executive">Objection Handling</button>
+              </div>
+            </div>
+          </details>
+      
         </div>
       </div>
     </section>
@@ -656,8 +711,8 @@
     // ======= EDIT THESE =======
     const PROFILE = {
       name: "Brittney Gray",
-      cityA: { label: "CITY_A", tz: "America/Chicago", lat: 30.5083, lon: -97.6789 }, // example: Round Rock
-      cityB: { label: "CITY_B", tz: "America/New_York", lat: 40.7128, lon: -74.0060 } // example: NYC
+      cityA: { label: "Round Rock, TX", tz: "America/Chicago", lat: 30.5083, lon: 97.6789 }, // example: Round Rock
+      cityB: { label: "Kenosha, WI", tz: "America/Chicago", lat: 30.5083, lon: -97.6789 } // example: NYC
     };
 
     // ======= Quote rotator (inside jokes safe) =======
@@ -736,27 +791,98 @@
       $("#lat").textContent = `${v}ms`;
     }, 1400);
 
-    // ======= Copilot prompt buttons =======
-    let lastPrompt = "";
-    $$("#copilot button[data-prompt]").forEach(btn=>{
+    // ======= Copilot Prompt Builder =======
+    const modeEl = document.getElementById("mode");
+    const channelEl = document.getElementById("channel");
+    const toneEl = document.getElementById("tone");
+    const productEl = document.getElementById("product");
+    const goalEl = document.getElementById("goal");
+    const ctxEl = document.getElementById("context");
+    const boxEl = document.getElementById("promptBox");
+    const statusEl = document.getElementById("copyStatus");
+    
+    function buildPrompt({ mode, channel, tone, product, goal, context }) {
+      const toneRules = {
+        direct: "Tone: direct, confident, no fluff, short sentences.",
+        warm: "Tone: warm, human, upbeat, not cheesy.",
+        executive: "Tone: executive, concise, outcomes-focused, professional.",
+        playful: "Tone: playful, light humor, still professional."
+      };
+    
+      const channelRules = {
+        email: "Output format: email. Include subject + body. Keep body under 170 words unless asked otherwise.",
+        linkedin: "Output format: LinkedIn message. 500 characters max. One clear CTA question.",
+        phone: "Output format: call script. 20–30 seconds opener + 3 discovery questions + close.",
+        text: "Output format: text message. 240 characters max."
+      };
+    
+      const core = {
+        idea: You are my sales ops copilot. Generate 10 specific next actions for this account. Rank by expected impact and ease. Include 1 “bold move.”,
+        research: Generate an account intel checklist and 10 targeted research questions to understand fit, buying triggers, and usage volumes. Also output 5 hypotheses about their pain points.,
+        outreach: Write a first-touch message that is relevant to the account and product. Include one sentence showing you understand their world, then the value, then one clear CTA.,
+        followup: Write a follow-up that assumes they’re busy (not ignoring). Keep it short. Include 2 options: (A) quick call, (B) send sample / pricing sheet.,
+        reengage: Write a re-engagement note referencing prior relationship lightly. Provide a new angle (quality, consistency, lead time, price stability, or flavor profiles). CTA: 15-min reset.,
+        call: Create a call plan: opener, credibility line, 5 discovery questions, 2 value paths, and a close that asks for next step.,
+        objection: List the top 8 objections for selling spices (price, quality, consistency, supply, MOQ, lead time, switching cost, vendor risk). For each: response + proof point + question back.,
+        meeting: Create a 20-minute meeting agenda with time boxes and the exact questions to ask. End with decision criteria and next steps.,
+        recap: Turn the context into a meeting recap: decisions, open items, risks, and next steps with owners and dates. Keep it tight.,
+        proposal: Generate a proposal outline: customer goals, current state, recommended products/solution, pricing approach, implementation steps, risks, and success metrics. Keep it practical.
+      };
+    
+      const safeContext = (context || "").trim();
+      const p = (product || "").trim();
+      const g = (goal || "").trim();
+    
+      const header = [
+        "You are helping a spice sales professional.",
+        toneRules[tone] || toneRules.direct,
+        channelRules[channel] || channelRules.email,
+        "Rules: Be specific. Avoid buzzwords. No generic fluff. Ask 1 clear question at the end.",
+      ].join("\n");
+    
+      const inputs = [
+        Mode: ${mode},
+        Product/Category: ${p || "(not provided)"},
+        Goal: ${g || "(not provided)"},
+        safeContext ? Context:\n${safeContext} : "Context: (none provided)"
+      ].join("\n\n");
+    
+      return ${header}\n\nTask:\n${core[mode] || core.outreach}\n\nInputs:\n${inputs}\n\nNow produce the output.;
+    }
+    
+    function generate(){
+      const prompt = buildPrompt({
+        mode: modeEl.value,
+        channel: channelEl.value,
+        tone: toneEl.value,
+        product: productEl.value,
+        goal: goalEl.value,
+        context: ctxEl.value
+      });
+      boxEl.value = prompt;
+      statusEl.textContent = "Ready.";
+    }
+    
+    document.getElementById("generate").addEventListener("click", generate);
+    
+    document.querySelectorAll(".preset").forEach(btn=>{
       btn.addEventListener("click", ()=>{
-        const ctx = ($("#context").value || "").trim();
-        const base = btn.getAttribute("data-prompt");
-        lastPrompt = ctx ? `${base}\n\nContext:\n${ctx}` : base;
-        $("#promptBox").value = lastPrompt;
-        $("#copyStatus").textContent = "Ready.";
+        modeEl.value = btn.dataset.mode;
+        channelEl.value = btn.dataset.channel;
+        toneEl.value = btn.dataset.tone;
+        generate();
       });
     });
-
-    $("#copyBtn").addEventListener("click", async ()=>{
-      const val = $("#promptBox").value.trim();
-      if(!val){ $("#copyStatus").textContent = "Nothing to copy."; return; }
+    
+    document.getElementById("copyBtn").addEventListener("click", async ()=>{
+      const val = boxEl.value.trim();
+      if(!val){ statusEl.textContent = "Nothing to copy."; return; }
       try{
         await navigator.clipboard.writeText(val);
-        $("#copyStatus").textContent = "Copied.";
-        setTimeout(()=> $("#copyStatus").textContent = "", 1400);
+        statusEl.textContent = "Copied.";
+        setTimeout(()=> statusEl.textContent = "", 1200);
       }catch(e){
-        $("#copyStatus").textContent = "Clipboard blocked. Select text and copy manually.";
+        statusEl.textContent = "Clipboard blocked. Select text and copy manually.";
       }
     });
 
