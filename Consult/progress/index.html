@@ -1,109 +1,239 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MODDES Core Progress Board</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MODDES™ Progress</title>
+
 <style>
-  @page {
-    margin: 0.5in;
-  }
-  body {
-    font-family: Arial, sans-serif;
-    font-size: 11pt;
-    margin: 0;
-    padding: 0.2in;
-  }
-  h1 {
-    text-align: center;
-    margin-bottom: 0.5em;
-  }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    page-break-inside: avoid;
-  }
-  th, td {
-    border: 1px solid #ccc;
-    padding: 6px 8px;
-    text-align: left;
-  }
-  th {
-    background: #f4f4f4;
-  }
-  tr:nth-child(even) {
-    background: #fafafa;
-  }
+:root{
+  --bg:#070b14;
+  --panel:#0b1220;
+  --card:#111827;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --stroke:rgba(255,255,255,.08);
+
+  --p1:#c00000;
+  --p2:#ed7d31;
+  --p3:#ffd966;
+  --p4:#5b9bd5;
+  --p5:#bfbfbf;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:linear-gradient(180deg,var(--panel),rgba(11,18,32,.92));
+  border-bottom:1px solid var(--stroke);
+  padding:16px;
+}
+
+header h1{
+  margin:0 0 10px;
+  font-size:1.2rem;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+select{
+  background:#0f172a;
+  color:var(--text);
+  border:1px solid var(--stroke);
+  padding:6px 10px;
+  border-radius:8px;
+}
+
+main{
+  max-width:1100px;
+  margin:0 auto;
+  padding:20px;
+}
+
+.area{
+  margin-bottom:22px;
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--panel);
+}
+
+.area-header{
+  padding:14px 16px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#0f172a;
+}
+
+.area-header span{
+  color:var(--muted);
+  font-size:.85rem;
+}
+
+.cards{
+  padding:14px;
+  display:grid;
+  gap:10px;
+}
+
+.card{
+  background:var(--card);
+  border-left:6px solid var(--p3);
+  padding:12px 14px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.card .left{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.card .task{
+  font-weight:500;
+}
+
+.card .sub{
+  font-size:.85rem;
+  color:var(--muted);
+}
+
+.badge{
+  font-size:.7rem;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid var(--stroke);
+  color:var(--muted);
+  white-space:nowrap;
+}
+
+.hidden{display:none}
+.p1{border-color:var(--p1)}
+.p2{border-color:var(--p2)}
+.p3{border-color:var(--p3)}
+.p4{border-color:var(--p4)}
+.p5{border-color:var(--p5)}
 </style>
 </head>
+
 <body>
-  <h1>MODDES Core Progress Board</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Area</th>
-        <th>Subsystem</th>
-        <th>Task / Deliverable</th>
-        <th>Priority</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Repo</td><td>Foundation</td><td>Initialize repository structure</td><td>P1</td></tr>
-      <tr><td>Repo</td><td>Config</td><td>Create pyproject.toml</td><td>P1</td></tr>
-      <tr><td>Repo</td><td>Config</td><td>Add .gitignore</td><td>P1</td></tr>
-      <tr><td>Repo</td><td>Docs</td><td>Write README (vision, scope, non-goals)</td><td>P2</td></tr>
-      <tr><td>Repo</td><td>Env</td><td>Create .env.example</td><td>P2</td></tr>
-      <tr><td>Core</td><td>runtime.py</td><td>Build execution loop</td><td>P1</td></tr>
-      <tr><td>Core</td><td>runtime.py</td><td>Add deterministic mode flag</td><td>P2</td></tr>
-      <tr><td>Core</td><td>router.py</td><td>Route intent to handlers</td><td>P1</td></tr>
-      <tr><td>Core</td><td>policies.py</td><td>Define safety & constraint policies</td><td>P1</td></tr>
-      <tr><td>Core</td><td>Error</td><td>Centralized error handling</td><td>P1</td></tr>
-      <tr><td>Memory</td><td>schema.py</td><td>Define memory schema</td><td>P1</td></tr>
-      <tr><td>Memory</td><td>store.py</td><td>Implement memory persistence</td><td>P1</td></tr>
-      <tr><td>Memory</td><td>API</td><td>Read/write memory interface</td><td>P1</td></tr>
-      <tr><td>Memory</td><td>Versioning</td><td>Add memory version control</td><td>P2</td></tr>
-      <tr><td>Memory</td><td>Maintenance</td><td>Memory pruning rules</td><td>P3</td></tr>
-      <tr><td>Tasks</td><td>models.py</td><td>Define task models</td><td>P1</td></tr>
-      <tr><td>Tasks</td><td>engine.py</td><td>Implement task lifecycle engine</td><td>P1</td></tr>
-      <tr><td>Tasks</td><td>Queue</td><td>Add task queue support</td><td>P1</td></tr>
-      <tr><td>Tasks</td><td>Retry</td><td>Retry & failure logic</td><td>P2</td></tr>
-      <tr><td>Tasks</td><td>Deps</td><td>Task dependency resolution</td><td>P2</td></tr>
-      <tr><td>Tools</td><td>registry.py</td><td>Build tool registry</td><td>P1</td></tr>
-      <tr><td>Tools</td><td>file_tool.py</td><td>File read/write tool</td><td>P1</td></tr>
-      <tr><td>Tools</td><td>shell_tool.py</td><td>Shell execution tool</td><td>P1</td></tr>
-      <tr><td>Tools</td><td>Security</td><td>Tool permission enforcement</td><td>P1</td></tr>
-      <tr><td>Tools</td><td>Audit</td><td>Tool invocation logging</td><td>P2</td></tr>
-      <tr><td>LLM</td><td>base.py</td><td>LLM abstract interface</td><td>P1</td></tr>
-      <tr><td>LLM</td><td>openai_compat.py</td><td>OpenAI-compatible adapter</td><td>P1</td></tr>
-      <tr><td>LLM</td><td>mock.py</td><td>Offline mock LLM</td><td>P2</td></tr>
-      <tr><td>LLM</td><td>Usage</td><td>Token usage tracking</td><td>P2</td></tr>
-      <tr><td>LLM</td><td>Fallback</td><td>Failover / fallback logic</td><td>P2</td></tr>
-      <tr><td>Improve</td><td>proposer.py</td><td>Generate improvement proposals</td><td>P2</td></tr>
-      <tr><td>Improve</td><td>validator.py</td><td>Validate proposals safely</td><td>P1</td></tr>
-      <tr><td>Improve</td><td>applier.py</td><td>Apply approved patches</td><td>P1</td></tr>
-      <tr><td>Improve</td><td>Rollback</td><td>Rollback failed patches</td><td>P1</td></tr>
-      <tr><td>Improve</td><td>Human Gate</td><td>Human approval flag</td><td>P3</td></tr>
-      <tr><td>Audit</td><td>logger.py</td><td>Structured logging system</td><td>P1</td></tr>
-      <tr><td>Audit</td><td>Trace</td><td>Execution trace per run</td><td>P1</td></tr>
-      <tr><td>Audit</td><td>Decision</td><td>Decision logging</td><td>P2</td></tr>
-      <tr><td>Audit</td><td>Integrity</td><td>Immutable audit option</td><td>P3</td></tr>
-      <tr><td>Config</td><td>settings.py</td><td>Central config loader</td><td>P1</td></tr>
-      <tr><td>Config</td><td>Env</td><td>Environment overrides</td><td>P2</td></tr>
-      <tr><td>Config</td><td>Validation</td><td>Config validation rules</td><td>P2</td></tr>
-      <tr><td>CLI</td><td>main.py</td><td>CLI entrypoint</td><td>P1</td></tr>
-      <tr><td>CLI</td><td>Commands</td><td>Run engine command</td><td>P1</td></tr>
-      <tr><td>CLI</td><td>Commands</td><td>Inspect memory command</td><td>P2</td></tr>
-      <tr><td>CLI</td><td>Commands</td><td>Inspect tasks command</td><td>P2</td></tr>
-      <tr><td>CLI</td><td>Debug</td><td>Dry-run mode</td><td>P3</td></tr>
-      <tr><td>Tests</td><td>Memory</td><td>Memory unit tests</td><td>P1</td></tr>
-      <tr><td>Tests</td><td>Tasks</td><td>Task engine tests</td><td>P1</td></tr>
-      <tr><td>Tests</td><td>Tools</td><td>Tool tests</td><td>P1</td></tr>
-      <tr><td>Tests</td><td>Improve</td><td>Self-improve tests</td><td>P2</td></tr>
-      <tr><td>Tests</td><td>Integration</td><td>End-to-end test</td><td>P1</td></tr>
-      <tr><td>Release</td><td>Stability</td><td>Verify deterministic behavior</td><td>P1</td></tr>
-      <tr><td>Release</td><td>Recovery</td><td>Crash recovery validation</td><td>P1</td></tr>
-      <tr><td>Release</td><td>Demo</td><td>Minimal working demo scenario</td><td>P1</td></tr>
-    </tbody>
-  </table>
+
+<header>
+  <h1>MODDES™ Progress Board</h1>
+  <div class="controls">
+    <select id="priorityFilter">
+      <option value="all">All Priorities</option>
+      <option value="p1">P1 Critical</option>
+      <option value="p2">P2 High</option>
+      <option value="p3">P3 Medium</option>
+      <option value="p4">P4 Low</option>
+      <option value="p5">P5 Lowest</option>
+    </select>
+
+    <select id="statusFilter">
+      <option value="all">All Status</option>
+      <option value="Not Started">Not Started</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Done">Done</option>
+      <option value="Blocked">Blocked</option>
+    </select>
+  </div>
+</header>
+
+<main id="board"></main>
+
+<script>
+const DATA = [
+  {
+    area:"Core",
+    items:[
+      {task:"Build execution loop", sub:"runtime.py", priority:"p1", status:"Not Started"},
+      {task:"Route intent to handlers", sub:"router.py", priority:"p1", status:"Not Started"},
+      {task:"Define guardrail policies", sub:"policies.py", priority:"p1", status:"Not Started"}
+    ]
+  },
+  {
+    area:"Memory",
+    items:[
+      {task:"Define memory schema", sub:"schema.py", priority:"p1", status:"Not Started"},
+      {task:"Implement persistence layer", sub:"store.py", priority:"p1", status:"Not Started"},
+      {task:"Add pruning rules", sub:"maintenance", priority:"p3", status:"Not Started"}
+    ]
+  },
+  {
+    area:"Tools",
+    items:[
+      {task:"Tool registry", sub:"registry.py", priority:"p1", status:"Not Started"},
+      {task:"File tool", sub:"file_tool.py", priority:"p1", status:"Not Started"},
+      {task:"Shell execution tool", sub:"shell_tool.py", priority:"p1", status:"Not Started"}
+    ]
+  }
+];
+
+const board = document.getElementById("board");
+const pFilter = document.getElementById("priorityFilter");
+const sFilter = document.getElementById("statusFilter");
+
+function render(){
+  board.innerHTML = "";
+
+  DATA.forEach(section=>{
+    const area = document.createElement("div");
+    area.className = "area";
+
+    const header = document.createElement("div");
+    header.className = "area-header";
+    header.innerHTML = ${section.area} <span>${section.items.length} items</span>;
+    header.onclick = () => cards.classList.toggle("hidden");
+
+    const cards = document.createElement("div");
+    cards.className = "cards";
+
+    section.items.forEach(item=>{
+      if(pFilter.value!=="all" && item.priority!==pFilter.value) return;
+      if(sFilter.value!=="all" && item.status!==sFilter.value) return;
+
+      const card = document.createElement("div");
+      card.className = card ${item.priority};
+      card.innerHTML = `
+        <div class="left">
+          <div class="task">${item.task}</div>
+          <div class="sub">${item.sub}</div>
+        </div>
+        <div class="badge">${item.status}</div>
+      `;
+      cards.appendChild(card);
+    });
+
+    area.appendChild(header);
+    area.appendChild(cards);
+    board.appendChild(area);
+  });
+}
+
+pFilter.onchange = render;
+sFilter.onchange = render;
+render();
+</script>
+
 </body>
 </html>
