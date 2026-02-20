@@ -5,58 +5,68 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>Where Should You Live (Unfiltered)</title>
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 html,body{margin:0;height:100%;background:#0b1220;color:#f8fafc;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif}
 #map{height:100%;width:100%}
 
-/* 18+ gate */
-#gate{
-  position:fixed;inset:0;background:#000;z-index:9999;
-  display:flex;align-items:center;justify-content:center;text-align:center;
+/* GATE */
+#gate,#bad{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  background:#000;text-align:center;
 }
 #gate .box{
-  max-width:420px;padding:24px;border:1px solid #333;background:#111;
+  padding:26px 30px;border:1px solid #333;background:#111;
 }
 #gate button{
-  margin-top:16px;padding:12px 18px;font-size:16px;
-  background:#e11d48;color:#fff;border:none;cursor:pointer;
+  margin:10px;padding:12px 22px;
+  font-size:18px;font-weight:700;
+  cursor:pointer;border:none;
+}
+#yes{background:#16a34a;color:#fff}
+#no{background:#dc2626;color:#fff}
+
+#bad{
+  display:none;
+  font-size:clamp(32px,8vw,96px);
+  font-weight:900;
+  letter-spacing:2px;
 }
 
-/* overlays */
+/* overlay */
 #zoneAlert{
-  position:fixed;top:20px;left:50%;transform:translateX(-50%);
-  padding:12px 18px;font-size:22px;font-weight:800;
-  background:rgba(0,0,0,.75);border-radius:10px;
-  display:none;z-index:5000;white-space:nowrap;
+  position:fixed;top:20px;left:50%;
+  transform:translateX(-50%);
+  padding:12px 18px;
+  font-size:22px;font-weight:900;
+  background:rgba(0,0,0,.75);
+  border-radius:12px;
+  display:none;z-index:5000;
 }
-.pulse{
-  animation:pulse 1.2s infinite;
+
+/* labels */
+.zone-label{
+  font-weight:900;
+  font-size:22px;
+  line-height:1.2;
+  text-align:center;
+  text-shadow:0 2px 8px rgba(0,0,0,.8);
+  transform:rotate(-2deg);
 }
+
+/* effects */
+.pulse{animation:pulse 1.2s infinite}
 @keyframes pulse{
   0%{box-shadow:0 0 0 0 rgba(255,255,255,.4)}
   70%{box-shadow:0 0 0 18px rgba(255,255,255,0)}
   100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}
 }
-
-/* scribble labels */
-.zone-label{
-  font-weight:900;font-size:22px;
-  text-shadow:0 2px 6px rgba(0,0,0,.7);
-  transform:rotate(-2deg);
-}
-
-/* DIE easter egg */
-body.die-mode::after{
-  content:"";
-  position:fixed;inset:0;
+body.die::after{
+  content:"";position:fixed;inset:0;
   background:rgba(0,0,0,.45);
-  pointer-events:none;
-  z-index:4000;
+  pointer-events:none;z-index:4000;
 }
 </style>
 </head>
@@ -65,134 +75,135 @@ body.die-mode::after{
 
 <div id="gate">
   <div class="box">
-    <h2>18+ Warning</h2>
-    <p>Adult language. Offensive humor. No apologies.</p>
-    <button id="enter">Enter</button>
+    <h2>18+ Content</h2>
+    <p>Offensive language. No filter.</p>
+    <button id="yes">YES</button>
+    <button id="no">NO</button>
   </div>
 </div>
 
+<div id="bad">TOO FUCKING BAD</div>
 <div id="zoneAlert"></div>
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-/* ---------- gate ---------- */
 const gate=document.getElementById("gate");
-document.getElementById("enter").onclick=()=>{
-  localStorage.setItem("gateAccepted","1");
+const bad=document.getElementById("bad");
+
+document.getElementById("yes").onclick=enter;
+document.getElementById("no").onclick=()=>{
   gate.style.display="none";
-  init();
+  bad.style.display="flex";
+  setTimeout(()=>{
+    bad.style.display="none";
+    enter();
+  },1200);
 };
-if(localStorage.getItem("gateAccepted")==="1"){
+
+function enter(){
   gate.style.display="none";
   init();
 }
 
-/* ---------- map ---------- */
 function init(){
 const map=L.map("map",{zoomControl:false}).setView([39,-98],4);
 
 L.tileLayer(
-  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-  {maxZoom:19}
+ "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+ {maxZoom:19}
 ).addTo(map);
 
-/* ---------- zones (rough, hand-drawn-ish) ---------- */
+/* CURVED ZONES */
 const zones=[
 {
-  name:"Fuck you, too cold for 5 months / year",
-  color:"#2563eb",
-  coords:[[60,-140],[60,-50],[50,-50],[50,-140]]
+ name:"DIE, Just fucking DIE",
+ color:"#ffffff",
+ coords:[
+  [72,-170],[72,-40],[60,-40],[58,-70],[60,-120],[58,-150],[60,-170]
+ ]
 },
 {
-  name:"Manageable",
-  color:"#facc15",
-  coords:[[50,-125],[50,-70],[40,-70],[40,-125]]
+ name:"Fuck you, too cold for 5 months / year",
+ color:"#2563eb",
+ coords:[
+  [58,-150],[58,-60],[52,-55],[50,-70],[50,-120],[52,-145]
+ ]
 },
 {
-  name:"YES!!! ❤️",
-  color:"#dc2626",
-  coords:[[38,-100],[38,-80],[25,-80],[25,-100]]
+ name:"Get fucked",
+ color:"#10b981",
+ coords:[
+  [50,-125],[50,-118],[45,-118],[38,-120],[34,-122],[32,-125]
+ ]
 },
 {
-  name:"Get fucked",
-  color:"#10b981",
-  coords:[[50,-125],[50,-115],[32,-115],[32,-125]]
+ name:"Manageable",
+ color:"#facc15",
+ coords:[
+  [38,-125],[38,-70],[36,-72],[34,-80],[34,-100],[35,-120]
+ ]
 },
 {
-  name:"DIE, Just fucking DIE",
-  color:"#ffffff",
-  coords:[[72,-170],[72,-40],[60,-40],[60,-170]]
+ name:"YES!!! ❤️",
+ color:"#dc2626",
+ coords:[
+  [34,-125],[32,-122],[29,-110],[28,-95],[27,-85],
+  [25,-82],[24,-84],[26,-90],[27,-100],[28,-115],[30,-125]
+ ]
 }
 ];
 
-const zoneLayers=[];
+const layers=[];
 
 zones.forEach(z=>{
-  const poly=L.polygon(z.coords,{
-    color:z.color,
-    weight:4,
-    fillColor:z.color,
-    fillOpacity:.25
-  }).addTo(map);
+ const poly=L.polygon(z.coords,{
+  color:z.color,weight:4,fillColor:z.color,fillOpacity:.28
+ }).addTo(map);
+ poly.zone=z.name;
+ layers.push(poly);
 
-  poly.zoneName=z.name;
-  zoneLayers.push(poly);
-
-  const center=poly.getBounds().getCenter();
-  L.marker(center,{
-    icon:L.divIcon({
-      className:"zone-label",
-      html:`<span style="color:${z.color}">${z.name}</span>`
-    })
-  }).addTo(map);
+ const c=poly.getBounds().getCenter();
+ L.marker(c,{
+  icon:L.divIcon({
+   className:"zone-label",
+   html:`<span style="color:${z.color}">${z.name}</span>`
+  })
+ }).addTo(map);
 });
 
-/* ---------- geolocation ---------- */
-function locate(){
-  if(!navigator.geolocation){
-    zoomOut();
-    return;
-  }
-  navigator.geolocation.getCurrentPosition(pos=>{
-    const latlng=[pos.coords.latitude,pos.coords.longitude];
-    const marker=L.circleMarker(latlng,{
-      radius:8,color:"#fff",fillColor:"#fff",fillOpacity:1
-    }).addTo(map).getElement();
-    marker.classList.add("pulse");
+/* GEO */
+const alertBox=document.getElementById("zoneAlert");
 
-    map.setView(latlng,11,{animate:true});
-    setTimeout(()=>zoomOut(),1500);
-    detectZone(latlng);
-  },()=>zoomOut());
+function locate(){
+ if(!navigator.geolocation){zoomOut();return;}
+ navigator.geolocation.getCurrentPosition(p=>{
+  const ll=[p.coords.latitude,p.coords.longitude];
+  const m=L.circleMarker(ll,{radius:8,color:"#fff",fillOpacity:1}).addTo(map);
+  m.getElement().classList.add("pulse");
+  map.setView(ll,11,{animate:true});
+  setTimeout(()=>zoomOut(),1500);
+  check(ll);
+ },zoomOut);
 }
 
 function zoomOut(){
-  const group=L.featureGroup(zoneLayers);
-  map.fitBounds(group.getBounds(),{animate:true});
+ const g=L.featureGroup(layers);
+ map.fitBounds(g.getBounds(),{animate:true});
 }
 
-/* ---------- zone detection ---------- */
-const alertBox=document.getElementById("zoneAlert");
-
-function detectZone(latlng){
-  zoneLayers.forEach(p=>{
-    if(p.getBounds().contains(latlng)){
-      showZone(p.zoneName,p.options.color);
-    }
-  });
-}
-
-function showZone(name,color){
-  alertBox.textContent="You are in: "+name;
-  alertBox.style.border=`3px solid ${color}`;
-  alertBox.style.display="block";
-  setTimeout(()=>alertBox.style.display="none",3000);
-
-  if(name.startsWith("DIE")){
-    document.body.classList.add("die-mode");
-    setTimeout(()=>document.body.classList.remove("die-mode"),2500);
+function check(ll){
+ layers.forEach(p=>{
+  if(p.getBounds().contains(ll)){
+   alertBox.textContent="You are in: "+p.zone;
+   alertBox.style.display="block";
+   setTimeout(()=>alertBox.style.display="none",3000);
+   if(p.zone.startsWith("DIE")){
+    document.body.classList.add("die");
+    setTimeout(()=>document.body.classList.remove("die"),2500);
+   }
   }
+ });
 }
 
 locate();
