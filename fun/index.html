@@ -9,11 +9,8 @@
 
 <style>
 html,body{
-  margin:0;
-  height:100%;
-  overflow:hidden; /* HARD STOP PAGE SCROLL */
-  background:#0b1220;
-  color:#f8fafc;
+  margin:0;height:100%;overflow:hidden;
+  background:#0b1220;color:#f8fafc;
   font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
 }
 #map{height:100%;width:100%}
@@ -24,43 +21,41 @@ html,body{
   display:flex;align-items:center;justify-content:center;
   background:#000;text-align:center;
 }
-#gate .box{
-  padding:26px 30px;border:1px solid #333;background:#111;
-}
+#gate .box{padding:26px 30px;border:1px solid #333;background:#111}
 #gate button{
   margin:10px;padding:12px 22px;
-  font-size:18px;font-weight:700;
-  cursor:pointer;border:none;
+  font-size:18px;font-weight:700;border:none;cursor:pointer
 }
 #yes{background:#16a34a;color:#fff}
 #no{background:#dc2626;color:#fff}
-
 #bad{
-  display:none;
-  font-size:clamp(32px,8vw,96px);
-  font-weight:900;
-  letter-spacing:2px;
+  display:none;font-size:clamp(32px,8vw,96px);
+  font-weight:900;letter-spacing:2px
 }
 
 /* overlay */
 #zoneAlert{
   position:fixed;top:20px;left:50%;
   transform:translateX(-50%);
-  padding:12px 18px;
-  font-size:22px;font-weight:900;
-  background:rgba(0,0,0,.75);
-  border-radius:12px;
-  display:none;z-index:5000;
+  padding:12px 18px;font-size:22px;font-weight:900;
+  background:rgba(0,0,0,.75);border-radius:12px;
+  display:none;z-index:5000
 }
 
 /* labels */
 .zone-label{
+  font-weight:900;font-size:22px;line-height:1.2;
+  text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.8)
+}
+
+/* full-width cold text */
+.cold-band{
+  width:100%;
+  color:#2563eb;
   font-weight:900;
-  font-size:22px;
-  line-height:1.2;
   text-align:center;
-  text-shadow:0 2px 8px rgba(0,0,0,.8);
-  transform:rotate(-2deg);
+  white-space:nowrap;
+  text-shadow:0 2px 10px rgba(0,0,0,.9)
 }
 
 /* effects */
@@ -73,7 +68,7 @@ html,body{
 body.die::after{
   content:"";position:fixed;inset:0;
   background:rgba(0,0,0,.45);
-  pointer-events:none;z-index:4000;
+  pointer-events:none;z-index:4000
 }
 </style>
 </head>
@@ -97,28 +92,19 @@ body.die::after{
 <script>
 const gate=document.getElementById("gate");
 const bad=document.getElementById("bad");
-
 document.getElementById("yes").onclick=enter;
 document.getElementById("no").onclick=()=>{
   gate.style.display="none";
   bad.style.display="flex";
-  setTimeout(()=>{
-    bad.style.display="none";
-    enter();
-  },1200);
+  setTimeout(()=>{bad.style.display="none";enter();},1200);
 };
 
-function enter(){
-  gate.style.display="none";
-  init();
-}
+function enter(){gate.style.display="none";init();}
 
 function init(){
 const map=L.map("map",{
-  zoomControl:false,
-  inertia:false,
-  worldCopyJump:false,
-  maxBoundsViscosity:1.0
+  zoomControl:false,inertia:false,
+  worldCopyJump:false,maxBoundsViscosity:1.0
 }).setView([39,-98],4);
 
 L.tileLayer(
@@ -126,43 +112,32 @@ L.tileLayer(
  {maxZoom:7,minZoom:3}
 ).addTo(map);
 
-/* CURVED, WIDENED ZONES */
+/* ZONES */
 const zones=[
 {
  name:"DIE, Just fucking DIE",
  color:"#ffffff",
- coords:[
-  [75,-170],[75,-40],[58,-40],[56,-80],[57,-120],[56,-150],[58,-170]
- ]
+ coords:[[75,-170],[75,-40],[58,-40],[56,-80],[57,-120],[56,-150],[58,-170]]
 },
 {
- name:"Fuck you, too cold for 5 months / year",
+ name:"COLD",
  color:"#2563eb",
- coords:[
-  [57,-150],[57,-55],[50,-50],[47,-70],[47,-120],[50,-145]
- ]
+ coords:[[57,-150],[57,-55],[50,-50],[47,-70],[47,-120],[50,-145]]
 },
 {
  name:"Get fucked",
  color:"#10b981",
- coords:[
-  [50,-127],[50,-118],[44,-118],[36,-121],[33,-124],[33,-127]
- ]
+ coords:[[50,-127],[50,-118],[44,-118],[36,-121],[33,-124],[33,-127]]
 },
 {
  name:"Manageable",
  color:"#facc15",
- coords:[
-  [41,-130],[41,-65],[37,-68],[35,-85],[35,-110],[36,-125]
- ]
+ coords:[[41,-130],[41,-65],[37,-68],[35,-85],[35,-110],[36,-125]]
 },
 {
  name:"YES!!! ❤️",
  color:"#dc2626",
- coords:[
-  [36,-128],[34,-123],[31,-110],[30,-95],[29,-85],
-  [26,-82],[24,-84],[26,-92],[28,-104],[30,-118],[33,-128]
- ]
+ coords:[[36,-128],[34,-123],[31,-110],[30,-95],[29,-85],[26,-82],[24,-84],[26,-92],[28,-104],[30,-118],[33,-128]]
 }
 ];
 
@@ -175,28 +150,38 @@ zones.forEach(z=>{
  poly.zone=z.name;
  layers.push(poly);
 
- const c=poly.getBounds().getCenter();
- L.marker(c,{
-  icon:L.divIcon({
-   className:"zone-label",
-   html:`<span style="color:${z.color}">${z.name}</span>`
-  })
- }).addTo(map);
+ // labels
+ const b=poly.getBounds();
+ if(z.name==="COLD"){
+   const mid=L.latLng((b.getNorth()+b.getSouth())/2,(b.getEast()+b.getWest())/2);
+   L.marker(mid,{
+     icon:L.divIcon({
+       className:"",
+       html:`<div class="cold-band">Fuck you, too cold for 5 months / year</div>`
+     })
+   }).addTo(map);
+ }else{
+   const c=b.getCenter();
+   L.marker(c,{
+     icon:L.divIcon({
+       className:"zone-label",
+       html:`<span style="color:${z.color}">${z.name}</span>`
+     })
+   }).addTo(map);
+ }
 });
 
-/* HARD PAN LIMITS = ZONES + TIGHT PADDING */
+/* HARD PAN LIMITS */
 const group=L.featureGroup(layers);
 let b=group.getBounds();
-const padLat=0.8, padLng=0.8; // ≈ ~20px feel at macro zoom
-const maxBounds=L.latLngBounds(
+const padLat=0.8,padLng=0.8;
+map.setMaxBounds(L.latLngBounds(
  [b.getSouth()-padLat,b.getWest()-padLng],
  [b.getNorth()+padLat,b.getEast()+padLng]
-);
-map.setMaxBounds(maxBounds);
+));
 
 /* GEO */
 const alertBox=document.getElementById("zoneAlert");
-
 function locate(){
  if(!navigator.geolocation){zoomOut();return;}
  navigator.geolocation.getCurrentPosition(p=>{
@@ -208,11 +193,7 @@ function locate(){
   check(ll);
  },zoomOut);
 }
-
-function zoomOut(){
- map.fitBounds(group.getBounds(),{animate:true});
-}
-
+function zoomOut(){map.fitBounds(group.getBounds(),{animate:true});}
 function check(ll){
  layers.forEach(p=>{
   if(p.getBounds().contains(ll)){
@@ -226,7 +207,6 @@ function check(ll){
   }
  });
 }
-
 locate();
 }
 </script>
