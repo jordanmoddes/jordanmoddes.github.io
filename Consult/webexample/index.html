@@ -6,35 +6,31 @@
   <meta name="theme-color" content="#ffffff" />
   <title>Web Examples — Before / After | Jordan Moddes</title>
 
-  <!-- Seamless child page under /Consult/
-       Put this file at: /Consult/webexamples/index.html
-       Assets assumed at: /Consult/assets/...
-  -->
-  <link rel="icon" type="image/png" href="../assets/JmodCo_Icon.png" />
+  <!-- Put at: /Consult/webexamples/index.html -->
+  <link rel="icon" type="image/png" href="/jmodco/assets/JmodLogoIconTP.png" />
 
   <style>
     :root{
-      /* bright luxury system */
+      /* brighter + more contrast */
       --bg:#ffffff;
       --ink:#0b0f17;
-      --muted:#5b6678;
-      --line:rgba(11,15,23,.10);
+      --muted:#526077;
+      --line:rgba(11,15,23,.12);
 
-      --card:#ffffff;
-      --shadow: 0 20px 70px rgba(11,15,23,.10);
-      --shadow2: 0 12px 28px rgba(11,15,23,.10);
+      --soft:#f6f7fb;
+      --soft2:#eef1f7;
 
       --gold:#b9975b;
-      --gold2:#d7c08a;
-      --char:#0b0f17;
-      --soft:#f6f7fb;
+      --gold2:#e3cf9a;
+
+      --shadow: 0 22px 80px rgba(11,15,23,.10);
+      --shadow2: 0 14px 34px rgba(11,15,23,.10);
 
       --radius:22px;
       --radius2:28px;
       --max:1240px;
 
       --focus: 0 0 0 4px rgba(185,151,91,.22);
-
       --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
@@ -45,78 +41,26 @@
       font-family:var(--font);
       color:var(--ink);
       background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(185,151,91,.10), transparent 55%),
-        radial-gradient(900px 600px at 90% 0%, rgba(215,192,138,.10), transparent 55%),
+        radial-gradient(1200px 700px at 18% -10%, rgba(185,151,91,.12), transparent 58%),
+        radial-gradient(900px 600px at 92% 0%, rgba(227,207,154,.12), transparent 58%),
         linear-gradient(#fff, #fff);
       overflow-x:hidden;
     }
-
     a{color:inherit; text-decoration:none}
     button{font-family:inherit}
-
     .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
-    .topbar{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter:saturate(1.4) blur(14px);
-      background:rgba(255,255,255,.82);
-      border-bottom:1px solid var(--line);
-    }
 
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      height:74px;
-      gap:16px;
-    }
-
-    .brand{display:flex; align-items:center; gap:12px; min-width:210px}
-    .brand img{
-      width:36px; height:36px; object-fit:contain;
-      filter: drop-shadow(0 8px 16px rgba(11,15,23,.12));
-    }
-    .brand .t{
-      display:flex; flex-direction:column; line-height:1.05;
-    }
-    .brand .t b{font-size:14px; letter-spacing:.12em; text-transform:uppercase}
-    .brand .t span{font-size:12px; color:var(--muted)}
-
-    .navlinks{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:rgba(255,255,255,.8);
-      box-shadow: 0 10px 18px rgba(11,15,23,.06);
-      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-      font-size:13px;
-      white-space:nowrap;
-    }
-    .pill:hover{transform:translateY(-1px); box-shadow: 0 18px 30px rgba(11,15,23,.10); border-color:rgba(185,151,91,.35)}
-    .pill:focus{outline:none; box-shadow:var(--focus)}
-
-    .pill.primary{
-      border-color:rgba(185,151,91,.55);
-      background:
-        linear-gradient(135deg, rgba(185,151,91,.18), rgba(215,192,138,.16)),
-        rgba(255,255,255,.9);
-    }
-
-    .hero{
-      position:relative;
-      padding:34px 0 18px;
-    }
-
+    /* watermark */
     .watermark{
       position:fixed; inset:0; pointer-events:none; z-index:0;
-      display:block;
     }
     .watermark::before{
       content:"";
       position:absolute; inset:-20%;
       background:
-        radial-gradient(900px 600px at 20% 15%, rgba(185,151,91,.08), transparent 60%),
-        radial-gradient(800px 520px at 80% 20%, rgba(215,192,138,.08), transparent 60%),
-        radial-gradient(900px 700px at 50% 110%, rgba(11,15,23,.04), transparent 62%);
+        radial-gradient(980px 720px at 20% 18%, rgba(185,151,91,.10), transparent 62%),
+        radial-gradient(860px 560px at 80% 20%, rgba(227,207,154,.10), transparent 64%),
+        radial-gradient(980px 760px at 50% 118%, rgba(11,15,23,.045), transparent 65%);
       opacity:.75;
     }
     .watermark::after{
@@ -126,43 +70,80 @@
       width:min(980px, 92vw);
       height:min(980px, 92vw);
       transform:translate(-50%,-50%);
-      background-image:url("../assets/JmodCo_Icon.png");
+      background-image:url("/jmodco/assets/JmodLogoIconTP.png");
       background-repeat:no-repeat;
       background-position:center;
       background-size:contain;
-      opacity:.045;
+      opacity:.035;
       filter: grayscale(1) contrast(1.05);
     }
 
+    /* topbar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(1.4) blur(14px);
+      background:rgba(255,255,255,.86);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      height:74px; gap:16px;
+    }
+    .brand{display:flex; align-items:center; gap:12px; min-width:240px}
+    .brand img{
+      width:40px; height:40px; object-fit:contain;
+      filter: drop-shadow(0 10px 18px rgba(11,15,23,.14));
+    }
+    .brand .t{display:flex; flex-direction:column; line-height:1.05}
+    .brand .t b{font-size:14px; letter-spacing:.12em; text-transform:uppercase}
+    .brand .t span{font-size:12px; color:var(--muted)}
+    .navlinks{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.92);
+      box-shadow: 0 10px 18px rgba(11,15,23,.06);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .pill:hover{transform:translateY(-1px); box-shadow: 0 18px 30px rgba(11,15,23,.10); border-color:rgba(185,151,91,.40)}
+    .pill:focus{outline:none; box-shadow:var(--focus)}
+    .pill.primary{
+      border-color:rgba(185,151,91,.65);
+      background:
+        linear-gradient(135deg, rgba(185,151,91,.20), rgba(227,207,154,.18)),
+        rgba(255,255,255,.94);
+    }
+
+    /* hero */
+    main.hero{position:relative; z-index:1; padding:34px 0 16px}
     .heroGrid{
-      position:relative;
-      z-index:1;
       display:grid;
       grid-template-columns: 1.25fr .75fr;
       gap:18px;
       align-items:stretch;
     }
-    @media (max-width: 980px){
-      .heroGrid{grid-template-columns:1fr}
-      .brand{min-width:unset}
-    }
+    @media (max-width: 980px){ .heroGrid{grid-template-columns:1fr} .brand{min-width:unset} }
 
     .hcard{
       border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.86));
+      background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(246,247,251,.92));
       border-radius:var(--radius2);
       box-shadow:var(--shadow);
       padding:22px 22px 18px;
       overflow:hidden;
       position:relative;
     }
-
-    .hcard .kicker{
+    .kicker{
       display:inline-flex; align-items:center; gap:10px;
       padding:8px 12px;
       border-radius:999px;
-      border:1px solid rgba(185,151,91,.35);
-      background:rgba(185,151,91,.08);
+      border:1px solid rgba(185,151,91,.45);
+      background:rgba(185,151,91,.10);
       font-size:12px;
       letter-spacing:.14em;
       text-transform:uppercase;
@@ -170,58 +151,42 @@
     .dot{
       width:8px; height:8px; border-radius:999px;
       background:linear-gradient(180deg, var(--gold2), var(--gold));
-      box-shadow: 0 8px 18px rgba(185,151,91,.35);
+      box-shadow: 0 10px 18px rgba(185,151,91,.35);
     }
-
-    h1{
-      margin:14px 0 10px;
-      font-size:42px;
-      letter-spacing:-.03em;
-      line-height:1.03;
-    }
-    @media (max-width: 520px){
-      h1{font-size:34px}
-    }
-
-    .lead{
-      margin:0 0 14px;
-      color:var(--muted);
-      font-size:16px;
-      line-height:1.55;
-      max-width:64ch;
-    }
+    h1{margin:14px 0 10px; font-size:42px; letter-spacing:-.03em; line-height:1.03}
+    @media (max-width:520px){ h1{font-size:34px} }
+    .lead{margin:0 0 14px; color:var(--muted); font-size:16px; line-height:1.55; max-width:68ch}
 
     .ctarow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px}
     .btn{
-      appearance:none; border:1px solid var(--line);
-      background:rgba(255,255,255,.92);
+      appearance:none;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.96);
       border-radius:14px;
       padding:12px 14px;
-      font-weight:700;
+      font-weight:800;
       font-size:13px;
       cursor:pointer;
       box-shadow:var(--shadow2);
       transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
       display:inline-flex; align-items:center; gap:10px;
     }
-    .btn:hover{transform:translateY(-1px); box-shadow: 0 20px 40px rgba(11,15,23,.12); border-color:rgba(185,151,91,.35)}
+    .btn:hover{transform:translateY(-1px); box-shadow: 0 20px 44px rgba(11,15,23,.12); border-color:rgba(185,151,91,.40)}
     .btn:focus{outline:none; box-shadow:var(--focus)}
     .btn.gold{
-      border-color:rgba(185,151,91,.55);
-      background:linear-gradient(135deg, rgba(185,151,91,.22), rgba(215,192,138,.18)), rgba(255,255,255,.94);
+      border-color:rgba(185,151,91,.70);
+      background:linear-gradient(135deg, rgba(185,151,91,.26), rgba(227,207,154,.20)), rgba(255,255,255,.96);
     }
 
-    .miniStats{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap:10px;
-      height:100%;
-    }
+    .legal{padding:14px 2px 0; color:rgba(11,15,23,.55); font-size:12px; line-height:1.5}
+
+    /* mini stats */
+    .miniStats{display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; height:100%}
     .stat{
       border:1px solid var(--line);
       border-radius:18px;
       padding:14px 14px 12px;
-      background:rgba(255,255,255,.88);
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,247,251,.90));
       box-shadow: 0 14px 30px rgba(11,15,23,.08);
       position:relative;
       overflow:hidden;
@@ -229,39 +194,30 @@
     .stat::before{
       content:"";
       position:absolute; inset:-60px -60px auto auto;
-      width:160px; height:160px;
-      background:radial-gradient(circle at 30% 30%, rgba(185,151,91,.22), transparent 60%);
+      width:170px; height:170px;
+      background:radial-gradient(circle at 30% 30%, rgba(185,151,91,.24), transparent 62%);
       transform:rotate(18deg);
-      opacity:.8;
+      opacity:.85;
     }
     .stat b{display:block; font-size:18px; letter-spacing:-.02em}
     .stat span{display:block; margin-top:4px; color:var(--muted); font-size:12px; line-height:1.35}
     .stat small{display:block; margin-top:10px; font-size:11px; color:rgba(11,15,23,.55); letter-spacing:.08em; text-transform:uppercase}
 
-    .section{
-      position:relative;
-      z-index:1;
-      padding:12px 0 58px;
-    }
-
+    /* section */
+    .section{position:relative; z-index:1; padding:10px 0 84px}
     .bar{
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; flex-wrap:wrap;
       margin:10px 0 14px;
     }
-    .crumb{
-      display:flex; align-items:center; gap:10px;
-      color:rgba(11,15,23,.64);
-      font-size:13px;
-    }
+    .crumb{display:flex; align-items:center; gap:10px; color:rgba(11,15,23,.64); font-size:13px}
     .crumb a{border-bottom:1px dashed rgba(11,15,23,.24)}
-    .crumb a:hover{border-bottom-color:rgba(185,151,91,.55)}
-    .filters{
-      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
-    }
+    .crumb a:hover{border-bottom-color:rgba(185,151,91,.60)}
+
+    .filters{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
     .chip{
       border:1px solid var(--line);
-      background:rgba(255,255,255,.9);
+      background:rgba(255,255,255,.96);
       border-radius:999px;
       padding:10px 12px;
       font-size:12px;
@@ -271,62 +227,44 @@
       user-select:none;
       display:inline-flex; align-items:center; gap:10px;
     }
-    .chip:hover{transform:translateY(-1px); border-color:rgba(185,151,91,.35); box-shadow: 0 18px 28px rgba(11,15,23,.10)}
+    .chip:hover{transform:translateY(-1px); border-color:rgba(185,151,91,.40); box-shadow: 0 18px 28px rgba(11,15,23,.10)}
     .chip[aria-pressed="true"]{
-      border-color:rgba(185,151,91,.65);
-      background:linear-gradient(135deg, rgba(185,151,91,.20), rgba(215,192,138,.16));
+      border-color:rgba(185,151,91,.75);
+      background:linear-gradient(135deg, rgba(185,151,91,.22), rgba(227,207,154,.18));
     }
     .chip:focus{outline:none; box-shadow:var(--focus)}
 
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap:14px;
-    }
+    /* layout blocks */
+    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px}
     .featured{
       grid-column: 1 / -1;
       border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.86));
+      background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(246,247,251,.92));
       border-radius:var(--radius2);
       box-shadow:var(--shadow);
       overflow:hidden;
     }
-
     .featTop{
       display:flex; align-items:flex-start; justify-content:space-between;
       gap:12px; flex-wrap:wrap;
-      padding:18px 18px 10px;
+      padding:18px 18px 12px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,247,251,.90));
     }
     .tag{
       display:inline-flex; align-items:center; gap:10px;
       padding:8px 12px;
       border-radius:999px;
       border:1px solid rgba(11,15,23,.12);
-      background:rgba(246,247,251,.9);
+      background:rgba(255,255,255,.92);
       font-size:12px;
       letter-spacing:.10em;
       text-transform:uppercase;
     }
-    .tag .dot{width:7px;height:7px}
-    .featTop h2{
-      margin:10px 0 0;
-      font-size:22px;
-      letter-spacing:-.02em;
-    }
-    .featTop p{
-      margin:8px 0 0;
-      color:var(--muted);
-      line-height:1.5;
-      max-width:70ch;
-      font-size:14px;
-    }
+    .featTop h2{margin:10px 0 0; font-size:22px; letter-spacing:-.02em}
+    .featTop p{margin:8px 0 0; color:var(--muted); line-height:1.5; max-width:76ch; font-size:14px}
     .featActions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-    .tiny{
-      font-size:12px;
-      padding:10px 12px;
-      border-radius:12px;
-      box-shadow: 0 12px 22px rgba(11,15,23,.10);
-    }
+    .tiny{font-size:12px; padding:10px 12px; border-radius:12px}
 
     .cards{
       grid-column: 1 / -1;
@@ -338,37 +276,29 @@
       grid-column: span 6;
       border:1px solid var(--line);
       border-radius:var(--radius2);
-      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.86));
+      background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(246,247,251,.92));
       box-shadow:var(--shadow2);
       overflow:hidden;
-      position:relative;
       transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     }
-    .card:hover{transform:translateY(-2px); box-shadow: 0 26px 60px rgba(11,15,23,.12); border-color:rgba(185,151,91,.28)}
-    @media (max-width: 980px){ .card{grid-column: span 12;} }
+    .card:hover{transform:translateY(-2px); box-shadow: 0 28px 70px rgba(11,15,23,.12); border-color:rgba(185,151,91,.35)}
+    @media (max-width: 980px){ .card{grid-column: span 12} }
 
     .cardHead{
-      padding:16px 16px 10px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      padding:16px 16px 12px;
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:10px; flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,247,251,.90));
     }
-    .cardHead h3{
-      margin:10px 0 0;
-      font-size:18px;
-      letter-spacing:-.02em;
-    }
-    .cardHead .meta{
-      margin-top:6px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.4;
-      max-width:64ch;
-    }
+    .cardHead h3{margin:10px 0 0; font-size:18px; letter-spacing:-.02em}
+    .cardHead .meta{margin-top:6px; color:var(--muted); font-size:13px; line-height:1.45; max-width:64ch}
     .badge{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
       border-radius:999px;
-      border:1px solid rgba(185,151,91,.35);
-      background:rgba(185,151,91,.08);
+      border:1px solid rgba(185,151,91,.45);
+      background:rgba(185,151,91,.10);
       font-size:11px;
       letter-spacing:.12em;
       text-transform:uppercase;
@@ -376,260 +306,112 @@
       white-space:nowrap;
     }
 
-    .upgrades{
-      display:flex; gap:8px; flex-wrap:wrap;
-      padding:0 16px 12px;
-    }
+    .upgrades{display:flex; gap:8px; flex-wrap:wrap; padding:12px 16px}
     .u{
       font-size:12px;
       padding:8px 10px;
       border-radius:999px;
       border:1px solid rgba(11,15,23,.10);
-      background:rgba(246,247,251,.92);
-      color:rgba(11,15,23,.72);
+      background:rgba(255,255,255,.92);
+      color:rgba(11,15,23,.70);
       white-space:nowrap;
     }
 
-    /* Slider */
+    /* ===== REAL PAGE SLIDER (no translucent overlay) =====
+       You will drop images into /Consult/webexamples/img/
+       Each slider uses:
+         data-before="/Consult/webexamples/img/xxx-before.jpg"
+         data-after="/Consult/webexamples/img/xxx-after.jpg"
+       If images are missing, it shows a clean placeholder grid.
+    */
     .slider{
       position:relative;
-      height:320px;
+      height:360px;
       border-top:1px solid var(--line);
       border-bottom:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(246,247,251,.92), rgba(255,255,255,.92));
+      background:linear-gradient(180deg, rgba(246,247,251,.95), rgba(255,255,255,.95));
       overflow:hidden;
+      isolation:isolate;
     }
-    @media (max-width:520px){ .slider{height:290px} }
+    @media (max-width:520px){ .slider{height:320px} }
 
-    .slider .pane{
-      position:absolute; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      padding:18px;
-    }
-
-    /* BEFORE look: intentionally dated */
-    .mock.before{
-      width:100%; height:100%;
-      border-radius:18px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.45)),
-        repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 1px, transparent 1px 18px),
-        linear-gradient(135deg, rgba(11,15,23,.08), rgba(185,151,91,.05));
-      border:1px solid rgba(11,15,23,.16);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.8), 0 18px 48px rgba(11,15,23,.10);
-      position:relative;
-      overflow:hidden;
-      filter:saturate(.90) contrast(.98);
-    }
-    .mock.before .top{
-      height:34px;
-      display:flex; align-items:center; gap:8px;
-      padding:0 12px;
-      background:linear-gradient(180deg, rgba(11,15,23,.14), rgba(11,15,23,.06));
-      border-bottom:1px solid rgba(11,15,23,.16);
-      font-size:12px;
-      color:rgba(11,15,23,.70);
-    }
-    .mock.before .top i{
-      width:10px; height:10px; border-radius:999px; display:inline-block;
-      background:rgba(11,15,23,.25);
-    }
-    .mock.before .content{
-      padding:14px;
-      display:grid;
-      grid-template-columns: 1fr .9fr;
-      gap:12px;
-      height:calc(100% - 34px);
-    }
-    .mock.before .left{
-      border:1px dashed rgba(11,15,23,.22);
-      border-radius:14px;
-      padding:10px;
-      background:rgba(255,255,255,.55);
-    }
-    .mock.before .right{
-      display:grid;
-      grid-template-rows: .6fr 1fr;
-      gap:10px;
-    }
-    .mock.before .box{
-      border:1px solid rgba(11,15,23,.16);
-      border-radius:14px;
-      background:rgba(255,255,255,.55);
-      padding:10px;
-    }
-    .mock.before .lines{
-      margin-top:10px;
-      display:grid;
-      gap:6px;
-    }
-    .mock.before .line{
-      height:10px;
+    .label{
+      position:absolute;
+      top:12px;
+      z-index:6;
+      padding:8px 10px;
       border-radius:999px;
-      background:rgba(11,15,23,.12);
-    }
-    .mock.before .line.w2{width:72%}
-    .mock.before .line.w3{width:58%}
-    .mock.before .line.w4{width:80%}
-    .mock.before .line.w5{width:46%}
-
-    /* AFTER look: modern bright luxury */
-    .mock.after{
-      width:100%; height:100%;
-      border-radius:18px;
-      background:
-        radial-gradient(900px 420px at 20% 0%, rgba(215,192,138,.32), transparent 55%),
-        radial-gradient(720px 360px at 90% 12%, rgba(185,151,91,.24), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.95), rgba(246,247,251,.95));
-      border:1px solid rgba(185,151,91,.30);
-      box-shadow: 0 22px 60px rgba(11,15,23,.12), inset 0 0 0 1px rgba(255,255,255,.8);
-      position:relative;
-      overflow:hidden;
-    }
-    .mock.after .nav{
-      height:46px;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 14px;
-      border-bottom:1px solid rgba(11,15,23,.08);
-      background:rgba(255,255,255,.72);
-      backdrop-filter: blur(10px);
-    }
-    .mock.after .logo{
-      display:flex; align-items:center; gap:10px;
-      font-weight:900;
+      font-size:11px;
       letter-spacing:.12em;
       text-transform:uppercase;
-      font-size:12px;
+      font-weight:900;
+      border:1px solid rgba(11,15,23,.10);
+      background:rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 26px rgba(11,15,23,.10);
+      user-select:none;
+      pointer-events:none;
     }
-    .mock.after .logo .mark{
-      width:10px; height:10px; border-radius:999px;
-      background:linear-gradient(180deg, var(--gold2), var(--gold));
-      box-shadow: 0 10px 18px rgba(185,151,91,.35);
+    .label.before{left:12px}
+    .label.after{
+      right:12px;
+      border-color: rgba(185,151,91,.40);
+      background: linear-gradient(135deg, rgba(185,151,91,.20), rgba(255,255,255,.92));
     }
-    .mock.after .nav .links{
-      display:flex; gap:10px;
-      color:rgba(11,15,23,.65);
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
+
+    .imgLayer{
+      position:absolute; inset:0;
+      background-size:cover;
+      background-position: top center;
+      background-repeat:no-repeat;
     }
-    .mock.after .hero2{
-      padding:16px;
-      height:calc(100% - 46px);
+    .imgLayer.after{z-index:1}
+    .clip{position:absolute; inset:0; width:50%; overflow:hidden; z-index:2}
+    .clip .imgLayer.before{position:absolute; inset:0}
+
+    /* fallback placeholder “page” look (only if no images provided) */
+    .placeholder{
+      position:absolute; inset:0;
       display:grid;
       grid-template-columns: 1.1fr .9fr;
-      gap:12px;
-      align-items:stretch;
+      gap:14px;
+      padding:18px;
     }
-    @media (max-width:520px){
-      .mock.after .hero2{grid-template-columns:1fr}
-    }
-    .mock.after .panel{
-      border-radius:16px;
-      border:1px solid rgba(11,15,23,.08);
-      background:rgba(255,255,255,.74);
-      box-shadow: 0 12px 26px rgba(11,15,23,.08);
-      padding:14px;
+    .phCard{
+      border-radius:18px;
+      border:1px solid rgba(11,15,23,.10);
+      background:rgba(255,255,255,.80);
+      box-shadow: 0 14px 30px rgba(11,15,23,.08);
       position:relative;
       overflow:hidden;
     }
-    .mock.after .panel::before{
+    .phCard::before{
       content:"";
       position:absolute; inset:-40px -40px auto auto;
-      width:170px; height:170px;
+      width:220px; height:220px;
       background:radial-gradient(circle at 30% 30%, rgba(185,151,91,.22), transparent 62%);
       transform:rotate(12deg);
-      opacity:.9;
     }
-    .mock.after .headline{
-      font-size:18px;
-      letter-spacing:-.02em;
-      margin:0;
-      line-height:1.12;
-      position:relative;
-      z-index:1;
-    }
-    .mock.after .sub{
-      margin:8px 0 12px;
-      color:rgba(11,15,23,.62);
-      font-size:12px;
-      line-height:1.4;
-      position:relative;
-      z-index:1;
-    }
-    .mock.after .cta{
-      display:inline-flex; align-items:center; justify-content:center;
-      height:36px;
-      padding:0 12px;
-      border-radius:12px;
-      border:1px solid rgba(185,151,91,.50);
-      background:linear-gradient(135deg, rgba(185,151,91,.30), rgba(215,192,138,.22));
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-weight:900;
-      width:max-content;
-      position:relative;
-      z-index:1;
-      box-shadow: 0 14px 24px rgba(185,151,91,.22);
-    }
-    .mock.after .stack{
-      display:grid;
-      grid-template-rows: .8fr 1.2fr;
-      gap:12px;
-    }
-    .mock.after .grid3{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap:10px;
-      position:relative;
-      z-index:1;
+    .phPad{padding:14px; position:relative; z-index:1}
+    .phLine{height:10px; border-radius:999px; background:rgba(11,15,23,.10); margin:8px 0}
+    .phLine.w1{width:82%}
+    .phLine.w2{width:62%}
+    .phLine.w3{width:72%}
+    .phBtn{
       margin-top:10px;
+      width:120px; height:34px;
+      border-radius:12px;
+      border:1px solid rgba(185,151,91,.55);
+      background:linear-gradient(135deg, rgba(185,151,91,.28), rgba(227,207,154,.22));
+      box-shadow: 0 14px 24px rgba(185,151,91,.18);
     }
-    .mock.after .tile{
-      border-radius:14px;
-      border:1px solid rgba(11,15,23,.08);
-      background:rgba(246,247,251,.92);
-      padding:10px;
-      font-size:10px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      color:rgba(11,15,23,.70);
-      text-align:left;
-    }
-    .mock.after .img{
-      border-radius:16px;
-      border:1px solid rgba(11,15,23,.08);
-      background:
-        radial-gradient(240px 160px at 30% 40%, rgba(185,151,91,.20), transparent 60%),
-        linear-gradient(135deg, rgba(11,15,23,.08), rgba(246,247,251,.80));
-      position:relative;
-      overflow:hidden;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.6);
-    }
-    .mock.after .img::after{
-      content:"";
-      position:absolute; inset:auto -40px -40px auto;
-      width:220px; height:220px;
-      background:radial-gradient(circle at 30% 30%, rgba(215,192,138,.28), transparent 62%);
-      transform:rotate(10deg);
-    }
-
-    .slider .afterPane{ z-index:1; }
-    .slider .beforePane{ z-index:2; }
-
-    .clip{
-      position:absolute; inset:0;
-      width:50%;
-      overflow:hidden;
-    }
-    .clip .pane{position:absolute; inset:0}
+    @media (max-width:520px){ .placeholder{grid-template-columns:1fr} }
 
     .handle{
       position:absolute; top:0; bottom:0;
       left:50%;
       width:0;
-      z-index:3;
+      z-index:7;
       cursor:ew-resize;
       touch-action:none;
     }
@@ -638,19 +420,19 @@
       position:absolute;
       left:-1px; top:0; bottom:0;
       width:2px;
-      background:linear-gradient(180deg, rgba(185,151,91,.85), rgba(11,15,23,.20));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.55), 0 18px 40px rgba(11,15,23,.16);
+      background:linear-gradient(180deg, rgba(185,151,91,.90), rgba(11,15,23,.22));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.65), 0 18px 40px rgba(11,15,23,.16);
     }
     .knob{
       position:absolute;
-      left:-24px;
+      left:-26px;
       top:50%;
       transform:translateY(-50%);
-      width:48px; height:48px;
+      width:52px; height:52px;
       border-radius:999px;
-      background:rgba(255,255,255,.92);
+      background:rgba(255,255,255,.96);
       border:1px solid rgba(11,15,23,.12);
-      box-shadow: 0 18px 40px rgba(11,15,23,.14);
+      box-shadow: 0 18px 46px rgba(11,15,23,.16);
       display:flex; align-items:center; justify-content:center;
       gap:8px;
     }
@@ -658,37 +440,18 @@
       width:0;height:0;
       border-top:7px solid transparent;
       border-bottom:7px solid transparent;
-      opacity:.75;
+      opacity:.78;
     }
-    .arrow.l{ border-right:9px solid rgba(11,15,23,.70); }
-    .arrow.r{ border-left:9px solid rgba(11,15,23,.70); }
-    .label{
-      position:absolute;
-      top:12px;
-      z-index:4;
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-weight:900;
-      border:1px solid rgba(11,15,23,.10);
-      background:rgba(255,255,255,.82);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 14px 26px rgba(11,15,23,.10);
-      user-select:none;
-      pointer-events:none;
-    }
-    .label.before{left:12px}
-    .label.after{right:12px; border-color: rgba(185,151,91,.30); background: linear-gradient(135deg, rgba(185,151,91,.18), rgba(255,255,255,.84));}
+    .arrow.l{ border-right:10px solid rgba(11,15,23,.74); }
+    .arrow.r{ border-left:10px solid rgba(11,15,23,.74); }
 
     .cardFoot{
-      padding:12px 16px 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      padding:14px 16px 16px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; flex-wrap:wrap;
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,247,251,.90));
     }
-    .deliver{
-      display:flex; flex-wrap:wrap; gap:8px; align-items:center;
-    }
+    .deliver{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
     .deliver .d{
       font-size:11px;
       letter-spacing:.10em;
@@ -696,44 +459,50 @@
       padding:8px 10px;
       border-radius:999px;
       border:1px solid rgba(11,15,23,.10);
-      background:rgba(255,255,255,.90);
-      color:rgba(11,15,23,.68);
+      background:rgba(255,255,255,.92);
+      color:rgba(11,15,23,.66);
       white-space:nowrap;
     }
 
-    .footCtas{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
     .ghost{
       font-size:12px;
       padding:10px 12px;
       border-radius:12px;
       border:1px solid rgba(11,15,23,.10);
-      background:rgba(255,255,255,.88);
+      background:rgba(255,255,255,.94);
       cursor:pointer;
       box-shadow: 0 12px 22px rgba(11,15,23,.10);
       transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
     }
-    .ghost:hover{transform:translateY(-1px); border-color:rgba(185,151,91,.35); box-shadow: 0 18px 28px rgba(11,15,23,.12)}
+    .ghost:hover{transform:translateY(-1px); border-color:rgba(185,151,91,.40); box-shadow: 0 18px 28px rgba(11,15,23,.12)}
     .ghost:focus{outline:none; box-shadow:var(--focus)}
 
-    /* CTA endcap */
+    /* endcap (fix “bottom looks fucked”) */
     .endcap{
+      grid-column: 1 / -1;
       margin-top:16px;
-      border:1px solid rgba(185,151,91,.30);
+      border:1px solid rgba(185,151,91,.38);
       background:
-        radial-gradient(900px 420px at 10% 0%, rgba(215,192,138,.30), transparent 55%),
+        radial-gradient(900px 420px at 10% 0%, rgba(227,207,154,.30), transparent 55%),
         radial-gradient(700px 380px at 90% 20%, rgba(185,151,91,.22), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,247,251,.92));
+        linear-gradient(180deg, rgba(255,255,255,.94), rgba(246,247,251,.92));
       border-radius:var(--radius2);
       box-shadow:var(--shadow);
       padding:18px;
-      display:flex; justify-content:space-between; align-items:center;
-      gap:12px; flex-wrap:wrap;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:14px;
+      align-items:center;
     }
     .endcap h4{margin:0; font-size:18px; letter-spacing:-.02em}
-    .endcap p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.45; max-width:70ch}
-    .endcap .cta{display:flex; gap:10px; flex-wrap:wrap}
+    .endcap p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.45; max-width:78ch}
+    .endcap .cta{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    @media (max-width:720px){
+      .endcap{grid-template-columns:1fr}
+      .endcap .cta{justify-content:flex-start}
+    }
 
-    /* Modal */
+    /* modal */
     .modal{
       position:fixed; inset:0;
       background:rgba(11,15,23,.62);
@@ -746,7 +515,7 @@
       margin:auto;
       width:min(1100px, 100%);
       border-radius:28px;
-      background:rgba(255,255,255,.94);
+      background:rgba(255,255,255,.96);
       border:1px solid rgba(255,255,255,.24);
       box-shadow: 0 40px 120px rgba(0,0,0,.32);
       overflow:hidden;
@@ -757,39 +526,23 @@
       gap:10px; flex-wrap:wrap;
       padding:14px 14px 10px;
       border-bottom:1px solid rgba(11,15,23,.10);
-      background:rgba(255,255,255,.85);
+      background:rgba(255,255,255,.90);
       backdrop-filter: blur(12px);
     }
     .modalTop b{letter-spacing:-.02em}
     .x{
       border:1px solid rgba(11,15,23,.12);
-      background:rgba(255,255,255,.92);
+      background:rgba(255,255,255,.96);
       border-radius:12px;
       padding:10px 12px;
       cursor:pointer;
       box-shadow: 0 12px 22px rgba(11,15,23,.12);
     }
-    .x:hover{border-color:rgba(185,151,91,.35)}
+    .x:hover{border-color:rgba(185,151,91,.40)}
     .x:focus{outline:none; box-shadow:var(--focus)}
     .modalBody{padding:0}
-    .modal .slider{height:min(520px, 62vh)}
-    @media (max-width:520px){ .modal .slider{height:56vh} }
-
-    .legal{
-      padding:14px 2px 0;
-      color:rgba(11,15,23,.55);
-      font-size:12px;
-      line-height:1.5;
-    }
-    .legal code{
-      background:rgba(246,247,251,.92);
-      border:1px solid rgba(11,15,23,.10);
-      padding:2px 6px;
-      border-radius:8px;
-      font-size:11px;
-    }
-
-    .sr{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+    .modal .slider{height:min(560px, 68vh)}
+    @media (max-width:520px){ .modal .slider{height:60vh} }
   </style>
 </head>
 
@@ -800,7 +553,7 @@
     <div class="wrap">
       <div class="nav">
         <a class="brand" href="../">
-          <img src="../assets/JmodCo_Icon.png" alt="Jmod Co. icon" />
+          <img src="/jmodco/assets/JmodLogoIconTP.png" alt="Jmod Co. logo" />
           <div class="t">
             <b>Consult</b>
             <span>Web Examples</span>
@@ -823,24 +576,20 @@
           <div class="kicker"><span class="dot"></span> BEFORE → AFTER SWIPE GALLERY</div>
           <h1>Outdated sites → modern bright luxury.</h1>
           <p class="lead">
-            Drag the handle. Watch the same business go from “what the hell is this” to “yeah, I’d pay for that.”
-            These are anonymized recreations (no names) based on real-world outdated sites.
+            Drag the handle. This is the exact pitch: “my site looks old” → “holy shit this looks premium.”
+            Next: drop real screenshots into the sliders.
           </p>
 
           <div class="ctarow">
             <button class="btn gold" id="jumpFeatured" type="button">
               <span class="dot"></span> Show the most dramatic
             </button>
-            <a class="btn" href="../#contact">
-              Get a mock for mine
-            </a>
-            <a class="btn" href="../#pricing">
-              See packages
-            </a>
+            <a class="btn" href="../#contact">Get a mock for mine</a>
+            <a class="btn" href="../#pricing">See packages</a>
           </div>
 
           <div class="legal">
-            Publish-safe: “before”/“after” visuals are recreated lookalikes. Swap any placeholder text/images later.
+            Sliders now support real images. Put files in <b>/Consult/webexamples/img/</b> and you’re done.
           </div>
         </section>
 
@@ -898,93 +647,43 @@
               <span class="tag"><span class="dot"></span> Featured: Car Detailing</span>
               <h2>“Looks expensive” without looking fake.</h2>
               <p>
-                The old site vibe: clutter, weak photos, no booking flow.
-                The rebuild: premium hero, instant packages, trust + proof, booking CTA everywhere.
+                This is where your real screenshots go. If the images aren’t present yet, you’ll see clean placeholders.
               </p>
             </div>
             <div class="featActions">
-              <button class="btn gold tiny" type="button" data-open="modal" data-target="featured">Fullscreen swipe</button>
+              <button class="btn gold tiny" type="button" data-open="modal">Fullscreen swipe</button>
               <a class="btn tiny" href="../#contact">I want this</a>
             </div>
           </div>
 
-          <div class="slider" data-slider="featured">
+          <div class="slider"
+               data-slider="featured"
+               data-before="/Consult/webexamples/img/featured-before.jpg"
+               data-after="/Consult/webexamples/img/featured-after.jpg">
             <div class="label before">Before</div>
             <div class="label after">After</div>
 
-            <div class="pane afterPane">
-              <div class="mock after" aria-label="After mockup">
-                <div class="nav">
-                  <div class="logo"><span class="mark"></span> PREMIUM DETAIL</div>
-                  <div class="links"><span>Packages</span><span>Gallery</span><span>Reviews</span><span>Book</span></div>
-                </div>
-                <div class="hero2">
-                  <div class="panel">
-                    <p class="headline">Mobile Detailing. <span style="color:var(--gold)">Luxury Finish.</span></p>
-                    <p class="sub">Showroom shine, at your driveway. Transparent packages. Same-day slots.</p>
-                    <div class="cta">Book now</div>
-                    <div class="grid3" aria-hidden="true">
-                      <div class="tile">Wash + Wax</div>
-                      <div class="tile">Interior Reset</div>
-                      <div class="tile">Ceramic</div>
-                    </div>
-                  </div>
-                  <div class="stack">
-                    <div class="panel">
-                      <p class="headline">Trusted. Insured. 5★</p>
-                      <p class="sub">Reviews + guarantees + service radius shown immediately.</p>
-                      <div class="grid3" aria-hidden="true">
-                        <div class="tile">5★ Reviews</div>
-                        <div class="tile">Insured</div>
-                        <div class="tile">Satisfaction</div>
-                      </div>
-                    </div>
-                    <div class="img" aria-hidden="true"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="imgLayer after" data-after></div>
 
             <div class="clip" style="width:50%" data-clip>
-              <div class="pane beforePane">
-                <div class="mock before" aria-label="Before mockup">
-                  <div class="top"><i></i><i></i><i></i><span style="margin-left:6px">HOME • SERVICES • CONTACT</span></div>
-                  <div class="content">
-                    <div class="left">
-                      <b style="font-size:12px; letter-spacing:.06em;">WELCOME!!!</b>
-                      <div class="lines">
-                        <div class="line w4"></div>
-                        <div class="line w2"></div>
-                        <div class="line w3"></div>
-                        <div class="line w5"></div>
-                        <div class="line w2"></div>
-                      </div>
-                      <div class="lines" style="margin-top:14px">
-                        <div class="line w3"></div>
-                        <div class="line w4"></div>
-                        <div class="line w2"></div>
-                      </div>
-                    </div>
-                    <div class="right">
-                      <div class="box">
-                        <b style="font-size:12px">SPECIALS</b>
-                        <div class="lines">
-                          <div class="line w2"></div>
-                          <div class="line w3"></div>
-                          <div class="line w5"></div>
-                        </div>
-                      </div>
-                      <div class="box">
-                        <b style="font-size:12px">CALL FOR PRICING</b>
-                        <div class="lines">
-                          <div class="line w4"></div>
-                          <div class="line w2"></div>
-                          <div class="line w3"></div>
-                          <div class="line w5"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <div class="imgLayer before" data-before></div>
+            </div>
+
+            <div class="placeholder" data-placeholder>
+              <div class="phCard">
+                <div class="phPad">
+                  <div class="phLine w1"></div>
+                  <div class="phLine w2"></div>
+                  <div class="phLine w3"></div>
+                  <div class="phBtn"></div>
+                </div>
+              </div>
+              <div class="phCard">
+                <div class="phPad">
+                  <div class="phLine w1"></div>
+                  <div class="phLine w3"></div>
+                  <div class="phLine w2"></div>
+                  <div class="phBtn"></div>
                 </div>
               </div>
             </div>
@@ -998,7 +697,6 @@
           </div>
         </article>
 
-        <!-- CARDS -->
         <div class="cards" id="cards">
 
           <!-- 1 Restaurant -->
@@ -1007,7 +705,7 @@
               <div>
                 <span class="badge"><span class="dot"></span> Restaurant</span>
                 <h3>Menu-first. Vibe-first. Reservation-first.</h3>
-                <div class="meta">Old: bland admin-page energy. New: full-bleed food, clean menu cards, events, reserve/order instantly.</div>
+                <div class="meta">Replace with real screenshots: <b>restaurant-before.jpg</b> / <b>restaurant-after.jpg</b></div>
               </div>
               <button class="ghost" type="button" data-open="modal">Fullscreen</button>
             </div>
@@ -1019,74 +717,21 @@
               <span class="u">Gallery strip</span>
             </div>
 
-            <div class="slider" data-slider="card-restaurant">
+            <div class="slider"
+                 data-slider="restaurant"
+                 data-before="/Consult/webexamples/img/restaurant-before.jpg"
+                 data-after="/Consult/webexamples/img/restaurant-after.jpg">
               <div class="label before">Before</div>
               <div class="label after">After</div>
 
-              <div class="pane afterPane">
-                <div class="mock after">
-                  <div class="nav">
-                    <div class="logo"><span class="mark"></span> BISTRO</div>
-                    <div class="links"><span>Menu</span><span>Events</span><span>Reserve</span></div>
-                  </div>
-                  <div class="hero2">
-                    <div class="panel">
-                      <p class="headline">Dinner that feels like <span style="color:var(--gold)">a plan.</span></p>
-                      <p class="sub">Seasonal plates. Cocktail program. Easy reservations.</p>
-                      <div class="cta">Reserve</div>
-                      <div class="grid3" aria-hidden="true">
-                        <div class="tile">Chef’s Menu</div>
-                        <div class="tile">Cocktails</div>
-                        <div class="tile">Live Nights</div>
-                      </div>
-                    </div>
-                    <div class="stack">
-                      <div class="img" aria-hidden="true"></div>
-                      <div class="panel">
-                        <p class="headline">Hours + Map + Parking</p>
-                        <p class="sub">No hunting. Everything upfront. Mobile-first.</p>
-                        <div class="grid3" aria-hidden="true">
-                          <div class="tile">Reserve</div>
-                          <div class="tile">Order</div>
-                          <div class="tile">Directions</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="imgLayer after" data-after></div>
+              <div class="clip" style="width:50%" data-clip>
+                <div class="imgLayer before" data-before></div>
               </div>
 
-              <div class="clip" style="width:50%" data-clip>
-                <div class="pane beforePane">
-                  <div class="mock before">
-                    <div class="top"><i></i><i></i><i></i><span style="margin-left:6px">WELCOME • MENU (PDF) • ABOUT</span></div>
-                    <div class="content">
-                      <div class="left">
-                        <b style="font-size:12px; letter-spacing:.06em;">HOME PAGE</b>
-                        <div class="lines">
-                          <div class="line w4"></div><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div>
-                        </div>
-                        <div class="lines" style="margin-top:12px">
-                          <div class="line w2"></div><div class="line w5"></div><div class="line w3"></div>
-                        </div>
-                      </div>
-                      <div class="right">
-                        <div class="box">
-                          <b style="font-size:12px">SPECIAL</b>
-                          <div class="lines">
-                            <div class="line w2"></div><div class="line w3"></div><div class="line w5"></div>
-                          </div>
-                        </div>
-                        <div class="box">
-                          <b style="font-size:12px">CONTACT</b>
-                          <div class="lines">
-                            <div class="line w4"></div><div class="line w2"></div><div class="line w3"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="placeholder" data-placeholder>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w2"></div><div class="phLine w3"></div><div class="phBtn"></div></div></div>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w3"></div><div class="phLine w2"></div><div class="phBtn"></div></div></div>
               </div>
 
               <div class="handle" role="slider" aria-label="Before and after slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" data-handle>
@@ -1100,9 +745,7 @@
                 <span class="d">Reserve/Order CTA</span>
                 <span class="d">Menu cards</span>
               </div>
-              <div class="footCtas">
-                <a class="btn tiny gold" href="../#contact">Get a mock</a>
-              </div>
+              <a class="btn tiny gold" href="../#contact">Get a mock</a>
             </div>
           </article>
 
@@ -1112,7 +755,7 @@
               <div>
                 <span class="badge"><span class="dot"></span> Movers</span>
                 <h3>Quote flow that doesn’t waste time.</h3>
-                <div class="meta">Old: wall of text + “call us.” New: 2-step quote, services, trust, insurance, how-it-works.</div>
+                <div class="meta">Replace with: <b>movers-before.jpg</b> / <b>movers-after.jpg</b></div>
               </div>
               <button class="ghost" type="button" data-open="modal">Fullscreen</button>
             </div>
@@ -1124,67 +767,21 @@
               <span class="u">Clear process</span>
             </div>
 
-            <div class="slider" data-slider="card-movers">
+            <div class="slider"
+                 data-slider="movers"
+                 data-before="/Consult/webexamples/img/movers-before.jpg"
+                 data-after="/Consult/webexamples/img/movers-after.jpg">
               <div class="label before">Before</div>
               <div class="label after">After</div>
 
-              <div class="pane afterPane">
-                <div class="mock after">
-                  <div class="nav">
-                    <div class="logo"><span class="mark"></span> MOVERS</div>
-                    <div class="links"><span>Services</span><span>How</span><span>Quote</span></div>
-                  </div>
-                  <div class="hero2">
-                    <div class="panel">
-                      <p class="headline">Move without the <span style="color:var(--gold)">chaos.</span></p>
-                      <p class="sub">Transparent pricing expectations. Licensed + insured. Fast scheduling.</p>
-                      <div class="cta">Get quote</div>
-                      <div class="grid3" aria-hidden="true">
-                        <div class="tile">Local</div>
-                        <div class="tile">Long</div>
-                        <div class="tile">Packing</div>
-                      </div>
-                    </div>
-                    <div class="stack">
-                      <div class="panel">
-                        <p class="headline">Trust shown upfront</p>
-                        <p class="sub">License, insurance, claims policy, and reviews visible immediately.</p>
-                        <div class="grid3" aria-hidden="true">
-                          <div class="tile">Licensed</div>
-                          <div class="tile">Insured</div>
-                          <div class="tile">5★</div>
-                        </div>
-                      </div>
-                      <div class="img" aria-hidden="true"></div>
-                    </div>
-                  </div>
-                </div>
+              <div class="imgLayer after" data-after></div>
+              <div class="clip" style="width:50%" data-clip>
+                <div class="imgLayer before" data-before></div>
               </div>
 
-              <div class="clip" style="width:50%" data-clip>
-                <div class="pane beforePane">
-                  <div class="mock before">
-                    <div class="top"><i></i><i></i><i></i><span style="margin-left:6px">HOME • ABOUT • SERVICES • CONTACT</span></div>
-                    <div class="content">
-                      <div class="left">
-                        <b style="font-size:12px; letter-spacing:.06em;">WELCOME TO OUR COMPANY</b>
-                        <div class="lines">
-                          <div class="line w4"></div><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div><div class="line w2"></div>
-                        </div>
-                      </div>
-                      <div class="right">
-                        <div class="box">
-                          <b style="font-size:12px">SERVICES</b>
-                          <div class="lines"><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div></div>
-                        </div>
-                        <div class="box">
-                          <b style="font-size:12px">CALL US</b>
-                          <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="placeholder" data-placeholder>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w2"></div><div class="phLine w3"></div><div class="phBtn"></div></div></div>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w3"></div><div class="phLine w2"></div><div class="phBtn"></div></div></div>
               </div>
 
               <div class="handle" role="slider" aria-label="Before and after slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" data-handle>
@@ -1198,9 +795,7 @@
                 <span class="d">Trust + proof</span>
                 <span class="d">Clear services</span>
               </div>
-              <div class="footCtas">
-                <a class="btn tiny gold" href="../#contact">Get a mock</a>
-              </div>
+              <a class="btn tiny gold" href="../#contact">Get a mock</a>
             </div>
           </article>
 
@@ -1210,7 +805,7 @@
               <div>
                 <span class="badge"><span class="dot"></span> Audio / AV</span>
                 <h3>Premium systems deserve premium presentation.</h3>
-                <div class="meta">Old: old-school catalog vibe. New: build-your-setup flow + install booking + guarantees.</div>
+                <div class="meta">Replace with: <b>audio-before.jpg</b> / <b>audio-after.jpg</b></div>
               </div>
               <button class="ghost" type="button" data-open="modal">Fullscreen</button>
             </div>
@@ -1222,65 +817,21 @@
               <span class="u">Guarantees</span>
             </div>
 
-            <div class="slider" data-slider="card-audio">
+            <div class="slider"
+                 data-slider="audio"
+                 data-before="/Consult/webexamples/img/audio-before.jpg"
+                 data-after="/Consult/webexamples/img/audio-after.jpg">
               <div class="label before">Before</div>
               <div class="label after">After</div>
 
-              <div class="pane afterPane">
-                <div class="mock after">
-                  <div class="nav">
-                    <div class="logo"><span class="mark"></span> AUDIO</div>
-                    <div class="links"><span>Build</span><span>Install</span><span>Book</span></div>
-                  </div>
-                  <div class="hero2">
-                    <div class="panel">
-                      <p class="headline">Precision sound. <span style="color:var(--gold)">Clean install.</span></p>
-                      <p class="sub">Start with your car. Pick your setup. Book installation.</p>
-                      <div class="cta">Build setup</div>
-                      <div class="grid3" aria-hidden="true">
-                        <div class="tile">Speakers</div>
-                        <div class="tile">Amp</div>
-                        <div class="tile">Sub</div>
-                      </div>
-                    </div>
-                    <div class="stack">
-                      <div class="img" aria-hidden="true"></div>
-                      <div class="panel">
-                        <p class="headline">Guaranteed workmanship</p>
-                        <p class="sub">Warranty, materials, and timeline shown upfront.</p>
-                        <div class="grid3" aria-hidden="true">
-                          <div class="tile">Warranty</div>
-                          <div class="tile">Fast</div>
-                          <div class="tile">Clean</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="imgLayer after" data-after></div>
+              <div class="clip" style="width:50%" data-clip>
+                <div class="imgLayer before" data-before></div>
               </div>
 
-              <div class="clip" style="width:50%" data-clip>
-                <div class="pane beforePane">
-                  <div class="mock before">
-                    <div class="top"><i></i><i></i><i></i><span style="margin-left:6px">AUDIO • VIDEO • PRODUCTS • LINKS</span></div>
-                    <div class="content">
-                      <div class="left">
-                        <b style="font-size:12px; letter-spacing:.06em;">PRODUCT LIST</b>
-                        <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div><div class="line w2"></div></div>
-                      </div>
-                      <div class="right">
-                        <div class="box">
-                          <b style="font-size:12px">CATEGORIES</b>
-                          <div class="lines"><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div></div>
-                        </div>
-                        <div class="box">
-                          <b style="font-size:12px">CONTACT</b>
-                          <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="placeholder" data-placeholder>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w2"></div><div class="phLine w3"></div><div class="phBtn"></div></div></div>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w3"></div><div class="phLine w2"></div><div class="phBtn"></div></div></div>
               </div>
 
               <div class="handle" role="slider" aria-label="Before and after slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" data-handle>
@@ -1294,9 +845,7 @@
                 <span class="d">Install booking</span>
                 <span class="d">Warranty</span>
               </div>
-              <div class="footCtas">
-                <a class="btn tiny gold" href="../#contact">Get a mock</a>
-              </div>
+              <a class="btn tiny gold" href="../#contact">Get a mock</a>
             </div>
           </article>
 
@@ -1306,7 +855,7 @@
               <div>
                 <span class="badge"><span class="dot"></span> Home &amp; Garden</span>
                 <h3>Portfolio that sells the taste level.</h3>
-                <div class="meta">Old: “services page” energy. New: case studies + filters + process + premium plans.</div>
+                <div class="meta">Replace with: <b>home-before.jpg</b> / <b>home-after.jpg</b></div>
               </div>
               <button class="ghost" type="button" data-open="modal">Fullscreen</button>
             </div>
@@ -1318,65 +867,21 @@
               <span class="u">Plans</span>
             </div>
 
-            <div class="slider" data-slider="card-home">
+            <div class="slider"
+                 data-slider="home"
+                 data-before="/Consult/webexamples/img/home-before.jpg"
+                 data-after="/Consult/webexamples/img/home-after.jpg">
               <div class="label before">Before</div>
               <div class="label after">After</div>
 
-              <div class="pane afterPane">
-                <div class="mock after">
-                  <div class="nav">
-                    <div class="logo"><span class="mark"></span> GARDEN</div>
-                    <div class="links"><span>Work</span><span>Process</span><span>Call</span></div>
-                  </div>
-                  <div class="hero2">
-                    <div class="panel">
-                      <p class="headline">Design. Build. <span style="color:var(--gold)">Maintain.</span></p>
-                      <p class="sub">Premium outdoor spaces with clean timelines and maintenance plans.</p>
-                      <div class="cta">Design call</div>
-                      <div class="grid3" aria-hidden="true">
-                        <div class="tile">Modern</div>
-                        <div class="tile">Minimal</div>
-                        <div class="tile">Tropical</div>
-                      </div>
-                    </div>
-                    <div class="stack">
-                      <div class="img" aria-hidden="true"></div>
-                      <div class="panel">
-                        <p class="headline">Plan tiers</p>
-                        <p class="sub">Monthly maintenance + seasonal refresh packages.</p>
-                        <div class="grid3" aria-hidden="true">
-                          <div class="tile">Essential</div>
-                          <div class="tile">Premium</div>
-                          <div class="tile">Elite</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="imgLayer after" data-after></div>
+              <div class="clip" style="width:50%" data-clip>
+                <div class="imgLayer before" data-before></div>
               </div>
 
-              <div class="clip" style="width:50%" data-clip>
-                <div class="pane beforePane">
-                  <div class="mock before">
-                    <div class="top"><i></i><i></i><i></i><span style="margin-left:6px">SERVICES • GALLERY • CONTACT</span></div>
-                    <div class="content">
-                      <div class="left">
-                        <b style="font-size:12px; letter-spacing:.06em;">SERVICES</b>
-                        <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div><div class="line w2"></div></div>
-                      </div>
-                      <div class="right">
-                        <div class="box">
-                          <b style="font-size:12px">GALLERY</b>
-                          <div class="lines"><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div></div>
-                        </div>
-                        <div class="box">
-                          <b style="font-size:12px">EMAIL US</b>
-                          <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="placeholder" data-placeholder>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w2"></div><div class="phLine w3"></div><div class="phBtn"></div></div></div>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w3"></div><div class="phLine w2"></div><div class="phBtn"></div></div></div>
               </div>
 
               <div class="handle" role="slider" aria-label="Before and after slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" data-handle>
@@ -1390,9 +895,7 @@
                 <span class="d">Process</span>
                 <span class="d">Plan tiers</span>
               </div>
-              <div class="footCtas">
-                <a class="btn tiny gold" href="../#contact">Get a mock</a>
-              </div>
+              <a class="btn tiny gold" href="../#contact">Get a mock</a>
             </div>
           </article>
 
@@ -1402,7 +905,7 @@
               <div>
                 <span class="badge"><span class="dot"></span> Tool Shop</span>
                 <h3>Catalog → modern shop experience.</h3>
-                <div class="meta">Old: flat lists. New: categories, search, filters, spec tables, “shop by job,” bulk quote.</div>
+                <div class="meta">Replace with: <b>tools-before.jpg</b> / <b>tools-after.jpg</b></div>
               </div>
               <button class="ghost" type="button" data-open="modal">Fullscreen</button>
             </div>
@@ -1414,65 +917,21 @@
               <span class="u">Bulk quote</span>
             </div>
 
-            <div class="slider" data-slider="card-tools">
+            <div class="slider"
+                 data-slider="tools"
+                 data-before="/Consult/webexamples/img/tools-before.jpg"
+                 data-after="/Consult/webexamples/img/tools-after.jpg">
               <div class="label before">Before</div>
               <div class="label after">After</div>
 
-              <div class="pane afterPane">
-                <div class="mock after">
-                  <div class="nav">
-                    <div class="logo"><span class="mark"></span> SUPPLY</div>
-                    <div class="links"><span>Shop</span><span>Jobs</span><span>Quote</span></div>
-                  </div>
-                  <div class="hero2">
-                    <div class="panel">
-                      <p class="headline">Hardware that feels <span style="color:var(--gold)">premium.</span></p>
-                      <p class="sub">Find parts fast. Specs clean. Bulk quote in 30 seconds.</p>
-                      <div class="cta">Shop now</div>
-                      <div class="grid3" aria-hidden="true">
-                        <div class="tile">Traffic</div>
-                        <div class="tile">Parking</div>
-                        <div class="tile">Construction</div>
-                      </div>
-                    </div>
-                    <div class="stack">
-                      <div class="panel">
-                        <p class="headline">Contractor-ready</p>
-                        <p class="sub">Account options + repeat ordering + PDF installs (optional).</p>
-                        <div class="grid3" aria-hidden="true">
-                          <div class="tile">Bulk</div>
-                          <div class="tile">Net terms</div>
-                          <div class="tile">Support</div>
-                        </div>
-                      </div>
-                      <div class="img" aria-hidden="true"></div>
-                    </div>
-                  </div>
-                </div>
+              <div class="imgLayer after" data-after></div>
+              <div class="clip" style="width:50%" data-clip>
+                <div class="imgLayer before" data-before></div>
               </div>
 
-              <div class="clip" style="width:50%" data-clip>
-                <div class="pane beforePane">
-                  <div class="mock before">
-                    <div class="top"><i></i><i></i><i></i><span style="margin-left:6px">HARDWARE LIST • PARTS • LINKS</span></div>
-                    <div class="content">
-                      <div class="left">
-                        <b style="font-size:12px; letter-spacing:.06em;">PART NUMBERS</b>
-                        <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div><div class="line w2"></div></div>
-                      </div>
-                      <div class="right">
-                        <div class="box">
-                          <b style="font-size:12px">CATEGORIES</b>
-                          <div class="lines"><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div></div>
-                        </div>
-                        <div class="box">
-                          <b style="font-size:12px">EMAIL</b>
-                          <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="placeholder" data-placeholder>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w2"></div><div class="phLine w3"></div><div class="phBtn"></div></div></div>
+                <div class="phCard"><div class="phPad"><div class="phLine w1"></div><div class="phLine w3"></div><div class="phLine w2"></div><div class="phBtn"></div></div></div>
               </div>
 
               <div class="handle" role="slider" aria-label="Before and after slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" data-handle>
@@ -1486,105 +945,7 @@
                 <span class="d">Filters</span>
                 <span class="d">Bulk quote</span>
               </div>
-              <div class="footCtas">
-                <a class="btn tiny gold" href="../#contact">Get a mock</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- 6 Auto (non-featured second auto) -->
-          <article class="card" data-kind="auto">
-            <div class="cardHead">
-              <div>
-                <span class="badge"><span class="dot"></span> Car Detailing</span>
-                <h3>Packages that don’t look cheap.</h3>
-                <div class="meta">Old: “call for pricing.” New: three tiers, add-ons, booking slots, proof + reviews.</div>
-              </div>
-              <button class="ghost" type="button" data-open="modal">Fullscreen</button>
-            </div>
-
-            <div class="upgrades">
-              <span class="u">Tiered packages</span>
-              <span class="u">Add-ons</span>
-              <span class="u">Proof</span>
-              <span class="u">Sticky booking</span>
-            </div>
-
-            <div class="slider" data-slider="card-auto2">
-              <div class="label before">Before</div>
-              <div class="label after">After</div>
-
-              <div class="pane afterPane">
-                <div class="mock after">
-                  <div class="nav">
-                    <div class="logo"><span class="mark"></span> DETAIL CO.</div>
-                    <div class="links"><span>Packages</span><span>Add-ons</span><span>Book</span></div>
-                  </div>
-                  <div class="hero2">
-                    <div class="panel">
-                      <p class="headline">Simple pricing. <span style="color:var(--gold)">Premium result.</span></p>
-                      <p class="sub">Pick a tier. Add what you want. Book a slot.</p>
-                      <div class="cta">See packages</div>
-                      <div class="grid3" aria-hidden="true">
-                        <div class="tile">Basic</div>
-                        <div class="tile">Premium</div>
-                        <div class="tile">Ceramic</div>
-                      </div>
-                    </div>
-                    <div class="stack">
-                      <div class="img" aria-hidden="true"></div>
-                      <div class="panel">
-                        <p class="headline">Before/after proof</p>
-                        <p class="sub">Micro-gallery + reviews above the fold.</p>
-                        <div class="grid3" aria-hidden="true">
-                          <div class="tile">Proof</div>
-                          <div class="tile">Reviews</div>
-                          <div class="tile">Guarantee</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="clip" style="width:50%" data-clip>
-                <div class="pane beforePane">
-                  <div class="mock before">
-                    <div class="top"><i></i><i></i><i></i><span style="margin-left:6px">HOME • PRICES • PHOTOS • CONTACT</span></div>
-                    <div class="content">
-                      <div class="left">
-                        <b style="font-size:12px; letter-spacing:.06em;">CALL FOR PRICE</b>
-                        <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div><div class="line w2"></div></div>
-                      </div>
-                      <div class="right">
-                        <div class="box">
-                          <b style="font-size:12px">GALLERY</b>
-                          <div class="lines"><div class="line w2"></div><div class="line w3"></div><div class="line w5"></div></div>
-                        </div>
-                        <div class="box">
-                          <b style="font-size:12px">PHONE</b>
-                          <div class="lines"><div class="line w4"></div><div class="line w2"></div><div class="line w3"></div></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="handle" role="slider" aria-label="Before and after slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" data-handle>
-                <div class="knob" aria-hidden="true"><div class="arrow l"></div><div class="arrow r"></div></div>
-              </div>
-            </div>
-
-            <div class="cardFoot">
-              <div class="deliver">
-                <span class="d">Packages</span>
-                <span class="d">Add-ons</span>
-                <span class="d">Booking</span>
-              </div>
-              <div class="footCtas">
-                <a class="btn tiny gold" href="../#contact">Get a mock</a>
-              </div>
+              <a class="btn tiny gold" href="../#contact">Get a mock</a>
             </div>
           </article>
 
@@ -1594,8 +955,7 @@
           <div>
             <h4>Want your business to look like it costs more?</h4>
             <p>
-              I’ll do the same before/after on your brand: premium bright luxury, conversion-first, mobile-first.
-              You’ll get a mock you can approve in minutes.
+              Same exact makeover: bright luxury, conversion-first, mobile-first. You’ll get a mock you can approve fast.
             </p>
           </div>
           <div class="cta">
@@ -1608,7 +968,6 @@
     </div>
   </section>
 
-  <!-- Modal -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Fullscreen before and after">
       <div class="modalTop">
@@ -1624,13 +983,10 @@
       const qs = (s, r=document) => r.querySelector(s);
       const qsa = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-      // Smooth jump to featured
-      const jump = qs('#jumpFeatured');
-      if(jump){
-        jump.addEventListener('click', ()=> qs('#featured')?.scrollIntoView({behavior:'smooth', block:'start'}));
-      }
+      // jump
+      qs('#jumpFeatured')?.addEventListener('click', ()=> qs('#featured')?.scrollIntoView({behavior:'smooth', block:'start'}));
 
-      // Filtering
+      // filters
       const chips = qsa('.chip[data-filter]');
       const cards = qsa('.card');
       const featured = qs('#featured');
@@ -1638,22 +994,18 @@
       function setChipActive(filter){
         chips.forEach(c => c.setAttribute('aria-pressed', (c.dataset.filter === filter) ? 'true' : 'false'));
       }
-
       function applyFilter(filter){
         const showAll = filter === 'all';
-        // featured visibility
         if(featured){
           const ok = showAll || featured.dataset.kind === filter;
           featured.style.display = ok ? '' : 'none';
         }
-        // cards
         cards.forEach(card=>{
           const ok = showAll || card.dataset.kind === filter;
           card.style.display = ok ? '' : 'none';
         });
         localStorage.setItem('jmod_consult_webexamples_filter', filter);
       }
-
       chips.forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const f = btn.dataset.filter || 'all';
@@ -1661,14 +1013,44 @@
           applyFilter(f);
         });
       });
-
       const saved = localStorage.getItem('jmod_consult_webexamples_filter');
       if(saved && chips.some(c=>c.dataset.filter===saved)){
         setChipActive(saved);
         applyFilter(saved);
       }
 
-      // Slider logic
+      // load images (real pages)
+      function setBg(el, url){
+        if(!url) return false;
+        el.style.backgroundImage = `url("${url}")`;
+        return true;
+      }
+      function testImage(url){
+        return new Promise((resolve)=>{
+          const img = new Image();
+          img.onload = ()=> resolve(true);
+          img.onerror = ()=> resolve(false);
+          img.src = url;
+        });
+      }
+
+      async function hydrateSlider(slider){
+        const beforeUrl = slider.getAttribute('data-before') || '';
+        const afterUrl  = slider.getAttribute('data-after') || '';
+        const beforeEl = slider.querySelector('[data-before]');
+        const afterEl  = slider.querySelector('[data-after]');
+        const ph = slider.querySelector('[data-placeholder]');
+
+        const [okB, okA] = await Promise.all([testImage(beforeUrl), testImage(afterUrl)]);
+
+        if(okA && afterEl){ setBg(afterEl, afterUrl); }
+        if(okB && beforeEl){ setBg(beforeEl, beforeUrl); }
+
+        const hasAny = okA || okB;
+        if(ph) ph.style.display = hasAny ? 'none' : '';
+      }
+
+      // slider interaction
       function initSlider(slider){
         const clip = slider.querySelector('[data-clip]');
         const handle = slider.querySelector('[data-handle]');
@@ -1682,7 +1064,6 @@
           handle.style.left = pct + '%';
           handle.setAttribute('aria-valuenow', String(Math.round(pct)));
         }
-
         function pointerToPct(clientX){
           const r = slider.getBoundingClientRect();
           const x = clientX - r.left;
@@ -1707,13 +1088,11 @@
         slider.addEventListener('pointermove', onMove);
         window.addEventListener('pointerup', onUp);
 
-        // Tap anywhere to move
         slider.addEventListener('pointerdown', (e)=>{
           if(e.target === handle || handle.contains(e.target)) return;
           setPct(pointerToPct(e.clientX));
         });
 
-        // Keyboard
         handle.addEventListener('keydown', (e)=>{
           const now = Number(handle.getAttribute('aria-valuenow') || '50');
           if(e.key === 'ArrowLeft'){ e.preventDefault(); setPct(now - 3); }
@@ -1722,13 +1101,14 @@
           if(e.key === 'End'){ e.preventDefault(); setPct(100); }
         });
 
-        // Initial
         setPct(50);
       }
 
-      qsa('.slider').forEach(initSlider);
+      const sliders = qsa('.slider');
+      sliders.forEach(initSlider);
+      sliders.forEach(hydrateSlider);
 
-      // Modal: clone slider into modal for fullscreen
+      // modal fullscreen
       const modal = qs('#modal');
       const modalBody = qs('#modalBody');
       const modalTitle = qs('#modalTitle');
@@ -1737,69 +1117,69 @@
       function openModalFromSlider(sliderEl, title){
         if(!modal || !modalBody) return;
         modalBody.innerHTML = '';
-
         const clone = sliderEl.cloneNode(true);
-        // remove any previous inline ids/attrs that could conflict
-        clone.removeAttribute('data-slider');
-
         modalBody.appendChild(clone);
-        modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
 
+        modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
         if(modalTitle) modalTitle.textContent = title || 'Fullscreen Swipe';
 
-        // re-init slider handlers inside clone
         initSlider(clone);
-        // allow clicking backdrop to close
+        hydrateSlider(clone);
+
         modal.addEventListener('pointerdown', onBackdropClose);
       }
-
       function closeModalNow(){
         if(!modal) return;
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        if(modalBody) modalBody.innerHTML = '';
+        modal.setAttribute('aria-hidden','true');
+        document.body.style.overflow='';
+        if(modalBody) modalBody.innerHTML='';
         modal.removeEventListener('pointerdown', onBackdropClose);
       }
-
       function onBackdropClose(e){
         if(e.target === modal) closeModalNow();
       }
 
       qsa('[data-open="modal"]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          const card = btn.closest('article');
-          const slider = card?.querySelector('.slider');
-          const title = card?.querySelector('h2, h3')?.textContent || 'Fullscreen Swipe';
+          const article = btn.closest('article');
+          const slider = article?.querySelector('.slider');
+          const title = article?.querySelector('h2, h3')?.textContent || 'Fullscreen Swipe';
           if(slider) openModalFromSlider(slider, title);
         });
       });
 
-      if(closeModal) closeModal.addEventListener('click', closeModalNow);
+      closeModal?.addEventListener('click', closeModalNow);
       window.addEventListener('keydown', (e)=>{
-        if(e.key === 'Escape' && modal?.getAttribute('aria-hidden') === 'false'){
-          closeModalNow();
-        }
+        if(e.key === 'Escape' && modal?.getAttribute('aria-hidden') === 'false') closeModalNow();
       });
 
     })();
   </script>
 
   <!--
-    REAL-WORLD REFERENCE SOURCES USED TO INSPIRE THESE ANONYMIZED "BEFORE" LOOKS:
-    - Car detailing: georgiamobiledetail.com
-    - Movers: ecimovers.com
-    - Restaurant: caribbeanbeach.co.za (admin-ish sections)
-    - Home & garden: forestpark.com.sg
-    - Tool shop/catalog: 4ssign.com
-    - Audio: motor-motor.com
-    You are NOT publishing their branding here. This is a recreated vibe with no names/logos/text.
+    WHAT CHANGED (YOUR COMPLAINTS):
+    - Jmod Co. logo now uses: /jmodco/assets/JmodLogoIconTP.png (header + favicon + watermark)
+    - Sliders now use REAL page images via data-before/data-after (no translucent cover effects)
+    - Beige/white washed look tightened with more contrast + slightly cooler soft panels
+    - Bottom “looks fucked” fixed: endcap is full-width grid, not a skinny column
 
-    TO UPGRADE FROM PLACEHOLDER MOCKS TO TRUE BEFORE/AFTER:
-    - Replace each .mock.before / .mock.after with images:
-      - Put images in /Consult/webexamples/img/
-      - Use <img> tags with object-fit:cover inside each pane.
-    If you want, I’ll refactor this file to use real image layers the moment you give me 12 screenshots.
+    DROP YOUR REAL IMAGES HERE:
+    /Consult/webexamples/img/
+      featured-before.jpg
+      featured-after.jpg
+      restaurant-before.jpg
+      restaurant-after.jpg
+      movers-before.jpg
+      movers-after.jpg
+      audio-before.jpg
+      audio-after.jpg
+      home-before.jpg
+      home-after.jpg
+      tools-before.jpg
+      tools-after.jpg
+
+    Use JPG or PNG. Desktop screenshots recommended (wide).
   -->
 </body>
 </html>
