@@ -1,1 +1,377 @@
-vsee box
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#070b14" />
+  <title>VSeeBox — Jordan Moddes</title>
+
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/png" href="/jmodco/assets/JmodLogoIconTP.png" />
+
+  <style>
+    /* =========================
+       SEAMLESS OPTION A BACKGROUND
+       ========================= */
+    :root{
+      --bg:#070b14;
+      --text:#e6e9f0;
+      --muted:#9aa3b2;
+      --accent:#3ea6ff;
+      --accent2:#6ee7b7;
+      --max:1080px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+
+    /* subtle noise overlay */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.035'/></svg>");
+      z-index:-1;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:var(--max);margin:0 auto;padding:18px}
+    .spacer{height:56px}
+    .spacer-sm{height:28px}
+
+    /* =========================
+       HEADER
+       ========================= */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .logo img{height:28px;width:auto;opacity:.9}
+    .lang-toggle{
+      display:flex;
+      gap:10px;
+      font-size:.9rem;
+    }
+    .lang-toggle button{
+      background:none;
+      border:none;
+      color:var(--muted);
+      cursor:pointer;
+    }
+    .lang-toggle button.active{color:var(--text)}
+
+    /* =========================
+       HERO
+       ========================= */
+    .hero h1{
+      font-size:clamp(1.6rem,5vw,2.4rem);
+      margin:.2em 0;
+      font-weight:600;
+    }
+    .hero p{
+      color:var(--muted);
+      max-width:720px;
+    }
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .btn{
+      padding:12px 18px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      color:var(--text);
+      background:transparent;
+    }
+    .btn.primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#071016;
+      border:none;
+    }
+
+    /* =========================
+       SECTION HEADERS
+       ========================= */
+    h2{
+      font-size:clamp(1.3rem,4.5vw,1.8rem);
+      font-weight:600;
+      margin:0 0 8px;
+    }
+    .sub{
+      color:var(--muted);
+      max-width:760px;
+    }
+
+    /* =========================
+       PRODUCT BLOCKS (NO CARDS)
+       ========================= */
+    .product{
+      margin-top:42px;
+    }
+    .product h3{
+      font-size:1.25rem;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+    .price{
+      color:var(--accent2);
+      font-weight:500;
+      margin-bottom:8px;
+    }
+    ul{
+      padding-left:18px;
+      margin:10px 0 0;
+    }
+    li{margin:6px 0}
+
+    /* =========================
+       COMPARISON STRIP
+       ========================= */
+    .chooser{
+      margin-top:42px;
+    }
+    .chooser-grid{
+      display:grid;
+      gap:14px;
+    }
+    @media(min-width:720px){
+      .chooser-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    .choose{
+      padding:14px 0;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    /* =========================
+       CONTACT
+       ========================= */
+    .contact{
+      margin-top:48px;
+    }
+    .contact strong{font-size:1.1rem}
+
+    /* =========================
+       STICKY MOBILE CTA
+       ========================= */
+    .cta-bar{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      padding:10px 14px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      backdrop-filter:blur(6px);
+      background:rgba(7,11,20,.55);
+      border-top:1px solid rgba(255,255,255,.12);
+    }
+    .cta-bar a{
+      flex:1;
+      text-align:center;
+      padding:12px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#071016;
+      font-weight:600;
+    }
+    @media(min-width:900px){
+      .cta-bar{display:none}
+    }
+
+    footer{
+      margin:64px 0 80px;
+      color:var(--muted);
+      font-size:.85rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- HEADER -->
+    <header>
+      <div class="logo">
+        <img src="/jmodco/assets/JmodLogoIconTP.png" alt="Jordan Moddes" />
+        <span>VSeeBox</span>
+      </div>
+      <div class="lang-toggle">
+        <button class="active" onclick="setLang('en')">EN</button>
+        <button onclick="setLang('es')">ES</button>
+      </div>
+    </header>
+
+    <div class="spacer"></div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <h1 data-en="Premium VSeeBox Experience"
+          data-es="Experiencia Premium VSeeBox"></h1>
+
+      <p data-en="A clean, fast Android TV experience with multiple VSeeBox options. Choose the box that fits how you watch."
+         data-es="Una experiencia Android TV limpia y rápida con múltiples opciones VSeeBox. Elige el equipo que se adapta a cómo ves contenido."></p>
+
+      <div class="hero-actions">
+        <a class="btn primary" href="tel:12627050853"
+           data-en="Call / Text Jordan"
+           data-es="Llamar / Texto a Jordan"></a>
+        <a class="btn" href="#models"
+           data-en="View Models"
+           data-es="Ver Modelos"></a>
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+
+    <!-- MODELS -->
+    <section id="models">
+      <h2 data-en="Available Models"
+          data-es="Modelos Disponibles"></h2>
+      <p class="sub"
+         data-en="Prices may vary slightly month to month."
+         data-es="Los precios pueden variar ligeramente cada mes."></p>
+
+      <!-- V6 MAX -->
+      <div class="product">
+        <h3>V6 Max</h3>
+        <div class="price" data-en="Starting at $260 • $3,800 / case*"
+             data-es="Desde $260 • $3,800 / caja*"></div>
+        <p data-en="The standard VSeeBox experience. This is the box most people should start with."
+           data-es="La experiencia VSeeBox estándar. Este es el equipo ideal para comenzar."></p>
+        <ul>
+          <li data-en="Comes with VSee Heat Apps"
+              data-es="Incluye aplicaciones Heat de VSee"></li>
+          <li data-en="Fast, stable, everyday performance"
+              data-es="Rendimiento rápido y estable"></li>
+          <li data-en="Clean setup and smooth navigation"
+              data-es="Configuración limpia y navegación fluida"></li>
+        </ul>
+      </div>
+
+      <!-- V6 PLUS -->
+      <div class="product">
+        <h3>V6 Plus</h3>
+        <div class="price" data-en="Starting at $290*"
+             data-es="Desde $290*"></div>
+        <p data-en="For advanced users who want more control while watching."
+           data-es="Para usuarios avanzados que buscan más control."></p>
+        <ul>
+          <li data-en="All V6 Max Heat Apps"
+              data-es="Todas las apps Heat del V6 Max"></li>
+          <li data-en="Additional Heat Apps with Picture-in-Picture and side-by-side viewing"
+              data-es="Apps Heat adicionales con vista PIP y pantalla dividida"></li>
+          <li data-en="Ideal for multi-view watching"
+              data-es="Ideal para ver múltiples fuentes"></li>
+        </ul>
+      </div>
+
+      <!-- ELITE MINI -->
+      <div class="product">
+        <h3>Elite Mini</h3>
+        <div class="price" data-en="Starting at $270*"
+             data-es="Desde $270*"></div>
+        <p data-en="Best value for content per dollar."
+           data-es="La mejor relación contenido / precio."></p>
+        <ul>
+          <li data-en="10 additional apps outside Heat-supported apps"
+              data-es="10 aplicaciones adicionales fuera de Heat"></li>
+          <li data-en="Excellent content flexibility"
+              data-es="Excelente flexibilidad de contenido"></li>
+          <li data-en="Compact size, strong performance"
+              data-es="Tamaño compacto y gran rendimiento"></li>
+        </ul>
+      </div>
+
+      <!-- ELITE ULTRA -->
+      <div class="product">
+        <h3>Elite Ultra</h3>
+        <div class="price" data-en="Starting at $400*"
+             data-es="Desde $400*"></div>
+        <p data-en="The ultimate VSeeBox option."
+           data-es="La opción VSeeBox definitiva."></p>
+        <ul>
+          <li data-en="20+ additional apps outside Heat-supported apps"
+              data-es="Más de 20 apps adicionales fuera de Heat"></li>
+          <li data-en="Maximum flexibility and capability"
+              data-es="Máxima flexibilidad y capacidad"></li>
+          <li data-en="Built for users who want everything"
+              data-es="Diseñado para quienes lo quieren todo"></li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+
+    <!-- CHOOSER -->
+    <section class="chooser">
+      <h2 data-en="Which One Should I Choose?"
+          data-es="¿Cuál Debería Elegir?"></h2>
+
+      <div class="chooser-grid">
+        <div class="choose" data-en="Standard experience → V6 Max"
+             data-es="Experiencia estándar → V6 Max"></div>
+        <div class="choose" data-en="Side-by-side viewing → V6 Plus"
+             data-es="Pantalla dividida → V6 Plus"></div>
+        <div class="choose" data-en="Best value → Elite Mini"
+             data-es="Mejor valor → Elite Mini"></div>
+        <div class="choose" data-en="Ultimate option → Elite Ultra"
+             data-es="Opción definitiva → Elite Ultra"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact">
+      <h2 data-en="Contact"
+          data-es="Contacto"></h2>
+      <p>
+        <strong data-en="Call or text Jordan:"
+                data-es="Llama o escribe a Jordan:"></strong>
+        <a href="tel:12627050853">262-705-0853</a>
+      </p>
+      <p data-en="VSeeBox distributor through LisnUp Installations. Software-related support handled directly with Jordan."
+         data-es="Distribuidor VSeeBox a través de LisnUp Installations. Soporte de software directamente con Jordan."></p>
+    </section>
+
+    <footer>
+      *Prices may vary monthly.
+    </footer>
+
+  </div>
+
+  <!-- STICKY CTA -->
+  <div class="cta-bar">
+    <a href="tel:12627050853">Call / Text Jordan</a>
+  </div>
+
+  <script>
+    function setLang(lang){
+      document.documentElement.setAttribute("data-lang",lang);
+      document.querySelectorAll("[data-en]").forEach(el=>{
+        el.textContent = el.getAttribute("data-"+lang);
+      });
+      document.querySelectorAll(".lang-toggle button").forEach(b=>b.classList.remove("active"));
+      document.querySelector(`.lang-toggle button[onclick="setLang('${lang}')"]`).classList.add("active");
+    }
+    setLang('en');
+  </script>
+</body>
+</html>
