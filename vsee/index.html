@@ -13,8 +13,7 @@
       --bg:#070b14;
       --text:#e6e9f0;
       --muted:#9aa3b2;
-      --line:rgba(255,255,255,.10);
-      --line2:rgba(255,255,255,.08);
+      --line:rgba(255,255,255,.08);
       --accent:#3ea6ff;
       --accent2:#6ee7b7;
       --max:1080px;
@@ -29,609 +28,249 @@
       color:var(--text);
       background:var(--bg);
       line-height:1.55;
-      overflow-x:hidden;
     }
 
-    /* Option A: seamless background + light noise */
     body::before{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
-      background-image:
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.035'/></svg>");
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.035'/></svg>");
       z-index:-1;
     }
 
-    a{color:inherit}
     .wrap{max-width:var(--max);margin:0 auto;padding:18px}
     .spacer{height:56px}
-    .spacer-sm{height:28px}
 
-    /* Header */
     header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      display:flex;justify-content:space-between;align-items:center
     }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
-    .brand img{height:28px;width:auto;opacity:.9}
-    .brand span{font-weight:600;letter-spacing:.2px}
-    .lang{
-      display:flex;
-      gap:10px;
-      font-size:.9rem;
-    }
-    .lang button{
-      background:none;
-      border:none;
-      color:var(--muted);
-      cursor:pointer;
-      padding:6px 8px;
-    }
-    .lang button.active{color:var(--text)}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{height:28px;opacity:.9}
 
-    /* Hero */
-    .hero h1{
-      font-size:clamp(1.7rem,5.2vw,2.4rem);
-      margin:.2em 0 .25em;
-      font-weight:650;
-      letter-spacing:-.3px;
+    .lang button{
+      background:none;border:none;color:var(--muted);
+      margin-left:10px;cursor:pointer
     }
-    .hero p{
-      color:var(--muted);
-      max-width:720px;
-      margin:0 0 18px;
-    }
-    .hero-actions{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
+    .lang .active{color:var(--text)}
+
+    h1{font-size:clamp(1.7rem,5vw,2.4rem)}
+    h2{font-size:clamp(1.3rem,4vw,1.8rem)}
+    h3{margin:0;font-size:1.25rem}
+
+    .sub{color:var(--muted)}
+
     .btn{
-      padding:12px 18px;
-      border-radius:999px;
+      padding:12px 18px;border-radius:999px;
       border:1px solid rgba(255,255,255,.18);
-      background:transparent;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      font-weight:600;
+      text-decoration:none;font-weight:600
     }
     .btn.primary{
-      border:none;
-      color:#071016;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      border:none;color:#071016;
+      background:linear-gradient(135deg,var(--accent),var(--accent2))
     }
 
-    h2{
-      font-size:clamp(1.3rem,4.5vw,1.8rem);
-      margin:0 0 8px;
-      font-weight:650;
-      letter-spacing:-.2px;
-    }
-    .sub{color:var(--muted);max-width:760px;margin:0}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
 
-    /* Available Models: radio selector */
-    .model-picker{
-      margin-top:18px;
-      border-top:1px solid var(--line2);
-      padding-top:18px;
-    }
-    .picklist{
-      display:grid;
-      gap:10px;
-      margin-top:14px;
-    }
+    /* model picker */
+    .picklist{margin-top:14px}
     .pick{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid var(--line2);
+      display:flex;gap:12px;align-items:center;
+      padding:12px 0;border-bottom:1px solid var(--line)
     }
     .pick input{
-      appearance:none;
-      width:18px;height:18px;
-      border-radius:999px;
-      border:2px solid rgba(255,255,255,.25);
-      outline:none;
-      margin:0;
-      position:relative;
-      flex:0 0 auto;
+      appearance:none;width:18px;height:18px;border-radius:50%;
+      border:2px solid rgba(255,255,255,.25)
     }
     .pick input:checked{
-      border-color:rgba(110,231,183,.9);
+      border-color:var(--accent2)
     }
     .pick input:checked::after{
-      content:"";
-      position:absolute;
-      inset:3px;
-      border-radius:999px;
-      background:rgba(110,231,183,.95);
+      content:"";display:block;margin:3px;
+      width:8px;height:8px;border-radius:50%;
+      background:var(--accent2)
     }
     .pick a{
-      text-decoration:none;
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      width:100%;
-      gap:12px;
-      min-width:0;
+      display:flex;justify-content:space-between;width:100%;
+      text-decoration:none
     }
-    .pick .name{
-      font-weight:650;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .pick .hint{
-      color:var(--muted);
-      font-size:.9rem;
-      text-align:right;
-      white-space:nowrap;
-      flex:0 0 auto;
-    }
+    .hint{color:var(--muted);font-size:.9rem}
 
-    /* Product sections (no cards, no block backgrounds) */
-    section.product{
-      margin-top:46px;
-      padding-top:10px;
-    }
-    .product-top{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .product-top h3{
-      font-size:1.25rem;
-      margin:0;
-      font-weight:700;
-    }
-    .price{
-      color:var(--accent2);
-      font-weight:650;
-    }
-    .lead{
-      color:var(--muted);
-      margin:10px 0 0;
-      max-width:820px;
-    }
+    section.product{margin-top:46px}
+    .price{color:var(--accent2);font-weight:600}
+    .lead{color:var(--muted)}
 
-    /* Image strip */
     .img-strip{
-      display:flex;
-      gap:12px;
-      overflow-x:auto;
-      padding:12px 0 6px;
-      scroll-snap-type:x mandatory;
+      display:flex;gap:12px;overflow-x:auto;padding:12px 0
     }
     .img-strip img{
-      height:170px;
-      border-radius:var(--radius);
-      flex:0 0 auto;
-      scroll-snap-align:start;
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.08);
-    }
-    @media(min-width:820px){
-      .img-strip img{height:210px}
+      height:190px;border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.08)
     }
 
-    .bullets{
-      margin:12px 0 0;
-      padding-left:18px;
-    }
-    .bullets li{margin:6px 0}
+    ul{padding-left:18px}
+    li{margin:6px 0}
 
-    /* Technical details */
     .tech{
-      margin-top:16px;
-      border-top:1px solid var(--line2);
-      padding-top:14px;
+      margin-top:14px;border-top:1px solid var(--line);padding-top:12px
     }
-    .tech h4{
-      margin:0 0 8px;
-      font-size:1rem;
-      font-weight:700;
-      letter-spacing:.2px;
-      color:rgba(255,255,255,.92);
-    }
-    .specs{
-      margin:0;
-      padding-left:18px;
-      color:rgba(230,233,240,.92);
-    }
-    .specs li{margin:6px 0}
-    .specs span{
-      color:var(--muted);
-      font-weight:600;
-    }
+    .tech h4{margin:0 0 6px;font-size:1rem}
+    .tech span{color:var(--muted);font-weight:600}
 
-    /* Footer */
     footer{
       margin:64px 0 92px;
-      border-top:1px solid var(--line2);
-      padding-top:18px;
-      color:var(--muted);
-      font-size:.88rem;
+      border-top:1px solid var(--line);
+      padding-top:18px;color:var(--muted);font-size:.85rem
     }
     .foot-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-top:10px;
+      display:flex;justify-content:space-between;margin-top:10px
     }
-    .link-subtle{
-      color:var(--muted);
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
-    .toplink{
-      color:var(--muted);
-      text-decoration:none;
-    }
+    .link-subtle{text-decoration:underline;color:var(--muted)}
 
-    /* Bottom floating bar (50% smaller) */
     .cta-bar{
-      position:fixed;
-      left:0;right:0;bottom:0;
-      padding:6px 12px;
-      display:flex;
-      justify-content:center;
-      background:rgba(7,11,20,.50);
+      position:fixed;bottom:0;left:0;right:0;
+      padding:6px;background:rgba(7,11,20,.5);
       backdrop-filter:blur(6px);
-      border-top:1px solid rgba(255,255,255,.10);
+      border-top:1px solid rgba(255,255,255,.1);
+      display:flex;justify-content:center
     }
     .cta-bar a{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 16px;
-      border-radius:999px;
-      font-weight:750;
-      text-decoration:none;
+      padding:10px 18px;border-radius:999px;
+      font-weight:700;text-decoration:none;
       color:#071016;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      font-size:.95rem;
-      min-width:min(420px,92vw);
+      background:linear-gradient(135deg,var(--accent),var(--accent2))
     }
-    @media(min-width:900px){
-      .cta-bar{display:none}
-    }
+    @media(min-width:900px){.cta-bar{display:none}}
   </style>
 </head>
 
 <body>
-  <div class="wrap" id="top">
+<div class="wrap" id="top">
 
-    <header>
-      <div class="brand">
-        <img src="/jmodco/assets/JmodLogoIconTP.png" alt="Jordan Moddes" />
-        <span>VSeeBox</span>
-      </div>
-      <div class="lang" aria-label="Language">
-        <button class="active" type="button" onclick="setLang('en')">EN</button>
-        <button type="button" onclick="setLang('es')">ES</button>
-      </div>
-    </header>
+<header>
+  <div class="brand">
+    <img src="/jmodco/assets/JmodLogoIconTP.png">
+    <span>VSeeBox</span>
+  </div>
+  <div class="lang">
+    <button class="active" onclick="setLang('en')">EN</button>
+    <button onclick="setLang('es')">ES</button>
+  </div>
+</header>
 
-    <div class="spacer"></div>
+<div class="spacer"></div>
 
-    <section class="hero">
-      <h1 data-en="Premium VSeeBox Experience"
-          data-es="Experiencia Premium VSeeBox"></h1>
+<section class="hero">
+  <h1 data-en="Premium VSeeBox Experience"
+      data-es="Experiencia Premium VSeeBox"></h1>
 
-      <p data-en="Clean, fast Android TV boxes. Choose what fits how you watch."
-         data-es="Equipos Android TV rápidos y limpios. Elige el que se adapta a cómo ves contenido."></p>
+  <p class="sub"
+     data-en="Clean, fast Android TV boxes. Choose what fits how you watch."
+     data-es="Equipos Android TV rápidos y limpios. Elige el que se adapte a ti."></p>
 
-      <div class="hero-actions">
-        <a class="btn primary" id="smsHero" href="sms:2627050853"
-           data-en="Text Jordan"
-           data-es="Texto a Jordan"></a>
-
-        <a class="btn" href="#available"
-           data-en="View Models"
-           data-es="Ver Modelos"></a>
-      </div>
-
-      <div class="model-picker" id="available">
-        <h2 data-en="Available Models"
-            data-es="Modelos Disponibles"></h2>
-        <p class="sub"
-           data-en="Prices may vary slightly month to month."
-           data-es="Los precios pueden variar ligeramente mes a mes."></p>
-
-        <!-- Radio list (no default checked) -->
-        <div class="picklist" role="radiogroup" aria-label="Model selector">
-          <div class="pick">
-            <input type="radio" name="model" id="rMax" />
-            <a href="#v6max" onclick="selectRadio('rMax')" aria-label="Go to V6 Max">
-              <div class="name" data-en="V6 Max" data-es="V6 Max"></div>
-              <div class="hint" data-en="Heat Apps • Start here" data-es="Heat Apps • Empieza aquí"></div>
-            </a>
-          </div>
-
-          <div class="pick">
-            <input type="radio" name="model" id="rPlus" />
-            <a href="#v6plus" onclick="selectRadio('rPlus')" aria-label="Go to V6 Plus">
-              <div class="name" data-en="V6 Plus" data-es="V6 Plus"></div>
-              <div class="hint" data-en="Split screen / PIP" data-es="Pantalla dividida / PIP"></div>
-            </a>
-          </div>
-
-          <div class="pick">
-            <input type="radio" name="model" id="rMini" />
-            <a href="#elitemini" onclick="selectRadio('rMini')" aria-label="Go to Elite Mini">
-              <div class="name" data-en="Elite Mini" data-es="Elite Mini"></div>
-              <div class="hint" data-en="Best value" data-es="Mejor valor"></div>
-            </a>
-          </div>
-
-          <div class="pick">
-            <input type="radio" name="model" id="rUltra" />
-            <a href="#eliteultra" onclick="selectRadio('rUltra')" aria-label="Go to Elite Ultra">
-              <div class="name" data-en="Elite Ultra" data-es="Elite Ultra"></div>
-              <div class="hint" data-en="Ultimate" data-es="Definitivo"></div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- =====================================================
-         IMPORTANT: Place your images at these exact paths:
-         /vseebox/assets/v6plus-1-kit.webp
-         /vseebox/assets/v6plus-2-splitscreen.webp
-         /vseebox/assets/v6max-1-kit.webp
-         /vseebox/assets/v6max-2-hero.webp
-         /vseebox/assets/v6max-3-specsheet.webp
-         /vseebox/assets/eliteultra-1-specsheet.webp
-         /vseebox/assets/eliteultra-2-hero.webp
-         /vseebox/assets/eliteultra-3-ports.webp
-         /vseebox/assets/elitemini-1-promo.webp
-         /vseebox/assets/elitemini-2-kit.webp
-         /vseebox/assets/elitemini-3-ports.webp
-         ===================================================== -->
-
-    <!-- V6 MAX -->
-    <section class="product" id="v6max">
-      <div class="product-top">
-        <h3>V6 Max</h3>
-        <div class="price" data-en="$260 • $3,800 / case*"
-             data-es="$260 • $3,800 / caja*"></div>
-      </div>
-
-      <p class="lead"
-         data-en="The standard VSeeBox experience. Comes with VSee’s Heat Apps."
-         data-es="La experiencia VSeeBox estándar. Incluye las apps Heat de VSee."></p>
-
-      <div class="img-strip" aria-label="V6 Max images">
-        <img src="/vseebox/assets/v6max-1-kit.webp" alt="V6 Max product kit" loading="lazy">
-        <img src="/vseebox/assets/v6max-2-hero.webp" alt="V6 Max box and remote" loading="lazy">
-        <img src="/vseebox/assets/v6max-3-specsheet.webp" alt="V6 Max feature sheet" loading="lazy">
-      </div>
-
-      <ul class="bullets">
-        <li data-en="VSee Heat Apps included"
-            data-es="Incluye apps Heat de VSee"></li>
-        <li data-en="Fast, stable everyday performance"
-            data-es="Rendimiento rápido y estable"></li>
-        <li data-en="Best starting point for most users"
-            data-es="Mejor punto de inicio para la mayoría"></li>
-      </ul>
-
-      <div class="tech">
-        <h4 data-en="Technical details" data-es="Detalles técnicos"></h4>
-        <ul class="specs">
-          <li><span data-en="Chip:" data-es="Chip:"></span> Amlogic 905Y4</li>
-          <li><span data-en="CPU:" data-es="CPU:"></span> Quad-core ARM Cortex-A35</li>
-          <li><span data-en="GPU:" data-es="GPU:"></span> Mali-G31MP2</li>
-          <li><span data-en="Memory:" data-es="Memoria:"></span> 4GB DDR3</li>
-          <li><span data-en="Storage:" data-es="Almacenamiento:"></span> 64GB eMMC</li>
-          <li><span data-en="OS:" data-es="SO:"></span> Android 14 (Android R 14.0)</li>
-          <li><span data-en="Wireless:" data-es="Inalámbrico:"></span> Dual-band Wi-Fi (2.4/5GHz, 2T2R MIMO) + Bluetooth 5.0</li>
-          <li><span data-en="Ethernet:" data-es="Ethernet:"></span> RJ45 10/100M</li>
-          <li><span data-en="Video:" data-es="Video:"></span> AV1/VP9/H.264/H.265 10-bit HDR decoding up to 8K@60</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- V6 PLUS -->
-    <section class="product" id="v6plus">
-      <div class="product-top">
-        <h3>V6 Plus</h3>
-        <div class="price" data-en="$290*" data-es="$290*"></div>
-      </div>
-
-      <p class="lead"
-         data-en="Adds more Heat Apps plus split-screen / picture-in-picture viewing through Heat."
-         data-es="Agrega más apps Heat y pantalla dividida / PIP a través de Heat."></p>
-
-      <div class="img-strip" aria-label="V6 Plus images">
-        <img src="/vseebox/assets/v6plus-1-kit.webp" alt="V6 Plus product kit" loading="lazy">
-        <img src="/vseebox/assets/v6plus-2-splitscreen.webp" alt="V6 Plus split screen example" loading="lazy">
-      </div>
-
-      <ul class="bullets">
-        <li data-en="Heat Apps included"
-            data-es="Incluye apps Heat"></li>
-        <li data-en="Additional Heat Apps: split screen / PIP"
-            data-es="Apps Heat adicionales: pantalla dividida / PIP"></li>
-        <li data-en="Backlit remote (easy in dark rooms)"
-            data-es="Control con luz (ideal en la oscuridad)"></li>
-      </ul>
-
-      <div class="tech">
-        <h4 data-en="Technical details" data-es="Detalles técnicos"></h4>
-        <ul class="specs">
-          <li><span data-en="Chip:" data-es="Chip:"></span> Amlogic 905Y5</li>
-          <li><span data-en="OS:" data-es="SO:"></span> Android 14</li>
-          <li><span data-en="Feature:" data-es="Función:"></span> Split-screen / multitasking support (through Heat apps)</li>
-          <li><span data-en="Remote:" data-es="Control:"></span> Backlit remote</li>
-          <li><span data-en="Designed for:" data-es="Diseñado para:"></span> Multi-view users</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ELITE MINI -->
-    <section class="product" id="elitemini">
-      <div class="product-top">
-        <h3>Elite Mini</h3>
-        <div class="price" data-en="$270*" data-es="$270*"></div>
-      </div>
-
-      <p class="lead"
-         data-en="Best content-per-dollar. Includes 10 additional apps outside Heat-supported apps."
-         data-es="Mejor contenido por dólar. Incluye 10 apps adicionales fuera de las apps soportadas por Heat."></p>
-
-      <div class="img-strip" aria-label="Elite Mini images">
-        <img src="/vseebox/assets/elitemini-1-promo.webp" alt="Elite Mini promo graphic" loading="lazy">
-        <img src="/vseebox/assets/elitemini-2-kit.webp" alt="Elite Mini product kit" loading="lazy">
-        <img src="/vseebox/assets/elitemini-3-ports.webp" alt="Elite Mini ports" loading="lazy">
-      </div>
-
-      <ul class="bullets">
-        <li data-en="10 additional apps outside Heat-supported apps"
-            data-es="10 apps adicionales fuera de Heat"></li>
-        <li data-en="Great value pick"
-            data-es="Excelente opción por valor"></li>
-        <li data-en="Compact setup"
-            data-es="Configuración compacta"></li>
-      </ul>
-
-      <div class="tech">
-        <h4 data-en="Technical details" data-es="Detalles técnicos"></h4>
-        <ul class="specs">
-          <li><span data-en="OS:" data-es="SO:"></span> Android 12</li>
-          <li><span data-en="Memory:" data-es="Memoria:"></span> 4GB</li>
-          <li><span data-en="Storage:" data-es="Almacenamiento:"></span> 32GB</li>
-          <li><span data-en="Wireless:" data-es="Inalámbrico:"></span> Wi-Fi 6 + Bluetooth</li>
-          <li><span data-en="Video:" data-es="Video:"></span> Up to 6K HDR</li>
-          <li><span data-en="Remote:" data-es="Control:"></span> Voice remote</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ELITE ULTRA -->
-    <section class="product" id="eliteultra">
-      <div class="product-top">
-        <h3>Elite Ultra</h3>
-        <div class="price" data-en="$400*" data-es="$400*"></div>
-      </div>
-
-      <p class="lead"
-         data-en="Ultimate option. Includes 20+ additional apps outside Heat-supported apps."
-         data-es="Opción definitiva. Incluye más de 20 apps adicionales fuera de Heat."></p>
-
-      <div class="img-strip" aria-label="Elite Ultra images">
-        <img src="/vseebox/assets/eliteultra-1-specsheet.webp" alt="Elite Ultra spec sheet" loading="lazy">
-        <img src="/vseebox/assets/eliteultra-2-hero.webp" alt="Elite Ultra hero" loading="lazy">
-        <img src="/vseebox/assets/eliteultra-3-ports.webp" alt="Elite Ultra ports" loading="lazy">
-      </div>
-
-      <ul class="bullets">
-        <li data-en="20+ additional apps outside Heat-supported apps"
-            data-es="Más de 20 apps adicionales fuera de Heat"></li>
-        <li data-en="Maximum flexibility"
-            data-es="Máxima flexibilidad"></li>
-        <li data-en="Built for users who want the top option"
-            data-es="Para quienes quieren la opción más alta"></li>
-      </ul>
-
-      <div class="tech">
-        <h4 data-en="Technical details" data-es="Detalles técnicos"></h4>
-        <ul class="specs">
-          <li><span data-en="OS:" data-es="SO:"></span> Android 12 (OTA updates)</li>
-          <li><span data-en="CPU:" data-es="CPU:"></span> Quad-core ARM Cortex-A53</li>
-          <li><span data-en="GPU:" data-es="GPU:"></span> Mali-G31</li>
-          <li><span data-en="Memory:" data-es="Memoria:"></span> 4GB</li>
-          <li><span data-en="Storage:" data-es="Almacenamiento:"></span> 128GB</li>
-          <li><span data-en="Wi-Fi:" data-es="Wi-Fi:"></span> Wi-Fi 6 (up to ~867 Mbps module)</li>
-          <li><span data-en="Ethernet:" data-es="Ethernet:"></span> Up to 1 Gb (10/100/1000)</li>
-          <li><span data-en="Video:" data-es="Video:"></span> HDR decoding up to 6K@60 (HDMI 2.0)</li>
-          <li><span data-en="Bluetooth:" data-es="Bluetooth:"></span> 5.0</li>
-        </ul>
-      </div>
-    </section>
-
-    <footer>
-      <div data-en="VSeeBox distributor through LisnUp Installations. Software-related support handled directly with Jordan."
-           data-es="Distribuidor VSeeBox a través de LisnUp Installations. Soporte de software directamente con Jordan."></div>
-
-      <div style="margin-top:10px">
-        <span data-en="LisnUp Installations:" data-es="LisnUp Installations:"></span>
-        <a class="link-subtle" href="https://lisnup.com" target="_blank" rel="noopener">LisnUp Installations</a>
-      </div>
-
-      <div style="margin-top:10px" data-en="*Prices may vary monthly."
-           data-es="*Los precios pueden variar mensualmente."></div>
-
-      <div class="foot-row">
-        <div>Jordan</div>
-        <a class="toplink" href="#top" data-en="Back to top" data-es="Volver arriba"></a>
-      </div>
-    </footer>
-
+  <div class="hero-actions">
+    <a class="btn primary" id="smsHero" href="sms:2627050853"
+       data-en="Text Jordan" data-es="Texto a Jordan"></a>
+    <a class="btn" href="#available"
+       data-en="View Models" data-es="Ver Modelos"></a>
   </div>
 
-  <!-- Bottom bar (SMS only, 50% smaller) -->
-  <div class="cta-bar">
-    <a id="smsBar" href="sms:2627050853" data-en="Text Jordan" data-es="Texto a Jordan"></a>
+  <div id="available" class="picklist">
+    <div class="pick">
+      <input type="radio" onclick="this.checked=true">
+      <a href="#v6max"><span>V6 Max</span><span class="hint">Heat Apps</span></a>
+    </div>
+    <div class="pick">
+      <input type="radio" onclick="this.checked=true">
+      <a href="#v6plus"><span>V6 Plus</span><span class="hint">Split Screen</span></a>
+    </div>
+    <div class="pick">
+      <input type="radio" onclick="this.checked=true">
+      <a href="#elitemini"><span>Elite Mini</span><span class="hint">Best Value</span></a>
+    </div>
+    <div class="pick">
+      <input type="radio" onclick="this.checked=true">
+      <a href="#eliteultra"><span>Elite Ultra</span><span class="hint">Ultimate</span></a>
+    </div>
   </div>
+</section>
 
-  <script>
-    function setLang(lang){
-      document.documentElement.setAttribute("data-lang", lang);
+<!-- V6 MAX -->
+<section class="product" id="v6max">
+  <h3>V6 Max</h3>
+  <div class="price">$260 • $3,800 / case*</div>
+  <p class="lead">Standard VSeeBox experience with Heat Apps.</p>
 
-      // Swap all data-en/data-es nodes
-      document.querySelectorAll("[data-en]").forEach(el=>{
-        el.textContent = el.getAttribute("data-"+lang);
-      });
+  <div class="img-strip">
+    <img src="https://vseebox.com/wp-content/uploads/2024/06/vseebox-v6-max-kit.jpg">
+    <img src="https://vseebox.com/wp-content/uploads/2024/06/vseebox-v6-max-remote.jpg">
+    <img src="https://vseebox.com/wp-content/uploads/2024/06/vseebox-v6-max-specs.jpg">
+  </div>
+</section>
 
-      // Toggle buttons
-      document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
-      document.querySelector(`.lang button[onclick="setLang('${lang}')"]`)?.classList.add("active");
-    }
+<!-- V6 PLUS -->
+<section class="product" id="v6plus">
+  <h3>V6 Plus</h3>
+  <div class="price">$290*</div>
+  <p class="lead">Heat Apps plus split-screen / PIP viewing.</p>
 
-    function selectRadio(id){
-      const r = document.getElementById(id);
-      if(r) r.checked = true;
-    }
+  <div class="img-strip">
+    <img src="https://vseebox.com/wp-content/uploads/2024/06/vseebox-v6-plus-kit.jpg">
+    <img src="https://vseebox.com/wp-content/uploads/2024/06/vseebox-v6-plus-splitscreen.jpg">
+  </div>
+</section>
 
-    // Optional: prefill SMS body (edit if you want)
-    const bodyEN = encodeURIComponent("Hey Jordan — I’m interested in a VSeeBox. Which model do you recommend?");
-    const bodyES = encodeURIComponent("Hola Jordan — me interesa un VSeeBox. ¿Cuál modelo recomiendas?");
-    function updateSmsLinks(){
-      const lang = document.documentElement.getAttribute("data-lang") || "en";
-      const body = (lang === "es") ? bodyES : bodyEN;
-      const href = `sms:2627050853?&body=${body}`;
-      document.getElementById("smsHero").setAttribute("href", href);
-      document.getElementById("smsBar").setAttribute("href", href);
-    }
+<!-- ELITE MINI -->
+<section class="product" id="elitemini">
+  <h3>Elite Mini</h3>
+  <div class="price">$270*</div>
+  <p class="lead">Best content per dollar.</p>
 
-    // Init
-    setLang('en');
-    updateSmsLinks();
+  <div class="img-strip">
+    <img src="https://vseebox.co/cdn/shop/files/vseebox-elite-mini-promo.jpg">
+    <img src="https://vseebox.co/cdn/shop/files/vseebox-elite-mini-kit.jpg">
+    <img src="https://vseebox.co/cdn/shop/files/vseebox-elite-mini-ports.jpg">
+  </div>
+</section>
 
-    // Update SMS body when language changes
-    const origSetLang = setLang;
-    window.setLang = function(lang){
-      origSetLang(lang);
-      updateSmsLinks();
-    };
-  </script>
+<!-- ELITE ULTRA -->
+<section class="product" id="eliteultra">
+  <h3>Elite Ultra</h3>
+  <div class="price">$400*</div>
+  <p class="lead">Ultimate box with 20+ additional apps.</p>
+
+  <div class="img-strip">
+    <img src="https://vseebox.co/cdn/shop/files/vseebox-elite-ultra-specs.jpg">
+    <img src="https://vseebox.co/cdn/shop/files/vseebox-elite-ultra-kit.jpg">
+    <img src="https://vseebox.co/cdn/shop/files/vseebox-elite-ultra-ports.jpg">
+  </div>
+</section>
+
+<footer>
+  VSeeBox distributor through
+  <a class="link-subtle" href="https://lisnup.com" target="_blank">LisnUp Installations</a>.
+  <div class="foot-row">
+    <div>Jordan</div>
+    <a href="#top">Back to top</a>
+  </div>
+</footer>
+
+</div>
+
+<div class="cta-bar">
+  <a href="sms:2627050853">Text Jordan</a>
+</div>
+
+<script>
+function setLang(lang){
+  document.querySelectorAll("[data-en]").forEach(el=>{
+    el.textContent = el.getAttribute("data-"+lang);
+  });
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+}
+setLang('en');
+</script>
+
 </body>
 </html>
