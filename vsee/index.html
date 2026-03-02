@@ -1,637 +1,875 @@
 <!doctype html>
-<html lang="en" data-lang="en">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#070b14" />
-  <title>VSeeBox — Jordan Moddes</title>
-
-  <link rel="icon" type="image/png" href="/jmodco/assets/JmodLogoIconTP.png" />
+  <meta name="theme-color" content="#04080f" />
+  <title>VSeeBoxATX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --bg:#070b14;
-      --text:#e6e9f0;
-      --muted:#9aa3b2;
-      --line:rgba(255,255,255,.10);
-      --line2:rgba(255,255,255,.08);
-      --accent:#3ea6ff;
-      --accent2:#6ee7b7;
-      --max:1080px;
-      --radius:14px;
+    :root {
+      --bg: #04080f;
+      --surface: #0b1120;
+      --surface2: #111a2e;
+      --border: rgba(255,255,255,.07);
+      --border2: rgba(255,255,255,.12);
+      --text: #eef0f6;
+      --muted: #7a8499;
+      --faint: #3d4559;
+      --blue: #4fa8ff;
+      --green: #52e8a0;
+      --gold: #f5c842;
+      --max: 1060px;
+      --r: 16px;
+      --r2: 24px;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      color:var(--text);
-      background:var(--bg);
-      line-height:1.55;
-      overflow-x:hidden;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Option A: seamless background + light noise */
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background-image:
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.035'/></svg>");
-      z-index:-1;
+    /* ── Background atmosphere ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(79,168,255,.09) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 110%, rgba(82,232,160,.06) 0%, transparent 55%);
     }
 
-    a{color:inherit}
-    .wrap{max-width:var(--max);margin:0 auto;padding:18px}
-    .spacer{height:56px}
-    .spacer-sm{height:28px}
+    /* ── Layout ── */
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
 
-    /* Header */
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+    /* ── Header ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(4,8,15,.80);
+      backdrop-filter: blur(18px) saturate(1.4);
+      border-bottom: 1px solid var(--border);
     }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
+    .header-inner {
+      max-width: var(--max); margin: 0 auto; padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-    .brand img{height:28px;width:auto;opacity:.9}
-    .brand span{font-weight:600;letter-spacing:.2px}
-    .lang{
-      display:flex;
-      gap:10px;
-      font-size:.9rem;
+    .brand {
+      display: flex; align-items: center; gap: 12px; text-decoration: none;
     }
-    .lang button{
-      background:none;
-      border:none;
-      color:var(--muted);
-      cursor:pointer;
-      padding:6px 8px;
+    .brand-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: .85rem;
+      color: #04080f; flex: 0 0 auto;
     }
-    .lang button.active{color:var(--text)}
+    .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .brand-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; color: var(--text); }
+    .brand-sub { font-size: .75rem; color: var(--muted); }
 
-    /* Hero */
-    .hero h1{
-      font-size:clamp(1.7rem,5.2vw,2.4rem);
-      margin:.2em 0 .25em;
-      font-weight:650;
-      letter-spacing:-.3px;
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .lang-toggle {
+      display: flex; background: var(--surface); border-radius: 999px;
+      border: 1px solid var(--border); overflow: hidden;
     }
-    .hero p{
-      color:var(--muted);
-      max-width:720px;
-      margin:0 0 18px;
+    .lang-toggle button {
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      padding: 5px 12px; font-size: .8rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
+      transition: color .2s, background .2s;
     }
-    .hero-actions{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .btn{
-      padding:12px 18px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:transparent;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      font-weight:600;
-    }
-    .btn.primary{
-      border:none;
-      color:#071016;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-    }
+    .lang-toggle button.active { background: var(--surface2); color: var(--text); }
 
-    h2{
-      font-size:clamp(1.3rem,4.5vw,1.8rem);
-      margin:0 0 8px;
-      font-weight:650;
-      letter-spacing:-.2px;
+    .header-cta {
+      padding: 8px 18px; border-radius: 999px; font-size: .85rem; font-weight: 600;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: #04080f; text-decoration: none; display: none; font-family: 'DM Sans', sans-serif;
     }
-    .sub{color:var(--muted);max-width:760px;margin:0}
+    @media(min-width:640px) { .header-cta { display: inline-flex; } }
 
-    /* Available Models: radio selector */
-    .model-picker{
-      margin-top:18px;
-      border-top:1px solid var(--line2);
-      padding-top:18px;
+    /* ── Hero ── */
+    .hero { padding: 80px 0 64px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border2); border-radius: 999px;
+      padding: 6px 14px; font-size: .8rem; color: var(--muted); margin-bottom: 24px;
+      animation: fadeUp .6s ease both;
     }
-    .picklist{
-      display:grid;
-      gap:10px;
-      margin-top:14px;
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex: 0 0 auto;
+      animation: pulse 2s ease infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif; font-size: clamp(2rem, 6vw, 3.4rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -.03em;
+      margin-bottom: 20px; animation: fadeUp .6s .1s ease both;
     }
-    .pick{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid var(--line2);
-    }
-    .pick input{
-      appearance:none;
-      width:18px;height:18px;
-      border-radius:999px;
-      border:2px solid rgba(255,255,255,.25);
-      outline:none;
-      margin:0;
-      position:relative;
-      flex:0 0 auto;
-    }
-    .pick input:checked{
-      border-color:rgba(110,231,183,.9);
-    }
-    .pick input:checked::after{
-      content:"";
-      position:absolute;
-      inset:3px;
-      border-radius:999px;
-      background:rgba(110,231,183,.95);
-    }
-    .pick a{
-      text-decoration:none;
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      width:100%;
-      gap:12px;
-      min-width:0;
-    }
-    .pick .name{
-      font-weight:650;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .pick .hint{
-      color:var(--muted);
-      font-size:.9rem;
-      text-align:right;
-      white-space:nowrap;
-      flex:0 0 auto;
+    .hero h1 em { font-style: normal; color: transparent;
+      background: linear-gradient(120deg, var(--blue), var(--green));
+      -webkit-background-clip: text; background-clip: text; }
+
+    .hero-desc {
+      color: var(--muted); font-size: 1.05rem; max-width: 580px;
+      margin-bottom: 36px; font-weight: 300; line-height: 1.7;
+      animation: fadeUp .6s .2s ease both;
     }
 
-    /* Product sections (no cards, no block backgrounds) */
-    section.product{
-      margin-top:46px;
-      padding-top:10px;
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeUp .6s .3s ease both; }
+    .btn-primary {
+      padding: 14px 28px; border-radius: 999px; font-weight: 600; font-size: 1rem;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: #04080f; text-decoration: none; display: inline-flex; align-items: center; gap: 9px;
+      font-family: 'DM Sans', sans-serif; transition: opacity .2s, transform .2s;
     }
-    .product-top{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
+    .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-ghost {
+      padding: 13px 24px; border-radius: 999px; font-weight: 500; font-size: 1rem;
+      border: 1px solid var(--border2); color: var(--text); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Sans', sans-serif; transition: border-color .2s, background .2s;
     }
-    .product-top h3{
-      font-size:1.25rem;
-      margin:0;
-      font-weight:700;
+    .btn-ghost:hover { border-color: rgba(255,255,255,.25); background: var(--surface); }
+
+    /* ── Trust bar ── */
+    .trust-bar {
+      display: flex; gap: 28px; flex-wrap: wrap; align-items: center;
+      padding: 24px 0; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); margin-top: 56px;
+      animation: fadeUp .6s .4s ease both;
     }
-    .price{
-      color:var(--accent2);
-      font-weight:650;
+    .trust-item { display: flex; align-items: center; gap: 10px; }
+    .trust-icon { font-size: 1.1rem; }
+    .trust-text { font-size: .85rem; color: var(--muted); }
+    .trust-text strong { color: var(--text); font-weight: 500; }
+
+    /* ── Section titles ── */
+    .section-label {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
     }
-    .lead{
-      color:var(--muted);
-      margin:10px 0 0;
-      max-width:820px;
+    .section-label span {
+      font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .section-title {
+      font-family: 'Syne', sans-serif; font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700; letter-spacing: -.02em; margin-bottom: 8px;
+    }
+    .section-desc { color: var(--muted); font-weight: 300; max-width: 600px; margin-bottom: 40px; }
+
+    /* ── Model selector ── */
+    .models-section { padding: 64px 0; }
+    .model-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+
+    .model-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2);
+      padding: 24px 20px; cursor: pointer; text-decoration: none; color: inherit;
+      transition: border-color .25s, transform .25s, background .25s;
+      display: block; position: relative; overflow: hidden;
+    }
+    .model-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: var(--r2);
+      background: linear-gradient(135deg, rgba(79,168,255,.06), rgba(82,232,160,.04));
+      opacity: 0; transition: opacity .25s;
+    }
+    .model-card:hover { border-color: rgba(255,255,255,.2); transform: translateY(-2px); }
+    .model-card:hover::before { opacity: 1; }
+    .model-card.best {
+      border-color: rgba(82,232,160,.3);
+      background: linear-gradient(135deg, rgba(82,232,160,.05), var(--surface));
     }
 
-    /* Image strip */
-    .img-strip{
-      display:flex;
-      gap:12px;
-      overflow-x:auto;
-      padding:12px 0 6px;
-      scroll-snap-type:x mandatory;
+    .model-badge {
+      display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 999px; margin-bottom: 14px;
     }
-    .img-strip img{
-      height:170px;
-      border-radius:var(--radius);
-      flex:0 0 auto;
-      scroll-snap-align:start;
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.08);
+    .badge-green { background: rgba(82,232,160,.15); color: var(--green); }
+    .badge-blue { background: rgba(79,168,255,.15); color: var(--blue); }
+    .badge-gold { background: rgba(245,200,66,.15); color: var(--gold); }
+    .badge-white { background: rgba(255,255,255,.08); color: var(--text); }
+
+    .model-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 6px; }
+    .model-price { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .model-price sup { font-size: .75rem; vertical-align: super; }
+    .model-tagline { font-size: .85rem; color: var(--muted); margin-bottom: 16px; }
+    .model-arrow {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: .8rem; color: var(--muted); font-weight: 500;
     }
-    @media(min-width:820px){
-      .img-strip img{height:210px}
+    .arrow-icon { font-size: 1rem; transition: transform .2s; }
+    .model-card:hover .arrow-icon { transform: translateX(3px); }
+
+    /* ── Product detail sections ── */
+    .product-detail { padding: 72px 0; border-top: 1px solid var(--border); }
+    .product-header {
+      display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 20px;
+      margin-bottom: 28px;
+    }
+    .product-title {
+      font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800; letter-spacing: -.02em;
+    }
+    .product-price-block { text-align: right; }
+    .product-price { font-size: 1.8rem; font-weight: 700; color: var(--green); }
+    .product-price-note { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+    .product-desc { color: var(--muted); font-weight: 300; max-width: 700px; margin-bottom: 32px; font-size: 1.05rem; line-height: 1.7; }
+
+    /* image placeholder strip */
+    .img-strip {
+      display: flex; gap: 12px; overflow-x: auto; margin-bottom: 32px;
+      padding-bottom: 4px; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .img-strip::-webkit-scrollbar { height: 4px; }
+    .img-strip::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
+    .img-strip::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 4px; }
+    .img-placeholder {
+      flex: 0 0 260px; height: 160px; border-radius: var(--r); scroll-snap-align: start;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; color: var(--faint);
+    }
+    .img-placeholder .img-icon { font-size: 1.8rem; }
+    .img-placeholder span { font-size: .75rem; }
+    .img-strip img {
+      flex: 0 0 auto; height: 160px; border-radius: var(--r);
+      scroll-snap-align: start; object-fit: cover;
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    @media(min-width:720px) {
+      .img-placeholder, .img-strip img { height: 200px; }
+      .img-placeholder { flex: 0 0 320px; }
     }
 
-    .bullets{
-      margin:12px 0 0;
-      padding-left:18px;
+    /* Two-col layout for features + specs */
+    .detail-cols {
+      display: grid; grid-template-columns: 1fr; gap: 24px;
     }
-    .bullets li{margin:6px 0}
+    @media(min-width:640px) { .detail-cols { grid-template-columns: 1fr 1fr; } }
 
-    /* Technical details */
-    .tech{
-      margin-top:16px;
-      border-top:1px solid var(--line2);
-      padding-top:14px;
+    .detail-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 22px 20px;
     }
-    .tech h4{
-      margin:0 0 8px;
-      font-size:1rem;
-      font-weight:700;
-      letter-spacing:.2px;
-      color:rgba(255,255,255,.92);
-    }
-    .specs{
-      margin:0;
-      padding-left:18px;
-      color:rgba(230,233,240,.92);
-    }
-    .specs li{margin:6px 0}
-    .specs span{
-      color:var(--muted);
-      font-weight:600;
+    .detail-box h4 {
+      font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
     }
 
-    /* Footer */
-    footer{
-      margin:64px 0 92px;
-      border-top:1px solid var(--line2);
-      padding-top:18px;
-      color:var(--muted);
-      font-size:.88rem;
-    }
-    .foot-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-top:10px;
-    }
-    .link-subtle{
-      color:var(--muted);
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
-    .toplink{
-      color:var(--muted);
-      text-decoration:none;
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .feature-list li { display: flex; align-items: flex-start; gap: 10px; font-size: .92rem; }
+    .check {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(82,232,160,.15); color: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; flex: 0 0 auto; margin-top: 2px;
     }
 
-    /* Bottom floating bar (50% smaller) */
-    .cta-bar{
-      position:fixed;
-      left:0;right:0;bottom:0;
-      padding:6px 12px;
-      display:flex;
-      justify-content:center;
-      background:rgba(7,11,20,.50);
-      backdrop-filter:blur(6px);
-      border-top:1px solid rgba(255,255,255,.10);
+    .spec-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .spec-list li {
+      display: flex; justify-content: space-between; gap: 12px;
+      font-size: .85rem; padding-bottom: 8px; border-bottom: 1px solid var(--border);
     }
-    .cta-bar a{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 16px;
-      border-radius:999px;
-      font-weight:750;
-      text-decoration:none;
-      color:#071016;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      font-size:.95rem;
-      min-width:min(420px,92vw);
+    .spec-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .spec-key { color: var(--muted); flex: 0 0 auto; }
+    .spec-val { text-align: right; font-weight: 500; }
+
+    /* ── Comparison table ── */
+    .compare-section { padding: 64px 0; }
+    .compare-table {
+      width: 100%; border-collapse: collapse; margin-top: 32px;
+      font-size: .88rem;
     }
-    @media(min-width:900px){
-      .cta-bar{display:none}
+    .compare-table th, .compare-table td {
+      padding: 13px 16px; text-align: center;
+      border-bottom: 1px solid var(--border);
     }
+    .compare-table th { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .82rem;
+      letter-spacing: .04em; color: var(--muted); background: var(--surface); }
+    .compare-table th:first-child, .compare-table td:first-child {
+      text-align: left; color: var(--muted); font-size: .83rem;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td.hi { color: var(--green); font-weight: 600; }
+    .compare-table td.mid { color: var(--blue); font-weight: 500; }
+    .compare-table .col-head { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--text); font-size: .95rem; }
+    .compare-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r2); }
+
+    /* ── How it works ── */
+    .how-section { padding: 64px 0; }
+    .steps { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 36px; }
+    .step {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 22px 18px; position: relative; overflow: hidden;
+    }
+    .step-num {
+      font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800;
+      color: var(--border2); line-height: 1; margin-bottom: 12px;
+    }
+    .step h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .step p { color: var(--muted); font-size: .88rem; font-weight: 300; }
+
+    /* ── CTA block ── */
+    .cta-section { padding: 64px 0 80px; }
+    .cta-card {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: var(--r2); padding: 48px 36px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(79,168,255,.07) 0%, transparent 70%);
+    }
+    .cta-card > * { position: relative; }
+    .cta-card h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; margin-bottom: 12px; }
+    .cta-card p { color: var(--muted); margin-bottom: 28px; font-weight: 300; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .cta-methods { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+    .btn-sms {
+      display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px;
+      border-radius: 999px; font-weight: 700; font-size: 1rem; font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: #04080f; text-decoration: none; transition: opacity .2s, transform .2s;
+    }
+    .btn-sms:hover { opacity: .9; transform: translateY(-1px); }
+
+    .btn-email {
+      display: inline-flex; align-items: center; gap: 9px; padding: 14px 26px;
+      border-radius: 999px; font-weight: 500; font-size: .95rem; font-family: 'DM Sans', sans-serif;
+      border: 1px solid var(--border2); color: var(--text); text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-email:hover { border-color: rgba(255,255,255,.25); background: var(--surface2); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 0 48px; color: var(--muted);
+      font-size: .83rem;
+    }
+    .footer-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 20px;
+      display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 12px;
+    }
+    .footer-left { display: flex; flex-direction: column; gap: 4px; }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── Sticky mobile bar ── */
+    .mobile-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(4,8,15,.85); backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: center;
+    }
+    .mobile-bar a {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: #04080f; font-weight: 700; font-size: 1rem; font-family: 'DM Sans', sans-serif;
+      border-radius: 999px; padding: 14px 0; width: 100%; max-width: 440px;
+      text-decoration: none;
+    }
+    @media(min-width:900px) { .mobile-bar { display: none; } }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
   </style>
 </head>
-
 <body>
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="#top">
+        <div class="brand-avatar">JM</div>
+        <div class="brand-text">
+          <div class="brand-name">Jordan Moddes</div>
+          <div class="brand-sub" data-en="VSeeBox Distributor" data-es="Distribuidor VSeeBox">VSeeBox Distributor</div>
+        </div>
+      </a>
+      <div class="header-right">
+        <div class="lang-toggle">
+          <button class="active" onclick="setLang('en')">EN</button>
+          <button onclick="setLang('es')">ES</button>
+        </div>
+        <a class="header-cta" id="headerCta" href="sms:2627050853">
+          <span>📱</span>
+          <span data-en="Text Jordan" data-es="Texto a Jordan">Text Jordan</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
   <div class="wrap" id="top">
 
-    <header>
-      <div class="brand">
-        <img src="/jmodco/assets/JmodLogoIconTP.png" alt="Jordan Moddes" />
-        <span>VSeeBox</span>
-      </div>
-      <div class="lang" aria-label="Language">
-        <button class="active" type="button" onclick="setLang('en')">EN</button>
-        <button type="button" onclick="setLang('es')">ES</button>
-      </div>
-    </header>
-
-    <div class="spacer"></div>
-
+    <!-- ── Hero ── -->
     <section class="hero">
-      <h1 data-en="Premium VSeeBox Experience"
-          data-es="Experiencia Premium VSeeBox"></h1>
+      <div class="hero-eyebrow">
+        <div class="dot"></div>
+        <span data-en="Available for in-person pickup · Milwaukee area" data-es="Disponible para recoger en persona · Área de Milwaukee">Available for in-person pickup · Milwaukee area</span>
+      </div>
 
-      <p data-en="Clean, fast Android TV boxes. Choose what fits how you watch."
-         data-es="Equipos Android TV rápidos y limpios. Elige el que se adapta a cómo ves contenido."></p>
+      <h1>
+        <span data-en="Premium Android TV." data-es="Android TV Premium.">Premium Android TV.</span><br>
+        <em data-en="Personally meet to grab." data-es="Entregado personalmente.">Personally delivered at meetup.</em>
+      </h1>
+
+      <p class="hero-desc" data-en="I'm a VSeeBox distributor through LisnUp Installations. I work with you to find the right box and make sure you know what you're getting." data-es="Soy distribuidor de VSeeBox a través de LisnUp Installations. Colaboro contigo para encontrar la caja ideal y asegurarme de que sepas lo que obtienes.">
+        I'm a VSeeBox distributor through LisnUp Installations. I work with you to find the right box and make sure you know what you're getting.
+      </p>
 
       <div class="hero-actions">
-        <a class="btn primary" id="smsHero" href="sms:2627050853"
-           data-en="Text Jordan"
-           data-es="Texto a Jordan"></a>
-
-        <a class="btn" href="#available"
-           data-en="View Models"
-           data-es="Ver Modelos"></a>
+        <a class="btn-primary" id="heroSms" href="sms:2627050853">
+          <span>💬</span>
+          <span data-en="Text Jordan to Order" data-es="Escríbele a Jordan">Text Jordan to Order</span>
+        </a>
+        <a class="btn-ghost" href="#models">
+          <span data-en="Compare Models" data-es="Comparar Modelos">Compare Models</span>
+          <span>↓</span>
+        </a>
       </div>
 
-      <div class="model-picker" id="available">
-        <h2 data-en="Available Models"
-            data-es="Modelos Disponibles"></h2>
-        <p class="sub"
-           data-en="Prices may vary slightly month to month."
-           data-es="Los precios pueden variar ligeramente mes a mes."></p>
-
-        <!-- Radio list (no default checked) -->
-        <div class="picklist" role="radiogroup" aria-label="Model selector">
-          <div class="pick">
-            <input type="radio" name="model" id="rMax" />
-            <a href="#v6max" onclick="selectRadio('rMax')" aria-label="Go to V6 Max">
-              <div class="name" data-en="V6 Max" data-es="V6 Max"></div>
-              <div class="hint" data-en="Heat Apps • Start here" data-es="Heat Apps • Empieza aquí"></div>
-            </a>
-          </div>
-
-          <div class="pick">
-            <input type="radio" name="model" id="rPlus" />
-            <a href="#v6plus" onclick="selectRadio('rPlus')" aria-label="Go to V6 Plus">
-              <div class="name" data-en="V6 Plus" data-es="V6 Plus"></div>
-              <div class="hint" data-en="Split screen / PIP" data-es="Pantalla dividida / PIP"></div>
-            </a>
-          </div>
-
-          <div class="pick">
-            <input type="radio" name="model" id="rMini" />
-            <a href="#elitemini" onclick="selectRadio('rMini')" aria-label="Go to Elite Mini">
-              <div class="name" data-en="Elite Mini" data-es="Elite Mini"></div>
-              <div class="hint" data-en="Best value" data-es="Mejor valor"></div>
-            </a>
-          </div>
-
-          <div class="pick">
-            <input type="radio" name="model" id="rUltra" />
-            <a href="#eliteultra" onclick="selectRadio('rUltra')" aria-label="Go to Elite Ultra">
-              <div class="name" data-en="Elite Ultra" data-es="Elite Ultra"></div>
-              <div class="hint" data-en="Ultimate" data-es="Definitivo"></div>
-            </a>
-          </div>
+      <div class="trust-bar">
+        <div class="trust-item">
+          <div class="trust-icon">🤝</div>
+          <div class="trust-text"><strong data-en="In-person" data-es="En persona">In-person</strong><br>
+            <span data-en="Cash or Zelle" data-es="Efectivo o Zelle">Cash or Zelle</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">📦</div>
+          <div class="trust-text"><strong data-en="4 models" data-es="4 modelos">4 models</strong><br>
+            <span data-en="All in stock" data-es="Todos en existencia">All in stock</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🛠️</div>
+          <div class="trust-text"><strong data-en="Setup support" data-es="Soporte de instalación">Setup support</strong><br>
+            <span data-en="I help you get started" data-es="Te ayudo a empezar">I help you get started</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🔗</div>
+          <div class="trust-text"><strong data-en="LisnUp partner" data-es="Socio LisnUp">LisnUp partner</strong><br>
+            <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" style="color:var(--blue);font-size:.83rem;">lisnup.com</a></div>
         </div>
       </div>
     </section>
 
-    <!-- =====================================================
-         IMPORTANT: Place your images at these exact paths:
-         /vseebox/assets/v6plus-1-kit.webp
-         /vseebox/assets/v6plus-2-splitscreen.webp
-         /vseebox/assets/v6max-1-kit.webp
-         /vseebox/assets/v6max-2-hero.webp
-         /vseebox/assets/v6max-3-specsheet.webp
-         /vseebox/assets/eliteultra-1-specsheet.webp
-         /vseebox/assets/eliteultra-2-hero.webp
-         /vseebox/assets/eliteultra-3-ports.webp
-         /vseebox/assets/elitemini-1-promo.webp
-         /vseebox/assets/elitemini-2-kit.webp
-         /vseebox/assets/elitemini-3-ports.webp
-         ===================================================== -->
+    <!-- ── Model cards ── -->
+    <section class="models-section fade-in" id="models">
+      <div class="section-label"><span data-en="Available Models" data-es="Modelos Disponibles">Available Models</span></div>
+      <h2 class="section-title" data-en="Choose your VSeeBox" data-es="Elige tu VSeeBox">Choose your VSeeBox</h2>
+      <p class="section-desc" data-en="Not sure which is right for you? Text me — I'll ask a couple quick questions and point you in the right direction." data-es="¿No estás seguro cuál es el adecuado? Escríbeme — te haré un par de preguntas y te orientaré.">Not sure which is right for you? Text me — I'll ask a couple quick questions and point you in the right direction.</p>
 
-    <!-- V6 MAX -->
-    <section class="product" id="v6max">
-      <div class="product-top">
-        <h3>V6 Max</h3>
-        <div class="price" data-en="$260 • $3,800 / case*"
-             data-es="$260 • $3,800 / caja*"></div>
+      <div class="model-grid">
+        <a class="model-card" href="#v6max">
+          <div class="model-badge badge-white" data-en="Start here" data-es="Empieza aquí">Start here</div>
+          <div class="model-name">V6 Max</div>
+          <div class="model-price"><sup>$</sup>260</div>
+          <div class="model-tagline" data-en="Clean, fast, everyday Android TV with Heat Apps" data-es="Android TV limpio y rápido con apps Heat">Clean, fast, everyday Android TV with Heat Apps</div>
+          <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon">→</span></div>
+        </a>
+
+        <a class="model-card" href="#v6plus">
+          <div class="model-badge badge-blue" data-en="Multi-viewer" data-es="Multi-pantalla">Multi-viewer</div>
+          <div class="model-name">V6 Plus</div>
+          <div class="model-price"><sup>$</sup>290</div>
+          <div class="model-tagline" data-en="Split screen + PIP + backlit remote" data-es="Pantalla dividida + PIP + control iluminado">Split screen + PIP + backlit remote</div>
+          <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon">→</span></div>
+        </a>
+
+        <a class="model-card best" href="#elitemini">
+          <div class="model-badge badge-green" data-en="Best value" data-es="Mejor valor">Best value</div>
+          <div class="model-name">Elite Mini</div>
+          <div class="model-price"><sup>$</sup>280</div>
+          <div class="model-tagline" data-en="Wi-Fi 6 · 10 bonus apps · 6K HDR · voice remote" data-es="Wi-Fi 6 · 10 apps extra · 6K HDR · control por voz">Wi-Fi 6 · 10 bonus apps · 6K HDR · voice remote</div>
+          <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon">→</span></div>
+        </a>
+
+        <a class="model-card" href="#eliteultra">
+          <div class="model-badge badge-gold" data-en="Top spec" data-es="Tope de gama">Top spec</div>
+          <div class="model-name">Elite Ultra</div>
+          <div class="model-price"><sup>$</sup>400</div>
+          <div class="model-tagline" data-en="Wi-Fi 6 · Gigabit ethernet · 20+ apps · 128GB" data-es="Wi-Fi 6 · Ethernet Gigabit · 20+ apps · 128GB">Wi-Fi 6 · Gigabit ethernet · 20+ apps · 128GB</div>
+          <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon">→</span></div>
+        </a>
       </div>
+    </section>
 
-      <p class="lead"
-         data-en="The standard VSeeBox experience. Comes with VSee’s Heat Apps."
-         data-es="La experiencia VSeeBox estándar. Incluye las apps Heat de VSee."></p>
+    <!-- ── Comparison table ── -->
+    <section class="compare-section fade-in">
+      <div class="section-label"><span data-en="Side by Side" data-es="Comparativa">Side by Side</span></div>
+      <h2 class="section-title" data-en="Quick comparison" data-es="Comparación rápida">Quick comparison</h2>
+      <div class="compare-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="col-head">V6 Max</th>
+              <th class="col-head">V6 Plus</th>
+              <th class="col-head">Elite Mini</th>
+              <th class="col-head">Elite Ultra</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-en="Price" data-es="Precio">Price</td>
+              <td>$260</td><td>$290</td><td>$280</td><td class="hi">$400</td>
+            </tr>
+            <tr>
+              <td data-en="OS" data-es="SO">OS</td>
+              <td>Android 14</td><td>Android 14</td><td>Android 12</td><td>Android 12</td>
+            </tr>
+            <tr>
+              <td data-en="RAM" data-es="Memoria">RAM</td>
+              <td>4GB</td><td>4GB</td><td>4GB</td><td>4GB</td>
+            </tr>
+            <tr>
+              <td data-en="Storage" data-es="Almacenamiento">Storage</td>
+              <td>64GB</td><td>64GB</td><td>32GB</td><td class="hi">128GB</td>
+            </tr>
+            <tr>
+              <td data-en="Wi-Fi" data-es="Wi-Fi">Wi-Fi</td>
+              <td>Dual-band</td><td>Dual-band</td><td class="mid">Wi-Fi 6</td><td class="hi">Wi-Fi 6</td>
+            </tr>
+            <tr>
+              <td data-en="Ethernet" data-es="Ethernet">Ethernet</td>
+              <td>100M</td><td>100M</td><td>—</td><td class="hi">Gigabit</td>
+            </tr>
+            <tr>
+              <td data-en="Split screen" data-es="Pantalla dividida">Split screen</td>
+              <td>—</td><td class="mid">✓</td><td>—</td><td>—</td>
+            </tr>
+            <tr>
+              <td data-en="Bonus apps" data-es="Apps extra">Bonus apps</td>
+              <td>—</td><td>—</td><td class="mid">10</td><td class="hi">20+</td>
+            </tr>
+            <tr>
+              <td data-en="Max video" data-es="Video máx.">Max video</td>
+              <td>8K@60</td><td>8K@60</td><td>6K HDR</td><td>6K@60</td>
+            </tr>
+            <tr>
+              <td data-en="Remote" data-es="Control">Remote</td>
+              <td data-en="Standard" data-es="Estándar">Standard</td>
+              <td data-en="Backlit" data-es="Iluminado">Backlit</td>
+              <td data-en="Voice" data-es="Por voz">Voice</td>
+              <td data-en="Voice" data-es="Por voz">Voice</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Product: V6 Max ── -->
+    <section class="product-detail fade-in" id="v6max">
+      <div class="product-header">
+        <div>
+          <div class="model-badge badge-white" style="display:inline-block;margin-bottom:10px" data-en="Standard" data-es="Estándar">Standard</div>
+          <h2 class="product-title">V6 Max</h2>
+        </div>
+        <div class="product-price-block">
+          <div class="product-price">$260</div>
+          <div class="product-price-note" data-en="Bulk: $3,800/case" data-es="Caja: $3,800">Bulk: $3,800/case</div>
+        </div>
+      </div>
+      <p class="product-desc" data-en="The everyday VSeeBox. Fast, reliable Android 14 with all the Heat apps you need. Best starting point for most people — clean software, no bloat." data-es="El VSeeBox cotidiano. Android 14 rápido y confiable con todas las apps Heat. El mejor punto de partida para la mayoría.">
+        The everyday VSeeBox. Fast, reliable Android 14 with all the Heat apps you need. Best starting point for most people — clean software, no bloat.
+      </p>
 
       <div class="img-strip" aria-label="V6 Max images">
-        <img src="/vseebox/assets/v6max-1-kit.webp" alt="V6 Max product kit" loading="lazy">
-        <img src="/vseebox/assets/v6max-2-hero.webp" alt="V6 Max box and remote" loading="lazy">
-        <img src="/vseebox/assets/v6max-3-specsheet.webp" alt="V6 Max feature sheet" loading="lazy">
+        <img src="/vseebox/assets/v6max-1-kit.webp" alt="V6 Max kit" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
+        <img src="/vseebox/assets/v6max-2-hero.webp" alt="V6 Max box" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Box &amp; remote'), this); this.remove()">
+        <img src="/vseebox/assets/v6max-3-specsheet.webp" alt="V6 Max specs" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Feature sheet'), this); this.remove()">
       </div>
 
-      <ul class="bullets">
-        <li data-en="VSee Heat Apps included"
-            data-es="Incluye apps Heat de VSee"></li>
-        <li data-en="Fast, stable everyday performance"
-            data-es="Rendimiento rápido y estable"></li>
-        <li data-en="Best starting point for most users"
-            data-es="Mejor punto de inicio para la mayoría"></li>
-      </ul>
-
-      <div class="tech">
-        <h4 data-en="Technical details" data-es="Detalles técnicos"></h4>
-        <ul class="specs">
-          <li><span data-en="Chip:" data-es="Chip:"></span> Amlogic 905Y4</li>
-          <li><span data-en="CPU:" data-es="CPU:"></span> Quad-core ARM Cortex-A35</li>
-          <li><span data-en="GPU:" data-es="GPU:"></span> Mali-G31MP2</li>
-          <li><span data-en="Memory:" data-es="Memoria:"></span> 4GB DDR3</li>
-          <li><span data-en="Storage:" data-es="Almacenamiento:"></span> 64GB eMMC</li>
-          <li><span data-en="OS:" data-es="SO:"></span> Android 14 (Android R 14.0)</li>
-          <li><span data-en="Wireless:" data-es="Inalámbrico:"></span> Dual-band Wi-Fi (2.4/5GHz, 2T2R MIMO) + Bluetooth 5.0</li>
-          <li><span data-en="Ethernet:" data-es="Ethernet:"></span> RJ45 10/100M</li>
-          <li><span data-en="Video:" data-es="Video:"></span> AV1/VP9/H.264/H.265 10-bit HDR decoding up to 8K@60</li>
-        </ul>
+      <div class="detail-cols">
+        <div class="detail-box">
+          <h4 data-en="What you get" data-es="Lo que incluye">What you get</h4>
+          <ul class="feature-list">
+            <li><div class="check">✓</div><span data-en="VSee Heat Apps pre-installed" data-es="Apps Heat de VSee preinstaladas">VSee Heat Apps pre-installed</span></li>
+            <li><div class="check">✓</div><span data-en="Android 14 — latest OS" data-es="Android 14 — último SO">Android 14 — latest OS</span></li>
+            <li><div class="check">✓</div><span data-en="8K@60 video decoding" data-es="Decodificación de video 8K@60">8K@60 video decoding</span></li>
+            <li><div class="check">✓</div><span data-en="Dual-band Wi-Fi + Bluetooth 5.0" data-es="Wi-Fi de banda dual + Bluetooth 5.0">Dual-band Wi-Fi + Bluetooth 5.0</span></li>
+            <li><div class="check">✓</div><span data-en="Wired ethernet option" data-es="Opción de ethernet con cable">Wired ethernet option</span></li>
+          </ul>
+        </div>
+        <div class="detail-box">
+          <h4 data-en="Specs" data-es="Especificaciones">Specs</h4>
+          <ul class="spec-list">
+            <li><span class="spec-key">Chip</span><span class="spec-val">Amlogic 905Y4</span></li>
+            <li><span class="spec-key">CPU</span><span class="spec-val">Quad-core Cortex-A35</span></li>
+            <li><span class="spec-key">GPU</span><span class="spec-val">Mali-G31MP2</span></li>
+            <li><span class="spec-key" data-en="Memory" data-es="Memoria">Memory</span><span class="spec-val">4GB DDR3</span></li>
+            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">64GB eMMC</span></li>
+            <li><span class="spec-key">OS</span><span class="spec-val">Android 14</span></li>
+            <li><span class="spec-key" data-en="Ethernet" data-es="Ethernet">Ethernet</span><span class="spec-val">RJ45 100M</span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <!-- V6 PLUS -->
-    <section class="product" id="v6plus">
-      <div class="product-top">
-        <h3>V6 Plus</h3>
-        <div class="price" data-en="$290*" data-es="$290*"></div>
+    <!-- ── Product: V6 Plus ── -->
+    <section class="product-detail fade-in" id="v6plus">
+      <div class="product-header">
+        <div>
+          <div class="model-badge badge-blue" style="display:inline-block;margin-bottom:10px" data-en="Multi-viewer" data-es="Multi-pantalla">Multi-viewer</div>
+          <h2 class="product-title">V6 Plus</h2>
+        </div>
+        <div class="product-price-block">
+          <div class="product-price">$290</div>
+        </div>
       </div>
-
-      <p class="lead"
-         data-en="Adds more Heat Apps plus split-screen / picture-in-picture viewing through Heat."
-         data-es="Agrega más apps Heat y pantalla dividida / PIP a través de Heat."></p>
+      <p class="product-desc" data-en="Everything in the V6 Max plus split-screen and picture-in-picture through Heat. The backlit remote is a nice touch for dark-room viewing." data-es="Todo lo del V6 Max más pantalla dividida y PIP a través de Heat. El control iluminado es genial para ver en la oscuridad.">
+        Everything in the V6 Max plus split-screen and picture-in-picture through Heat. The backlit remote is a nice touch for dark-room viewing.
+      </p>
 
       <div class="img-strip" aria-label="V6 Plus images">
-        <img src="/vseebox/assets/v6plus-1-kit.webp" alt="V6 Plus product kit" loading="lazy">
-        <img src="/vseebox/assets/v6plus-2-splitscreen.webp" alt="V6 Plus split screen example" loading="lazy">
+        <img src="/vseebox/assets/v6plus-1-kit.webp" alt="V6 Plus kit" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
+        <img src="/vseebox/assets/v6plus-2-splitscreen.webp" alt="Split screen" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Split screen demo'), this); this.remove()">
       </div>
 
-      <ul class="bullets">
-        <li data-en="Heat Apps included"
-            data-es="Incluye apps Heat"></li>
-        <li data-en="Additional Heat Apps: split screen / PIP"
-            data-es="Apps Heat adicionales: pantalla dividida / PIP"></li>
-        <li data-en="Backlit remote (easy in dark rooms)"
-            data-es="Control con luz (ideal en la oscuridad)"></li>
-      </ul>
-
-      <div class="tech">
-        <h4 data-en="Technical details" data-es="Detalles técnicos"></h4>
-        <ul class="specs">
-          <li><span data-en="Chip:" data-es="Chip:"></span> Amlogic 905Y5</li>
-          <li><span data-en="OS:" data-es="SO:"></span> Android 14</li>
-          <li><span data-en="Feature:" data-es="Función:"></span> Split-screen / multitasking support (through Heat apps)</li>
-          <li><span data-en="Remote:" data-es="Control:"></span> Backlit remote</li>
-          <li><span data-en="Designed for:" data-es="Diseñado para:"></span> Multi-view users</li>
-        </ul>
+      <div class="detail-cols">
+        <div class="detail-box">
+          <h4 data-en="What you get" data-es="Lo que incluye">What you get</h4>
+          <ul class="feature-list">
+            <li><div class="check">✓</div><span data-en="Everything in the V6 Max" data-es="Todo lo del V6 Max">Everything in the V6 Max</span></li>
+            <li><div class="check">✓</div><span data-en="Split-screen viewing via Heat" data-es="Pantalla dividida via Heat">Split-screen viewing via Heat</span></li>
+            <li><div class="check">✓</div><span data-en="Picture-in-picture (PIP)" data-es="Picture-in-picture (PIP)">Picture-in-picture (PIP)</span></li>
+            <li><div class="check">✓</div><span data-en="Backlit remote — easy in dark rooms" data-es="Control iluminado — perfecto en la oscuridad">Backlit remote — easy in dark rooms</span></li>
+            <li><div class="check">✓</div><span data-en="More Heat apps included" data-es="Más apps Heat incluidas">More Heat apps included</span></li>
+          </ul>
+        </div>
+        <div class="detail-box">
+          <h4 data-en="Specs" data-es="Especificaciones">Specs</h4>
+          <ul class="spec-list">
+            <li><span class="spec-key">Chip</span><span class="spec-val">Amlogic 905Y5</span></li>
+            <li><span class="spec-key">OS</span><span class="spec-val">Android 14</span></li>
+            <li><span class="spec-key" data-en="Memory" data-es="Memoria">Memory</span><span class="spec-val">4GB</span></li>
+            <li><span class="spec-key" data-en="Remote" data-es="Control">Remote</span><span class="spec-val" data-en="Backlit" data-es="Iluminado">Backlit</span></li>
+            <li><span class="spec-key" data-en="Feature" data-es="Función">Feature</span><span class="spec-val">Split-screen / PIP</span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <!-- ELITE MINI -->
-    <section class="product" id="elitemini">
-      <div class="product-top">
-        <h3>Elite Mini</h3>
-        <div class="price" data-en="$270*" data-es="$270*"></div>
+    <!-- ── Product: Elite Mini ── -->
+    <section class="product-detail fade-in" id="elitemini">
+      <div class="product-header">
+        <div>
+          <div class="model-badge badge-green" style="display:inline-block;margin-bottom:10px" data-en="Best value" data-es="Mejor valor">Best value</div>
+          <h2 class="product-title">Elite Mini</h2>
+        </div>
+        <div class="product-price-block">
+          <div class="product-price">$280</div>
+        </div>
       </div>
-
-      <p class="lead"
-         data-en="Best content-per-dollar. Includes 10 additional apps outside Heat-supported apps."
-         data-es="Mejor contenido por dólar. Incluye 10 apps adicionales fuera de las apps soportadas por Heat."></p>
+      <p class="product-desc" data-en="Wi-Fi 6, a voice remote, and 10 extra apps outside the Heat ecosystem. Most content for the money. Great for anyone who wants a bit more flexibility." data-es="Wi-Fi 6, control por voz y 10 apps extra fuera del ecosistema Heat. Más contenido por el dinero. Ideal para quien quiere más flexibilidad.">
+        Wi-Fi 6, a voice remote, and 10 extra apps outside the Heat ecosystem. Most content for the money. Great for anyone who wants a bit more flexibility.
+      </p>
 
       <div class="img-strip" aria-label="Elite Mini images">
-        <img src="/vseebox/assets/elitemini-1-promo.webp" alt="Elite Mini promo graphic" loading="lazy">
-        <img src="/vseebox/assets/elitemini-2-kit.webp" alt="Elite Mini product kit" loading="lazy">
-        <img src="/vseebox/assets/elitemini-3-ports.webp" alt="Elite Mini ports" loading="lazy">
+        <img src="/vseebox/assets/elitemini-1-promo.webp" alt="Elite Mini promo" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Promo graphic'), this); this.remove()">
+        <img src="/vseebox/assets/elitemini-2-kit.webp" alt="Elite Mini kit" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
+        <img src="/vseebox/assets/elitemini-3-ports.webp" alt="Elite Mini ports" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Ports'), this); this.remove()">
       </div>
 
-      <ul class="bullets">
-        <li data-en="10 additional apps outside Heat-supported apps"
-            data-es="10 apps adicionales fuera de Heat"></li>
-        <li data-en="Great value pick"
-            data-es="Excelente opción por valor"></li>
-        <li data-en="Compact setup"
-            data-es="Configuración compacta"></li>
-      </ul>
-
-      <div class="tech">
-        <h4 data-en="Technical details" data-es="Detalles técnicos"></h4>
-        <ul class="specs">
-          <li><span data-en="OS:" data-es="SO:"></span> Android 12</li>
-          <li><span data-en="Memory:" data-es="Memoria:"></span> 4GB</li>
-          <li><span data-en="Storage:" data-es="Almacenamiento:"></span> 32GB</li>
-          <li><span data-en="Wireless:" data-es="Inalámbrico:"></span> Wi-Fi 6 + Bluetooth</li>
-          <li><span data-en="Video:" data-es="Video:"></span> Up to 6K HDR</li>
-          <li><span data-en="Remote:" data-es="Control:"></span> Voice remote</li>
-        </ul>
+      <div class="detail-cols">
+        <div class="detail-box">
+          <h4 data-en="What you get" data-es="Lo que incluye">What you get</h4>
+          <ul class="feature-list">
+            <li><div class="check">✓</div><span data-en="10 apps beyond Heat ecosystem" data-es="10 apps fuera del ecosistema Heat">10 apps beyond Heat ecosystem</span></li>
+            <li><div class="check">✓</div><span data-en="Wi-Fi 6 — faster, more reliable" data-es="Wi-Fi 6 — más rápido y confiable">Wi-Fi 6 — faster, more reliable</span></li>
+            <li><div class="check">✓</div><span data-en="Voice remote included" data-es="Control por voz incluido">Voice remote included</span></li>
+            <li><div class="check">✓</div><span data-en="Up to 6K HDR playback" data-es="Reproducción de hasta 6K HDR">Up to 6K HDR playback</span></li>
+            <li><div class="check">✓</div><span data-en="Compact form factor" data-es="Diseño compacto">Compact form factor</span></li>
+          </ul>
+        </div>
+        <div class="detail-box">
+          <h4 data-en="Specs" data-es="Especificaciones">Specs</h4>
+          <ul class="spec-list">
+            <li><span class="spec-key">OS</span><span class="spec-val">Android 12</span></li>
+            <li><span class="spec-key" data-en="Memory" data-es="Memoria">Memory</span><span class="spec-val">4GB</span></li>
+            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">32GB</span></li>
+            <li><span class="spec-key">Wi-Fi</span><span class="spec-val">Wi-Fi 6</span></li>
+            <li><span class="spec-key" data-en="Video" data-es="Video">Video</span><span class="spec-val">6K HDR</span></li>
+            <li><span class="spec-key" data-en="Remote" data-es="Control">Remote</span><span class="spec-val" data-en="Voice" data-es="Por voz">Voice</span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <!-- ELITE ULTRA -->
-    <section class="product" id="eliteultra">
-      <div class="product-top">
-        <h3>Elite Ultra</h3>
-        <div class="price" data-en="$400*" data-es="$400*"></div>
+    <!-- ── Product: Elite Ultra ── -->
+    <section class="product-detail fade-in" id="eliteultra">
+      <div class="product-header">
+        <div>
+          <div class="model-badge badge-gold" style="display:inline-block;margin-bottom:10px" data-en="Top spec" data-es="Tope de gama">Top spec</div>
+          <h2 class="product-title">Elite Ultra</h2>
+        </div>
+        <div class="product-price-block">
+          <div class="product-price">$400</div>
+        </div>
       </div>
-
-      <p class="lead"
-         data-en="Ultimate option. Includes 20+ additional apps outside Heat-supported apps."
-         data-es="Opción definitiva. Incluye más de 20 apps adicionales fuera de Heat."></p>
+      <p class="product-desc" data-en="The top of the lineup. Gigabit ethernet, Wi-Fi 6, 128GB of storage, and 20+ extra apps. For people who want the absolute best setup and maximum content options." data-es="La cima de la línea. Ethernet Gigabit, Wi-Fi 6, 128GB y más de 20 apps extra. Para quienes quieren lo mejor y máximas opciones de contenido.">
+        The top of the lineup. Gigabit ethernet, Wi-Fi 6, 128GB of storage, and 20+ extra apps. For people who want the absolute best setup and maximum content options.
+      </p>
 
       <div class="img-strip" aria-label="Elite Ultra images">
-        <img src="/vseebox/assets/eliteultra-1-specsheet.webp" alt="Elite Ultra spec sheet" loading="lazy">
-        <img src="/vseebox/assets/eliteultra-2-hero.webp" alt="Elite Ultra hero" loading="lazy">
-        <img src="/vseebox/assets/eliteultra-3-ports.webp" alt="Elite Ultra ports" loading="lazy">
+        <img src="/vseebox/assets/eliteultra-1-specsheet.webp" alt="Elite Ultra specs" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Spec sheet'), this); this.remove()">
+        <img src="/vseebox/assets/eliteultra-2-hero.webp" alt="Elite Ultra hero" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Hero shot'), this); this.remove()">
+        <img src="/vseebox/assets/eliteultra-3-ports.webp" alt="Elite Ultra ports" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Ports'), this); this.remove()">
       </div>
 
-      <ul class="bullets">
-        <li data-en="20+ additional apps outside Heat-supported apps"
-            data-es="Más de 20 apps adicionales fuera de Heat"></li>
-        <li data-en="Maximum flexibility"
-            data-es="Máxima flexibilidad"></li>
-        <li data-en="Built for users who want the top option"
-            data-es="Para quienes quieren la opción más alta"></li>
-      </ul>
-
-      <div class="tech">
-        <h4 data-en="Technical details" data-es="Detalles técnicos"></h4>
-        <ul class="specs">
-          <li><span data-en="OS:" data-es="SO:"></span> Android 12 (OTA updates)</li>
-          <li><span data-en="CPU:" data-es="CPU:"></span> Quad-core ARM Cortex-A53</li>
-          <li><span data-en="GPU:" data-es="GPU:"></span> Mali-G31</li>
-          <li><span data-en="Memory:" data-es="Memoria:"></span> 4GB</li>
-          <li><span data-en="Storage:" data-es="Almacenamiento:"></span> 128GB</li>
-          <li><span data-en="Wi-Fi:" data-es="Wi-Fi:"></span> Wi-Fi 6 (up to ~867 Mbps module)</li>
-          <li><span data-en="Ethernet:" data-es="Ethernet:"></span> Up to 1 Gb (10/100/1000)</li>
-          <li><span data-en="Video:" data-es="Video:"></span> HDR decoding up to 6K@60 (HDMI 2.0)</li>
-          <li><span data-en="Bluetooth:" data-es="Bluetooth:"></span> 5.0</li>
-        </ul>
+      <div class="detail-cols">
+        <div class="detail-box">
+          <h4 data-en="What you get" data-es="Lo que incluye">What you get</h4>
+          <ul class="feature-list">
+            <li><div class="check">✓</div><span data-en="20+ apps beyond Heat ecosystem" data-es="Más de 20 apps fuera del ecosistema Heat">20+ apps beyond Heat ecosystem</span></li>
+            <li><div class="check">✓</div><span data-en="Wi-Fi 6 + Gigabit ethernet" data-es="Wi-Fi 6 + Ethernet Gigabit">Wi-Fi 6 + Gigabit ethernet</span></li>
+            <li><div class="check">✓</div><span data-en="128GB storage — never run out of room" data-es="128GB — nunca te quedas sin espacio">128GB storage — never run out of room</span></li>
+            <li><div class="check">✓</div><span data-en="OTA software updates" data-es="Actualizaciones OTA">OTA software updates</span></li>
+            <li><div class="check">✓</div><span data-en="Bluetooth 5.0 + voice remote" data-es="Bluetooth 5.0 + control por voz">Bluetooth 5.0 + voice remote</span></li>
+          </ul>
+        </div>
+        <div class="detail-box">
+          <h4 data-en="Specs" data-es="Especificaciones">Specs</h4>
+          <ul class="spec-list">
+            <li><span class="spec-key">OS</span><span class="spec-val">Android 12 + OTA</span></li>
+            <li><span class="spec-key">CPU</span><span class="spec-val">Quad-core Cortex-A53</span></li>
+            <li><span class="spec-key">GPU</span><span class="spec-val">Mali-G31</span></li>
+            <li><span class="spec-key" data-en="Memory" data-es="Memoria">Memory</span><span class="spec-val">4GB</span></li>
+            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">128GB</span></li>
+            <li><span class="spec-key">Wi-Fi</span><span class="spec-val">Wi-Fi 6</span></li>
+            <li><span class="spec-key" data-en="Ethernet" data-es="Ethernet">Ethernet</span><span class="spec-val">Gigabit (1Gbps)</span></li>
+            <li><span class="spec-key" data-en="Video" data-es="Video">Video</span><span class="spec-val">6K@60 HDMI 2.0</span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <footer>
-      <div data-en="VSeeBox distributor through LisnUp Installations. Software-related support handled directly with Jordan."
-           data-es="Distribuidor VSeeBox a través de LisnUp Installations. Soporte de software directamente con Jordan."></div>
+    <!-- ── How it works ── -->
+    <section class="how-section fade-in">
+      <div class="section-label"><span data-en="The Process" data-es="El Proceso">The Process</span></div>
+      <h2 class="section-title" data-en="How buying works" data-es="Cómo funciona la compra">How buying works</h2>
 
-      <div style="margin-top:10px">
-        <span data-en="LisnUp Installations:" data-es="LisnUp Installations:"></span>
-        <a class="link-subtle" href="https://lisnup.com" target="_blank" rel="noopener">LisnUp Installations</a>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h4 data-en="Text me" data-es="Escríbeme">Text me</h4>
+          <p data-en="Tell me how you watch TV and I'll suggest the right model for you." data-es="Dime cómo ves la televisión y te sugeriré el modelo adecuado.">Tell me how you watch TV and I'll suggest the right model for you.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h4 data-en="We meet up" data-es="Nos encontramos">We meet up</h4>
+          <p data-en="In-person handoff in the Austin/Round Rock area. Cash or Zelle accepted." data-es="Entrega en persona en el área de Austin / Round Rock. Efectivo o Zelle.">In-person handoff in the Austin/Round Rock area. Cash or Zelle accepted.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h4 data-en="You're set up" data-es="Listo">You're set up</h4>
+          <p data-en="I walk you through the setup and answer any questions you have." data-es="Te guío en la configuración y respondo todas tus preguntas.">I walk you through the setup and answer any questions you have.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h4 data-en="Ongoing support" data-es="Soporte continuo">Ongoing support</h4>
+          <p data-en="Software questions? Text me directly — I handle support personally." data-es="¿Preguntas de software? Escríbeme directamente — yo manejo el soporte.">Software questions? Text me directly — I handle support personally.</p>
+        </div>
       </div>
+    </section>
 
-      <div style="margin-top:10px" data-en="*Prices may vary monthly."
-           data-es="*Los precios pueden variar mensualmente."></div>
-
-      <div class="foot-row">
-        <div>Jordan</div>
-        <a class="toplink" href="#top" data-en="Back to top" data-es="Volver arriba"></a>
+    <!-- ── CTA block ── -->
+    <section class="cta-section fade-in">
+      <div class="cta-card">
+        <h2 data-en="Ready to get yours?" data-es="¿Listo para conseguir el tuyo?">Ready to get yours?</h2>
+        <p data-en="Text me and we'll figure out the right model, arrange a pickup, and get you set up." data-es="Escríbeme y encontramos el modelo correcto, coordinamos la entrega y te instalamos.">Text me and we'll figure out the right model, arrange a pickup, and get you set up.</p>
+        <div class="cta-methods">
+          <a class="btn-sms" id="ctaSms" href="sms:2627050853">
+            <span>💬</span>
+            <span data-en="Text Jordan — (262) 705-0853" data-es="Texto a Jordan — (262) 705-0853">Text Jordan — (262) 705-0853</span>
+          </a>
+        </div>
+        <p style="margin-top:20px;font-size:.83rem;color:var(--faint)" data-en="*Prices may vary slightly month to month." data-es="*Los precios pueden variar ligeramente mes a mes.">*Prices may vary slightly month to month.</p>
       </div>
-    </footer>
+    </section>
 
   </div>
 
-  <!-- Bottom bar (SMS only, 50% smaller) -->
-  <div class="cta-bar">
-    <a id="smsBar" href="sms:2627050853" data-en="Text Jordan" data-es="Texto a Jordan"></a>
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <div style="color:var(--text);font-weight:600;margin-bottom:4px">Jordan Moddes</div>
+        <div data-en="VSeeBox distributor via LisnUp Installations" data-es="Distribuidor VSeeBox vía LisnUp Installations">VSeeBox distributor via LisnUp Installations</div>
+      </div>
+      <div class="footer-links">
+        <a href="https://lisnup.com" target="_blank" rel="noopener">LisnUp Installations</a>
+        <a href="#top" data-en="Back to top" data-es="Volver arriba">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Mobile sticky bar ── -->
+  <div class="mobile-bar">
+    <a id="mobileSms" href="sms:2627050853">
+      <span>💬</span>
+      <span data-en="Text Jordan to Order" data-es="Escríbele a Jordan">Text Jordan to Order</span>
+    </a>
   </div>
 
   <script>
-    function setLang(lang){
-      document.documentElement.setAttribute("data-lang", lang);
-
-      // Swap all data-en/data-es nodes
-      document.querySelectorAll("[data-en]").forEach(el=>{
-        el.textContent = el.getAttribute("data-"+lang);
+    // ── Language ──
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang) || el.textContent;
       });
-
-      // Toggle buttons
-      document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
-      document.querySelector(`.lang button[onclick="setLang('${lang}')"]`)?.classList.add("active");
+      document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-toggle button[onclick="setLang('${lang}')"]`)?.classList.add('active');
+      updateSmsLinks(lang);
     }
 
-    function selectRadio(id){
-      const r = document.getElementById(id);
-      if(r) r.checked = true;
+    // ── SMS body ──
+    function updateSmsLinks(lang) {
+      const bodies = {
+        en: encodeURIComponent("Hey Jordan — I'm interested in a VSeeBox. Which model do you recommend?"),
+        es: encodeURIComponent("Hola Jordan — me interesa un VSeeBox. ¿Cuál modelo recomiendas?")
+      };
+      const href = `sms:2627050853?&body=${bodies[lang]}`;
+      ['heroSms','ctaSms','mobileSms','headerCta'].forEach(id => {
+        document.getElementById(id)?.setAttribute('href', href);
+      });
     }
 
-    // Optional: prefill SMS body (edit if you want)
-    const bodyEN = encodeURIComponent("Hey Jordan — I’m interested in a VSeeBox. Which model do you recommend?");
-    const bodyES = encodeURIComponent("Hola Jordan — me interesa un VSeeBox. ¿Cuál modelo recomiendas?");
-    function updateSmsLinks(){
-      const lang = document.documentElement.getAttribute("data-lang") || "en";
-      const body = (lang === "es") ? bodyES : bodyEN;
-      const href = `sms:2627050853?&body=${body}`;
-      document.getElementById("smsHero").setAttribute("href", href);
-      document.getElementById("smsBar").setAttribute("href", href);
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── Image fallback placeholder ──
+    function makePlaceholder(label) {
+      const d = document.createElement('div');
+      d.className = 'img-placeholder';
+      d.innerHTML = `<div class="img-icon">🖼️</div><span>${label}</span>`;
+      return d;
     }
 
     // Init
-    setLang('en');
-    updateSmsLinks();
-
-    // Update SMS body when language changes
-    const origSetLang = setLang;
-    window.setLang = function(lang){
-      origSetLang(lang);
-      updateSmsLinks();
-    };
+    updateSmsLinks('en');
   </script>
 </body>
 </html>
