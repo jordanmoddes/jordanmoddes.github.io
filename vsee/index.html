@@ -147,16 +147,15 @@
     .btn-ghost:hover { border-color: rgba(255,255,255,.25); background: var(--surface); }
 
     /* ── Trust bar ── */
-    .trust-bar {
-      display: flex; gap: 28px; flex-wrap: wrap; align-items: center;
-      padding: 24px 0; border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border); margin-top: 56px;
-      animation: fadeUp .6s .4s ease both;
+    .two-row-trust-bar { display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; color: var(--muted);
     }
-    .trust-item { display: flex; align-items: center; gap: 10px; }
-    .trust-icon { font-size: 1.1rem; }
-    .trust-text { font-size: .85rem; color: var(--muted); }
-    .trust-text strong { color: var(--text); font-weight: 500; }
+    .trust-row { display: flex; gap: 20px; flex-wrap: wrap;
+    }
+    .trust-item { display: flex; align-items: center; gap: 6px;
+    }
+    .trust-icon { font-size: 1.2rem; width: 1.4em; display: inline-block; text-align: center;
+    }
+
 
     /* ── Section titles ── */
     .section-label {
@@ -661,48 +660,34 @@
       </div>
 
       <!-- CHANGED: trust bar — concrete proofs, tightened copy -->
-      <div class="trust-bar" role="list" aria-label="Key purchase assurances">
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">📍</div>
-          <div class="trust-text">
-            <strong data-en="Austin / Round Rock" data-es="Austin / Round Rock">Austin / Round Rock</strong><br>
-            <span data-en="In-person pickup only" data-es="Solo recogida en persona">In-person pickup only</span>
+      <div class="two-row-trust-bar">
+        <div class="trust-row">
+          <div class="trust-item">
+            <span class="trust-icon">📍</span>
+            <span class="trust-text">Austin / Round Rock</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">📦</span>
+            <span class="trust-text">4 models in stock</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">🛠️</span>
+            <span class="trust-text">Plug & play pickup</span>
           </div>
         </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">📦</div>
-          <div class="trust-text">
-            <strong data-en="4 models in stock" data-es="4 modelos en existencia">4 models in stock</strong><br>
-            <span data-en="$260 – $425" data-es="$260 – $425">$260 – $425</span>
+        <div class="trust-row">
+          <div class="trust-item">
+            <span class="trust-icon">💵</span>
+            <span class="trust-text">Cash or Zelle</span>
           </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">💵</div>
-          <div class="trust-text">
-            <strong data-en="Cash or Zelle" data-es="Efectivo o Zelle">Cash or Zelle</strong><br>
-            <span data-en="Pay at pickup" data-es="Paga al recoger">Pay at pickup</span>
+          <div class="trust-item">
+            <span class="trust-icon">🔒</span>
+            <span class="trust-text">One-time purchase</span>
           </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">🛠️</div>
-          <div class="trust-text">
-            <strong data-en="Plug & play pickup" data-es="Recogida lista para usar">Plug & play pickup</strong><br>
-            <span data-en="Brief setup guidance at handoff;<br>text support afterwards." data-es="Guía breve de configuración al entregar;<br>soporte por texto después.">Brief setup guidance at handoff;<br>text support afterwards.</span>
+          <div class="trust-item">
+            <span class="trust-icon">🔗</span>
+            <span class="trust-text">LisnUp Installations</span>
           </div>
-        </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">🔒</div>
-          <div class="trust-text">
-            <strong data-en="One-time purchase" data-es="Compra única">One-time purchase</strong><br>
-            <span data-en="No device subscription fees." data-es="Sin tarifas de suscripción del dispositivo.">No device/app subscription fees.</span>
-          </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">🔗</div>
-          <div class="trust-text">
-            <strong data-en="LisnUp Installations" data-es="LisnUp Installations">LisnUp Installations</strong><br>
-            <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" style="color:var(--blue);font-size:.83rem;" aria-label="Visit LisnUp Installations website (opens in new tab)">lisnupinstallations.com</a>
         </div>
       </div>
     </section>
