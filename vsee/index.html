@@ -8,7 +8,7 @@
   <title>VSeeBoxATX</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* ── CHANGELOG (CSS unchanged — no color/theme variables modified) ──
@@ -73,11 +73,11 @@
       width: 36px; height: 36px; border-radius: 50%;
       background: linear-gradient(135deg, var(--blue), var(--green));
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Syne', sans-serif; font-weight: 800; font-size: .85rem;
+     font-family: 'Plus Jakarta Sans', sans-serif;; font-weight: 800; font-size: .85rem;
       color: #04080f; flex: 0 0 auto;
     }
     .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
-    .brand-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; color: var(--text); }
+    .brand-name { font-family: 'Plus Jakarta Sans', sans-serif;; font-weight: 700; font-size: .95rem; color: var(--text); }
     .brand-sub { font-size: .75rem; color: var(--muted); }
 
     .header-right { display: flex; align-items: center; gap: 10px; }
@@ -87,7 +87,7 @@
     }
     .lang-toggle button {
       background: none; border: none; color: var(--muted); cursor: pointer;
-      padding: 5px 12px; font-size: .8rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
+      padding: 5px 12px; font-size: .8rem; font-weight: 600; font-family: 'Inter', sans-serif;
       transition: color .2s, background .2s;
     }
     .lang-toggle button.active { background: var(--surface2); color: var(--text); }
@@ -112,7 +112,7 @@
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
     .hero h1 {
-      font-family: 'Syne', sans-serif; font-size: clamp(2rem, 6vw, 3.4rem);
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(2rem, 6vw, 3.4rem);
       font-weight: 800; line-height: 1.1; letter-spacing: -.03em;
       margin-bottom: 20px; animation: fadeUp .6s .1s ease both;
     }
@@ -165,7 +165,7 @@
     .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
     .section-title {
-      font-family: 'Syne', sans-serif; font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.5rem, 4vw, 2.2rem);
       font-weight: 700; letter-spacing: -.02em; margin-bottom: 8px;
     }
     .section-desc { color: var(--muted); font-weight: 300; max-width: 600px; margin-bottom: 40px; }
@@ -201,7 +201,7 @@
     .badge-gold { background: rgba(245,200,66,.15); color: var(--gold); }
     .badge-white { background: rgba(255,255,255,.08); color: var(--text); }
 
-    .model-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 6px; }
+    .model-name { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 6px; }
     .model-price { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
     .model-price sup { font-size: .75rem; vertical-align: super; }
     .model-tagline { font-size: .85rem; color: var(--muted); margin-bottom: 16px; }
@@ -219,7 +219,7 @@
       margin-bottom: 28px;
     }
     .product-title {
-      font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.6rem, 4vw, 2.2rem);
       font-weight: 800; letter-spacing: -.02em;
     }
     .product-price-block { text-align: right; }
@@ -265,7 +265,7 @@
       padding: 22px 20px;
     }
     .detail-box h4 {
-      font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .05em;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .05em;
       text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
     }
 
@@ -297,7 +297,7 @@
       padding: 13px 16px; text-align: center;
       border-bottom: 1px solid var(--border);
     }
-    .compare-table th { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .82rem;
+    .compare-table th { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: .82rem;
       letter-spacing: .04em; color: var(--muted); background: var(--surface); }
     .compare-table th:first-child, .compare-table td:first-child {
       text-align: left; color: var(--muted); font-size: .83rem;
@@ -305,7 +305,7 @@
     .compare-table tr:last-child td { border-bottom: none; }
     .compare-table td.hi { color: var(--green); font-weight: 600; }
     .compare-table td.mid { color: var(--blue); font-weight: 500; }
-    .compare-table .col-head { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--text); font-size: .95rem; }
+    .compare-table .col-head { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; color: var(--text); font-size: .95rem; }
     .compare-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r2); }
 
     /* ── FAQ section ── */
@@ -340,10 +340,10 @@
       padding: 22px 18px; position: relative; overflow: hidden;
     }
     .step-num {
-      font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 3rem; font-weight: 800;
       color: var(--border2); line-height: 1; margin-bottom: 12px;
     }
-    .step h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .step h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
     .step p { color: var(--muted); font-size: .88rem; font-weight: 300; }
 
     /* ── CTA block ── */
@@ -358,7 +358,7 @@
       background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(79,168,255,.07) 0%, transparent 70%);
     }
     .cta-card > * { position: relative; }
-    .cta-card h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; margin-bottom: 12px; }
+    .cta-card h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; margin-bottom: 12px; }
     .cta-card p { color: var(--muted); margin-bottom: 28px; font-weight: 300; max-width: 500px; margin-left: auto; margin-right: auto; }
     .cta-methods { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
