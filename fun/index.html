@@ -1,214 +1,1473 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>Where Should You Live (Unfiltered)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png" />
+  <title>Jordan Moddes | Operations & Supply Chain Leader</title>
+  <meta name="description" content="Jordan Moddes is an operations and supply chain leader with 10+ years across Amazon fulfillment and global supply chain environments, including large-scale turnarounds, cross-site operational development, ERP-driven planning, and programs delivering $3.6M in annual value." />
+  <meta name="keywords" content="Jordan Moddes, operations leader, supply chain leader, Amazon operations, fulfillment leadership, logistics optimization, process improvement, multi-site operations, inventory planning, SAP, Macola, VBA automation, KPI management, labor planning, dock operations, turnaround leadership, WMS, distribution operations" />
+  <meta name="author" content="Jordan Moddes" />
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+  <link rel="canonical" href="https://www.jordanmoddes.com/" />
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Jordan Moddes" />
+  <meta property="og:title" content="Jordan Moddes | Operations & Supply Chain Leader" />
+  <meta property="og:description" content="Operations and supply chain leader with 10+ years of experience across Amazon fulfillment and global supply chain environments, known for turnarounds, program creation, and multi-site operational development." />
+  <meta property="og:url" content="https://www.jordanmoddes.com/" />
+  <meta property="og:image" content="https://www.jordanmoddes.com/assets/Signature_WhiteTP.png" />
 
-<style>
-html,body{
-  margin:0;height:100%;overflow:hidden;
-  background:#0b1220;color:#f8fafc;
-  font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
-}
-#map{height:100%;width:100%}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jordan Moddes | Operations & Supply Chain Leader" />
+  <meta name="twitter:description" content="10+ years driving fulfillment and supply chain performance through turnarounds, multi-site operational development, ERP planning, and logistics optimization." />
+  <meta name="twitter:image" content="https://www.jordanmoddes.com/assets/Signature_WhiteTP.png" />
 
-/* GATE */
-#gate,#bad{
-  position:fixed;inset:0;z-index:9999;
-  display:flex;align-items:center;justify-content:center;
-  background:#000;text-align:center;
-}
-#gate .box{padding:26px 30px;border:1px solid #333;background:#111}
-#gate button{
-  margin:10px;padding:12px 22px;
-  font-size:18px;font-weight:700;border:none;cursor:pointer
-}
-#yes{background:#16a34a;color:#fff}
-#no{background:#dc2626;color:#fff}
-#bad{
-  display:none;font-size:clamp(32px,8vw,96px);
-  font-weight:900;letter-spacing:2px
-}
-
-/* overlay */
-#zoneAlert{
-  position:fixed;top:20px;left:50%;
-  transform:translateX(-50%);
-  padding:12px 18px;font-size:22px;font-weight:900;
-  background:rgba(0,0,0,.75);border-radius:12px;
-  display:none;z-index:5000
-}
-
-/* labels */
-.zone-label{
-  font-weight:900;font-size:22px;line-height:1.2;
-  text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.8)
-}
-
-/* full-width cold text */
-.cold-band{
-  width:100%;
-  color:#2563eb;
-  font-weight:900;
-  text-align:center;
-  white-space:nowrap;
-  text-shadow:0 2px 10px rgba(0,0,0,.9)
-}
-
-/* effects */
-.pulse{animation:pulse 1.2s infinite}
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(255,255,255,.4)}
-  70%{box-shadow:0 0 0 18px rgba(255,255,255,0)}
-  100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}
-}
-body.die::after{
-  content:"";position:fixed;inset:0;
-  background:rgba(0,0,0,.45);
-  pointer-events:none;z-index:4000
-}
-</style>
-</head>
-
-<body>
-
-<div id="gate">
-  <div class="box">
-    <h2>18+ Content</h2>
-    <p>Offensive language. No filter.</p>
-    <button id="yes">YES</button>
-    <button id="no">NO</button>
-  </div>
-</div>
-
-<div id="bad">TOO FUCKING BAD</div>
-<div id="zoneAlert"></div>
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-const gate=document.getElementById("gate");
-const bad=document.getElementById("bad");
-document.getElementById("yes").onclick=enter;
-document.getElementById("no").onclick=()=>{
-  gate.style.display="none";
-  bad.style.display="flex";
-  setTimeout(()=>{bad.style.display="none";enter();},1200);
-};
-
-function enter(){gate.style.display="none";init();}
-
-function init(){
-const map=L.map("map",{
-  zoomControl:false,inertia:false,
-  worldCopyJump:false,maxBoundsViscosity:1.0
-}).setView([39,-98],4);
-
-L.tileLayer(
- "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
- {maxZoom:7,minZoom:3}
-).addTo(map);
-
-/* ZONES */
-const zones=[
-{
- name:"DIE, Just fucking DIE",
- color:"#ffffff",
- coords:[[75,-170],[75,-40],[58,-40],[56,-80],[57,-120],[56,-150],[58,-170]]
-},
-{
- name:"COLD",
- color:"#2563eb",
- coords:[[57,-150],[57,-55],[50,-50],[47,-70],[47,-120],[50,-145]]
-},
-{
- name:"Get fucked",
- color:"#10b981",
- coords:[[50,-127],[50,-118],[44,-118],[36,-121],[33,-124],[33,-127]]
-},
-{
- name:"Manageable",
- color:"#facc15",
- coords:[[41,-130],[41,-65],[37,-68],[35,-85],[35,-110],[36,-125]]
-},
-{
- name:"YES!!! ❤️",
- color:"#dc2626",
- coords:[[36,-128],[34,-123],[31,-110],[30,-95],[29,-85],[26,-82],[24,-84],[26,-92],[28,-104],[30,-118],[33,-128]]
-}
-];
-
-const layers=[];
-
-zones.forEach(z=>{
- const poly=L.polygon(z.coords,{
-  color:z.color,weight:4,fillColor:z.color,fillOpacity:.28
- }).addTo(map);
- poly.zone=z.name;
- layers.push(poly);
-
- // labels
- const b=poly.getBounds();
- if(z.name==="COLD"){
-   const mid=L.latLng((b.getNorth()+b.getSouth())/2,(b.getEast()+b.getWest())/2);
-   L.marker(mid,{
-     icon:L.divIcon({
-       className:"",
-       html:`<div class="cold-band">Fuck you, too cold for 5 months / year</div>`
-     })
-   }).addTo(map);
- }else{
-   const c=b.getCenter();
-   L.marker(c,{
-     icon:L.divIcon({
-       className:"zone-label",
-       html:`<span style="color:${z.color}">${z.name}</span>`
-     })
-   }).addTo(map);
- }
-});
-
-/* HARD PAN LIMITS */
-const group=L.featureGroup(layers);
-let b=group.getBounds();
-const padLat=0.8,padLng=0.8;
-map.setMaxBounds(L.latLngBounds(
- [b.getSouth()-padLat,b.getWest()-padLng],
- [b.getNorth()+padLat,b.getEast()+padLng]
-));
-
-/* GEO */
-const alertBox=document.getElementById("zoneAlert");
-function locate(){
- if(!navigator.geolocation){zoomOut();return;}
- navigator.geolocation.getCurrentPosition(p=>{
-  const ll=[p.coords.latitude,p.coords.longitude];
-  const m=L.circleMarker(ll,{radius:8,color:"#fff",fillOpacity:1}).addTo(map);
-  m.getElement().classList.add("pulse");
-  map.setView(ll,6,{animate:true});
-  setTimeout(()=>zoomOut(),1200);
-  check(ll);
- },zoomOut);
-}
-function zoomOut(){map.fitBounds(group.getBounds(),{animate:true});}
-function check(ll){
- layers.forEach(p=>{
-  if(p.getBounds().contains(ll)){
-   alertBox.textContent="You are in: "+p.zone;
-   alertBox.style.display="block";
-   setTimeout(()=>alertBox.style.display="none",3000);
-   if(p.zone.startsWith("DIE")){
-    document.body.classList.add("die");
-    setTimeout(()=>document.body.classList.remove("die"),2500);
-   }
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://www.jordanmoddes.com/#website",
+        "url": "https://www.jordanmoddes.com/",
+        "name": "Jordan Moddes - Operations & Supply Chain Leader",
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.jordanmoddes.com/#person",
+        "name": "Jordan Moddes",
+        "jobTitle": "Operations & Supply Chain Leader",
+        "url": "https://www.jordanmoddes.com/",
+        "image": "https://www.jordanmoddes.com/assets/Signature_WhiteTP.png",
+        "description": "Operations and supply chain leader with over 10 years in fulfillment, logistics, process optimization, operational turnarounds, and multi-site performance improvement.",
+        "worksFor": { "@type": "Organization", "name": "Jmod Co." },
+        "alumniOf": [{ "@type": "EducationalOrganization", "name": "Bryant & Stratton College" }],
+        "knowsAbout": ["Warehouse Management Systems (WMS)","Dock Operations","Sortation","NonCon Routing","Vendor Returns","Transportation Logistics","Fulfillment Center Launches","Continuous Improvement"],
+        "email": "mailto:jmodwork@gmail.com",
+        "telephone": "+1-262-705-0853",
+        "sameAs": ["https://www.linkedin.com/in/jordanmoddes/"]
+      }
+    ]
   }
- });
-}
-locate();
-}
-</script>
+  </script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MPJ69EQK7P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MPJ69EQK7P');
+    if (location.hostname === 'jordanmoddes.com') {
+      location.href = 'https://www.jordanmoddes.com' + location.pathname;
+    }
+  </script>
+
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── tokens ─── */
+    :root {
+      --bg: #080c10;
+      --bg-mid: #0d1117;
+      --panel: #111820;
+      --panel-2: #0e131a;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.07);
+      --text: #eef1f6;
+      --muted: rgba(238,241,246,0.62);
+      --muted-2: rgba(238,241,246,0.40);
+      --line: rgba(255,255,255,0.09);
+      --line-2: rgba(255,255,255,0.05);
+      --accent: #00e8d8;
+      --accent-dim: rgba(0,232,216,0.12);
+      --accent-border: rgba(0,232,216,0.28);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.28);
+      --shadow: 0 8px 28px rgba(0,0,0,0.36);
+      --shadow-lg: 0 20px 48px rgba(0,0,0,0.44);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --radius-xs: 8px;
+      --max: 1160px;
+      --hero-grad: linear-gradient(140deg, #001f1d 0%, #00302c 40%, #004a44 100%);
+      --hero-fg: #e0faf8;
+      --mono: 'DM Mono', monospace;
+    }
+    html[data-theme='light'] {
+      --bg: #f2f5f9;
+      --bg-mid: #ffffff;
+      --panel: #ffffff;
+      --panel-2: #f7f9fc;
+      --glass: rgba(0,0,0,0.03);
+      --glass-2: rgba(0,0,0,0.055);
+      --text: #0d1117;
+      --muted: rgba(13,17,23,0.62);
+      --muted-2: rgba(13,17,23,0.40);
+      --line: rgba(13,17,23,0.10);
+      --line-2: rgba(13,17,23,0.055);
+      --accent: #007a70;
+      --accent-dim: rgba(0,122,112,0.10);
+      --accent-border: rgba(0,122,112,0.26);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.07);
+      --shadow: 0 6px 22px rgba(0,0,0,0.10);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,0.12);
+      --hero-grad: linear-gradient(140deg, #e6faf9 0%, #ccf5f2 40%, #b0edea 100%);
+      --hero-fg: #00302c;
+    }
+
+    /* ─── reset ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; cursor: pointer; }
+    ul { padding-left: 1.1em; }
+    li { line-height: 1.72; }
+
+    /* ─── watermark ─── */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      margin: auto;
+      width: min(68vw, 680px);
+      background: url('/assets/Signature_WhiteTP.png') center / contain no-repeat;
+      opacity: 0.032;
+      pointer-events: none;
+      z-index: 0;
+    }
+    html[data-theme='light'] body::before {
+      background: url('/assets/Signature_BlackTP.png') center / contain no-repeat;
+      opacity: 0.04;
+    }
+
+    /* ─── layout ─── */
+    .page { position: relative; z-index: 1; }
+    .container { width: min(var(--max), calc(100% - 2.5rem)); margin: 0 auto; }
+
+    /* ─── topbar ─── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px) saturate(1.4);
+      -webkit-backdrop-filter: blur(18px) saturate(1.4);
+      background: rgba(8,12,16,0.80);
+      border-bottom: 1px solid var(--line-2);
+      transition: background 0.2s;
+    }
+    html[data-theme='light'] .topbar {
+      background: rgba(242,245,249,0.88);
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 62px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 700;
+      font-size: 0.97rem;
+      letter-spacing: 0.01em;
+    }
+    .brand img { width: 30px; height: 30px; border-radius: 8px; }
+
+    .top-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
+
+    /* ─── buttons ─── */
+    .btn, .ghost-btn, .mini-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .btn {
+      background: var(--accent);
+      color: #040d0c;
+      padding: 0.75rem 1.25rem;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 6px 20px rgba(0,232,216,0.22);
+      font-weight: 800;
+    }
+    html[data-theme='light'] .btn { box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 6px 18px rgba(0,122,112,0.20); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 10px 28px rgba(0,232,216,0.30); }
+    .ghost-btn {
+      padding: 0.72rem 1.1rem;
+      border-color: var(--line);
+      background: var(--glass);
+      color: var(--text);
+    }
+    .ghost-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .mini-btn {
+      padding: 0.52rem 0.9rem;
+      border-color: var(--line);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+    .mini-btn:hover { color: var(--text); border-color: var(--accent); background: var(--accent-dim); }
+    .theme-btn { width: 38px; height: 38px; border-radius: 999px; padding: 0; border-color: var(--line); background: var(--glass); color: var(--text); font-size: 1rem; }
+
+    /* ─── hero ─── */
+    .hero {
+      background: var(--hero-grad);
+      color: var(--hero-fg);
+      padding: 4rem 0 3rem;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.24);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,232,216,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    html[data-theme='light'] .hero::after {
+      background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,122,112,0.06) 0%, transparent 70%);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+      gap: 2rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-kicker {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      opacity: 0.65;
+      margin-bottom: 1rem;
+      font-family: var(--mono);
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      line-height: 0.92;
+      letter-spacing: -0.035em;
+      font-weight: 800;
+    }
+    .hero h2 {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      margin: 0.9rem 0 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      opacity: 0.82;
+    }
+    .hero p {
+      max-width: 680px;
+      margin: 0.8rem 0 0;
+      font-size: 1rem;
+      line-height: 1.78;
+      opacity: 0.80;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.4rem; }
+    .hero-contacts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.85rem; }
+
+    /* hero snapshot card */
+    .hero-card {
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 1.25rem;
+      backdrop-filter: blur(12px);
+    }
+    html[data-theme='light'] .hero-card {
+      background: rgba(255,255,255,0.28);
+      border-color: rgba(0,0,0,0.10);
+    }
+    .hero-card h3 {
+      margin: 0 0 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      opacity: 0.65;
+      font-family: var(--mono);
+      font-weight: 500;
+    }
+    .hero-stat-list { display: grid; gap: 0; }
+    .hero-stat {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: baseline;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+    html[data-theme='light'] .hero-stat { border-bottom-color: rgba(0,0,0,0.08); }
+    .hero-stat:last-child { border-bottom: none; padding-bottom: 0; }
+    .hero-stat:first-child { padding-top: 0; }
+    .hero-stat strong { font-size: 1.4rem; line-height: 1; font-weight: 800; letter-spacing: -0.02em; }
+    .hero-stat span { font-size: 0.84rem; opacity: 0.78; line-height: 1.4; text-align: right; }
+
+    /* ─── main layout ─── */
+    main { padding: 1.75rem 0 5rem; }
+    section { margin-top: 1.25rem; }
+
+    /* ─── section panels ─── */
+    .section-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    html[data-theme='light'] .section-panel { box-shadow: var(--shadow-sm); }
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem 1.75rem 1rem;
+      border-bottom: 1px solid var(--line-2);
+    }
+    .section-head h3 {
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      letter-spacing: -0.025em;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .section-head p {
+      margin: 0.4rem 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.65;
+      max-width: 680px;
+    }
+    .section-body { padding: 1.25rem 1.75rem 1.75rem; }
+
+    /* ─── impact grid ─── */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+    .metric-card {
+      background: var(--glass);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 1.1rem;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .metric-card:hover { border-color: var(--accent-border); background: var(--accent-dim); }
+    .metric-card strong {
+      font-size: 1.9rem;
+      line-height: 1;
+      letter-spacing: -0.035em;
+      color: var(--accent);
+      font-weight: 800;
+    }
+    .metric-card span {
+      display: block;
+      margin-top: 0.55rem;
+      font-size: 0.875rem;
+      line-height: 1.48;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* ─── pills ─── */
+    .pill-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .pill {
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--glass);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .pill:hover { border-color: var(--accent-border); color: var(--accent); background: var(--accent-dim); }
+
+    /* ─── featured work ─── */
+    .feature-stack { display: grid; gap: 1rem; }
+    .feature {
+      border: 1px solid var(--line);
+      background: var(--glass);
+      border-radius: 20px;
+      padding: 1.5rem;
+      transition: border-color 0.15s;
+    }
+    .feature:hover { border-color: var(--line); }
+    .feature-top { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+    .feature-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      font-family: var(--mono);
+    }
+    .feature h4 { margin: 0.65rem 0 0.4rem; font-size: 1.35rem; letter-spacing: -0.025em; font-weight: 800; line-height: 1.15; }
+    .feature > div > p, .feature > .feature-top > div > p { margin: 0; color: var(--muted); line-height: 1.72; font-size: 0.95rem; }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+    .subpanel {
+      border: 1px solid var(--line);
+      background: var(--glass-2);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.1rem;
+    }
+    .subpanel h5 {
+      margin: 0 0 0.65rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted-2);
+      font-weight: 600;
+      font-family: var(--mono);
+    }
+    .subpanel ul { color: var(--text); font-size: 0.92rem; }
+    .subpanel li { margin-bottom: 0.2rem; }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+    .metric-tile {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--glass);
+      padding: 0.9rem 1rem;
+      min-height: 96px;
+    }
+    .metric-tile strong { display: block; font-size: 1.35rem; line-height: 1.05; color: var(--accent); font-weight: 800; letter-spacing: -0.02em; }
+    .metric-tile span { display: block; margin-top: 0.4rem; color: var(--muted); line-height: 1.45; font-size: 0.84rem; font-weight: 600; }
+
+    .feature-foot {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--glass);
+    }
+
+    /* ─── experience ─── */
+    .experience-stack { display: grid; gap: 1rem; }
+    .role-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--panel);
+    }
+    .role-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1.25rem 1.5rem 0;
+    }
+    .role-head h4 { font-size: 1.2rem; letter-spacing: -0.02em; font-weight: 800; line-height: 1.2; }
+    .role-head > div > p { margin: 0.3rem 0 0; color: var(--muted); line-height: 1.6; font-size: 0.93rem; }
+    .role-date {
+      color: var(--accent);
+      font-weight: 700;
+      white-space: nowrap;
+      font-size: 0.84rem;
+      font-family: var(--mono);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .role-body { padding: 1rem 1.5rem 1.5rem; }
+    .role-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; }
+    .role-group {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1rem;
+      background: var(--glass);
+    }
+    .role-group h5 {
+      margin: 0 0 0.6rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted-2);
+      font-weight: 600;
+      font-family: var(--mono);
+    }
+    .role-group ul { font-size: 0.92rem; color: var(--text); }
+    .role-group li { margin-bottom: 0.15rem; }
+
+    /* ─── details/accordion ─── */
+    details.detail-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--glass);
+      margin-top: 0.85rem;
+      overflow: hidden;
+    }
+    details.detail-card summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 0.9rem 1.1rem;
+      font-weight: 700;
+      font-size: 0.92rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      color: var(--muted);
+      transition: color 0.15s;
+      user-select: none;
+    }
+    details.detail-card summary::-webkit-details-marker { display: none; }
+    details.detail-card summary:hover { color: var(--text); }
+    details.detail-card[open] summary { border-bottom: 1px solid var(--line); color: var(--text); }
+    .detail-content { padding: 1rem 1.1rem 1.1rem; }
+    .detail-content .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+
+    /* ─── two-col layout ─── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* ─── soft cards ─── */
+    .soft-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--glass);
+      padding: 1rem 1.1rem;
+    }
+    .soft-card h4, .soft-card h5 { margin: 0 0 0.6rem; font-size: 0.9rem; font-weight: 700; }
+    .soft-card p { margin: 0; color: var(--muted); line-height: 1.72; font-size: 0.92rem; }
+    .soft-card ul { margin: 0; font-size: 0.92rem; color: var(--text); }
+    .soft-card li { margin-bottom: 0.15rem; }
+
+    /* ─── footer ─── */
+    .footer {
+      margin: 2.5rem 0 0;
+      padding: 1rem 0 6rem;
+      color: var(--muted-2);
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+      font-family: var(--mono);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── translate ─── */
+    #google_translate_element {
+      display: none;
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--line);
+    }
+
+    /* ─── floating chat ─── */
+    .floating-chat {
+      position: fixed;
+      right: 1.25rem;
+      bottom: 1.25rem;
+      z-index: 80;
+    }
+    .chat-bubble {
+      border: 1px solid rgba(0,0,0,0.12);
+      background: var(--accent);
+      color: #030d0c;
+      padding: 0.68rem 1.1rem;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 24px rgba(0,232,216,0.28), 0 2px 8px rgba(0,0,0,0.24);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .chat-bubble:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,232,216,0.36), 0 4px 12px rgba(0,0,0,0.28); }
+    html[data-theme='light'] .chat-bubble { color: #fff; }
+    .chat-bubble img { width: 18px; height: 18px; border-radius: 5px; }
+
+    /* ─── chat panel ─── */
+    .chat-panel {
+      position: fixed;
+      right: 1.25rem;
+      bottom: 5rem;
+      width: min(380px, calc(100vw - 1.5rem));
+      max-height: 70vh;
+      display: none;
+      flex-direction: column;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--bg-mid);
+      box-shadow: var(--shadow-lg);
+      z-index: 81;
+    }
+    html[data-theme='light'] .chat-panel { background: #ffffff; }
+    .chat-panel.open { display: flex; }
+    .chat-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .chat-head strong { display: block; font-weight: 800; }
+    .chat-head span { display: block; color: var(--muted); font-size: 0.86rem; margin-top: 0.2rem; line-height: 1.5; }
+    .chat-close { background: transparent; border: none; color: var(--muted); font-size: 1.1rem; width: 28px; height: 28px; border-radius: 999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: color 0.15s, background 0.15s; }
+    .chat-close:hover { color: var(--text); background: var(--glass); }
+    .chat-body { padding: 1rem; overflow: auto; display: grid; gap: 0.65rem; }
+    .chat-msg { padding: 0.75rem 0.9rem; border-radius: var(--radius-sm); line-height: 1.65; font-size: 0.9rem; }
+    .chat-msg.bot { background: var(--glass); border: 1px solid var(--line); color: var(--text); }
+    .chat-msg.user { background: var(--accent-dim); border: 1px solid var(--accent-border); color: var(--text); }
+    html[data-theme='light'] .chat-msg.bot { background: var(--glass); }
+    html[data-theme='light'] .chat-msg.user { background: var(--accent-dim); }
+    .chat-footer { padding: 0.85rem 1rem; border-top: 1px solid var(--line); display: grid; gap: 0.65rem; }
+    .chat-row { display: flex; gap: 0.5rem; }
+    .chat-input {
+      flex: 1;
+      border: 1px solid var(--line);
+      background: var(--glass);
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      outline: none;
+      font: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.15s;
+    }
+    .chat-input:focus { border-color: var(--accent-border); }
+    html[data-theme='light'] .chat-input { background: var(--glass); }
+    .chat-send {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: var(--accent);
+      font-weight: 800;
+      font-size: 0.875rem;
+      color: #030d0c;
+      flex-shrink: 0;
+    }
+    html[data-theme='light'] .chat-send { color: #fff; }
+    .chat-links { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+    /* ─── section entrance animation ─── */
+    @media (prefers-reduced-motion: no-preference) {
+      .section-panel, .feature, .role-card, .metric-card {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+      }
+      .section-panel.visible, .feature.visible, .role-card.visible, .metric-card.visible {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ─── responsive ─── */
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-card { order: -1; }
+      .feature-grid, .two-col, .detail-content .split { grid-template-columns: 1fr; }
+      .impact-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .role-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 700px) {
+      .container { width: min(var(--max), calc(100% - 1.75rem)); }
+      .topbar-inner { flex-direction: column; align-items: flex-start; padding: 0.7rem 0; min-height: auto; gap: 0.5rem; }
+      .top-actions { width: 100%; justify-content: flex-start; }
+      .hero { padding: 2.75rem 0 2.25rem; }
+      .section-head, .feature-top, .role-head { flex-direction: column; align-items: flex-start; }
+      .section-head { padding: 1.25rem 1.25rem 0.85rem; }
+      .section-body { padding: 1rem 1.25rem 1.25rem; }
+      .role-head { padding: 1.1rem 1.25rem 0; }
+      .role-body { padding: 0.85rem 1.25rem 1.25rem; }
+      .impact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .role-grid { grid-template-columns: 1fr; }
+      .feature { padding: 1.1rem; }
+    }
+    @media (max-width: 480px) {
+      .container { width: min(var(--max), calc(100% - 1.25rem)); }
+      .impact-grid, .metric-strip { grid-template-columns: 1fr 1fr; }
+      .hero-actions, .hero-contacts, .top-actions, .chat-links { gap: 0.45rem; }
+      .floating-chat { right: 0.85rem; bottom: 0.85rem; }
+      .chat-panel { right: 0.5rem; bottom: 4.5rem; width: calc(100vw - 1rem); }
+    }
+    @media (max-width: 360px) {
+      .impact-grid, .metric-strip { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ── topbar ── -->
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="#top" aria-label="Jordan Moddes home">
+          <img src="/assets/Signature_WhiteTP.png" alt="Jordan Moddes logo" id="brandLogo">
+          <span>Jordan Moddes</span>
+        </a>
+        <div class="top-actions">
+          <button class="mini-btn" id="shareBtn" type="button">Share</button>
+          <button class="mini-btn" id="translateToggle" type="button" aria-expanded="false" aria-controls="google_translate_element">Translate</button>
+          <button class="theme-btn mini-btn" id="themeToggle" type="button" aria-label="Toggle theme">☀</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── hero ── -->
+    <header class="hero" id="top">
+      <div class="container hero-grid">
+        <div>
+          <p class="hero-kicker">Operations portfolio</p>
+          <h1>Jordan Moddes</h1>
+          <h2>Operations and Supply Chain Leader</h2>
+          <p>
+            Operations and supply chain leader with 10+ years across Amazon fulfillment and global supply chain environments. Known for stabilizing underperforming operations, creating scalable programs, and driving measurable impact through labor planning, process redesign, automation, and multi-site execution.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="/assets/Jordan_Moddes_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+            <a class="ghost-btn" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="ghost-btn" href="/cdn-cgi/l/email-protection#b0dadddfd4c7dfc2dbf0d7ddd1d9dc9ed3dfdd">Contact</a>
+          </div>
+          <div class="hero-contacts">
+            <a class="mini-btn" href="tel:+12627050853">Call</a>
+            <a class="mini-btn" href="sms:+12627050853">Text</a>
+            <a class="mini-btn" href="/cdn-cgi/l/email-protection#02686f6d66756d706942656f636b6e2c616d6f">Email</a>
+            <a class="mini-btn" href="/assets/jordan-moddes.vcf" download>Save Contact</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Snapshot">
+          <h3>Snapshot</h3>
+          <div class="hero-stat-list">
+            <div class="hero-stat"><strong>25+</strong><span>Amazon sites supported</span></div>
+            <div class="hero-stat"><strong>600+</strong><span>Employees led in a 3.25M sq ft facility</span></div>
+            <div class="hero-stat"><strong>$3.6M</strong><span>Annual operational value from Lane Dash</span></div>
+            <div class="hero-stat"><strong>64</strong><span>Global distribution centers supported today</span></div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+
+        <!-- ── career impact ── -->
+        <section class="section-panel" aria-labelledby="impact-title">
+          <div class="section-head">
+            <div>
+              <h3 id="impact-title">Career Impact</h3>
+              <p>High-signal metrics that define scale, leadership range, and business impact.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="impact-grid">
+              <article class="metric-card"><strong>25+</strong><span>Amazon fulfillment centers supported through training, launch support, and operational improvement work</span></article>
+              <article class="metric-card"><strong>600+</strong><span>Employees led across multi-shift fulfillment operations</span></article>
+              <article class="metric-card"><strong>$3.6M</strong><span>Annual operational value created through Lane Dash logistics optimization</span></article>
+              <article class="metric-card"><strong>30+</strong><span>Internal promotions developed from associate through salaried leadership</span></article>
+              <article class="metric-card"><strong>13</strong><span>Salaried leaders coached across multi-site operations</span></article>
+              <article class="metric-card"><strong>90+</strong><span>Sites using reporting dashboards built through VBA automation</span></article>
+              <article class="metric-card"><strong>15%</strong><span>Average YoY performance gains across home facilities</span></article>
+              <article class="metric-card"><strong>19</strong><span>VBA automation tools developed to reduce manual work and improve visibility</span></article>
+              <article class="metric-card"><strong>5</strong><span>Operational framework and SOP rollouts adopted at network scale</span></article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── core capabilities ── -->
+        <section class="section-panel" aria-labelledby="strengths-title">
+          <div class="section-head">
+            <div>
+              <h3 id="strengths-title">Core Leadership Capabilities</h3>
+              <p>Operational strengths consistently used across warehouse, fulfillment, logistics, planning, and turnaround environments.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="pill-grid">
+              <span class="pill">Operations Leadership</span>
+              <span class="pill">Supply Chain Operations</span>
+              <span class="pill">Operational Turnarounds</span>
+              <span class="pill">Program Creation</span>
+              <span class="pill">Process Optimization</span>
+              <span class="pill">Labor Planning and Forecasting</span>
+              <span class="pill">KPI and Performance Management</span>
+              <span class="pill">Dock and Sortation Operations</span>
+              <span class="pill">Inventory Control and Planning</span>
+              <span class="pill">Transportation Coordination</span>
+              <span class="pill">Cross-Functional Leadership</span>
+              <span class="pill">Training Development and SOP Design</span>
+              <span class="pill">5-Why Root Cause Analysis</span>
+              <span class="pill">Launch and Stabilization Support</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── featured work ── -->
+        <section class="section-panel" aria-labelledby="featured-title">
+          <div class="section-head">
+            <div>
+              <h3 id="featured-title">Featured Operational Work</h3>
+              <p>The highest-signal work that best represents program ownership, executive exposure, and senior operations readiness.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="feature-stack">
+
+              <!-- Lane Dash -->
+              <article class="feature" aria-labelledby="lane-dash-title">
+                <div class="feature-top">
+                  <div>
+                    <span class="feature-tag">Program created and deployed</span>
+                    <h4 id="lane-dash-title">Lane Dash Logistics Optimization Program</h4>
+                    <p>Created and led a logistics routing optimization program focused on improving dock flow efficiency and labor utilization across fulfillment operations.</p>
+                  </div>
+                </div>
+                <div class="feature-grid">
+                  <div class="subpanel">
+                    <h5>What I built</h5>
+                    <ul>
+                      <li>Identified inefficiencies within dock routing and labor utilization</li>
+                      <li>Designed new routing logic and workflow execution changes</li>
+                      <li>Built reporting metrics used to track program performance</li>
+                      <li>Moved the work from concept to approved investment and deployment</li>
+                    </ul>
+                  </div>
+                  <div class="subpanel">
+                    <h5>Business impact</h5>
+                    <ul>
+                      <li>$1.28M investment approved</li>
+                      <li>Approximately 5.5 month ROI</li>
+                      <li>$3.6M annual operational value</li>
+                      <li>Scaled across the North American Fulfillment network</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="metric-strip" aria-label="Lane Dash metrics">
+                  <div class="metric-tile"><strong>$1.28M</strong><span>Approved investment</span></div>
+                  <div class="metric-tile"><strong>5.5 months</strong><span>Estimated ROI payback period</span></div>
+                  <div class="metric-tile"><strong>$3.6M</strong><span>Annual operational value</span></div>
+                  <div class="metric-tile"><strong>NACF</strong><span>Deployment across network scale</span></div>
+                </div>
+              </article>
+
+              <!-- RIT -->
+              <article class="feature" aria-labelledby="rit-title">
+                <div class="feature-top">
+                  <div>
+                    <span class="feature-tag">VP-directed turnaround</span>
+                    <h4 id="rit-title">Rapid Improvement Team Turnaround</h4>
+                    <p>Selected by leadership for a VP-directed Rapid Improvement Team to stabilize a severely underperforming fulfillment center. Responsible for the entire inbound side: receive dock, stow, inbound quality, inbound safety, and labor planning.</p>
+                  </div>
+                </div>
+                <div class="metric-strip" aria-label="Initial conditions metrics">
+                  <div class="metric-tile"><strong>31%</strong><span>Benchmark compliance score at start</span></div>
+                  <div class="metric-tile"><strong>2/day</strong><span>Approximate safety incidents every 24 hours</span></div>
+                  <div class="metric-tile"><strong>110</strong><span>Inbound throughput before turnaround</span></div>
+                  <div class="metric-tile"><strong>3600</strong><span>Approximate inbound DPMO at start</span></div>
+                </div>
+                <div class="feature-grid">
+                  <div class="subpanel">
+                    <h5>Turnaround actions</h5>
+                    <ul>
+                      <li>Implemented workstation 5S standardization and center-work checklists</li>
+                      <li>Cut indirect labor overspend by about 40 percent through planning resets</li>
+                      <li>Rebuilt labor planning and dock scheduling structure</li>
+                      <li>Trained Ops Managers, Area Managers, and Process Assistants on execution standards</li>
+                      <li>Introduced weekly compliance reviews and 5-Why failure analysis</li>
+                    </ul>
+                  </div>
+                  <div class="subpanel">
+                    <h5>Results in six weeks</h5>
+                    <ul>
+                      <li>Safety incidents dropped to zero for the final two weeks</li>
+                      <li>Throughput improved from 110 to 155 within four weeks</li>
+                      <li>Peak throughput reached 165 in a single shift</li>
+                      <li>Inbound DPMO dropped from about 3600 to 210</li>
+                      <li>Quality hit the site's lowest inbound DPMO in more than three years</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="feature-foot">Executive recognition: results were strong enough that the VP requested formal documentation. The framework was later refined into reference guidance for ACES benchmark follow-up actions.</div>
+              </article>
+
+              <!-- Acting Senior Ops -->
+              <article class="feature" aria-labelledby="senior-title">
+                <div class="feature-top">
+                  <div>
+                    <span class="feature-tag">Stretch leadership</span>
+                    <h4 id="senior-title">Acting Senior Operations Manager</h4>
+                    <p>Served twice as Acting Senior Operations Manager covering military leave, totaling about six months of stretch leadership, including one assignment during Peak season.</p>
+                  </div>
+                </div>
+                <div class="feature-grid">
+                  <div class="subpanel">
+                    <h5>Responsibilities</h5>
+                    <ul>
+                      <li>Full labor planning and staffing strategy</li>
+                      <li>A3 project oversight and follow-up across operations managers and area managers</li>
+                      <li>Weekly business review leadership</li>
+                      <li>Safety and finance review meetings</li>
+                      <li>Operational escalation investigations and regional reporting</li>
+                    </ul>
+                  </div>
+                  <div class="subpanel">
+                    <h5>Operating control</h5>
+                    <ul>
+                      <li>Oversaw outbound ship dock execution and committed goal delivery</li>
+                      <li>Handled container misses and service-risk investigations</li>
+                      <li>Worked directly with regional leadership on follow-up plans when needed</li>
+                      <li>Across roughly 24 weeks of coverage, only two issues required full executive-level deep dive and white paper response</li>
+                    </ul>
+                  </div>
+                </div>
+              </article>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ── professional experience ── -->
+        <section class="section-panel" aria-labelledby="experience-title">
+          <div class="section-head">
+            <div>
+              <h3 id="experience-title">Professional Experience</h3>
+              <p>Role-by-role scope with detailed operational focus, impact, and systems exposure.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="experience-stack">
+
+              <!-- MilliporeSigma -->
+              <article class="role-card" aria-labelledby="msig-title">
+                <div class="role-head">
+                  <div>
+                    <h4 id="msig-title">MilliporeSigma | Inventory Specialist / Material Scheduler</h4>
+                    <p>Support supply chain planning and production status monitoring across Sigma and Cerilliant product lines.</p>
+                  </div>
+                  <div class="role-date">2025 – Present</div>
+                </div>
+                <div class="role-body">
+                  <div class="role-grid">
+                    <div class="role-group">
+                      <h5>Scope</h5>
+                      <ul>
+                        <li>Track production step status across approximately 14,000 active SKUs within a larger 300K+ product portfolio</li>
+                        <li>Support product flow from manufacturing labs into 64 global distribution centers, including two primary U.S. director DCs</li>
+                        <li>Coordinate planning updates across lab teams, planners, and distribution centers</li>
+                      </ul>
+                    </div>
+                    <div class="role-group">
+                      <h5>Contribution</h5>
+                      <ul>
+                        <li>Contributed to site-supported backlog reduction from Euro 3.7M to Euro 2.675M in about two months through scheduling coordination and escalation support</li>
+                        <li>Built Excel VBA automation that flags idle or overdue production steps</li>
+                        <li>Reduced manual investigation time from about 32 hours to under 1 hour</li>
+                      </ul>
+                    </div>
+                    <div class="role-group">
+                      <h5>Systems</h5>
+                      <ul>
+                        <li>SAP PRD/100</li>
+                        <li>SAP PRE/100</li>
+                        <li>SAP PRP/100</li>
+                        <li>Macola ERP</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Amazon Operations Manager -->
+              <article class="role-card" aria-labelledby="amazon-title">
+                <div class="role-head">
+                  <div>
+                    <h4 id="amazon-title">Amazon | Operations Manager</h4>
+                    <p>Led large-scale fulfillment operations within a 3.25M sq ft facility supporting 600+ employees across multiple shifts while also participating in network development, program creation, and executive turnaround work.</p>
+                  </div>
+                  <div class="role-date">2021 – 2025</div>
+                </div>
+                <div class="role-body">
+                  <div class="role-grid">
+                    <div class="role-group">
+                      <h5>Operational scope</h5>
+                      <ul>
+                        <li>Managed 600+ associates and 13 salaried leaders</li>
+                        <li>Oversaw inbound receive, stow, outbound ship dock, hazmat, NonCon, routing, yard coordination, vendor returns, and transshipment</li>
+                        <li>Executed labor planning using 21-day forecasts and weekly volume trends</li>
+                        <li>Owned throughput, safety, quality, SLA, and real-time workflow execution</li>
+                      </ul>
+                    </div>
+                    <div class="role-group">
+                      <h5>Leadership impact</h5>
+                      <ul>
+                        <li>Developed 30+ internal promotions from frontline associate through salaried leadership</li>
+                        <li>Mentored Area Managers, Process Assistants, and Learning Ambassadors</li>
+                        <li>Built structured training and operating rhythm across departments</li>
+                        <li>Coached 13 salaried leaders on KPI ownership and execution discipline</li>
+                      </ul>
+                    </div>
+                    <div class="role-group">
+                      <h5>Programs and improvements</h5>
+                      <ul>
+                        <li>Created Lane Dash logistics optimization program</li>
+                        <li>Eliminated a six-month NonCon backlog in 6.5 weeks through workflow redesign and labor reallocation</li>
+                        <li>Partnered with ACES to redesign hazmat SOP documentation later standardized NACF-wide</li>
+                        <li>Built VBA-based reporting dashboards adopted across 90+ Amazon sites</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <details class="detail-card">
+                    <summary><span>Network Operations Development and Cross-Site Execution</span><span>Open ›</span></summary>
+                    <div class="detail-content">
+                      <div class="split">
+                        <div class="soft-card">
+                          <h5>Scope</h5>
+                          <ul>
+                            <li>Worked across 25 Amazon sites due to delayed launch timing during COVID supply chain disruption</li>
+                            <li>Supported AR robotics facilities, Gen-11 launch sites, sort centers, sub-same-day docks, and delivery stations</li>
+                            <li>Assignments ranged from roughly one week to six weeks depending on site need</li>
+                          </ul>
+                        </div>
+                        <div class="soft-card">
+                          <h5>Output</h5>
+                          <ul>
+                            <li>Delivered field training and operational development support</li>
+                            <li>Produced white papers documenting best practices, risks, and avoidable behaviors</li>
+                            <li>Built an internal wiki capturing center-work guidance and lessons learned</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </article>
+
+              <!-- Area Manager -->
+              <article class="role-card" aria-labelledby="am-title">
+                <div class="role-head">
+                  <div>
+                    <h4 id="am-title">Amazon | Area Manager I / II and Process Assistant</h4>
+                    <p>Built frontline operational leadership foundation across inbound fulfillment operations through productivity, quality, and process redesign work.</p>
+                  </div>
+                  <div class="role-date">2015 – 2021</div>
+                </div>
+                <div class="role-body">
+                  <div class="role-grid">
+                    <div class="role-group">
+                      <h5>Operational leadership</h5>
+                      <ul>
+                        <li>Managed frontline teams across stow, inbound dock, and problem solve operations</li>
+                        <li>Served as SME for inbound operations and real-time problem solving</li>
+                        <li>Coordinated workflow across inbound, stow, and downstream functions</li>
+                      </ul>
+                    </div>
+                    <div class="role-group">
+                      <h5>Performance wins</h5>
+                      <ul>
+                        <li>Increased stow productivity from 240 to 310 UPH within three months</li>
+                        <li>Reduced defect rate from 2100 to 400 DPMO within one month</li>
+                        <li>Improved stow performance by 19 percent at team level, 11 percent at site level, and 4 percent at regional level</li>
+                      </ul>
+                    </div>
+                    <div class="role-group">
+                      <h5>Process optimization</h5>
+                      <ul>
+                        <li>Designed NonCon routing process implemented across 12 sites</li>
+                        <li>Redesigned waterspider workflow using 5S methodology</li>
+                        <li>Improved material flow, workstation consistency, and transfer-lane execution</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Earlier career -->
+              <article class="role-card" aria-labelledby="career-title">
+                <div class="role-head">
+                  <div>
+                    <h4 id="career-title">Earlier Career</h4>
+                    <p>Early logistics and retail leadership experience that established inventory discipline, vendor coordination, and department ownership.</p>
+                  </div>
+                </div>
+                <div class="role-body">
+                  <div class="two-col">
+                    <div class="soft-card">
+                      <h5>SC Johnson | Transportation Coordinator</h5>
+                      <p>Managed outbound logistics scheduling and vendor coordination.</p>
+                    </div>
+                    <div class="soft-card">
+                      <h5>Menards | Assistant Department Manager</h5>
+                      <p>Managed $3M department operations while maintaining approximately 95 percent inventory accuracy.</p>
+                    </div>
+                    <div class="soft-card">
+                      <h5>Reebok | Retail Leadership</h5>
+                      <p>Maintained approximately 98 percent inventory accuracy while supervising retail operations.</p>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ── systems + philosophy ── -->
+        <section class="two-col" aria-label="Systems and philosophy">
+          <div class="section-panel">
+            <div class="section-head">
+              <div>
+                <h3>Systems and Technology</h3>
+                <p>Core systems, tools, and platforms used across operational leadership and planning work.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="two-col">
+                <div class="soft-card">
+                  <h5>ERP</h5>
+                  <ul>
+                    <li>SAP PRD/100</li>
+                    <li>SAP PRE/100</li>
+                    <li>SAP PRP/100</li>
+                    <li>Macola ERP</li>
+                  </ul>
+                </div>
+                <div class="soft-card">
+                  <h5>Data and automation</h5>
+                  <ul>
+                    <li>Excel Advanced</li>
+                    <li>VBA Automation</li>
+                    <li>PowerBI</li>
+                  </ul>
+                </div>
+                <div class="soft-card">
+                  <h5>Operations platforms</h5>
+                  <ul>
+                    <li>Warehouse Management Systems</li>
+                    <li>Fulfillment operations platforms</li>
+                    <li>Internal logistics reporting tools</li>
+                  </ul>
+                </div>
+                <div class="soft-card">
+                  <h5>Collaboration</h5>
+                  <ul>
+                    <li>SharePoint</li>
+                    <li>Google Workspace</li>
+                    <li>Slack</li>
+                    <li>Asana</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-panel">
+            <div class="section-head">
+              <div>
+                <h3>Leadership Philosophy</h3>
+                <p>How I approach operating systems, people development, and sustained improvement.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="soft-card">
+                <p>
+                  Operational leadership is built on clarity, ownership, and capability development. Teams need to understand exactly what success looks like. Leaders need to address root causes instead of symptoms. Organizations need to improve in ways that survive leadership transitions. My goal is to leave every operation stronger than when I arrived by improving both process design and the people responsible for executing it.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── playbooks ── -->
+        <section class="section-panel" aria-labelledby="playbooks-title">
+          <div class="section-head">
+            <div>
+              <h3 id="playbooks-title">Operational Playbooks</h3>
+              <p>Support frameworks that reflect how problems are diagnosed, standards are rebuilt, and leaders are developed.</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="role-grid">
+              <div class="role-group">
+                <h5>Turnaround framework</h5>
+                <ul>
+                  <li>Diagnose operational reality</li>
+                  <li>Identify root causes</li>
+                  <li>Simplify execution standards</li>
+                  <li>Rebuild labor planning</li>
+                  <li>Implement operational audits</li>
+                  <li>Reinforce leadership ownership</li>
+                </ul>
+              </div>
+              <div class="role-group">
+                <h5>Root cause methodology</h5>
+                <ul>
+                  <li>5-Why analysis</li>
+                  <li>Operational audit review</li>
+                  <li>Data validation and metric tracking</li>
+                  <li>Behavioral observation on the floor</li>
+                </ul>
+              </div>
+              <div class="role-group">
+                <h5>Leadership development model</h5>
+                <ul>
+                  <li>Train Area Managers on execution discipline</li>
+                  <li>Develop Process Assistants as operational anchors</li>
+                  <li>Empower ambassadors to scale training</li>
+                  <li>Reinforce standards through center-work documentation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── education ── -->
+        <section class="two-col" aria-label="Education and training">
+          <div class="section-panel">
+            <div class="section-head">
+              <div>
+                <h3>Education</h3>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="soft-card">
+                <h5>Bryant and Stratton College</h5>
+                <p>Bachelor of Business Administration<br>Graduated April 2013</p>
+              </div>
+            </div>
+          </div>
+          <div class="section-panel">
+            <div class="section-head">
+              <div>
+                <h3>Certifications and Specialized Training</h3>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="soft-card">
+                <ul>
+                  <li>Weekly Business Review reporting and analysis</li>
+                  <li>Peak and Prime operations planning leadership</li>
+                  <li>MMA and TDR operational methods</li>
+                  <li>ACES SOP development and documentation</li>
+                  <li>Incident Command and emergency response leadership</li>
+                  <li>PIT and robotics fulfillment systems experience</li>
+                </ul>
+                <div id="google_translate_element"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="footer">Crafted by Jordan Moddes &middot; AI Partnership</div>
+
+      </div>
+    </main>
+
+    <!-- ── chat bubble ── -->
+    <div class="floating-chat">
+      <button class="chat-bubble" id="chatOpen" type="button" aria-label="Open Jmod AI">
+        <img src="/assets/Signature_WhiteTP.png" alt="">
+        <span>Jmod AI</span>
+      </button>
+    </div>
+
+    <!-- ── chat panel ── -->
+    <section class="chat-panel" id="chatPanel" aria-label="Jmod AI chat" aria-modal="true" role="dialog">
+      <div class="chat-head">
+        <div>
+          <strong>Jmod AI</strong>
+          <span>Ask about Jordan's operations background, programs, turnarounds, or current supply chain role.</span>
+        </div>
+        <button class="chat-close" id="chatClose" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="chat-body" id="chatThread">
+        <div class="chat-msg bot">I can answer questions about Amazon operations, Lane Dash, the Rapid Improvement Team turnaround, acting Senior Ops coverage, and current MilliporeSigma supply chain work.</div>
+      </div>
+      <div class="chat-footer">
+        <div class="chat-links">
+          <button class="mini-btn quick-q" type="button" data-q="What was Lane Dash?">Lane Dash</button>
+          <button class="mini-btn quick-q" type="button" data-q="Tell me about the Rapid Improvement Team turnaround.">RIT</button>
+          <button class="mini-btn quick-q" type="button" data-q="What does Jordan do at MilliporeSigma?">MilliporeSigma</button>
+        </div>
+        <div class="chat-row">
+          <input class="chat-input" id="chatInput" type="text" placeholder="Ask about Jordan's experience…">
+          <button class="chat-send" id="chatSend" type="button">Send</button>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- .page -->
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script>
+    /* ── theme ── */
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const stored = localStorage.getItem('jm-theme');
+    if (stored === 'light' || stored === 'dark') root.setAttribute('data-theme', stored);
+
+    function syncBrandLogo() {
+      const light = root.getAttribute('data-theme') === 'light';
+      document.getElementById('brandLogo').src = light ? '/assets/Signature_BlackTP.png' : '/assets/Signature_WhiteTP.png';
+      const bubbleLogo = document.querySelector('.chat-bubble img');
+      if (bubbleLogo) bubbleLogo.src = light ? '/assets/Signature_BlackTP.png' : '/assets/Signature_WhiteTP.png';
+      themeToggle.textContent = light ? '☾' : '☀';
+    }
+    syncBrandLogo();
+
+    themeToggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('jm-theme', next);
+      syncBrandLogo();
+    });
+
+    /* ── share ── */
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+      const data = { title: document.title, text: 'Jordan Moddes | Operations and Supply Chain Leader', url: window.location.href };
+      if (navigator.share) {
+        try { await navigator.share(data); } catch (e) {}
+      } else {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          alert('Link copied to clipboard.');
+        } catch (e) { alert(window.location.href); }
+      }
+    });
+
+    /* ── translate toggle ── */
+    const translateToggle = document.getElementById('translateToggle');
+    const translateEl = document.getElementById('google_translate_element');
+    translateToggle.addEventListener('click', () => {
+      const open = translateEl.style.display === 'block';
+      translateEl.style.display = open ? 'none' : 'block';
+      translateToggle.setAttribute('aria-expanded', String(!open));
+    });
+
+    /* ── chat ── */
+    const chatPanel = document.getElementById('chatPanel');
+    const chatThread = document.getElementById('chatThread');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+
+    const botAnswers = {
+      'what was lane dash?': 'Lane Dash was a logistics routing optimization program Jordan created and led. It improved dock flow and labor utilization, secured a $1.28M investment, had an estimated 5.5 month ROI, and delivered about $3.6M in annual operational value at network scale.',
+      'tell me about the rapid improvement team turnaround.': 'Jordan was selected for a VP-directed Rapid Improvement Team to stabilize a severely underperforming site. Over six weeks, the team improved benchmark compliance, cut safety incidents to zero for the final two weeks, raised inbound throughput from about 110 to a peak of 165, and reduced inbound DPMO from about 3600 to 210.',
+      'what does jordan do at milliporesigma?': 'Jordan supports supply chain planning and production step-status monitoring across Sigma and Cerilliant lines, covering about 14,000 active SKUs within a larger portfolio. He coordinates across manufacturing labs, planners, and 64 global distribution centers while maintaining SAP and Macola status integrity and using VBA automation to flag idle or overdue steps.',
+      'default': "This page covers Jordan's operations and supply chain experience in detail. Ask about Amazon leadership, current MilliporeSigma work, Lane Dash, the Rapid Improvement Team turnaround, or acting Senior Ops coverage."
+    };
+
+    function addMsg(text, who) {
+      const el = document.createElement('div');
+      el.className = `chat-msg ${who}`;
+      el.textContent = text;
+      chatThread.appendChild(el);
+      chatThread.scrollTop = chatThread.scrollHeight;
+    }
+
+    function botReply(q) {
+      return botAnswers[q.trim().toLowerCase()] || botAnswers.default;
+    }
+
+    function sendChat() {
+      const q = chatInput.value.trim();
+      if (!q) return;
+      addMsg(q, 'user');
+      chatInput.value = '';
+      setTimeout(() => addMsg(botReply(q), 'bot'), 100);
+    }
+
+    document.getElementById('chatOpen').addEventListener('click', () => chatPanel.classList.add('open'));
+    document.getElementById('chatClose').addEventListener('click', () => chatPanel.classList.remove('open'));
+    chatSend.addEventListener('click', sendChat);
+    chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
+    document.querySelectorAll('.quick-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        chatInput.value = btn.dataset.q;
+        sendChat();
+      });
+    });
+
+    /* ── entrance animations via IntersectionObserver ── */
+    if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      const targets = document.querySelectorAll('.section-panel, .feature, .role-card');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.06 });
+      targets.forEach(el => obs.observe(el));
+
+      // metric cards stagger
+      const cards = document.querySelectorAll('.metric-card');
+      const cardObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const delay = Array.from(cards).indexOf(entry.target) * 40;
+            setTimeout(() => entry.target.classList.add('visible'), delay);
+            cardObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.06 });
+      cards.forEach(el => cardObs.observe(el));
+    }
+  </script>
 </body>
 </html>
