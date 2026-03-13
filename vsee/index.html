@@ -147,15 +147,13 @@
     .btn-ghost:hover { border-color: rgba(255,255,255,.25); background: var(--surface); }
 
     /* ── Trust bar ── */
-    .two-row-trust-bar { display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; color: var(--muted);
+    .two-row-trust-bar { display: flex; flex-direction: column; gap: 16px; font-size: 0.9rem; color: var(--muted); }
+    .trust-row { display: flex; gap: 40px; flex-wrap: wrap; }
+    .trust-item { display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 150px; text-align: center; }
+    .trust-icon { font-size: 1.5rem; width: 1.8em; display: inline-block; text-align: center; }
+    .trust-text strong { color: var(--text); font-weight: 500; display: block; }
+    .trust-text span, .trust-text a { font-size: 0.8rem; color: var(--muted);
     }
-    .trust-row { display: flex; gap: 20px; flex-wrap: wrap;
-    }
-    .trust-item { display: flex; align-items: center; gap: 6px;
-    }
-    .trust-icon { font-size: 1.2rem; width: 1.4em; display: inline-block; text-align: center;
-    }
-
 
     /* ── Section titles ── */
     .section-label {
@@ -660,36 +658,54 @@
       </div>
 
       <!-- CHANGED: trust bar — concrete proofs, tightened copy -->
-      <div class="two-row-trust-bar">
-        <div class="trust-row">
-          <div class="trust-item">
-            <span class="trust-icon">📍</span>
-            <span class="trust-text">Austin / Round Rock</span>
+        <div class="two-row-trust-bar">
+          <div class="trust-row">
+            <div class="trust-item">
+              <div class="trust-icon" aria-hidden="true">📍</div>
+              <div class="trust-text">
+                <strong>Austin / Round Rock</strong><br>
+                <span>In-person pickup only</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon" aria-hidden="true">📦</div>
+              <div class="trust-text">
+                <strong>4 models in stock</strong><br>
+                <span>$260 – $425</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon" aria-hidden="true">🛠️</div>
+              <div class="trust-text">
+                <strong>Plug & play pickup</strong><br>
+                <span>Brief setup guidance at handoff; text support afterwards.</span>
+              </div>
+            </div>
           </div>
-          <div class="trust-item">
-            <span class="trust-icon">📦</span>
-            <span class="trust-text">4 models in stock</span>
-          </div>
-          <div class="trust-item">
-            <span class="trust-icon">🛠️</span>
-            <span class="trust-text">Plug & play pickup</span>
+          <div class="trust-row">
+            <div class="trust-item">
+              <div class="trust-icon" aria-hidden="true">💵</div>
+              <div class="trust-text">
+                <strong>Cash or Zelle</strong><br>
+                <span>Pay at pickup</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon" aria-hidden="true">🔒</div>
+              <div class="trust-text">
+                <strong>One-time purchase</strong><br>
+                <span>No device/app subscription fees.</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon" aria-hidden="true">🔗</div>
+              <div class="trust-text">
+                <strong>LisnUp Installations</strong><br>
+                <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" style="color:var(--blue); font-size:.83rem;">lisnupinstallations.com</a>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="trust-row">
-          <div class="trust-item">
-            <span class="trust-icon">💵</span>
-            <span class="trust-text">Cash or Zelle</span>
-          </div>
-          <div class="trust-item">
-            <span class="trust-icon">🔒</span>
-            <span class="trust-text">One-time purchase</span>
-          </div>
-          <div class="trust-item">
-            <span class="trust-icon">🔗</span>
-            <span class="trust-text">LisnUp Installations</span>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- ── Model cards ── -->
