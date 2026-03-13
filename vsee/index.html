@@ -421,97 +421,174 @@
     .fade-in.visible { opacity: 1; transform: none; }
   </style>
 
-  <!-- JSON-LD: Product + FAQ structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "ItemList",
-        "name": "VSeeBox Android TV Units — Austin TX",
-        "description": "Locally stocked VSeeBox Android TV units available for in-person pickup in Austin and Round Rock, TX.",
-        "itemListElement": [
-          {
-            "@type": "ListItem", "position": 1,
-            "item": {
-              "@type": "Product", "name": "VSeeBox V6 Max",
-              "description": "Android 14 Android TV box with Heat apps, 4GB RAM, 64GB storage, dual-band Wi-Fi, and 8K video decoding.",
-              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "260", "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
-            }
-          },
-          {
-            "@type": "ListItem", "position": 2,
-            "item": {
-              "@type": "Product", "name": "VSeeBox V6 Plus",
-              "description": "Android 14 Android TV box with split-screen, PIP, backlit remote, 4GB RAM, 64GB storage.",
-              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "290", "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
-            }
-          },
-          {
-            "@type": "ListItem", "position": 3,
-            "item": {
-              "@type": "Product", "name": "VSeeBox Elite Mini",
-              "description": "Android 12 Android TV box with Wi-Fi 6, voice remote, 10 bonus apps, 6K HDR, 4GB RAM, 32GB storage.",
-              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "310", "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
-            }
-          },
-          {
-            "@type": "ListItem", "position": 4,
-            "item": {
-              "@type": "Product", "name": "VSeeBox Elite Ultra",
-              "description": "Android 12 Android TV box with Wi-Fi 6, Gigabit Ethernet, 20+ apps, 128GB storage, voice remote.",
-              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "425", "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ItemList",
+      "name": "VSeeBox Android TV Units — Austin TX",
+      "description": "Locally stocked VSeeBox Android TV units available for in-person pickup in Austin and Round Rock, TX.",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "Product",
+            "name": "VSeeBox V6 Max",
+            "description": "Android 14 Android TV box with Heat apps, 4GB RAM, 64GB storage, dual-band Wi-Fi, and 8K video decoding.",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "USD",
+              "price": "260",
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Person",
+                "name": "Jordan Moddes"
+              }
             }
           }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Where can I pick up my VSeeBox?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Jordan arranges in-person handoffs in the Austin and Round Rock, TX area. Text to schedule a convenient meetup location." }
-          },
-          {
-            "@type": "Question",
-            "name": "What payment methods are accepted?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Cash and Zelle are accepted. Payment is made at the time of in-person pickup." }
-          },
-          {
-            "@type": "Question",
-            "name": "Which VSeeBox model is right for me?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Most first-time buyers do great with the V6 Max ($260). If you want Wi-Fi 6, a voice remote, and extra apps, the Elite Mini ($310) is the best value. Power users and resellers often prefer the Elite Ultra ($425)." }
-          },
-          {
-            "@type": "Question",
-            "name": "Do you sell in bulk for resellers or businesses?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The V6 Max is available by the case at $3,800. Text Jordan for bulk pricing on other models." }
-          },
-          {
-            "@type": "Question",
-            "name": "What is VSeeBox and who makes it?",
-            "acceptedAnswer": { "@type": "Answer", "text": "VSeeBox is an Android TV set-top box designed for streaming, with VSee Heat apps pre-installed. Jordan is an authorized distributor through LisnUp Installations." }
-          },
-          {
-            "@type": "Question",
-            "name": "Will I get setup help after I buy?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Jordan walks you through initial setup at pickup and remains available by text for software questions afterward." }
-          },
-          {
-            "@type": "Question",
-            "name": "What is the difference between Android 12 and Android 14 on these devices?",
-            "acceptedAnswer": { "@type": "Answer", "text": "The V6 Max and V6 Plus run Android 14, offering the most current app compatibility. The Elite Mini and Elite Ultra run Android 12, which is stable and fully supported, and receive OTA updates." }
-          },
-          {
-            "@type": "Question",
-            "name": "Do the Elite models support OTA (over-the-air) software updates?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Elite Mini and Elite Ultra both support OTA updates, so your device receives firmware improvements automatically." }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Product",
+            "name": "VSeeBox V6 Plus",
+            "description": "Android 14 Android TV box with split-screen, PIP, backlit remote, 4GB RAM, 64GB storage.",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "USD",
+              "price": "290",
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Person",
+                "name": "Jordan Moddes"
+              }
+            }
           }
-        ]
-      }
-    ]
-  }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Product",
+            "name": "VSeeBox Elite Mini",
+            "description": "Android 12 Android TV box with Wi-Fi 6, voice remote, 10 bonus apps, 6K HDR, 4GB RAM, 32GB storage.",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "USD",
+              "price": "310",
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Person",
+                "name": "Jordan Moddes"
+              }
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "Product",
+            "name": "VSeeBox Elite Ultra",
+            "description": "Android 12 Android TV box with Wi-Fi 6, Gigabit Ethernet, 20+ apps, 128GB storage, voice remote. Optional app pre-load & configuration service available for $75.",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "USD",
+              "price": "425",
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Person",
+                "name": "Jordan Moddes"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Where can I pick up my VSeeBox?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Jordan arranges in-person handoffs in the Austin and Round Rock, TX area. Text to schedule a convenient meetup location — usually same-week availability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What payment methods are accepted?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cash and Zelle are accepted. Payment is made at the time of in-person pickup."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which VSeeBox model is right for me?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most first-time buyers do great with the V6 Max ($260). If you want Wi-Fi 6, a voice remote, and extra apps, the Elite Mini ($310) is the best value. Power users and resellers often prefer the Elite Ultra ($425)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you sell in bulk for resellers or businesses?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The V6 Max is available by the case at $3,800. Text Jordan for bulk pricing on other models."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is VSeeBox and who makes it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "VSeeBox is an Android TV set-top box designed for streaming, with VSee Heat apps pre-installed. Jordan is an authorized distributor through LisnUp Installations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will I get setup help after I buy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You’ll get brief setup guidance at pickup — devices are plug & play. Optional Elite Ultra app pre-load & configuration is available for $75. After pickup you can always text for follow-up help."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between Android 12 and Android 14 on these devices?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The V6 Max and V6 Plus run Android 14, offering the most current app compatibility. The Elite Mini and Elite Ultra run Android 12, which is stable and fully supported, and receive OTA updates."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do the Elite models support OTA (over-the-air) software updates?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The Elite Mini and Elite Ultra both support OTA updates, so your device receives firmware improvements automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are there monthly subscription fees?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The device is sold as a one-time purchase and does not require a monthly subscription to own the unit. Third-party apps or content services (if used) may require separate subscriptions or accounts — confirm any content/service details when you text."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
   </script>
 </head>
 <body>
@@ -563,6 +640,9 @@
       <p class="hero-desc" data-en="Four VSeeBox Android TV models in stock right now — from the clean, everyday V6 Max to the fully loaded Elite Ultra. Pick yours up in the Austin / Round Rock area. Authorized distributor via LisnUp Installations." data-es="Cuatro modelos de VSeeBox Android TV en existencia ahora mismo — desde el práctico V6 Max hasta el Elite Ultra completamente equipado. Recógelo en el área de Austin / Round Rock. Distribuidor autorizado a través de LisnUp Installations.">
         Four VSeeBox Android TV models in stock right now — from the clean, everyday V6 Max to the fully loaded Elite Ultra. Pick yours up in the Austin / Round Rock area. Authorized distributor via LisnUp Installations.
       </p>
+      <p class="hero-micro" data-en="One-time device purchase — no device subscription. Third‑party apps may require their own accounts." data-es="Compra única del dispositivo — sin suscripción del dispositivo. Las apps de terceros pueden requerir sus propias cuentas." style="color:var(--green);font-weight:600;margin-top:6px;">
+        One-time device purchase — no device subscription. Third‑party apps may require their own accounts.
+      </p>
 
       <div class="hero-actions">
         <!-- CHANGED: primary CTA — cleaner action phrasing -->
@@ -603,7 +683,15 @@
           <div class="trust-icon" aria-hidden="true">🛠️</div>
           <div class="trust-text">
             <strong data-en="Plug & play pickup" data-es="Recogida lista para usar">Plug & play pickup</strong><br>
-            <span data-en="Brief setup guidance at handoff; text support afterwards." data-es="Guía breve de configuración al entregar.">Brief setup guidance at handoff; text support afterwards.</span>
+            <span data-en="Brief setup guidance at handoff;<br>text support afterwards." data-es="Guía breve de configuración al entregar;<br>soporte por texto después.">Brief setup guidance at handoff;<br>text support afterwards.</span>
+          </div>
+        </div>
+        </div>
+        <div class="trust-item" role="listitem">
+          <div class="trust-icon" aria-hidden="true">🔒</div>
+          <div class="trust-text">
+            <strong data-en="One-time purchase" data-es="Compra única">One-time purchase</strong><br>
+            <span data-en="No device subscription fees. Third‑party services may require separate accounts." data-es="Sin tarifas de suscripción del dispositivo. Servicios de terceros pueden requerir cuentas separadas.">No device subscription fees. Third‑party services may require separate accounts.</span>
           </div>
         </div>
         <div class="trust-item" role="listitem">
@@ -611,7 +699,6 @@
           <div class="trust-text">
             <strong data-en="LisnUp Installations" data-es="LisnUp Installations">LisnUp Installations</strong><br>
             <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" style="color:var(--blue);font-size:.83rem;" aria-label="Visit LisnUp Installations website (opens in new tab)">lisnupinstallations.com</a>
-          </div>
         </div>
       </div>
     </section>
@@ -1121,7 +1208,15 @@
             <span data-en="Yes. All boxes support over-the-air (OTA) updates, so the device receives firmware improvements without any action on your part." data-es="Sí. Todas las cajas admiten actualizaciones por aire (OTA), por lo que el dispositivo recibe mejoras de firmware sin ninguna acción por su parte.">Yes. All boxes support over-the-air (OTA) updates, so the device receives firmware improvements without any action on your part.</span>
           </div>
         </div>
-
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq-subscriptions-answer" id="faq-subscriptions-btn">
+            <span data-en="Are there monthly subscription fees?" data-es="¿Hay tarifas de suscripción mensuales?">Are there monthly subscription fees?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq-subscriptions-answer" role="region" aria-labelledby="faq-subscriptions-btn">
+            <span data-en="The device is sold as a one-time purchase and does not require a monthly subscription to own the unit. Third‑party apps or content services (if used) may require separate subscriptions or accounts — confirm any content/service details when you text." data-es="El dispositivo se vende como compra única y no requiere suscripción mensual para ser propiedad. Las apps de terceros o servicios de contenido (si se usan) pueden requerir suscripciones o cuentas por separado — confirma los detalles al escribir.">The device is sold as a one-time purchase and does not require a monthly subscription to own the unit. Third‑party apps or content services (if used) may require separate subscriptions or accounts — confirm any content/service details when you text.</span>
+          </div>
+        </div>
       </div>
     </section>
 
