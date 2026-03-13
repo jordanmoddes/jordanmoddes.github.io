@@ -1,45 +1,1934 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NO!</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png" />
+  <title>Jordan Moddes | Operations & Supply Chain Leader</title>
+
+  <!-- ========================= -->
+  <!--        SEO META TAGS      -->
+  <!-- ========================= -->
+  <meta name="description"
+        content="Jordan Moddes is an operations and supply chain leader with 10+ years across Amazon fulfillment and global supply chain environments, including large-scale turnarounds, cross-site operational development, ERP-driven planning, and programs delivering $3.6M in annual value." />
+  <meta name="keywords"
+        content="Jordan Moddes, operations leader, supply chain leader, Amazon operations, fulfillment leadership, logistics optimization, process improvement, multi-site operations, inventory planning, SAP, Macola, VBA automation, KPI management, labor planning, dock operations, turnaround leadership, WMS, distribution operations" />
+  <meta name="author" content="Jordan Moddes" />
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+  <link rel="canonical" href="https://www.jordanmoddes.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Jordan Moddes" />
+  <meta property="og:title" content="Jordan Moddes | Operations & Supply Chain Leader" />
+  <meta property="og:description"
+        content="Operations and supply chain leader with 10+ years of experience across Amazon fulfillment and global supply chain environments, known for turnarounds, program creation, and multi-site operational development." />
+  <meta property="og:url" content="https://www.jordanmoddes.com/" />
+  <meta property="og:image" content="https://www.jordanmoddes.com/assets/Signature_WhiteTP.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jordan Moddes | Operations & Supply Chain Leader" />
+  <meta name="twitter:description"
+        content="10+ years driving fulfillment and supply chain performance through turnarounds, multi-site operational development, ERP planning, and logistics optimization." />
+  <meta name="twitter:image" content="https://www.jordanmoddes.com/assets/Signature_WhiteTP.png" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://www.jordanmoddes.com/#website",
+        "url": "https://www.jordanmoddes.com/",
+        "name": "Jordan Moddes - Operations & Supply Chain Leader",
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.jordanmoddes.com/#person",
+        "name": "Jordan Moddes",
+        "jobTitle": "Operations & Supply Chain Leader",
+        "url": "https://www.jordanmoddes.com/",
+        "image": "https://www.jordanmoddes.com/assets/Signature_WhiteTP.png",
+        "description": "Operations and supply chain leader with over 10 years in fulfillment, logistics, process optimization, operational turnarounds, and multi-site performance improvement.",
+        "worksFor": { "@type": "Organization", "name": "Jmod Co." },
+        "alumniOf": [{ "@type": "EducationalOrganization", "name": "Bryant & Stratton College" }],
+        "knowsAbout": [
+          "Warehouse Management Systems (WMS)",
+          "Dock Operations",
+          "Sortation",
+          "NonCon Routing",
+          "Vendor Returns",
+          "Transportation Logistics",
+          "Fulfillment Center Launches",
+          "Continuous Improvement"
+        ],
+        "email": "mailto:jmodwork@gmail.com",
+        "telephone": "+1-262-705-0853",
+        "sameAs": ["https://www.linkedin.com/in/jordanmoddes/"]
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MPJ69EQK7P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MPJ69EQK7P');
+  </script>
+
+  <!-- Google Translate init -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.VERTICAL,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+
+  <!-- Canonical handler -->
+  <script>
+    if (location.hostname === 'jordanmoddes.com') {
+      location.href = 'https://www.jordanmoddes.com' + location.pathname;
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
+    :root{
+      --bg-dark:#121212;
+      --text-dark:#ffffff;
+      --accent-dark:#00ffee;
+
+      --bg-light:#ffffff;
+      --text-light:#121212;
+      --accent-light:#0000ff;
+
+      --chat-radius:14px;
+      --chat-shadow:0 12px 30px rgba(0,0,0,0.35);
+
+      /* floating controls */
+      --fab-gap: 10px;         /* spacing between Jmod AI and bulb */
+      --fab-right: 1rem;
+      --fab-bottom: 1rem;
     }
 
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      font-weight: 900;
-      overflow: hidden;
+    html[data-theme='dark']{
+      background-color:var(--bg-dark);
+      color:var(--text-dark);
+      --accent:var(--accent-dark);
+
+      --chat-panel:rgba(12,12,12,0.96);
+      --chat-border:rgba(255,255,255,0.10);
+      --chat-text:#ffffff;
+      --chat-muted:rgba(255,255,255,0.72);
+      --chat-input:rgba(255,255,255,0.07);
+
+      --bulb-stroke: var(--accent);
+      --bulb-fill: transparent;
     }
 
-    /* Make "NO!" fill the screen responsively */
-    .nope {
-      font-size: min(40vw, 40vh);
-      line-height: 1;
-      letter-spacing: 0.02em;
-      user-select: none;
-      text-transform: uppercase;
+    html[data-theme='light']{
+      background-color:var(--bg-light);
+      color:var(--text-light);
+      --accent:var(--accent-light);
+
+      --chat-panel:rgba(255,255,255,0.98);
+      --chat-border:rgba(0,0,0,0.12);
+      --chat-text:#111827;
+      --chat-muted:rgba(17,24,39,0.72);
+      --chat-input:rgba(17,24,39,0.06);
+
+      --bulb-stroke: #FFD400; /* yellow outline in light mode */
+      --bulb-fill: transparent;
     }
 
-    /* Flashing colors */
-    @keyframes flash {
-      0%, 49.999%  { background: #ffffff; color: #d00000; }
-      50%, 100%    { background: #d00000; color: #ffffff; }
+    body{
+      font-family:'Inter',sans-serif;
+      margin:0;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      position:relative;
+      z-index:1;
     }
 
-    body {
-      animation: flash 0.333s steps(1, end) infinite;
+    h2,h3{ text-align:center; }
+    a{ color:inherit; text-decoration:none; }
+    html[data-theme='light'] a{ color:white; }
+
+    /* Header */
+    header.site-header{
+      text-align:center;
+      padding:2rem 1rem;
+      color:#000;
+      background:linear-gradient(to right,#00ffee 0%,#71fff5 50%,#ffffff 100%);
     }
-  </style>
+    html[data-theme='light'] header.site-header{
+      background:linear-gradient(to right,#0000ff,#5656fc);
+      color:#ffffff;
+    }
+
+    .quick-links{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:0.5rem;
+      margin-top:1rem;
+    }
+    .link-row{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:0.8rem;
+    }
+    .link-btn{
+      font-size:0.95rem;
+      background:none;
+      border:none;
+      padding:0.4rem 0.6rem;
+      color:#000;
+      border-radius:6px;
+      display:inline-flex;
+      align-items:center;
+      gap:0.25rem;
+      transition:all 0.2s ease;
+      cursor:pointer;
+    }
+    .link-btn strong{ font-weight:700; }
+    .link-btn:hover{ background-color:#00e0ff22; color:#ff8000; }
+    html[data-theme='light'] .link-btn{ color:#ffffff; }
+
+    /* Share dropdown */
+    .share-dropdown{
+      position:fixed;
+      top:20px;
+      right:20px;
+      z-index:1000;
+      font-family:'Inter',sans-serif;
+    }
+    .share-button{
+      background-color:transparent !important;
+      color:var(--accent) !important;
+      border:2px solid black !important;
+      padding:10px 14px;
+      cursor:pointer;
+      border-radius:6px;
+      font-size:14px;
+      font-weight:bold;
+    }
+    @media (max-width:600px){
+      .share-button{ font-size:12px; padding:6px 10px; border-width:1px; }
+    }
+    .share-content{
+      display:none;
+      position:absolute;
+      right:0;
+      background-color:#fff;
+      color:#000;
+      min-width:180px;
+      box-shadow:0px 8px 16px rgba(0,0,0,0.2);
+      border-radius:6px;
+      margin-top:8px;
+      padding:10px;
+      font-size:14px;
+    }
+    .share-content a{
+      color:#000;
+      padding:8px 12px;
+      text-decoration:none;
+      display:block;
+    }
+    .share-content a:hover{ background-color:#f0f0f0; }
+
+    /* Impact grid */
+    .impact-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:1rem;
+      max-width:900px;
+      margin:2rem auto;
+      padding:0 1rem;
+    }
+    .metric-box{
+      background:rgba(255,255,255,0.05);
+      padding:1.5rem;
+      border-radius:10px;
+      text-align:center;
+      font-size:1.1rem;
+      box-shadow:0 0 8px var(--accent);
+      border:2px solid var(--accent);
+      transition:transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .metric-number{
+      font-size:2rem;
+      font-weight:bold;
+      margin-bottom:0.5rem;
+    }
+
+    /* Translate widget */
+    #google_translate_element{
+      position:fixed;
+      bottom:4.5rem;
+      left:1rem;
+      z-index:1000;
+      width:220px;
+      max-height:300px;
+      overflow-y:auto;
+      background-color:rgba(0,0,0,0.85);
+      padding:0.5rem 1rem;
+      border-radius:12px;
+      display:none;
+    }
+    .goog-te-menu-frame{
+      width:220px !important;
+      max-height:300px !important;
+      overflow-y:auto !important;
+      border-radius:8px;
+    }
+
+    /* Watermark */
+    html[data-theme='dark'] body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      margin:auto;
+      width:min(70vw,600px);
+      height:auto;
+      background:url("/assets/Signature_WhiteTP.png") center/contain no-repeat;
+      opacity:0.05;
+      pointer-events:none;
+      z-index:0;
+    }
+    html[data-theme='light'] body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      margin:auto;
+      width:min(70vw,600px);
+      height:auto;
+      background:url("/assets/Signature_BlackTP.png") center/contain no-repeat;
+      opacity:0.06;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    /* Tooltips (desktop only) */
+    .tooltip{ display:none; }
+    @media (hover:hover) and (pointer:fine) and (min-width:768px){
+      .link-btn.has-tooltip{ position:relative; overflow:visible; }
+      .tooltip{
+        display:block;
+        position:absolute;
+        left:50%;
+        bottom:125%;
+        transform:translateX(-50%) translateY(10px);
+        background:#ffffff;
+        color:#111827;
+        padding:0.75rem 1rem;
+        border-radius:0.75rem;
+        box-shadow:0 10px 20px rgba(0,0,0,0.25);
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+        z-index:50;
+        white-space:nowrap;
+        transition:opacity 0.18s ease-out, transform 0.18s ease-out, visibility 0.18s ease-out;
+      }
+      .tooltip::after{
+        content:"";
+        position:absolute;
+        top:100%;
+        left:50%;
+        transform:translateX(-50%);
+        border-width:6px;
+        border-style:solid;
+        border-color:#ffffff transparent transparent transparent;
+      }
+      .tooltip-title{ font-weight:700; font-size:0.9rem; margin-bottom:0.25rem; }
+      .tooltip-body{ font-size:0.9rem; }
+      .tooltip-qr img{
+        display:block;
+        margin-top:0.35rem;
+        width:160px;
+        height:160px;
+        border-radius:0.5rem;
+      }
+      .link-btn.has-tooltip:hover .tooltip,
+      .link-btn.has-tooltip:focus-visible .tooltip{
+        opacity:1;
+        visibility:visible;
+        transform:translateX(-50%) translateY(0);
+      }
+    }
+
+    /* Footer */
+    footer{
+      text-align:center;
+      margin-top:3rem;
+      font-size:0.9rem;
+      padding:1rem 0;
+      white-space:nowrap;
+    }
+
+    /* Tools section */
+    .tools-section{
+      max-width:800px;
+      margin:2rem auto;
+      padding:0 1.2rem;
+    }
+    .tools-section h4{ text-align:center; margin-bottom:1rem; }
+    .tools-grid{ max-width:600px; margin:0 auto; }
+    .tools-grid ul{
+      columns:2;
+      -webkit-columns:2;
+      -moz-columns:2;
+      column-gap:2rem;
+      list-style:disc;
+      padding-left:1.2rem;
+      font-size:1rem;
+      line-height:1.6;
+    }
+    @media (max-width:400px){
+      .tools-grid ul{ font-size:0.95rem; }
+    }
+
+    /* Certifications section */
+    #certifications{
+      max-width:800px;
+      margin:2rem auto 0;
+      padding:0 1.2rem;
+    }
+    #certifications h4{
+      text-align:center;
+      margin-bottom:0.75rem;
+      font-size:1.25rem;
+    }
+    #certifications ul{
+      padding-left:1.5rem;
+      font-size:1rem;
+      line-height:1.6;
+      list-style:disc;
+      margin:0 auto;
+    }
+
+    /* =========================
+       Floating controls row
+       (Jmod AI + Bulb) bottom-right
+       ========================= */
+    .floating-controls{
+      position:fixed;
+      right:var(--fab-right);
+      bottom:var(--fab-bottom);
+      z-index:1300;
+      display:flex;
+      align-items:center;
+      gap:var(--fab-gap);
+    }
+
+    /* Theme bulb button */
+    .theme-bulb{
+      width:46px;
+      height:46px;
+      border-radius:999px;
+      border:2px solid rgba(0,0,0,0.35);
+      background:transparent;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      box-shadow:0 0 10px rgba(0,0,0,0.25);
+      padding:0;
+    }
+    html[data-theme='light'] .theme-bulb{
+      border:2px solid rgba(0,0,0,0.18);
+    }
+    .theme-bulb svg{
+      width:22px;
+      height:22px;
+      stroke:var(--bulb-stroke);
+      fill:var(--bulb-fill);
+      stroke-width:2.2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    /* =========================
+       Floating JMOD AI chat
+       ========================= */
+    .jmod-ai-bubble{
+      border:2px solid var(--accent);
+      background:var(--accent); /* filled */
+      color:#000;
+      padding:0.55rem 0.75rem;
+      border-radius:999px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 0 10px rgba(0,0,0,0.25);
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .jmod-ai-bubble:hover{ transform:translateY(-1px); }
+    html[data-theme='light'] .jmod-ai-bubble{ color:#fff; }
+
+    .jmod-ai-bubble-logo{
+      width:18px;
+      height:18px;
+      border-radius:6px;
+      box-shadow:0 0 0 1px rgba(0,0,0,0.15);
+    }
+
+    .jmod-ai-panel{
+      position:fixed;
+      right:var(--fab-right);
+      bottom:calc(var(--fab-bottom) + 56px);
+      z-index:1301;
+      width:min(380px, calc(100vw - 2rem));
+      max-height:72vh;
+      display:none;
+      flex-direction:column;
+      border-radius:var(--chat-radius);
+      background:var(--chat-panel);
+      border:1px solid var(--chat-border);
+      box-shadow:var(--chat-shadow);
+      overflow:hidden;
+    }
+    .jmod-ai-panel.open{ display:flex; }
+
+    .jmod-ai-header{
+      padding:0.9rem 0.95rem 0.75rem;
+      border-bottom:1px solid var(--chat-border);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:0.75rem;
+    }
+    .jmod-ai-title{
+      display:flex;
+      align-items:center;
+      gap:0.6rem;
+    }
+    .jmod-ai-title img{
+      width:22px;
+      height:22px;
+      border-radius:6px;
+      box-shadow:0 0 0 1px var(--chat-border);
+    }
+    .jmod-ai-title .twrap{
+      display:flex;
+      flex-direction:column;
+      gap:0.15rem;
+    }
+    .jmod-ai-title strong{
+      color:var(--chat-text);
+      font-size:0.95rem;
+      letter-spacing:0.2px;
+    }
+    .jmod-ai-title span{
+      color:var(--chat-muted);
+      font-size:0.78rem;
+      line-height:1.2;
+    }
+    .jmod-ai-close{
+      border:1px solid var(--chat-border);
+      background:transparent;
+      color:var(--chat-text);
+      border-radius:10px;
+      padding:0.35rem 0.55rem;
+      cursor:pointer;
+      font-weight:800;
+    }
+
+    .jmod-ai-body{
+      padding:0.85rem 0.95rem;
+      overflow-y:auto;
+      color:var(--chat-text);
+    }
+    .jmod-ai-systemline{
+      color:var(--chat-text);
+      font-size:0.92rem;
+      line-height:1.35;
+      margin:0 0 0.75rem;
+    }
+    .jmod-ai-thread{
+      display:flex;
+      flex-direction:column;
+      gap:0.65rem;
+      margin-top:0.25rem;
+    }
+    .jmod-ai-msg{
+      border:1px solid var(--chat-border);
+      border-radius:12px;
+      padding:0.65rem 0.7rem;
+      font-size:0.9rem;
+      line-height:1.35;
+      white-space:pre-wrap;
+      word-break:break-word;
+      max-width:96%;
+    }
+    .jmod-ai-msg.user{
+      background:rgba(0,0,0,0.00);
+      align-self:flex-end;
+    }
+    .jmod-ai-msg.bot{
+      background:rgba(0,0,0,0.00);
+      align-self:flex-start;
+    }
+
+    .jmod-ai-alert{
+      color:var(--chat-muted);
+      font-size:0.82rem;
+      margin-top:0.5rem;
+      line-height:1.25;
+    }
+
+    .jmod-ai-footer{
+      border-top:1px solid var(--chat-border);
+      padding:0.75rem 0.95rem 0.9rem;
+      display:flex;
+      flex-direction:column;
+      gap:0.55rem;
+    }
+    .jmod-ai-row{
+      display:flex;
+      gap:0.55rem;
+      align-items:center;
+    }
+    .jmod-ai-input{
+      flex:1 1 auto;
+      border:1px solid var(--chat-border);
+      background:var(--chat-input);
+      color:var(--chat-text);
+      border-radius:12px;
+      padding:0.6rem 0.7rem;
+      font-size:0.92rem;
+      outline:none;
+    }
+    .jmod-ai-send{
+      flex:0 0 auto;
+      border:2px solid var(--accent);
+      background:transparent;
+      color:var(--accent);
+      border-radius:12px;
+      padding:0.6rem 0.75rem;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .jmod-ai-send:disabled{ opacity:0.55; cursor:not-allowed; }
+
+    .jmod-ai-jd{
+      display:none;
+      border:1px solid var(--chat-border);
+      background:var(--chat-input);
+      color:var(--chat-text);
+      border-radius:12px;
+      padding:0.6rem 0.7rem;
+      font-size:0.9rem;
+      outline:none;
+      min-height:90px;
+      resize:vertical;
+    }
+    .jmod-ai-jd.show{ display:block; }
+
+    .jmod-ai-mini{
+      display:flex;
+      justify-content:space-between;
+      gap:0.75rem;
+      color:var(--chat-muted);
+      font-size:0.78rem;
+    }
+    .jmod-ai-mini a{
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:800;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:600px){
+      .link-row{ flex-wrap:nowrap; gap:0.5rem; }
+      .link-btn{ font-size:0.85rem; padding:0.35rem 0.5rem; white-space:nowrap; }
+      .theme-bulb{ width:42px; height:42px; }
+      .jmod-ai-panel{ right:0.75rem; width:calc(100vw - 1.5rem); }
+    }
+  
+    /* ===== Resume page content refresh ===== */
+    main{
+      position:relative;
+      z-index:1;
+      width:min(1100px, calc(100% - 2rem));
+      margin:0 auto;
+      padding:1.25rem 0 0;
+    }
+    section.resume-section{
+      max-width:1000px;
+      margin:1.25rem auto;
+      padding:0 0.5rem;
+    }
+    .section-shell{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.09);
+      border-radius:18px;
+      box-shadow:0 0 10px rgba(0,0,0,0.15);
+      padding:1.15rem 1.15rem 1.1rem;
+      backdrop-filter: blur(4px);
+    }
+    html[data-theme='light'] .section-shell{
+      background:rgba(0,0,0,0.03);
+      border-color:rgba(0,0,0,0.10);
+    }
+    .intro-copy{
+      max-width:880px;
+      margin:0 auto;
+      font-size:1rem;
+      line-height:1.72;
+      text-align:center;
+    }
+    .section-title{
+      text-align:center;
+      font-size:1.45rem;
+      margin:0 0 0.9rem;
+      letter-spacing:0.2px;
+    }
+    .eyebrow{
+      display:block;
+      text-align:center;
+      color:var(--accent);
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      font-size:0.78rem;
+      margin-bottom:0.45rem;
+    }
+    .impact-grid{
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      max-width:1000px;
+    }
+    .metric-box{
+      border-radius:16px;
+      padding:1.15rem 0.9rem;
+      min-height:118px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .metric-label{
+      font-size:0.93rem;
+      line-height:1.35;
+    }
+    .chip-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.7rem;
+      justify-content:center;
+      max-width:900px;
+      margin:0 auto;
+    }
+    .chip{
+      border:1px solid var(--accent);
+      box-shadow:0 0 8px rgba(0,255,238,0.12);
+      border-radius:999px;
+      padding:0.58rem 0.88rem;
+      font-size:0.95rem;
+      line-height:1.2;
+      background:rgba(255,255,255,0.04);
+    }
+    html[data-theme='light'] .chip{
+      background:rgba(0,0,255,0.04);
+      box-shadow:none;
+    }
+    .case-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:1rem;
+      align-items:start;
+    }
+    .case-card, .role-card, .sub-card, .mini-card{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px;
+      padding:1rem 1rem 0.95rem;
+    }
+    html[data-theme='light'] .case-card,
+    html[data-theme='light'] .role-card,
+    html[data-theme='light'] .sub-card,
+    html[data-theme='light'] .mini-card{
+      background:rgba(0,0,0,0.03);
+      border-color:rgba(0,0,0,0.10);
+    }
+    .case-card h4, .role-card h4, .sub-card h5{
+      margin:0 0 0.55rem;
+      text-align:left;
+      font-size:1.08rem;
+    }
+    .subtle{
+      color:rgba(255,255,255,0.76);
+      font-size:0.92rem;
+    }
+    html[data-theme='light'] .subtle{ color:rgba(0,0,0,0.66); }
+    .stats-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:0.7rem;
+      margin:0.8rem 0 0.1rem;
+    }
+    .stat-pill{
+      border:1px solid var(--accent);
+      border-radius:14px;
+      padding:0.7rem 0.8rem;
+      text-align:center;
+      background:rgba(0,0,0,0.08);
+    }
+    .stat-pill strong{
+      display:block;
+      font-size:1.05rem;
+      margin-bottom:0.12rem;
+    }
+    .stat-pill span{
+      font-size:0.82rem;
+      line-height:1.25;
+      display:block;
+    }
+    .role-stack{
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+    }
+    .role-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:1rem;
+      flex-wrap:wrap;
+      margin-bottom:0.55rem;
+    }
+    .role-head h4{
+      margin:0;
+      font-size:1.18rem;
+    }
+    .role-head .date{
+      color:var(--accent);
+      font-weight:800;
+      white-space:nowrap;
+    }
+    .role-intro{
+      margin:0 0 0.8rem;
+      line-height:1.65;
+    }
+    .detail-block{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1rem;
+      margin-top:0.85rem;
+    }
+    .detail-block.single{ grid-template-columns:1fr; }
+    .detail-block ul,
+    .role-card ul,
+    .sub-card ul,
+    .mini-card ul{
+      margin:0.25rem 0 0;
+      padding-left:1.15rem;
+      line-height:1.65;
+      font-size:0.98rem;
+    }
+    .detail-block li,
+    .role-card li,
+    .sub-card li,
+    .mini-card li{
+      margin:0.24rem 0;
+    }
+    details.clean{
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px;
+      padding:0.2rem 0.9rem 0.9rem;
+      background:rgba(255,255,255,0.03);
+    }
+    html[data-theme='light'] details.clean{
+      border-color:rgba(0,0,0,0.10);
+      background:rgba(0,0,0,0.02);
+    }
+    details.clean + details.clean{ margin-top:0.85rem; }
+    details.clean summary{
+      cursor:pointer;
+      font-weight:800;
+      padding:0.8rem 0 0.35rem;
+      list-style:none;
+    }
+    details.clean summary::-webkit-details-marker{ display:none; }
+    details.clean summary::after{
+      content:"+";
+      float:right;
+      color:var(--accent);
+      font-size:1.1rem;
+      line-height:1;
+    }
+    details.clean[open] summary::after{ content:"â€“"; }
+    .outcome-bar{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:0.75rem;
+      margin-top:0.8rem;
+    }
+    .outcome{
+      padding:0.8rem;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.03);
+    }
+    html[data-theme='light'] .outcome{
+      border-color:rgba(0,0,0,0.10);
+      background:rgba(0,0,0,0.02);
+    }
+    .outcome .fromto{
+      color:var(--accent);
+      font-weight:900;
+      font-size:1rem;
+      display:block;
+      margin-bottom:0.18rem;
+    }
+    .mini-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:0.9rem;
+    }
+    .edu-list{
+      max-width:850px;
+      margin:0 auto;
+      display:grid;
+      gap:0.85rem;
+    }
+    .footer-spacer{ height:4rem; }
+    @media (max-width:900px){
+      .detail-block{ grid-template-columns:1fr; }
+    }
+    @media (max-width:600px){
+      main{ width:min(100% - 1rem, 100%); }
+      .section-shell{ padding:0.95rem 0.85rem; border-radius:16px; }
+      .section-title{ font-size:1.25rem; }
+      .role-head h4{ font-size:1.05rem; }
+      .intro-copy{ text-align:left; }
+      .chip-grid{ justify-content:flex-start; }
+    }
+</style>
 </head>
+
 <body>
-  <div class="nope" aria-label="No exclamation">NO!</div>
+  <!-- ========================= -->
+  <!--          HEADER           -->
+  <!-- ========================= -->
+  <header class="site-header">
+    <h1>Jordan Moddes</h1>
+    <p><strong>OPERATIONS &amp; SUPPLY CHAIN LEADER | TURNAROUNDS | PROGRAMS | NETWORK EXECUTION</strong></p>
+
+    <div class="quick-links">
+      <div class="link-row">
+        <a class="link-btn" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank" rel="noopener">
+          ðŸ”— <span>LinkedIn</span>
+        </a>
+        <a class="link-btn" href="https://calendly.com/jmodwork" target="_blank" rel="noopener">
+          ðŸ“… <strong>Schedule Interview</strong>
+        </a>
+        <a class="link-btn" href="/Resume-Jordan-Moddes.pdf" download="Jordan-Moddes-Resume.pdf">
+          ðŸ“„ <span>Resume</span>
+        </a>
+      </div>
+
+      <div class="link-row">
+        <a class="link-btn has-tooltip" href="tel:2627050853" title="Call 262-705-0853">
+          ðŸ“ž <strong>Call</strong>
+          <div class="tooltip tooltip-call" aria-hidden="true">
+            <div class="tooltip-title">Call</div>
+            <div class="tooltip-body">(262) 705-0853</div>
+          </div>
+        </a>
+
+        <a class="link-btn has-tooltip" href="sms:2627050853" title="Text 262-705-0853">
+          ðŸ’¬ <span>Text</span>
+          <div class="tooltip tooltip-text" aria-hidden="true">
+            <div class="tooltip-title">Text</div>
+            <div class="tooltip-body">(262) 705-0853</div>
+          </div>
+        </a>
+
+        <a class="link-btn" href="mailto:jmodwork@gmail.com" title="Email jmodwork@gmail.com">
+          âœ‰ï¸ <span>Email</span>
+        </a>
+
+        <a class="link-btn has-tooltip" href="/vCard.vcf" download="Jordan_Moddes.vcf" title="Save contact">
+          ðŸ’¾ <strong>Save Contact</strong>
+          <div class="tooltip tooltip-qr" aria-hidden="true">
+            <div class="tooltip-title">Scan to Save</div>
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwww.jordanmoddes.com%2FvCard.vcf"
+              alt="QR code to save Jordan's contact">
+          </div>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================= -->
+  <!--       SHARE DROPDOWN      -->
+  <!-- ========================= -->
+  <div class="share-dropdown">
+    <button class="share-button" type="button">ðŸ”— Share</button>
+    <div class="share-content">
+      <a href="mailto:?subject=Check%20out%20Jordan%20Moddes%27%20portfolio&body=Explore%20Jordan%20Moddes%27%20professional%20site%20at%20https://www.jordanmoddes.com" target="_blank" rel="noopener">ðŸ“§ Email</a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.jordanmoddes.com" target="_blank" rel="noopener">ðŸ’¼ LinkedIn</a>
+      <a href="slack://open?team=&message=Check%20out%20this%20portfolio:%20https://www.jordanmoddes.com" target="_blank" rel="noopener">ðŸ’¬ Slack</a>
+      <a href="https://twitter.com/intent/tweet?url=https://www.jordanmoddes.com&text=Check%20out%20Jordan%20Moddes%27%20portfolio!" target="_blank" rel="noopener">ðŸ¦ X</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.jordanmoddes.com" target="_blank" rel="noopener">ðŸ“˜ Facebook</a>
+      <a href="#" id="copyLinkBtn">ðŸ“‹ Copy Link</a>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!--           MAIN            -->
+  <!-- ========================= -->
+  
+  <main>
+    <section class="resume-section">
+      <div class="section-shell">
+        <span class="eyebrow">Professional Resume</span>
+        <h2 class="section-title">Operations &amp; Supply Chain Leader</h2>
+        <p class="intro-copy">
+          Operations and supply chain leader with 10+ years of experience across Amazon fulfillment and global supply chain environments.
+          Known for stabilizing underperforming operations, designing scalable process improvements, and deploying programs that drive measurable operational impact across large distribution networks.
+          Experienced managing <strong>150â€“600 employees across facilities up to 3.25M sq ft</strong>, executing operational turnarounds, launching fulfillment sites, and building automation used across multiple facilities.
+          Currently support global supply chain operations at <strong>MilliporeSigma</strong>, coordinating production status monitoring and supply planning across <strong>~14,000 active SKUs within a 300K+ product portfolio serving 64 global distribution centers</strong>.
+        </p>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h3 class="section-title">Career Impact</h3>
+      <div class="impact-grid">
+        <div class="metric-box"><div id="sitesVisited" class="metric-number">0</div><div class="metric-label">Amazon Sites Supported</div></div>
+        <div class="metric-box"><div id="employeesLed" class="metric-number">0</div><div class="metric-label">Employees Led</div></div>
+        <div class="metric-box"><div id="leadersCoached" class="metric-number">0</div><div class="metric-label">Salaried Leaders Coached</div></div>
+        <div class="metric-box"><div id="promotionsDeveloped" class="metric-number">0</div><div class="metric-label">Internal Promotions Developed</div></div>
+        <div class="metric-box"><div id="siteTools" class="metric-number">0</div><div class="metric-label">Sites Using Reporting Tools</div></div>
+        <div class="metric-box"><div id="annualImpact" class="metric-number">$0M</div><div class="metric-label">Annual Program Value</div></div>
+        <div class="metric-box"><div id="performanceGains" class="metric-number">0%</div><div class="metric-label">Avg. YoY Performance Gains</div></div>
+        <div class="metric-box"><div id="vbaTools" class="metric-number">0</div><div class="metric-label">VBA Automations Developed</div></div>
+        <div class="metric-box"><div id="sopPrograms" class="metric-number">0</div><div class="metric-label">SOP / Framework Programs Adopted</div></div>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <div class="section-shell">
+        <h3 class="section-title">Core Leadership Capabilities</h3>
+        <div class="chip-grid">
+          <span class="chip">Operations Leadership</span>
+          <span class="chip">Supply Chain Operations</span>
+          <span class="chip">Operational Turnaround Execution</span>
+          <span class="chip">Process Optimization</span>
+          <span class="chip">Lean Operations</span>
+          <span class="chip">5-Why Root Cause Analysis</span>
+          <span class="chip">KPI &amp; Performance Management</span>
+          <span class="chip">Labor Planning &amp; Forecasting</span>
+          <span class="chip">Dock &amp; Sortation Operations</span>
+          <span class="chip">Inventory Control &amp; Planning</span>
+          <span class="chip">Transportation &amp; Logistics Coordination</span>
+          <span class="chip">Cross-Functional Leadership</span>
+          <span class="chip">Training Development &amp; SOP Design</span>
+          <span class="chip">Multi-Site Launch &amp; Stabilization</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h3 class="section-title">Operational Case Studies</h3>
+      <div class="case-grid">
+        <article class="case-card">
+          <h4>Rapid Improvement Team Turnaround</h4>
+          <p class="subtle">Selected for a VP-directed Rapid Improvement Team to stabilize a severely underperforming fulfillment center.</p>
+          <div class="outcome-bar">
+            <div class="outcome"><span class="fromto">31% compliance</span><div>benchmark audit starting point</div></div>
+            <div class="outcome"><span class="fromto">~2/day â†’ 0</span><div>safety incidents for final 2 weeks</div></div>
+            <div class="outcome"><span class="fromto">110 â†’ 165</span><div>inbound throughput peak within 6 weeks</div></div>
+            <div class="outcome"><span class="fromto">3600 â†’ 210</span><div>inbound DPMO</div></div>
+          </div>
+          <details class="clean" open>
+            <summary>Problem, Actions, and Outcome</summary>
+            <ul>
+              <li>Owned turnaround of inbound receive, stow, inbound quality, inbound safety, and labor planning.</li>
+              <li>Diagnosed poor 5S execution, weak labor planning, leadership inconsistency, and ~40% indirect labor overspend.</li>
+              <li>Implemented workstation standardization, center-work checklists, weekly compliance reviews, and role-based leadership training.</li>
+              <li>Reduced indirect labor overspend by ~40% while improving both productivity and quality.</li>
+              <li>Results were strong enough that the VP requested formal methodology documentation later used as reference guidance for ACES benchmark audits.</li>
+            </ul>
+          </details>
+        </article>
+
+        <article class="case-card">
+          <h4>Lane Dash Logistics Optimization Program</h4>
+          <p class="subtle">Program created and fully executed to deployment to improve dock flow efficiency and labor utilization.</p>
+          <div class="outcome-bar">
+            <div class="outcome"><span class="fromto">$1.28M</span><div>investment approved</div></div>
+            <div class="outcome"><span class="fromto">~5.5 months</span><div>ROI timeline</div></div>
+            <div class="outcome"><span class="fromto">$3.6M</span><div>annual operational value</div></div>
+          </div>
+          <details class="clean" open>
+            <summary>Program Structure</summary>
+            <ul>
+              <li>Identified inefficiencies in dock routing, labor utilization, and logistics flow.</li>
+              <li>Designed routing logic and workflow changes to improve execution consistency.</li>
+              <li>Built reporting metrics used to track impact and support scale-out.</li>
+              <li>Program scaled across the North American Fulfillment network.</li>
+            </ul>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <h3 class="section-title">Professional Experience</h3>
+      <div class="role-stack">
+
+        <article class="role-card">
+          <div class="role-head">
+            <div>
+              <h4>MilliporeSigma</h4>
+              <div class="subtle">Inventory Specialist / Material Scheduler</div>
+            </div>
+            <div class="date">2025 â€“ Present</div>
+          </div>
+          <p class="role-intro">
+            Support supply chain planning and production status monitoring across Sigma and Cerilliant product lines.
+          </p>
+          <div class="detail-block">
+            <div class="sub-card">
+              <h5>Responsibilities &amp; Contributions</h5>
+              <ul>
+                <li>Manage production step-status tracking across <strong>~14,000 active SKUs within a 300K+ product portfolio</strong>.</li>
+                <li>Support product flow from <strong>manufacturing labs into 64 global distribution centers</strong>, including two primary U.S. director DCs.</li>
+                <li>Contributed to backlog reduction initiatives helping reduce site-supported backorders from <strong>â‚¬3.7M â†’ â‚¬2.675M within ~2 months</strong>.</li>
+                <li>Built <strong>Excel VBA automation that flags idle or overdue production steps</strong>, reducing manual investigation time from <strong>~32 hours to under 1 hour</strong>.</li>
+                <li>Maintain material status integrity across <strong>SAP (PRD/100, PRE/100, PRP/100)</strong> and Macola ERP.</li>
+                <li>Coordinate planning updates across planners, lab teams, and distribution centers to maintain global product availability.</li>
+              </ul>
+            </div>
+            <div class="sub-card">
+              <h5>Systems &amp; Focus Areas</h5>
+              <ul>
+                <li>Material status control and step aging visibility</li>
+                <li>Backorder support and escalation readiness</li>
+                <li>ERP validation logic and exception handling</li>
+                <li>Cross-functional coordination with labs, planners, and distribution teams</li>
+                <li>Automation-first reporting and manual review elimination</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="role-card">
+          <div class="role-head">
+            <div>
+              <h4>Amazon</h4>
+              <div class="subtle">Operations Manager</div>
+            </div>
+            <div class="date">2021 â€“ 2025</div>
+          </div>
+          <p class="role-intro">
+            Led large-scale fulfillment operations within a <strong>3.25M sq ft facility supporting 600+ employees across multiple shifts</strong>, overseeing inbound receive, stow, outbound ShipDock, hazmat operations, NonCon processing, routing coordination, vendor returns, yard coordination, and transshipment.
+          </p>
+
+          <div class="stats-row">
+            <div class="stat-pill"><strong>600+</strong><span>employees across multiple shifts</span></div>
+            <div class="stat-pill"><strong>13</strong><span>salaried leaders coached</span></div>
+            <div class="stat-pill"><strong>30+</strong><span>internal promotions developed</span></div>
+            <div class="stat-pill"><strong>90+</strong><span>sites using reporting dashboards</span></div>
+          </div>
+
+          <div class="detail-block">
+            <div class="sub-card">
+              <h5>Operational Leadership</h5>
+              <ul>
+                <li>Managed <strong>600+ associates and 13 salaried leaders</strong>.</li>
+                <li>Executed labor planning using <strong>21-day operational forecasts</strong> and weekly volume trends.</li>
+                <li>Maintained operational performance across throughput, safety, quality, and SLA metrics.</li>
+                <li>Directed real-time workflow adjustments across inbound and outbound fulfillment workflows.</li>
+                <li>Led shift execution through complexity while holding standards on labor efficiency and service performance.</li>
+              </ul>
+            </div>
+            <div class="sub-card">
+              <h5>Organizational Leadership</h5>
+              <ul>
+                <li>Developed <strong>30+ internal promotions</strong> from frontline associates to salaried leadership.</li>
+                <li>Mentored Area Managers, Process Assistants, and Learning Ambassadors.</li>
+                <li>Designed structured training programs improving operational readiness and cross-team execution.</li>
+                <li>Led performance coaching and leadership development across a large salaried leadership bench.</li>
+              </ul>
+            </div>
+          </div>
+
+          <details class="clean" open>
+            <summary>Programs, Pilots, and Operational Improvement Work</summary>
+            <div class="mini-grid">
+              <div class="mini-card">
+                <h5>Lane Dash Program</h5>
+                <ul>
+                  <li>Created and deployed logistics routing optimization program.</li>
+                  <li><strong>$1.28M investment</strong>, <strong>~5.5 month ROI</strong>, <strong>$3.6M annual value</strong>.</li>
+                  <li>Scaled across North American Fulfillment.</li>
+                </ul>
+              </div>
+              <div class="mini-card">
+                <h5>NonCon Backlog Recovery</h5>
+                <ul>
+                  <li>Eliminated a <strong>6-month backlog in 6.5 weeks</strong> through workflow redesign and labor reallocation.</li>
+                  <li>Restored flow and labor efficiency within a constrained operating environment.</li>
+                </ul>
+              </div>
+              <div class="mini-card">
+                <h5>Hazmat SOP Standardization</h5>
+                <ul>
+                  <li>Partnered with ACES to redesign Hazmat SOP documentation.</li>
+                  <li>Supported standardization later rolled NACF-wide.</li>
+                </ul>
+              </div>
+              <div class="mini-card">
+                <h5>Network Pilots / Program Support</h5>
+                <ul>
+                  <li>Built metrics and review dashboards for pilot evaluation.</li>
+                  <li>Performed 5-Why failure analysis and supported SOP / training documents for scale-out.</li>
+                  <li>Included support for <strong>Project S.A.M.</strong> after Lane Dash.</li>
+                </ul>
+              </div>
+            </div>
+          </details>
+
+          <details class="clean" open>
+            <summary>Executive Rapid Improvement Team (RIT)</summary>
+            <p class="subtle">Selected for a VP-directed Rapid Improvement Team because site leadership trusted the results I consistently delivered.</p>
+            <div class="detail-block">
+              <div class="sub-card">
+                <h5>Scope &amp; Initial Conditions</h5>
+                <ul>
+                  <li>Responsible for turnaround of the entire inbound organization: receive dock, stow, quality, safety, and labor planning.</li>
+                  <li>Worked directly with the site Senior Operations Manager while reporting findings, actions, and results to site GM and regional leadership.</li>
+                  <li><strong>31% benchmark compliance score</strong></li>
+                  <li><strong>~2 safety incidents per day</strong></li>
+                  <li><strong>~110 inbound throughput</strong> against a 120 goal</li>
+                  <li><strong>~40% indirect labor overspend</strong></li>
+                  <li><strong>~3600 DPMO</strong> inbound quality defects</li>
+                </ul>
+              </div>
+              <div class="sub-card">
+                <h5>Actions &amp; Results in 6 Weeks</h5>
+                <ul>
+                  <li>Standardized workstations through 5S and rebuilt center-work expectations.</li>
+                  <li>Trained Ops Managers, AMs, PAs, ambassadors, and frontline roles on execution discipline.</li>
+                  <li>Rebuilt labor planning, dock scheduling, and indirect role utilization.</li>
+                  <li>Improved inbound throughput from <strong>110 â†’ 155 within 4 weeks</strong>, with a peak of <strong>165</strong>.</li>
+                  <li>Reduced safety incidents to <strong>zero for the final two weeks</strong>.</li>
+                  <li>Improved quality from <strong>~3600 DPMO â†’ 210 DPMO</strong>, the lowest the site had seen in over three years.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="outcome-bar">
+              <div class="outcome"><span class="fromto">31% â†’ 89%</span><div>benchmark compliance improvement within the broader turnaround effort</div></div>
+              <div class="outcome"><span class="fromto">110 â†’ 165</span><div>throughput peak</div></div>
+              <div class="outcome"><span class="fromto">3600 â†’ 210</span><div>quality DPMO</div></div>
+              <div class="outcome"><span class="fromto">~2/day â†’ 0</span><div>safety incidents late-stage</div></div>
+            </div>
+            <p class="role-intro" style="margin-top:0.9rem;">
+              Results were strong enough that the VP requested a formal write-up. My initial documentation was refined by my GM and became part of benchmark audit follow-up guidance used by ACES.
+            </p>
+          </details>
+
+          <details class="clean" open>
+            <summary>Network Operations Development &amp; Cross-Site Travel</summary>
+            <p class="subtle">
+              Due to delayed launch of my assigned facility during COVID supply chain disruptions, leadership authorized extensive cross-site work across the network.
+            </p>
+            <div class="detail-block">
+              <div class="sub-card">
+                <h5>Scope</h5>
+                <ul>
+                  <li>Worked across <strong>25 Amazon sites</strong> including AR fulfillment centers, Gen-11 launch sites, sort centers, sub-same-day docks, and delivery stations.</li>
+                  <li>Supported both training and operational improvement assignments ranging from <strong>1â€“6 weeks</strong>.</li>
+                  <li>One assignment lasted <strong>6 weeks</strong>; multiple others focused on field training, operational learning, and improvement support.</li>
+                  <li>Visited downstream sites with my team so they could understand how upstream decisions affected later network nodes.</li>
+                </ul>
+              </div>
+              <div class="sub-card">
+                <h5>What I Produced</h5>
+                <ul>
+                  <li>Created a one-page white paper after each visit documenting best practices, risks, lessons learned, and what to avoid.</li>
+                  <li>Built and continuously updated an internal operational wiki with center-work guidance and audit checks.</li>
+                  <li>Served as the manager sites requested when they needed someone to teach or stabilize specific workflows.</li>
+                  <li>Managed 13 salaried leaders across multiple sites while maintaining frequent virtual check-ins and coaching cadence.</li>
+                </ul>
+              </div>
+            </div>
+          </details>
+
+          <details class="clean" open>
+            <summary>Acting Senior Operations Manager (Stretch Role)</summary>
+            <p class="subtle">Served twice as Acting Senior Operations Manager covering military leave for two leaders. Total stretch time: <strong>~6 months</strong>.</p>
+            <div class="detail-block">
+              <div class="sub-card">
+                <h5>Responsibilities</h5>
+                <ul>
+                  <li>Owned outbound ShipDock labor planning, staffing strategy, and weekly execution.</li>
+                  <li>Oversaw A3 projects, follow-up cadence with Operations Managers and Area Managers, and weekly business reviews.</li>
+                  <li>Led safety and finance review meetings and created plans of action to hold committed goals.</li>
+                  <li>Investigated major service failures, including missing containers and process breakdowns affecting customer delivery.</li>
+                  <li>Reported performance and corrective actions directly to regional leadership.</li>
+                </ul>
+              </div>
+              <div class="sub-card">
+                <h5>Stretch Context</h5>
+                <ul>
+                  <li>One assignment occurred during <strong>Peak</strong>, the busiest period of the year.</li>
+                  <li>Worked closely with senior leadership across two closely linked sites while still operating independently.</li>
+                  <li>Across roughly <strong>24 weeks</strong> of coverage, only <strong>two issues</strong> required a full executive deep dive and white-paper response.</li>
+                  <li>Built team structure and accountability strong enough that operations did not depend on constant escalation.</li>
+                </ul>
+              </div>
+            </div>
+          </details>
+        </article>
+
+        <article class="role-card">
+          <div class="role-head">
+            <div>
+              <h4>Amazon</h4>
+              <div class="subtle">Area Manager I / II &amp; Process Assistant</div>
+            </div>
+            <div class="date">2015 â€“ 2021</div>
+          </div>
+          <p class="role-intro">
+            Led frontline teams and continuous improvement initiatives across inbound fulfillment operations.
+          </p>
+          <div class="detail-block">
+            <div class="sub-card">
+              <h5>Operational Leadership</h5>
+              <ul>
+                <li>Managed frontline teams across stow, inbound dock, and problem solve operations.</li>
+                <li>Served as SME for inbound operations and real-time problem solving.</li>
+                <li>Coordinated cross-department workflow between inbound, stow, and downstream teams.</li>
+              </ul>
+            </div>
+            <div class="sub-card">
+              <h5>Key Achievements</h5>
+              <ul>
+                <li>Increased stow productivity from <strong>240 â†’ 310 UPH within 3 months</strong>.</li>
+                <li>Reduced defect rate from <strong>2100 â†’ 400 DPMO within 1 month</strong>.</li>
+                <li>Improved stow performance <strong>+19% team / +11% site / +4% region</strong>.</li>
+                <li>Designed NonCon routing process implemented across <strong>12 sites</strong>.</li>
+                <li>Redesigned waterspider workflow using <strong>5S methodology</strong>.</li>
+                <li>Improved transfers lane optimization and escalation streamlining.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="role-card">
+          <div class="role-head">
+            <div>
+              <h4>Earlier Career</h4>
+              <div class="subtle">Transportation, Retail Operations, and Department Leadership</div>
+            </div>
+          </div>
+          <div class="mini-grid">
+            <div class="mini-card">
+              <h5>SC Johnson | Transportation Coordinator</h5>
+              <div class="subtle">2014 â€“ 2015</div>
+              <ul>
+                <li>Managed outbound logistics scheduling and vendor coordination.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Menards | Assistant Department Manager</h5>
+              <div class="subtle">2011 â€“ 2014</div>
+              <ul>
+                <li>Managed <strong>$3M department operations</strong> while maintaining <strong>~95% inventory accuracy</strong>.</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h5>Reebok | Retail Leadership</h5>
+              <div class="subtle">2011 â€“ 2014</div>
+              <ul>
+                <li>Maintained <strong>~98% inventory accuracy</strong> while supervising retail team operations.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <div class="section-shell">
+        <h3 class="section-title">Systems &amp; Technology</h3>
+        <div class="mini-grid">
+          <div class="mini-card">
+            <h5>ERP</h5>
+            <ul>
+              <li>SAP (PRD/100, PRE/100, PRP/100)</li>
+              <li>Macola ERP</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h5>Data &amp; Automation</h5>
+            <ul>
+              <li>Excel (Advanced)</li>
+              <li>VBA Automation</li>
+              <li>PowerBI</li>
+              <li>SQL (Basic)</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h5>Operations Platforms</h5>
+            <ul>
+              <li>Warehouse Management Systems</li>
+              <li>Fulfillment operations platforms</li>
+              <li>Internal wiki platforms</li>
+              <li>Dashboard reporting tools</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h5>Collaboration</h5>
+            <ul>
+              <li>SharePoint</li>
+              <li>Google Workspace</li>
+              <li>Slack</li>
+              <li>Asana</li>
+              <li>Quip</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <div class="section-shell">
+        <h3 class="section-title">Leadership Philosophy</h3>
+        <p class="intro-copy">
+          Operational leadership is built on three pillars: <strong>clarity, ownership, and capability development</strong>.
+          Clarity ensures teams understand exactly what success looks like.
+          Ownership ensures leaders address root causes rather than symptoms.
+          Capability development ensures the organization improves even after leadership transitions.
+          My goal is to leave every operation stronger than when I arrived by improving both the processes and the people responsible for executing them.
+        </p>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <div class="section-shell">
+        <h3 class="section-title">Operational Playbooks</h3>
+        <div class="mini-grid">
+          <div class="mini-card">
+            <h5>Turnaround Framework</h5>
+            <ul>
+              <li>Diagnose operational reality</li>
+              <li>Identify root causes</li>
+              <li>Simplify execution standards</li>
+              <li>Rebuild labor planning</li>
+              <li>Implement operational audits</li>
+              <li>Reinforce leadership ownership</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h5>Root Cause Methodology</h5>
+            <ul>
+              <li>5-Why analysis</li>
+              <li>Operational audit review</li>
+              <li>Data validation and metric tracking</li>
+              <li>Behavioral observation on the floor</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h5>Leadership Development Model</h5>
+            <ul>
+              <li>Train Area Managers on execution discipline</li>
+              <li>Develop Process Assistants as operational anchors</li>
+              <li>Empower ambassadors to scale training</li>
+              <li>Reinforce standards through center-work documentation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <div class="section-shell">
+        <h3 class="section-title">Education &amp; Specialized Training</h3>
+        <div class="edu-list">
+          <div class="mini-card">
+            <h5>Bachelor of Business Administration</h5>
+            <div class="subtle">Bryant &amp; Stratton College â€” Graduated 04/2013</div>
+          </div>
+          <div class="mini-card">
+            <h5>Certifications &amp; Specialized Training</h5>
+            <ul>
+              <li>Weekly Business Review (WBR): Prep, Analysis &amp; Reporting</li>
+              <li>Peak &amp; Prime Day: Playbook Planning &amp; Execution Lead</li>
+              <li>MMA (Management Methods Application) &amp; TDR (Total Demand Review) Proficient</li>
+              <li>ACES SOP Development: Created and standardized network-approved documentation</li>
+              <li>PIT &amp; Robotic Tools (RME): Hands-on experience with fulfillment tools (no active cert)</li>
+              <li>Incident Command &amp; CPR/First Aid: Previously certified, functioned in IC role</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <footer>
+    âœ¦ Crafted by Jordan Moddes Â· AI-Partnership âœ¦<br><br><br><br><br><br>
+  </footer>
+
+  <!-- ========================= -->
+  <!--     FLOATING CONTROLS     -->
+  <!-- ========================= -->
+  <div class="floating-controls" aria-label="Floating controls">
+    <!-- Jmod AI bubble -->
+    <button class="jmod-ai-bubble" id="jmodAiBubble" type="button" aria-label="Open Jmod AI chat" title="Jmod AI">
+      <img src="/assets/Signature_WhiteTP.png" alt="" class="jmod-ai-bubble-logo" id="jmodAiBubbleLogo">
+      <span>Jmod AI</span>
+    </button>
+
+    <!-- Theme bulb -->
+    <button class="theme-bulb" id="themeBulb" type="button" aria-label="Toggle light/dark" title="Toggle theme">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 18h6" />
+        <path d="M10 22h4" />
+        <path d="M12 2a7 7 0 0 0-4 12c.6.5 1 1.2 1.2 2h5.6c.2-.8.6-1.5 1.2-2A7 7 0 0 0 12 2z" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- ========================= -->
+  <!--        JMOD AI PANEL      -->
+  <!-- ========================= -->
+  <div class="jmod-ai-panel" id="jmodAiPanel" role="dialog" aria-label="Jmod AI chat" aria-modal="true">
+    <div class="jmod-ai-header">
+      <div class="jmod-ai-title">
+        <img src="/assets/Signature_WhiteTP.png" alt="Jmod AI logo" id="jmodAiLogo">
+        <div class="twrap">
+          <strong>Jmod AI</strong>
+          <span>Verified experience only.</span>
+        </div>
+      </div>
+      <button class="jmod-ai-close" id="jmodAiClose" type="button" aria-label="Close">âœ•</button>
+    </div>
+
+    <div class="jmod-ai-body">
+      <p class="jmod-ai-systemline" id="jmodAiWelcome">
+        Ask about leadership scope, measurable results, cost mindset, or paste a job link. *Note, first response may take 60 seconds, then immediate after
+      </p>
+
+      <div class="jmod-ai-thread" id="jmodAiThread"></div>
+      <div class="jmod-ai-alert" id="jmodAiAlert" style="display:none;"></div>
+    </div>
+
+    <div class="jmod-ai-footer">
+      <textarea class="jmod-ai-jd" id="jmodAiJobText"
+        placeholder="Paste job description text here (only needed if a job link is blocked)"></textarea>
+
+      <div class="jmod-ai-row">
+        <input class="jmod-ai-input" id="jmodAiInput" placeholder="Type a questionâ€¦" />
+        <button class="jmod-ai-send" id="jmodAiSend" type="button">Send</button>
+      </div>
+
+      <div class="jmod-ai-mini">
+        <span id="jmodAiStatus">Ready.</span>
+        <a href="/resume-ai.html?resumeai=1" target="_blank" rel="noopener" id="openFullPageLink">Open full page</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!--    TRANSLATE BUTTON/WGT   -->
+  <!-- ========================= -->
+  <button class="translate-toggle" id="translateToggle" type="button" onclick="toggleTranslateWidget()"
+          style="position:fixed; bottom:1rem; left:1rem; border:none; padding:0.6rem 1rem; border-radius:20px; cursor:pointer; font-weight:bold; z-index:1000;">
+    ðŸŒ Translate
+  </button>
+
+  <div id="google_translate_element" class="translate-container"></div>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- ========================= -->
+  <!--           SCRIPTS         -->
+  <!-- ========================= -->
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+
+      // Notify any listeners (resume-ai.html, other pages, etc.)
+      try { window.dispatchEvent(new Event("storage")); } catch {}
+    }
+
+    function toggleTranslateWidget() {
+      const widget = document.getElementById("google_translate_element");
+      if (!widget) return;
+      widget.style.display = (widget.style.display === "none" || widget.style.display === "") ? "block" : "none";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // ====== harden: never let one failure kill the rest ======
+      function safe(fn) {
+        try { fn(); } catch (e) { console.error(e); }
+      }
+
+      // ====== shared storage keys (stable across pages) ======
+      const VISITOR_KEY = "jmod_visitor_id_v1";
+      
+      function getVisitorId(){
+        let id = localStorage.getItem(VISITOR_KEY);
+        if (!id){
+          id = crypto.randomUUID();
+          localStorage.setItem(VISITOR_KEY, id);
+        }
+        return id;
+      }
+      
+      const VISITOR_ID = getVisitorId();
+      const STORAGE_KEY = `jmod_ai_thread_v1::${VISITOR_ID}`;
+      const STORAGE_KEY_THEME = "theme";
+
+      // Restore theme (default dark)
+      safe(() => {
+        const storedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+        if (storedTheme === "light" || storedTheme === "dark") {
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      });
+
+      // Keep translate button theme-aware
+      const translateBtn = document.getElementById("translateToggle");
+      function paintTranslateBtn() {
+        const theme = document.documentElement.getAttribute("data-theme") || "dark";
+        if (!translateBtn) return;
+        if (theme === "dark") { translateBtn.style.background = "#00ffee"; translateBtn.style.color = "#000"; }
+        else { translateBtn.style.background = "#0000ff"; translateBtn.style.color = "#fff"; }
+      }
+
+      // Update logos based on theme
+      const jmodAiLogo = document.getElementById("jmodAiLogo");
+      const jmodAiBubbleLogo = document.getElementById("jmodAiBubbleLogo");
+      function setAiLogosForTheme() {
+        const theme = document.documentElement.getAttribute("data-theme") || "dark";
+        const src = theme === "dark" ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
+        if (jmodAiLogo) jmodAiLogo.src = src;
+        if (jmodAiBubbleLogo) jmodAiBubbleLogo.src = src;
+        // keep favicon in sync too
+        const icon = document.querySelector('link[rel="icon"]');
+        if (icon) icon.href = src;
+        paintTranslateBtn();
+      }
+      safe(setAiLogosForTheme);
+
+      // Listen for theme changes from other tabs/pages
+      safe(() => {
+        window.addEventListener("storage", (e) => {
+          if (!e || (e.key && e.key !== STORAGE_KEY_THEME && e.key !== STORAGE_KEY)) return;
+          const storedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+          if (storedTheme === "light" || storedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", storedTheme);
+            setAiLogosForTheme();
+          }
+        });
+      });
+
+      // Metrics animation
+      safe(() => {
+        function animateValue(id, start, end, duration, suffix = "", prefix = "") {
+          const obj = document.getElementById(id);
+          if (!obj) return;
+          const range = end - start;
+          if (range === 0) { obj.textContent = prefix + end + suffix; return; }
+          const stepTime = Math.max(20, Math.abs(Math.floor(duration / Math.max(Math.abs(range), 1))));
+          let current = start;
+          const timer = setInterval(() => {
+            current += Math.sign(range);
+            obj.textContent = prefix + current + suffix;
+            if ((range > 0 && current >= end) || (range < 0 && current <= end)) clearInterval(timer);
+          }, stepTime);
+        }
+        animateValue("sitesVisited", 0, 25, 1200, "+");
+        animateValue("employeesLed", 0, 600, 1200, "+");
+        animateValue("leadersCoached", 0, 13, 1200);
+        animateValue("promotionsDeveloped", 0, 30, 1200, "+");
+        animateValue("siteTools", 0, 90, 1200, "+");
+        document.getElementById("annualImpact").textContent = "$3.6M";
+        animateValue("performanceGains", 0, 15, 1200, "%");
+        animateValue("vbaTools", 0, 19, 1200);
+        animateValue("sopPrograms", 0, 5, 1200);
+      });
+
+      // Share dropdown behavior
+      safe(() => {
+        const shareButton = document.querySelector(".share-button");
+        const shareContent = document.querySelector(".share-content");
+
+        if (shareButton && shareContent) {
+          shareButton.addEventListener("click", function (e) {
+            e.stopPropagation();
+            shareContent.style.display = shareContent.style.display === "block" ? "none" : "block";
+          });
+
+          document.addEventListener("click", function (e) {
+            if (!shareContent.contains(e.target) && e.target !== shareButton) shareContent.style.display = "none";
+          });
+        }
+      });
+
+      // Copy link
+      safe(() => {
+        const copyLinkBtn = document.getElementById("copyLinkBtn");
+        if (copyLinkBtn) {
+          copyLinkBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            navigator.clipboard.writeText('https://www.jordanmoddes.com');
+            alert('Link copied to clipboard!');
+          });
+        }
+      });
+
+      /* =========================
+         Theme bulb binding
+         ========================= */
+      safe(() => {
+        const bulb = document.getElementById("themeBulb");
+        if (bulb) bulb.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleTheme();
+          setAiLogosForTheme();
+        });
+      });
+
+      /* =========================
+         Jmod AI Chat Logic
+         ========================= */
+      safe(() => {
+        const API_BASE = "https://resume-ai-backend-sx60.onrender.com/";
+        const bubble = document.getElementById("jmodAiBubble");
+        const panel = document.getElementById("jmodAiPanel");
+        const closeBtn = document.getElementById("jmodAiClose");
+        const input = document.getElementById("jmodAiInput");
+        const send = document.getElementById("jmodAiSend");
+        const thread = document.getElementById("jmodAiThread");
+        const status = document.getElementById("jmodAiStatus");
+        const alertBox = document.getElementById("jmodAiAlert");
+        const jobTextBox = document.getElementById("jmodAiJobText");
+        const openFullPageLink = document.getElementById("openFullPageLink");
+
+        // ===== Persisted chat (shared with /resume-ai.html) =====
+        function loadThreadFromStorage() {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            const parsed = raw ? JSON.parse(raw) : [];
+            return Array.isArray(parsed) ? parsed : [];
+          } catch {
+            return [];
+          }
+        }
+
+        function saveThreadToStorage(items) {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(items || []));
+          } catch {}
+        }
+
+        // in-memory copy
+        let threadState = loadThreadFromStorage();
+
+        function renderStoredThread() {
+          if (!thread) return;
+          thread.innerHTML = "";
+          for (const m of (threadState || [])) {
+            if (!m || !m.kind) continue;
+            const div = document.createElement("div");
+            div.className = "jmod-ai-msg " + m.kind;
+            div.textContent = String(m.text || "");
+            thread.appendChild(div);
+          }
+          if (thread.parentElement) {
+            thread.parentElement.scrollTop = thread.parentElement.scrollHeight;
+          }
+        }
+
+        // render any saved history on load (WITHOUT opening panel)
+        renderStoredThread();
+
+        // Keep in sync if another tab/page writes to localStorage
+        window.addEventListener("storage", (e) => {
+          if (!e || e.key !== STORAGE_KEY) return;
+          threadState = loadThreadFromStorage();
+          renderStoredThread();
+        });
+
+        // Ensure "Open full page" carries history (localStorage already does)
+        // Also pass a flag for the other page to optionally focus; it should not auto-open here.
+        if (openFullPageLink) {
+          openFullPageLink.addEventListener("click", () => {
+            try { localStorage.setItem("jmod_ai_last_opened_from", "index"); } catch {}
+          });
+        }
+
+        function openChat() {
+          if (!panel) return;
+          panel.classList.add("open");
+          setTimeout(() => input && input.focus(), 50);
+        }
+
+        function closeChat() {
+          if (!panel) return;
+          panel.classList.remove("open");
+          if (alertBox) alertBox.style.display = "none";
+        }
+
+        function addMsg(kind, text) {
+          if (!thread) return;
+          const msg = {
+            kind,
+            text: String(text || ""),
+            ts: Date.now()
+          };
+
+          // store
+          threadState.push(msg);
+          saveThreadToStorage(threadState);
+
+          // render (append)
+          const div = document.createElement("div");
+          div.className = "jmod-ai-msg " + kind;
+          div.textContent = msg.text;
+          thread.appendChild(div);
+          if (thread.parentElement) {
+            thread.parentElement.scrollTop = thread.parentElement.scrollHeight;
+          }
+        }
+
+        function parseJobUrlFromText(text) {
+          const m = (text || "").match(/https?:\/\/\S+/i);
+          return m ? m[0].replace(/[)\],.]+$/g, "") : "";
+        }
+
+        async function askBackend(questionText) {
+          if (!status || !send) return;
+
+          status.textContent = "Thinkingâ€¦";
+          send.disabled = true;
+          if (alertBox) alertBox.style.display = "none";
+
+          const raw = (questionText || "").trim();
+          const extractedUrl = parseJobUrlFromText(raw);
+          const cleanQuestion = raw.replace(extractedUrl, "").trim() || raw;
+
+          const payload = {
+            question: cleanQuestion,
+            job_url: extractedUrl || null,
+            job_text: (jobTextBox && jobTextBox.value ? jobTextBox.value.trim() : "") || null
+          };
+
+          try {
+            const res = await fetch(API_BASE + "ask", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+
+            let data = null;
+            try { data = await res.json(); } catch { data = null; }
+
+            const answer = (data && data.answer) ? data.answer : (res && !res.ok ? "Server error. Try again." : "No answer returned.");
+            const needsPaste = !!(data && data.needs_paste_jd);
+
+            addMsg("bot", answer);
+
+            if (needsPaste) {
+              if (jobTextBox) jobTextBox.classList.add("show");
+              if (alertBox) {
+                alertBox.textContent = "This job link is blocked. Paste the job description text to continue.";
+                alertBox.style.display = "block";
+              }
+              status.textContent = "Paste JD, then send again.";
+            } else {
+              if (jobTextBox) jobTextBox.classList.remove("show");
+              status.textContent = "Ready.";
+            }
+          } catch (e) {
+            status.textContent = "Error.";
+            if (alertBox) {
+              alertBox.textContent = "Network error. If this persists, refresh the page.";
+              alertBox.style.display = "block";
+            }
+          } finally {
+            send.disabled = false;
+          }
+        }
+
+        function handleSend(text) {
+          const t = (text || "").trim();
+          if (!t) return;
+          addMsg("user", t);
+          if (input) input.value = "";
+          askBackend(t);
+        }
+
+        if (bubble) {
+          bubble.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (!panel) return;
+            if (panel.classList.contains("open")) closeChat();
+            else openChat();
+          });
+        }
+
+        if (closeBtn) {
+          closeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            closeChat();
+          });
+        }
+
+        document.addEventListener("click", (e) => {
+          if (!panel || !panel.classList.contains("open")) return;
+          const inPanel = panel.contains(e.target);
+          const inBubble = bubble && bubble.contains(e.target);
+          if (!inPanel && !inBubble) closeChat();
+        });
+
+        if (send) send.addEventListener("click", () => handleSend(input ? input.value : ""));
+        if (input) {
+          input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSend(input.value);
+            }
+          });
+        }
+      });
+
+      // Final paint pass (theme + logos + translate button)
+      safe(() => {
+        paintTranslateBtn();
+        setAiLogosForTheme();
+      });
+    });
+  </script>
 </body>
 </html>
