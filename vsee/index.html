@@ -661,51 +661,55 @@
       </div>
 
       <!-- CHANGED: trust bar — concrete proofs, tightened copy -->
-      <div class="trust-bar" role="list" aria-label="Key purchase assurances">
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">📍</div>
-          <div class="trust-text">
-            <strong data-en="Austin / Round Rock" data-es="Austin / Round Rock">Austin / Round Rock</strong><br>
-            <span data-en="In-person pickup only" data-es="Solo recogida en persona">In-person pickup only</span>
-          </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">📦</div>
-          <div class="trust-text">
-            <strong data-en="4 models in stock" data-es="4 modelos en existencia">4 models in stock</strong><br>
-            <span data-en="$260 – $425" data-es="$260 – $425">$260 – $425</span>
-          </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">💵</div>
-          <div class="trust-text">
-            <strong data-en="Cash or Zelle" data-es="Efectivo o Zelle">Cash or Zelle</strong><br>
-            <span data-en="Pay at pickup" data-es="Paga al recoger">Pay at pickup</span>
-          </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">🛠️</div>
-          <div class="trust-text">
-            <strong data-en="Plug & play pickup" data-es="Recogida lista para usar">Plug & play pickup</strong><br>
-            <span data-en="Brief setup guidance at handoff;<br>text support afterwards." data-es="Guía breve de configuración al entregar;<br>soporte por texto después.">Brief setup guidance at handoff;<br>text support afterwards.</span>
-          </div>
-        </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">🔒</div>
-          <div class="trust-text">
-            <strong data-en="One-time purchase" data-es="Compra única">One-time purchase</strong><br>
-            <span data-en="No device subscription fees. Third‑party services may require separate accounts." data-es="Sin tarifas de suscripción del dispositivo. Servicios de terceros pueden requerir cuentas separadas.">No device subscription fees. Third‑party services may require separate accounts.</span>
-          </div>
-        </div>
-        <div class="trust-item" role="listitem">
-          <div class="trust-icon" aria-hidden="true">🔗</div>
-          <div class="trust-text">
-            <strong data-en="LisnUp Installations" data-es="LisnUp Installations">LisnUp Installations</strong><br>
-            <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" style="color:var(--blue);font-size:.83rem;" aria-label="Visit LisnUp Installations website (opens in new tab)">lisnupinstallations.com</a>
-        </div>
-      </div>
-    </section>
+      <section class="info-bar" aria-label="Key purchase and pickup information">
+        <ul class="info-list">
+          <li>
+            <span class="info-icon" aria-hidden="true">📍</span>
+            <span class="info-text">
+              <strong>Austin / Round Rock</strong><br />
+              In-person pickup only
+            </span>
+          </li>
+          <li>
+            <span class="info-icon" aria-hidden="true">📦</span>
+            <span class="info-text">
+              <strong>4 models in stock</strong><br />
+              $260 – $425
+            </span>
+          </li>
+          <li>
+            <span class="info-icon" aria-hidden="true">💵</span>
+            <span class="info-text">
+              <strong>Cash or Zelle</strong><br />
+              Pay at pickup
+            </span>
+          </li>
+          <li>
+            <span class="info-icon" aria-hidden="true">🛠️</span>
+            <span class="info-text">
+              <strong>Plug & play pickup</strong><br />
+              Brief setup guidance at handoff; text support afterwards.
+            </span>
+          </li>
+        </ul>
+      
+        <ul class="info-list purchase-info">
+          <li>
+            <span class="info-icon" aria-hidden="true">🔒</span>
+            <span class="info-text">
+              <strong>One-time purchase</strong><br />
+              No device subscription fees. Third-party services may require separate accounts.
+            </span>
+          </li>
+          <li>
+            <span class="info-icon" aria-hidden="true">🔗</span>
+            <span class="info-text">
+              LisnUp Installations<br />
+              <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" class="info-link">lisnupinstallations.com</a>
+            </span>
+          </li>
+        </ul>
+      </section>
 
     <!-- ── Model cards ── -->
     <!-- SECTION: Models — rewritten section title, desc, card taglines -->
@@ -818,9 +822,9 @@
               <td>100 Mbps</td><td>100 Mbps</td><td>—</td><td class="hi">Gigabit</td>
             </tr>
             <tr>
-              <!-- CHANGED: row label — "Split Screen / PIP" for clarity -->
+              <!-- CHANGED: row label — "Split Screen / PIP" for clarity, added asterisk -->
               <td data-en="Split Screen / PIP" data-es="Pantalla dividida / PIP">Split Screen / PIP</td>
-              <td>—</td><td class="mid">✓</td><td>—</td><td>—</td>
+              <td>—</td><td class="mid">✓</td><td class="mid">✓*</td><td class="mid">✓*</td>
             </tr>
             <tr>
               <!-- CHANGED: row label — "Extra Apps (beyond Heat)" for clarity -->
@@ -841,6 +845,10 @@
             </tr>
           </tbody>
         </table>
+    
+        <p class="footnote" style="font-size: 0.85rem; color: var(--muted); margin-top: 8px;">
+          * <span data-en="Non-VSee supported apps support Picture-in-Picture (PIP) functionality." data-es="Las apps no soportadas por VSee admiten funcionalidad de imagen en imagen (PIP).">Non-VSee supported apps support Picture-in-Picture (PIP) functionality.</span>
+        </p>
       </div>
     </section>
 
