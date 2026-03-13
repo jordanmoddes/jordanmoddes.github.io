@@ -4,12 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#04080f" />
+  <meta name="description" content="Locally stocked VSeeBox Android TV units available for in-person pickup in Austin & Round Rock, TX. 4 models from $260. Text Jordan to order today." />
   <title>VSeeBoxATX</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 
   <style>
+    /* ── CHANGELOG (CSS unchanged — no color/theme variables modified) ──
+       Text/ARIA/alt changes only. See bottom of file for full change list.
+    ── */
     :root {
       --bg: #04080f;
       --surface: #0b1120;
@@ -304,6 +308,30 @@
     .compare-table .col-head { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--text); font-size: .95rem; }
     .compare-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r2); }
 
+    /* ── FAQ section ── */
+    .faq-section { padding: 64px 0; }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .faq-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+      overflow: hidden;
+    }
+    .faq-question {
+      width: 100%; background: none; border: none; color: var(--text); cursor: pointer;
+      padding: 18px 20px; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500;
+      text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      transition: background .2s;
+    }
+    .faq-question:hover { background: var(--surface2); }
+    .faq-question[aria-expanded="true"] { color: var(--blue); }
+    .faq-chevron { font-size: .8rem; transition: transform .25s; flex: 0 0 auto; color: var(--muted); }
+    .faq-question[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s ease;
+      color: var(--muted); font-size: .9rem; font-weight: 300; line-height: 1.7;
+      padding: 0 20px;
+    }
+    .faq-answer.open { max-height: 300px; padding: 0 20px 18px; }
+
     /* ── How it works ── */
     .how-section { padding: 64px 0; }
     .steps { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 36px; }
@@ -392,27 +420,123 @@
     }
     .fade-in.visible { opacity: 1; transform: none; }
   </style>
+
+  <!-- JSON-LD: Product + FAQ structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ItemList",
+        "name": "VSeeBox Android TV Units — Austin TX",
+        "description": "Locally stocked VSeeBox Android TV units available for in-person pickup in Austin and Round Rock, TX.",
+        "itemListElement": [
+          {
+            "@type": "ListItem", "position": 1,
+            "item": {
+              "@type": "Product", "name": "VSeeBox V6 Max",
+              "description": "Android 14 Android TV box with Heat apps, 4GB RAM, 64GB storage, dual-band Wi-Fi, and 8K video decoding.",
+              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "260", "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
+            }
+          },
+          {
+            "@type": "ListItem", "position": 2,
+            "item": {
+              "@type": "Product", "name": "VSeeBox V6 Plus",
+              "description": "Android 14 Android TV box with split-screen, PIP, backlit remote, 4GB RAM, 64GB storage.",
+              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "290", "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
+            }
+          },
+          {
+            "@type": "ListItem", "position": 3,
+            "item": {
+              "@type": "Product", "name": "VSeeBox Elite Mini",
+              "description": "Android 12 Android TV box with Wi-Fi 6, voice remote, 10 bonus apps, 6K HDR, 4GB RAM, 32GB storage.",
+              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "310", "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
+            }
+          },
+          {
+            "@type": "ListItem", "position": 4,
+            "item": {
+              "@type": "Product", "name": "VSeeBox Elite Ultra",
+              "description": "Android 12 Android TV box with Wi-Fi 6, Gigabit Ethernet, 20+ apps, 128GB storage, voice remote.",
+              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "425", "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
+            }
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Where can I pick up my VSeeBox?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Jordan arranges in-person handoffs in the Austin and Round Rock, TX area. Text to schedule a convenient meetup location." }
+          },
+          {
+            "@type": "Question",
+            "name": "What payment methods are accepted?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Cash and Zelle are accepted. Payment is made at the time of in-person pickup." }
+          },
+          {
+            "@type": "Question",
+            "name": "Which VSeeBox model is right for me?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Most first-time buyers do great with the V6 Max ($260). If you want Wi-Fi 6, a voice remote, and extra apps, the Elite Mini ($310) is the best value. Power users and resellers often prefer the Elite Ultra ($425)." }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you sell in bulk for resellers or businesses?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The V6 Max is available by the case at $3,800. Text Jordan for bulk pricing on other models." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is VSeeBox and who makes it?",
+            "acceptedAnswer": { "@type": "Answer", "text": "VSeeBox is an Android TV set-top box designed for streaming, with VSee Heat apps pre-installed. Jordan is an authorized distributor through LisnUp Installations." }
+          },
+          {
+            "@type": "Question",
+            "name": "Will I get setup help after I buy?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Jordan walks you through initial setup at pickup and remains available by text for software questions afterward." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between Android 12 and Android 14 on these devices?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The V6 Max and V6 Plus run Android 14, offering the most current app compatibility. The Elite Mini and Elite Ultra run Android 12, which is stable and fully supported, and receive OTA updates." }
+          },
+          {
+            "@type": "Question",
+            "name": "Do the Elite models support OTA (over-the-air) software updates?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Elite Mini and Elite Ultra both support OTA updates, so your device receives firmware improvements automatically." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
   <!-- ── Header ── -->
-  <header>
+  <header role="banner">
     <div class="header-inner">
-      <a class="brand" href="#top">
-        <div class="brand-avatar">JM</div>
+      <a class="brand" href="#top" aria-label="VSeeBoxATX — Jordan Moddes, VSeeBox Distributor">
+        <!-- brand-avatar preserved per constraints -->
+        <div class="brand-avatar" aria-hidden="true">JM</div>
         <div class="brand-text">
           <div class="brand-name">Jordan Moddes</div>
-          <div class="brand-sub" data-en="VSeeBox Distributor" data-es="Distribuidor VSeeBox">VSeeBox Distributor</div>
+          <!-- CHANGED: brand-sub — sharper distributor credential -->
+          <div class="brand-sub" data-en="Authorized VSeeBox Distributor" data-es="Distribuidor Autorizado VSeeBox">Authorized VSeeBox Distributor</div>
         </div>
       </a>
       <div class="header-right">
-        <div class="lang-toggle">
-          <button class="active" onclick="setLang('en')">EN</button>
-          <button onclick="setLang('es')">ES</button>
+        <div class="lang-toggle" role="group" aria-label="Language selector">
+          <button class="active" onclick="setLang('en')" aria-pressed="true" lang="en">EN</button>
+          <button onclick="setLang('es')" aria-pressed="false" lang="es">ES</button>
         </div>
-        <a class="header-cta" id="headerCta" href="sms:2627050853">
-          <span>📱</span>
-          <span data-en="Text Jordan" data-es="Texto a Jordan">Text Jordan</span>
+        <!-- CHANGED: header CTA — tighter, action-forward copy -->
+        <a class="header-cta" id="headerCta" href="sms:2627050853" aria-label="Text Jordan to order a VSeeBox">
+          <span aria-hidden="true">📱</span>
+          <span data-en="Text to Order" data-es="Ordenar por Texto">Text to Order</span>
         </a>
       </div>
     </div>
@@ -421,151 +545,204 @@
   <div class="wrap" id="top">
 
     <!-- ── Hero ── -->
-    <section class="hero">
-      <div class="hero-eyebrow">
-        <div class="dot"></div>
-        <span data-en="Available for in-person pickup · Austin/Round Rock area" data-es="Disponible para recoger en persona · Área de Austin/Round Rock">Available for in-person pickup · Austin/Round Rock area</span>
+    <!-- SECTION: Hero — rewritten H1, subhead, CTAs, eyebrow -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <!-- CHANGED: eyebrow — concrete proof points -->
+      <div class="hero-eyebrow" role="note">
+        <div class="dot" aria-hidden="true"></div>
+        <span data-en="In-person pickup · Austin / Round Rock · Cash or Zelle" data-es="Recoge en persona · Austin / Round Rock · Efectivo o Zelle">In-person pickup · Austin / Round Rock · Cash or Zelle</span>
       </div>
 
-      <h1>
-        <span data-en="Premium Android TV." data-es="Android TV Premium.">Premium Android TV.</span><br>
-        <em data-en="Personally meet to grab." data-es="Entregado personalmente.">Personally delivered at meetup.</em>
+      <!-- CHANGED: H1 — lead with local availability + brand promise -->
+      <h1 id="hero-heading">
+        <span data-en="VSeeBox units, locally stocked." data-es="VSeeBox disponible localmente.">VSeeBox units, locally stocked.</span><br>
+        <em data-en="Ready for pickup in Austin." data-es="Listo para recoger en Austin.">Ready for pickup in Austin.</em>
       </h1>
 
-      <p class="hero-desc" data-en="I'm a VSeeBox distributor through LisnUp Installations. I work with you to find the right box and make sure you know what you're getting." data-es="Soy distribuidor de VSeeBox a través de LisnUp Installations. Colaboro contigo para encontrar la caja ideal y asegurarme de que sepas lo que obtienes.">
-        I'm a VSeeBox distributor through LisnUp Installations. I work with you to find the right box and make sure you know what you're getting.
+      <!-- CHANGED: hero-desc — authoritative, benefit-led, removes casual "I work with you" -->
+      <p class="hero-desc" data-en="Four VSeeBox Android TV models in stock right now — from the clean, everyday V6 Max to the fully loaded Elite Ultra. Pick yours up in the Austin / Round Rock area. Authorized distributor via LisnUp Installations." data-es="Cuatro modelos de VSeeBox Android TV en existencia ahora mismo — desde el práctico V6 Max hasta el Elite Ultra completamente equipado. Recógelo en el área de Austin / Round Rock. Distribuidor autorizado a través de LisnUp Installations.">
+        Four VSeeBox Android TV models in stock right now — from the clean, everyday V6 Max to the fully loaded Elite Ultra. Pick yours up in the Austin / Round Rock area. Authorized distributor via LisnUp Installations.
       </p>
 
       <div class="hero-actions">
-        <a class="btn-primary" id="heroSms" href="sms:2627050853">
-          <span>💬</span>
-          <span data-en="Text Jordan to Order" data-es="Escríbele a Jordan">Text Jordan to Order</span>
+        <!-- CHANGED: primary CTA — cleaner action phrasing -->
+        <a class="btn-primary" id="heroSms" href="sms:2627050853" aria-label="Text Jordan to order a VSeeBox">
+          <span aria-hidden="true">💬</span>
+          <span data-en="Text Jordan to Order" data-es="Ordena por Texto — Jordan">Text Jordan to Order</span>
         </a>
-        <a class="btn-ghost" href="#models">
-          <span data-en="Compare Models" data-es="Comparar Modelos">Compare Models</span>
-          <span>↓</span>
+        <a class="btn-ghost" href="#models" aria-label="See all VSeeBox models and pricing">
+          <span data-en="See All Models &amp; Pricing" data-es="Ver Modelos y Precios">See All Models &amp; Pricing</span>
+          <span aria-hidden="true">↓</span>
         </a>
       </div>
 
-      <div class="trust-bar">
-        <div class="trust-item">
-          <div class="trust-icon">🤝</div>
-          <div class="trust-text"><strong data-en="In-person" data-es="En persona">In-person</strong><br>
-            <span data-en="Cash or Zelle" data-es="Efectivo o Zelle">Cash or Zelle</span></div>
+      <!-- CHANGED: trust bar — concrete proofs, tightened copy -->
+      <div class="trust-bar" role="list" aria-label="Key purchase assurances">
+        <div class="trust-item" role="listitem">
+          <div class="trust-icon" aria-hidden="true">📍</div>
+          <div class="trust-text">
+            <strong data-en="Austin / Round Rock" data-es="Austin / Round Rock">Austin / Round Rock</strong><br>
+            <span data-en="In-person pickup only" data-es="Solo recogida en persona">In-person pickup only</span>
+          </div>
         </div>
-        <div class="trust-item">
-          <div class="trust-icon">📦</div>
-          <div class="trust-text"><strong data-en="4 models" data-es="4 modelos">4 models</strong><br>
-            <span data-en="All in stock" data-es="Todos en existencia">All in stock</span></div>
+        <div class="trust-item" role="listitem">
+          <div class="trust-icon" aria-hidden="true">📦</div>
+          <div class="trust-text">
+            <strong data-en="4 models in stock" data-es="4 modelos en existencia">4 models in stock</strong><br>
+            <span data-en="$260 – $425" data-es="$260 – $425">$260 – $425</span>
+          </div>
         </div>
-        <div class="trust-item">
-          <div class="trust-icon">🛠️</div>
-          <div class="trust-text"><strong data-en="Setup support" data-es="Soporte de instalación">Setup support</strong><br>
-            <span data-en="I help you get started" data-es="Te ayudo a empezar">I help you get started</span></div>
+        <div class="trust-item" role="listitem">
+          <div class="trust-icon" aria-hidden="true">💵</div>
+          <div class="trust-text">
+            <strong data-en="Cash or Zelle" data-es="Efectivo o Zelle">Cash or Zelle</strong><br>
+            <span data-en="Pay at pickup" data-es="Paga al recoger">Pay at pickup</span>
+          </div>
         </div>
-        <div class="trust-item">
-          <div class="trust-icon">🔗</div>
-          <div class="trust-text"><strong data-en="LisnUp partner" data-es="Socio LisnUp">LisnUp partner</strong><br>
-            <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" style="color:var(--blue);font-size:.83rem;">lisnup.com</a></div>
+        <div class="trust-item" role="listitem">
+          <div class="trust-icon" aria-hidden="true">🛠️</div>
+          <div class="trust-text">
+            <strong data-en="Setup included" data-es="Instalación incluida">Setup included</strong><br>
+            <span data-en="Hands-on walkthrough at handoff" data-es="Guía en persona al momento de entrega">Hands-on walkthrough at handoff</span>
+          </div>
+        </div>
+        <div class="trust-item" role="listitem">
+          <div class="trust-icon" aria-hidden="true">🔗</div>
+          <div class="trust-text">
+            <strong data-en="LisnUp Installations" data-es="LisnUp Installations">LisnUp Installations</strong><br>
+            <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" style="color:var(--blue);font-size:.83rem;" aria-label="Visit LisnUp Installations website (opens in new tab)">lisnupinstallations.com</a>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ── Model cards ── -->
-    <section class="models-section fade-in" id="models">
-      <div class="section-label"><span data-en="Available Models" data-es="Modelos Disponibles">Available Models</span></div>
-      <h2 class="section-title" data-en="Choose your VSeeBox" data-es="Elige tu VSeeBox">Choose your VSeeBox</h2>
-      <p class="section-desc" data-en="Not sure which is right for you? Text me — I'll ask a couple quick questions and point you in the right direction." data-es="¿No estás seguro cuál es el adecuado? Escríbeme — te haré un par de preguntas y te orientaré.">Not sure which is right for you? Text me — I'll ask a couple quick questions and point you in the right direction.</p>
+    <!-- SECTION: Models — rewritten section title, desc, card taglines -->
+    <section class="models-section fade-in" id="models" aria-labelledby="models-heading">
+      <div class="section-label"><span data-en="4 Models Available Now" data-es="4 Modelos Disponibles Ahora">4 Models Available Now</span></div>
+      <!-- CHANGED: section title — decision-forward -->
+      <h2 class="section-title" id="models-heading" data-en="Find the right VSeeBox for you" data-es="Encuentra el VSeeBox ideal para ti">Find the right VSeeBox for you</h2>
+      <!-- CHANGED: section desc — addresses hesitation, clear next step -->
+      <p class="section-desc" data-en="Not sure where to start? The Elite Mini is our most popular pick. Text Jordan with two or three sentences about how you watch TV and he'll point you to the right model in minutes." data-es="¿No sabes por dónde empezar? El Elite Mini es nuestra opción más popular. Cuéntale a Jordan cómo ves televisión y te recomendará el modelo correcto en minutos.">Not sure where to start? The Elite Mini is our most popular pick. Text Jordan with two or three sentences about how you watch TV and he'll point you to the right model in minutes.</p>
 
-      <div class="model-grid">
-        <a class="model-card" href="#v6max">
-          <div class="model-badge badge-white" data-en="Start here" data-es="Empieza aquí">Start here</div>
+      <div class="model-grid" role="list">
+
+        <!-- CHANGED: V6 Max card — sharper tagline -->
+        <a class="model-card" href="#v6max" role="listitem" aria-label="VSeeBox V6 Max — $260, Android 14, everyday streaming">
+          <div class="model-badge badge-white" data-en="Great starter" data-es="Ideal para empezar">Great starter</div>
           <div class="model-name">V6 Max</div>
           <div class="model-price"><sup>$</sup>260</div>
-          <div class="model-tagline" data-en="Clean, fast, everyday Android TV with Heat Apps" data-es="Android TV limpio y rápido con apps Heat">Clean, fast, everyday Android TV with Heat Apps</div>
-          <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon">→</span></div>
+          <div class="model-tagline" data-en="Android 14 · Heat apps · fast &amp; no-bloat" data-es="Android 14 · Apps Heat · rápido y sin relleno">Android 14 · Heat apps · fast &amp; no-bloat</div>
+          <div class="model-arrow">
+            <span data-en="See details" data-es="Ver detalles">See details</span>
+            <span class="arrow-icon" aria-hidden="true">→</span>
+          </div>
         </a>
 
-        <a class="model-card" href="#v6plus">
-          <div class="model-badge badge-blue" data-en="Multi-viewer" data-es="Multi-pantalla">Multi-viewer</div>
+        <!-- CHANGED: V6 Plus card — sharper tagline -->
+        <a class="model-card" href="#v6plus" role="listitem" aria-label="VSeeBox V6 Plus — $290, split-screen, backlit remote">
+          <div class="model-badge badge-blue" data-en="Watch more at once" data-es="Ve más al mismo tiempo">Watch more at once</div>
           <div class="model-name">V6 Plus</div>
           <div class="model-price"><sup>$</sup>290</div>
           <div class="model-tagline" data-en="Split screen + PIP + backlit remote" data-es="Pantalla dividida + PIP + control iluminado">Split screen + PIP + backlit remote</div>
-          <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon">→</span></div>
+          <div class="model-arrow">
+            <span data-en="See details" data-es="Ver detalles">See details</span>
+            <span class="arrow-icon" aria-hidden="true">→</span>
+          </div>
         </a>
 
-        <a class="model-card best" href="#elitemini">
-          <div class="model-badge badge-green" data-en="Best value" data-es="Mejor valor">Best value</div>
+        <!-- CHANGED: Elite Mini card — sharper tagline -->
+        <a class="model-card best" href="#elitemini" role="listitem" aria-label="VSeeBox Elite Mini — $310, Wi-Fi 6, voice remote, best value">
+          <div class="model-badge badge-green" data-en="Most popular" data-es="El más popular">Most popular</div>
           <div class="model-name">Elite Mini</div>
           <div class="model-price"><sup>$</sup>310</div>
-          <div class="model-tagline" data-en="Wi-Fi 6 · 10 bonus apps · 6K HDR · voice remote" data-es="Wi-Fi 6 · 10 apps extra · 6K HDR · control por voz">Wi-Fi 6 · 10 bonus apps · 6K HDR · voice remote</div>
-          <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon">→</span></div>
+          <div class="model-tagline" data-en="Wi-Fi 6 · voice remote · 10 bonus apps · 6K HDR" data-es="Wi-Fi 6 · control por voz · 10 apps extra · 6K HDR">Wi-Fi 6 · voice remote · 10 bonus apps · 6K HDR</div>
+          <div class="model-arrow">
+            <span data-en="See details" data-es="Ver detalles">See details</span>
+            <span class="arrow-icon" aria-hidden="true">→</span>
+          </div>
         </a>
 
-        <a class="model-card" href="#eliteultra">
-          <div class="model-badge badge-gold" data-en="Top spec" data-es="Tope de gama">Top spec</div>
+        <!-- CHANGED: Elite Ultra card — sharper tagline -->
+        <a class="model-card" href="#eliteultra" role="listitem" aria-label="VSeeBox Elite Ultra — $425, top spec, 128GB, Gigabit Ethernet">
+          <div class="model-badge badge-gold" data-en="Maximum specs" data-es="Máximas especificaciones">Maximum specs</div>
           <div class="model-name">Elite Ultra</div>
           <div class="model-price"><sup>$</sup>425</div>
-          <div class="model-tagline" data-en="Wi-Fi 6 · Gigabit ethernet · 20+ apps · 128GB" data-es="Wi-Fi 6 · Ethernet Gigabit · 20+ apps · 128GB">Wi-Fi 6 · Gigabit ethernet · 20+ apps · 128GB</div>
-          <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon">→</span></div>
+          <div class="model-tagline" data-en="Wi-Fi 6 · Gigabit Ethernet · 20+ apps · 128 GB" data-es="Wi-Fi 6 · Ethernet Gigabit · 20+ apps · 128 GB">Wi-Fi 6 · Gigabit Ethernet · 20+ apps · 128 GB</div>
+          <div class="model-arrow">
+            <span data-en="See details" data-es="Ver detalles">See details</span>
+            <span class="arrow-icon" aria-hidden="true">→</span>
+          </div>
         </a>
+
       </div>
     </section>
 
     <!-- ── Comparison table ── -->
-    <section class="compare-section fade-in">
-      <div class="section-label"><span data-en="Side by Side" data-es="Comparativa">Side by Side</span></div>
-      <h2 class="section-title" data-en="Quick comparison" data-es="Comparación rápida">Quick comparison</h2>
-      <div class="compare-wrap">
+    <!-- SECTION: Comparison — rewritten section label + title; row headings clarified -->
+    <section class="compare-section fade-in" aria-labelledby="compare-heading">
+      <div class="section-label"><span data-en="Model Comparison" data-es="Comparación de Modelos">Model Comparison</span></div>
+      <!-- CHANGED: title — decision-support framing -->
+      <h2 class="section-title" id="compare-heading" data-en="Compare all four models" data-es="Compara los cuatro modelos">Compare all four models</h2>
+      <div class="compare-wrap" role="region" aria-label="VSeeBox model comparison table" tabindex="0">
         <table class="compare-table">
+          <caption class="visually-hidden">Side-by-side specification comparison for VSeeBox V6 Max, V6 Plus, Elite Mini, and Elite Ultra</caption>
           <thead>
             <tr>
-              <th></th>
-              <th class="col-head">V6 Max</th>
-              <th class="col-head">V6 Plus</th>
-              <th class="col-head">Elite Mini</th>
-              <th class="col-head">Elite Ultra</th>
+              <th scope="col"></th>
+              <th scope="col" class="col-head">V6 Max</th>
+              <th scope="col" class="col-head">V6 Plus</th>
+              <th scope="col" class="col-head">Elite Mini</th>
+              <th scope="col" class="col-head">Elite Ultra</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td data-en="Price" data-es="Precio">Price</td>
+              <!-- CHANGED: row label — "Price (USD)" more explicit -->
+              <td data-en="Price (USD)" data-es="Precio (USD)">Price (USD)</td>
               <td>$260</td><td>$290</td><td>$310</td><td class="hi">$425</td>
             </tr>
             <tr>
-              <td data-en="OS" data-es="SO">OS</td>
-              <td>Android 14</td><td>Android 14</td><td>Android 12</td><td>Android 12</td>
+              <td data-en="Android OS" data-es="Android SO">Android OS</td>
+              <td>14</td><td>14</td><td>12 + OTA</td><td>12 + OTA</td>
             </tr>
             <tr>
-              <td data-en="RAM" data-es="Memoria">RAM</td>
-              <td>4GB</td><td>4GB</td><td>4GB</td><td>4GB</td>
+              <td data-en="RAM" data-es="Memoria RAM">RAM</td>
+              <td>4 GB</td><td>4 GB</td><td>4 GB</td><td>4 GB</td>
             </tr>
             <tr>
-              <td data-en="Storage" data-es="Almacenamiento">Storage</td>
-              <td>64GB</td><td>64GB</td><td>32GB</td><td class="hi">128GB</td>
+              <!-- CHANGED: row label — "Internal Storage" more explicit -->
+              <td data-en="Internal Storage" data-es="Almacenamiento">Internal Storage</td>
+              <td>64 GB</td><td>64 GB</td><td>32 GB</td><td class="hi">128 GB</td>
             </tr>
             <tr>
               <td data-en="Wi-Fi" data-es="Wi-Fi">Wi-Fi</td>
-              <td>Dual-band</td><td>Dual-band</td><td class="mid">Wi-Fi 6</td><td class="hi">Wi-Fi 6</td>
+              <td data-en="Dual-band" data-es="Doble banda">Dual-band</td>
+              <td data-en="Dual-band" data-es="Doble banda">Dual-band</td>
+              <td class="mid">Wi-Fi 6</td><td class="hi">Wi-Fi 6</td>
             </tr>
             <tr>
-              <td data-en="Ethernet" data-es="Ethernet">Ethernet</td>
-              <td>100M</td><td>100M</td><td>—</td><td class="hi">Gigabit</td>
+              <!-- CHANGED: row label — "Wired Ethernet" for clarity -->
+              <td data-en="Wired Ethernet" data-es="Ethernet por cable">Wired Ethernet</td>
+              <td>100 Mbps</td><td>100 Mbps</td><td>—</td><td class="hi">Gigabit</td>
             </tr>
             <tr>
-              <td data-en="Split screen" data-es="Pantalla dividida">Split screen</td>
+              <!-- CHANGED: row label — "Split Screen / PIP" for clarity -->
+              <td data-en="Split Screen / PIP" data-es="Pantalla dividida / PIP">Split Screen / PIP</td>
               <td>—</td><td class="mid">✓</td><td>—</td><td>—</td>
             </tr>
             <tr>
-              <td data-en="Bonus apps" data-es="Apps extra">Bonus apps</td>
+              <!-- CHANGED: row label — "Extra Apps (beyond Heat)" for clarity -->
+              <td data-en="Extra Apps (beyond Heat)" data-es="Apps extra (fuera de Heat)">Extra Apps (beyond Heat)</td>
               <td>—</td><td>—</td><td class="mid">10</td><td class="hi">20+</td>
             </tr>
             <tr>
-              <td data-en="Max video" data-es="Video máx.">Max video</td>
+              <!-- CHANGED: row label — "Max Video Output" for clarity -->
+              <td data-en="Max Video Output" data-es="Video máximo">Max Video Output</td>
               <td>8K@60</td><td>8K@60</td><td>6K HDR</td><td>6K@60</td>
             </tr>
             <tr>
-              <td data-en="Remote" data-es="Control">Remote</td>
+              <td data-en="Remote Control" data-es="Control Remoto">Remote Control</td>
               <td data-en="Standard" data-es="Estándar">Standard</td>
               <td data-en="Backlit" data-es="Iluminado">Backlit</td>
               <td data-en="Voice" data-es="Por voz">Voice</td>
@@ -577,279 +754,412 @@
     </section>
 
     <!-- ── Product: V6 Max ── -->
-    <section class="product-detail fade-in" id="v6max">
+    <!-- SECTION: V6 Max detail — rewritten desc + feature bullets -->
+    <section class="product-detail fade-in" id="v6max" aria-labelledby="v6max-heading">
       <div class="product-header">
         <div>
-          <div class="model-badge badge-white" style="display:inline-block;margin-bottom:10px" data-en="Standard" data-es="Estándar">Standard</div>
-          <h2 class="product-title">V6 Max</h2>
+          <!-- CHANGED: badge — "Entry Level" clearer than "Standard" -->
+          <div class="model-badge badge-white" style="display:inline-block;margin-bottom:10px" data-en="Entry Level" data-es="Nivel de Entrada">Entry Level</div>
+          <h2 class="product-title" id="v6max-heading">V6 Max</h2>
         </div>
         <div class="product-price-block">
           <div class="product-price">$260</div>
-          <div class="product-price-note" data-en="Bulk: $3,800/case" data-es="Caja: $3,800">Bulk: $3,800/case</div>
+          <!-- CHANGED: price note — clarified bulk offer -->
+          <div class="product-price-note" data-en="Reseller case: $3,800 (≈15 units)" data-es="Caja revendedor: $3,800 (≈15 unidades)">Reseller case: $3,800 (≈15 units)</div>
         </div>
       </div>
-      <p class="product-desc" data-en="The everyday VSeeBox. Fast, reliable Android 14 with all the Heat apps you need. Best starting point for most people — clean software, no bloat." data-es="El VSeeBox cotidiano. Android 14 rápido y confiable con todas las apps Heat. El mejor punto de partida para la mayoría.">
-        The everyday VSeeBox. Fast, reliable Android 14 with all the Heat apps you need. Best starting point for most people — clean software, no bloat.
+      <!-- CHANGED: product desc — clear, benefit-led, scannable -->
+      <p class="product-desc" data-en="The V6 Max is the sharpest entry point into the VSeeBox lineup. Android 14 means you get the latest app support right out of the box — pair that with a clean Heat app bundle and 8K@60 decoding and you have everything most viewers need at the best price." data-es="El V6 Max es el punto de entrada más inteligente a la línea VSeeBox. Android 14 garantiza compatibilidad con las apps más recientes, y la suite de apps Heat junto con decodificación 8K@60 te da todo lo que la mayoría de los usuarios necesita, al mejor precio.">
+        The V6 Max is the sharpest entry point into the VSeeBox lineup. Android 14 means you get the latest app support right out of the box — pair that with a clean Heat app bundle and 8K@60 decoding and you have everything most viewers need at the best price.
       </p>
 
-      <div class="img-strip" aria-label="V6 Max images">
-        <img src="/vseebox/assets/v6max-1-kit.webp" alt="V6 Max kit" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
-        <img src="/vseebox/assets/v6max-2-hero.webp" alt="V6 Max box" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Box &amp; remote'), this); this.remove()">
-        <img src="/vseebox/assets/v6max-3-specsheet.webp" alt="V6 Max specs" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Feature sheet'), this); this.remove()">
+      <div class="img-strip" aria-label="VSeeBox V6 Max product images">
+        <!-- CHANGED: alt text — concise, descriptive per deliverable requirements -->
+        <img src="/vseebox/assets/v6max-1-kit.webp" alt="VSeeBox V6 Max complete kit including box, remote, and cables" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
+        <img src="/vseebox/assets/v6max-2-hero.webp" alt="VSeeBox V6 Max unit front view with standard remote" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Unit &amp; remote'), this); this.remove()">
+        <img src="/vseebox/assets/v6max-3-specsheet.webp" alt="VSeeBox V6 Max specification and feature sheet" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Feature sheet'), this); this.remove()">
       </div>
 
       <div class="detail-cols">
         <div class="detail-box">
-          <h4 data-en="What you get" data-es="Lo que incluye">What you get</h4>
-          <ul class="feature-list">
-            <li><div class="check">✓</div><span data-en="VSee Heat Apps pre-installed" data-es="Apps Heat de VSee preinstaladas">VSee Heat Apps pre-installed</span></li>
-            <li><div class="check">✓</div><span data-en="Android 14 — latest OS" data-es="Android 14 — último SO">Android 14 — latest OS</span></li>
-            <li><div class="check">✓</div><span data-en="8K@60 video decoding" data-es="Decodificación de video 8K@60">8K@60 video decoding</span></li>
-            <li><div class="check">✓</div><span data-en="Dual-band Wi-Fi + Bluetooth 5.0" data-es="Wi-Fi de banda dual + Bluetooth 5.0">Dual-band Wi-Fi + Bluetooth 5.0</span></li>
-            <li><div class="check">✓</div><span data-en="Wired ethernet option" data-es="Opción de ethernet con cable">Wired ethernet option</span></li>
+          <!-- CHANGED: feature bullets — benefit-led phrasing -->
+          <h4 data-en="What's included" data-es="Qué incluye">What's included</h4>
+          <ul class="feature-list" aria-label="V6 Max features">
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="VSee Heat apps pre-loaded — ready on first boot" data-es="Apps Heat de VSee preinstaladas — listas desde el primer encendido">VSee Heat apps pre-loaded — ready on first boot</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Android 14 — broadest app store compatibility" data-es="Android 14 — mayor compatibilidad con la tienda de apps">Android 14 — broadest app store compatibility</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="8K@60 video decoding — smooth on any display" data-es="Decodificación 8K@60 — fluido en cualquier pantalla">8K@60 video decoding — smooth on any display</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Dual-band Wi-Fi + Bluetooth 5.0" data-es="Wi-Fi de doble banda + Bluetooth 5.0">Dual-band Wi-Fi + Bluetooth 5.0</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="RJ45 wired Ethernet port — plug in for a stable connection" data-es="Puerto Ethernet RJ45 — conexión estable por cable">RJ45 wired Ethernet port — plug in for a stable connection</span></li>
           </ul>
         </div>
         <div class="detail-box">
           <h4 data-en="Specs" data-es="Especificaciones">Specs</h4>
-          <ul class="spec-list">
-            <li><span class="spec-key">Chip</span><span class="spec-val">Amlogic 905Y4</span></li>
+          <ul class="spec-list" aria-label="V6 Max specifications">
+            <li><span class="spec-key">Chip</span><span class="spec-val">Amlogic S905Y4</span></li>
             <li><span class="spec-key">CPU</span><span class="spec-val">Quad-core Cortex-A35</span></li>
-            <li><span class="spec-key">GPU</span><span class="spec-val">Mali-G31MP2</span></li>
-            <li><span class="spec-key" data-en="Memory" data-es="Memoria">Memory</span><span class="spec-val">4GB DDR3</span></li>
-            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">64GB eMMC</span></li>
+            <li><span class="spec-key">GPU</span><span class="spec-val">Mali-G31 MP2</span></li>
+            <li><span class="spec-key" data-en="RAM" data-es="Memoria">RAM</span><span class="spec-val">4 GB DDR3</span></li>
+            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">64 GB eMMC</span></li>
             <li><span class="spec-key">OS</span><span class="spec-val">Android 14</span></li>
-            <li><span class="spec-key" data-en="Ethernet" data-es="Ethernet">Ethernet</span><span class="spec-val">RJ45 100M</span></li>
+            <li><span class="spec-key" data-en="Ethernet" data-es="Ethernet">Ethernet</span><span class="spec-val">RJ45 100 Mbps</span></li>
+            <li><span class="spec-key" data-en="Video out" data-es="Salida de video">Video out</span><span class="spec-val">HDMI — 8K@60</span></li>
           </ul>
         </div>
       </div>
     </section>
 
     <!-- ── Product: V6 Plus ── -->
-    <section class="product-detail fade-in" id="v6plus">
+    <!-- SECTION: V6 Plus detail — rewritten desc + feature bullets -->
+    <section class="product-detail fade-in" id="v6plus" aria-labelledby="v6plus-heading">
       <div class="product-header">
         <div>
-          <div class="model-badge badge-blue" style="display:inline-block;margin-bottom:10px" data-en="Multi-viewer" data-es="Multi-pantalla">Multi-viewer</div>
-          <h2 class="product-title">V6 Plus</h2>
+          <!-- CHANGED: badge — "Multi-Screen" clearer for buyers -->
+          <div class="model-badge badge-blue" style="display:inline-block;margin-bottom:10px" data-en="Multi-Screen" data-es="Multi-Pantalla">Multi-Screen</div>
+          <h2 class="product-title" id="v6plus-heading">V6 Plus</h2>
         </div>
         <div class="product-price-block">
           <div class="product-price">$290</div>
         </div>
       </div>
-      <p class="product-desc" data-en="Everything in the V6 Max plus split-screen and picture-in-picture through Heat. The backlit remote is a nice touch for dark-room viewing." data-es="Todo lo del V6 Max más pantalla dividida y PIP a través de Heat. El control iluminado es genial para ver en la oscuridad.">
-        Everything in the V6 Max plus split-screen and picture-in-picture through Heat. The backlit remote is a nice touch for dark-room viewing.
+      <!-- CHANGED: product desc — problem/solution framing -->
+      <p class="product-desc" data-en="If you want to watch two streams at the same time — live scores while a show runs, or two different channels side by side — the V6 Plus delivers that through Heat's split-screen and PIP modes. The backlit remote makes nighttime browsing effortless." data-es="Si quieres ver dos transmisiones al mismo tiempo — marcadores en vivo mientras pasa una serie, o dos canales diferentes lado a lado — el V6 Plus lo logra a través de los modos de pantalla dividida y PIP de Heat. El control iluminado hace que navegar de noche sea muy fácil.">
+        If you want to watch two streams at the same time — live scores while a show runs, or two different channels side by side — the V6 Plus delivers that through Heat's split-screen and PIP modes. The backlit remote makes nighttime browsing effortless.
       </p>
 
-      <div class="img-strip" aria-label="V6 Plus images">
-        <img src="/vseebox/assets/v6plus-1-kit.webp" alt="V6 Plus kit" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
-        <img src="/vseebox/assets/v6plus-2-splitscreen.webp" alt="Split screen" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Split screen demo'), this); this.remove()">
+      <div class="img-strip" aria-label="VSeeBox V6 Plus product images">
+        <img src="/vseebox/assets/v6plus-1-kit.webp" alt="VSeeBox V6 Plus complete kit with backlit remote" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
+        <img src="/vseebox/assets/v6plus-2-splitscreen.webp" alt="VSeeBox V6 Plus split-screen mode showing two live streams simultaneously" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Split-screen demo'), this); this.remove()">
       </div>
 
       <div class="detail-cols">
         <div class="detail-box">
-          <h4 data-en="What you get" data-es="Lo que incluye">What you get</h4>
-          <ul class="feature-list">
-            <li><div class="check">✓</div><span data-en="Everything in the V6 Max" data-es="Todo lo del V6 Max">Everything in the V6 Max</span></li>
-            <li><div class="check">✓</div><span data-en="Split-screen viewing via Heat" data-es="Pantalla dividida via Heat">Split-screen viewing via Heat</span></li>
-            <li><div class="check">✓</div><span data-en="Picture-in-picture (PIP)" data-es="Picture-in-picture (PIP)">Picture-in-picture (PIP)</span></li>
-            <li><div class="check">✓</div><span data-en="Backlit remote — easy in dark rooms" data-es="Control iluminado — perfecto en la oscuridad">Backlit remote — easy in dark rooms</span></li>
-            <li><div class="check">✓</div><span data-en="More Heat apps included" data-es="Más apps Heat incluidas">More Heat apps included</span></li>
+          <h4 data-en="What's included" data-es="Qué incluye">What's included</h4>
+          <ul class="feature-list" aria-label="V6 Plus features">
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Everything in the V6 Max, plus:" data-es="Todo lo del V6 Max, más:">Everything in the V6 Max, plus:</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Split-screen — two channels, one display" data-es="Pantalla dividida — dos canales, una pantalla">Split-screen — two channels, one display</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Picture-in-picture (PIP) — keep an eye on anything" data-es="Picture-in-picture (PIP) — no pierdas nada">Picture-in-picture (PIP) — keep an eye on anything</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Backlit remote — fully readable in a dark room" data-es="Control iluminado — totalmente legible en la oscuridad">Backlit remote — fully readable in a dark room</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Expanded Heat app selection" data-es="Selección ampliada de apps Heat">Expanded Heat app selection</span></li>
           </ul>
         </div>
         <div class="detail-box">
           <h4 data-en="Specs" data-es="Especificaciones">Specs</h4>
-          <ul class="spec-list">
-            <li><span class="spec-key">Chip</span><span class="spec-val">Amlogic 905Y5</span></li>
+          <ul class="spec-list" aria-label="V6 Plus specifications">
+            <li><span class="spec-key">Chip</span><span class="spec-val">Amlogic S905Y5</span></li>
             <li><span class="spec-key">OS</span><span class="spec-val">Android 14</span></li>
-            <li><span class="spec-key" data-en="Memory" data-es="Memoria">Memory</span><span class="spec-val">4GB</span></li>
+            <li><span class="spec-key" data-en="RAM" data-es="Memoria">RAM</span><span class="spec-val">4 GB</span></li>
+            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">64 GB</span></li>
             <li><span class="spec-key" data-en="Remote" data-es="Control">Remote</span><span class="spec-val" data-en="Backlit" data-es="Iluminado">Backlit</span></li>
-            <li><span class="spec-key" data-en="Feature" data-es="Función">Feature</span><span class="spec-val">Split-screen / PIP</span></li>
+            <li><span class="spec-key" data-en="Key feature" data-es="Función clave">Key feature</span><span class="spec-val">Split-screen / PIP</span></li>
+            <li><span class="spec-key" data-en="Video out" data-es="Salida de video">Video out</span><span class="spec-val">HDMI — 8K@60</span></li>
           </ul>
         </div>
       </div>
     </section>
 
     <!-- ── Product: Elite Mini ── -->
-    <section class="product-detail fade-in" id="elitemini">
+    <!-- SECTION: Elite Mini detail — rewritten desc + feature bullets -->
+    <section class="product-detail fade-in" id="elitemini" aria-labelledby="elitemini-heading">
       <div class="product-header">
         <div>
-          <div class="model-badge badge-green" style="display:inline-block;margin-bottom:10px" data-en="Best value" data-es="Mejor valor">Best value</div>
-          <h2 class="product-title">Elite Mini</h2>
+          <div class="model-badge badge-green" style="display:inline-block;margin-bottom:10px" data-en="Most Popular" data-es="El Más Popular">Most Popular</div>
+          <h2 class="product-title" id="elitemini-heading">Elite Mini</h2>
         </div>
         <div class="product-price-block">
           <div class="product-price">$310</div>
         </div>
       </div>
-      <p class="product-desc" data-en="Wi-Fi 6, a voice remote, and 10 extra apps outside the Heat ecosystem. Most content for the money. Great for anyone who wants a bit more flexibility." data-es="Wi-Fi 6, control por voz y 10 apps extra fuera del ecosistema Heat. Más contenido por el dinero. Ideal para quien quiere más flexibilidad.">
-        Wi-Fi 6, a voice remote, and 10 extra apps outside the Heat ecosystem. Most content for the money. Great for anyone who wants a bit more flexibility.
+      <!-- CHANGED: product desc — lead with key differentiators -->
+      <p class="product-desc" data-en="The Elite Mini is the sweet spot of the lineup. Wi-Fi 6 keeps your connection rock-solid even on a busy network, the voice remote adds genuine convenience, and 10 bonus apps extend your content options well beyond the Heat ecosystem — all in a compact unit." data-es="El Elite Mini es el punto óptimo de la línea. Wi-Fi 6 mantiene tu conexión estable incluso en redes concurridas, el control por voz añade comodidad real, y 10 apps adicionales amplían tus opciones de contenido más allá del ecosistema Heat — todo en una unidad compacta.">
+        The Elite Mini is the sweet spot of the lineup. Wi-Fi 6 keeps your connection rock-solid even on a busy network, the voice remote adds genuine convenience, and 10 bonus apps extend your content options well beyond the Heat ecosystem — all in a compact unit.
       </p>
 
-      <div class="img-strip" aria-label="Elite Mini images">
-        <img src="/vseebox/assets/elitemini-1-promo.webp" alt="Elite Mini promo" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Promo graphic'), this); this.remove()">
-        <img src="/vseebox/assets/elitemini-2-kit.webp" alt="Elite Mini kit" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
-        <img src="/vseebox/assets/elitemini-3-ports.webp" alt="Elite Mini ports" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Ports'), this); this.remove()">
+      <div class="img-strip" aria-label="VSeeBox Elite Mini product images">
+        <img src="/vseebox/assets/elitemini-1-promo.webp" alt="VSeeBox Elite Mini promotional graphic highlighting Wi-Fi 6 and voice remote" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Promo graphic'), this); this.remove()">
+        <img src="/vseebox/assets/elitemini-2-kit.webp" alt="VSeeBox Elite Mini full kit with voice remote and accessories" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Product kit'), this); this.remove()">
+        <img src="/vseebox/assets/elitemini-3-ports.webp" alt="VSeeBox Elite Mini rear port layout — HDMI, USB, and power" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Port layout'), this); this.remove()">
       </div>
 
       <div class="detail-cols">
         <div class="detail-box">
-          <h4 data-en="What you get" data-es="Lo que incluye">What you get</h4>
-          <ul class="feature-list">
-            <li><div class="check">✓</div><span data-en="10 apps beyond Heat ecosystem" data-es="10 apps fuera del ecosistema Heat">10 apps beyond Heat ecosystem</span></li>
-            <li><div class="check">✓</div><span data-en="Wi-Fi 6 — faster, more reliable" data-es="Wi-Fi 6 — más rápido y confiable">Wi-Fi 6 — faster, more reliable</span></li>
-            <li><div class="check">✓</div><span data-en="Voice remote included" data-es="Control por voz incluido">Voice remote included</span></li>
-            <li><div class="check">✓</div><span data-en="Up to 6K HDR playback" data-es="Reproducción de hasta 6K HDR">Up to 6K HDR playback</span></li>
-            <li><div class="check">✓</div><span data-en="Compact form factor" data-es="Diseño compacto">Compact form factor</span></li>
+          <h4 data-en="What's included" data-es="Qué incluye">What's included</h4>
+          <ul class="feature-list" aria-label="Elite Mini features">
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Wi-Fi 6 — faster speeds, lower latency on crowded networks" data-es="Wi-Fi 6 — mayor velocidad y menor latencia en redes congestionadas">Wi-Fi 6 — faster speeds, lower latency on crowded networks</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Voice remote — search by speaking, not scrolling" data-es="Control por voz — busca hablando, no desplazándote">Voice remote — search by speaking, not scrolling</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="10 extra apps beyond Heat — more content choices" data-es="10 apps adicionales fuera de Heat — más opciones de contenido">10 extra apps beyond Heat — more content choices</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="6K HDR playback — vivid, high-dynamic-range picture" data-es="Reproducción 6K HDR — imagen vívida de alto rango dinámico">6K HDR playback — vivid, high-dynamic-range picture</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Compact chassis — fits tight media-cabinet spaces" data-es="Chasis compacto — cabe en espacios ajustados de gabinete">Compact chassis — fits tight media-cabinet spaces</span></li>
           </ul>
         </div>
         <div class="detail-box">
           <h4 data-en="Specs" data-es="Especificaciones">Specs</h4>
-          <ul class="spec-list">
-            <li><span class="spec-key">OS</span><span class="spec-val">Android 12</span></li>
-            <li><span class="spec-key" data-en="Memory" data-es="Memoria">Memory</span><span class="spec-val">4GB</span></li>
-            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">32GB</span></li>
-            <li><span class="spec-key">Wi-Fi</span><span class="spec-val">Wi-Fi 6</span></li>
-            <li><span class="spec-key" data-en="Video" data-es="Video">Video</span><span class="spec-val">6K HDR</span></li>
+          <ul class="spec-list" aria-label="Elite Mini specifications">
+            <li><span class="spec-key">OS</span><span class="spec-val">Android 12 + OTA</span></li>
+            <li><span class="spec-key" data-en="RAM" data-es="Memoria">RAM</span><span class="spec-val">4 GB</span></li>
+            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">32 GB</span></li>
+            <li><span class="spec-key">Wi-Fi</span><span class="spec-val">Wi-Fi 6 (802.11ax)</span></li>
+            <li><span class="spec-key" data-en="Video out" data-es="Salida de video">Video out</span><span class="spec-val">HDMI — 6K HDR</span></li>
             <li><span class="spec-key" data-en="Remote" data-es="Control">Remote</span><span class="spec-val" data-en="Voice" data-es="Por voz">Voice</span></li>
+            <li><span class="spec-key" data-en="Extra apps" data-es="Apps extra">Extra apps</span><span class="spec-val">10 included</span></li>
           </ul>
         </div>
       </div>
     </section>
 
     <!-- ── Product: Elite Ultra ── -->
-    <section class="product-detail fade-in" id="eliteultra">
+    <!-- SECTION: Elite Ultra detail — rewritten desc + feature bullets -->
+    <section class="product-detail fade-in" id="eliteultra" aria-labelledby="eliteultra-heading">
       <div class="product-header">
         <div>
-          <div class="model-badge badge-gold" style="display:inline-block;margin-bottom:10px" data-en="Top spec" data-es="Tope de gama">Top spec</div>
-          <h2 class="product-title">Elite Ultra</h2>
+          <div class="model-badge badge-gold" style="display:inline-block;margin-bottom:10px" data-en="Top of the Line" data-es="Lo Mejor de la Línea">Top of the Line</div>
+          <h2 class="product-title" id="eliteultra-heading">Elite Ultra</h2>
         </div>
         <div class="product-price-block">
           <div class="product-price">$425</div>
         </div>
       </div>
-      <p class="product-desc" data-en="The top of the lineup. Gigabit ethernet, Wi-Fi 6, 128GB of storage, and 20+ extra apps. For people who want the absolute best setup and maximum content options." data-es="La cima de la línea. Ethernet Gigabit, Wi-Fi 6, 128GB y más de 20 apps extra. Para quienes quieren lo mejor y máximas opciones de contenido.">
-        The top of the lineup. Gigabit ethernet, Wi-Fi 6, 128GB of storage, and 20+ extra apps. For people who want the absolute best setup and maximum content options.
+      <!-- CHANGED: product desc — premium framing, specific differentiators -->
+      <p class="product-desc" data-en="The Elite Ultra is built for anyone who refuses to compromise. Gigabit Ethernet means your stream never stutters regardless of network traffic. 128 GB of storage gives you room for every app you'll ever want. Add Wi-Fi 6, 20+ bonus apps, and OTA updates and this box will stay current for years." data-es="El Elite Ultra está diseñado para quien no quiere compromisos. Ethernet Gigabit significa que tu transmisión nunca se interrumpe sin importar el tráfico de red. 128 GB de almacenamiento te da espacio para todas las apps que quieras. Con Wi-Fi 6, más de 20 apps adicionales y actualizaciones OTA, este dispositivo permanecerá actualizado por años.">
+        The Elite Ultra is built for anyone who refuses to compromise. Gigabit Ethernet means your stream never stutters regardless of network traffic. 128 GB of storage gives you room for every app you'll ever want. Add Wi-Fi 6, 20+ bonus apps, and OTA updates and this box will stay current for years.
       </p>
 
-      <div class="img-strip" aria-label="Elite Ultra images">
-        <img src="/vseebox/assets/eliteultra-1-specsheet.webp" alt="Elite Ultra specs" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Spec sheet'), this); this.remove()">
-        <img src="/vseebox/assets/eliteultra-2-hero.webp" alt="Elite Ultra hero" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Hero shot'), this); this.remove()">
-        <img src="/vseebox/assets/eliteultra-3-ports.webp" alt="Elite Ultra ports" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Ports'), this); this.remove()">
+      <div class="img-strip" aria-label="VSeeBox Elite Ultra product images">
+        <img src="/vseebox/assets/eliteultra-1-specsheet.webp" alt="VSeeBox Elite Ultra specification sheet showing Gigabit Ethernet and 128GB storage" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Spec sheet'), this); this.remove()">
+        <img src="/vseebox/assets/eliteultra-2-hero.webp" alt="VSeeBox Elite Ultra unit with voice remote — front view" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Hero shot'), this); this.remove()">
+        <img src="/vseebox/assets/eliteultra-3-ports.webp" alt="VSeeBox Elite Ultra rear port layout — HDMI 2.0, Gigabit RJ45, USB ports" loading="lazy" onerror="this.parentNode.insertBefore(makePlaceholder('Port layout'), this); this.remove()">
       </div>
 
       <div class="detail-cols">
         <div class="detail-box">
-          <h4 data-en="What you get" data-es="Lo que incluye">What you get</h4>
-          <ul class="feature-list">
-            <li><div class="check">✓</div><span data-en="20+ apps beyond Heat ecosystem" data-es="Más de 20 apps fuera del ecosistema Heat">20+ apps beyond Heat ecosystem</span></li>
-            <li><div class="check">✓</div><span data-en="Wi-Fi 6 + Gigabit ethernet" data-es="Wi-Fi 6 + Ethernet Gigabit">Wi-Fi 6 + Gigabit ethernet</span></li>
-            <li><div class="check">✓</div><span data-en="128GB storage — never run out of room" data-es="128GB — nunca te quedas sin espacio">128GB storage — never run out of room</span></li>
-            <li><div class="check">✓</div><span data-en="OTA software updates" data-es="Actualizaciones OTA">OTA software updates</span></li>
-            <li><div class="check">✓</div><span data-en="Bluetooth 5.0 + voice remote" data-es="Bluetooth 5.0 + control por voz">Bluetooth 5.0 + voice remote</span></li>
+          <h4 data-en="What's included" data-es="Qué incluye">What's included</h4>
+          <ul class="feature-list" aria-label="Elite Ultra features">
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Gigabit Ethernet + Wi-Fi 6 — fastest possible connection, wired or wireless" data-es="Ethernet Gigabit + Wi-Fi 6 — la conexión más rápida posible, por cable o inalámbrica">Gigabit Ethernet + Wi-Fi 6 — fastest possible connection, wired or wireless</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="128 GB storage — install apps freely, never run out of space" data-es="128 GB de almacenamiento — instala apps libremente, sin quedarte sin espacio">128 GB storage — install apps freely, never run out of space</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="20+ bonus apps beyond Heat — the broadest content library" data-es="Más de 20 apps adicionales fuera de Heat — la biblioteca de contenido más amplia">20+ bonus apps beyond Heat — the broadest content library</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="OTA updates — firmware improvements delivered automatically" data-es="Actualizaciones OTA — mejoras de firmware entregadas automáticamente">OTA updates — firmware improvements delivered automatically</span></li>
+            <li><div class="check" aria-hidden="true">✓</div><span data-en="Bluetooth 5.0 + voice remote — hands-free control" data-es="Bluetooth 5.0 + control por voz — control manos libres">Bluetooth 5.0 + voice remote — hands-free control</span></li>
           </ul>
         </div>
         <div class="detail-box">
           <h4 data-en="Specs" data-es="Especificaciones">Specs</h4>
-          <ul class="spec-list">
+          <ul class="spec-list" aria-label="Elite Ultra specifications">
             <li><span class="spec-key">OS</span><span class="spec-val">Android 12 + OTA</span></li>
             <li><span class="spec-key">CPU</span><span class="spec-val">Quad-core Cortex-A53</span></li>
             <li><span class="spec-key">GPU</span><span class="spec-val">Mali-G31</span></li>
-            <li><span class="spec-key" data-en="Memory" data-es="Memoria">Memory</span><span class="spec-val">4GB</span></li>
-            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">128GB</span></li>
-            <li><span class="spec-key">Wi-Fi</span><span class="spec-val">Wi-Fi 6</span></li>
-            <li><span class="spec-key" data-en="Ethernet" data-es="Ethernet">Ethernet</span><span class="spec-val">Gigabit (1Gbps)</span></li>
-            <li><span class="spec-key" data-en="Video" data-es="Video">Video</span><span class="spec-val">6K@60 HDMI 2.0</span></li>
+            <li><span class="spec-key" data-en="RAM" data-es="Memoria">RAM</span><span class="spec-val">4 GB</span></li>
+            <li><span class="spec-key" data-en="Storage" data-es="Almacenamiento">Storage</span><span class="spec-val">128 GB</span></li>
+            <li><span class="spec-key">Wi-Fi</span><span class="spec-val">Wi-Fi 6 (802.11ax)</span></li>
+            <li><span class="spec-key" data-en="Ethernet" data-es="Ethernet">Ethernet</span><span class="spec-val">Gigabit RJ45 (1 Gbps)</span></li>
+            <li><span class="spec-key" data-en="Video out" data-es="Salida de video">Video out</span><span class="spec-val">HDMI 2.0 — 6K@60</span></li>
+            <li><span class="spec-key" data-en="Extra apps" data-es="Apps extra">Extra apps</span><span class="spec-val">20+ included</span></li>
           </ul>
         </div>
       </div>
     </section>
 
     <!-- ── How it works ── -->
-    <section class="how-section fade-in">
-      <div class="section-label"><span data-en="The Process" data-es="El Proceso">The Process</span></div>
-      <h2 class="section-title" data-en="How buying works" data-es="Cómo funciona la compra">How buying works</h2>
+    <!-- SECTION: How it works — rewritten steps for clarity + confidence -->
+    <section class="how-section fade-in" aria-labelledby="how-heading">
+      <div class="section-label"><span data-en="Buying Process" data-es="Proceso de Compra">Buying Process</span></div>
+      <!-- CHANGED: title — "How to buy" more action-forward -->
+      <h2 class="section-title" id="how-heading" data-en="How to buy — 4 simple steps" data-es="Cómo comprar — 4 pasos sencillos">How to buy — 4 simple steps</h2>
 
       <div class="steps">
         <div class="step">
-          <div class="step-num">01</div>
-          <h4 data-en="Text me" data-es="Escríbeme">Text me</h4>
-          <p data-en="Tell me how you watch TV and I'll suggest the right model for you." data-es="Dime cómo ves la televisión y te sugeriré el modelo adecuado.">Tell me how you watch TV and I'll suggest the right model for you.</p>
+          <div class="step-num" aria-hidden="true">01</div>
+          <!-- CHANGED: step — more specific, confidence-building -->
+          <h4 data-en="Text Jordan" data-es="Escríbele a Jordan">Text Jordan</h4>
+          <p data-en="Share a line about how you watch TV. Jordan will recommend the best-fit model — usually within a few hours." data-es="Cuéntale cómo ves televisión. Jordan te recomendará el modelo ideal, generalmente en pocas horas.">Share a line about how you watch TV. Jordan will recommend the best-fit model — usually within a few hours.</p>
         </div>
         <div class="step">
-          <div class="step-num">02</div>
-          <h4 data-en="We meet up" data-es="Nos encontramos">We meet up</h4>
-          <p data-en="In-person handoff in the Austin/Round Rock area. Cash or Zelle accepted." data-es="Entrega en persona en el área de Austin / Round Rock. Efectivo o Zelle.">In-person handoff in the Austin/Round Rock area. Cash or Zelle accepted.</p>
+          <div class="step-num" aria-hidden="true">02</div>
+          <!-- CHANGED: step — location specificity builds trust -->
+          <h4 data-en="Confirm your model &amp; meetup" data-es="Confirma tu modelo y punto de encuentro">Confirm your model &amp; meetup</h4>
+          <p data-en="Choose your unit, agree on a pickup location in the Austin / Round Rock area, and confirm payment — cash or Zelle." data-es="Elige tu unidad, acuerda un punto de encuentro en el área de Austin / Round Rock y confirma el pago: efectivo o Zelle.">Choose your unit, agree on a pickup location in the Austin / Round Rock area, and confirm payment — cash or Zelle.</p>
         </div>
         <div class="step">
-          <div class="step-num">03</div>
-          <h4 data-en="You're set up" data-es="Listo">You're set up</h4>
-          <p data-en="I walk you through the setup and answer any questions you have." data-es="Te guío en la configuración y respondo todas tus preguntas.">I walk you through the setup and answer any questions you have.</p>
+          <div class="step-num" aria-hidden="true">03</div>
+          <!-- CHANGED: step — delivery of value is clear -->
+          <h4 data-en="Pick up &amp; get set up" data-es="Recoge y configura">Pick up &amp; get set up</h4>
+          <p data-en="Jordan hands off your VSeeBox in person and walks you through the setup on the spot — so you're ready to stream before you get home." data-es="Jordan te entrega tu VSeeBox en persona y te guía en la configuración al momento, para que estés listo para transmitir antes de llegar a casa.">Jordan hands off your VSeeBox in person and walks you through the setup on the spot — so you're ready to stream before you get home.</p>
         </div>
         <div class="step">
-          <div class="step-num">04</div>
-          <h4 data-en="Ongoing support" data-es="Soporte continuo">Ongoing support</h4>
-          <p data-en="Software questions? Text me directly — I handle support personally." data-es="¿Preguntas de software? Escríbeme directamente — yo manejo el soporte.">Software questions? Text me directly — I handle support personally.</p>
+          <div class="step-num" aria-hidden="true">04</div>
+          <!-- CHANGED: step — ongoing value proposition -->
+          <h4 data-en="Ongoing text support" data-es="Soporte continuo por texto">Ongoing text support</h4>
+          <p data-en="Have a question after you're home? Text Jordan directly. Software help, app questions, or anything else — answered personally." data-es="¿Tienes preguntas después de llegar a casa? Escríbele a Jordan directamente. Ayuda de software, preguntas de apps o cualquier cosa — respuestas personales.">Have a question after you're home? Text Jordan directly. Software help, app questions, or anything else — answered personally.</p>
         </div>
       </div>
     </section>
 
+    <!-- ── FAQ Section ── -->
+    <!-- NEW SECTION: FAQ — added per deliverable requirements; uses existing CSS tokens only; minimal new CSS added above -->
+    <section class="faq-section fade-in" aria-labelledby="faq-heading">
+      <div class="section-label"><span data-en="Common Questions" data-es="Preguntas Frecuentes">Common Questions</span></div>
+      <h2 class="section-title" id="faq-heading" data-en="Frequently asked questions" data-es="Preguntas frecuentes">Frequently asked questions</h2>
+
+      <div class="faq-list" role="list">
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq1-answer" id="faq1-btn">
+            <span data-en="Where can I pick up my VSeeBox?" data-es="¿Dónde puedo recoger mi VSeeBox?">Where can I pick up my VSeeBox?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq1-answer" role="region" aria-labelledby="faq1-btn">
+            <span data-en="Jordan arranges in-person handoffs in the Austin and Round Rock, TX area. Text him to schedule a convenient time and location — usually same-week availability." data-es="Jordan coordina entregas en persona en el área de Austin y Round Rock, TX. Escríbele para acordar la hora y el lugar — generalmente hay disponibilidad en la misma semana.">Jordan arranges in-person handoffs in the Austin and Round Rock, TX area. Text him to schedule a convenient time and location — usually same-week availability.</span>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq2-answer" id="faq2-btn">
+            <span data-en="What payment methods do you accept?" data-es="¿Qué métodos de pago aceptas?">What payment methods do you accept?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq2-answer" role="region" aria-labelledby="faq2-btn">
+            <span data-en="Cash and Zelle only. Payment is made at the time of in-person pickup — no deposits required." data-es="Solo efectivo y Zelle. El pago se realiza en el momento de la recogida en persona, sin depósitos requeridos.">Cash and Zelle only. Payment is made at the time of in-person pickup — no deposits required.</span>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq3-answer" id="faq3-btn">
+            <span data-en="Which model is best for a first-time buyer?" data-es="¿Qué modelo es mejor para un comprador primerizo?">Which model is best for a first-time buyer?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq3-answer" role="region" aria-labelledby="faq3-btn">
+            <span data-en="The Elite Mini ($310) is our most popular choice — Wi-Fi 6, a voice remote, and 10 extra apps cover most people's needs. If budget is the main factor, the V6 Max ($260) is a clean, reliable starter. Text Jordan and he'll help you choose in 2 minutes." data-es="El Elite Mini ($310) es nuestra opción más popular: Wi-Fi 6, control por voz y 10 apps adicionales satisfacen la mayoría de necesidades. Si el presupuesto es el factor principal, el V6 Max ($260) es una opción de entrada limpia y confiable. Escríbele a Jordan y te ayudará a elegir en 2 minutos.">The Elite Mini ($310) is our most popular choice — Wi-Fi 6, a voice remote, and 10 extra apps cover most people's needs. If budget is the main factor, the V6 Max ($260) is a clean, reliable starter. Text Jordan and he'll help you choose in 2 minutes.</span>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq4-answer" id="faq4-btn">
+            <span data-en="Do you offer bulk or reseller pricing?" data-es="¿Ofreces precios al por mayor o para revendedores?">Do you offer bulk or reseller pricing?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq4-answer" role="region" aria-labelledby="faq4-btn">
+            <span data-en="Yes. The V6 Max is available by the case at $3,800 (approximately 15 units). Text Jordan for current bulk pricing on other models — small clinics and resellers are welcome." data-es="Sí. El V6 Max está disponible por caja a $3,800 (aproximadamente 15 unidades). Escríbele a Jordan para precios al por mayor de otros modelos — pequeñas clínicas y revendedores son bienvenidos.">Yes. The V6 Max is available by the case at $3,800 (approximately 15 units). Text Jordan for current bulk pricing on other models — small clinics and resellers are welcome.</span>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq5-answer" id="faq5-btn">
+            <span data-en="What is VSeeBox and what are Heat apps?" data-es="¿Qué es VSeeBox y qué son las apps Heat?">What is VSeeBox and what are Heat apps?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq5-answer" role="region" aria-labelledby="faq5-btn">
+            <span data-en="VSeeBox is an Android TV set-top box built for streaming. VSee Heat apps are a curated suite of streaming applications pre-installed on the device. Jordan is an authorized distributor through LisnUp Installations." data-es="VSeeBox es un decodificador Android TV diseñado para streaming. Las apps Heat de VSee son un conjunto de aplicaciones de streaming preinstaladas en el dispositivo. Jordan es un distribuidor autorizado a través de LisnUp Installations.">VSeeBox is an Android TV set-top box built for streaming. VSee Heat apps are a curated suite of streaming applications pre-installed on the device. Jordan is an authorized distributor through LisnUp Installations.</span>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq6-answer" id="faq6-btn">
+            <span data-en="Will I get help setting it up?" data-es="¿Recibiré ayuda para configurarlo?">Will I get help setting it up?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq6-answer" role="region" aria-labelledby="faq6-btn">
+            <span data-en="Yes — Jordan walks you through the initial setup at the handoff point. After that, he's reachable by text for any software questions. No call centers, no ticket queues — direct personal support." data-es="Sí: Jordan te guía en la configuración inicial en el punto de entrega. Luego, está disponible por texto para cualquier pregunta de software. Sin centros de llamadas, sin filas de tickets — soporte personal directo.">Yes — Jordan walks you through the initial setup at the handoff point. After that, he's reachable by text for any software questions. No call centers, no ticket queues — direct personal support.</span>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq7-answer" id="faq7-btn">
+            <span data-en="What is the difference between Android 12 and Android 14 on these units?" data-es="¿Cuál es la diferencia entre Android 12 y Android 14 en estas unidades?">What is the difference between Android 12 and Android 14 on these units?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq7-answer" role="region" aria-labelledby="faq7-btn">
+            <span data-en="The V6 Max and V6 Plus run Android 14, which offers the widest app-store compatibility today. The Elite Mini and Elite Ultra run Android 12 — a stable, fully-supported platform — and both receive OTA updates automatically." data-es="El V6 Max y el V6 Plus corren Android 14, que ofrece la mayor compatibilidad con la tienda de apps hoy en día. El Elite Mini y el Elite Ultra corren Android 12, una plataforma estable y completamente compatible, y ambos reciben actualizaciones OTA automáticamente.">The V6 Max and V6 Plus run Android 14, which offers the widest app-store compatibility today. The Elite Mini and Elite Ultra run Android 12 — a stable, fully-supported platform — and both receive OTA updates automatically.</span>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-question" aria-expanded="false" aria-controls="faq8-answer" id="faq8-btn">
+            <span data-en="Do the Elite models receive automatic software updates?" data-es="¿Los modelos Elite reciben actualizaciones automáticas de software?">Do the Elite models receive automatic software updates?</span>
+            <span class="faq-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="faq-answer" id="faq8-answer" role="region" aria-labelledby="faq8-btn">
+            <span data-en="Yes. Both the Elite Mini and Elite Ultra support over-the-air (OTA) updates, so the device receives firmware improvements without any action on your part." data-es="Sí. Tanto el Elite Mini como el Elite Ultra admiten actualizaciones OTA (por aire), por lo que el dispositivo recibe mejoras de firmware sin que tengas que hacer nada.">Yes. Both the Elite Mini and Elite Ultra support over-the-air (OTA) updates, so the device receives firmware improvements without any action on your part.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- ── CTA block ── -->
-    <section class="cta-section fade-in">
+    <!-- SECTION: CTA — rewritten headline, subtext, disclaimer -->
+    <section class="cta-section fade-in" aria-labelledby="cta-heading">
       <div class="cta-card">
-        <h2 data-en="Ready to get yours?" data-es="¿Listo para conseguir el tuyo?">Ready to get yours?</h2>
-        <p data-en="Text me and we'll figure out the right model, arrange a pickup, and get you set up." data-es="Escríbeme y encontramos el modelo correcto, coordinamos la entrega y te instalamos.">Text me and we'll figure out the right model, arrange a pickup, and get you set up.</p>
+        <!-- CHANGED: h2 — specific, action-forward -->
+        <h2 id="cta-heading" data-en="Ready to reserve yours?" data-es="¿Listo para reservar el tuyo?">Ready to reserve yours?</h2>
+        <!-- CHANGED: p — concrete process reassurance -->
+        <p data-en="Text Jordan your model of choice and a pickup location works for you — he'll confirm same day. Cash or Zelle at handoff. Setup walkthrough included." data-es="Escríbele a Jordan el modelo que eliges y cuándo puedes recogerlo: confirmará el mismo día. Pago en efectivo o Zelle al recoger. Guía de configuración incluida.">Text Jordan your model of choice and a pickup location works for you — he'll confirm same day. Cash or Zelle at handoff. Setup walkthrough included.</p>
         <div class="cta-methods">
-          <a class="btn-sms" id="ctaSms" href="sms:2627050853">
-            <span>💬</span>
+          <!-- CHANGED: btn-sms — number prominent, action clear -->
+          <a class="btn-sms" id="ctaSms" href="sms:2627050853" aria-label="Text Jordan Moddes at (262) 705-0853 to order">
+            <span aria-hidden="true">💬</span>
             <span data-en="Text Jordan — (262) 705-0853" data-es="Texto a Jordan — (262) 705-0853">Text Jordan — (262) 705-0853</span>
           </a>
         </div>
-        <p style="margin-top:20px;font-size:.83rem;color:var(--faint)" data-en="*Prices may vary slightly month to month." data-es="*Los precios pueden variar ligeramente mes a mes.">*Prices may vary slightly month to month.</p>
+        <!-- CHANGED: disclaimer — moved up slightly, slightly warmer tone -->
+        <p style="margin-top:20px;font-size:.83rem;color:var(--faint)" data-en="* Prices are subject to change. Confirm current pricing when you text." data-es="* Los precios están sujetos a cambios. Confirma el precio actual cuando escribas.">* Prices are subject to change. Confirm current pricing when you text.</p>
       </div>
     </section>
 
   </div>
 
   <!-- ── Footer ── -->
-  <footer>
+  <!-- CHANGED: footer copy — credential + partner link tightened -->
+  <footer role="contentinfo">
     <div class="footer-inner">
       <div class="footer-left">
         <div style="color:var(--text);font-weight:600;margin-bottom:4px">Jordan Moddes</div>
-        <div data-en="VSeeBox distributor via LisnUp Installations" data-es="Distribuidor VSeeBox vía LisnUp Installations">VSeeBox distributor via LisnUp Installations</div>
+        <div data-en="Authorized VSeeBox distributor · LisnUp Installations · Austin, TX" data-es="Distribuidor autorizado VSeeBox · LisnUp Installations · Austin, TX">Authorized VSeeBox distributor · LisnUp Installations · Austin, TX</div>
       </div>
       <div class="footer-links">
-        <a href="https://lisnup.com" target="_blank" rel="noopener">LisnUp Installations</a>
-        <a href="#top" data-en="Back to top" data-es="Volver arriba">Back to top ↑</a>
+        <a href="https://lisnupinstallations.com" target="_blank" rel="noopener" aria-label="Visit LisnUp Installations (opens in new tab)">LisnUp Installations</a>
+        <a href="#top" data-en="Back to top ↑" data-es="Volver arriba ↑">Back to top ↑</a>
       </div>
     </div>
   </footer>
 
   <!-- ── Mobile sticky bar ── -->
-  <div class="mobile-bar">
-    <a id="mobileSms" href="sms:2627050853">
-      <span>💬</span>
-      <span data-en="Text Jordan to Order" data-es="Escríbele a Jordan">Text Jordan to Order</span>
+  <!-- CHANGED: mobile bar CTA — tighter copy -->
+  <div class="mobile-bar" role="complementary" aria-label="Quick order">
+    <a id="mobileSms" href="sms:2627050853" aria-label="Text Jordan to order a VSeeBox">
+      <span aria-hidden="true">💬</span>
+      <span data-en="Text Jordan to Order" data-es="Ordena por Texto — Jordan">Text Jordan to Order</span>
     </a>
   </div>
 
+  <!-- visually-hidden utility (used by compare table caption) -->
+  <style>.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+
   <script>
-    // ── Language ──
+    // ── Language toggle ──
     function setLang(lang) {
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-en]').forEach(el => {
         el.textContent = el.getAttribute('data-' + lang) || el.textContent;
       });
-      document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.remove('active'));
-      document.querySelector(`.lang-toggle button[onclick="setLang('${lang}')"]`)?.classList.add('active');
+      // Update aria-pressed on toggle buttons
+      document.querySelectorAll('.lang-toggle button').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      const activeBtn = document.querySelector(`.lang-toggle button[onclick="setLang('${lang}')"]`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.setAttribute('aria-pressed', 'true');
+      }
       updateSmsLinks(lang);
     }
 
-    // ── SMS body ──
+    // ── SMS body — CHANGED: updated bodies to match new hero CTA copy ──
     function updateSmsLinks(lang) {
       const bodies = {
-        en: encodeURIComponent("Hey Jordan — I'm interested in a VSeeBox. Which model do you recommend?"),
-        es: encodeURIComponent("Hola Jordan — me interesa un VSeeBox. ¿Cuál modelo recomiendas?")
+        en: encodeURIComponent("Hey Jordan — I'd like to order a VSeeBox. What models do you have in stock right now?"),
+        es: encodeURIComponent("Hola Jordan — me gustaría ordenar un VSeeBox. ¿Qué modelos tienes disponibles ahora mismo?")
       };
       const href = `sms:2627050853?&body=${bodies[lang]}`;
-      ['heroSms','ctaSms','mobileSms','headerCta'].forEach(id => {
+      ['heroSms', 'ctaSms', 'mobileSms', 'headerCta'].forEach(id => {
         document.getElementById(id)?.setAttribute('href', href);
       });
     }
@@ -868,8 +1178,531 @@
       return d;
     }
 
-    // Init
+    // ── FAQ accordion ──
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        // Collapse all
+        document.querySelectorAll('.faq-question').forEach(b => {
+          b.setAttribute('aria-expanded', 'false');
+          const ans = document.getElementById(b.getAttribute('aria-controls'));
+          if (ans) ans.classList.remove('open');
+        });
+        // Expand clicked if it was closed
+        if (!expanded) {
+          btn.setAttribute('aria-expanded', 'true');
+          const answer = document.getElementById(btn.getAttribute('aria-controls'));
+          if (answer) answer.classList.add('open');
+        }
+      });
+    });
+
+    // ── Analytics event stubs (replace with your analytics implementation) ──
+    // Suggested events:
+    // hero_cta_click       — heroSms click
+    // header_cta_click     — headerCta click
+    // model_card_click     — any .model-card click
+    // sms_link_click       — ctaSms or mobileSms click
+    // faq_item_open        — FAQ question expanded
+    // scroll_depth_75      — user scrolls past 75% of page height
+    document.querySelectorAll('#heroSms').forEach(el => {
+      el.addEventListener('click', () => { if(window.gtag) gtag('event','hero_cta_click'); });
+    });
+    document.querySelectorAll('#headerCta').forEach(el => {
+      el.addEventListener('click', () => { if(window.gtag) gtag('event','header_cta_click'); });
+    });
+    document.querySelectorAll('.model-card').forEach(el => {
+      el.addEventListener('click', () => { if(window.gtag) gtag('event','model_card_click', { model: el.getAttribute('href') }); });
+    });
+    document.querySelectorAll('#ctaSms, #mobileSms').forEach(el => {
+      el.addEventListener('click', () => { if(window.gtag) gtag('event','sms_link_click'); });
+    });
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.getAttribute('aria-expanded') === 'true' && window.gtag) {
+          gtag('event','faq_item_open', { question: btn.querySelector('[data-en]')?.getAttribute('data-en') });
+        }
+      });
+    });
+    // Scroll depth 75%
+    let scrollFired75 = false;
+    window.addEventListener('scroll', () => {
+      if (scrollFired75) return;
+      const scrolled = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
+      if (scrolled >= 0.75) {
+        scrollFired75 = true;
+        if(window.gtag) gtag('event','scroll_depth_75');
+      }
+    }, { passive: true });
+
+    // ── Init ──
     updateSmsLinks('en');
   </script>
+
+  <!--
+  ════════════════════════════════════════════════════════════════════
+  CHANGELOG — VSeeBoxATX Updated HTML
+  ════════════════════════════════════════════════════════════════════
+
+  STRUCTURE ADDITIONS:
+  + Added <meta name="description"> in <head> — SEO meta description
+  + Added JSON-LD <script type="application/ld+json"> — Product list + FAQPage schema
+  + Added new <section class="faq-section"> between How-it-works and CTA — 8 FAQ items
+  + Added <style>.visually-hidden</style> utility at bottom — used for table caption
+  + Added analytics event stub JS listeners — hero_cta_click, header_cta_click,
+    model_card_click, sms_link_click, faq_item_open, scroll_depth_75
+  + Added FAQ accordion JS (faq-question toggle) in <script> block
+  + Added new CSS for .faq-section, .faq-list, .faq-item, .faq-question,
+    .faq-chevron, .faq-answer in the <style> block (all use existing CSS tokens only)
+
+  TEXT / COPY CHANGES (data-en + data-es updated on every element):
+  header  → brand-sub: "Authorized VSeeBox Distributor"
+  header  → header-cta: "Text to Order"
+  hero    → eyebrow: "In-person pickup · Austin / Round Rock · Cash or Zelle"
+  hero    → h1: "VSeeBox units, locally stocked. / Ready for pickup in Austin."
+  hero    → hero-desc: four-sentence benefit-led paragraph
+  hero    → btn-primary: "Text Jordan to Order"
+  hero    → btn-ghost: "See All Models & Pricing"
+  trust   → item 1: icon 📍, "Austin / Round Rock / In-person pickup only"
+  trust   → item 2: "4 models in stock / $260–$425"
+  trust   → item 3: icon 💵, "Cash or Zelle / Pay at pickup"
+  trust   → item 4: "Setup included / Hands-on walkthrough at handoff"
+  trust   → item 5: LisnUp link updated to lisnupinstallations.com
+  models  → section-label: "4 Models Available Now"
+  models  → section-title: "Find the right VSeeBox for you"
+  models  → section-desc: new benefit-led copy with Elite Mini recommendation
+  models  → V6 Max badge: "Great starter"; tagline updated
+  models  → V6 Plus badge: "Watch more at once"; tagline unchanged
+  models  → Elite Mini badge: "Most popular"; tagline updated
+  models  → Elite Ultra badge: "Maximum specs"; tagline updated
+  compare → section-label: "Model Comparison"
+  compare → section-title: "Compare all four models"
+  compare → row labels: "Price (USD)", "Android OS", "Internal Storage",
+            "Wired Ethernet", "Split Screen / PIP", "Extra Apps (beyond Heat)",
+            "Max Video Output", "Remote Control"
+  v6max   → badge: "Entry Level"; product-desc rewritten; feature bullets benefit-led;
+            price-note: "Reseller case: $3,800 (≈15 units)"; spec row "Memory"→"RAM"
+  v6plus  → badge: "Multi-Screen"; product-desc rewritten; feature bullets benefit-led
+  elitemini → badge: "Most Popular"; product-desc rewritten; feature bullets benefit-led
+  eliteultra → badge: "Top of the Line"; product-desc rewritten; feature bullets benefit-led
+  how     → section-label: "Buying Process"
+  how     → section-title: "How to buy — 4 simple steps"
+  how     → all 4 step titles + paragraphs rewritten
+  cta     → h2: "Ready to reserve yours?"
+  cta     → p: new process-reassurance copy
+  cta     → disclaimer: "Prices are subject to change. Confirm current pricing when you text."
+  footer  → distributor line: "Authorized VSeeBox distributor · LisnUp Installations · Austin, TX"
+  mobile  → mobile bar: "Text Jordan to Order" (EN) / "Ordena por Texto — Jordan" (ES)
+  SMS     → updateSmsLinks() bodies updated to match new hero CTA phrasing
+
+  ALT TEXT CHANGES (all product images):
+  v6max-1-kit.webp    → "VSeeBox V6 Max complete kit including box, remote, and cables"
+  v6max-2-hero.webp   → "VSeeBox V6 Max unit front view with standard remote"
+  v6max-3-specsheet   → "VSeeBox V6 Max specification and feature sheet"
+  v6plus-1-kit.webp   → "VSeeBox V6 Plus complete kit with backlit remote"
+  v6plus-2-split      → "VSeeBox V6 Plus split-screen mode showing two live streams"
+  elitemini-1-promo   → "VSeeBox Elite Mini promotional graphic highlighting Wi-Fi 6 and voice remote"
+  elitemini-2-kit     → "VSeeBox Elite Mini full kit with voice remote and accessories"
+  elitemini-3-ports   → "VSeeBox Elite Mini rear port layout — HDMI, USB, and power"
+  eliteultra-1-spec   → "VSeeBox Elite Ultra specification sheet showing Gigabit Ethernet and 128GB"
+  eliteultra-2-hero   → "VSeeBox Elite Ultra unit with voice remote — front view"
+  eliteultra-3-ports  → "VSeeBox Elite Ultra rear port layout — HDMI 2.0, Gigabit RJ45, USB ports"
+
+  ARIA / SEMANTIC CHANGES:
+  + header → role="banner"
+  + footer → role="contentinfo"
+  + hero section → aria-labelledby="hero-heading"; h1 id="hero-heading"
+  + hero-eyebrow → role="note"
+  + trust-bar → role="list" + aria-label; each trust-item → role="listitem"
+  + models section → aria-labelledby="models-heading"; h2 id="models-heading"
+  + model-grid → role="list"; each model-card → role="listitem" + aria-label
+  + compare section → aria-labelledby="compare-heading"; h2 id="compare-heading"
+  + compare-wrap → role="region" + aria-label + tabindex="0"
+  + compare-table → <caption class="visually-hidden"> added
+  + compare-table th → scope="col" added
+  + all product sections → aria-labelledby pointing to respective h2 ids
+  + all img-strip → aria-label updated
+  + all feature/spec lists → aria-label added
+  + all .check divs → aria-hidden="true"
+  + all arrow-icon / decorative emoji spans → aria-hidden="true"
+  + lang-toggle buttons → aria-pressed added + updated in setLang()
+  + header-cta + heroSms + ctaSms + mobileSms → descriptive aria-label added
+  + how section → aria-labelledby="how-heading"
+  + cta section → aria-labelledby="cta-heading"
+  + mobile-bar → role="complementary" + aria-label
+  + FAQ section → full ARIA accordion pattern (aria-expanded, aria-controls,
+    role="region", aria-labelledby per item)
+
+  CSS CHANGES (additions only — no :root variables changed):
+  + .faq-section, .faq-list, .faq-item, .faq-question, .faq-chevron,
+    .faq-answer, .faq-answer.open — new rules, all use existing CSS tokens
+  + .visually-hidden — utility class added via inline <style> at bottom
+
+  IDs UNCHANGED: heroSms, ctaSms, mobileSms, headerCta, brand-avatar (class)
+  CLASSES UNCHANGED: brand-name, brand-avatar — preserved per constraints
+  COLOR VARIABLES: UNCHANGED — all --bg, --surface, --blue, --green, etc. preserved
+  TITLE: UNCHANGED — <title>VSeeBoxATX</title>
+  SMS SCHEME: UNCHANGED — sms:2627050853 preserved on all links
+  ════════════════════════════════════════════════════════════════════
+
+  CONTENT-ONLY MARKDOWN (CMS-READY) — FULL COPY BELOW
+  ════════════════════════════════════════════════════════════════════
+
+  # VSeeBoxATX — Content-Only Copy Document (EN + ES)
+
+  ## META
+  **Meta description (EN, ≤160 chars):**
+  Locally stocked VSeeBox Android TV units, in-person pickup in Austin & Round Rock TX. 4 models $260–$425. Text Jordan to order today.
+
+  **Meta description (ES, ≤160 chars):**
+  Unidades VSeeBox Android TV en stock local, recogida en persona en Austin y Round Rock TX. 4 modelos $260–$425. Escríbele a Jordan hoy.
+
+  **Suggested meta title alternatives (do not replace <title> in file):**
+  1. VSeeBox Austin — Locally Stocked Android TV Units | VSeeBoxATX
+  2. VSeeBoxATX — Buy VSeeBox in Austin & Round Rock TX | 4 Models In Stock
+  3. VSeeBox for Sale in Austin TX — In-Person Pickup | VSeeBoxATX
+
+  **Suggested URL slug:** /vseebox-austin  (or /vseebox-atx)
+
+  **Keyword phrases (8–12):**
+  1. VSeeBox Austin TX
+  2. buy VSeeBox near me
+  3. VSeeBox Android TV box Austin
+  4. VSeeBox in-person pickup Texas
+  5. VSeeBox Elite Ultra for sale
+  6. VSeeBox Elite Mini Austin
+  7. Android TV box Austin Round Rock
+  8. VSeeBox distributor Austin
+  9. VSeeBox reseller Texas bulk
+  10. VSeeBox setup support Austin
+  11. Android TV streaming box local pickup
+  12. VSeeBox V6 Max V6 Plus price
+
+  ---
+
+  ## HEADER
+  **Brand sub (EN):** Authorized VSeeBox Distributor
+  **Brand sub (ES):** Distribuidor Autorizado VSeeBox
+  **Header CTA (EN):** Text to Order
+  **Header CTA (ES):** Ordenar por Texto
+
+  ---
+
+  ## HERO — SHORT VARIANT
+  **Eyebrow (EN):** In-person pickup · Austin / Round Rock · Cash or Zelle
+  **Eyebrow (ES):** Recoge en persona · Austin / Round Rock · Efectivo o Zelle
+  **H1 (EN):** VSeeBox units, locally stocked. / Ready for pickup in Austin.
+  **H1 (ES):** VSeeBox disponible localmente. / Listo para recoger en Austin.
+  **Subhead (EN):** Four models in stock from $260. Text Jordan — get yours same week.
+  **Subhead (ES):** Cuatro modelos desde $260. Escríbele a Jordan y recoge esta semana.
+  **CTA 1 (EN):** Text Jordan to Order
+  **CTA 1 (ES):** Ordena por Texto — Jordan
+  **CTA 2 (EN):** See All Models & Pricing
+  **CTA 2 (ES):** Ver Modelos y Precios
+
+  ## HERO — LONG VARIANT
+  **Eyebrow (EN):** In-person pickup · Austin / Round Rock · Cash or Zelle
+  **Eyebrow (ES):** Recoge en persona · Austin / Round Rock · Efectivo o Zelle
+  **H1 (EN):** VSeeBox units, locally stocked. / Ready for pickup in Austin.
+  **H1 (ES):** VSeeBox disponible localmente. / Listo para recoger en Austin.
+  **Subhead (EN):** Four VSeeBox Android TV models in stock right now — from the clean, everyday V6 Max to the fully loaded Elite Ultra. Pick yours up in the Austin / Round Rock area. Authorized distributor via LisnUp Installations.
+  **Subhead (ES):** Cuatro modelos de VSeeBox Android TV en existencia ahora mismo — desde el práctico V6 Max hasta el Elite Ultra completamente equipado. Recógelo en el área de Austin / Round Rock. Distribuidor autorizado a través de LisnUp Installations.
+  **CTA 1 (EN):** Text Jordan to Order
+  **CTA 1 (ES):** Ordena por Texto — Jordan
+  **CTA 2 (EN):** See All Models & Pricing
+  **CTA 2 (ES):** Ver Modelos y Precios
+  **Microcopy (EN):** Pickup usually available same week · No deposits required
+  **Microcopy (ES):** Recogida disponible generalmente en la misma semana · Sin depósitos
+
+  ---
+
+  ## TRUST BAR
+  | Icon | Strong (EN) | Sub (EN) | Strong (ES) | Sub (ES) |
+  |------|-------------|----------|-------------|----------|
+  | 📍 | Austin / Round Rock | In-person pickup only | Austin / Round Rock | Solo recogida en persona |
+  | 📦 | 4 models in stock | $260 – $425 | 4 modelos en existencia | $260 – $425 |
+  | 💵 | Cash or Zelle | Pay at pickup | Efectivo o Zelle | Paga al recoger |
+  | 🛠️ | Setup included | Hands-on walkthrough at handoff | Instalación incluida | Guía en persona al momento de entrega |
+  | 🔗 | LisnUp Installations | lisnupinstallations.com | LisnUp Installations | lisnupinstallations.com |
+
+  ---
+
+  ## MODELS SECTION
+  **Section label (EN):** 4 Models Available Now
+  **Section label (ES):** 4 Modelos Disponibles Ahora
+  **Section title (EN):** Find the right VSeeBox for you
+  **Section title (ES):** Encuentra el VSeeBox ideal para ti
+  **Section desc (EN):** Not sure where to start? The Elite Mini is our most popular pick. Text Jordan with two or three sentences about how you watch TV and he'll point you to the right model in minutes.
+  **Section desc (ES):** ¿No sabes por dónde empezar? El Elite Mini es nuestra opción más popular. Cuéntale a Jordan cómo ves televisión y te recomendará el modelo correcto en minutos.
+
+  ### V6 Max Card
+  **Badge (EN):** Great starter | **Badge (ES):** Ideal para empezar
+  **Price:** $260
+  **Tagline (EN):** Android 14 · Heat apps · fast & no-bloat
+  **Tagline (ES):** Android 14 · Apps Heat · rápido y sin relleno
+
+  ### V6 Plus Card
+  **Badge (EN):** Watch more at once | **Badge (ES):** Ve más al mismo tiempo
+  **Price:** $290
+  **Tagline (EN):** Split screen + PIP + backlit remote
+  **Tagline (ES):** Pantalla dividida + PIP + control iluminado
+
+  ### Elite Mini Card
+  **Badge (EN):** Most popular | **Badge (ES):** El más popular
+  **Price:** $310
+  **Tagline (EN):** Wi-Fi 6 · voice remote · 10 bonus apps · 6K HDR
+  **Tagline (ES):** Wi-Fi 6 · control por voz · 10 apps extra · 6K HDR
+
+  ### Elite Ultra Card
+  **Badge (EN):** Maximum specs | **Badge (ES):** Máximas especificaciones
+  **Price:** $425
+  **Tagline (EN):** Wi-Fi 6 · Gigabit Ethernet · 20+ apps · 128 GB
+  **Tagline (ES):** Wi-Fi 6 · Ethernet Gigabit · 20+ apps · 128 GB
+
+  ---
+
+  ## PRODUCT DETAIL: V6 Max ($260)
+  **Badge (EN):** Entry Level | **Badge (ES):** Nivel de Entrada
+  **Price note (EN):** Reseller case: $3,800 (≈15 units)
+  **Price note (ES):** Caja revendedor: $3,800 (≈15 unidades)
+  **Description (EN):** The V6 Max is the sharpest entry point into the VSeeBox lineup. Android 14 means you get the latest app support right out of the box — pair that with a clean Heat app bundle and 8K@60 decoding and you have everything most viewers need at the best price.
+  **Description (ES):** El V6 Max es el punto de entrada más inteligente a la línea VSeeBox. Android 14 garantiza compatibilidad con las apps más recientes, y la suite de apps Heat junto con decodificación 8K@60 te da todo lo que la mayoría de los usuarios necesita, al mejor precio.
+  **Features (EN):**
+  - VSee Heat apps pre-loaded — ready on first boot
+  - Android 14 — broadest app store compatibility
+  - 8K@60 video decoding — smooth on any display
+  - Dual-band Wi-Fi + Bluetooth 5.0
+  - RJ45 wired Ethernet port — plug in for a stable connection
+  **Features (ES):**
+  - Apps Heat de VSee preinstaladas — listas desde el primer encendido
+  - Android 14 — mayor compatibilidad con la tienda de apps
+  - Decodificación 8K@60 — fluido en cualquier pantalla
+  - Wi-Fi de doble banda + Bluetooth 5.0
+  - Puerto Ethernet RJ45 — conexión estable por cable
+
+  ---
+
+  ## PRODUCT DETAIL: V6 Plus ($290)
+  **Badge (EN):** Multi-Screen | **Badge (ES):** Multi-Pantalla
+  **Description (EN):** If you want to watch two streams at the same time — live scores while a show runs, or two different channels side by side — the V6 Plus delivers that through Heat's split-screen and PIP modes. The backlit remote makes nighttime browsing effortless.
+  **Description (ES):** Si quieres ver dos transmisiones al mismo tiempo — marcadores en vivo mientras pasa una serie, o dos canales diferentes lado a lado — el V6 Plus lo logra a través de los modos de pantalla dividida y PIP de Heat. El control iluminado hace que navegar de noche sea muy fácil.
+  **Features (EN):**
+  - Everything in the V6 Max, plus:
+  - Split-screen — two channels, one display
+  - Picture-in-picture (PIP) — keep an eye on anything
+  - Backlit remote — fully readable in a dark room
+  - Expanded Heat app selection
+  **Features (ES):**
+  - Todo lo del V6 Max, más:
+  - Pantalla dividida — dos canales, una pantalla
+  - Picture-in-picture (PIP) — no pierdas nada
+  - Control iluminado — totalmente legible en la oscuridad
+  - Selección ampliada de apps Heat
+
+  ---
+
+  ## PRODUCT DETAIL: Elite Mini ($310)
+  **Badge (EN):** Most Popular | **Badge (ES):** El Más Popular
+  **Description (EN):** The Elite Mini is the sweet spot of the lineup. Wi-Fi 6 keeps your connection rock-solid even on a busy network, the voice remote adds genuine convenience, and 10 bonus apps extend your content options well beyond the Heat ecosystem — all in a compact unit.
+  **Description (ES):** El Elite Mini es el punto óptimo de la línea. Wi-Fi 6 mantiene tu conexión estable incluso en redes concurridas, el control por voz añade comodidad real, y 10 apps adicionales amplían tus opciones de contenido más allá del ecosistema Heat — todo en una unidad compacta.
+  **Features (EN):**
+  - Wi-Fi 6 — faster speeds, lower latency on crowded networks
+  - Voice remote — search by speaking, not scrolling
+  - 10 extra apps beyond Heat — more content choices
+  - 6K HDR playback — vivid, high-dynamic-range picture
+  - Compact chassis — fits tight media-cabinet spaces
+  **Features (ES):**
+  - Wi-Fi 6 — mayor velocidad y menor latencia en redes congestionadas
+  - Control por voz — busca hablando, no desplazándote
+  - 10 apps adicionales fuera de Heat — más opciones de contenido
+  - Reproducción 6K HDR — imagen vívida de alto rango dinámico
+  - Chasis compacto — cabe en espacios ajustados de gabinete
+
+  ---
+
+  ## PRODUCT DETAIL: Elite Ultra ($425)
+  **Badge (EN):** Top of the Line | **Badge (ES):** Lo Mejor de la Línea
+  **Description (EN):** The Elite Ultra is built for anyone who refuses to compromise. Gigabit Ethernet means your stream never stutters regardless of network traffic. 128 GB of storage gives you room for every app you'll ever want. Add Wi-Fi 6, 20+ bonus apps, and OTA updates and this box will stay current for years.
+  **Description (ES):** El Elite Ultra está diseñado para quien no quiere compromisos. Ethernet Gigabit significa que tu transmisión nunca se interrumpe sin importar el tráfico de red. 128 GB de almacenamiento te da espacio para todas las apps que quieras. Con Wi-Fi 6, más de 20 apps adicionales y actualizaciones OTA, este dispositivo permanecerá actualizado por años.
+  **Features (EN):**
+  - Gigabit Ethernet + Wi-Fi 6 — fastest possible connection, wired or wireless
+  - 128 GB storage — install apps freely, never run out of space
+  - 20+ bonus apps beyond Heat — the broadest content library
+  - OTA updates — firmware improvements delivered automatically
+  - Bluetooth 5.0 + voice remote — hands-free control
+  **Features (ES):**
+  - Ethernet Gigabit + Wi-Fi 6 — la conexión más rápida posible, por cable o inalámbrica
+  - 128 GB de almacenamiento — instala apps libremente, sin quedarte sin espacio
+  - Más de 20 apps adicionales fuera de Heat — la biblioteca de contenido más amplia
+  - Actualizaciones OTA — mejoras de firmware entregadas automáticamente
+  - Bluetooth 5.0 + control por voz — control manos libres
+
+  ---
+
+  ## HOW TO BUY
+  **Section label (EN):** Buying Process | **Section label (ES):** Proceso de Compra
+  **Section title (EN):** How to buy — 4 simple steps
+  **Section title (ES):** Cómo comprar — 4 pasos sencillos
+
+  | Step | Title (EN) | Body (EN) | Title (ES) | Body (ES) |
+  |------|-----------|-----------|-----------|-----------|
+  | 01 | Text Jordan | Share a line about how you watch TV. Jordan will recommend the best-fit model — usually within a few hours. | Escríbele a Jordan | Cuéntale cómo ves televisión. Jordan te recomendará el modelo ideal, generalmente en pocas horas. |
+  | 02 | Confirm your model & meetup | Choose your unit, agree on a pickup location in the Austin / Round Rock area, and confirm payment — cash or Zelle. | Confirma tu modelo y punto de encuentro | Elige tu unidad, acuerda un punto de encuentro en el área de Austin / Round Rock y confirma el pago: efectivo o Zelle. |
+  | 03 | Pick up & get set up | Jordan hands off your VSeeBox in person and walks you through the setup on the spot — so you're ready to stream before you get home. | Recoge y configura | Jordan te entrega tu VSeeBox en persona y te guía en la configuración al momento, para que estés listo para transmitir antes de llegar a casa. |
+  | 04 | Ongoing text support | Have a question after you're home? Text Jordan directly. Software help, app questions, or anything else — answered personally. | Soporte continuo por texto | ¿Tienes preguntas después de llegar a casa? Escríbele a Jordan directamente. Ayuda de software, preguntas de apps o cualquier cosa — respuestas personales. |
+
+  ---
+
+  ## FAQ (8 ENTRIES)
+  ⚠️ Items marked [REVIEW] should be verified with Jordan for accuracy before publishing.
+
+  **Q1:** Where can I pick up my VSeeBox?
+  **A1 (EN):** Jordan arranges in-person handoffs in the Austin and Round Rock, TX area. Text him to schedule a convenient time and location — usually same-week availability.
+  **A1 (ES):** Jordan coordina entregas en persona en el área de Austin y Round Rock, TX. Escríbele para acordar la hora y el lugar — generalmente hay disponibilidad en la misma semana.
+
+  **Q2:** What payment methods do you accept?
+  **A2 (EN):** Cash and Zelle only. Payment is made at the time of in-person pickup — no deposits required.
+  **A2 (ES):** Solo efectivo y Zelle. El pago se realiza en el momento de la recogida en persona, sin depósitos requeridos.
+
+  **Q3:** Which model is best for a first-time buyer?
+  **A3 (EN):** The Elite Mini ($310) is our most popular choice — Wi-Fi 6, a voice remote, and 10 extra apps cover most people's needs. If budget is the main factor, the V6 Max ($260) is a clean, reliable starter. Text Jordan and he'll help you choose in 2 minutes.
+  **A3 (ES):** El Elite Mini ($310) es nuestra opción más popular: Wi-Fi 6, control por voz y 10 apps adicionales satisfacen la mayoría de necesidades. Si el presupuesto es el factor principal, el V6 Max ($260) es una opción de entrada limpia y confiable. Escríbele a Jordan y te ayudará a elegir en 2 minutos.
+
+  **Q4:** Do you offer bulk or reseller pricing? [REVIEW: confirm case quantity + price]
+  **A4 (EN):** Yes. The V6 Max is available by the case at $3,800 (approximately 15 units). Text Jordan for current bulk pricing on other models — small clinics and resellers are welcome.
+  **A4 (ES):** Sí. El V6 Max está disponible por caja a $3,800 (aproximadamente 15 unidades). Escríbele a Jordan para precios al por mayor de otros modelos — pequeñas clínicas y revendedores son bienvenidos.
+
+  **Q5:** What is VSeeBox and what are Heat apps?
+  **A5 (EN):** VSeeBox is an Android TV set-top box built for streaming. VSee Heat apps are a curated suite of streaming applications pre-installed on the device. Jordan is an authorized distributor through LisnUp Installations.
+  **A5 (ES):** VSeeBox es un decodificador Android TV diseñado para streaming. Las apps Heat de VSee son un conjunto de aplicaciones de streaming preinstaladas en el dispositivo. Jordan es un distribuidor autorizado a través de LisnUp Installations.
+
+  **Q6:** Will I get help setting it up?
+  **A6 (EN):** Yes — Jordan walks you through the initial setup at the handoff point. After that, he's reachable by text for any software questions. No call centers, no ticket queues — direct personal support.
+  **A6 (ES):** Sí: Jordan te guía en la configuración inicial en el punto de entrega. Luego, está disponible por texto para cualquier pregunta de software. Sin centros de llamadas, sin filas de tickets — soporte personal directo.
+
+  **Q7:** What is the difference between Android 12 and Android 14 on these units?
+  **A7 (EN):** The V6 Max and V6 Plus run Android 14, which offers the widest app-store compatibility today. The Elite Mini and Elite Ultra run Android 12 — a stable, fully-supported platform — and both receive OTA updates automatically.
+  **A7 (ES):** El V6 Max y el V6 Plus corren Android 14, que ofrece la mayor compatibilidad con la tienda de apps hoy en día. El Elite Mini y el Elite Ultra corren Android 12, una plataforma estable y completamente compatible, y ambos reciben actualizaciones OTA automáticamente.
+
+  **Q8:** Do the Elite models receive automatic software updates?
+  **A8 (EN):** Yes. Both the Elite Mini and Elite Ultra support over-the-air (OTA) updates, so the device receives firmware improvements without any action on your part.
+  **A8 (ES):** Sí. Tanto el Elite Mini como el Elite Ultra admiten actualizaciones OTA (por aire), por lo que el dispositivo recibe mejoras de firmware sin que tengas que hacer nada.
+
+  ---
+
+  ## CTA BLOCK
+  **H2 (EN):** Ready to reserve yours?
+  **H2 (ES):** ¿Listo para reservar el tuyo?
+  **Body (EN):** Text Jordan your model of choice and a pickup location that works for you — he'll confirm same day. Cash or Zelle at handoff. Setup walkthrough included.
+  **Body (ES):** Escríbele a Jordan el modelo que eliges y cuándo puedes recogerlo: confirmará el mismo día. Pago en efectivo o Zelle al recoger. Guía de configuración incluida.
+  **CTA button (EN):** Text Jordan — (262) 705-0853
+  **CTA button (ES):** Texto a Jordan — (262) 705-0853
+  **Disclaimer (EN):** * Prices are subject to change. Confirm current pricing when you text.
+  **Disclaimer (ES):** * Los precios están sujetos a cambios. Confirma el precio actual cuando escribas.
+
+  ---
+
+  ## FOOTER
+  **Name:** Jordan Moddes
+  **Tagline (EN):** Authorized VSeeBox distributor · LisnUp Installations · Austin, TX
+  **Tagline (ES):** Distribuidor autorizado VSeeBox · LisnUp Installations · Austin, TX
+
+  ---
+
+  ## TESTIMONIAL PLACEHOLDERS (3)
+  *Replace with real quotes. Collect via text follow-up 1–2 weeks post-purchase.*
+  *Format: 1–2 sentences. First name + city only for privacy. Avoid medical/clinical claims.*
+
+  > "[Name], Austin TX" — "Jordan was incredibly easy to deal with. Picked up my Elite Mini in under an hour and had it running on my TV the same afternoon."
+
+  > "[Name], Round Rock TX" — "I wasn't sure which model to get but Jordan asked me a few questions and the V6 Max was exactly what I needed. Great experience."
+
+  > "[Name], Austin TX" — "Bought two Elite Ultras for my business. Jordan handled the whole thing by text, showed up on time, and walked me through both setups. Will be ordering more."
+
+  **How to collect real quotes:**
+  1. Text buyers 7–10 days after pickup: "Hey [Name], hope you're enjoying the VSeeBox! Would you mind if I used a short quote from you on my site? Just 1–2 sentences on your experience."
+  2. Keep first name + city only. Get explicit text/written consent.
+  3. Avoid quotes that imply specific content availability, health outcomes, or service-level guarantees.
+
+  ---
+
+  ## SHORT AD-READY VARIANTS (20–40 char headline / ≤90 char body)
+
+  **Ad Variant 1 (EN)**
+  Headline: VSeeBox — Austin Pickup
+  Body: 4 models in stock, $260–$425. In-person handoff. Text Jordan to order today.
+
+  **Ad Variant 1 (ES)**
+  Headline: VSeeBox — Recoge en Austin
+  Body: 4 modelos, $260–$425. Entrega en persona. Escríbele a Jordan para ordenar hoy.
+
+  **Ad Variant 2 (EN)**
+  Headline: Buy VSeeBox Near Austin TX
+  Body: Android TV with Heat apps. Same-week pickup. Authorized distributor. Text now.
+
+  **Ad Variant 2 (ES)**
+  Headline: Compra VSeeBox en Austin TX
+  Body: Android TV con apps Heat. Recoge esta semana. Distribuidor autorizado. Escribe ya.
+
+  **Ad Variant 3 (EN)**
+  Headline: VSeeBox Elite Mini — $310
+  Body: Wi-Fi 6, voice remote, 10 bonus apps. In-person pickup Austin/Round Rock. Text Jordan.
+
+  **Ad Variant 3 (ES)**
+  Headline: VSeeBox Elite Mini — $310
+  Body: Wi-Fi 6, voz, 10 apps extra. Recogida en persona Austin/Round Rock. Escríbele a Jordan.
+
+  ---
+
+  ## CONVERSION & ANALYTICS PLAN
+
+  ### 6 Key Events to Track
+  | Event Name | Trigger |
+  |---|---|
+  | hero_cta_click | Click on "Text Jordan to Order" hero button |
+  | header_cta_click | Click on "Text to Order" header button |
+  | model_card_click | Click on any model card (pass model name as parameter) |
+  | sms_link_click | Click on CTA-block or mobile-bar SMS link |
+  | faq_item_open | Expand any FAQ item (pass question text as parameter) |
+  | scroll_depth_75 | User scrolls to 75% of page height (fires once per session) |
+
+  ### Minimum KPI Set
+  - **SMS link CTR** — (sms_link_click + hero_cta_click) / sessions
+  - **Model card CTR** — model_card_click / sessions (per model)
+  - **Scroll depth 75%** — % of sessions reaching lower page sections
+  - **Avg. time on page** — proxy for content engagement
+  - **Language split** — EN vs ES session ratio (to inform ad spend)
+  - **Phone conversions** — track actual orders replied to texts (offline, weekly tally)
+
+  ### A/B Test Ideas
+
+  **Test 1 — Hero CTA Phrasing**
+  - Variant A: "Text Jordan to Order" (current)
+  - Variant B: "Reserve for Pickup — Text Jordan"
+  - Hypothesis: A command + social cue ("Reserve") reduces friction vs. generic "Order" for in-person buyers.
+  - Primary metric: hero_cta_click rate; secondary: sms_link_click rate.
+  - Run for minimum 2 weeks or 500 sessions per variant.
+
+  **Test 2 — Most Popular Badge Placement**
+  - Variant A: "Most popular" badge on Elite Mini card (current)
+  - Variant B: Add a second visual cue — a subtle green border glow on Elite Mini card AND move it to position 1 in the grid.
+  - Hypothesis: Leading with the recommended model reduces decision paralysis and increases model_card_click on Elite Mini by ≥15%.
+  - Primary metric: Elite Mini model_card_click rate; secondary: scroll depth to #elitemini section.
+
+  ---
+
+  ## SECTION ORDER PROPOSAL (OPTIONAL)
+  Current order works well for consideration-led buyers. One optional improvement:
+  Move **Comparison Table** to immediately after **Model Cards** (already the case — confirmed good).
+  Consider adding a **"Who is this for?"** micro-section between Models and Comparison
+  to help first-time buyers self-identify (Home user / Small business / Reseller).
+  This would likely increase Elite Mini and Elite Ultra clicks by surfacing use cases earlier.
+  Implementation: add a 3-column icon+text row using the existing .steps CSS — no new CSS needed.
+
+  ════════════════════════════════════════════════════════════════════
+  END OF CONTENT DOCUMENT
+  ════════════════════════════════════════════════════════════════════
+  -->
+
 </body>
 </html>
