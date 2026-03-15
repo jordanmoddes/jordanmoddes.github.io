@@ -4,851 +4,1078 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Gmas Page \ud83d\udc99</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+  <title>Gmas Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --cream: #FFF8F0;
-      --warm-white: #FFFDF9;
-      --rose: #F472B6;
-      --rose-light: #FCE7F3;
-      --rose-dark: #DB2777;
-      --blue: #3B82F6;
-      --blue-light: #EFF6FF;
-      --blue-dark: #1D4ED8;
-      --teal: #14B8A6;
-      --teal-light: #F0FDFA;
-      --purple: #8B5CF6;
-      --purple-light: #F5F3FF;
-      --gold: #F59E0B;
-      --navy: #1E3A5F;
-      --text: #1E293B;
-      --text-soft: #64748B;
-      --shadow-soft: 0 4px 24px rgba(0,0,0,0.08);
-      --shadow-card: 0 8px 32px rgba(0,0,0,0.12);
-      --shadow-lifted: 0 16px 48px rgba(0,0,0,0.18);
-      --radius: 24px;
-      --radius-sm: 16px;
+      --bg: #F7F5F2;
+      --surface: #FFFFFF;
+      --surface2: #F0EDE8;
+      --border: rgba(0,0,0,0.07);
+      --text: #1A1A1A;
+      --text-soft: #6B6560;
+      --text-xsoft: #9E9891;
+      --accent: #2D6BE4;
+      --accent-light: #EBF1FD;
+      --green: #16A34A;
+      --green-light: #DCFCE7;
+      --amber: #D97706;
+      --amber-light: #FEF3C7;
+      --rose: #E11D48;
+      --rose-light: #FFE4E6;
+      --purple: #7C3AED;
+      --purple-light: #EDE9FE;
+      --r: 14px;
+      --r-sm: 10px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--cream);
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
       min-height: 100vh;
       color: var(--text);
-      overflow-x: hidden;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
-    /* ===== BACKGROUND TEXTURE ===== */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: 
-        radial-gradient(circle at 20% 20%, rgba(244,114,182,0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(59,130,246,0.08) 0%, transparent 50%),
-        radial-gradient(circle at 60% 30%, rgba(20,184,166,0.05) 0%, transparent 40%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ===== GREETING SCREEN ===== */
+    /* ===== GREETING ===== */
     #greeting {
       position: fixed; inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      text-align: center; padding: 40px 32px;
-      background: linear-gradient(145deg, #FFF0F9 0%, #EFF6FF 50%, #F0FDFA 100%);
+      text-align: center; padding: 48px 32px;
+      background: var(--surface);
       z-index: 100;
-      transition: opacity 1.8s ease-out;
+      transition: opacity 1.6s ease;
     }
 
-    .greeting-hearts {
-      font-size: 52px;
-      margin-bottom: 24px;
-      animation: float 3s ease-in-out infinite;
+    .g-sub { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-xsoft); margin-bottom: 20px; }
+    .g-name { font-size: 42px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    .g-tagline { font-size: 16px; color: var(--text-soft); font-weight: 500; margin-bottom: 48px; line-height: 1.6; max-width: 280px; }
+    .g-heart { font-size: 32px; animation: pulse 2s ease infinite; display: block; }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+    .g-from { font-size: 13px; color: var(--text-xsoft); margin-top: 16px; font-weight: 500; }
+
+    /* ===== LAYOUT ===== */
+    #app { max-width: 480px; margin: 0 auto; padding: 0 16px 48px; }
+
+    /* ===== NAV BAR ===== */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0 16px;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer;
+      color: var(--accent); font-size: 15px; font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      padding: 6px 0;
     }
 
-    .greeting-name {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(52px, 14vw, 72px);
-      color: var(--navy);
-      line-height: 1.1;
-      margin-bottom: 8px;
+    .nav-title { font-size: 15px; font-weight: 700; color: var(--text-soft); }
+
+    .streak-badge {
+      font-size: 13px; font-weight: 700;
+      background: var(--amber-light);
+      color: var(--amber);
+      padding: 5px 11px; border-radius: 999px;
+      border: 1px solid rgba(217,119,6,0.2);
     }
 
-    .greeting-aka {
-      font-size: clamp(20px, 5vw, 26px);
-      color: var(--rose-dark);
-      font-weight: 700;
-      margin-bottom: 36px;
-      opacity: 0.85;
+    /* ===== HOME ===== */
+    .home-top {
+      padding: 32px 0 24px;
     }
 
-    .greeting-love {
-      font-size: clamp(22px, 6vw, 30px);
-      color: var(--text);
-      line-height: 1.6;
-      max-width: 380px;
-      margin-bottom: 40px;
-      font-weight: 600;
-    }
+    .home-greeting { font-size: 13px; font-weight: 600; color: var(--text-xsoft); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .home-title { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 6px; line-height: 1.2; }
+    .home-sub { font-size: 14px; color: var(--text-soft); font-weight: 500; }
 
-    .greeting-love .heart {
-      color: var(--rose);
-      display: inline-block;
-      animation: heartbeat 1.4s ease-in-out infinite;
-    }
-
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    .greeting-sig {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(18px, 4.5vw, 22px);
-      color: var(--teal);
-      opacity: 0.8;
-      letter-spacing: 0.5px;
-    }
-
-    .greeting-dots {
-      display: flex; gap: 8px; margin-top: 48px;
-      align-items: center;
-    }
-
-    .greeting-dots span {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: var(--rose);
-      opacity: 0.4;
-      animation: dotPulse 1.4s ease-in-out infinite;
-    }
-
-    .greeting-dots span:nth-child(2) { animation-delay: 0.2s; background: var(--blue); }
-    .greeting-dots span:nth-child(3) { animation-delay: 0.4s; background: var(--teal); }
-
-    @keyframes dotPulse {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.3); }
-    }
-
-    /* ===== MAIN APP ===== */
-    #app {
-      max-width: 440px;
-      margin: 0 auto;
-      padding: 0 16px 32px;
-      position: relative; z-index: 1;
-    }
-
-    /* ===== TOP BAR ===== */
-    .top-bar {
-      padding: 20px 4px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .back-btn {
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: white;
-      border: none;
-      box-shadow: var(--shadow-soft);
-      font-size: 22px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-      color: var(--text);
-    }
-
-    .back-btn:active { transform: scale(0.92); }
-
-    /* ===== STREAK BADGE ===== */
-    .streak-pill {
-      background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-      border: 2px solid var(--gold);
-      border-radius: 999px;
-      padding: 8px 18px;
-      display: inline-flex; align-items: center; gap: 6px;
-      font-weight: 800;
-      font-size: 18px;
-      color: #92400E;
-      box-shadow: 0 2px 8px rgba(245,158,11,0.25);
-    }
-
-    /* ===== HOME SCREEN ===== */
-    .home-header {
-      text-align: center;
-      padding: 24px 8px 28px;
-    }
-
-    .home-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(34px, 9vw, 44px);
-      color: var(--navy);
-      line-height: 1.15;
-      margin-bottom: 6px;
-    }
-
-    .home-subtitle {
-      font-size: clamp(15px, 4vw, 18px);
-      color: var(--text-soft);
-      line-height: 1.6;
-      max-width: 340px;
-      margin: 0 auto;
-      font-weight: 600;
-    }
-
-    .streak-row {
-      display: flex; justify-content: center;
-      margin: 20px 0 28px;
-    }
+    .streak-row { margin: 20px 0 28px; }
 
     /* ===== GAME CARDS ===== */
-    .game-card {
-      width: 100%;
-      border-radius: var(--radius);
-      border: none;
-      padding: 28px 24px;
-      margin-bottom: 16px;
+    .game-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .game-tile {
+      background: var(--surface);
+      border-radius: var(--r);
+      padding: 20px;
+      border: 1.5px solid var(--border);
       cursor: pointer;
       text-align: left;
-      box-shadow: var(--shadow-card);
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      overflow: hidden;
+      width: 100%;
+      font-family: 'Outfit', sans-serif;
+      display: flex; align-items: center; gap: 16px;
+      transition: all 0.15s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
 
-    .game-card:active { transform: scale(0.97); box-shadow: var(--shadow-soft); }
-    .game-card:not(:active):hover { transform: translateY(-3px); box-shadow: var(--shadow-lifted); }
+    .game-tile:active { transform: scale(0.98); background: var(--surface2); }
 
-    .game-card.memory-card {
-      background: linear-gradient(145deg, #EFF6FF, #DBEAFE);
-      border: 2px solid rgba(59,130,246,0.2);
+    .game-tile-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
     }
 
-    .game-card.decisions-card {
-      background: linear-gradient(145deg, #F5F3FF, #EDE9FE);
-      border: 2px solid rgba(139,92,246,0.2);
-    }
+    .game-tile-body { flex: 1; }
+    .game-tile-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .game-tile-desc { font-size: 13px; color: var(--text-soft); font-weight: 500; }
+    .game-tile-arrow { color: var(--text-xsoft); font-size: 18px; }
 
-    .game-card::before {
-      content: '';
-      position: absolute; top: -20px; right: -20px;
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      opacity: 0.12;
-    }
-
-    .memory-card::before { background: var(--blue); }
-    .decisions-card::before { background: var(--purple); }
-
-    .game-card-emoji {
-      font-size: 44px;
-      margin-bottom: 10px;
-      display: block;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-    }
-
-    .game-card-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(22px, 6vw, 28px);
-      margin-bottom: 6px;
-    }
-
-    .memory-card .game-card-title { color: var(--blue-dark); }
-    .decisions-card .game-card-title { color: var(--purple); }
-
-    .game-card-desc {
-      font-size: clamp(14px, 3.8vw, 16px);
-      color: var(--text-soft);
-      line-height: 1.5;
-      font-weight: 600;
-    }
-
-    .game-card-arrow {
-      position: absolute; right: 24px; top: 50%;
-      transform: translateY(-50%);
-      font-size: 24px;
-      opacity: 0.4;
-    }
-
-    /* ===== SECTION HEADER ===== */
-    .section-header {
-      display: flex; align-items: center; gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .section-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(26px, 7vw, 32px);
+    /* ===== SECTION LABEL ===== */
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--text-xsoft);
+      margin: 24px 0 12px;
     }
 
     /* ===== MEMORY GAME ===== */
-    .mem-stats {
-      display: flex; gap: 12px;
-      margin-bottom: 20px;
+    .mem-bar {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px; margin-bottom: 20px;
     }
 
-    .stat-chip {
-      flex: 1;
-      background: white;
-      border-radius: var(--radius-sm);
-      padding: 12px 8px;
+    .mem-stat {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      padding: 10px 8px;
       text-align: center;
-      box-shadow: var(--shadow-soft);
-      border: 1.5px solid rgba(0,0,0,0.06);
+      border: 1.5px solid var(--border);
     }
 
-    .stat-chip-label {
-      font-size: 12px;
-      color: var(--text-soft);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 2px;
-    }
-
-    .stat-chip-value {
-      font-family: 'Fredoka One', cursive;
-      font-size: 26px;
-      color: var(--navy);
-    }
+    .mem-stat-val { font-size: 20px; font-weight: 800; color: var(--text); }
+    .mem-stat-lbl { font-size: 11px; font-weight: 600; color: var(--text-xsoft); text-transform: uppercase; letter-spacing: 0.5px; }
 
     #memGrid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
     }
 
-    .mem-card {
+    .mc {
       aspect-ratio: 1;
-      border-radius: 16px;
+      border-radius: 12px;
       cursor: pointer;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .mem-card.flipped { transform: rotateY(180deg); }
+    .mc.flipped { transform: rotateY(180deg); }
+    .mc.matched { transform: rotateY(180deg); animation: matchBounce 0.3s ease 0.1s; }
+    @keyframes matchBounce { 0%{transform:rotateY(180deg) scale(1)} 50%{transform:rotateY(180deg) scale(1.1)} 100%{transform:rotateY(180deg) scale(1)} }
 
-    .mem-card.matched {
-      animation: matchPop 0.4s ease forwards;
-    }
-
-    @keyframes matchPop {
-      0% { transform: rotateY(180deg) scale(1); }
-      50% { transform: rotateY(180deg) scale(1.15); }
-      100% { transform: rotateY(180deg) scale(1); }
-    }
-
-    .mem-front, .mem-back {
+    .mc-f, .mc-b {
       position: absolute; inset: 0;
+      border-radius: 12px;
       backface-visibility: hidden;
-      border-radius: 16px;
       display: flex; align-items: center; justify-content: center;
     }
 
-    .mem-front {
-      background: linear-gradient(135deg, #93C5FD, #3B82F6);
-      font-size: clamp(24px, 6vw, 30px);
-      color: white;
-      font-weight: 900;
-      font-family: 'Fredoka One', cursive;
-      border: 2.5px solid rgba(255,255,255,0.3);
+    .mc-f {
+      background: #E8E4DF;
+      font-size: 13px; font-weight: 800;
+      color: #B8B0A8;
+      border: 1.5px solid rgba(0,0,0,0.06);
     }
 
-    .mem-back {
-      background: white;
-      font-size: clamp(26px, 7vw, 34px);
+    .mc-b {
+      background: var(--surface);
+      font-size: clamp(22px, 5.5vw, 28px);
       transform: rotateY(180deg);
-      border: 2.5px solid rgba(59,130,246,0.15);
+      border: 1.5px solid var(--border);
     }
 
-    .mem-card.matched .mem-back {
-      background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
-      border-color: rgba(20,184,166,0.3);
+    .mc.matched .mc-b {
+      background: var(--green-light);
+      border-color: rgba(22,163,74,0.25);
     }
 
-    /* ===== WIN SCREEN ===== */
-    .win-screen {
+    /* ===== INLINE RESULT ===== */
+    .result-box {
+      border-radius: var(--r-sm);
+      padding: 14px 16px;
+      font-size: 14px; font-weight: 600;
+      line-height: 1.55;
+      margin-top: 16px;
+      animation: fadeSlide 0.25s ease;
+    }
+
+    @keyframes fadeSlide { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+    .result-box.correct { background: var(--green-light); color: #14532D; border: 1px solid rgba(22,163,74,0.2); }
+    .result-box.wrong { background: var(--amber-light); color: #78350F; border: 1px solid rgba(217,119,6,0.2); }
+
+    /* ===== WIN PANEL ===== */
+    .win-panel {
+      background: var(--surface);
+      border-radius: var(--r);
+      padding: 28px 24px;
       text-align: center;
-      background: white;
-      border-radius: var(--radius);
-      padding: 36px 28px;
-      box-shadow: var(--shadow-card);
-      margin-top: 20px;
-      border: 2px solid rgba(20,184,166,0.2);
-      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1.5px solid var(--border);
+      animation: fadeSlide 0.35s ease;
+      margin-top: 16px;
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .win-icon { font-size: 48px; margin-bottom: 12px; display: block; }
+    .win-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    .win-msg { font-size: 14px; color: var(--text-soft); font-weight: 500; margin-bottom: 24px; line-height: 1.6; }
 
-    .win-emoji {
-      font-size: 64px;
-      margin-bottom: 12px;
-      display: block;
-      animation: wiggle 0.6s ease 0.2s both;
-    }
-
-    @keyframes wiggle {
-      0% { transform: rotate(-10deg) scale(0.8); }
-      30% { transform: rotate(10deg) scale(1.15); }
-      60% { transform: rotate(-5deg) scale(1.05); }
-      100% { transform: rotate(0deg) scale(1); }
-    }
-
-    .win-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(26px, 7vw, 32px);
-      color: var(--teal);
+    /* ===== BUTTONS ===== */
+    .btn {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: var(--r-sm);
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
       margin-bottom: 8px;
     }
 
-    .win-msg {
-      font-size: clamp(15px, 4vw, 17px);
-      color: var(--text-soft);
-      line-height: 1.6;
-      font-weight: 600;
-      margin-bottom: 28px;
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-ghost { background: var(--surface2); color: var(--text-soft); border: 1.5px solid var(--border); }
+
+    /* ===== SCENARIO ===== */
+    .scenario-wrap { display: flex; flex-direction: column; gap: 10px; }
+
+    .scenario-header {
+      background: var(--surface);
+      border-radius: var(--r);
+      padding: 20px;
+      border: 1.5px solid var(--border);
     }
 
-    /* ===== BUTTONS ===== */
-    .btn-primary {
-      width: 100%;
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 18px 24px;
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(17px, 4.5vw, 20px);
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-      letter-spacing: 0.2px;
+    .prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .prog-track { flex: 1; height: 5px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.4s ease; }
+    .prog-lbl { font-size: 12px; font-weight: 700; color: var(--text-xsoft); }
+
+    .sc-tag {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      color: var(--text-xsoft); margin-bottom: 8px;
     }
 
-    .btn-primary:active { transform: scale(0.96); }
+    .sc-q { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.6; }
 
-    .btn-teal {
-      background: linear-gradient(135deg, var(--teal), #0D9488);
-      color: white;
-      box-shadow: 0 6px 20px rgba(20,184,166,0.4);
-    }
-
-    .btn-blue {
-      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-      color: white;
-      box-shadow: 0 6px 20px rgba(59,130,246,0.4);
-    }
-
-    .btn-purple {
-      background: linear-gradient(135deg, var(--purple), #7C3AED);
-      color: white;
-      box-shadow: 0 6px 20px rgba(139,92,246,0.4);
-    }
-
-    /* ===== EXECUTIVE DECISIONS ===== */
-    .scenario-card {
-      background: white;
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow-card);
-      margin-bottom: 18px;
-      border: 2px solid rgba(139,92,246,0.1);
-    }
-
-    .scenario-progress {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .progress-bar-track {
-      flex: 1;
-      height: 8px;
-      background: var(--purple-light);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--purple), var(--rose));
-      border-radius: 999px;
-      transition: width 0.5s ease;
-    }
-
-    .progress-label {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--purple);
-      white-space: nowrap;
-    }
-
-    .scenario-text {
-      font-size: clamp(16px, 4.2vw, 19px);
-      line-height: 1.65;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .scenario-year {
-      display: inline-block;
-      background: var(--purple-light);
-      color: var(--purple);
-      font-weight: 800;
-      font-size: 13px;
-      padding: 3px 10px;
-      border-radius: 999px;
-      margin-bottom: 10px;
-      border: 1.5px solid rgba(139,92,246,0.2);
-    }
-
-    .option-btn {
-      width: 100%;
-      border: 2.5px solid rgba(0,0,0,0.07);
-      border-radius: var(--radius-sm);
-      padding: 18px 20px;
-      background: white;
+    .opt-btn {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 14px 16px;
       text-align: left;
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(15px, 4vw, 17px);
-      font-weight: 700;
+      width: 100%;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px; font-weight: 600;
       color: var(--text);
       cursor: pointer;
-      transition: all 0.18s;
-      margin-bottom: 10px;
-      display: flex; align-items: flex-start; gap: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex; align-items: flex-start; gap: 10px;
+      transition: all 0.14s;
       line-height: 1.5;
     }
 
-    .option-btn:active { transform: scale(0.98); }
+    .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
+    .opt-btn:active:not(:disabled) { transform: scale(0.98); }
+    .opt-btn:disabled { cursor: default; }
+    .opt-btn.correct { background: var(--green-light); border-color: rgba(22,163,74,0.35); color: #14532D; }
+    .opt-btn.wrong { background: var(--rose-light); border-color: rgba(225,29,72,0.2); color: #9F1239; opacity: 0.75; }
 
-    .option-btn:hover:not(:disabled) {
-      border-color: var(--purple);
-      background: var(--purple-light);
-      transform: translateX(3px);
-    }
-
-    .option-btn:disabled { cursor: default; }
-
-    .option-btn.correct {
-      background: linear-gradient(135deg, #D1FAE5, #ECFDF5);
-      border-color: var(--teal);
-      color: #065F46;
-    }
-
-    .option-btn.wrong {
-      background: linear-gradient(135deg, #FEE2E2, #FFF5F5);
-      border-color: #F87171;
-      color: #991B1B;
-      opacity: 0.7;
-    }
-
-    .option-letter {
-      width: 30px; height: 30px;
-      border-radius: 50%;
-      background: var(--purple-light);
-      color: var(--purple);
-      font-weight: 900;
-      font-size: 14px;
+    .opt-letter {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: var(--surface2); color: var(--text-soft);
+      font-size: 12px; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      margin-top: 1px;
-      border: 1.5px solid rgba(139,92,246,0.2);
-      transition: all 0.18s;
+      transition: all 0.14s;
     }
 
-    .option-btn.correct .option-letter {
-      background: #D1FAE5;
-      color: #065F46;
-      border-color: var(--teal);
+    .opt-btn.correct .opt-letter { background: #BBF7D0; color: #166534; }
+    .opt-btn.wrong .opt-letter { background: #FECDD3; color: #9F1239; }
+
+    /* ===== WORD PUZZLE ===== */
+    .word-grid {
+      display: flex; flex-direction: column; gap: 6px;
+      margin-bottom: 16px;
     }
 
-    .option-btn.wrong .option-letter {
-      background: #FEE2E2;
-      color: #991B1B;
-      border-color: #F87171;
+    .word-row { display: flex; gap: 6px; justify-content: center; }
+
+    .word-cell {
+      width: clamp(44px, 12vw, 56px);
+      height: clamp(44px, 12vw, 56px);
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(17px, 4vw, 20px);
+      font-weight: 800;
+      text-transform: uppercase;
+      transition: all 0.12s;
     }
 
-    /* ===== RESULT TOAST ===== */
-    .result-toast {
-      border-radius: var(--radius-sm);
-      padding: 18px 20px;
-      font-size: clamp(15px, 4vw, 17px);
+    .word-cell.filled { border-color: var(--text-soft); }
+    .word-cell.correct { background: var(--green); border-color: var(--green); color: white; }
+    .word-cell.present { background: var(--amber); border-color: var(--amber); color: white; }
+    .word-cell.absent { background: #6B6560; border-color: #6B6560; color: white; }
+    .word-cell.current-row { border-color: var(--accent); }
+
+    .word-cell.pop {
+      animation: cellPop 0.12s ease;
+    }
+    @keyframes cellPop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
+
+    .word-cell.shake { animation: cellShake 0.35s ease; }
+    @keyframes cellShake {
+      0%,100%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)}
+    }
+
+    .word-cell.flip {
+      animation: cellFlip 0.4s ease forwards;
+    }
+    @keyframes cellFlip {
+      0%{transform:scaleY(1)} 50%{transform:scaleY(0)} 100%{transform:scaleY(1)}
+    }
+
+    .keyboard { display: flex; flex-direction: column; gap: 6px; }
+    .kb-row { display: flex; gap: 5px; justify-content: center; }
+
+    .kb-key {
+      min-width: clamp(26px, 7vw, 36px);
+      height: clamp(44px, 10vw, 52px);
+      border-radius: 6px;
+      border: none;
+      background: var(--surface2);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(11px, 3vw, 14px);
       font-weight: 700;
-      line-height: 1.55;
-      animation: slideUp 0.35s ease;
-      margin-bottom: 16px;
+      cursor: pointer;
+      transition: all 0.12s;
+      flex: 1;
+      max-width: 44px;
     }
 
-    .result-toast.correct-toast {
-      background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
-      color: #065F46;
-      border: 2px solid rgba(20,184,166,0.3);
+    .kb-key.wide { flex: 1.5; max-width: 64px; font-size: clamp(10px, 2.5vw, 12px); }
+    .kb-key:active { transform: scale(0.93); }
+    .kb-key.k-correct { background: var(--green); color: white; }
+    .kb-key.k-present { background: var(--amber); color: white; }
+    .kb-key.k-absent { background: #9E9891; color: white; }
+
+    .word-msg {
+      text-align: center; font-size: 14px; font-weight: 700;
+      padding: 10px; border-radius: var(--r-sm);
+      margin-bottom: 12px;
+      animation: fadeSlide 0.2s ease;
     }
 
-    .result-toast.wrong-toast {
-      background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-      color: #92400E;
-      border: 2px solid rgba(245,158,11,0.3);
-    }
+    .word-msg.good { background: var(--green-light); color: #14532D; }
+    .word-msg.bad { background: var(--rose-light); color: #9F1239; }
+    .word-msg.info { background: var(--amber-light); color: #78350F; }
 
-    .result-toast .toast-icon {
-      font-size: 24px;
-      margin-right: 8px;
-    }
-
-    /* ===== COMPLETE SCREEN ===== */
-    .complete-screen {
-      text-align: center;
-      padding: 20px 8px;
-      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .complete-big-emoji {
-      font-size: 80px;
-      display: block;
-      margin-bottom: 16px;
-      animation: wiggle 0.6s ease 0.2s both;
-    }
-
-    .complete-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(28px, 7vw, 36px);
-      color: var(--navy);
+    /* ===== TRIVIA ===== */
+    .trivia-q {
+      background: var(--surface);
+      border-radius: var(--r);
+      padding: 20px;
+      border: 1.5px solid var(--border);
       margin-bottom: 10px;
-      line-height: 1.2;
     }
 
-    .complete-msg {
-      font-size: clamp(16px, 4vw, 18px);
-      color: var(--text-soft);
-      font-weight: 600;
-      line-height: 1.65;
-      margin-bottom: 32px;
-      max-width: 320px;
-      margin-left: auto; margin-right: auto;
+    .trivia-num { font-size: 11px; font-weight: 700; color: var(--text-xsoft); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 8px; }
+    .trivia-text { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.6; }
+
+    .trivia-opts { display: flex; flex-direction: column; gap: 8px; }
+
+    .trivia-opt {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 13px 16px;
+      text-align: left;
+      width: 100%;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px; font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex; align-items: center; gap: 10px;
+      transition: all 0.14s;
     }
 
-    /* ===== CONFETTI ===== */
-    .confetti-piece {
-      position: fixed;
-      width: 10px; height: 10px;
-      border-radius: 2px;
-      pointer-events: none;
-      animation: confettiFall linear forwards;
-      z-index: 999;
+    .trivia-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
+    .trivia-opt:active:not(:disabled) { transform: scale(0.98); }
+    .trivia-opt:disabled { cursor: default; }
+    .trivia-opt.correct { background: var(--green-light); border-color: rgba(22,163,74,0.35); color: #14532D; }
+    .trivia-opt.wrong { background: var(--rose-light); border-color: rgba(225,29,72,0.2); color: #9F1239; opacity: 0.7; }
+
+    .trivia-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--border); flex-shrink: 0;
+      transition: all 0.14s;
     }
 
-    @keyframes confettiFall {
-      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    .trivia-opt.correct .trivia-dot { background: var(--green); }
+    .trivia-opt.wrong .trivia-dot { background: var(--rose); }
+
+    /* ===== COMPLETE ===== */
+    .complete {
+      background: var(--surface);
+      border-radius: var(--r);
+      padding: 32px 24px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      animation: fadeSlide 0.35s ease;
     }
+
+    .complete-icon { font-size: 52px; display: block; margin-bottom: 14px; }
+    .complete-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .complete-score { font-size: 15px; color: var(--text-soft); font-weight: 500; margin-bottom: 28px; line-height: 1.6; }
 
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- ===== GREETING ===== -->
-  <div id="greeting">
-    <div class="greeting-hearts">\ud83d\udc99\ud83c\udf38\ud83d\udc99</div>
-    <div class="greeting-name">Hi Debbie!</div>
-    <div class="greeting-aka">(aka the best Grandma)</div>
-    <div class="greeting-love">
-      Have a wonderful day<br>and know you're loved<br>so much <span class="heart">\u2764\ufe0f</span>
+<!-- GREETING -->
+<div id="greeting">
+  <div class="g-sub">Good morning</div>
+  <div class="g-name">Hi Debbie 👋</div>
+  <div class="g-tagline">A little something to keep that sharp mind going.</div>
+  <span class="g-heart">❤️</span>
+  <div class="g-from">— from your grandson</div>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <div id="screen-home">
+    <div class="home-top">
+      <div class="home-greeting">Brain Lab</div>
+      <div class="home-title">Pick a game,<br>Debbie.</div>
+      <div class="home-sub">All brain. No filler.</div>
     </div>
-    <div class="greeting-sig">\u2014 Your grandson</div>
-    <div class="greeting-dots">
-      <span></span><span></span><span></span>
+    <div class="streak-row">
+      <span class="streak-badge">🔥 <span id="streak">0</span> day streak</span>
+    </div>
+
+    <div class="section-label">Games</div>
+    <div class="game-list">
+      <button class="game-tile" onclick="go('memory')">
+        <div class="game-tile-icon" style="background:#EBF1FD;">🃏</div>
+        <div class="game-tile-body">
+          <div class="game-tile-name">Memory Match</div>
+          <div class="game-tile-desc">Find the pairs. Beat your best.</div>
+        </div>
+        <div class="game-tile-arrow">›</div>
+      </button>
+      <button class="game-tile" onclick="go('word')">
+        <div class="game-tile-icon" style="background:#DCFCE7;">🔤</div>
+        <div class="game-tile-body">
+          <div class="game-tile-name">Word Puzzle</div>
+          <div class="game-tile-desc">Guess the 5-letter word in 6 tries.</div>
+        </div>
+        <div class="game-tile-arrow">›</div>
+      </button>
+      <button class="game-tile" onclick="go('trivia')">
+        <div class="game-tile-icon" style="background:#EDE9FE;">🧩</div>
+        <div class="game-tile-body">
+          <div class="game-tile-name">Trivia Mix</div>
+          <div class="game-tile-desc">History, science, nature — mix of everything good.</div>
+        </div>
+        <div class="game-tile-arrow">›</div>
+      </button>
+      <button class="game-tile" onclick="go('decisions')">
+        <div class="game-tile-icon" style="background:#FEF3C7;">💼</div>
+        <div class="game-tile-body">
+          <div class="game-tile-name">Decision Maker</div>
+          <div class="game-tile-desc">Classic business dilemmas. What's the right call?</div>
+        </div>
+        <div class="game-tile-arrow">›</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- MEMORY -->
+  <div id="screen-memory" class="hidden">
+    <div class="nav">
+      <button class="nav-back" onclick="go('home')">‹ Back</button>
+      <div class="nav-title">Memory Match</div>
+      <span class="streak-badge">🔥 <span id="memStreakBadge">0</span></span>
+    </div>
+    <div class="mem-bar">
+      <div class="mem-stat"><div class="mem-stat-val" id="memMoves">0</div><div class="mem-stat-lbl">Moves</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="memPairs">0/8</div><div class="mem-stat-lbl">Pairs</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="memBestDisp">—</div><div class="mem-stat-lbl">Best</div></div>
+    </div>
+    <div id="memGrid"></div>
+    <div id="memWin" class="win-panel hidden">
+      <span class="win-icon">🏆</span>
+      <div class="win-title" id="winTitle">All pairs found!</div>
+      <div class="win-msg" id="winMsg"></div>
+      <button class="btn btn-primary" onclick="initMemory()">Play again</button>
+      <button class="btn btn-ghost" onclick="go('home')">← Home</button>
     </div>
   </div>
 
-  <!-- ===== MAIN APP ===== -->
-  <div id="app" class="hidden">
-    <div id="app-inner">
-      <!-- HOME -->
-      <div id="home">
-        <div class="home-header">
-          <div class="home-title">Debbie's<br>Brain Lab \ud83e\udde0</div>
-          <p class="home-subtitle">Real challenges from the Zion plant \u2014 aperture cards, fiche jackets, and sharp minds.</p>
-        </div>
-        <div class="streak-row">
-          <div class="streak-pill">\ud83d\udd25 <span id="streak">0</span> day streak!</div>
-        </div>
-        <button class="game-card memory-card" onclick="showGame('memory')">
-          <span class="game-card-emoji">\ud83c\udccf</span>
-          <div class="game-card-title">Memory Pro</div>
-          <div class="game-card-desc">Microseal edition \u2014 match the pairs with that legendary GM recall.</div>
-          <span class="game-card-arrow">\u203a</span>
-        </button>
-        <button class="game-card decisions-card" onclick="showGame('decisions')">
-          <span class="game-card-emoji">\ud83d\udcbc</span>
-          <div class="game-card-title">Executive Decisions</div>
-          <div class="game-card-desc">90s & 00s Zion plant scenarios. What would you have done?</div>
-          <span class="game-card-arrow">\u203a</span>
-        </button>
-      </div>
-
-      <!-- MEMORY GAME -->
-      <div id="memory" class="hidden">
-        <div class="top-bar">
-          <button class="back-btn" onclick="goHome()">\u2190</button>
-          <div style="font-family:'Fredoka One',cursive; font-size:24px; color:var(--blue-dark);">Memory Pro \ud83c\udccf</div>
-          <div class="streak-pill" style="font-size:14px; padding:6px 12px;">\ud83d\udd25 <span id="memStreak">0</span></div>
-        </div>
-        <div class="mem-stats">
-          <div class="stat-chip">
-            <div class="stat-chip-label">Moves</div>
-            <div class="stat-chip-value" id="memMoves">0</div>
-          </div>
-          <div class="stat-chip">
-            <div class="stat-chip-label">Pairs</div>
-            <div class="stat-chip-value" id="memPairs">0/8</div>
-          </div>
-          <div class="stat-chip">
-            <div class="stat-chip-label">Best</div>
-            <div class="stat-chip-value" id="memBest">\u2014</div>
-          </div>
-        </div>
-        <div id="memGrid"></div>
-        <div id="memWin" class="win-screen hidden">
-          <span class="win-emoji">\ud83c\udfc6</span>
-          <div class="win-title">GM-Level Recall!</div>
-          <div class="win-msg" id="winMsg">Just like keeping millions of aperture cards perfectly organized at the Zion plant.</div>
-          <button class="btn-primary btn-teal" onclick="restartMemory()">Play Again \u21ba</button>
-        </div>
-      </div>
-
-      <!-- EXECUTIVE DECISIONS -->
-      <div id="decisions" class="hidden">
-        <div class="top-bar">
-          <button class="back-btn" onclick="goHome()">\u2190</button>
-          <div style="font-family:'Fredoka One',cursive; font-size:22px; color:var(--purple);">Executive Decisions</div>
-          <div class="streak-pill" style="font-size:14px; padding:6px 12px;">\ud83d\udd25 <span id="decStreak">0</span></div>
-        </div>
-        <div id="decisionsContent"></div>
+  <!-- WORD PUZZLE -->
+  <div id="screen-word" class="hidden">
+    <div class="nav">
+      <button class="nav-back" onclick="go('home')">‹ Back</button>
+      <div class="nav-title">Word Puzzle</div>
+      <span class="streak-badge">🔥 <span id="wordStreakBadge">0</span></span>
+    </div>
+    <div id="wordMsg" class="word-msg hidden"></div>
+    <div class="word-grid" id="wordGrid"></div>
+    <div class="keyboard" id="keyboard"></div>
+    <div id="wordResult" class="hidden" style="margin-top:20px;">
+      <div class="win-panel">
+        <span class="win-icon" id="wordResultIcon">🎉</span>
+        <div class="win-title" id="wordResultTitle"></div>
+        <div class="win-msg" id="wordResultMsg"></div>
+        <button class="btn btn-primary" onclick="initWord()">New word</button>
+        <button class="btn btn-ghost" onclick="go('home')">← Home</button>
       </div>
     </div>
   </div>
+
+  <!-- TRIVIA -->
+  <div id="screen-trivia" class="hidden">
+    <div class="nav">
+      <button class="nav-back" onclick="go('home')">‹ Back</button>
+      <div class="nav-title">Trivia Mix</div>
+      <span class="streak-badge">🔥 <span id="triviaStreakBadge">0</span></span>
+    </div>
+    <div id="triviaContent"></div>
+  </div>
+
+  <!-- DECISIONS -->
+  <div id="screen-decisions" class="hidden">
+    <div class="nav">
+      <button class="nav-back" onclick="go('home')">‹ Back</button>
+      <div class="nav-title">Decision Maker</div>
+      <span class="streak-badge">🔥 <span id="decStreakBadge">0</span></span>
+    </div>
+    <div id="decContent"></div>
+  </div>
+</div>
 
 <script>
-// ===== DATA =====
-const microsealPairs = ['\ud83d\udcc7','\ud83d\uddc3\ufe0f','\ud83d\udccb','\ud83d\udd0d','\ud83d\udcfc','\ud83d\udda5\ufe0f','\ud83d\udce6','\ud83d\udcca'];
-let cards = [], flippedCards = [], matchedCards = [], moves = 0, matchedCount = 0;
+// ================================================================
+// MEMORY
+// ================================================================
+const EMOJIS = ['🦋','🌿','⭐','🎵','🌊','🏔️','🌺','🍎'];
+let mCards=[], mFlipped=[], mMatched=[], mMoves=0, mCount=0;
 
-const scenarios = [
-  {
-    year: "Zion Plant \u00b7 1996",
-    q: "Digital imaging is starting to appear. Your fiche jacket line is running at full capacity. What's the smart executive move?",
-    options: [
-      "Shut down the jacket line and retool everything for digital right now.",
-      "Keep analog running while quietly training 20% of the team on new digital scanners.",
-      "Ignore digital \u2014 aperture cards and jackets will always be king."
-    ],
-    correct: 1,
-    feedback: "That's the hybrid strategy that kept Microseal plants competitive through the late 90s. Smart, steady leadership \u2014 just like you always were.",
-    feedbackWrong: "Close, but the winning move was holding both worlds at once. Transition without disruption \u2014 that's real GM thinking."
-  },
-  {
-    year: "Zion Plant \u00b7 2001",
-    q: "Budget cuts hit hard. You need to reduce costs 15% without losing quality on aperture cards and storage systems. What do you do?",
-    options: [
-      "Cut maintenance on the card-punching machines.",
-      "Cross-train operators so you need fewer supervisors while keeping quality standards.",
-      "Pause all safety and training programs to free up the budget."
-    ],
-    correct: 1,
-    feedback: "Strong GM call \u2014 cross-training builds a smarter floor and protects what matters most. That's the efficiency that kept Zion strong through tough years.",
-    feedbackWrong: "The best path was cross-training \u2014 more capability, leaner overhead, quality intact. That's how Zion weathered the tough years."
-  },
-  {
-    year: "Zion Plant \u00b7 2003",
-    q: "Your team is nervous about the digital transition. Morale is slipping. As GM, what do you do?",
-    options: [
-      "Tell everyone 'nothing is changing' and hope things settle down.",
-      "Hold a full plant meeting with real data showing how their fiche and storage skills transfer to electronic imaging.",
-      "Hand out small bonuses and avoid bringing up the topic."
-    ],
-    correct: 1,
-    feedback: "Perfect leadership. Real communication, real vision. That's exactly what the best Microseal GMs did \u2014 and exactly what you would have done.",
-    feedbackWrong: "The winning move: bring everyone into the real picture. Fear shrinks when people see their value carries forward. That's true GM leadership."
-  }
-];
-
-// ===== MEMORY LOGIC =====
-function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
-
-function createMemory() {
-  const doubled = [...microsealPairs, ...microsealPairs];
-  cards = shuffle(doubled);
-  flippedCards = []; matchedCards = []; moves = 0; matchedCount = 0;
-
-  const grid = document.getElementById('memGrid');
-  grid.innerHTML = '';
-
-  cards.forEach((emoji, i) => {
-    const card = document.createElement('div');
-    card.className = 'mem-card';
-    card.dataset.value = emoji;
-    card.dataset.index = i;
-    card.innerHTML = `
-      <div class="mem-front">?</div>
-      <div class="mem-back">${emoji}</div>
-    `;
-    card.addEventListener('click', flipCard);
-    grid.appendChild(card);
-  });
-
-  updateMemStats();
+function initMemory() {
+  const pairs = [...EMOJIS,...EMOJIS].sort(()=>Math.random()-0.5);
+  mCards=pairs; mFlipped=[]; mMatched=[]; mMoves=0; mCount=0;
   document.getElementById('memWin').classList.add('hidden');
-  grid.classList.remove('hidden');
+  document.getElementById('memGrid').classList.remove('hidden');
+  renderMemStats();
+
+  const g = document.getElementById('memGrid');
+  g.innerHTML='';
+  pairs.forEach((e,i)=>{
+    const d=document.createElement('div');
+    d.className='mc'; d.dataset.v=e; d.dataset.i=i;
+    d.innerHTML=`<div class="mc-f">·</div><div class="mc-b">${e}</div>`;
+    d.addEventListener('click',onMemClick);
+    g.appendChild(d);
+  });
 }
 
-function flipCard(e) {
-  const card = e.currentTarget;
-  if (
-    flippedCards.length === 2 ||
-    card.classList.contains('flipped') ||
-    card.classList.contains('matched')
-  ) return;
-
-  card.classList.add('flipped');
-  flippedCards.push(card);
-
-  if (flippedCards.length === 2) {
-    moves++;
-    updateMemStats();
-
-    if (flippedCards[0].dataset.value === flippedCards[1].dataset.value) {
-      flippedCards.forEach(c => {
-        c.classList.add('matched');
-        c.removeEventListener('click', flipCard);
-      });
-      matchedCards.push(...flippedCards);
-      matchedCount++;
-      flippedCards = [];
-      updateMemStats();
-
-      if (matchedCount === 8) {
-        const best = parseInt(localStorage.getItem('memBest') || '9999');
-        if (moves < best) localStorage.setItem('memBest', moves);
-        updateMemStats();
-        setTimeout(() => {
-          spawnConfetti();
+function onMemClick(ev) {
+  const c=ev.currentTarget;
+  if(mFlipped.length===2||c.classList.contains('flipped')||c.classList.contains('matched')) return;
+  c.classList.add('flipped'); mFlipped.push(c);
+  if(mFlipped.length===2){
+    mMoves++; renderMemStats();
+    if(mFlipped[0].dataset.v===mFlipped[1].dataset.v){
+      mFlipped.forEach(x=>{x.classList.add('matched');x.removeEventListener('click',onMemClick);});
+      mMatched.push(...mFlipped); mCount++; mFlipped=[];
+      renderMemStats();
+      if(mCount===8){
+        const best=parseInt(localStorage.getItem('memBest')||'9999');
+        if(mMoves<best) localStorage.setItem('memBest',mMoves);
+        renderMemStats(); updateStreak();
+        setTimeout(()=>{
           document.getElementById('memGrid').classList.add('hidden');
-          const winMsg = moves <= 12
-            ? "In just " + moves + " moves \u2014 flawless!
+          document.getElementById('winTitle').textContent = mMoves<=14?'Flawless.':'All pairs found!';
+          document.getElementById('winMsg').textContent = mMoves<=14
+            ?`${mMoves} moves — that's exceptional.`
+            :mMoves<=20?`${mMoves} moves. Sharp.`:`${mMoves} moves — got there!`;
+          document.getElementById('memWin').classList.remove('hidden');
+          confetti();
+        },400);
+      }
+    } else {
+      setTimeout(()=>{mFlipped.forEach(x=>x.classList.remove('flipped'));mFlipped=[];},900);
+    }
+  }
+}
+
+function renderMemStats(){
+  document.getElementById('memMoves').textContent=mMoves;
+  document.getElementById('memPairs').textContent=mCount+'/8';
+  const b=localStorage.getItem('memBest');
+  document.getElementById('memBestDisp').textContent=b||'—';
+  document.getElementById('memStreakBadge').textContent=localStorage.getItem('dbStreak')||'0';
+}
+
+// ================================================================
+// WORD PUZZLE (Wordle-style)
+// ================================================================
+const WORDS = [
+  'CRANE','PLANT','SHARP','BRISK','CHART','FLAME','BRAVE','CLAMP',
+  'DRAFT','FLINT','GRASP','HINGE','LATCH','MARCH','NOTCH','PIVOT',
+  'QUIRK','RIDGE','SCOUT','THRIVE','SWIFT','TORCH','TWIST','VAULT',
+  'WRIST','YIELD','BLOOM','CHEST','DRIVE','FETCH','GLARE','HATCH',
+  'JUDGE','KNACK','LUSTY','MEANT','NOBLE','OLIVE','PLUMB','QUILL',
+  'RIVET','SLOPE','TROUT','ULCER','VISTA','WALTZ','YEAST','ZONAL',
+  'CABIN','DANCE','EAGLE','FABLE','GLOBE','HABIT','INFER','JOUST',
+  'KARMA','LEMON','MAPLE','NERVE','ORBIT','PROBE','QUEEN','REALM',
+  'STAGE','TIGER','UNITE','VIOLA','WAGER','YOUTH','ZEBRA','BLAZE',
+  'CRISP','DELTA','ELBOW','FINCH','GROVE','HOARD','INSET','JELLY',
+  'KNEEL','LLAMA','MERGE','NYMPH','ONSET','PIXEL','QUEST','ROUSE',
+  'SHAWL','TRYST','USHER','VENOM','WHEAT','XYLEM','YEARN','ZILCH'
+];
+
+let wTarget='', wGuesses=[], wCurrent='', wDone=false;
+const ROWS=6, COLS=5;
+
+function initWord() {
+  wTarget = WORDS[Math.floor(Math.random()*WORDS.length)];
+  wGuesses=[]; wCurrent=''; wDone=false;
+  document.getElementById('wordResult').classList.add('hidden');
+  document.getElementById('wordMsg').classList.add('hidden');
+  buildWordGrid();
+  buildKeyboard();
+  document.getElementById('wordStreakBadge').textContent=localStorage.getItem('dbStreak')||'0';
+}
+
+function buildWordGrid(){
+  const g=document.getElementById('wordGrid'); g.innerHTML='';
+  for(let r=0;r<ROWS;r++){
+    const row=document.createElement('div'); row.className='word-row';
+    for(let c=0;c<COLS;c++){
+      const cell=document.createElement('div');
+      cell.className='word-cell'; cell.id=`wc-${r}-${c}`;
+      row.appendChild(cell);
+    } g.appendChild(row);
+  }
+}
+
+function buildKeyboard(){
+  const rows=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENTER','Z','X','C','V','B','N','M','⌫']];
+  const kb=document.getElementById('keyboard'); kb.innerHTML='';
+  rows.forEach(row=>{
+    const div=document.createElement('div'); div.className='kb-row';
+    row.forEach(k=>{
+      const btn=document.createElement('button');
+      btn.className='kb-key'+(k.length>1?' wide':'');
+      btn.textContent=k; btn.dataset.k=k;
+      btn.addEventListener('click',()=>onKey(k));
+      div.appendChild(btn);
+    }); kb.appendChild(div);
+  });
+}
+
+function onKey(k){
+  if(wDone) return;
+  if(k==='⌫'){
+    wCurrent=wCurrent.slice(0,-1); updateCurrentRow(); return;
+  }
+  if(k==='ENTER'){
+    if(wCurrent.length<COLS){ showWordMsg('Not enough letters','bad'); return; }
+    submitGuess(); return;
+  }
+  if(wCurrent.length<COLS) { wCurrent+=k; updateCurrentRow(); }
+}
+
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('screen-word').classList.contains('hidden')) return;
+  if(e.key==='Enter') onKey('ENTER');
+  else if(e.key==='Backspace') onKey('⌫');
+  else if(/^[a-zA-Z]$/.test(e.key)) onKey(e.key.toUpperCase());
+});
+
+function updateCurrentRow(){
+  const r=wGuesses.length;
+  for(let c=0;c<COLS;c++){
+    const cell=document.getElementById(`wc-${r}-${c}`);
+    const ch=wCurrent[c]||'';
+    cell.textContent=ch;
+    cell.className='word-cell'+(ch?' filled current-row':'');
+    if(ch) { cell.classList.add('pop'); setTimeout(()=>cell.classList.remove('pop'),120); }
+  }
+}
+
+function submitGuess(){
+  const guess=wCurrent;
+  const result=scoreGuess(guess, wTarget);
+  const r=wGuesses.length;
+  document.getElementById('wordMsg').classList.add('hidden');
+
+  result.forEach((res,c)=>{
+    const cell=document.getElementById(`wc-${r}-${c}`);
+    cell.className='word-cell filled';
+    setTimeout(()=>{
+      cell.classList.add('flip');
+      setTimeout(()=>{ cell.classList.remove('flip'); cell.classList.add(res); },200);
+    }, c*80);
+  });
+
+  setTimeout(()=>updateKbColors(guess,result), COLS*80+250);
+
+  wGuesses.push(guess); wCurrent='';
+
+  if(guess===wTarget){
+    wDone=true; updateStreak(); confetti();
+    setTimeout(()=>{
+      const msgs=['Perfect!','Got it!','Nice work!','Sharp!','Correct!','You got it!'];
+      document.getElementById('wordResultIcon').textContent='🎉';
+      document.getElementById('wordResultTitle').textContent=msgs[Math.min(wGuesses.length-1,5)];
+      document.getElementById('wordResultMsg').textContent=`"${wTarget}" — solved in ${wGuesses.length} ${wGuesses.length===1?'try':'tries'}.`;
+      document.getElementById('wordResult').classList.remove('hidden');
+    }, COLS*80+600);
+    return;
+  }
+
+  if(wGuesses.length===ROWS){
+    wDone=true;
+    setTimeout(()=>{
+      document.getElementById('wordResultIcon').textContent='😅';
+      document.getElementById('wordResultTitle').textContent='Almost!';
+      document.getElementById('wordResultMsg').textContent=`The word was "${wTarget}". Give it another go!`;
+      document.getElementById('wordResult').classList.remove('hidden');
+    }, COLS*80+500);
+    return;
+  }
+
+  updateCurrentRow();
+}
+
+function scoreGuess(guess, target){
+  const res=Array(COLS).fill('absent');
+  const tArr=[...target], used=Array(COLS).fill(false);
+  // correct pass
+  for(let i=0;i<COLS;i++) if(guess[i]===tArr[i]){ res[i]='correct'; used[i]=true; }
+  // present pass
+  for(let i=0;i<COLS;i++){
+    if(res[i]==='correct') continue;
+    for(let j=0;j<COLS;j++){
+      if(!used[j]&&res[j]!=='correct'&&guess[i]===tArr[j]){ res[i]='present'; used[j]=true; break; }
+    }
+  }
+  return res;
+}
+
+function updateKbColors(guess, result){
+  const priority={correct:3,present:2,absent:1};
+  result.forEach((res,i)=>{
+    const k=guess[i];
+    document.querySelectorAll('.kb-key').forEach(btn=>{
+      if(btn.dataset.k===k){
+        const cur=btn.classList.contains('k-correct')?'correct':btn.classList.contains('k-present')?'present':btn.classList.contains('k-absent')?'absent':null;
+        if(!cur||priority[res]>priority[cur]){
+          btn.className=`kb-key${k.length>1?' wide':''} k-${res}`;
+        }
+      }
+    });
+  });
+}
+
+function showWordMsg(msg, type){
+  const el=document.getElementById('wordMsg');
+  el.textContent=msg; el.className=`word-msg ${type}`;
+  el.classList.remove('hidden');
+  setTimeout(()=>el.classList.add('hidden'),1600);
+  // shake current row
+  for(let c=0;c<COLS;c++){
+    const cell=document.getElementById(`wc-${wGuesses.length}-${c}`);
+    cell.classList.add('shake');
+    setTimeout(()=>cell.classList.remove('shake'),350);
+  }
+}
+
+// ================================================================
+// TRIVIA
+// ================================================================
+const triviaBank = [
+  { q:"What is the largest planet in our solar system?", opts:["Saturn","Jupiter","Neptune","Uranus"], a:1 },
+  { q:"How many sides does a hexagon have?", opts:["5","6","7","8"], a:1 },
+  { q:"Which element has the chemical symbol 'Au'?", opts:["Silver","Aluminum","Gold","Copper"], a:2 },
+  { q:"The Great Wall of China was primarily built to protect against invaders from which direction?", opts:["South","West","East","North"], a:3 },
+  { q:"What is the capital of Australia?", opts:["Sydney","Melbourne","Brisbane","Canberra"], a:3 },
+  { q:"Which ocean is the largest by area?", opts:["Atlantic","Indian","Arctic","Pacific"], a:3 },
+  { q:"How many bones are in the adult human body?", opts:["196","206","216","226"], a:1 },
+  { q:"What year did World War II end?", opts:["1943","1944","1945","1946"], a:2 },
+  { q:"Which planet is known as the Red Planet?", opts:["Venus","Mars","Jupiter","Saturn"], a:1 },
+  { q:"Who painted the Mona Lisa?", opts:["Michelangelo","Raphael","Leonardo da Vinci","Botticelli"], a:2 },
+  { q:"What is the chemical formula for water?", opts:["HO","H2O","H3O","H2O2"], a:1 },
+  { q:"In what country were the first modern Olympic Games held in 1896?", opts:["Italy","France","Greece","England"], a:2 },
+  { q:"What is the hardest natural substance on Earth?", opts:["Gold","Iron","Quartz","Diamond"], a:3 },
+  { q:"How many continents are there on Earth?", opts:["5","6","7","8"], a:2 },
+  { q:"What is the speed of light approximately?", opts:["186,000 miles/sec","100,000 miles/sec","250,000 miles/sec","300,000 miles/sec"], a:0 },
+  { q:"Which animal is known as the 'King of the Jungle'?", opts:["Tiger","Cheetah","Lion","Leopard"], a:2 },
+  { q:"How many players are on a standard soccer team on the field?", opts:["9","10","11","12"], a:2 },
+  { q:"What is the tallest mountain in the world?", opts:["K2","Everest","Kilimanjaro","Mont Blanc"], a:1 },
+  { q:"Which US state is known as the 'Sunshine State'?", opts:["California","Hawaii","Arizona","Florida"], a:3 },
+  { q:"What gas do plants primarily absorb during photosynthesis?", opts:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"], a:2 },
+  { q:"How many letters are in the English alphabet?", opts:["24","25","26","27"], a:2 },
+  { q:"What is the longest river in the world?", opts:["Amazon","Congo","Yangtze","Nile"], a:3 },
+  { q:"Which instrument has 88 keys?", opts:["Organ","Accordion","Piano","Harpsichord"], a:2 },
+  { q:"In which decade did the Berlin Wall fall?", opts:["1970s","1980s","1990s","2000s"], a:1 },
+  { q:"What is the square root of 144?", opts:["10","11","12","13"], a:2 },
+  { q:"Which bird is a symbol of peace?", opts:["Eagle","Crane","Dove","Swan"], a:2 },
+  { q:"How many hours are in a week?", opts:["156","160","168","172"], a:2 },
+  { q:"Which country invented paper?", opts:["Japan","Egypt","China","India"], a:2 },
+  { q:"What is the largest organ of the human body?", opts:["Liver","Brain","Lung","Skin"], a:3 },
+  { q:"How many teeth does an adult human typically have?", opts:["28","30","32","34"], a:2 },
+];
+
+let tQuestions=[], tIdx=0, tScore=0, tAnswered=false;
+const T_PER_ROUND=7;
+
+function initTrivia(){
+  const shuffled=[...triviaBank].sort(()=>Math.random()-0.5);
+  tQuestions=shuffled.slice(0,T_PER_ROUND);
+  tIdx=0; tScore=0; tAnswered=false;
+  document.getElementById('triviaStreakBadge').textContent=localStorage.getItem('dbStreak')||'0';
+  renderTrivia();
+}
+
+function renderTrivia(){
+  if(tIdx>=tQuestions.length){ showTriviaComplete(); return; }
+  tAnswered=false;
+  const q=tQuestions[tIdx];
+  const prog=((tIdx)/tQuestions.length)*100;
+  document.getElementById('triviaContent').innerHTML=`
+    <div class="trivia-q">
+      <div class="prog-row" style="margin-bottom:14px">
+        <div class="prog-track"><div class="prog-fill" style="width:${prog}%"></div></div>
+        <div class="prog-lbl">${tIdx+1}/${tQuestions.length}</div>
+      </div>
+      <div class="trivia-num">Question ${tIdx+1}</div>
+      <div class="trivia-text">${q.q}</div>
+    </div>
+    <div class="trivia-opts">
+      ${q.opts.map((o,i)=>`
+        <button class="trivia-opt" id="topt${i}" onclick="onTrivia(${i})">
+          <span class="trivia-dot"></span>${o}
+        </button>`).join('')}
+    </div>
+    <div id="tResult"></div>
+  `;
+}
+
+function onTrivia(choice){
+  if(tAnswered) return; tAnswered=true;
+  const q=tQuestions[tIdx];
+  q.opts.forEach((_,i)=>{
+    const btn=document.getElementById('topt'+i);
+    btn.disabled=true;
+    if(i===q.a) btn.classList.add('correct');
+    else if(i===choice&&choice!==q.a) btn.classList.add('wrong');
+  });
+  if(choice===q.a) tScore++;
+  document.getElementById('tResult').innerHTML=`
+    <div class="result-box ${choice===q.a?'correct':'wrong'}" style="margin-top:12px">
+      ${choice===q.a?'✓ Correct!':'That\'s a tough one — the answer was: <strong>'+q.opts[q.a]+'</strong>'}
+    </div>
+  `;
+  setTimeout(()=>{ tIdx++; renderTrivia(); }, 1800);
+}
+
+function showTriviaComplete(){
+  updateStreak(); confetti();
+  const pct=Math.round((tScore/tQuestions.length)*100);
+  document.getElementById('triviaContent').innerHTML=`
+    <div class="complete">
+      <span class="complete-icon">${pct===100?'🏆':pct>=70?'🎯':'💡'}</span>
+      <div class="complete-title">${tScore} / ${tQuestions.length}</div>
+      <div class="complete-score">${pct===100?'Perfect round!':pct>=85?'Really sharp.':pct>=70?'Solid work.':'Good effort — try again?'}</div>
+      <button class="btn btn-primary" onclick="initTrivia()">Play again</button>
+      <button class="btn btn-ghost" onclick="go('home')">← Home</button>
+    </div>
+  `;
+}
+
+// ================================================================
+// DECISIONS
+// ================================================================
+const decisions = [
+  {
+    tag:"Classic dilemma",
+    q:"A long-time supplier offers you a 20% discount if you commit to an exclusive 3-year contract. A newer competitor offers 10% off with no lock-in. What do you do?",
+    opts:["Take the exclusive deal — savings now, sort later","Decline both and keep full flexibility","Negotiate: ask the supplier for shorter term with same discount","Accept the newer competitor's deal"],
+    a:2,
+    fb:"Negotiating first is almost always the right first move. You might get the same savings with far less lock-in.",
+    fbw:"Smart instinct, but there's usually a better angle before making the final call."
+  },
+  {
+    tag:"People problem",
+    q:"Your best performer is clashing repeatedly with a newer team member who has real potential. Productivity is slipping for both. What's your move?",
+    opts:["Separate them — put them on different projects indefinitely","Address it directly: meet with each, then together if needed","Wait it out — personalities usually sort themselves","Let the team manage it naturally"],
+    a:1,
+    fb:"Direct, honest conversation — separately then together — usually resolves this faster than any workaround.",
+    fbw:"Avoidance and workarounds tend to let the problem grow. Direct is usually better here."
+  },
+  {
+    tag:"Budget crunch",
+    q:"You're 15% over budget midway through the year. Leadership wants cuts. What do you cut first?",
+    opts:["Across-the-board 15% trim on every line item","Identify the lowest-ROI spending first, cut those fully","Freeze all discretionary spending immediately","Ask for a budget extension instead"],
+    a:1,
+    fb:"Targeted cuts based on actual ROI protect the things that matter most and show strategic judgment.",
+    fbw:"Across-the-board and blanket freezes are blunt instruments — they often cut things you'll regret losing."
+  },
+  {
+    tag:"Process question",
+    q:"A new system would save the team 4 hours a week, but there's a steep learning curve and a 6-week disruption. Do you implement it?",
+    opts:["Yes — the long-term math is clear","No — 6 weeks of disruption isn't worth it","Pilot it with one team member first, evaluate results","Wait until a quieter time of year"],
+    a:2,
+    fb:"Piloting lets you capture real data on the disruption and benefit before committing the whole team.",
+    fbw:"The pilot approach usually de-risks the decision significantly — it's worth that extra step."
+  },
+  {
+    tag:"Communication",
+    q:"You need to share difficult news with your team — a project they worked hard on has been cancelled. How do you handle it?",
+    opts:["Send a group email explaining the situation clearly","Announce in the next regular team meeting","Tell them individually in brief 1-on-1s first","Delegate the announcement to someone else"],
+    a:2,
+    fb:"Individual conversations first show respect for the people involved and give each person space to react without an audience.",
+    fbw:"Group announcements for hard news can make people feel like a number. Individual first is usually the more human approach."
+  },
+  {
+    tag:"Risk & reward",
+    q:"A vendor offers an amazing deal but they're brand new with no track record. The savings are significant. Do you take it?",
+    opts:["Yes — the numbers make sense","No — no track record means too much risk","Start with a small pilot contract, option to expand","Ask for references and third-party validation first"],
+    a:3,
+    fb:"Verification first — references, reviews, third-party validation — dramatically reduces blind risk without killing the opportunity.",
+    fbw:"Good instinct around the risk. Getting third-party validation before committing is usually the smart middle path."
+  },
+];
+
+let dIdx=0, dDone=false;
+
+function initDecisions(){
+  const shuffled=[...decisions].sort(()=>Math.random()-0.5);
+  // use shuffled but show max 5
+  dIdx=0; dDone=false;
+  document.getElementById('decStreakBadge').textContent=localStorage.getItem('dbStreak')||'0';
+  renderDecision(shuffled);
+  // store shuffled for session
+  window._decSet=shuffled.slice(0,5);
+}
+
+function renderDecision(set){
+  window._decSet=window._decSet||set;
+  if(dIdx>=window._decSet.length){ showDecComplete(); return; }
+  dDone=false;
+  const d=window._decSet[dIdx];
+  const prog=(dIdx/window._decSet.length)*100;
+  document.getElementById('decContent').innerHTML=`
+    <div class="scenario-header" style="margin-bottom:10px">
+      <div class="prog-row">
+        <div class="prog-track"><div class="prog-fill" style="width:${prog}%"></div></div>
+        <div class="prog-lbl">${dIdx+1}/${window._decSet.length}</div>
+      </div>
+      <div class="sc-tag">${d.tag}</div>
+      <div class="sc-q">${d.q}</div>
+    </div>
+    <div class="scenario-wrap" id="decOpts">
+      ${d.opts.map((o,i)=>`
+        <button class="opt-btn" id="dopt${i}" onclick="onDecision(${i})">
+          <span class="opt-letter">${String.fromCharCode(65+i)}</span>
+          <span>${o}</span>
+        </button>`).join('')}
+    </div>
+    <div id="decResult"></div>
+  `;
+}
+
+function onDecision(choice){
+  if(dDone) return; dDone=true;
+  const d=window._decSet[dIdx];
+  d.opts.forEach((_,i)=>{
+    const btn=document.getElementById('dopt'+i);
+    btn.disabled=true;
+    if(i===d.a) btn.classList.add('correct');
+    else if(i===choice&&choice!==d.a) btn.classList.add('wrong');
+  });
+  const correct=(choice===d.a);
+  document.getElementById('decResult').innerHTML=`
+    <div class="result-box ${correct?'correct':'wrong'}" style="margin-top:12px">
+      ${correct?'✓ '+d.fb:d.fbw+' <strong>Best call: '+d.opts[d.a]+'</strong>'}
+    </div>
+  `;
+  setTimeout(()=>{ dIdx++; renderDecision(); }, 2200);
+}
+
+function showDecComplete(){
+  updateStreak(); confetti();
+  document.getElementById('decContent').innerHTML=`
+    <div class="complete">
+      <span class="complete-icon">💼</span>
+      <div class="complete-title">Round complete.</div>
+      <div class="complete-score">Good thinking all around.</div>
+      <button class="btn btn-primary" onclick="initDecisions()">Play again</button>
+      <button class="btn btn-ghost" onclick="go('home')">← Home</button>
+    </div>
+  `;
+}
+
+// ================================================================
+// STREAK + NAV + CONFETTI
+// ================================================================
+function updateStreak(){
+  let s=parseInt(localStorage.getItem('dbStreak')||'0');
+  const last=localStorage.getItem('dbLastDate'), today=new Date().toDateString();
+  if(last!==today){ s++; localStorage.setItem('dbStreak',s); localStorage.setItem('dbLastDate',today); }
+  document.getElementById('streak').textContent=s;
+}
+
+function go(screen){
+  ['home','memory','word','trivia','decisions'].forEach(s=>{
+    document.getElementById('screen-'+s).classList.add('hidden');
+  });
+  document.getElementById('screen-'+screen).classList.remove('hidden');
+  if(screen==='memory') initMemory();
+  if(screen==='word') initWord();
+  if(screen==='trivia') initTrivia();
+  if(screen==='decisions') initDecisions();
+  if(screen==='home') updateStreak();
+  window.scrollTo(0,0);
+}
+
+function confetti(){
+  const c=['#3B82F6','#16A34A','#D97706','#7C3AED','#E11D48','#14B8A6'];
+  for(let i=0;i<30;i++){
+    const el=document.createElement('div');
+    el.style.cssText=`position:fixed;left:${Math.random()*100}vw;top:-12px;width:${5+Math.random()*6}px;height:${5+Math.random()*6}px;border-radius:${Math.random()>.5?'50%':'2px'};background:${c[Math.floor(Math.random()*c.length)]};pointer-events:none;z-index:9999;animation:confettiFall ${1.2+Math.random()*1.8}s linear ${Math.random()*0.5}s forwards`;
+    document.body.appendChild(el);
+    el.addEventListener('animationend',()=>el.remove());
+  }
+}
+
+const style=document.createElement('style');
+style.textContent=`@keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}`;
+document.head.appendChild(style);
+
+// ================================================================
+// BOOT
+// ================================================================
+window.onload=()=>{
+  updateStreak();
+  const greeting=document.getElementById('greeting');
+  setTimeout(()=>{
+    greeting.style.opacity='0';
+    setTimeout(()=>{ greeting.classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); },1700);
+  },4500);
+};
+</script>
+</body>
+</html>
