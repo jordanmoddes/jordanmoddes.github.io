@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kodak GM Brain Lab</title>
+  <title>Microseal GM Brain Lab</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: system-ui; }
@@ -14,43 +14,43 @@
     .scenario-option { transition: all 0.2s; }
   </style>
 </head>
-<body class="bg-amber-50 min-h-screen text-2xl p-4 max-w-md mx-auto overflow-hidden">
+<body class="bg-blue-50 min-h-screen text-2xl p-4 max-w-md mx-auto overflow-hidden">
 
   <!-- GREETING SCREEN -->
   <div id="greeting" class="flex flex-col items-center justify-center min-h-screen text-center">
-    <div class="text-6xl font-bold text-amber-800 leading-tight">
+    <div class="text-6xl font-bold text-blue-900 leading-tight">
       Hi Debbie<br>(aka Grandma)
     </div>
     <div class="mt-8 text-5xl text-pink-600">Have a good day and I love you ❤️</div>
-    <div class="mt-12 text-2xl text-amber-600 animate-pulse">— Your grandson</div>
+    <div class="mt-12 text-2xl text-blue-600 animate-pulse">— Your grandson</div>
   </div>
 
-  <!-- MAIN APP (hidden until greeting fades) -->
+  <!-- MAIN APP -->
   <div id="app" class="hidden">
     <div id="home" class="text-center">
-      <h1 class="text-5xl font-bold text-amber-700 mb-2">Kodak GM Brain Lab</h1>
+      <h1 class="text-5xl font-bold text-blue-800 mb-2">Microseal GM Brain Lab</h1>
       <div class="flex items-center justify-center gap-3 mb-6 text-3xl font-bold text-teal-700">
         <span>GM Streak:</span>
         <span id="streak" class="text-4xl">0</span>
         <span class="text-3xl">days 🔥</span>
       </div>
-      <p class="text-3xl text-amber-600 mb-10">Real executive challenges from the film plant days.<br>Sharp focus. Real wins. No politics — just strategy.</p>
+      <p class="text-3xl text-blue-700 mb-10">Real executive challenges from the Zion, IL plant.<br>Aperture cards, fiche jackets, storage systems — just like the old days. Sharp focus. No politics.</p>
       
-      <button onclick="showGame('memory')" class="block w-full bg-amber-600 hover:bg-amber-700 text-white py-9 rounded-3xl mb-6 text-3xl shadow-xl">🧠 Memory Pro (Kodak 90s/00s Edition)</button>
-      <button onclick="showGame('decisions')" class="block w-full bg-purple-600 hover:bg-purple-700 text-white py-9 rounded-3xl text-3xl shadow-xl">📋 Executive Decisions (Your Old Job)</button>
+      <button onclick="showGame('memory')" class="block w-full bg-blue-600 hover:bg-blue-700 text-white py-9 rounded-3xl mb-6 text-3xl shadow-xl">🧠 Memory Pro (Microseal Edition)</button>
+      <button onclick="showGame('decisions')" class="block w-full bg-purple-600 hover:bg-purple-700 text-white py-9 rounded-3xl text-3xl shadow-xl">📋 Executive Decisions (Zion Plant 90s/00s)</button>
     </div>
 
     <!-- MEMORY PRO -->
     <div id="memory" class="hidden">
       <div class="flex justify-between items-center mb-6">
         <button onclick="goHome()" class="text-4xl">←</button>
-        <h2 class="text-4xl font-bold text-amber-700">Memory Pro</h2>
+        <h2 class="text-4xl font-bold text-blue-700">Memory Pro</h2>
         <div class="text-3xl font-bold" id="memMoves">Moves: 0</div>
       </div>
       <div id="memGrid" class="grid grid-cols-4 gap-4"></div>
       <div id="memWin" class="hidden mt-8 text-center">
         <p class="text-5xl mb-3">🎉 GM-Level Perfect Recall! 🎉</p>
-        <p class="text-3xl">Just like keeping the lines perfect in '97.</p>
+        <p class="text-3xl">Just like keeping millions of aperture cards perfectly organized at the Zion plant.</p>
         <button onclick="restartMemory()" class="mt-8 bg-green-600 text-white py-7 px-14 rounded-3xl text-3xl">Next Challenge</button>
       </div>
     </div>
@@ -59,16 +59,16 @@
     <div id="decisions" class="hidden">
       <button onclick="goHome()" class="text-4xl mb-4">←</button>
       <h2 class="text-4xl font-bold text-purple-700 mb-6 text-center">Executive Decisions</h2>
-      <div id="scenarioText" class="text-3xl mb-8 leading-tight text-amber-800"></div>
+      <div id="scenarioText" class="text-3xl mb-8 leading-tight text-blue-900"></div>
       <div id="options" class="space-y-5"></div>
       <div id="decisionResult" class="hidden mt-8 text-4xl text-center"></div>
     </div>
   </div>
 
 <script>
-// Tailwind ready
-const kodakPairs = ['📼','📼','🧪','🧪','📸','📸','🎞️','🎞️','🔬','🔬','🏭','🏭','💾','💾','📊','📊'];
-let cards = [...kodakPairs];
+// Microseal-themed pairs (aperture cards, fiche jackets, storage, viewers, etc.)
+const microsealPairs = ['📇','📇','🗃️','🗃️','📋','📋','🔍','🔍','📼','📼','🖥️','🖥️','📦','📦','📊','📊'];
+let cards = [...microsealPairs];
 let flippedCards = [], matched = [], moves = 0;
 
 function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
@@ -79,9 +79,9 @@ function createMemory() {
   grid.innerHTML = '';
   cards.forEach((emoji, i) => {
     const card = document.createElement('div');
-    card.className = 'card relative h-24 bg-white rounded-3xl shadow-2xl border-4 border-amber-300 flex items-center justify-center text-7xl cursor-pointer';
+    card.className = 'card relative h-24 bg-white rounded-3xl shadow-2xl border-4 border-blue-300 flex items-center justify-center text-7xl cursor-pointer';
     card.innerHTML = `
-      <div class="card-front absolute inset-0 flex items-center justify-center bg-amber-200 rounded-3xl text-7xl">❓</div>
+      <div class="card-front absolute inset-0 flex items-center justify-center bg-blue-200 rounded-3xl text-7xl">❓</div>
       <div class="card-back absolute inset-0 flex items-center justify-center bg-white rounded-3xl text-7xl">${emoji}</div>
     `;
     card.dataset.value = emoji;
@@ -124,37 +124,37 @@ function restartMemory() {
   createMemory();
 }
 
-// EXECUTIVE DECISIONS
+// Real Microseal 90s/00s scenarios
 const scenarios = [
   {
-    q: "It's 1998. Digital cameras are starting to show up. Your plant has a huge film line running at 95% capacity. Best executive move?",
+    q: "It's 1996 at the Zion plant. Digital imaging is starting to appear. Your fiche jacket line is running at full capacity. Best executive move?",
     options: [
-      "Shut down the film line immediately and retool everything for digital",
-      "Keep film running full speed while quietly training 20% of the team on digital processes",
-      "Ignore digital — film is king and always will be"
+      "Shut down the jacket line immediately and retool everything for digital",
+      "Keep analog production running full speed while quietly training 20% of the team on new digital scanners and imaging",
+      "Ignore digital completely — aperture cards and jackets will always be king"
     ],
     correct: 1,
-    feedback: "✅ Spot-on GM thinking! That's exactly how the best plants stayed ahead in the late 90s."
+    feedback: "✅ Exactly the smart hybrid strategy that kept Microseal plants competitive in the late 90s."
   },
   {
-    q: "Budget cuts hit in 2001. You have to reduce costs by 15% without losing quality. What do you do?",
+    q: "Budget cuts hit hard in 2001. You must reduce costs 15% without losing quality on aperture cards and storage systems. What do you do?",
     options: [
-      "Cut the maintenance budget on the coating machines",
-      "Cross-train operators so you need 2 fewer supervisors",
-      "Stop all safety training to save money"
+      "Cut maintenance on the card-punching machines",
+      "Cross-train operators so you need fewer supervisors while keeping quality standards",
+      "Stop all safety and training programs to save money"
     ],
     correct: 1,
-    feedback: "✅ Excellent leadership call — that's the kind of smart efficiency that kept Kodak facilities running strong."
+    feedback: "✅ Strong GM call — that's the efficiency that kept the Zion operation strong through tough years."
   },
   {
-    q: "Your team is nervous about the digital transition in 2003. Morale is dropping. Best move?",
+    q: "Your team is worried about the digital transition in 2003. Morale is dropping. Best move as GM?",
     options: [
-      "Tell them everything will be fine and nothing is changing",
-      "Hold a plant-wide meeting showing real data and how their skills transfer to new tech",
-      "Just give everyone a small bonus and hope it passes"
+      "Tell everyone 'nothing is changing' and hope it passes",
+      "Hold a full plant meeting with real data showing how their fiche and storage skills transfer to electronic imaging",
+      "Just hand out small bonuses and avoid the topic"
     ],
     correct: 1,
-    feedback: "✅ Perfect. Real communication and vision — that's what separated great GMs from the rest."
+    feedback: "✅ Perfect leadership — real communication and vision, just like the best Microseal GMs did."
   }
 ];
 let currentScenario = 0;
@@ -182,14 +182,13 @@ function showScenario() {
 function handleDecision(choice) {
   const s = scenarios[currentScenario];
   const result = document.getElementById('decisionResult');
-  const correct = s.correct;
   
-  if (choice === correct) {
+  if (choice === s.correct) {
     result.innerHTML = s.feedback;
     result.className = 'hidden mt-8 text-4xl text-green-600';
   } else {
-    result.innerHTML = `Not quite the move we used back then.<br><span class="text-amber-700">Best was: ${s.options[correct]}</span>`;
-    result.className = 'hidden mt-8 text-4xl text-amber-700';
+    result.innerHTML = `Not quite the move we used back then at Microseal.<br><span class="text-blue-700">Best was: ${s.options[s.correct]}</span>`;
+    result.className = 'hidden mt-8 text-4xl text-blue-700';
   }
   result.classList.remove('hidden');
   
@@ -198,7 +197,7 @@ function handleDecision(choice) {
     if (currentScenario < scenarios.length) {
       showScenario();
     } else {
-      result.innerHTML = `🎉 Full Executive Round Complete!<br>You just ran the plant like the pro you are.<br>Streak updated — keep going!`;
+      result.innerHTML = `🎉 Full Executive Round Complete!<br>You just ran the Zion plant like the pro GM you are.<br>Streak updated — keep going!`;
       result.className = 'hidden mt-8 text-4xl text-purple-600';
       result.classList.remove('hidden');
       updateStreak();
@@ -206,7 +205,6 @@ function handleDecision(choice) {
   }, 2600);
 }
 
-// Navigation
 function showGame(game) {
   document.getElementById('home').classList.add('hidden');
   document.getElementById('memory').classList.add('hidden');
@@ -227,26 +225,24 @@ function goHome() {
   document.getElementById('decisions').classList.add('hidden');
 }
 
-// Streak
 function updateStreak() {
-  let streak = parseInt(localStorage.getItem('gmStreak') || '0');
-  const lastDate = localStorage.getItem('gmLastDate');
+  let streak = parseInt(localStorage.getItem('microsealStreak') || '0');
+  const lastDate = localStorage.getItem('microsealLastDate');
   const today = new Date().toDateString();
   
   if (lastDate !== today) {
     streak++;
-    localStorage.setItem('gmStreak', streak);
-    localStorage.setItem('gmLastDate', today);
+    localStorage.setItem('microsealStreak', streak);
+    localStorage.setItem('microsealLastDate', today);
   }
   document.getElementById('streak').textContent = streak;
 }
 
-// Greeting → Main App fade
+// Greeting fade → app
 window.onload = () => {
   const greeting = document.getElementById('greeting');
   const app = document.getElementById('app');
   
-  // Show greeting for 7 seconds
   setTimeout(() => {
     greeting.classList.add('fade-out');
     greeting.style.opacity = '0';
@@ -254,8 +250,8 @@ window.onload = () => {
     setTimeout(() => {
       greeting.classList.add('hidden');
       app.classList.remove('hidden');
-      updateStreak();           // load streak on first real screen
-    }, 2200); // after fade finishes
+      updateStreak();
+    }, 2200);
   }, 7000);
 };
 </script>
