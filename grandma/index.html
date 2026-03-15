@@ -1,259 +1,854 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Microseal GM Brain Lab</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Debbie's Brain Lab \ud83d\udc99</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
   <style>
-    body { font-family: system-ui; }
-    .fade-out { transition: opacity 2s ease-out; }
-    .card { transition: transform 0.6s; transform-style: preserve-3d; }
-    .card.flipped { transform: rotateY(180deg); }
-    .card-front, .card-back { backface-visibility: hidden; }
-    .scenario-option { transition: all 0.2s; }
+    :root {
+      --cream: #FFF8F0;
+      --warm-white: #FFFDF9;
+      --rose: #F472B6;
+      --rose-light: #FCE7F3;
+      --rose-dark: #DB2777;
+      --blue: #3B82F6;
+      --blue-light: #EFF6FF;
+      --blue-dark: #1D4ED8;
+      --teal: #14B8A6;
+      --teal-light: #F0FDFA;
+      --purple: #8B5CF6;
+      --purple-light: #F5F3FF;
+      --gold: #F59E0B;
+      --navy: #1E3A5F;
+      --text: #1E293B;
+      --text-soft: #64748B;
+      --shadow-soft: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.12);
+      --shadow-lifted: 0 16px 48px rgba(0,0,0,0.18);
+      --radius: 24px;
+      --radius-sm: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      min-height: 100vh;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ===== BACKGROUND TEXTURE ===== */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(244,114,182,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(59,130,246,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 60% 30%, rgba(20,184,166,0.05) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== GREETING SCREEN ===== */
+    #greeting {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 40px 32px;
+      background: linear-gradient(145deg, #FFF0F9 0%, #EFF6FF 50%, #F0FDFA 100%);
+      z-index: 100;
+      transition: opacity 1.8s ease-out;
+    }
+
+    .greeting-hearts {
+      font-size: 52px;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .greeting-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(52px, 14vw, 72px);
+      color: var(--navy);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .greeting-aka {
+      font-size: clamp(20px, 5vw, 26px);
+      color: var(--rose-dark);
+      font-weight: 700;
+      margin-bottom: 36px;
+      opacity: 0.85;
+    }
+
+    .greeting-love {
+      font-size: clamp(22px, 6vw, 30px);
+      color: var(--text);
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+
+    .greeting-love .heart {
+      color: var(--rose);
+      display: inline-block;
+      animation: heartbeat 1.4s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .greeting-sig {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(18px, 4.5vw, 22px);
+      color: var(--teal);
+      opacity: 0.8;
+      letter-spacing: 0.5px;
+    }
+
+    .greeting-dots {
+      display: flex; gap: 8px; margin-top: 48px;
+      align-items: center;
+    }
+
+    .greeting-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--rose);
+      opacity: 0.4;
+      animation: dotPulse 1.4s ease-in-out infinite;
+    }
+
+    .greeting-dots span:nth-child(2) { animation-delay: 0.2s; background: var(--blue); }
+    .greeting-dots span:nth-child(3) { animation-delay: 0.4s; background: var(--teal); }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* ===== MAIN APP ===== */
+    #app {
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 0 16px 32px;
+      position: relative; z-index: 1;
+    }
+
+    /* ===== TOP BAR ===== */
+    .top-bar {
+      padding: 20px 4px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .back-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      box-shadow: var(--shadow-soft);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+
+    .back-btn:active { transform: scale(0.92); }
+
+    /* ===== STREAK BADGE ===== */
+    .streak-pill {
+      background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+      border: 2px solid var(--gold);
+      border-radius: 999px;
+      padding: 8px 18px;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-weight: 800;
+      font-size: 18px;
+      color: #92400E;
+      box-shadow: 0 2px 8px rgba(245,158,11,0.25);
+    }
+
+    /* ===== HOME SCREEN ===== */
+    .home-header {
+      text-align: center;
+      padding: 24px 8px 28px;
+    }
+
+    .home-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(34px, 9vw, 44px);
+      color: var(--navy);
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .home-subtitle {
+      font-size: clamp(15px, 4vw, 18px);
+      color: var(--text-soft);
+      line-height: 1.6;
+      max-width: 340px;
+      margin: 0 auto;
+      font-weight: 600;
+    }
+
+    .streak-row {
+      display: flex; justify-content: center;
+      margin: 20px 0 28px;
+    }
+
+    /* ===== GAME CARDS ===== */
+    .game-card {
+      width: 100%;
+      border-radius: var(--radius);
+      border: none;
+      padding: 28px 24px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: var(--shadow-card);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card:active { transform: scale(0.97); box-shadow: var(--shadow-soft); }
+    .game-card:not(:active):hover { transform: translateY(-3px); box-shadow: var(--shadow-lifted); }
+
+    .game-card.memory-card {
+      background: linear-gradient(145deg, #EFF6FF, #DBEAFE);
+      border: 2px solid rgba(59,130,246,0.2);
+    }
+
+    .game-card.decisions-card {
+      background: linear-gradient(145deg, #F5F3FF, #EDE9FE);
+      border: 2px solid rgba(139,92,246,0.2);
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute; top: -20px; right: -20px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      opacity: 0.12;
+    }
+
+    .memory-card::before { background: var(--blue); }
+    .decisions-card::before { background: var(--purple); }
+
+    .game-card-emoji {
+      font-size: 44px;
+      margin-bottom: 10px;
+      display: block;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .game-card-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(22px, 6vw, 28px);
+      margin-bottom: 6px;
+    }
+
+    .memory-card .game-card-title { color: var(--blue-dark); }
+    .decisions-card .game-card-title { color: var(--purple); }
+
+    .game-card-desc {
+      font-size: clamp(14px, 3.8vw, 16px);
+      color: var(--text-soft);
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .game-card-arrow {
+      position: absolute; right: 24px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      opacity: 0.4;
+    }
+
+    /* ===== SECTION HEADER ===== */
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(26px, 7vw, 32px);
+    }
+
+    /* ===== MEMORY GAME ===== */
+    .mem-stats {
+      display: flex; gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-chip {
+      flex: 1;
+      background: white;
+      border-radius: var(--radius-sm);
+      padding: 12px 8px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+      border: 1.5px solid rgba(0,0,0,0.06);
+    }
+
+    .stat-chip-label {
+      font-size: 12px;
+      color: var(--text-soft);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .stat-chip-value {
+      font-family: 'Fredoka One', cursive;
+      font-size: 26px;
+      color: var(--navy);
+    }
+
+    #memGrid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .mem-card {
+      aspect-ratio: 1;
+      border-radius: 16px;
+      cursor: pointer;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .mem-card.flipped { transform: rotateY(180deg); }
+
+    .mem-card.matched {
+      animation: matchPop 0.4s ease forwards;
+    }
+
+    @keyframes matchPop {
+      0% { transform: rotateY(180deg) scale(1); }
+      50% { transform: rotateY(180deg) scale(1.15); }
+      100% { transform: rotateY(180deg) scale(1); }
+    }
+
+    .mem-front, .mem-back {
+      position: absolute; inset: 0;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .mem-front {
+      background: linear-gradient(135deg, #93C5FD, #3B82F6);
+      font-size: clamp(24px, 6vw, 30px);
+      color: white;
+      font-weight: 900;
+      font-family: 'Fredoka One', cursive;
+      border: 2.5px solid rgba(255,255,255,0.3);
+    }
+
+    .mem-back {
+      background: white;
+      font-size: clamp(26px, 7vw, 34px);
+      transform: rotateY(180deg);
+      border: 2.5px solid rgba(59,130,246,0.15);
+    }
+
+    .mem-card.matched .mem-back {
+      background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+      border-color: rgba(20,184,166,0.3);
+    }
+
+    /* ===== WIN SCREEN ===== */
+    .win-screen {
+      text-align: center;
+      background: white;
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      box-shadow: var(--shadow-card);
+      margin-top: 20px;
+      border: 2px solid rgba(20,184,166,0.2);
+      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .win-emoji {
+      font-size: 64px;
+      margin-bottom: 12px;
+      display: block;
+      animation: wiggle 0.6s ease 0.2s both;
+    }
+
+    @keyframes wiggle {
+      0% { transform: rotate(-10deg) scale(0.8); }
+      30% { transform: rotate(10deg) scale(1.15); }
+      60% { transform: rotate(-5deg) scale(1.05); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    .win-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(26px, 7vw, 32px);
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .win-msg {
+      font-size: clamp(15px, 4vw, 17px);
+      color: var(--text-soft);
+      line-height: 1.6;
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 18px 24px;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(17px, 4.5vw, 20px);
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      letter-spacing: 0.2px;
+    }
+
+    .btn-primary:active { transform: scale(0.96); }
+
+    .btn-teal {
+      background: linear-gradient(135deg, var(--teal), #0D9488);
+      color: white;
+      box-shadow: 0 6px 20px rgba(20,184,166,0.4);
+    }
+
+    .btn-blue {
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: white;
+      box-shadow: 0 6px 20px rgba(59,130,246,0.4);
+    }
+
+    .btn-purple {
+      background: linear-gradient(135deg, var(--purple), #7C3AED);
+      color: white;
+      box-shadow: 0 6px 20px rgba(139,92,246,0.4);
+    }
+
+    /* ===== EXECUTIVE DECISIONS ===== */
+    .scenario-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 18px;
+      border: 2px solid rgba(139,92,246,0.1);
+    }
+
+    .scenario-progress {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .progress-bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--purple-light);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--rose));
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--purple);
+      white-space: nowrap;
+    }
+
+    .scenario-text {
+      font-size: clamp(16px, 4.2vw, 19px);
+      line-height: 1.65;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .scenario-year {
+      display: inline-block;
+      background: var(--purple-light);
+      color: var(--purple);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      border: 1.5px solid rgba(139,92,246,0.2);
+    }
+
+    .option-btn {
+      width: 100%;
+      border: 2.5px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+      background: white;
+      text-align: left;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(15px, 4vw, 17px);
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.18s;
+      margin-bottom: 10px;
+      display: flex; align-items: flex-start; gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      line-height: 1.5;
+    }
+
+    .option-btn:active { transform: scale(0.98); }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--purple);
+      background: var(--purple-light);
+      transform: translateX(3px);
+    }
+
+    .option-btn:disabled { cursor: default; }
+
+    .option-btn.correct {
+      background: linear-gradient(135deg, #D1FAE5, #ECFDF5);
+      border-color: var(--teal);
+      color: #065F46;
+    }
+
+    .option-btn.wrong {
+      background: linear-gradient(135deg, #FEE2E2, #FFF5F5);
+      border-color: #F87171;
+      color: #991B1B;
+      opacity: 0.7;
+    }
+
+    .option-letter {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--purple-light);
+      color: var(--purple);
+      font-weight: 900;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      border: 1.5px solid rgba(139,92,246,0.2);
+      transition: all 0.18s;
+    }
+
+    .option-btn.correct .option-letter {
+      background: #D1FAE5;
+      color: #065F46;
+      border-color: var(--teal);
+    }
+
+    .option-btn.wrong .option-letter {
+      background: #FEE2E2;
+      color: #991B1B;
+      border-color: #F87171;
+    }
+
+    /* ===== RESULT TOAST ===== */
+    .result-toast {
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+      font-size: clamp(15px, 4vw, 17px);
+      font-weight: 700;
+      line-height: 1.55;
+      animation: slideUp 0.35s ease;
+      margin-bottom: 16px;
+    }
+
+    .result-toast.correct-toast {
+      background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+      color: #065F46;
+      border: 2px solid rgba(20,184,166,0.3);
+    }
+
+    .result-toast.wrong-toast {
+      background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+      color: #92400E;
+      border: 2px solid rgba(245,158,11,0.3);
+    }
+
+    .result-toast .toast-icon {
+      font-size: 24px;
+      margin-right: 8px;
+    }
+
+    /* ===== COMPLETE SCREEN ===== */
+    .complete-screen {
+      text-align: center;
+      padding: 20px 8px;
+      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .complete-big-emoji {
+      font-size: 80px;
+      display: block;
+      margin-bottom: 16px;
+      animation: wiggle 0.6s ease 0.2s both;
+    }
+
+    .complete-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(28px, 7vw, 36px);
+      color: var(--navy);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .complete-msg {
+      font-size: clamp(16px, 4vw, 18px);
+      color: var(--text-soft);
+      font-weight: 600;
+      line-height: 1.65;
+      margin-bottom: 32px;
+      max-width: 320px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    /* ===== CONFETTI ===== */
+    .confetti-piece {
+      position: fixed;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      pointer-events: none;
+      animation: confettiFall linear forwards;
+      z-index: 999;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    .hidden { display: none !important; }
   </style>
 </head>
-<body class="bg-blue-50 min-h-screen text-2xl p-4 max-w-md mx-auto overflow-hidden">
+<body>
 
-  <!-- GREETING SCREEN -->
-  <div id="greeting" class="flex flex-col items-center justify-center min-h-screen text-center">
-    <div class="text-6xl font-bold text-blue-900 leading-tight">
-      Hi Debbie<br>(aka Grandma)
+  <!-- ===== GREETING ===== -->
+  <div id="greeting">
+    <div class="greeting-hearts">\ud83d\udc99\ud83c\udf38\ud83d\udc99</div>
+    <div class="greeting-name">Hi Debbie!</div>
+    <div class="greeting-aka">(aka the best Grandma)</div>
+    <div class="greeting-love">
+      Have a wonderful day<br>and know you're loved<br>so much <span class="heart">\u2764\ufe0f</span>
     </div>
-    <div class="mt-8 text-5xl text-pink-600">Have a good day and I love you ❤️</div>
-    <div class="mt-12 text-2xl text-blue-600 animate-pulse">— Your grandson</div>
+    <div class="greeting-sig">\u2014 Your grandson</div>
+    <div class="greeting-dots">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 
-  <!-- MAIN APP -->
+  <!-- ===== MAIN APP ===== -->
   <div id="app" class="hidden">
-    <div id="home" class="text-center">
-      <h1 class="text-5xl font-bold text-blue-800 mb-2">Microseal GM Brain Lab</h1>
-      <div class="flex items-center justify-center gap-3 mb-6 text-3xl font-bold text-teal-700">
-        <span>GM Streak:</span>
-        <span id="streak" class="text-4xl">0</span>
-        <span class="text-3xl">days 🔥</span>
+    <div id="app-inner">
+      <!-- HOME -->
+      <div id="home">
+        <div class="home-header">
+          <div class="home-title">Debbie's<br>Brain Lab \ud83e\udde0</div>
+          <p class="home-subtitle">Real challenges from the Zion plant \u2014 aperture cards, fiche jackets, and sharp minds.</p>
+        </div>
+        <div class="streak-row">
+          <div class="streak-pill">\ud83d\udd25 <span id="streak">0</span> day streak!</div>
+        </div>
+        <button class="game-card memory-card" onclick="showGame('memory')">
+          <span class="game-card-emoji">\ud83c\udccf</span>
+          <div class="game-card-title">Memory Pro</div>
+          <div class="game-card-desc">Microseal edition \u2014 match the pairs with that legendary GM recall.</div>
+          <span class="game-card-arrow">\u203a</span>
+        </button>
+        <button class="game-card decisions-card" onclick="showGame('decisions')">
+          <span class="game-card-emoji">\ud83d\udcbc</span>
+          <div class="game-card-title">Executive Decisions</div>
+          <div class="game-card-desc">90s & 00s Zion plant scenarios. What would you have done?</div>
+          <span class="game-card-arrow">\u203a</span>
+        </button>
       </div>
-      <p class="text-3xl text-blue-700 mb-10">Real executive challenges from the Zion, IL plant.<br>Aperture cards, fiche jackets, storage systems — just like the old days. Sharp focus. No politics.</p>
-      
-      <button onclick="showGame('memory')" class="block w-full bg-blue-600 hover:bg-blue-700 text-white py-9 rounded-3xl mb-6 text-3xl shadow-xl">🧠 Memory Pro (Microseal Edition)</button>
-      <button onclick="showGame('decisions')" class="block w-full bg-purple-600 hover:bg-purple-700 text-white py-9 rounded-3xl text-3xl shadow-xl">📋 Executive Decisions (Zion Plant 90s/00s)</button>
-    </div>
 
-    <!-- MEMORY PRO -->
-    <div id="memory" class="hidden">
-      <div class="flex justify-between items-center mb-6">
-        <button onclick="goHome()" class="text-4xl">←</button>
-        <h2 class="text-4xl font-bold text-blue-700">Memory Pro</h2>
-        <div class="text-3xl font-bold" id="memMoves">Moves: 0</div>
+      <!-- MEMORY GAME -->
+      <div id="memory" class="hidden">
+        <div class="top-bar">
+          <button class="back-btn" onclick="goHome()">\u2190</button>
+          <div style="font-family:'Fredoka One',cursive; font-size:24px; color:var(--blue-dark);">Memory Pro \ud83c\udccf</div>
+          <div class="streak-pill" style="font-size:14px; padding:6px 12px;">\ud83d\udd25 <span id="memStreak">0</span></div>
+        </div>
+        <div class="mem-stats">
+          <div class="stat-chip">
+            <div class="stat-chip-label">Moves</div>
+            <div class="stat-chip-value" id="memMoves">0</div>
+          </div>
+          <div class="stat-chip">
+            <div class="stat-chip-label">Pairs</div>
+            <div class="stat-chip-value" id="memPairs">0/8</div>
+          </div>
+          <div class="stat-chip">
+            <div class="stat-chip-label">Best</div>
+            <div class="stat-chip-value" id="memBest">\u2014</div>
+          </div>
+        </div>
+        <div id="memGrid"></div>
+        <div id="memWin" class="win-screen hidden">
+          <span class="win-emoji">\ud83c\udfc6</span>
+          <div class="win-title">GM-Level Recall!</div>
+          <div class="win-msg" id="winMsg">Just like keeping millions of aperture cards perfectly organized at the Zion plant.</div>
+          <button class="btn-primary btn-teal" onclick="restartMemory()">Play Again \u21ba</button>
+        </div>
       </div>
-      <div id="memGrid" class="grid grid-cols-4 gap-4"></div>
-      <div id="memWin" class="hidden mt-8 text-center">
-        <p class="text-5xl mb-3">🎉 GM-Level Perfect Recall! 🎉</p>
-        <p class="text-3xl">Just like keeping millions of aperture cards perfectly organized at the Zion plant.</p>
-        <button onclick="restartMemory()" class="mt-8 bg-green-600 text-white py-7 px-14 rounded-3xl text-3xl">Next Challenge</button>
-      </div>
-    </div>
 
-    <!-- EXECUTIVE DECISIONS -->
-    <div id="decisions" class="hidden">
-      <button onclick="goHome()" class="text-4xl mb-4">←</button>
-      <h2 class="text-4xl font-bold text-purple-700 mb-6 text-center">Executive Decisions</h2>
-      <div id="scenarioText" class="text-3xl mb-8 leading-tight text-blue-900"></div>
-      <div id="options" class="space-y-5"></div>
-      <div id="decisionResult" class="hidden mt-8 text-4xl text-center"></div>
+      <!-- EXECUTIVE DECISIONS -->
+      <div id="decisions" class="hidden">
+        <div class="top-bar">
+          <button class="back-btn" onclick="goHome()">\u2190</button>
+          <div style="font-family:'Fredoka One',cursive; font-size:22px; color:var(--purple);">Executive Decisions</div>
+          <div class="streak-pill" style="font-size:14px; padding:6px 12px;">\ud83d\udd25 <span id="decStreak">0</span></div>
+        </div>
+        <div id="decisionsContent"></div>
+      </div>
     </div>
   </div>
 
 <script>
-// Microseal-themed pairs (aperture cards, fiche jackets, storage, viewers, etc.)
-const microsealPairs = ['📇','📇','🗃️','🗃️','📋','📋','🔍','🔍','📼','📼','🖥️','🖥️','📦','📦','📊','📊'];
-let cards = [...microsealPairs];
-let flippedCards = [], matched = [], moves = 0;
+// ===== DATA =====
+const microsealPairs = ['\ud83d\udcc7','\ud83d\uddc3\ufe0f','\ud83d\udccb','\ud83d\udd0d','\ud83d\udcfc','\ud83d\udda5\ufe0f','\ud83d\udce6','\ud83d\udcca'];
+let cards = [], flippedCards = [], matchedCards = [], moves = 0, matchedCount = 0;
 
-function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
-
-function createMemory() {
-  cards = shuffle(cards);
-  const grid = document.getElementById('memGrid');
-  grid.innerHTML = '';
-  cards.forEach((emoji, i) => {
-    const card = document.createElement('div');
-    card.className = 'card relative h-24 bg-white rounded-3xl shadow-2xl border-4 border-blue-300 flex items-center justify-center text-7xl cursor-pointer';
-    card.innerHTML = `
-      <div class="card-front absolute inset-0 flex items-center justify-center bg-blue-200 rounded-3xl text-7xl">❓</div>
-      <div class="card-back absolute inset-0 flex items-center justify-center bg-white rounded-3xl text-7xl">${emoji}</div>
-    `;
-    card.dataset.value = emoji;
-    card.addEventListener('click', flipMemoryCard);
-    grid.appendChild(card);
-  });
-  flippedCards = []; matched = []; moves = 0;
-  document.getElementById('memMoves').textContent = 'Moves: 0';
-}
-
-function flipMemoryCard(e) {
-  const card = e.currentTarget;
-  if (flippedCards.length === 2 || card.classList.contains('flipped') || matched.includes(card)) return;
-  
-  card.classList.add('flipped');
-  flippedCards.push(card);
-  
-  if (flippedCards.length === 2) {
-    moves++;
-    document.getElementById('memMoves').textContent = `Moves: ${moves}`;
-    
-    if (flippedCards[0].dataset.value === flippedCards[1].dataset.value) {
-      matched.push(...flippedCards);
-      flippedCards = [];
-      if (matched.length === 16) {
-        setTimeout(() => document.getElementById('memWin').classList.remove('hidden'), 600);
-        updateStreak();
-      }
-    } else {
-      setTimeout(() => {
-        flippedCards.forEach(c => c.classList.remove('flipped'));
-        flippedCards = [];
-      }, 1100);
-    }
-  }
-}
-
-function restartMemory() {
-  document.getElementById('memWin').classList.add('hidden');
-  createMemory();
-}
-
-// Real Microseal 90s/00s scenarios
 const scenarios = [
   {
-    q: "It's 1996 at the Zion plant. Digital imaging is starting to appear. Your fiche jacket line is running at full capacity. Best executive move?",
+    year: "Zion Plant \u00b7 1996",
+    q: "Digital imaging is starting to appear. Your fiche jacket line is running at full capacity. What's the smart executive move?",
     options: [
-      "Shut down the jacket line immediately and retool everything for digital",
-      "Keep analog production running full speed while quietly training 20% of the team on new digital scanners and imaging",
-      "Ignore digital completely — aperture cards and jackets will always be king"
+      "Shut down the jacket line and retool everything for digital right now.",
+      "Keep analog running while quietly training 20% of the team on new digital scanners.",
+      "Ignore digital \u2014 aperture cards and jackets will always be king."
     ],
     correct: 1,
-    feedback: "✅ Exactly the smart hybrid strategy that kept Microseal plants competitive in the late 90s."
+    feedback: "That's the hybrid strategy that kept Microseal plants competitive through the late 90s. Smart, steady leadership \u2014 just like you always were.",
+    feedbackWrong: "Close, but the winning move was holding both worlds at once. Transition without disruption \u2014 that's real GM thinking."
   },
   {
-    q: "Budget cuts hit hard in 2001. You must reduce costs 15% without losing quality on aperture cards and storage systems. What do you do?",
+    year: "Zion Plant \u00b7 2001",
+    q: "Budget cuts hit hard. You need to reduce costs 15% without losing quality on aperture cards and storage systems. What do you do?",
     options: [
-      "Cut maintenance on the card-punching machines",
-      "Cross-train operators so you need fewer supervisors while keeping quality standards",
-      "Stop all safety and training programs to save money"
+      "Cut maintenance on the card-punching machines.",
+      "Cross-train operators so you need fewer supervisors while keeping quality standards.",
+      "Pause all safety and training programs to free up the budget."
     ],
     correct: 1,
-    feedback: "✅ Strong GM call — that's the efficiency that kept the Zion operation strong through tough years."
+    feedback: "Strong GM call \u2014 cross-training builds a smarter floor and protects what matters most. That's the efficiency that kept Zion strong through tough years.",
+    feedbackWrong: "The best path was cross-training \u2014 more capability, leaner overhead, quality intact. That's how Zion weathered the tough years."
   },
   {
-    q: "Your team is worried about the digital transition in 2003. Morale is dropping. Best move as GM?",
+    year: "Zion Plant \u00b7 2003",
+    q: "Your team is nervous about the digital transition. Morale is slipping. As GM, what do you do?",
     options: [
-      "Tell everyone 'nothing is changing' and hope it passes",
-      "Hold a full plant meeting with real data showing how their fiche and storage skills transfer to electronic imaging",
-      "Just hand out small bonuses and avoid the topic"
+      "Tell everyone 'nothing is changing' and hope things settle down.",
+      "Hold a full plant meeting with real data showing how their fiche and storage skills transfer to electronic imaging.",
+      "Hand out small bonuses and avoid bringing up the topic."
     ],
     correct: 1,
-    feedback: "✅ Perfect leadership — real communication and vision, just like the best Microseal GMs did."
+    feedback: "Perfect leadership. Real communication, real vision. That's exactly what the best Microseal GMs did \u2014 and exactly what you would have done.",
+    feedbackWrong: "The winning move: bring everyone into the real picture. Fear shrinks when people see their value carries forward. That's true GM leadership."
   }
 ];
-let currentScenario = 0;
 
-function startDecisions() {
-  currentScenario = 0;
-  document.getElementById('decisionResult').classList.add('hidden');
-  showScenario();
-}
+// ===== MEMORY LOGIC =====
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
 
-function showScenario() {
-  const s = scenarios[currentScenario];
-  document.getElementById('scenarioText').innerHTML = `<span class="text-purple-600">Scenario \( {currentScenario+1}/ \){scenarios.length}:</span><br>${s.q}`;
-  const optsDiv = document.getElementById('options');
-  optsDiv.innerHTML = '';
-  s.options.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'scenario-option block w-full bg-white hover:bg-purple-100 text-left p-7 rounded-3xl shadow text-3xl';
-    btn.textContent = `${String.fromCharCode(65+i)}) ${opt}`;
-    btn.onclick = () => handleDecision(i);
-    optsDiv.appendChild(btn);
+function createMemory() {
+  const doubled = [...microsealPairs, ...microsealPairs];
+  cards = shuffle(doubled);
+  flippedCards = []; matchedCards = []; moves = 0; matchedCount = 0;
+
+  const grid = document.getElementById('memGrid');
+  grid.innerHTML = '';
+
+  cards.forEach((emoji, i) => {
+    const card = document.createElement('div');
+    card.className = 'mem-card';
+    card.dataset.value = emoji;
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="mem-front">?</div>
+      <div class="mem-back">${emoji}</div>
+    `;
+    card.addEventListener('click', flipCard);
+    grid.appendChild(card);
   });
+
+  updateMemStats();
+  document.getElementById('memWin').classList.add('hidden');
+  grid.classList.remove('hidden');
 }
 
-function handleDecision(choice) {
-  const s = scenarios[currentScenario];
-  const result = document.getElementById('decisionResult');
-  
-  if (choice === s.correct) {
-    result.innerHTML = s.feedback;
-    result.className = 'hidden mt-8 text-4xl text-green-600';
-  } else {
-    result.innerHTML = `Not quite the move we used back then at Microseal.<br><span class="text-blue-700">Best was: ${s.options[s.correct]}</span>`;
-    result.className = 'hidden mt-8 text-4xl text-blue-700';
-  }
-  result.classList.remove('hidden');
-  
-  setTimeout(() => {
-    currentScenario++;
-    if (currentScenario < scenarios.length) {
-      showScenario();
-    } else {
-      result.innerHTML = `🎉 Full Executive Round Complete!<br>You just ran the Zion plant like the pro GM you are.<br>Streak updated — keep going!`;
-      result.className = 'hidden mt-8 text-4xl text-purple-600';
-      result.classList.remove('hidden');
-      updateStreak();
-    }
-  }, 2600);
-}
+function flipCard(e) {
+  const card = e.currentTarget;
+  if (
+    flippedCards.length === 2 ||
+    card.classList.contains('flipped') ||
+    card.classList.contains('matched')
+  ) return;
 
-function showGame(game) {
-  document.getElementById('home').classList.add('hidden');
-  document.getElementById('memory').classList.add('hidden');
-  document.getElementById('decisions').classList.add('hidden');
-  
-  if (game === 'memory') {
-    document.getElementById('memory').classList.remove('hidden');
-    createMemory();
-  } else if (game === 'decisions') {
-    document.getElementById('decisions').classList.remove('hidden');
-    startDecisions();
-  }
-}
+  card.classList.add('flipped');
+  flippedCards.push(card);
 
-function goHome() {
-  document.getElementById('home').classList.remove('hidden');
-  document.getElementById('memory').classList.add('hidden');
-  document.getElementById('decisions').classList.add('hidden');
-}
+  if (flippedCards.length === 2) {
+    moves++;
+    updateMemStats();
 
-function updateStreak() {
-  let streak = parseInt(localStorage.getItem('microsealStreak') || '0');
-  const lastDate = localStorage.getItem('microsealLastDate');
-  const today = new Date().toDateString();
-  
-  if (lastDate !== today) {
-    streak++;
-    localStorage.setItem('microsealStreak', streak);
-    localStorage.setItem('microsealLastDate', today);
-  }
-  document.getElementById('streak').textContent = streak;
-}
+    if (flippedCards[0].dataset.value === flippedCards[1].dataset.value) {
+      flippedCards.forEach(c => {
+        c.classList.add('matched');
+        c.removeEventListener('click', flipCard);
+      });
+      matchedCards.push(...flippedCards);
+      matchedCount++;
+      flippedCards = [];
+      updateMemStats();
 
-// Greeting fade → app
-window.onload = () => {
-  const greeting = document.getElementById('greeting');
-  const app = document.getElementById('app');
-  
-  setTimeout(() => {
-    greeting.classList.add('fade-out');
-    greeting.style.opacity = '0';
-    
-    setTimeout(() => {
-      greeting.classList.add('hidden');
-      app.classList.remove('hidden');
-      updateStreak();
-    }, 2200);
-  }, 7000);
-};
-</script>
-</body>
-</html>
+      if (matchedCount === 8) {
+        const best = parseInt(localStorage.getItem('memBest') || '9999');
+        if (moves < best) localStorage.setItem('memBest', moves);
+        updateMemStats();
+        setTimeout(() => {
+          spawnConfetti();
+          document.getElementById('memGrid').classList.add('hidden');
+          const winMsg = moves <= 12
+            ? "In just " + moves + " moves \u2014 flawless!
