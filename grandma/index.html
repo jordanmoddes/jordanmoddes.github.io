@@ -1,1 +1,263 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kodak GM Brain Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: system-ui; }
+    .fade-out { transition: opacity 2s ease-out; }
+    .card { transition: transform 0.6s; transform-style: preserve-3d; }
+    .card.flipped { transform: rotateY(180deg); }
+    .card-front, .card-back { backface-visibility: hidden; }
+    .scenario-option { transition: all 0.2s; }
+  </style>
+</head>
+<body class="bg-amber-50 min-h-screen text-2xl p-4 max-w-md mx-auto overflow-hidden">
+
+  <!-- GREETING SCREEN -->
+  <div id="greeting" class="flex flex-col items-center justify-center min-h-screen text-center">
+    <div class="text-6xl font-bold text-amber-800 leading-tight">
+      Hi Debbie<br>(aka Grandma)
+    </div>
+    <div class="mt-8 text-5xl text-pink-600">Have a good day and I love you ❤️</div>
+    <div class="mt-12 text-2xl text-amber-600 animate-pulse">— Your grandson</div>
+  </div>
+
+  <!-- MAIN APP (hidden until greeting fades) -->
+  <div id="app" class="hidden">
+    <div id="home" class="text-center">
+      <h1 class="text-5xl font-bold text-amber-700 mb-2">Kodak GM Brain Lab</h1>
+      <div class="flex items-center justify-center gap-3 mb-6 text-3xl font-bold text-teal-700">
+        <span>GM Streak:</span>
+        <span id="streak" class="text-4xl">0</span>
+        <span class="text-3xl">days 🔥</span>
+      </div>
+      <p class="text-3xl text-amber-600 mb-10">Real executive challenges from the film plant days.<br>Sharp focus. Real wins. No politics — just strategy.</p>
+      
+      <button onclick="showGame('memory')" class="block w-full bg-amber-600 hover:bg-amber-700 text-white py-9 rounded-3xl mb-6 text-3xl shadow-xl">🧠 Memory Pro (Kodak 90s/00s Edition)</button>
+      <button onclick="showGame('decisions')" class="block w-full bg-purple-600 hover:bg-purple-700 text-white py-9 rounded-3xl text-3xl shadow-xl">📋 Executive Decisions (Your Old Job)</button>
+    </div>
+
+    <!-- MEMORY PRO -->
+    <div id="memory" class="hidden">
+      <div class="flex justify-between items-center mb-6">
+        <button onclick="goHome()" class="text-4xl">←</button>
+        <h2 class="text-4xl font-bold text-amber-700">Memory Pro</h2>
+        <div class="text-3xl font-bold" id="memMoves">Moves: 0</div>
+      </div>
+      <div id="memGrid" class="grid grid-cols-4 gap-4"></div>
+      <div id="memWin" class="hidden mt-8 text-center">
+        <p class="text-5xl mb-3">🎉 GM-Level Perfect Recall! 🎉</p>
+        <p class="text-3xl">Just like keeping the lines perfect in '97.</p>
+        <button onclick="restartMemory()" class="mt-8 bg-green-600 text-white py-7 px-14 rounded-3xl text-3xl">Next Challenge</button>
+      </div>
+    </div>
+
+    <!-- EXECUTIVE DECISIONS -->
+    <div id="decisions" class="hidden">
+      <button onclick="goHome()" class="text-4xl mb-4">←</button>
+      <h2 class="text-4xl font-bold text-purple-700 mb-6 text-center">Executive Decisions</h2>
+      <div id="scenarioText" class="text-3xl mb-8 leading-tight text-amber-800"></div>
+      <div id="options" class="space-y-5"></div>
+      <div id="decisionResult" class="hidden mt-8 text-4xl text-center"></div>
+    </div>
+  </div>
+
+<script>
+// Tailwind ready
+const kodakPairs = ['📼','📼','🧪','🧪','📸','📸','🎞️','🎞️','🔬','🔬','🏭','🏭','💾','💾','📊','📊'];
+let cards = [...kodakPairs];
+let flippedCards = [], matched = [], moves = 0;
+
+function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
+
+function createMemory() {
+  cards = shuffle(cards);
+  const grid = document.getElementById('memGrid');
+  grid.innerHTML = '';
+  cards.forEach((emoji, i) => {
+    const card = document.createElement('div');
+    card.className = 'card relative h-24 bg-white rounded-3xl shadow-2xl border-4 border-amber-300 flex items-center justify-center text-7xl cursor-pointer';
+    card.innerHTML = `
+      <div class="card-front absolute inset-0 flex items-center justify-center bg-amber-200 rounded-3xl text-7xl">❓</div>
+      <div class="card-back absolute inset-0 flex items-center justify-center bg-white rounded-3xl text-7xl">${emoji}</div>
+    `;
+    card.dataset.value = emoji;
+    card.addEventListener('click', flipMemoryCard);
+    grid.appendChild(card);
+  });
+  flippedCards = []; matched = []; moves = 0;
+  document.getElementById('memMoves').textContent = 'Moves: 0';
+}
+
+function flipMemoryCard(e) {
+  const card = e.currentTarget;
+  if (flippedCards.length === 2 || card.classList.contains('flipped') || matched.includes(card)) return;
+  
+  card.classList.add('flipped');
+  flippedCards.push(card);
+  
+  if (flippedCards.length === 2) {
+    moves++;
+    document.getElementById('memMoves').textContent = `Moves: ${moves}`;
+    
+    if (flippedCards[0].dataset.value === flippedCards[1].dataset.value) {
+      matched.push(...flippedCards);
+      flippedCards = [];
+      if (matched.length === 16) {
+        setTimeout(() => document.getElementById('memWin').classList.remove('hidden'), 600);
+        updateStreak();
+      }
+    } else {
+      setTimeout(() => {
+        flippedCards.forEach(c => c.classList.remove('flipped'));
+        flippedCards = [];
+      }, 1100);
+    }
+  }
+}
+
+function restartMemory() {
+  document.getElementById('memWin').classList.add('hidden');
+  createMemory();
+}
+
+// EXECUTIVE DECISIONS
+const scenarios = [
+  {
+    q: "It's 1998. Digital cameras are starting to show up. Your plant has a huge film line running at 95% capacity. Best executive move?",
+    options: [
+      "Shut down the film line immediately and retool everything for digital",
+      "Keep film running full speed while quietly training 20% of the team on digital processes",
+      "Ignore digital — film is king and always will be"
+    ],
+    correct: 1,
+    feedback: "✅ Spot-on GM thinking! That's exactly how the best plants stayed ahead in the late 90s."
+  },
+  {
+    q: "Budget cuts hit in 2001. You have to reduce costs by 15% without losing quality. What do you do?",
+    options: [
+      "Cut the maintenance budget on the coating machines",
+      "Cross-train operators so you need 2 fewer supervisors",
+      "Stop all safety training to save money"
+    ],
+    correct: 1,
+    feedback: "✅ Excellent leadership call — that's the kind of smart efficiency that kept Kodak facilities running strong."
+  },
+  {
+    q: "Your team is nervous about the digital transition in 2003. Morale is dropping. Best move?",
+    options: [
+      "Tell them everything will be fine and nothing is changing",
+      "Hold a plant-wide meeting showing real data and how their skills transfer to new tech",
+      "Just give everyone a small bonus and hope it passes"
+    ],
+    correct: 1,
+    feedback: "✅ Perfect. Real communication and vision — that's what separated great GMs from the rest."
+  }
+];
+let currentScenario = 0;
+
+function startDecisions() {
+  currentScenario = 0;
+  document.getElementById('decisionResult').classList.add('hidden');
+  showScenario();
+}
+
+function showScenario() {
+  const s = scenarios[currentScenario];
+  document.getElementById('scenarioText').innerHTML = `<span class="text-purple-600">Scenario \( {currentScenario+1}/ \){scenarios.length}:</span><br>${s.q}`;
+  const optsDiv = document.getElementById('options');
+  optsDiv.innerHTML = '';
+  s.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'scenario-option block w-full bg-white hover:bg-purple-100 text-left p-7 rounded-3xl shadow text-3xl';
+    btn.textContent = `${String.fromCharCode(65+i)}) ${opt}`;
+    btn.onclick = () => handleDecision(i);
+    optsDiv.appendChild(btn);
+  });
+}
+
+function handleDecision(choice) {
+  const s = scenarios[currentScenario];
+  const result = document.getElementById('decisionResult');
+  const correct = s.correct;
+  
+  if (choice === correct) {
+    result.innerHTML = s.feedback;
+    result.className = 'hidden mt-8 text-4xl text-green-600';
+  } else {
+    result.innerHTML = `Not quite the move we used back then.<br><span class="text-amber-700">Best was: ${s.options[correct]}</span>`;
+    result.className = 'hidden mt-8 text-4xl text-amber-700';
+  }
+  result.classList.remove('hidden');
+  
+  setTimeout(() => {
+    currentScenario++;
+    if (currentScenario < scenarios.length) {
+      showScenario();
+    } else {
+      result.innerHTML = `🎉 Full Executive Round Complete!<br>You just ran the plant like the pro you are.<br>Streak updated — keep going!`;
+      result.className = 'hidden mt-8 text-4xl text-purple-600';
+      result.classList.remove('hidden');
+      updateStreak();
+    }
+  }, 2600);
+}
+
+// Navigation
+function showGame(game) {
+  document.getElementById('home').classList.add('hidden');
+  document.getElementById('memory').classList.add('hidden');
+  document.getElementById('decisions').classList.add('hidden');
+  
+  if (game === 'memory') {
+    document.getElementById('memory').classList.remove('hidden');
+    createMemory();
+  } else if (game === 'decisions') {
+    document.getElementById('decisions').classList.remove('hidden');
+    startDecisions();
+  }
+}
+
+function goHome() {
+  document.getElementById('home').classList.remove('hidden');
+  document.getElementById('memory').classList.add('hidden');
+  document.getElementById('decisions').classList.add('hidden');
+}
+
+// Streak
+function updateStreak() {
+  let streak = parseInt(localStorage.getItem('gmStreak') || '0');
+  const lastDate = localStorage.getItem('gmLastDate');
+  const today = new Date().toDateString();
+  
+  if (lastDate !== today) {
+    streak++;
+    localStorage.setItem('gmStreak', streak);
+    localStorage.setItem('gmLastDate', today);
+  }
+  document.getElementById('streak').textContent = streak;
+}
+
+// Greeting → Main App fade
+window.onload = () => {
+  const greeting = document.getElementById('greeting');
+  const app = document.getElementById('app');
+  
+  // Show greeting for 7 seconds
+  setTimeout(() => {
+    greeting.classList.add('fade-out');
+    greeting.style.opacity = '0';
+    
+    setTimeout(() => {
+      greeting.classList.add('hidden');
+      app.classList.remove('hidden');
+      updateStreak();           // load streak on first real screen
+    }, 2200); // after fade finishes
+  }, 7000);
+};
+</script>
+</body>
+</html>
