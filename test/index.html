@@ -323,6 +323,13 @@
     gap:1.35rem;
     align-items:end;
   }
+  /* Left column gets its own stacking context so the contact
+     dropdown floats above the aside card on the right.
+     Without this the aside card intercepts taps on the menu. */
+  .hero-grid > div:first-child{
+    position:relative;
+    z-index:10;
+  }
   .hero h1{
     margin:0;
     font-size:clamp(3rem,5vw,5.3rem);
@@ -429,7 +436,9 @@
      ------------------------------------------------------------ */
   .hero-aside{
     padding:1rem 1rem 1.05rem;background:var(--glass);
-    border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-sm)
+    border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-sm);
+    position:relative;
+    z-index:1; /* must stay below the left column (z-index:10) so contact menu is tappable */
   }
   .aside-label{font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
   .aside-list{display:grid;gap:.7rem;margin-top:.78rem}
@@ -736,13 +745,14 @@
     .jmod-ai-systemline,.jmod-ai-msg,.jmod-ai-input,.jmod-ai-send,.jmod-ai-mini,.jmod-ai-jd{font-size:.72rem}
     /* Disable hover lift on touch/mobile - no mouse hover on phones */
     .impact-card:hover,.feature:hover,.role-card:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--line)}
-    /* Contact dropdown on mobile */
+    /* Contact dropdown on mobile â€” must stay on top of everything */
+    .contact-wrap{z-index:400}
     .contact-menu{
+      z-index:400;
       min-width:180px;
       max-width:220px;
       left:0;
       right:auto;
-      /* Re-state solid background in case any mobile browser inherits differently */
       background:#111820;
     }
     html[data-theme='light'] .contact-menu{background:#ffffff}
