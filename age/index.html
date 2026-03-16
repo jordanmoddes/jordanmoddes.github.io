@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Age Verification Check</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0e14;
+      --bg2: #12151e;
+      --surface: rgba(255,255,255,0.045);
+      --surface2: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.09);
+      --border-focus: rgba(180,160,255,0.55);
+      --text: #eef0f6;
+      --muted: #8891aa;
+      --dim: #4e5572;
+      --accent: #b08cff;
+      --accent2: #7ee8c8;
+      --accent3: #f5c97a;
+      --good: #4ade80;
+      --bad: #f87171;
+      --warn: #fbbf24;
+      --radius: 20px;
+      --radius-sm: 12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px 60px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ── Background atmosphere ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 15% 5%, rgba(120,80,255,0.13) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 45% at 88% 8%, rgba(60,220,170,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 35% at 50% 95%, rgba(180,130,255,0.07) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Noise grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      pointer-events: none;
+      opacity: .55;
+      z-index: 0;
+    }
+
+    .page-wrap {
+      width: min(780px, 100%);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 36px;
+      animation: fadeDown .55s ease both;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(176,140,255,0.1);
+      border: 1px solid rgba(176,140,255,0.22);
+      padding: 7px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    .badge svg { width:14px; height:14px; flex-shrink:0; }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtext {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: linear-gradient(160deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.025) 100%);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      backdrop-filter: blur(24px);
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.03) inset,
+        0 30px 80px rgba(0,0,0,0.5),
+        0 4px 20px rgba(0,0,0,0.3);
+      animation: fadeUp .6s ease both .1s;
+    }
+
+    /* ── Section headers inside card ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 18px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Form layout ── */
+    form {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      form { padding: 22px; }
+      .section-label { font-size: 9.5px; }
+    }
+
+    /* ── Field ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #c8cfde;
+      letter-spacing: .005em;
+    }
+
+    .field .hint {
+      font-size: 11.5px;
+      color: var(--dim);
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    input[type="date"],
+    input[type="number"],
+    select {
+      width: 100%;
+      background: rgba(255,255,255,0.055);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 13px 15px;
+      font-size: 14px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238891aa' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+      cursor: pointer;
+    }
+
+    select option {
+      background: #1a1e2e;
+      color: var(--text);
+    }
+
+    input:focus, select:focus {
+      border-color: var(--border-focus);
+      background: rgba(176,140,255,0.07);
+      box-shadow: 0 0 0 3px rgba(176,140,255,0.12);
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(60%) sepia(10%) saturate(300%);
+      cursor: pointer;
+      opacity: .7;
+    }
+
+    /* ── President checkboxes ── */
+    .president-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .pres-check {
+      position: relative;
+    }
+
+    .pres-check input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .pres-check label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: all .18s ease;
+      user-select: none;
+    }
+
+    .pres-check .box {
+      width: 17px;
+      height: 17px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all .18s ease;
+    }
+
+    .pres-check .box svg {
+      opacity: 0;
+      transform: scale(.5);
+      transition: all .18s ease;
+    }
+
+    .pres-check input:checked + label {
+      background: rgba(176,140,255,0.1);
+      border-color: rgba(176,140,255,0.35);
+      color: var(--text);
+    }
+
+    .pres-check input:checked + label .box {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .pres-check input:checked + label .box svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .pres-check label:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      font-family: 'Outfit', sans-serif;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      padding: 14px 26px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      transition: all .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #b08cff, #7cb9ff);
+      color: #0a0514;
+      box-shadow: 0 8px 28px rgba(176,140,255,0.28), 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(176,140,255,0.38), 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .btn-submit:active { transform: translateY(0); }
+
+    .btn-reset {
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-reset:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+    }
+
+    .btn-submit svg, .btn-reset svg { width:16px; height:16px; flex-shrink:0; }
+
+    /* ── Result box ── */
+    #result-box {
+      display: none;
+      margin: 0 32px 32px;
+      border-radius: 18px;
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+      animation: fadeUp .35s ease both;
+    }
+
+    @media (max-width:600px) {
+      #result-box { margin: 0 22px 22px; }
+    }
+
+    #result-box.show { display: block; }
+
+    #result-box.pass {
+      background: rgba(74,222,128,0.07);
+      border-color: rgba(74,222,128,0.28);
+    }
+
+    #result-box.fail {
+      background: rgba(248,113,113,0.07);
+      border-color: rgba(248,113,113,0.28);
+    }
+
+    #result-box.uncertain {
+      background: rgba(251,191,36,0.07);
+      border-color: rgba(251,191,36,0.28);
+    }
+
+    .result-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .result-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pass .result-icon { background: rgba(74,222,128,0.15); }
+    .fail .result-icon { background: rgba(248,113,113,0.15); }
+    .uncertain .result-icon { background: rgba(251,191,36,0.15); }
+
+    .result-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem;
+      line-height: 1.1;
+    }
+
+    .pass .result-title { color: var(--good); }
+    .fail .result-title { color: var(--bad); }
+    .uncertain .result-title { color: var(--warn); }
+
+    .result-detail {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .score-bar-wrap {
+      margin-top: 14px;
+    }
+
+    .score-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--dim);
+      margin-bottom: 7px;
+      letter-spacing: .06em;
+    }
+
+    .score-bar {
+      height: 5px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width .6s ease;
+    }
+
+    .pass .score-fill { background: linear-gradient(90deg, #4ade80, #22d3ee); }
+    .fail .score-fill { background: linear-gradient(90deg, #f87171, #fb923c); }
+    .uncertain .score-fill { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+
+    .mailto-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 12px;
+      color: var(--dim);
+      animation: fadeUp .5s ease both .25s;
+      line-height: 1.7;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Error state ── */
+    .field-error input,
+    .field-error select {
+      border-color: rgba(248,113,113,0.55) !important;
+      box-shadow: 0 0 0 3px rgba(248,113,113,0.1) !important;
+    }
+
+    .err-msg {
+      font-size: 11.5px;
+      color: var(--bad);
+      display: none;
+    }
+
+    .field-error .err-msg { display: block; }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="badge">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Z" fill="currentColor"/>
+        <path d="M8 7a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0V8a1 1 0 0 1 1-1ZM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/>
+      </svg>
+      Secure Verification
+    </div>
+    <h1>Age <em>Verification</em> Check</h1>
+    <p class="subtext">Complete the questions below to confirm eligibility. All answers are cross-checked for consistency before a result is issued.</p>
+  </header>
+
+  <!-- Card -->
+  <div class="card">
+    <form id="vForm" novalidate>
+
+      <!-- Section 1: Threshold -->
+      <div>
+        <div class="section-label">01 &mdash; Eligibility Threshold</div>
+        <div class="field" id="wrap-threshold">
+          <label for="threshold">Minimum Age Required</label>
+          <select id="threshold" required>
+            <option value="" disabled selected>Select age requirement</option>
+            <option value="18">18+ (Standard eligibility)</option>
+            <option value="21">21+ (Restricted eligibility)</option>
+          </select>
+          <span class="err-msg">Please select a minimum age requirement.</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Section 2: Identity Questions -->
+      <div>
+        <div class="section-label">02 &mdash; Date of Birth & Age Markers</div>
+        <div class="grid-2">
+
+          <div class="field" id="wrap-dob">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" required />
+            <span class="hint">Used to calculate your current age.</span>
+            <span class="err-msg">Please enter your date of birth.</span>
+          </div>
+
+          <div class="field" id="wrap-yr16">
+            <label for="yr16">Year You Turned 16</label>
+            <input type="number" id="yr16" placeholder="e.g. 2007" min="1940" max="2025" required />
+            <span class="hint">The calendar year of your 16th birthday.</span>
+            <span class="err-msg">Please enter a valid year.</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Section 3: School History -->
+      <div>
+        <div class="section-label">03 &mdash; Education Timeline</div>
+        <div class="grid-2">
+
+          <div class="field" id="wrap-elemStart">
+            <label for="elemStart">Elementary School Start Year</label>
+            <input type="number" id="elemStart" placeholder="e.g. 1997" min="1940" max="2020" required />
+            <span class="hint">Typically age 5–6 (kindergarten).</span>
+            <span class="err-msg">Please enter a valid year.</span>
+          </div>
+
+          <div class="field" id="wrap-hsStart">
+            <label for="hsStart">High School Start Year</label>
+            <input type="number" id="hsStart" placeholder="e.g. 2006" min="1950" max="2025" required />
+            <span class="hint">The year you began 9th grade.</span>
+            <span class="err-msg">Please enter a valid year.</span>
+          </div>
+
+          <div class="field" id="wrap-hsGrad" style="grid-column:1/-1">
+            <label for="hsGrad">High School Graduation Year</label>
+            <input type="number" id="hsGrad" placeholder="e.g. 2010" min="1950" max="2030" required />
+            <span class="hint">The year you graduated (or expect to graduate) from high school.</span>
+            <span class="err-msg">Please enter a valid year.</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Section 4: Presidents -->
+      <div>
+        <div class="section-label">04 &mdash; Presidential Knowledge Check</div>
+        <div class="field">
+          <label>Which U.S. presidents were in office during your elementary school years?</label>
+          <p class="hint" style="margin-bottom:12px;">Select all that served while you attended grades K–5.</p>
+          <div class="president-grid">
+
+            <div class="pres-check">
+              <input type="checkbox" id="p-clinton" name="presidents" value="clinton" />
+              <label for="p-clinton">
+                <span class="box">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l3 3 5-6" stroke="#0a0514" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                Bill Clinton
+              </label>
+            </div>
+
+            <div class="pres-check">
+              <input type="checkbox" id="p-bush" name="presidents" value="bush" />
+              <label for="p-bush">
+                <span class="box">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l3 3 5-6" stroke="#0a0514" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                George W. Bush
+              </label>
+            </div>
+
+            <div class="pres-check">
+              <input type="checkbox" id="p-obama" name="presidents" value="obama" />
+              <label for="p-obama">
+                <span class="box">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l3 3 5-6" stroke="#0a0514" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                Barack Obama
+              </label>
+            </div>
+
+            <div class="pres-check">
+              <input type="checkbox" id="p-trump1" name="presidents" value="trump1" />
+              <label for="p-trump1">
+                <span class="box">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l3 3 5-6" stroke="#0a0514" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                Donald Trump
+              </label>
+            </div>
+
+            <div class="pres-check">
+              <input type="checkbox" id="p-biden" name="presidents" value="biden" />
+              <label for="p-biden">
+                <span class="box">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l3 3 5-6" stroke="#0a0514" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                Joe Biden
+              </label>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Buttons -->
+      <div class="btn-row">
+        <button type="submit" class="btn-submit">
+          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.5 11.5l-3-3 1.06-1.06L6.5 9.38l5.44-5.44L13 5l-6.5 6.5Z" fill="currentColor"/>
+          </svg>
+          Run Verification
+        </button>
+        <button type="button" class="btn-reset" onclick="resetForm()">
+          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.5 2.5v4h-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.18 9A5.5 5.5 0 1 1 11.5 4.5l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Reset
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Result box (inside card, below form) -->
+    <div id="result-box">
+      <div class="result-top">
+        <div class="result-icon" id="result-icon"></div>
+        <div class="result-title" id="result-title"></div>
+      </div>
+      <div class="result-detail" id="result-detail"></div>
+      <div class="score-bar-wrap">
+        <div class="score-label">
+          <span>Consistency Score</span>
+          <span id="score-pct"></span>
+        </div>
+        <div class="score-bar"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+      </div>
+      <div class="mailto-note" id="mailto-note"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    All answers are evaluated locally in your browser. No data is stored or transmitted without your action.<br>
+    A summary draft is prepared for your records upon submission.
+  </footer>
+
+</div>
+
+<script>
+  /* ── President term ranges (Jan 20 year start to Jan 20 year end) ── */
+  const PRES_TERMS = {
+    clinton:  { start: 1993, end: 2001 },
+    bush:     { start: 2001, end: 2009 },
+    obama:    { start: 2009, end: 2017 },
+    trump1:   { start: 2017, end: 2021 },
+    biden:    { start: 2021, end: 2025 },
+  };
+
+  function yearsOverlap(aStart, aEnd, bStart, bEnd) {
+    return aStart <= bEnd && bStart <= aEnd;
+  }
+
+  function calcAge(dob) {
+    const today = new Date();
+    const birth = new Date(dob);
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
+  }
+
+  function val(id) { return document.getElementById(id).value.trim(); }
+  function intVal(id) { return parseInt(val(id), 10); }
+
+  function setError(wrapId, show) {
+    const el = document.getElementById(wrapId);
+    if (show) el.classList.add('field-error');
+    else el.classList.remove('field-error');
+  }
+
+  function resetForm() {
+    document.getElementById('vForm').reset();
+    ['wrap-threshold','wrap-dob','wrap-yr16','wrap-elemStart','wrap-hsStart','wrap-hsGrad']
+      .forEach(id => setError(id, false));
+    const rb = document.getElementById('result-box');
+    rb.className = '';
+    rb.style.display = 'none';
+  }
+
+  document.getElementById('vForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    runVerification();
+  });
+
+  function runVerification() {
+    let valid = true;
+
+    /* ── Collect & validate ── */
+    const threshold = val('threshold');
+    const dob = val('dob');
+    const yr16 = intVal('yr16');
+    const elemStart = intVal('elemStart');
+    const hsStart = intVal('hsStart');
+    const hsGrad = intVal('hsGrad');
+
+    const selPres = [...document.querySelectorAll('input[name="presidents"]:checked')]
+      .map(cb => cb.value);
+
+    setError('wrap-threshold', !threshold); if (!threshold) valid = false;
+    setError('wrap-dob', !dob); if (!dob) valid = false;
+    setError('wrap-yr16', isNaN(yr16) || yr16 < 1940 || yr16 > new Date().getFullYear()); 
+    if (isNaN(yr16) || yr16 < 1940) valid = false;
+    setError('wrap-elemStart', isNaN(elemStart) || elemStart < 1940); 
+    if (isNaN(elemStart) || elemStart < 1940) valid = false;
+    setError('wrap-hsStart', isNaN(hsStart) || hsStart < 1950); 
+    if (isNaN(hsStart) || hsStart < 1950) valid = false;
+    setError('wrap-hsGrad', isNaN(hsGrad) || hsGrad < 1950); 
+    if (isNaN(hsGrad) || hsGrad < 1950) valid = false;
+
+    if (!valid) return;
+
+    /* ── Core calculations ── */
+    const age = calcAge(dob);
+    const birthYear = new Date(dob).getFullYear();
+    const birthMonth = new Date(dob).getMonth(); // 0-indexed
+
+    let score = 0;
+    let maxScore = 0;
+    const notes = [];
+
+    /* Check 1: Age meets threshold */
+    maxScore += 30;
+    if (age >= parseInt(threshold)) {
+      score += 30;
+    } else {
+      notes.push(`Age (${age}) does not meet the ${threshold}+ requirement.`);
+    }
+
+    /* Check 2: Year turned 16 ≈ birthYear + 16 (allow ±1 for birthday timing) */
+    maxScore += 15;
+    const expected16 = birthYear + 16;
+    if (Math.abs(yr16 - expected16) <= 1) {
+      score += 15;
+    } else {
+      notes.push(`Year turned 16 (${yr16}) is inconsistent with DOB — expected around ${expected16}.`);
+    }
+
+    /* Check 3: Elementary school start ≈ birthYear + 5 or 6 */
+    maxScore += 15;
+    const expectedElem = birthYear + 5;
+    if (Math.abs(elemStart - expectedElem) <= 2) {
+      score += 15;
+    } else {
+      notes.push(`Elementary school start (${elemStart}) is inconsistent with DOB — expected around ${expectedElem}.`);
+    }
+
+    /* Check 4: High school start ≈ elemStart + 6 or 7 (K-5 = 6 yrs, then middle school varies) */
+    maxScore += 10;
+    const expectedHsStart = elemStart + 7; // K + 1-5 + middle (6-8)
+    if (Math.abs(hsStart - expectedHsStart) <= 2) {
+      score += 10;
+    } else {
+      notes.push(`High school start (${hsStart}) is inconsistent with elementary start (${elemStart}).`);
+    }
+
+    /* Check 5: HS Grad ≈ hsStart + 4 */
+    maxScore += 10;
+    const expectedGrad = hsStart + 4;
+    if (Math.abs(hsGrad - expectedGrad) <= 1) {
+      score += 10;
+    } else {
+      notes.push(`HS graduation (${hsGrad}) is inconsistent with HS start (${hsStart}) — expected around ${expectedGrad}.`);
+    }
+
+    /* Check 6: President check — determine which presidents should overlap with elem years */
+    maxScore += 20;
+    const elemEnd = elemStart + 6;
+    const expectedPres = Object.keys(PRES_TERMS).filter(p => {
+      const t = PRES_TERMS[p];
+      return yearsOverlap(elemStart, elemEnd, t.start, t.end);
+    });
+
+    const selectedSet = new Set(selPres);
+    const expectedSet = new Set(expectedPres);
+
+    // Check for correct selections
+    let presScore = 0;
+    let presMax = expectedSet.size + selectedSet.size;
+
+    // Correct inclusions
+    expectedSet.forEach(p => { if (selectedSet.has(p)) presScore += 2; });
+    // Wrong inclusions (selected but shouldn't be)
+    selectedSet.forEach(p => { if (!expectedSet.has(p)) presScore -= 1; });
+
+    // Normalize
+    const presRatio = presMax > 0 ? Math.max(0, presScore) / (expectedSet.size * 2) : 0.5;
+    score += Math.round(presRatio * 20);
+
+    if (presRatio < 0.5 && selectedSet.size > 0) {
+      notes.push(`Presidential selections don't align with your elementary school years (${elemStart}–${elemEnd}).`);
+    } else if (selectedSet.size === 0) {
+      notes.push('No presidents selected for cross-check.');
+    }
+
+    /* ── Determine result ── */
+    const pct = Math.round((score / maxScore) * 100);
+    let outcome, title, detail, colorClass;
+
+    if (age < parseInt(threshold)) {
+      outcome = 'FAILED';
+      title = 'Verification Failed';
+      colorClass = 'fail';
+      detail = `Your date of birth indicates you are ${age} years old, which does not meet the ${threshold}+ age requirement. Eligibility cannot be confirmed.`;
+    } else if (pct >= 72) {
+      outcome = 'PASSED';
+      title = 'Verification Passed';
+      colorClass = 'pass';
+      detail = `Your responses are internally consistent and your calculated age (${age}) meets the ${threshold}+ threshold. Eligibility confirmed.`;
+    } else if (pct >= 45) {
+      outcome = 'UNCERTAIN';
+      title = 'Verification Uncertain';
+      colorClass = 'uncertain';
+      detail = `Your age (${age}) meets the threshold, but some answers appear inconsistent. Manual review may be required.`;
+    } else {
+      outcome = 'FAILED';
+      title = 'Verification Failed';
+      colorClass = 'fail';
+      detail = `Multiple inconsistencies were detected across your responses. Verification could not be completed successfully.`;
+    }
+
+    if (notes.length > 0) {
+      detail += '<br><br><strong style="font-size:12px;color:inherit;opacity:.7">Issues detected:</strong><ul style="margin-top:6px;padding-left:18px;font-size:12.5px;line-height:1.8;">' + notes.map(n => `<li>${n}</li>`).join('') + '</ul>';
+    }
+
+    /* ── Render result ── */
+    const rb = document.getElementById('result-box');
+    rb.className = colorClass + ' show';
+    rb.style.display = 'block';
+
+    const icons = {
+      pass:      `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4.5 4.5 7.5-9" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      fail:      `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="#f87171" stroke-width="2" stroke-linecap="round"/></svg>`,
+      uncertain: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 6v5M10 14v1" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/></svg>`,
+    };
+
+    document.getElementById('result-icon').innerHTML = icons[colorClass];
+    document.getElementById('result-title').textContent = title;
+    document.getElementById('result-detail').innerHTML = detail;
+    document.getElementById('score-pct').textContent = pct + '%';
+    setTimeout(() => {
+      document.getElementById('score-fill').style.width = pct + '%';
+    }, 80);
+
+    /* ── Build mailto ── */
+    const selPresLabels = {
+      clinton: 'Bill Clinton', bush: 'George W. Bush', obama: 'Barack Obama',
+      trump1: 'Donald Trump', biden: 'Joe Biden'
+    };
+    const presStr = selPres.length ? selPres.map(p => selPresLabels[p]).join(', ') : 'None selected';
+
+    const subject = encodeURIComponent('Age Verification Submission');
+    const body = encodeURIComponent(
+`AGE VERIFICATION SUBMISSION
+============================
+
+Minimum Age Threshold  : ${threshold}+
+Date of Birth          : ${dob}
+Calculated Age         : ${age} years old
+Year Turned 16         : ${yr16}
+Elementary School Start: ${elemStart}
+High School Start Year : ${hsStart}
+HS Graduation Year     : ${hsGrad}
+Presidents Selected    : ${presStr}
+
+----
+Consistency Score      : ${pct}% (${score} / ${maxScore} pts)
+Verification Result    : ${outcome}
+
+${notes.length ? 'Issues noted:\n' + notes.map(n => '  - ' + n).join('\n') : 'No major inconsistencies flagged.'}
+
+This submission was generated automatically via a browser-based verification form.`
+    );
+
+    const mailtoHref = `mailto:jordanmoddes@gmail.com?subject=${subject}&body=${body}`;
+
+    document.getElementById('mailto-note').innerHTML =
+      `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M1 6l7 4 7-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+       <a href="${mailtoHref}" style="color:var(--accent);text-decoration:none;font-size:12px;">Open email draft to submit results &rarr;</a>`;
+
+    rb.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>
+</body>
+</html>
