@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+
+  <!-- ============================================================
+       SEO SECTION
+       This is what search engines and AI tools read to understand
+       your page. Edit the title, description, and keywords here
+       when you want to update how you appear in search results.
+       ============================================================ -->
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PAGE TITLE â€” shows in browser tab and Google results -->
   <title>Jordan Moddes | Operations and Supply Chain Leader</title>
+
+  <!-- META DESCRIPTION â€” the blurb Google shows under your link in search results -->
   <meta name="description" content="Operations and supply chain leader with 10+ years across fulfillment, logistics, and supply chain planning. Led 600+ employees, delivered $3.6M annual operational value, improved throughput 50% in six weeks, and built automation used across 90+ sites." />
+
+  <!-- KEYWORDS â€” less important for Google now but still useful for other engines -->
   <meta name="keywords" content="Jordan Moddes, Operations Manager, Supply Chain Leader, Amazon fulfillment, logistics optimization, process improvement, multi-site operations, inventory management, lean operations, VBA automation, labor planning, turnaround leadership, ERP, SAP, fulfillment center" />
+
   <meta name="author" content="Jordan Moddes" />
+
+  <!-- ROBOTS â€” tells search engines to index your page and follow links -->
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+
+  <!-- CANONICAL URL â€” tells Google this is the "real" version of the page -->
   <link rel="canonical" href="https://www.jordanmoddes.com/" />
+
+  <!-- FAVICON â€” the small icon in the browser tab -->
   <link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png" />
 
-  <!-- Open Graph -->
+  <!-- OPEN GRAPH â€” controls how your page looks when shared on LinkedIn, Facebook, Slack, etc. -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Jordan Moddes" />
   <meta property="og:title" content="Jordan Moddes | Operations and Supply Chain Leader" />
@@ -19,13 +40,18 @@
   <meta property="og:url" content="https://www.jordanmoddes.com/" />
   <meta property="og:image" content="https://www.jordanmoddes.com/assets/Signature_WhiteTP.png" />
 
-  <!-- Twitter Card -->
+  <!-- TWITTER CARD â€” controls how your page looks when shared on X/Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Jordan Moddes | Operations and Supply Chain Leader" />
   <meta name="twitter:description" content="10+ years driving fulfillment and supply chain performance. $3.6M program value, 50% throughput improvement, automation across 90+ sites." />
   <meta name="twitter:image" content="https://www.jordanmoddes.com/assets/Signature_WhiteTP.png" />
 
-  <!-- JSON-LD Structured Data -->
+  <!-- ============================================================
+       SCHEMA / STRUCTURED DATA SECTION
+       This is machine-readable data that helps Google, ChatGPT,
+       Perplexity, and other AI tools understand who you are.
+       Edit name, jobTitle, description, knowsAbout as needed.
+       ============================================================ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -76,7 +102,12 @@
   }
   </script>
 
-  <!-- Google Analytics -->
+  <!-- ============================================================
+       ANALYTICS AND UTILITIES
+       Leave these alone unless your tracking ID changes.
+       ============================================================ -->
+
+  <!-- Google Analytics â€” your site traffic tracker -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MPJ69EQK7P"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -85,7 +116,7 @@
     gtag('config', 'G-MPJ69EQK7P');
   </script>
 
-  <!-- Google Translate init -->
+  <!-- Google Translate widget setup -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
@@ -96,46 +127,66 @@
     }
   </script>
 
-  <!-- Canonical redirect -->
+  <!-- Redirect non-www to www for consistency -->
   <script>
     if (location.hostname === 'jordanmoddes.com') {
       location.href = 'https://www.jordanmoddes.com' + location.pathname;
     }
   </script>
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 
 <style>
+
+  /* ============================================================
+     CSS SECTION
+     All visual styling lives here. Each sub-section is labeled
+     so you know what it controls. To find something fast, use
+     Ctrl+F (or Cmd+F on Mac) and search for the section name.
+     ============================================================ */
+
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: COLOR TOKENS - DARK MODE
+     These are the "variables" the whole page uses.
+     Change a color here and it updates everywhere automatically.
+     --accent is your teal/cyan brand color.
+     ------------------------------------------------------------ */
   :root{
-    --bg:#080c10;
-    --bg-mid:#0d1117;
-    --panel:#111820;
-    --panel-2:#0e131a;
-    --glass:rgba(255,255,255,0.04);
-    --glass-2:rgba(255,255,255,0.07);
-    --text:#eef1f6;
-    --muted:rgba(238,241,246,0.70);
-    --muted-2:rgba(238,241,246,0.45);
-    --line:rgba(255,255,255,0.10);
-    --line-2:rgba(255,255,255,0.06);
-    --accent:#00e8d8;
-    --accent-dim:rgba(0,232,216,0.12);
-    --accent-border:rgba(0,232,216,0.28);
-    --shadow-sm:0 2px 8px rgba(0,0,0,0.28);
-    --shadow:0 10px 30px rgba(0,0,0,0.38);
-    --shadow-lg:0 22px 52px rgba(0,0,0,0.46);
-    --radius:20px;
-    --radius-sm:14px;
-    --max:1380px;
+    --bg:#080c10;           /* main background, very dark navy */
+    --bg-mid:#0d1117;       /* slightly lighter background */
+    --panel:#111820;        /* card/panel background */
+    --panel-2:#0e131a;      /* slightly darker card background */
+    --glass:rgba(255,255,255,0.04);    /* very subtle white overlay */
+    --glass-2:rgba(255,255,255,0.07);  /* slightly stronger overlay */
+    --text:#eef1f6;          /* main text color (off-white) */
+    --muted:rgba(238,241,246,0.70);    /* secondary text, slightly faded */
+    --muted-2:rgba(238,241,246,0.45);  /* tertiary text, more faded */
+    --line:rgba(255,255,255,0.10);     /* border/divider color */
+    --line-2:rgba(255,255,255,0.06);   /* subtle inner border */
+    --accent:#00e8d8;                  /* YOUR BRAND COLOR - teal/cyan */
+    --accent-dim:rgba(0,232,216,0.12); /* accent as a faint background tint */
+    --accent-border:rgba(0,232,216,0.28); /* accent as a border color */
+    --shadow-sm:0 2px 8px rgba(0,0,0,0.28);   /* small drop shadow */
+    --shadow:0 10px 30px rgba(0,0,0,0.38);     /* medium drop shadow */
+    --shadow-lg:0 22px 52px rgba(0,0,0,0.46);  /* large drop shadow */
+    --radius:20px;      /* default card corner roundness */
+    --radius-sm:14px;   /* smaller corner roundness */
+    --max:1380px;       /* max page width */
+    /* Hero background: two subtle color glows + a dark gradient */
     --hero-grad:
       radial-gradient(circle at 16% 18%, rgba(0,232,216,0.09), transparent 24%),
       radial-gradient(circle at 84% 32%, rgba(47,120,255,0.10), transparent 24%),
       linear-gradient(180deg, #0a0f14 0%, #0b1118 100%);
-    --watermark-opacity:0.036;
+    --watermark-opacity:0.036; /* how visible the background signature is */
   }
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: COLOR TOKENS - LIGHT MODE
+     These override the dark mode colors when light mode is active.
+     ------------------------------------------------------------ */
   html[data-theme='light']{
     --bg:#eef4f8;
     --bg-mid:#f7fbfd;
@@ -148,7 +199,7 @@
     --muted-2:rgba(16,32,46,0.48);
     --line:rgba(10,40,54,0.11);
     --line-2:rgba(10,40,54,0.07);
-    --accent:#007b73;
+    --accent:#007b73;                     /* darker teal for light mode readability */
     --accent-dim:rgba(0,123,115,0.10);
     --accent-border:rgba(0,123,115,0.22);
     --shadow-sm:0 2px 8px rgba(0,0,0,0.08);
@@ -161,6 +212,10 @@
     --watermark-opacity:0.042;
   }
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: BASE / RESET
+     Basic rules that apply to every element on the page.
+     ------------------------------------------------------------ */
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
@@ -174,6 +229,11 @@
     top:0!important;
   }
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: WATERMARK
+     The faint signature logo that floats in the background.
+     Adjust --watermark-opacity above to make it more/less visible.
+     ------------------------------------------------------------ */
   body::before{
     content:"";
     position:fixed;
@@ -185,17 +245,23 @@
     pointer-events:none;
     z-index:0;
   }
-
   html[data-theme='light'] body::before{
     background:url('/assets/Signature_BlackTP.png') center/contain no-repeat;
   }
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: GLOBAL ELEMENT DEFAULTS
+     ------------------------------------------------------------ */
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
   button,input,textarea{font:inherit}
   .page{position:relative;z-index:1}
   .container{width:min(var(--max),calc(100% - 2.5rem));margin:0 auto}
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: NAVIGATION BAR (TOPBAR)
+     The sticky bar at the top with your name and buttons.
+     ------------------------------------------------------------ */
   .topbar{
     position:sticky;top:0;z-index:60;
     backdrop-filter:blur(18px) saturate(1.3);
@@ -204,18 +270,15 @@
     border-bottom:1px solid var(--line-2);
   }
   html[data-theme='light'] .topbar{background:rgba(246,249,252,0.9)}
-
   .topbar-inner{
     min-height:62px;
     display:flex;align-items:center;justify-content:space-between;gap:1rem;
   }
-
   .brand{
     display:inline-flex;align-items:center;gap:.72rem;font-weight:800;
     letter-spacing:.01em;flex-shrink:0;
   }
   .brand img{width:30px;height:30px;border-radius:8px}
-
   .top-actions{display:flex;align-items:center;gap:.45rem;position:relative}
   .nav-btn,.mini-btn,.contact-btn{
     display:inline-flex;align-items:center;justify-content:center;
@@ -228,7 +291,6 @@
     border-color:var(--accent-border);color:var(--accent);
     background:var(--accent-dim);transform:translateY(-1px);
   }
-
   .translate-wrap{position:relative}
   #google_translate_element{
     display:none;position:absolute;top:calc(100% + .55rem);right:0;
@@ -243,32 +305,34 @@
     border-radius:10px;padding:.45rem .55rem;width:100%;
   }
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: HERO SECTION
+     The big name/title area at the top of the page.
+     ------------------------------------------------------------ */
   .hero{
     padding:2.1rem 0 1.45rem;
     background:var(--hero-grad);
     border-bottom:1px solid var(--line-2);
+    overflow:hidden;
+    position:relative;
   }
-
   .hero-grid{
     display:grid;
     grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);
     gap:1.35rem;
     align-items:end;
   }
-
   .hero h1{
     margin:0;
     font-size:clamp(3rem,5vw,5.3rem);
     line-height:.95;
     letter-spacing:-.05em;
   }
-
   .hero-kicker{
     margin:.25rem 0 0;
     font-size:clamp(1.1rem,1.8vw,1.45rem);
     font-weight:800;
   }
-
   .hero-desc{
     margin:.7rem 0 0;
     max-width:52rem;
@@ -276,7 +340,7 @@
     line-height:1.65;
     color:var(--muted);
   }
-
+  /* The indented summary box with the accent left border */
   .hero-summary{
     margin:.85rem 0 0;
     max-width:52rem;
@@ -289,6 +353,9 @@
     border-radius:0 12px 12px 0;
   }
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: HERO BUTTONS (Resume / LinkedIn / Contact)
+     ------------------------------------------------------------ */
   .cta-row{display:flex;flex-wrap:wrap;gap:.72rem;margin-top:1rem}
   .btn,.btn-ghost{
     display:inline-flex;align-items:center;justify-content:center;
@@ -299,7 +366,6 @@
   .btn:hover{transform:translateY(-1px);filter:brightness(1.02)}
   .btn-ghost{background:var(--glass);color:var(--text)}
   .btn-ghost:hover{border-color:var(--accent-border);color:var(--accent);background:var(--accent-dim)}
-
   .contact-wrap{position:relative}
   .contact-menu{
     display:none;position:absolute;top:calc(100% + .55rem);left:0;z-index:30;
@@ -314,182 +380,110 @@
   }
   .contact-menu a:hover{border-color:var(--accent-border);color:var(--accent)}
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: HERO ASIDE (the "What stands out fast" box)
+     ------------------------------------------------------------ */
   .hero-aside{
     padding:1rem 1rem 1.05rem;background:var(--glass);
     border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-sm)
   }
-  .aside-label{
-    font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)
-  }
+  .aside-label{font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
   .aside-list{display:grid;gap:.7rem;margin-top:.78rem}
   .aside-item{display:grid;gap:.18rem}
   .aside-item strong{font-size:1.02rem}
   .aside-item span{color:var(--muted);font-size:.95rem;line-height:1.45}
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: SECTION LAYOUT
+     Controls spacing and heading style for each page section.
+     ------------------------------------------------------------ */
   .section{padding:1.45rem 0}
-  .section-head{
-    display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1rem
-  }
-  .section-head h2,.section-head h3{
-    margin:0;font-size:clamp(1.35rem,2vw,1.9rem);letter-spacing:-.03em
-  }
-  .section-head p{
-    margin:.3rem 0 0;color:var(--muted);line-height:1.6;max-width:56rem
-  }
+  .section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+  .section-head h2,.section-head h3{margin:0;font-size:clamp(1.35rem,2vw,1.9rem);letter-spacing:-.03em}
+  .section-head p{margin:.3rem 0 0;color:var(--muted);line-height:1.6;max-width:56rem}
 
-  .impact-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:1rem;
-  }
-
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: IMPACT CARDS (the big number cards)
+     ------------------------------------------------------------ */
+  .impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
   .impact-card,.soft-card,.panel,.feature,.role-card{
     background:linear-gradient(180deg,var(--panel),var(--panel-2));
-    border:1px solid var(--line);
-    border-radius:18px;
-    box-shadow:var(--shadow-sm);
+    border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-sm);
   }
-
   .impact-card{padding:1rem}
-  .impact-card .label{
-    font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)
-  }
-  .impact-card .value{
-    margin-top:.55rem;font-size:1.75rem;font-weight:800;letter-spacing:-.04em
-  }
-  .impact-card p{
-    margin:.45rem 0 0;color:var(--muted);line-height:1.55;font-size:.96rem
-  }
+  .impact-card .label{font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+  .impact-card .value{margin-top:.55rem;font-size:1.75rem;font-weight:800;letter-spacing:-.04em}
+  .impact-card p{margin:.45rem 0 0;color:var(--muted);line-height:1.55;font-size:.96rem}
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: FEATURED WORK CARDS
+     ------------------------------------------------------------ */
   .feature-stack{display:grid;gap:1.1rem}
   .feature{
-    padding:1.15rem;
-    display:grid;
+    padding:1.15rem;display:grid;
     grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);
-    gap:1rem;
-    align-items:start;
+    gap:1rem;align-items:start;
   }
-
   .feature .eyebrow{
     display:inline-flex;width:fit-content;padding:.42rem .72rem;
     border-radius:999px;border:1px solid var(--accent-border);background:var(--accent-dim);
     color:var(--accent);font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em
   }
-
   .feature h3{margin:.6rem 0 .35rem;font-size:1.45rem;letter-spacing:-.03em}
   .feature p{margin:0;color:var(--muted);line-height:1.68}
   .feature ul{margin:.8rem 0 0;padding-left:1.05rem}
   .feature li{line-height:1.68;color:var(--text)}
+  .feature-grid{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:.75rem;margin-top:.9rem}
+  .metric-box{padding:.85rem .9rem;border-radius:14px;background:var(--glass);border:1px solid var(--line-2)}
+  .metric-box .metric{font-size:1.24rem;font-weight:800;letter-spacing:-.03em}
+  .metric-box span{display:block;color:var(--muted);margin-top:.22rem;font-size:.9rem;line-height:1.45}
+  .feature-side{display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));gap:.75rem;align-items:start}
 
-  .feature-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(160px,1fr));
-    gap:.75rem;
-    margin-top:.9rem;
-  }
-
-  .metric-box{
-    padding:.85rem .9rem;border-radius:14px;background:var(--glass);
-    border:1px solid var(--line-2)
-  }
-  .metric-box .metric{
-    font-size:1.24rem;font-weight:800;letter-spacing:-.03em
-  }
-  .metric-box span{
-    display:block;color:var(--muted);margin-top:.22rem;font-size:.9rem;line-height:1.45
-  }
-
-  .feature-side{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(180px,1fr));
-    gap:.75rem;
-    align-items:start;
-  }
-
-  .roles-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:1rem;
-    align-items:start;
-  }
-
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: ROLE / EXPERIENCE CARDS
+     ------------------------------------------------------------ */
+  .roles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start}
   .role-card{padding:1rem}
-  .role-meta{
-    display:flex;justify-content:space-between;gap:.8rem;align-items:flex-start;flex-wrap:wrap
-  }
+  .role-meta{display:flex;justify-content:space-between;gap:.8rem;align-items:flex-start;flex-wrap:wrap}
   .role-meta h3{margin:0;font-size:1.18rem}
   .role-meta .period{color:var(--muted);font-weight:700}
   .role-card p{margin:.55rem 0 0;color:var(--muted);line-height:1.62}
-
-  .role-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:.8rem;
-    margin-top:.9rem;
-    align-items:start;
-  }
-
-  .role-group{
-    padding:.9rem;border:1px solid var(--line-2);border-radius:14px;background:var(--glass)
-  }
-  .role-group h4{
-    margin:0 0 .5rem;
-    font-size:.84rem;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:var(--accent);
-  }
+  .role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem;margin-top:.9rem;align-items:start}
+  .role-group{padding:.9rem;border:1px solid var(--line-2);border-radius:14px;background:var(--glass)}
+  .role-group h4{margin:0 0 .5rem;font-size:.84rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
   .role-group ul{margin:0;padding-left:1.05rem}
   .role-group li{line-height:1.6;color:var(--muted)}
 
-  .two-col{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:1rem;
-    align-items:start;
-  }
-
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: TWO-COLUMN LAYOUT + SOFT CARDS
+     Used in Tools, Operating Framework, Certifications, Education.
+     ------------------------------------------------------------ */
+  .two-col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start}
   .soft-card{padding:1rem}
   .soft-card h4,.soft-card h5{margin:0 0 .45rem}
   .soft-card p{margin:0;color:var(--muted);line-height:1.65}
   .soft-card ul{margin:0;padding-left:1.05rem}
   .soft-card li{line-height:1.62}
   .minor-note{font-size:.92rem;color:var(--muted)}
+  .section .minor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem;align-items:start}
 
-  .section .minor-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:.8rem;
-    align-items:start;
-  }
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: FOOTER
+     ------------------------------------------------------------ */
+  footer{padding:1.2rem 0 6rem;color:var(--muted);font-size:.95rem;text-align:center}
 
-  footer{
-    padding:1.2rem 0 6rem;
-    color:var(--muted);
-    font-size:.95rem;
-    text-align:center;
-  }
-
-  /* Floating controls */
-  .floating-controls{
-    position:fixed;right:1rem;bottom:1rem;z-index:70;display:flex;align-items:center;gap:.55rem;
-  }
-
-  /* Theme bulb */
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: FLOATING CONTROLS
+     The Jmod AI button and theme toggle in the bottom-right corner.
+     ------------------------------------------------------------ */
+  .floating-controls{position:fixed;right:1rem;bottom:1rem;z-index:70;display:flex;align-items:center;gap:.55rem}
   .theme-bulb{
     width:44px;height:44px;border-radius:999px;
     border:1px solid var(--line);background:var(--glass);
-    cursor:pointer;display:grid;place-items:center;
-    box-shadow:var(--shadow-sm);padding:0;
+    cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow-sm);padding:0;
   }
-  .theme-bulb svg{
-    width:20px;height:20px;
-    stroke:var(--accent);fill:transparent;
-    stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;
-  }
+  .theme-bulb svg{width:20px;height:20px;stroke:var(--accent);fill:transparent;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
   html[data-theme='light'] .theme-bulb svg{stroke:#f59e0b}
-
-  /* Jmod AI bubble */
   .jmod-ai-bubble{
     border:1px solid var(--accent-border);background:var(--panel);color:var(--text);
     border-radius:999px;padding:.68rem .84rem;display:inline-flex;align-items:center;gap:.52rem;
@@ -497,13 +491,17 @@
   }
   .jmod-ai-bubble img{width:22px;height:22px}
 
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: JMOD AI CHAT PANEL
+     The floating chat window. Do not edit the IDs here â€” they
+     are wired to the JavaScript at the bottom of the file.
+     ------------------------------------------------------------ */
   .jmod-ai-panel{
     position:fixed;right:1rem;bottom:4.8rem;z-index:80;width:min(420px,calc(100% - 1.5rem));
     background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--line);
     border-radius:18px;box-shadow:var(--shadow-lg);display:none;overflow:hidden
   }
   .jmod-ai-panel.open{display:block}
-
   .jmod-ai-header,.jmod-ai-footer{padding:.85rem .95rem;border-bottom:1px solid var(--line-2)}
   .jmod-ai-footer{border-bottom:none;border-top:1px solid var(--line-2)}
   .jmod-ai-title{display:flex;align-items:center;gap:.7rem}
@@ -511,99 +509,176 @@
   .jmod-ai-title .twrap{display:grid}
   .jmod-ai-title strong{font-size:.98rem}
   .jmod-ai-title span{font-size:.82rem;color:var(--muted)}
-  .jmod-ai-close{
-    margin-left:auto;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:1.1rem
-  }
+  .jmod-ai-close{margin-left:auto;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:1.1rem}
   .jmod-ai-header{display:flex;align-items:center;justify-content:space-between}
   .jmod-ai-body{padding:.95rem}
   .jmod-ai-systemline{margin:0 0 .75rem;color:var(--muted);line-height:1.55;font-size:.94rem}
-  .jmod-ai-thread{
-    max-height:260px;overflow:auto;display:grid;gap:.6rem;padding-right:.2rem
-  }
-  .jmod-ai-msg{
-    padding:.75rem .82rem;border-radius:14px;line-height:1.55;white-space:pre-wrap;word-break:break-word;font-size:.9rem
-  }
+  .jmod-ai-thread{max-height:260px;overflow:auto;display:grid;gap:.6rem;padding-right:.2rem}
+  .jmod-ai-msg{padding:.75rem .82rem;border-radius:14px;line-height:1.55;white-space:pre-wrap;word-break:break-word;font-size:.9rem}
   .jmod-ai-msg.user{background:var(--accent-dim);border:1px solid var(--accent-border)}
   .jmod-ai-msg.bot{background:var(--glass);border:1px solid var(--line-2)}
-  .jmod-ai-alert{
-    margin-top:.7rem;padding:.7rem .82rem;border-radius:12px;background:#7a1f1f22;color:#ffbcbc;border:1px solid #ff8c8c33
-  }
-  .jmod-ai-jd{
-    display:none;width:100%;min-height:86px;resize:vertical;margin-bottom:.75rem;
-    background:var(--glass);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:.75rem
-  }
+  .jmod-ai-alert{margin-top:.7rem;padding:.7rem .82rem;border-radius:12px;background:#7a1f1f22;color:#ffbcbc;border:1px solid #ff8c8c33}
+  .jmod-ai-jd{display:none;width:100%;min-height:86px;resize:vertical;margin-bottom:.75rem;background:var(--glass);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:.75rem}
   .jmod-ai-jd.show{display:block}
   .jmod-ai-row{display:flex;gap:.6rem}
-  .jmod-ai-input{
-    flex:1;background:var(--glass);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem;outline:none
-  }
-  .jmod-ai-send{
-    border:none;border-radius:12px;padding:.8rem .95rem;font-weight:800;background:var(--accent);color:#04100f;cursor:pointer
-  }
+  .jmod-ai-input{flex:1;background:var(--glass);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem;outline:none}
+  .jmod-ai-send{border:none;border-radius:12px;padding:.8rem .95rem;font-weight:800;background:var(--accent);color:#04100f;cursor:pointer}
   .jmod-ai-send:disabled{opacity:.55;cursor:not-allowed}
-  .jmod-ai-mini{
-    margin-top:.65rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-size:.86rem
-  }
+  .jmod-ai-mini{margin-top:.65rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-size:.86rem}
   .jmod-ai-mini a{color:var(--accent);font-weight:700}
 
-  /* Visually hidden (for AEO/SEO hidden content) */
-  .visually-hidden{
-    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
-    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  /* ------------------------------------------------------------
+     CSS SUB-SECTION: ACCESSIBILITY HELPER
+     .visually-hidden hides content from eyes but not from
+     search engines or screen readers. Used for the AEO FAQ section.
+     ------------------------------------------------------------ */
+  .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* ============================================================
+     CSS SUB-SECTION: ANIMATIONS
+     All motion and entrance effects live here.
+
+     QUICK REFERENCE FOR TUNING:
+       - Speed up an animation: lower the seconds value (e.g. 0.55s to 0.3s)
+       - Slow it down: raise the seconds value
+       - Less movement: reduce the translateY or translateX pixel value
+       - Remove an effect entirely: delete just that line/block
+     ============================================================ */
+
+  /* --- Keyframe: fade up from below ---
+     Used on most scroll-entrance elements.
+     28px = how far below they start. Lower = subtler rise. */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(28px); }
+    to   { opacity:1; transform:translateY(0); }
   }
 
-  @media (max-width: 1260px){
+  /* --- Keyframe: hero name slides in from the left ---
+     The big "Jordan Moddes" heading sweeps in on page load. */
+  @keyframes heroSlideIn {
+    from { opacity:0; transform:translateX(-30px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+
+  /* --- Keyframe: hero aside box fades in from the right --- */
+  @keyframes heroAsideIn {
+    from { opacity:0; transform:translateX(24px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+
+  /* --- Keyframe: accent glow pulse on impact card numbers ---
+     A slow breathing glow on the big numbers like $3.6M, 600+.
+     0 0 18px = blur radius. rgba value = glow color + strength. */
+  @keyframes glowPulse {
+    0%,100% { text-shadow: 0 0 0px transparent; }
+    50%      { text-shadow: 0 0 18px rgba(0,232,216,0.55); }
+  }
+  .impact-card .value {
+    animation: glowPulse 3.5s ease-in-out infinite;
+  }
+
+  /* --- Hero entrance animations (run once on page load) ---
+     Each element staggers in slightly after the previous one.
+     animation-delay controls how long each waits before starting. */
+  .hero h1      { animation: heroSlideIn 0.65s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.05s; }
+  .hero-kicker  { animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.18s; }
+  .hero-desc    { animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.28s; }
+  .hero-summary { animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.36s; }
+  .cta-row      { animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.46s; }
+  .hero-aside   { animation: heroAsideIn 0.65s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.3s; }
+
+  /* --- Scroll-triggered entrance: the .reveal class ---
+     Elements with class "reveal" start hidden. When JavaScript
+     detects they have scrolled into view, it adds class "visible"
+     which triggers this transition.
+
+     To make the rise effect bigger: increase the 28px value.
+     To make it faster: decrease the 0.52s value. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.52s cubic-bezier(0.22,1,0.36,1),
+                transform 0.52s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger delays: each card in a grid delays slightly more.
+     nth-child(1) = first card, nth-child(2) = second, etc.
+     To change stagger gap: edit the 0.07s increment below. */
+  .reveal:nth-child(1){ transition-delay:0s; }
+  .reveal:nth-child(2){ transition-delay:0.07s; }
+  .reveal:nth-child(3){ transition-delay:0.14s; }
+  .reveal:nth-child(4){ transition-delay:0.21s; }
+  .reveal:nth-child(5){ transition-delay:0.28s; }
+  .reveal:nth-child(6){ transition-delay:0.35s; }
+
+  /* --- Card hover depth effect ---
+     Cards lift and get stronger shadow + accent border on hover.
+     translateY(-5px) = how high it lifts. Lower = subtler. */
+  .impact-card,
+  .feature,
+  .role-card {
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+  .impact-card:hover,
+  .feature:hover,
+  .role-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent-border);
+  }
+
+  /* ============================================================
+     CSS SUB-SECTION: RESPONSIVE / MOBILE
+     These rules adjust the layout for smaller screens.
+     Breakpoints: 1260px (tablet-wide), 1120px (tablet), 760px (mobile)
+     ============================================================ */
+  @media (max-width:1260px){
     .feature{grid-template-columns:1fr}
     .feature-side{grid-template-columns:repeat(2,minmax(180px,1fr))}
     .roles-grid,.two-col{grid-template-columns:1fr}
   }
-
-  @media (max-width: 1120px){
+  @media (max-width:1120px){
     .impact-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
     .role-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
     .feature-side{grid-template-columns:1fr 1fr}
   }
-
-  @media (max-width: 760px){
+  @media (max-width:760px){
     .container{width:calc(100% - 1rem)}
     .topbar-inner{min-height:56px}
     .brand span{font-size:.92rem}
     .nav-btn{padding:.5rem .72rem;font-size:.8rem}
-
     .hero{padding:1.25rem 0 1rem}
     .hero-grid{grid-template-columns:1fr;gap:.85rem}
     .hero h1{font-size:2.2rem}
     .hero-kicker{font-size:.92rem}
     .hero-desc{font-size:.62rem;line-height:1.5}
     .hero-summary{font-size:.62rem;line-height:1.5}
-
     .btn,.btn-ghost,.contact-btn{min-width:0;padding:.64rem .8rem;font-size:.62rem}
     .hero-aside{padding:.72rem}
     .aside-label{font-size:.56rem}
     .aside-item strong{font-size:.7rem}
     .aside-item span{font-size:.58rem;line-height:1.4}
-
     .section{padding:.85rem 0}
     .section-head h2,.section-head h3{font-size:1rem}
     .section-head p{font-size:.6rem;line-height:1.45}
-
     .impact-grid{grid-template-columns:1fr 1fr;gap:.55rem}
     .impact-card{padding:.65rem}
     .impact-card .label{font-size:.46rem}
     .impact-card .value{font-size:.95rem;margin-top:.35rem}
     .impact-card p{font-size:.58rem;line-height:1.45}
-
     .feature{padding:.72rem;gap:.72rem;grid-template-columns:1fr}
     .feature .eyebrow{font-size:.48rem;padding:.3rem .48rem}
     .feature h3{font-size:.88rem}
     .feature p,.feature li{font-size:.58rem;line-height:1.5}
     .feature-grid{grid-template-columns:1fr 1fr;gap:.45rem}
     .feature-side{grid-template-columns:1fr 1fr;gap:.45rem}
-
     .metric-box{padding:.55rem .58rem}
     .metric-box .metric{font-size:.78rem}
     .metric-box span{font-size:.54rem;line-height:1.35}
-
     .role-card,.soft-card{padding:.7rem}
     .role-meta h3{font-size:.84rem}
     .role-meta .period{font-size:.58rem}
@@ -611,18 +686,24 @@
     .role-group{padding:.58rem}
     .role-group h4,.soft-card h4,.soft-card h5{font-size:.56rem}
     .role-grid,.two-col,.roles-grid,.section .minor-grid{grid-template-columns:1fr}
-
     .jmod-ai-bubble{padding:.58rem .72rem;font-size:.68rem}
     .jmod-ai-bubble img{width:18px;height:18px}
     .jmod-ai-panel{right:.5rem;bottom:4.1rem;width:calc(100% - 1rem)}
     .jmod-ai-systemline,.jmod-ai-msg,.jmod-ai-input,.jmod-ai-send,.jmod-ai-mini,.jmod-ai-jd{font-size:.72rem}
+    /* Disable hover lift on touch/mobile - no mouse hover on phones */
+    .impact-card:hover,.feature:hover,.role-card:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--line)}
   }
+
 </style>
 </head>
 <body>
   <div class="page">
 
-    <!-- NAVBAR -->
+    <!-- ============================================================
+         NAVBAR
+         To add a new nav button: copy one of the nav-btn lines
+         and change the label and href.
+         ============================================================ -->
     <header class="topbar">
       <div class="container topbar-inner">
         <a class="brand" href="#top" aria-label="Back to top">
@@ -642,7 +723,12 @@
 
     <main id="top">
 
-      <!-- HERO -->
+      <!-- ============================================================
+           HERO SECTION
+           To edit: change the h1, hero-kicker, hero-desc, hero-summary,
+           or the button links in cta-row.
+           To edit the "What stands out fast" panel: edit the aside-item blocks.
+           ============================================================ -->
       <section class="hero">
         <div class="container hero-grid">
           <div>
@@ -655,8 +741,11 @@
               Led operations supporting 600+ employees, delivered $3.6M annual operational value, and built systems adopted across 90+ sites. Currently supporting global supply chain planning at MilliporeSigma. Based in Austin, Texas and open to relocation.
             </p>
             <div class="cta-row">
+              <!-- Resume button â€” links to your PDF -->
               <a class="btn" href="/Resume-Jordan-Moddes.pdf" target="_blank" rel="noopener">Resume</a>
+              <!-- LinkedIn button -->
               <a class="btn-ghost" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank" rel="noopener">LinkedIn</a>
+              <!-- Contact dropdown - reveals Call / Text / Email / Save Contact -->
               <div class="contact-wrap" id="contactWrap">
                 <button class="contact-btn" id="contactBtn" type="button">Contact</button>
                 <div class="contact-menu" id="contactMenu">
@@ -668,6 +757,7 @@
               </div>
             </div>
           </div>
+          <!-- "What stands out fast" panel -->
           <aside class="hero-aside">
             <div class="aside-label">What stands out fast</div>
             <div class="aside-list">
@@ -692,7 +782,14 @@
         </div>
       </section>
 
-      <!-- EXECUTIVE IMPACT -->
+      <!-- ============================================================
+           EXECUTIVE IMPACT SECTION
+           Each impact-card has:
+             data-target = the number the counter counts up to
+             data-prefix = text before the number (like "$")
+             data-suffix = text after the number (like "+" or "%")
+           Cards without data-target show static text and skip the counter.
+           ============================================================ -->
       <section class="section">
         <div class="container">
           <div class="section-head">
@@ -702,36 +799,38 @@
             </div>
           </div>
           <div class="impact-grid">
-            <article class="impact-card">
+            <article class="impact-card reveal" data-target="600" data-suffix="+">
               <div class="label">Leadership scale</div>
-              <div class="value">600+</div>
+              <div class="value" id="counter-1">600+</div>
               <p>Employees led across facilities up to 3.25M sq ft, including 13 salaried leaders.</p>
             </article>
-            <article class="impact-card">
+            <article class="impact-card reveal" data-target="3.6" data-prefix="$" data-suffix="M">
               <div class="label">Program value</div>
-              <div class="value">$3.6M</div>
+              <div class="value" id="counter-2">$3.6M</div>
               <p>Annual operational value generated through the Lane Dash logistics optimization program.</p>
             </article>
-            <article class="impact-card">
+            <article class="impact-card reveal" data-target="50" data-suffix="%">
               <div class="label">Turnaround impact</div>
-              <div class="value">50%</div>
+              <div class="value" id="counter-3">50%</div>
               <p>Capacity improvement delivered during a six-week operational recovery assignment.</p>
             </article>
-            <article class="impact-card">
+            <article class="impact-card reveal">
               <div class="label">Systems automation</div>
-              <div class="value">90+ sites</div>
+              <div class="value" id="counter-4">90+ sites</div>
               <p>Reporting automation built for scale, including a 32-hour review cycle reduced to 45 minutes.</p>
             </article>
-            <article class="impact-card">
+            <article class="impact-card reveal">
               <div class="label">Supply chain systems</div>
-              <div class="value">14K SKUs</div>
+              <div class="value" id="counter-5">14K SKUs</div>
               <p>Active SKUs managed inside a 300K-plus product portfolio supporting global distribution planning.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- FEATURED WORK -->
+      <!-- ============================================================
+           FEATURED WORK SECTION
+           ============================================================ -->
       <section class="section">
         <div class="container">
           <div class="section-head">
@@ -741,7 +840,7 @@
             </div>
           </div>
           <div class="feature-stack">
-            <article class="feature">
+            <article class="feature reveal">
               <div>
                 <div class="eyebrow">Program ownership</div>
                 <h3>Lane Dash logistics optimization program</h3>
@@ -761,7 +860,7 @@
               </div>
             </article>
 
-            <article class="feature">
+            <article class="feature reveal">
               <div>
                 <div class="eyebrow">Turnaround leadership</div>
                 <h3>Rapid Improvement Team turnaround</h3>
@@ -782,7 +881,7 @@
               </div>
             </article>
 
-            <article class="feature">
+            <article class="feature reveal">
               <div>
                 <div class="eyebrow">Stretch leadership</div>
                 <h3>Acting Senior Operations Manager coverage</h3>
@@ -805,7 +904,9 @@
         </div>
       </section>
 
-      <!-- LEADERSHIP EXPERIENCE -->
+      <!-- ============================================================
+           LEADERSHIP EXPERIENCE SECTION
+           ============================================================ -->
       <section class="section">
         <div class="container">
           <div class="section-head">
@@ -815,7 +916,7 @@
             </div>
           </div>
           <div class="roles-grid">
-            <article class="role-card">
+            <article class="role-card reveal">
               <div class="role-meta">
                 <div>
                   <h3>Amazon &#8212; Operations Leadership</h3>
@@ -853,7 +954,7 @@
               </div>
             </article>
 
-            <article class="role-card">
+            <article class="role-card reveal">
               <div class="role-meta">
                 <div>
                   <h3>Network operations development</h3>
@@ -889,7 +990,7 @@
               </div>
             </article>
 
-            <article class="role-card">
+            <article class="role-card reveal">
               <div class="role-meta">
                 <div>
                   <h3>MilliporeSigma &#8212; Inventory Specialist / Material Scheduler</h3>
@@ -925,7 +1026,7 @@
               </div>
             </article>
 
-            <article class="role-card">
+            <article class="role-card reveal">
               <div class="role-meta">
                 <div>
                   <h3>Earlier leadership roles</h3>
@@ -962,10 +1063,12 @@
         </div>
       </section>
 
-      <!-- SUPPLY CHAIN SYSTEMS / TECHNOLOGY & TOOLS -->
+      <!-- ============================================================
+           TECHNOLOGY & TOOLS + OPERATING FRAMEWORK
+           ============================================================ -->
       <section class="section">
         <div class="container two-col">
-          <div class="soft-card">
+          <div class="soft-card reveal">
             <div class="section-head">
               <div>
                 <h2>Technology &amp; Tools</h2>
@@ -1012,8 +1115,7 @@
             </div>
           </div>
 
-          <!-- OPERATING FRAMEWORK -->
-          <div class="soft-card">
+          <div class="soft-card reveal">
             <div class="section-head">
               <div>
                 <h2>Operating Framework</h2>
@@ -1057,10 +1159,12 @@
         </div>
       </section>
 
-      <!-- CERTIFICATIONS & CONTINUING EDUCATION -->
+      <!-- ============================================================
+           CERTIFICATIONS & CONTINUING EDUCATION
+           ============================================================ -->
       <section class="section">
         <div class="container">
-          <div class="soft-card">
+          <div class="soft-card reveal">
             <div class="section-head">
               <div>
                 <h3>Certifications &amp; Continuing Education</h3>
@@ -1095,10 +1199,12 @@
         </div>
       </section>
 
-      <!-- EDUCATION -->
+      <!-- ============================================================
+           EDUCATION
+           ============================================================ -->
       <section class="section">
         <div class="container">
-          <div class="soft-card">
+          <div class="soft-card reveal">
             <div class="section-head">
               <div>
                 <h3>Education</h3>
@@ -1125,7 +1231,13 @@
         </div>
       </section>
 
-      <!-- HIDDEN FAQ / AEO SECTION -->
+      <!-- ============================================================
+           AEO SECTION - HIDDEN FAQ
+           This section is invisible to visitors but readable by search
+           engines, Google AI Overviews, ChatGPT, Perplexity, etc.
+           It helps AI tools answer questions about you accurately.
+           Edit the answers here whenever you update your experience above.
+           ============================================================ -->
       <section class="visually-hidden" aria-hidden="true">
         <h2>Frequently Asked Questions about Jordan Moddes</h2>
 
@@ -1162,13 +1274,15 @@
     </footer>
   </div>
 
-  <!-- FLOATING CONTROLS -->
+  <!-- ============================================================
+       FLOATING CONTROLS
+       The Jmod AI button and theme bulb in the bottom-right corner.
+       ============================================================ -->
   <div class="floating-controls" aria-label="Floating controls">
     <button class="jmod-ai-bubble" id="jmodAiBubble" type="button" aria-label="Open Jmod AI chat" title="Jmod AI">
       <img src="/assets/Signature_WhiteTP.png" alt="" class="jmod-ai-bubble-logo" id="jmodAiBubbleLogo">
       <span>Jmod AI</span>
     </button>
-    <!-- Theme bulb -->
     <button class="theme-bulb" id="themeBulb" type="button" aria-label="Toggle light/dark theme" title="Toggle theme">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M9 18h6" />
@@ -1178,7 +1292,11 @@
     </button>
   </div>
 
-  <!-- JMOD AI PANEL -->
+  <!-- ============================================================
+       JMOD AI CHAT PANEL
+       Do not change any id= values here â€” they are wired to the
+       JavaScript below. Changing them will break the chat.
+       ============================================================ -->
   <div class="jmod-ai-panel" id="jmodAiPanel" role="dialog" aria-label="Jmod AI chat" aria-modal="true">
     <div class="jmod-ai-header">
       <div class="jmod-ai-title">
@@ -1190,7 +1308,6 @@
       </div>
       <button class="jmod-ai-close" id="jmodAiClose" type="button" aria-label="Close">&#x2715;</button>
     </div>
-
     <div class="jmod-ai-body">
       <p class="jmod-ai-systemline" id="jmodAiWelcome">
         Ask about leadership scope, measurable results, cost mindset, or paste a job link. Note: first response may take around 60 seconds, then much faster after.
@@ -1198,7 +1315,6 @@
       <div class="jmod-ai-thread" id="jmodAiThread"></div>
       <div class="jmod-ai-alert" id="jmodAiAlert" style="display:none;"></div>
     </div>
-
     <div class="jmod-ai-footer">
       <textarea class="jmod-ai-jd" id="jmodAiJobText" placeholder="Paste job description text here if a job link is blocked"></textarea>
       <div class="jmod-ai-row">
@@ -1212,12 +1328,22 @@
     </div>
   </div>
 
-  <!-- TRANSLATE SCRIPT -->
+  <!-- Translate script + Cloudflare email decode -->
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-  <!-- SCRIPTS -->
+  <!-- ============================================================
+       JAVASCRIPT SECTION
+       All interactive behavior lives here.
+       Sub-sections are labeled so you can find things easily.
+       ============================================================ -->
   <script>
+
+    /* ----------------------------------------------------------
+       JS: THEME TOGGLE
+       Switches between dark and light mode. Saves the choice to
+       localStorage so it persists the next time someone visits.
+       ---------------------------------------------------------- */
     function toggleTheme() {
       var html = document.documentElement;
       var current = html.getAttribute('data-theme') || 'dark';
@@ -1228,6 +1354,11 @@
       if (typeof paintNavThemeLabel === 'function') paintNavThemeLabel();
       if (typeof setAiLogosForTheme === 'function') setAiLogosForTheme();
     }
+
+    /* ----------------------------------------------------------
+       JS: TRANSLATE WIDGET TOGGLE
+       Shows/hides the Google Translate dropdown.
+       ---------------------------------------------------------- */
     function toggleTranslateWidget() {
       var widget = document.getElementById("google_translate_element");
       if (!widget) return;
@@ -1235,11 +1366,19 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
+
+      /* Safe wrapper â€” if one block of code errors, it won't
+         kill everything else on the page */
       function safe(fn) { try { fn(); } catch(e) { console.error(e); } }
 
-      var VISITOR_KEY = "jmod_visitor_id_v1";
-      var STORAGE_KEY_THEME = "theme";
-
+      /* ----------------------------------------------------------
+         JS: VISITOR ID + STORAGE KEYS
+         A unique ID is created per browser so chat history stays
+         private. Do not change these key names â€” they are shared
+         with /resume-ai.html and changing them breaks chat sync.
+         ---------------------------------------------------------- */
+      var VISITOR_KEY      = "jmod_visitor_id_v1";
+      var STORAGE_KEY_THEME= "theme";
       function getVisitorId() {
         var id = localStorage.getItem(VISITOR_KEY);
         if (!id) {
@@ -1248,37 +1387,45 @@
         }
         return id;
       }
-      var VISITOR_ID = getVisitorId();
+      var VISITOR_ID       = getVisitorId();
       var STORAGE_KEY_THREAD = "jmod_ai_thread_v1::" + VISITOR_ID;
 
-      // Restore theme
+      /* ----------------------------------------------------------
+         JS: RESTORE SAVED THEME ON PAGE LOAD
+         ---------------------------------------------------------- */
       safe(function() {
         var storedTheme = localStorage.getItem(STORAGE_KEY_THEME);
         document.documentElement.setAttribute('data-theme', storedTheme === 'light' ? 'light' : 'dark');
       });
 
-      var themeBtn = document.getElementById("themeBtn");
-      var themeBulb = document.getElementById("themeBulb");
+      /* ----------------------------------------------------------
+         JS: NAVBAR BUTTON WIRING
+         Connects theme, translate, contact dropdown, and share.
+         ---------------------------------------------------------- */
+      var themeBtn     = document.getElementById("themeBtn");
+      var themeBulb    = document.getElementById("themeBulb");
       var translateBtn = document.getElementById("translateBtn");
-      var contactWrap = document.getElementById("contactWrap");
-      var contactBtn = document.getElementById("contactBtn");
-      var brandLogo = document.getElementById("brandLogo");
+      var contactWrap  = document.getElementById("contactWrap");
+      var contactBtn   = document.getElementById("contactBtn");
+      var brandLogo    = document.getElementById("brandLogo");
 
+      /* Updates the Light/Dark button label to match current theme */
       window.paintNavThemeLabel = function() {
         var theme = document.documentElement.getAttribute("data-theme") || "dark";
         if (themeBtn) themeBtn.textContent = theme === "dark" ? "Light" : "Dark";
       };
 
+      /* Swaps logos and favicon to match current theme */
       window.setAiLogosForTheme = function() {
-        var theme = document.documentElement.getAttribute("data-theme") || "dark";
+        var theme   = document.documentElement.getAttribute("data-theme") || "dark";
         var logoSrc = theme === "dark" ? "/assets/Signature_WhiteTP.png" : "/assets/Signature_BlackTP.png";
-        var icon = document.querySelector('link[rel="icon"]');
-        if (brandLogo) brandLogo.src = logoSrc;
-        var jmodAiLogo = document.getElementById("jmodAiLogo");
+        var icon    = document.querySelector('link[rel="icon"]');
+        if (brandLogo)            brandLogo.src = logoSrc;
+        var jmodAiLogo       = document.getElementById("jmodAiLogo");
         var jmodAiBubbleLogo = document.getElementById("jmodAiBubbleLogo");
-        if (jmodAiLogo) jmodAiLogo.src = logoSrc;
+        if (jmodAiLogo)       jmodAiLogo.src = logoSrc;
         if (jmodAiBubbleLogo) jmodAiBubbleLogo.src = logoSrc;
-        if (icon) icon.href = logoSrc;
+        if (icon)             icon.href = logoSrc;
       };
 
       safe(function() {
@@ -1287,24 +1434,11 @@
       });
 
       safe(function() {
-        if (themeBtn) themeBtn.addEventListener("click", function(e) {
-          e.stopPropagation();
-          toggleTheme();
-        });
-        if (themeBulb) themeBulb.addEventListener("click", function(e) {
-          e.stopPropagation();
-          toggleTheme();
-        });
-        if (translateBtn) translateBtn.addEventListener("click", function(e) {
-          e.stopPropagation();
-          toggleTranslateWidget();
-        });
-        if (contactBtn) {
-          contactBtn.addEventListener("click", function(e) {
-            e.stopPropagation();
-            if (contactWrap) contactWrap.classList.toggle("open");
-          });
-        }
+        if (themeBtn)    themeBtn.addEventListener("click",    function(e){ e.stopPropagation(); toggleTheme(); });
+        if (themeBulb)   themeBulb.addEventListener("click",   function(e){ e.stopPropagation(); toggleTheme(); });
+        if (translateBtn)translateBtn.addEventListener("click",function(e){ e.stopPropagation(); toggleTranslateWidget(); });
+        if (contactBtn)  contactBtn.addEventListener("click",  function(e){ e.stopPropagation(); if(contactWrap) contactWrap.classList.toggle("open"); });
+        /* Close contact menu and translate dropdown when clicking outside */
         document.addEventListener("click", function(e) {
           var gt = document.getElementById("google_translate_element");
           if (contactWrap && !contactWrap.contains(e.target)) contactWrap.classList.remove("open");
@@ -1313,27 +1447,33 @@
         });
       });
 
+      /* ----------------------------------------------------------
+         JS: SHARE BUTTON
+         Uses native Web Share API on mobile. Falls back to
+         clipboard copy on desktop.
+         ---------------------------------------------------------- */
       safe(function() {
         var shareBtn = document.getElementById("shareBtn");
         if (shareBtn) {
           shareBtn.addEventListener("click", async function() {
-            var shareData = {
-              title: document.title,
-              text: "Jordan Moddes | Operations & Supply Chain Leader",
-              url: window.location.href
-            };
+            var shareData = { title: document.title, text: "Jordan Moddes | Operations & Supply Chain Leader", url: window.location.href };
             try {
               if (navigator.share) await navigator.share(shareData);
               else {
                 await navigator.clipboard.writeText(window.location.href);
                 shareBtn.textContent = "Copied";
-                setTimeout(function() { shareBtn.textContent = "Share"; }, 1200);
+                setTimeout(function(){ shareBtn.textContent = "Share"; }, 1200);
               }
             } catch(e) {}
           });
         }
       });
 
+      /* ----------------------------------------------------------
+         JS: CROSS-TAB THEME SYNC
+         If the theme changes in another open tab, this one
+         updates automatically to stay in sync.
+         ---------------------------------------------------------- */
       safe(function() {
         window.addEventListener("storage", function(e) {
           if (!e) return;
@@ -1350,27 +1490,99 @@
         });
       });
 
-      /* ===== Jmod AI ===== */
-      var API_BASE = "https://resume-ai-backend-sx60.onrender.com/";
-      var bubble = document.getElementById("jmodAiBubble");
-      var panel = document.getElementById("jmodAiPanel");
-      var closeBtn = document.getElementById("jmodAiClose");
-      var input = document.getElementById("jmodAiInput");
-      var send = document.getElementById("jmodAiSend");
-      var thread = document.getElementById("jmodAiThread");
-      var status = document.getElementById("jmodAiStatus");
-      var alertBox = document.getElementById("jmodAiAlert");
-      var jobTextBox = document.getElementById("jmodAiJobText");
+      /* ----------------------------------------------------------
+         JS: SCROLL REVEAL ANIMATION
+         Watches all elements with class "reveal". When they enter
+         the viewport, adds class "visible" to trigger the CSS
+         fade-up transition defined in the CSS section above.
+
+         rootMargin "-60px" = animation fires when the element is
+         60px inside the viewport. Increase to trigger later.
+         ---------------------------------------------------------- */
+      safe(function() {
+        var revealEls = document.querySelectorAll('.reveal');
+        if (!('IntersectionObserver' in window)) {
+          /* Very old browser fallback: just show everything */
+          revealEls.forEach(function(el){ el.classList.add('visible'); });
+          return;
+        }
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target); /* fire once only */
+            }
+          });
+        }, { rootMargin: '-60px 0px' });
+        revealEls.forEach(function(el){ observer.observe(el); });
+      });
+
+      /* ----------------------------------------------------------
+         JS: COUNTER ANIMATION ON IMPACT CARDS
+         When an impact card scrolls into view, its number counts
+         up from 0 to the final value.
+
+         To edit a counter: find the impact-card in the HTML above
+         and change data-target (the number), data-prefix (before,
+         like "$"), or data-suffix (after, like "+" or "%").
+
+         Cards without data-target skip the counter and just
+         display their static text as-is.
+
+         duration = 1400ms. Lower = faster count. Higher = slower.
+         ---------------------------------------------------------- */
+      safe(function() {
+        var counterCards = document.querySelectorAll('.impact-card[data-target]');
+        if (!('IntersectionObserver' in window)) return;
+        var counterObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (!entry.isIntersecting) return;
+            var card    = entry.target;
+            var valEl   = card.querySelector('.value');
+            if (!valEl) return;
+            var target  = parseFloat(card.getAttribute('data-target'));
+            var prefix  = card.getAttribute('data-prefix') || '';
+            var suffix  = card.getAttribute('data-suffix') || '';
+            var isFloat = (target % 1 !== 0);
+            var duration= 1400;
+            var steps   = 50;
+            var stepTime= duration / steps;
+            var current = 0;
+            var increment = target / steps;
+            var timer = setInterval(function() {
+              current += increment;
+              if (current >= target) { current = target; clearInterval(timer); }
+              valEl.textContent = prefix + (isFloat ? current.toFixed(1) : Math.round(current)) + suffix;
+            }, stepTime);
+            counterObserver.unobserve(card);
+          });
+        }, { rootMargin: '-40px 0px' });
+        counterCards.forEach(function(card){ counterObserver.observe(card); });
+      });
+
+      /* ----------------------------------------------------------
+         JS: JMOD AI CHAT
+         DO NOT EDIT THIS SECTION unless your backend URL changes.
+         Backend URL: https://resume-ai-backend-sx60.onrender.com/
+         ---------------------------------------------------------- */
+      var API_BASE         = "https://resume-ai-backend-sx60.onrender.com/";
+      var bubble           = document.getElementById("jmodAiBubble");
+      var panel            = document.getElementById("jmodAiPanel");
+      var closeBtn         = document.getElementById("jmodAiClose");
+      var input            = document.getElementById("jmodAiInput");
+      var send             = document.getElementById("jmodAiSend");
+      var thread           = document.getElementById("jmodAiThread");
+      var status           = document.getElementById("jmodAiStatus");
+      var alertBox         = document.getElementById("jmodAiAlert");
+      var jobTextBox       = document.getElementById("jmodAiJobText");
       var openFullPageLink = document.getElementById("openFullPageLink");
 
       function loadThreadFromStorage() {
         try {
-          var raw = localStorage.getItem(STORAGE_KEY_THREAD);
+          var raw    = localStorage.getItem(STORAGE_KEY_THREAD);
           var parsed = raw ? JSON.parse(raw) : [];
           return Array.isArray(parsed) ? parsed : [];
-        } catch(e) {
-          return [];
-        }
+        } catch(e) { return []; }
       }
       function saveThreadToStorage(items) {
         try { localStorage.setItem(STORAGE_KEY_THREAD, JSON.stringify(items || [])); } catch(e) {}
@@ -1384,7 +1596,7 @@
           var m = threadState[i];
           if (!m || !m.kind) continue;
           var div = document.createElement("div");
-          div.className = "jmod-ai-msg " + m.kind;
+          div.className   = "jmod-ai-msg " + m.kind;
           div.textContent = String(m.text || "");
           thread.appendChild(div);
         }
@@ -1401,7 +1613,7 @@
       function openChat() {
         if (!panel) return;
         panel.classList.add("open");
-        setTimeout(function() { if (input) input.focus(); }, 60);
+        setTimeout(function(){ if (input) input.focus(); }, 60);
       }
       function closeChat() {
         if (!panel) return;
@@ -1414,7 +1626,7 @@
         threadState.push(msg);
         saveThreadToStorage(threadState);
         var div = document.createElement("div");
-        div.className = "jmod-ai-msg " + kind;
+        div.className   = "jmod-ai-msg " + kind;
         div.textContent = msg.text;
         thread.appendChild(div);
         if (thread.parentElement) thread.parentElement.scrollTop = thread.parentElement.scrollHeight;
@@ -1428,31 +1640,28 @@
         status.textContent = "Thinking...";
         send.disabled = true;
         if (alertBox) alertBox.style.display = "none";
-        var raw = (questionText || "").trim();
+        var raw          = (questionText || "").trim();
         var extractedUrl = parseJobUrlFromText(raw);
-        var cleanQuestion = raw.replace(extractedUrl, "").trim() || raw;
+        var cleanQuestion= raw.replace(extractedUrl, "").trim() || raw;
         var payload = {
           question: cleanQuestion,
-          job_url: extractedUrl || null,
+          job_url : extractedUrl || null,
           job_text: (jobTextBox && jobTextBox.value ? jobTextBox.value.trim() : "") || null
         };
         try {
           var res = await fetch(API_BASE + "ask", {
-            method: "POST",
+            method : "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body   : JSON.stringify(payload)
           });
           var data = null;
           try { data = await res.json(); } catch(e) {}
-          var answer = (data && data.answer) ? data.answer : (!res.ok ? "Server error. Try again." : "No answer returned.");
-          var needsPaste = !!(data && data.needs_paste_jd);
+          var answer    = (data && data.answer) ? data.answer : (!res.ok ? "Server error. Try again." : "No answer returned.");
+          var needsPaste= !!(data && data.needs_paste_jd);
           addMsg("bot", answer);
           if (needsPaste) {
             if (jobTextBox) jobTextBox.classList.add("show");
-            if (alertBox) {
-              alertBox.textContent = "This job link is blocked. Paste the job description text to continue.";
-              alertBox.style.display = "block";
-            }
+            if (alertBox) { alertBox.textContent = "This job link is blocked. Paste the job description text to continue."; alertBox.style.display = "block"; }
             status.textContent = "Paste JD, then send again.";
           } else {
             if (jobTextBox) jobTextBox.classList.remove("show");
@@ -1460,10 +1669,7 @@
           }
         } catch(e) {
           status.textContent = "Error.";
-          if (alertBox) {
-            alertBox.textContent = "Network error. If this persists, refresh the page.";
-            alertBox.style.display = "block";
-          }
+          if (alertBox) { alertBox.textContent = "Network error. If this persists, refresh the page."; alertBox.style.display = "block"; }
         } finally {
           send.disabled = false;
         }
@@ -1475,29 +1681,22 @@
         if (input) input.value = "";
         askBackend(t);
       }
-      if (bubble) {
-        bubble.addEventListener("click", function(e) {
-          e.stopPropagation();
-          if (panel && panel.classList.contains("open")) closeChat();
-          else openChat();
-        });
-      }
-      if (closeBtn) closeBtn.addEventListener("click", function(e) { e.stopPropagation(); closeChat(); });
+      if (bubble)  bubble.addEventListener("click",  function(e){ e.stopPropagation(); if(panel && panel.classList.contains("open")) closeChat(); else openChat(); });
+      if (closeBtn)closeBtn.addEventListener("click", function(e){ e.stopPropagation(); closeChat(); });
       document.addEventListener("click", function(e) {
         if (!panel || !panel.classList.contains("open")) return;
-        var inPanel = panel.contains(e.target);
+        var inPanel  = panel.contains(e.target);
         var inBubble = bubble && bubble.contains(e.target);
         if (!inPanel && !inBubble) closeChat();
       });
-      if (send) send.addEventListener("click", function() { handleSend(input ? input.value : ""); });
-      if (input) input.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          handleSend(input.value);
-        }
-      });
-    });
+      if (send) send.addEventListener("click", function(){ handleSend(input ? input.value : ""); });
+      if (input)input.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); handleSend(input.value); } });
+
+    }); /* end DOMContentLoaded */
   </script>
+
+  <!-- Cloudflare Web Analytics - leave this alone -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1a1584bfa96b48e196debc8525f4c09e","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+
 </body>
 </html>
