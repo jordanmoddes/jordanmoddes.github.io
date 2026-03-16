@@ -313,8 +313,9 @@
     padding:2.1rem 0 1.45rem;
     background:var(--hero-grad);
     border-bottom:1px solid var(--line-2);
-    overflow:hidden;
     position:relative;
+    /* NOTE: overflow must stay unset here so the Contact dropdown
+       can escape the hero bounds and appear above the page content. */
   }
   .hero-grid{
     display:grid;
@@ -368,15 +369,31 @@
   .btn-ghost:hover{border-color:var(--accent-border);color:var(--accent);background:var(--accent-dim)}
   .contact-wrap{position:relative}
   .contact-menu{
-    display:none;position:absolute;top:calc(100% + .55rem);left:0;z-index:30;
-    min-width:220px;padding:.65rem;background:var(--panel);
-    border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
-    flex-direction:column;gap:.45rem;
+    display:none;
+    position:absolute;
+    top:calc(100% + .55rem);
+    left:0;
+    z-index:200;
+    min-width:220px;
+    max-width:260px;
+    padding:.65rem;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow-lg);
+    flex-direction:column;
+    gap:.45rem;
   }
   .contact-wrap.open .contact-menu{display:flex}
   .contact-menu a{
-    padding:.8rem .9rem;border:1px solid var(--line-2);border-radius:12px;
-    background:var(--panel-2);font-weight:700;
+    padding:.8rem .9rem;
+    border:1px solid var(--line-2);
+    border-radius:12px;
+    background:var(--panel-2);
+    font-weight:700;
+    font-size:1rem;
+    color:var(--text);
+    display:block;
   }
   .contact-menu a:hover{border-color:var(--accent-border);color:var(--accent)}
 
@@ -692,6 +709,19 @@
     .jmod-ai-systemline,.jmod-ai-msg,.jmod-ai-input,.jmod-ai-send,.jmod-ai-mini,.jmod-ai-jd{font-size:.72rem}
     /* Disable hover lift on touch/mobile - no mouse hover on phones */
     .impact-card:hover,.feature:hover,.role-card:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--line)}
+    /* Contact dropdown on mobile: constrain width, clean up font size */
+    .contact-menu{
+      min-width:180px;
+      max-width:220px;
+      left:0;
+      right:auto;
+    }
+    .contact-menu a{
+      font-size:.95rem;
+      padding:.75rem .85rem;
+    }
+    /* Buttons in the CTA row: let them shrink naturally */
+    .cta-row{gap:.5rem}
   }
 
 </style>
