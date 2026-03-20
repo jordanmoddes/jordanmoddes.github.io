@@ -19,7 +19,7 @@ margin:0;
 font-family:Inter,sans-serif;
 background:#f6f6f6;
 color:#111;
-line-height:1.5;
+line-height:1.55;
 }
 
 .container{
@@ -42,6 +42,21 @@ margin:0 0 16px;
 color:#444;
 }
 
+a{
+text-decoration:none;
+color:inherit;
+}
+
+ul{
+margin:0;
+padding-left:20px;
+}
+
+li{
+margin-bottom:10px;
+color:#444;
+}
+
 /* ================= HEADER ================= */
 
 header{
@@ -51,17 +66,20 @@ background:#1B3022;
 color:white;
 z-index:1000;
 padding:14px 0;
+box-shadow:0 4px 16px rgba(0,0,0,.12);
 }
 
 .header-inner{
 display:flex;
 justify-content:space-between;
 align-items:center;
+gap:14px;
 }
 
 .logo{
 font-weight:800;
 font-size:1rem;
+letter-spacing:-0.02em;
 }
 
 .nav{
@@ -73,6 +91,11 @@ gap:16px;
 color:white;
 font-weight:600;
 text-decoration:none;
+opacity:.95;
+}
+
+.nav a:hover{
+opacity:1;
 }
 
 /* ================= BUTTONS ================= */
@@ -83,6 +106,11 @@ padding:14px 18px;
 border-radius:12px;
 font-weight:700;
 text-decoration:none;
+transition:.2s ease;
+}
+
+.btn:hover{
+transform:translateY(-1px);
 }
 
 .btn-primary{
@@ -95,6 +123,11 @@ background:white;
 color:#1B3022;
 }
 
+.btn-dark{
+background:#1B3022;
+color:white;
+}
+
 /* ================= HERO ================= */
 
 .hero{
@@ -103,17 +136,26 @@ color:white;
 }
 
 .hero-overlay{
-background:rgba(0,0,0,.6);
-padding:80px 0;
+background:linear-gradient(90deg, rgba(0,0,0,.72), rgba(0,0,0,.46));
+padding:90px 0;
 }
 
 .hero h1{
-font-size:clamp(2.2rem,7vw,4rem);
+font-size:clamp(2.2rem,7vw,4.3rem);
+max-width:760px;
 }
 
 .hero p{
-color:#ddd;
-max-width:500px;
+color:#e4e4e4;
+max-width:620px;
+font-size:1.05rem;
+}
+
+.hero-actions{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+margin-top:24px;
 }
 
 /* ================= TRUST ================= */
@@ -121,14 +163,25 @@ max-width:500px;
 .trust{
 background:white;
 padding:20px;
-border-radius:16px;
+border-radius:18px;
 box-shadow:0 8px 24px rgba(0,0,0,.08);
-margin-top:-40px;
+margin-top:-36px;
+position:relative;
+z-index:3;
 }
 
 .trust-grid{
 display:grid;
 gap:10px;
+}
+
+.trust-item{
+background:#f1f4f2;
+padding:14px;
+border-radius:12px;
+font-weight:700;
+text-align:center;
+color:#1B3022;
 }
 
 /* ================= CARDS ================= */
@@ -140,19 +193,24 @@ gap:18px;
 
 .card{
 background:white;
-border-radius:16px;
+border-radius:18px;
 overflow:hidden;
 box-shadow:0 6px 20px rgba(0,0,0,.08);
 }
 
 .card img{
 width:100%;
-height:200px;
+height:220px;
 object-fit:cover;
+display:block;
 }
 
 .card-body{
-padding:20px;
+padding:22px;
+}
+
+.card-body h3{
+font-size:1.25rem;
 }
 
 /* ================= SPLIT ================= */
@@ -162,10 +220,46 @@ display:grid;
 gap:20px;
 }
 
-.split .box{
+.box{
+background:white;
+padding:24px;
+border-radius:18px;
+box-shadow:0 6px 20px rgba(0,0,0,.06);
+}
+
+.box-dark{
+background:#1B3022;
+color:white;
+}
+
+.box-dark p,
+.box-dark li{
+color:#d8ddd9;
+}
+
+/* ================= INFO ================= */
+
+.info-grid{
+display:grid;
+gap:16px;
+}
+
+.info{
 background:white;
 padding:20px;
 border-radius:16px;
+box-shadow:0 6px 20px rgba(0,0,0,.06);
+font-weight:600;
+}
+
+.info-label{
+display:block;
+font-size:.8rem;
+text-transform:uppercase;
+letter-spacing:.08em;
+color:#6a6a6a;
+margin-bottom:8px;
+font-weight:800;
 }
 
 /* ================= GALLERY ================= */
@@ -178,15 +272,35 @@ gap:10px;
 
 .gallery img{
 width:100%;
-border-radius:12px;
+height:170px;
+object-fit:cover;
+border-radius:14px;
+display:block;
 }
 
-/* ================= INFO ================= */
+/* ================= MAP / VISIT ================= */
 
-.info{
-background:white;
-padding:20px;
-border-radius:16px;
+.address-link{
+font-weight:700;
+color:#1B3022;
+text-decoration:underline;
+text-underline-offset:3px;
+}
+
+.visit-actions{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+margin-top:18px;
+}
+
+/* ================= CTA ================= */
+
+.cta{
+background:linear-gradient(135deg, #ffffff, #f1f1f1);
+border-radius:20px;
+padding:28px;
+box-shadow:0 8px 24px rgba(0,0,0,.06);
 }
 
 /* ================= FOOTER ================= */
@@ -198,6 +312,11 @@ padding:40px 0;
 margin-top:40px;
 }
 
+footer p{
+color:#d8ddd9;
+margin:0;
+}
+
 /* ================= DESKTOP ================= */
 
 @media(min-width:768px){
@@ -207,7 +326,7 @@ display:flex;
 }
 
 .hero-overlay{
-padding:120px 0;
+padding:130px 0;
 }
 
 .grid-3{
@@ -222,8 +341,16 @@ grid-template-columns:1fr 1fr;
 grid-template-columns:repeat(4,1fr);
 }
 
+.gallery img{
+height:210px;
+}
+
 .trust-grid{
 grid-template-columns:repeat(4,1fr);
+}
+
+.info-grid{
+grid-template-columns:repeat(2,1fr);
 }
 
 }
@@ -255,11 +382,12 @@ grid-template-columns:repeat(4,1fr);
 <div class="container">
 
 <h1>Trusted Bait, Tackle & Archery in Adams, WI</h1>
-<p>Real outdoor knowledge. Local service. Premium archery support.</p>
+<p>Real outdoor knowledge. Local service. Strong archery expertise. Built for people who want honest answers and quality gear without the big-box feel.</p>
 
-<br>
-
+<div class="hero-actions">
 <a href="tel:16083397664" class="btn btn-primary">Call for Availability</a>
+<a href="https://www.google.com/maps/search/?api=1&query=2156+State+Hwy+13+Adams+WI+53910" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Get Directions</a>
+</div>
 
 </div>
 </div>
@@ -269,10 +397,10 @@ grid-template-columns:repeat(4,1fr);
 <div class="container">
 <div class="trust">
 <div class="trust-grid">
-<div>Local Outdoor Shop</div>
-<div>Family Owned</div>
-<div>Archery Expertise</div>
-<div>Bait, Gear & Coaching</div>
+<div class="trust-item">Local Outdoor Shop</div>
+<div class="trust-item">Family Owned</div>
+<div class="trust-item">Archery Expertise</div>
+<div class="trust-item">Bait, Gear & Coaching</div>
 </div>
 </div>
 </div>
@@ -282,30 +410,31 @@ grid-template-columns:repeat(4,1fr);
 <div class="container">
 
 <h2>Shop Categories</h2>
+<p>Keep the brand simple and recognizable: bait, tackle, and archery backed by real outdoor experience.</p>
 
 <div class="grid grid-3">
 
 <div class="card">
-<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/800e496f958de57b21418f29d1a4222f.jpg">
+<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/800e496f958de57b21418f29d1a4222f.jpg" alt="Live bait at Lewie's Unlimited Outdoors">
 <div class="card-body">
 <h3>Live Bait</h3>
-<p>Minnows, wax worms, nightcrawlers.</p>
+<p>Minnows, wax worms, nightcrawlers, and practical local help so customers know what they need before they head out.</p>
 </div>
 </div>
 
 <div class="card">
-<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/c6264049794317bc03d34e02c67bf54f.jpg">
+<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/c6264049794317bc03d34e02c67bf54f.jpg" alt="Fishing tackle and gear">
 <div class="card-body">
 <h3>Tackle & Gear</h3>
-<p>Rods, reels, and local expertise.</p>
+<p>Fishing gear, tackle, and trusted recommendations from a shop that actually understands local outdoor needs.</p>
 </div>
 </div>
 
 <div class="card">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr6r7RhkI9EOJ3EJDktYRFAsKoEnBGR6g-MR1ETjLiEaqt53q124ri5KcE&s=10">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr6r7RhkI9EOJ3EJDktYRFAsKoEnBGR6g-MR1ETjLiEaqt53q124ri5KcE&s=10" alt="Archery category">
 <div class="card-body">
 <h3>Archery</h3>
-<p>Premium bow setup and repair.</p>
+<p>Premium archery support, equipment, coaching, and setup for customers who want a higher standard of service.</p>
 </div>
 </div>
 
@@ -320,17 +449,21 @@ grid-template-columns:repeat(4,1fr);
 
 <div class="box">
 <h2>Our Story</h2>
-<p>Lewie’s Unlimited Outdoors was built on passion for outdoor sports and strong family values.</p>
-<p>We believe in real service, real knowledge, and helping every customer walk out confident.</p>
+<p>Lewis Holmes III, known affectionately as “Lewie” by friends and fellow outdoorsmen, has spent a lifetime honing his skills and expertise in various outdoor pursuits. From archery competitions that have taken him to national and international stages to mastering the art of fishing and hunting in the serene wilderness, Lewie’s love for outdoor sports runs deep. 2</p>
+
+<p>With a dream of sharing his passion and knowledge with others, Lewie and his family established Lewie’s Unlimited Outdoors. The store is not just a business. It is a reflection of their values, their experiences, and their dedication to building a strong community of outdoor enthusiasts. </p>
+
+<p>When customers step into Lewie’s Unlimited Outdoors, the goal is simple: give them exceptional service, real expertise, and a shopping experience that leaves them confident and ready for the next trip, hunt, or competition. 4</p>
 </div>
 
-<div class="box">
+<div class="box box-dark">
 <h2>Why People Trust Us</h2>
 <ul>
-<li>Local experience</li>
-<li>Real outdoor expertise</li>
-<li>Not a big box store</li>
-<li>Personal service</li>
+<li>Strong local roots and real outdoor experience</li>
+<li>Archery knowledge backed by high-level skill and competition background</li>
+<li>Family-run values and service</li>
+<li>Personal guidance instead of generic sales talk</li>
+<li>Practical help across bait, tackle, classes, repair, and licensing</li>
 </ul>
 </div>
 
@@ -342,15 +475,13 @@ grid-template-columns:repeat(4,1fr);
 <div class="container">
 
 <h2>What We Offer</h2>
+<p>The original site lists quality products, expertise, community, and licensing. Present that as structured services instead of a text wall. 5</p>
 
-<div class="grid">
-
-<div class="info">Bait, tackle, hunting supplies</div>
-<div class="info">Archery equipment & setup</div>
-<div class="info">Classes and coaching</div>
-<div class="info">Maintenance and repair</div>
-<div class="info">Licensing assistance</div>
-
+<div class="info-grid">
+<div class="info"><span class="info-label">Outdoor Goods</span>Bait, tackle, fishing gear, hunting supplies, and archery equipment</div>
+<div class="info"><span class="info-label">Classes & Coaching</span>Skill-building support for archery and outdoor experience</div>
+<div class="info"><span class="info-label">Maintenance & Repair</span>Hands-on help to keep equipment ready and performing</div>
+<div class="info"><span class="info-label">Licensing Support</span>Convenient help with permits and legal outdoor preparation</div>
 </div>
 
 </div>
@@ -361,14 +492,13 @@ grid-template-columns:repeat(4,1fr);
 <div class="container">
 
 <h2>From the Shop & Outdoors</h2>
+<p>Keep the real imagery. It proves the business is real and gives the site recognition for people who already know Lewie.</p>
 
 <div class="gallery">
-
-<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/7ed8bc5478d9efd3024d3fcc973c13c1.jpg">
-<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/a7c6a7fd92e7eb3926131b9a313c142f.jpg">
-<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/4af7ecfe53dc55a274a5279af44a8ac1.jpg">
-<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/1c8f98d2f2b3149f4fdaa0a39abb5b5d.jpg">
-
+<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/7ed8bc5478d9efd3024d3fcc973c13c1.jpg" alt="Gallery image 1">
+<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/a7c6a7fd92e7eb3926131b9a313c142f.jpg" alt="Gallery image 2">
+<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/4af7ecfe53dc55a274a5279af44a8ac1.jpg" alt="Gallery image 3">
+<img src="https://lewiesunlimitedoutdoors.my.canva.site/_assets/media/1c8f98d2f2b3149f4fdaa0a39abb5b5d.jpg" alt="Gallery image 4">
 </div>
 
 </div>
@@ -380,16 +510,30 @@ grid-template-columns:repeat(4,1fr);
 
 <div class="box">
 <h2>Visit Us</h2>
-<p>2156 State Hwy 13<br>Adams, WI 53910</p>
-<p><strong>(608) 339-7664</strong></p>
+<p>
+<a class="address-link" href="https://www.google.com/maps/search/?api=1&query=2156+State+Hwy+13+Adams+WI+53910" target="_blank" rel="noopener noreferrer">
+2156 State Hwy 13<br>Adams, WI 53910
+</a>
+</p>
+
+<p><strong>Phone:</strong> <a href="tel:16083397664">(608) 339-7664</a></p>
+
+<div class="visit-actions">
+<a href="https://www.google.com/maps/search/?api=1&query=2156+State+Hwy+13+Adams+WI+53910" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Open in Google Maps</a>
+<a href="tel:16083397664" class="btn btn-secondary">Call the Shop</a>
+</div>
 </div>
 
 <div class="box">
 <h2>Hours</h2>
 <p>
-Mon/Wed/Thu/Fri: 7–4<br>
-Saturday: 7–2:30<br>
-Tuesday & Sunday: Closed<br>
+Monday: 7:00 AM – 4:00 PM<br>
+Tuesday: Closed<br>
+Wednesday: 7:00 AM – 4:00 PM<br>
+Thursday: 7:00 AM – 4:00 PM<br>
+Friday: 7:00 AM – 4:00 PM<br>
+Saturday: 7:00 AM – 2:30 PM<br>
+Sunday: Closed<br>
 By appointment available
 </p>
 </div>
@@ -401,10 +545,11 @@ By appointment available
 <section class="section">
 <div class="container">
 
+<div class="cta">
 <h2>Call First. Get Real Answers.</h2>
-<p>Know what’s in stock before you drive.</p>
-
+<p>Know what’s available before you drive. That is the kind of service people remember.</p>
 <a href="tel:16083397664" class="btn btn-primary">Call Now</a>
+</div>
 
 </div>
 </section>
