@@ -1,1 +1,1156 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic page setup -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <title>Lewie’s Unlimited Outdoors | Bait, Tackle & Archery in Adams, WI</title>
+  <meta
+    name="description"
+    content="Lewie’s Unlimited Outdoors in Adams, WI offers bait, tackle, archery equipment, outdoor expertise, classes, and trusted local service."
+  />
+  <meta
+    name="keywords"
+    content="bait shop Adams WI, tackle shop Adams WI, archery shop Adams WI, bait near Wisconsin Dells, outdoor sporting goods Adams Wisconsin"
+  />
+  <meta name="theme-color" content="#13261d" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Lewie’s Unlimited Outdoors" />
+  <meta
+    property="og:description"
+    content="Bait, tackle, archery equipment, outdoor expertise, and trusted local service in Adams, WI."
+  />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* =========================
+       1. ROOT / EASY EDIT ZONE
+       Change colors, spacing, sizes here first
+       ========================= */
+    :root {
+      --bg: #f6f3ec;
+      --surface: #ffffff;
+      --surface-alt: #f1eee6;
+      --dark: #13261d;
+      --dark-2: #1b3025;
+      --text: #17211c;
+      --muted: #5d685f;
+      --line: rgba(19, 38, 29, 0.12);
+
+      --accent: #b9853b;         /* premium bronze */
+      --accent-2: #8b5f20;       /* darker bronze */
+      --accent-soft: #efe3d1;    /* soft premium background */
+
+      --success: #274b36;
+      --white: #ffffff;
+
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
+      --radius-pill: 999px;
+
+      --shadow-sm: 0 8px 20px rgba(14, 28, 21, 0.08);
+      --shadow-md: 0 18px 40px rgba(14, 28, 21, 0.12);
+
+      --max-width: 1200px;
+      --gutter: 20px;
+
+      --section-pad-mobile: 56px;
+      --section-pad-desktop: 92px;
+
+      --transition: 180ms ease;
+    }
+
+    /* =========================
+       2. RESET / GLOBAL
+       ========================= */
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .container {
+      width: min(calc(100% - (var(--gutter) * 2)), var(--max-width));
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: var(--section-pad-mobile) 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      box-shadow: var(--shadow-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: clamp(1.9rem, 6vw, 3.5rem);
+      line-height: 1.03;
+      letter-spacing: -0.03em;
+    }
+
+    .section-intro {
+      margin: 0;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .stack-12 > * + * { margin-top: 12px; }
+    .stack-16 > * + * { margin-top: 16px; }
+    .stack-20 > * + * { margin-top: 20px; }
+    .stack-24 > * + * { margin-top: 24px; }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* =========================
+       3. BUTTONS
+       ========================= */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform var(--transition), opacity var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--dark);
+      border: 1px solid rgba(19, 38, 29, 0.12);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-dark {
+      background: var(--dark);
+      color: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* =========================
+       4. TOP BAR
+       ========================= */
+    .topbar {
+      background: var(--dark);
+      color: rgba(255,255,255,0.88);
+      font-size: 0.88rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px 0;
+    }
+
+    .topbar-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      align-items: center;
+    }
+
+    .topbar-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+    }
+
+    /* =========================
+       5. HEADER / NAV
+       Mobile first with simple menu
+       ========================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(246, 243, 236, 0.84);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(19, 38, 29, 0.08);
+    }
+
+    .site-header.scrolled {
+      box-shadow: 0 10px 26px rgba(10, 20, 15, 0.08);
+    }
+
+    .header-inner {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--dark);
+    }
+
+    .brand-subtitle {
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .nav-toggle {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-toggle span,
+    .nav-toggle span::before,
+    .nav-toggle span::after {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 999px;
+      position: relative;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    .nav-toggle span::before,
+    .nav-toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+
+    .nav-toggle span::before { top: -6px; }
+    .nav-toggle span::after { top: 6px; }
+
+    .nav-toggle.active span {
+      background: transparent;
+    }
+
+    .nav-toggle.active span::before {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .nav-toggle.active span::after {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .nav-panel {
+      display: none;
+      padding: 0 0 18px;
+    }
+
+    .nav-panel.open {
+      display: block;
+    }
+
+    .nav-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .nav-links a {
+      min-height: 48px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      font-weight: 600;
+    }
+
+    .header-actions-desktop {
+      display: none;
+    }
+
+    /* =========================
+       6. HERO
+       ========================= */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(10,16,12,0.12), rgba(10,16,12,0.30)),
+        radial-gradient(circle at top left, rgba(185,133,59,0.16), transparent 35%),
+        var(--dark);
+      color: var(--white);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(14,22,17,0.86) 0%, rgba(14,22,17,0.70) 45%, rgba(14,22,17,0.42) 100%),
+        url("images/hero-outdoors.jpg") center/cover no-repeat;
+      opacity: 1;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      padding: 52px 0 44px;
+      display: grid;
+      gap: 28px;
+    }
+
+    .hero-copy {
+      max-width: 720px;
+    }
+
+    .hero-title {
+      margin: 0 0 14px;
+      font-size: clamp(2.2rem, 8vw, 5rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-text {
+      margin: 0;
+      font-size: 1rem;
+      max-width: 640px;
+      color: rgba(255,255,255,0.86);
+    }
+
+    .hero-trust {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .hero-trust-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .hero-trust-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.72);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .hero-trust-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    /* =========================
+       7. TRUST BAR
+       ========================= */
+    .trust-bar-wrap {
+      margin-top: -18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .trust-bar {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(19,38,29,0.08);
+      border-radius: 22px;
+      box-shadow: var(--shadow-md);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .trust-pill {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--surface-alt);
+      color: var(--dark);
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* =========================
+       8. CATEGORY CARDS
+       ========================= */
+    .category-card {
+      overflow: hidden;
+    }
+
+    .category-image {
+      aspect-ratio: 16 / 10;
+      background: #d8ddd8 center/cover no-repeat;
+    }
+
+    .category-image.bait {
+      background-image: linear-gradient(rgba(8,18,12,0.16), rgba(8,18,12,0.16)), url("images/bait.jpg");
+    }
+
+    .category-image.tackle {
+      background-image: linear-gradient(rgba(8,18,12,0.16), rgba(8,18,12,0.16)), url("images/tackle.jpg");
+    }
+
+    .category-image.archery {
+      background-image: linear-gradient(rgba(8,18,12,0.16), rgba(8,18,12,0.16)), url("images/archery.jpg");
+    }
+
+    .category-body {
+      padding: 20px;
+    }
+
+    .category-title {
+      margin: 0 0 8px;
+      font-size: 1.22rem;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .category-text {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    /* =========================
+       9. STORY / PREMIUM LOCAL FEEL
+       ========================= */
+    .split-panel {
+      display: grid;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .feature-panel {
+      padding: 22px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, #ffffff, #f9f6ef);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .feature-panel.dark {
+      background: linear-gradient(180deg, #1b3025, #13261d);
+      color: var(--white);
+      border-color: rgba(255,255,255,0.08);
+    }
+
+    .feature-panel.dark p,
+    .feature-panel.dark li {
+      color: rgba(255,255,255,0.82);
+    }
+
+    .list-clean {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .list-clean li + li {
+      margin-top: 10px;
+    }
+
+    /* =========================
+       10. INFO GRID
+       ========================= */
+    .info-card {
+      padding: 20px;
+    }
+
+    .info-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .hours-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hours-list li + li {
+      margin-top: 10px;
+    }
+
+    /* =========================
+       11. CTA BAND
+       ========================= */
+    .cta-band {
+      background:
+        linear-gradient(135deg, rgba(185,133,59,0.10), rgba(19,38,29,0.04)),
+        var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow-md);
+      padding: 24px;
+    }
+
+    .cta-band-title {
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 5vw, 2.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .cta-band-text {
+      margin: 0 0 18px;
+      color: var(--muted);
+      max-width: 700px;
+    }
+
+    /* =========================
+       12. FOOTER
+       ========================= */
+    .footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.88);
+      padding: 42px 0 28px;
+      margin-top: 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .footer h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .footer p,
+    .footer li,
+    .footer a {
+      color: rgba(255,255,255,0.78);
+      font-size: 0.95rem;
+    }
+
+    .footer-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-list li + li {
+      margin-top: 8px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.10);
+      margin-top: 24px;
+      padding-top: 16px;
+      font-size: 0.84rem;
+      color: rgba(255,255,255,0.62);
+    }
+
+    /* =========================
+       13. DESKTOP BREAKPOINTS
+       Desktop second
+       ========================= */
+    @media (min-width: 768px) {
+      .section {
+        padding: var(--section-pad-desktop) 0;
+      }
+
+      .topbar-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .hero-inner {
+        min-height: 78vh;
+        padding: 90px 0 76px;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        align-items: end;
+      }
+
+      .hero-trust {
+        align-self: end;
+      }
+
+      .trust-bar {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .split-panel {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1.3fr 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .nav-toggle {
+        display: none;
+      }
+
+      .nav-panel {
+        display: none !important;
+      }
+
+      .header-inner {
+        grid-template-columns: auto 1fr auto;
+        display: grid;
+      }
+
+      .header-actions-desktop {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .desktop-nav {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .desktop-nav a {
+        min-height: 44px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+        color: var(--dark);
+        transition: background var(--transition), color var(--transition);
+      }
+
+      .desktop-nav a:hover {
+        background: rgba(19, 38, 29, 0.06);
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      .desktop-nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- =========================
+       TOP BAR
+       ========================= -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="topbar-line">
+        <span>Trusted local outdoor shop in Adams, Wisconsin</span>
+      </div>
+      <div class="topbar-line">
+        <span>Call: <a href="tel:16083397664">(608) 339-7664</a></span>
+        <span class="topbar-dot"></span>
+        <span>By appointment available</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       HEADER
+       ========================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#top" class="brand">
+          <span class="brand-title">Lewie’s Unlimited Outdoors</span>
+          <span class="brand-subtitle">Bait • Tackle • Archery • Outdoor Expertise</span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Primary">
+          <a href="#categories">Shop</a>
+          <a href="#story">Our Story</a>
+          <a href="#services">Services</a>
+          <a href="#visit">Visit</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="header-actions-desktop">
+          <a class="btn btn-secondary" href="mailto:unlimitedoutdoorsguideservice@gmail.com">Email</a>
+          <a class="btn btn-primary" href="tel:16083397664">Call the Shop</a>
+        </div>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+          <span></span>
+        </button>
+      </div>
+
+      <div class="nav-panel" id="mobileNav">
+        <nav class="nav-links" aria-label="Mobile">
+          <a href="#categories">Shop Categories</a>
+          <a href="#story">Our Story</a>
+          <a href="#services">Services</a>
+          <a href="#visit">Hours & Location</a>
+          <a href="#contact">Contact</a>
+          <a href="tel:16083397664">Call the Shop</a>
+          <a href="mailto:unlimitedoutdoorsguideservice@gmail.com">Email Us</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================
+       HERO
+       ========================= -->
+  <section class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <div class="hero-copy stack-24">
+        <span class="eyebrow">Adams, WI Outdoor Shop</span>
+
+        <div class="stack-16">
+          <h1 class="hero-title">Trusted local service.<br />High-end outdoor standards.</h1>
+          <p class="hero-text">
+            Lewie’s Unlimited Outdoors brings together small-town trust, real outdoor knowledge,
+            and a sharper level of quality across bait, tackle, archery, and outdoor sporting goods.
+          </p>
+        </div>
+
+        <div class="btn-row">
+          <a class="btn btn-primary" href="tel:16083397664">Call for Availability</a>
+          <a class="btn btn-secondary" href="#visit">Visit the Shop</a>
+        </div>
+      </div>
+
+      <div class="hero-trust">
+        <div class="hero-trust-card">
+          <div class="hero-trust-label">Address</div>
+          <div class="hero-trust-value">2156 State Hwy 13, Adams, WI 53910</div>
+        </div>
+        <div class="hero-trust-card">
+          <div class="hero-trust-label">Specialties</div>
+          <div class="hero-trust-value">Bait, tackle, archery equipment, classes, coaching</div>
+        </div>
+        <div class="hero-trust-card">
+          <div class="hero-trust-label">Built Around</div>
+          <div class="hero-trust-value">Family values, expertise, and outdoor community</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       TRUST BAR
+       ========================= -->
+  <div class="trust-bar-wrap">
+    <div class="container">
+      <div class="trust-bar">
+        <div class="trust-pill">Local service you can trust</div>
+        <div class="trust-pill">Archery expertise with premium standards</div>
+        <div class="trust-pill">Bait, tackle, gear, and outdoor essentials</div>
+        <div class="trust-pill">Classes, coaching, and licensing support</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       CATEGORIES
+       ========================= -->
+  <section class="section" id="categories">
+    <div class="container stack-24">
+      <div class="stack-12">
+        <span class="eyebrow">Shop Categories</span>
+        <h2 class="section-title">Everything built around real outdoor needs</h2>
+        <p class="section-intro">
+          Keep the shopping experience simple, clear, and confidence-driven. These are the three
+          core anchors of the brand.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        <article class="card category-card">
+          <div class="category-image bait" aria-hidden="true"></div>
+          <div class="category-body">
+            <h3 class="category-title">Live Bait</h3>
+            <p class="category-text">
+              Position this as the trusted local stop for practical fishing needs, fast answers,
+              and dependable availability.
+            </p>
+            <div class="btn-row">
+              <a class="btn btn-dark" href="tel:16083397664">Call for Bait</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card category-card">
+          <div class="category-image tackle" aria-hidden="true"></div>
+          <div class="category-body">
+            <h3 class="category-title">Tackle & Fishing Gear</h3>
+            <p class="category-text">
+              Clean, clear, no-nonsense positioning for anglers who want quality gear and local
+              guidance without the big-box feel.
+            </p>
+            <div class="btn-row">
+              <a class="btn btn-secondary" href="#contact">Ask About Gear</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card category-card">
+          <div class="category-image archery" aria-hidden="true"></div>
+          <div class="category-body">
+            <h3 class="category-title">Archery</h3>
+            <p class="category-text">
+              This is where the elevated branding hits harder — premium archery standards,
+              knowledge, coaching, and confidence.
+            </p>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="#services">Explore Archery</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       STORY / BRAND POSITIONING
+       ========================= -->
+  <section class="section" id="story">
+    <div class="container split-panel">
+      <div class="feature-panel stack-20">
+        <span class="eyebrow">Our Story</span>
+        <h2 class="section-title" style="font-size: clamp(1.8rem, 5vw, 3rem);">
+          Neighbor-level trust. Stronger standards than people expect.
+        </h2>
+        <p class="section-intro">
+          Lewie’s Unlimited Outdoors was founded around real passion for outdoor sports, family
+          values, and the kind of service that turns first-time visitors into long-term customers.
+        </p>
+        <p class="section-intro">
+          The current brand strength is not “corporate outdoor retailer.” It is something better:
+          local credibility, actual knowledge, and a more exclusive standard of care.
+        </p>
+      </div>
+
+      <div class="feature-panel dark stack-20">
+        <span class="eyebrow" style="background: rgba(255,255,255,0.12); color: white; border-color: rgba(255,255,255,0.12);">
+          Why this positioning works
+        </span>
+        <ul class="list-clean">
+          <li>Feels personal and approachable</li>
+          <li>Still signals premium expertise and quality</li>
+          <li>Builds trust faster than a generic outdoor site</li>
+          <li>Gives archery the room to feel higher-end and specialized</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       SERVICES / OFFERS
+       ========================= -->
+  <section class="section" id="services">
+    <div class="container stack-24">
+      <div class="stack-12">
+        <span class="eyebrow">What We Offer</span>
+        <h2 class="section-title">Services that feel local, not small</h2>
+        <p class="section-intro">
+          The current business offers bait, tackle, fishing gear, hunting supplies, archery
+          equipment, classes, coaching, licensing support, and maintenance/repair. That mix should
+          be presented as organized expertise, not a text wall. 1
+        </p>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card info-card">
+          <div class="info-label">Outdoor Goods</div>
+          <div class="info-value">Bait, tackle, fishing gear, hunting supplies, archery equipment</div>
+        </div>
+
+        <div class="card info-card">
+          <div class="info-label">Guidance</div>
+          <div class="info-value">Outdoor knowledge, trusted recommendations, local support</div>
+        </div>
+
+        <div class="card info-card">
+          <div class="info-label">Training</div>
+          <div class="info-value">Classes, coaching sessions, and skill refinement</div>
+        </div>
+
+        <div class="card info-card">
+          <div class="info-label">Support</div>
+          <div class="info-value">Licensing assistance, equipment maintenance, and repair</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       VISIT / HOURS / CONTACT
+       ========================= -->
+  <section class="section" id="visit">
+    <div class="container stack-24">
+      <div class="stack-12">
+        <span class="eyebrow">Visit the Shop</span>
+        <h2 class="section-title">Straightforward, reliable, easy to find</h2>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card info-card stack-16">
+          <div>
+            <div class="info-label">Location</div>
+            <div class="info-value">2156 State Hwy 13<br />Adams, WI 53910</div>
+          </div>
+
+          <div>
+            <div class="info-label">Phone</div>
+            <div class="info-value"><a href="tel:16083397664">(608) 339-7664</a></div>
+          </div>
+
+          <div>
+            <div class="info-label">Email</div>
+            <div class="info-value">
+              <a href="mailto:unlimitedoutdoorsguideservice@gmail.com">
+                unlimitedoutdoorsguideservice@gmail.com
+              </a>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-primary" href="https://maps.google.com/?q=2156+State+Hwy+13+Adams+WI+53910" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            <a class="btn btn-secondary" href="tel:16083397664">Call Now</a>
+          </div>
+        </div>
+
+        <div class="card info-card">
+          <div class="info-label">Hours</div>
+          <ul class="hours-list">
+            <li><strong>Monday:</strong> 7:00 AM – 4:00 PM</li>
+            <li><strong>Tuesday:</strong> Closed</li>
+            <li><strong>Wednesday:</strong> 7:00 AM – 4:00 PM</li>
+            <li><strong>Thursday:</strong> 7:00 AM – 4:00 PM</li>
+            <li><strong>Friday:</strong> 7:00 AM – 4:00 PM</li>
+            <li><strong>Saturday:</strong> 7:00 AM – 2:30 PM</li>
+            <li><strong>Sunday:</strong> Closed</li>
+            <li><strong>Also:</strong> By appointment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       FINAL CTA
+       ========================= -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="cta-band">
+        <h2 class="cta-band-title">Call first. Get real answers. Show up confident.</h2>
+        <p class="cta-band-text">
+          That is the tone this brand should own. Helpful. Direct. Trusted. Elevated. Not flashy.
+          Not generic. Just strong local credibility with premium-level presence.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="tel:16083397664">Call the Shop</a>
+          <a class="btn btn-secondary" href="mailto:unlimitedoutdoorsguideservice@gmail.com">Send Email</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       FOOTER
+       ========================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3>Lewie’s Unlimited Outdoors</h3>
+          <p>
+            Local outdoor trust with a sharper standard for bait, tackle, archery, and hands-on expertise.
+          </p>
+        </div>
+
+        <div>
+          <h3>Visit</h3>
+          <ul class="footer-list">
+            <li>2156 State Hwy 13</li>
+            <li>Adams, WI 53910</li>
+            <li><a href="tel:16083397664">(608) 339-7664</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>Hours</h3>
+          <ul class="footer-list">
+            <li>Mon / Wed / Thu / Fri: 7:00–4:00</li>
+            <li>Saturday: 7:00–2:30</li>
+            <li>Tuesday / Sunday: Closed</li>
+            <li>By appointment available</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © <span id="year"></span> Lewie’s Unlimited Outdoors. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* =========================
+       SIMPLE JS ONLY
+       Easy to understand
+       ========================= */
+
+    // 1) Mobile nav toggle
+    const navToggle = document.getElementById("navToggle");
+    const mobileNav = document.getElementById("mobileNav");
+
+    navToggle.addEventListener("click", function () {
+      const isOpen = mobileNav.classList.toggle("open");
+      navToggle.classList.toggle("active", isOpen);
+      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    // 2) Close mobile nav when a link is clicked
+    mobileNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", function () {
+        mobileNav.classList.remove("open");
+        navToggle.classList.remove("active");
+        navToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // 3) Sticky header subtle shadow on scroll
+    const siteHeader = document.getElementById("siteHeader");
+
+    function handleHeaderScroll() {
+      if (window.scrollY > 12) {
+        siteHeader.classList.add("scrolled");
+      } else {
+        siteHeader.classList.remove("scrolled");
+      }
+    }
+
+    window.addEventListener("scroll", handleHeaderScroll);
+    handleHeaderScroll();
+
+    // 4) Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
