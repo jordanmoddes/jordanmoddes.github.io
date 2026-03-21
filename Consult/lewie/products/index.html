@@ -6,7 +6,7 @@
 
 <title>Products | Lewie’s Unlimited Outdoors</title>
 
-<meta name="description" content="Explore bait, tackle, and archery gear available at Lewie’s Unlimited Outdoors in Adams, WI. Serving Wisconsin Dells, Portage, and beyond.">
+<meta name="description" content="Archery gear, bait, tackle, and licenses available in Adams, WI. Serving Wisconsin, Illinois, and surrounding regions.">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -27,6 +27,14 @@ margin:auto;
 
 .section{
 padding:60px 0;
+}
+
+h1,h2,h3{
+margin:0 0 12px;
+}
+
+p{
+color:#444;
 }
 
 /* HEADER */
@@ -51,11 +59,17 @@ padding:12px 16px;
 border-radius:10px;
 font-weight:700;
 text-decoration:none;
+display:inline-block;
 }
 
 .btn-primary{
 background:#FF5A1F;
 color:white;
+}
+
+.btn-secondary{
+background:white;
+color:#1B3022;
 }
 
 /* HERO */
@@ -73,23 +87,6 @@ font-size:clamp(2rem,6vw,3.5rem);
 .hero p{
 color:#ccc;
 max-width:500px;
-}
-
-/* FILTER */
-
-.filters{
-display:flex;
-gap:10px;
-overflow-x:auto;
-margin-top:20px;
-}
-
-.filter-btn{
-background:white;
-padding:10px 14px;
-border-radius:20px;
-font-weight:600;
-white-space:nowrap;
 }
 
 /* GRID */
@@ -120,18 +117,36 @@ padding:18px;
 margin:0 0 6px;
 }
 
-.card-body p{
-font-size:.9rem;
-color:#555;
+/* BOX */
+
+.box{
+background:white;
+padding:24px;
+border-radius:16px;
+box-shadow:0 6px 20px rgba(0,0,0,.06);
 }
 
-/* CATEGORY TEXT */
+.box-dark{
+background:#1B3022;
+color:white;
+}
 
-.category{
+.box-dark p, .box-dark li{
+color:#ddd;
+}
+
+/* INFO GRID */
+
+.info-grid{
+display:grid;
+gap:16px;
+}
+
+.info{
 background:white;
-padding:20px;
-border-radius:16px;
-margin-top:30px;
+padding:18px;
+border-radius:12px;
+font-weight:600;
 }
 
 /* FOOTER */
@@ -147,6 +162,9 @@ margin-top:40px;
 .grid{
 grid-template-columns:repeat(3,1fr);
 }
+.info-grid{
+grid-template-columns:repeat(2,1fr);
+}
 }
 
 </style>
@@ -161,21 +179,56 @@ grid-template-columns:repeat(3,1fr);
 </div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
 <div class="container">
-<h1>Products & Gear</h1>
-<p>Top brands. Real inventory. Call to confirm what’s in stock.</p>
+<h1>Products & Services</h1>
+<p>Top gear. Custom builds. Real expertise. Call to confirm what’s in stock.</p>
+</div>
+</section>
 
-<div class="filters">
-<div class="filter-btn">All</div>
-<div class="filter-btn">Bait</div>
-<div class="filter-btn">Tackle</div>
-<div class="filter-btn">Archery</div>
+<!-- AUTHORITY -->
+<section class="section">
+<div class="container">
+
+<div class="box" style="text-align:center;">
+<h2>Elite Archery Expertise</h2>
+
+<p><strong>NFAA Pro Chairman</strong></p>
+<p><strong>World Ranked Archer (Top 500 Globally)</strong></p>
+
+<p>
+Custom arrow builds. Honest recommendations. No upselling — only what actually improves performance.
+</p>
+
 </div>
 
 </div>
 </section>
 
+<!-- CUSTOM ARROWS -->
+<section class="section">
+<div class="container">
+
+<h2>Custom Arrow Builds</h2>
+
+<p>
+Every archer is different. Lewie builds arrows based on your setup, draw weight, and performance — not guesswork.
+</p>
+
+<ul>
+<li>Precision arrow matching</li>
+<li>Component tuning</li>
+<li>Performance-first recommendations</li>
+<li>No unnecessary upsells</li>
+</ul>
+
+<a href="tel:16083397664" class="btn btn-primary">Call for Custom Setup</a>
+
+</div>
+</section>
+
+<!-- PRODUCTS -->
 <section class="section">
 <div class="container">
 
@@ -183,113 +236,105 @@ grid-template-columns:repeat(3,1fr);
 
 <div class="grid">
 
-<!-- CBE -->
 <div class="card">
-<img src="https://i.imgur.com/3ZQ3Z8K.jpg">
+<img src="https://via.placeholder.com/400x300?text=Bow+Sight">
 <div class="card-body">
-<h3>CBE Engage Hybrid</h3>
-<p>High-precision bow sight.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
+<h3>Bow Sights</h3>
+<p>Precision setups for serious archers.</p>
 </div>
 </div>
 
 <div class="card">
-<img src="https://i.imgur.com/7F9bT4T.jpg">
+<img src="https://via.placeholder.com/400x300?text=Arrows">
 <div class="card-body">
-<h3>CBE Tactic Hybrid</h3>
-<p>Reliable hunting sight.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
-</div>
-</div>
-
-<!-- Black Eagle -->
-<div class="card">
-<img src="https://i.imgur.com/N9qXJXK.jpg">
-<div class="card-body">
-<h3>Rampage Arrows</h3>
-<p>Durable hunting arrows.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
+<h3>Arrows</h3>
+<p>Matched to your build and performance needs.</p>
 </div>
 </div>
 
 <div class="card">
-<img src="https://i.imgur.com/Yv1b3nU.jpg">
+<img src="https://via.placeholder.com/400x300?text=Broadheads">
 <div class="card-body">
-<h3>X-Impact Arrows</h3>
-<p>High-performance arrows.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
-</div>
-</div>
-
-<!-- G5 -->
-<div class="card">
-<img src="https://i.imgur.com/GmX3K2W.jpg">
-<div class="card-body">
-<h3>G5 Montec</h3>
-<p>Fixed blade broadhead.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
+<h3>Broadheads</h3>
+<p>Reliable, field-tested hunting setups.</p>
 </div>
 </div>
 
 <div class="card">
-<img src="https://i.imgur.com/pxy9d4Q.jpg">
+<img src="https://via.placeholder.com/400x300?text=Fishing+Gear">
 <div class="card-body">
-<h3>G5 DeadMeat</h3>
-<p>Mechanical broadhead.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
-</div>
-</div>
-
-<!-- VMC -->
-<div class="card">
-<img src="https://i.imgur.com/3lD9q5n.jpg">
-<div class="card-body">
-<h3>VMC Jig Heads</h3>
-<p>Essential fishing setup.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
+<h3>Fishing Gear</h3>
+<p>Bait, tackle, and essentials for local waters.</p>
 </div>
 </div>
 
 <div class="card">
-<img src="https://i.imgur.com/Bd0dF3F.jpg">
+<img src="https://via.placeholder.com/400x300?text=Live+Bait">
 <div class="card-body">
-<h3>VMC Treble Hooks</h3>
-<p>Reliable hook performance.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
-</div>
-</div>
-
-<!-- YUM -->
-<div class="card">
-<img src="https://i.imgur.com/j0G6L1P.jpg">
-<div class="card-body">
-<h3>YUM Dinger</h3>
-<p>Top bass fishing lure.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
+<h3>Live Bait</h3>
+<p>Minnows, wax worms, nightcrawlers.</p>
 </div>
 </div>
 
 <div class="card">
-<img src="https://i.imgur.com/9gP2q8r.jpg">
+<img src="https://via.placeholder.com/400x300?text=Accessories">
 <div class="card-body">
-<h3>YUM Craw Papi</h3>
-<p>Proven soft bait.</p>
-<a href="tel:16083397664" class="btn btn-primary">Call</a>
+<h3>Accessories</h3>
+<p>Everything you need for setup and maintenance.</p>
 </div>
 </div>
 
 </div>
 
-<!-- SEO BLOCKS -->
+</div>
+</section>
 
-<div class="category">
-<h3>Bait & Fishing Supplies</h3>
-<p>Lewie’s Unlimited Outdoors carries live bait including minnows, wax worms, and nightcrawlers. Serving Adams, Wisconsin Dells, and Portage anglers with reliable fishing supplies.</p>
+<!-- LICENSES -->
+<section class="section">
+<div class="container">
+
+<h2>Licenses Available In-Store</h2>
+
+<p>
+Get your fishing and hunting licenses on the spot. Fast, simple, and local.
+</p>
+
+<ul>
+<li>Fishing licenses</li>
+<li>Deer (buck & doe)</li>
+<li>Seasonal hunting licenses</li>
+</ul>
+
+</div>
+</section>
+
+<!-- WHAT WE STOCK -->
+<section class="section">
+<div class="container">
+
+<h2>What You’ll Find In-Store</h2>
+
+<div class="info-grid">
+
+<div class="info">Arrows & Components</div>
+<div class="info">Archery Accessories</div>
+<div class="info">Bait & Fishing Gear</div>
+<div class="info">Hunting Essentials</div>
+
 </div>
 
-<div class="category">
-<h3>Archery Equipment</h3>
-<p>Archery equipment, bow setup, and high-end brands available in Adams, WI. Serving customers from Eau Claire to Milwaukee and Chicago.</p>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+<div class="container">
+
+<div class="box">
+<h2>Call Before You Drive</h2>
+<p>Inventory changes fast. Get real answers before heading out.</p>
+
+<a href="tel:16083397664" class="btn btn-primary">Call Now</a>
 </div>
 
 </div>
