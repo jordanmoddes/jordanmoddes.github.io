@@ -1,908 +1,1165 @@
 <!DOCTYPE html>
 <html lang="en" id="top">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png" />
-  <title>JMOD’s Dashboard</title>
-  <meta name="color-scheme" content="dark light" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png" />
+<title>JMOD's Dashboard</title>
+<meta name="color-scheme" content="dark light" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#0b0c10;
-      --bg-soft:#0e1218;
-      --card:#13151b;
-      --ink:#e8ebf4;
-      --muted:#a2a8b6;
-      --border:#222631;
-      --accent:#4da3ff;
-      --good:#17e5a1;
-      --bad:#ff7b7b;
-    }
+<style>
+:root{
+  --bg:#0b0c10;
+  --bg-soft:#0e1218;
+  --card:#13151b;
+  --ink:#e8ebf4;
+  --muted:#a2a8b6;
+  --border:#222631;
+  --accent:#4da3ff;
+  --good:#17e5a1;
+  --bad:#ff7b7b;
+  --amber:#ffd166;
+  --teal:#17e5a1;
+  --purple:#b47dff;
+  --font-sans:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+}
 
-    /* Light theme overrides (applied when html.light is set) */
-    html.light{
-      --bg:#f4f5fb;
-      --bg-soft:#e7e9f5;
-      --card:#ffffff;
-      --ink:#111827;
-      --muted:#6b7280;
-      --border:#d3d7e6;
-      --accent:#2563eb;
-      --good:#059669;
-      --bad:#dc2626;
-    }
+html.light{
+  --bg:#f4f5fb;
+  --bg-soft:#e7e9f5;
+  --card:#ffffff;
+  --ink:#111827;
+  --muted:#6b7280;
+  --border:#d3d7e6;
+  --accent:#2563eb;
+  --good:#059669;
+  --bad:#dc2626;
+  --amber:#d97706;
+}
 
-    html,body{height:100%}
-    html{scroll-behavior:smooth}
-    .hidden{display:none;}
+html,body{height:100%}
+html{scroll-behavior:smooth}
+.hidden{display:none;}
 
-    /* Animated background: subtle gradients + faint grid */
-    body{
-      margin:0;
-      color:var(--ink);
-      background:
-        radial-gradient(1200px 800px at 10% -20%, rgba(77,163,255,.10), transparent 60%),
-        radial-gradient(900px 700px at 90% 120%, rgba(180,77,255,.08), transparent 60%),
-        linear-gradient(180deg,var(--bg),var(--bg-soft));
-      position:relative;
-      overflow-x:hidden;
-    }
-    body::before{
-      content:""; position:fixed; inset:-2px;
-      background:
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px,
-        linear-gradient(0deg,  rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px;
-      opacity:.15; pointer-events:none; z-index:0;
-      animation:floatBG 40s linear infinite;
-    }
-    /* Adjust grid lines in light mode */
-    html.light body::before{
-      background:
-        linear-gradient(90deg, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/40px 40px,
-        linear-gradient(0deg,  rgba(15,23,42,.06) 1px, transparent 1px) 0 0/40px 40px;
-      opacity:.22;
-    }
+body{
+  margin:0;
+  font-family:var(--font-sans);
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 800px at 10% -20%, rgba(77,163,255,.10), transparent 60%),
+    radial-gradient(900px 700px at 90% 120%, rgba(180,77,255,.08), transparent 60%),
+    linear-gradient(180deg,var(--bg),var(--bg-soft));
+  position:relative;
+  overflow-x:hidden;
+}
+body::before{
+  content:""; position:fixed; inset:-2px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px,
+    linear-gradient(0deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px;
+  opacity:.15; pointer-events:none; z-index:0;
+  animation:floatBG 40s linear infinite;
+}
+html.light body::before{
+  background:
+    linear-gradient(90deg, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/40px 40px,
+    linear-gradient(0deg, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/40px 40px;
+  opacity:.22;
+}
+@keyframes floatBG{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
 
-    @keyframes floatBG{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+a{color:inherit;text-decoration:none}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 14px 48px}
 
-    a{color:inherit;text-decoration:none}
-    .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 14px 48px}
+/* â”€â”€ Nav â”€â”€ */
+.nav{
+  position:sticky;top:0;z-index:1000;
+  background:#0d0f14cc;
+  backdrop-filter:blur(8px);
+  border-bottom:0;
+}
+html.light .nav{background:rgba(248,250,255,0.94);border-bottom:1px solid var(--border);}
+.navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;
+  justify-content:center;padding:12px}
+.nav a{color:#f1f3f7;font-weight:600;font-size:13px;letter-spacing:.01em;
+  padding:5px 10px;border-radius:8px;transition:background .15s,color .15s;position:relative}
+html.light .nav a{color:#111827;}
+.nav a:hover{background:rgba(77,163,255,.12);color:var(--accent)}
+.nav a.active{color:var(--accent)}
+.nav a.active::after{
+  content:"";position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:var(--accent);
+}
 
-    /* Nav */
-    .nav{
-      position:sticky;top:0;z-index:1000;
-      background:#0d0f14cc;
-      backdrop-filter:blur(8px);
-      border-bottom:0;
-    }
-    html.light .nav{
-      background:rgba(248,250,255,0.94);
-      border-bottom:1px solid var(--border);
-    }
-    .navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;
-           justify-content:center;padding:12px}
-    .nav a{color:#f1f3f7;font-weight:600}
-    html.light .nav a{color:#111827;}
-    .nav a:hover{opacity:.85}
+/* â”€â”€ Ticker â”€â”€ */
+.ticker{white-space:nowrap;overflow:hidden;background:#0e121800;border:0}
+.ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
+.ticker:hover .ticker-inner{animation-play-state:paused}
+.tick-item{display:inline-block;margin-right:28px;color:#cfe0ff;font-size:12px;font-family:var(--font-mono)}
+html.light .tick-item{color:#1f2937;}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* Ticker (no border line) */
-    .ticker{white-space:nowrap;overflow:hidden;background:#0e121800;border:0}
-    .ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
-    .ticker:hover .ticker-inner{animation-play-state:paused}
-    .tick-item{display:inline-block;margin-right:28px;color:#cfe0ff}
-    html.light .tick-item{color:#1f2937;}
-    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* â”€â”€ Card entrance animation â”€â”€ */
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  animation:cardIn .4s ease both;
+}
+html.light .card{box-shadow:0 12px 30px rgba(15,23,42,.08);}
 
-    /* Cards / layout */
-    h1{font-size:22px;margin:16px 0}
-    .grid{display:grid;gap:16px}
-    @media(min-width:900px){.grid.cols-2{grid-template-columns:1fr 1fr}}
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:16px;
-      box-shadow:0 10px 30px rgba(0,0,0,.35)
-    }
-    html.light .card{
-      box-shadow:0 12px 30px rgba(15,23,42,.08);
-    }
-    .card .hd{padding:12px 14px;border-bottom:1px solid var(--border);
-              display:flex;justify-content:space-between;align-items:center}
-    .card .bd{padding:14px}
-    .pill{
-      font-size:12px;
-      background:#0f1420;
-      border:1px solid #1f2a43;
-      color:#a9c8ff;
-      padding:5px 10px;
-      border-radius:999px;
-    }
-    html.light .pill{
-      background:#f3f5ff;
-      border-color:#d0d4e5;
-      color:#111827;
-    }
-    .mini{font-size:12px;color:#cbd5e1}
-    html.light .mini{color:#4b5563;}
-    .muted{color:var(--muted)}
-    .section{scroll-margin-top:72px}
-    iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
+/* stagger children */
+.wrap > *:nth-child(1){animation-delay:.05s}
+.wrap > *:nth-child(2){animation-delay:.10s}
+.wrap > *:nth-child(3){animation-delay:.15s}
+.wrap > *:nth-child(4){animation-delay:.20s}
+.wrap > *:nth-child(5){animation-delay:.25s}
+.wrap > *:nth-child(6){animation-delay:.30s}
+.wrap > *:nth-child(7){animation-delay:.35s}
+.wrap > *:nth-child(8){animation-delay:.40s}
+.wrap > *:nth-child(9){animation-delay:.45s}
+.wrap > *:nth-child(10){animation-delay:.50s}
 
-    /* Grids & tiles reused for weather/stocks/crypto/events */
-    .symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-    .sym{border:1px solid var(--border);border-radius:12px;padding:10px}
-    .sym .top{display:flex;justify-content:space-between;gap:8px}
-    .sym .price{font-size:20px;font-weight:800;margin-top:4px}
-    .hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .hchip{
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      border:1px solid var(--border);background:#0f1218;border-radius:10px;
-      padding:6px 8px;min-width:52px
-    }
-    html.light .hchip{
-      background:#f5f7ff;
-    }
-    .hchip .ico{font-size:18px;line-height:1}
-    .hchip .t{font-weight:700;margin-top:2px}
-    .chg.up{color:var(--good)} .chg.down{color:var(--bad)}
+/* â”€â”€ Card accent borders by category â”€â”€ */
+.card.cat-data   {border-left:3px solid var(--accent)}
+.card.cat-work   {border-left:3px solid var(--teal)}
+.card.cat-personal{border-left:3px solid var(--amber)}
+.card.cat-finance{border-left:3px solid var(--purple)}
 
-    /* Notes */
-    textarea{
-      width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;
-      color:var(--ink);border-radius:12px;padding:10px
-    }
-    html.light textarea{
-      background:#f8f9ff;
-    }
+h1{font-size:22px;margin:16px 0;font-family:var(--font-sans);font-weight:700;letter-spacing:-.01em}
+.grid{display:grid;gap:16px}
+@media(min-width:900px){.grid.cols-2{grid-template-columns:1fr 1fr}}
+.card .hd{padding:12px 14px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card .bd{padding:14px}
 
-    /* “Top” + footer */
-    .btm{display:flex;justify-content:center;margin:28px 0}
-    .btn-top{
-      background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;
-      border-radius:999px;font-weight:600
-    }
-    html.light .btn-top{
-      background:#f3f5ff;
-      border-color:#d0d4e5;
-      color:#111827;
-    }
-    .btn-top:hover{opacity:.9}
-    .footer{color:#9aa3b6;text-align:center;padding-bottom:24px}
-    html.light .footer{color:#6b7280;}
+/* section label in hd */
+.hd-label{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+.hd-icon{font-size:16px;line-height:1}
 
-    /* VOTD card */
-    .votd-card{
-      position:relative;border:1px solid var(--border);border-left:4px solid var(--accent);
-      background:radial-gradient(1200px 400px at -10% -40%, rgba(77,163,255,.12), transparent 40%),
-                 linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.06));
-      border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25)
-    }
-    html.light .votd-card{
-      background:radial-gradient(1200px 400px at -10% -40%, rgba(37,99,235,.10), transparent 40%),
-                 linear-gradient(180deg, rgba(255,255,255,0.9), rgba(241,245,249,1));
-      box-shadow:0 12px 30px rgba(15,23,42,.08);
-    }
-    .votd-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .votd-badge{font-size:12px;font-weight:700;letter-spacing:.04em;color:#cfe0ff;
-      background:#0f1420;border:1px solid #1f2a43;border-radius:999px;padding:4px 10px}
-    html.light .votd-badge{
-      color:#1f2937;
-      background:#e0ebff;
-      border-color:#c7d2fe;
-    }
-    .votd-date{font-size:12px;color:var(--muted)}
-    .votd-quote{margin:4px 0 10px;font-size:clamp(18px,2.2vw,22px);line-height:1.5;font-weight:600;color:var(--ink);position:relative}
-    .votd-quote::before{content:"“";position:absolute;left:-14px;top:-6px;font-size:28px;line-height:1;opacity:.25}
-    .votd-quote::after{content:"”";margin-left:4px;opacity:.25}
-    .votd-bottom{display:flex;justify-content:flex-end}
-    .votd-ref{font-size:13px;color:#a9c8ff;font-weight:700}
-    html.light .votd-ref{color:#2563eb;}
+.pill{
+  font-size:12px;
+  background:#0f1420;
+  border:1px solid #1f2a43;
+  color:#a9c8ff;
+  padding:5px 10px;
+  border-radius:999px;
+  font-family:var(--font-mono);
+  cursor:pointer;
+  transition:background .15s;
+}
+.pill:hover{background:#182035}
+html.light .pill{background:#f3f5ff;border-color:#d0d4e5;color:#111827;}
+.mini{font-size:12px;color:#cbd5e1;font-family:var(--font-mono)}
+html.light .mini{color:#4b5563;}
+.muted{color:var(--muted)}
+.section{scroll-margin-top:72px}
+iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
 
-    /* Simple table for Pelosi list */
-    .table{width:100%;border-collapse:collapse}
-    .table th,.table td{border-top:1px solid var(--border);padding:8px;text-align:left;font-size:12px}
-    .table th{color:#cfe0ff}
-    html.light .table th{color:#1f2937;}
+/* â”€â”€ Sym tiles â”€â”€ */
+.symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.sym{
+  border:1px solid var(--border);border-radius:12px;padding:10px;
+  transition:transform .15s,box-shadow .15s,border-color .15s;
+  cursor:default;
+}
+.sym:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3);border-color:rgba(77,163,255,.3)}
+html.light .sym:hover{box-shadow:0 8px 20px rgba(15,23,42,.12)}
+.sym .top{display:flex;justify-content:space-between;gap:8px}
+.sym .price{font-size:20px;font-weight:800;margin-top:4px;font-family:var(--font-mono)}
+.hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.hchip{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:1px solid var(--border);background:#0f1218;border-radius:10px;
+  padding:6px 8px;min-width:52px;transition:background .15s;
+}
+.hchip:hover{background:#151b28}
+html.light .hchip{background:#f5f7ff;}
+.hchip .ico{font-size:18px;line-height:1}
+.hchip .t{font-weight:700;margin-top:2px;font-family:var(--font-mono)}
+.chg.up{color:var(--good)} .chg.down{color:var(--bad)}
 
-    /* Conversions (scoped styles) */
-    .cv-wrap{display:grid;gap:14px;margin:12px 0}
-    .cv-row{grid-template-columns:repeat(4,minmax(160px,1fr))}
-    .cv-card{border:1px solid var(--border);border-radius:12px;padding:12px}
-    .cv-card h4{margin:0 0 8px;font-size:1rem;font-weight:600}
-    .cv-io{display:flex;align-items:center;gap:8px;margin:6px 0}
-    .cv-io input{flex:1;padding:6px 8px;border:1px solid rgba(127,127,127,.35);border-radius:8px;background:transparent;color:inherit}
-    .cv-out{min-width:5ch;font-variant-numeric:tabular-nums}
-    .cv-muted{opacity:.75;font-size:.9em}
-    .cv-grid-2{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:10px}
-    .cv-grid-3{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:8px}
-    .cv-split{display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));gap:12px}
-    .cv-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-    .cv-table td{padding:6px 8px;border-top:1px dashed rgba(127,127,127,.25)}
-    .cv-table tr:first-child td{border-top:none}
-    .cv-right{text-align:right}
-    @media (max-width:900px){
-      .cv-row{grid-template-columns:repeat(2,minmax(160px,1fr))}
-      .cv-split{grid-template-columns:1fr}
-    }
-    @media (max-width:520px){
-      .cv-row{grid-template-columns:1fr}
-      .cv-grid-2{grid-template-columns:1fr}
-      .cv-grid-3{grid-template-columns:1fr}
-    }
+/* â”€â”€ Notes â”€â”€ */
+textarea{
+  width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;
+  color:var(--ink);border-radius:12px;padding:10px;font-family:var(--font-mono);
+  font-size:13px;box-sizing:border-box;resize:vertical;transition:border-color .2s;
+}
+textarea:focus{outline:none;border-color:var(--accent)}
+html.light textarea{background:#f8f9ff;}
 
-    /* Sunrise/Sunset arc */
-    .sunbox{display:flex;flex-direction:column;gap:8px}
-    .sun-legend{display:flex;gap:10px;align-items:center}
-    .sun-dot{width:10px;height:10px;border-radius:50%}
-    .sun-dot.fill{background:#ffd166}
-    .sun-dot.hollow{border:2px solid #ffd166;background:transparent}
+/* â”€â”€ Back to top / footer â”€â”€ */
+.btm{display:flex;justify-content:center;margin:28px 0}
+.btn-top{
+  background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;
+  border-radius:999px;font-weight:600;font-size:13px;cursor:pointer;transition:background .15s,transform .15s;
+}
+.btn-top:hover{background:#182035;transform:translateY(-1px)}
+html.light .btn-top{background:#f3f5ff;border-color:#d0d4e5;color:#111827;}
+.footer{color:#9aa3b6;text-align:center;padding-bottom:24px;font-size:12px;font-family:var(--font-mono)}
+html.light .footer{color:#6b7280;}
 
-    /* Theme toggle pill */
-    .theme-toggle{
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      z-index:1100;
-      background:#0f1420;
-      border:1px solid var(--border);
-      color:#ffd166;
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:18px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      box-shadow:0 6px 16px rgba(0,0,0,.35);
-    }
-    html.light .theme-toggle{
-      background:#ffffff;
-      border-color:#d0d4e5;
-      color:#f6b500;
-      box-shadow:0 6px 16px rgba(15,23,42,.18);
-    }
-  </style>
+/* â”€â”€ VOTD â”€â”€ */
+.votd-card{
+  position:relative;border:1px solid var(--border);border-left:4px solid var(--accent);
+  background:radial-gradient(1200px 400px at -10% -40%, rgba(77,163,255,.12), transparent 40%),
+  linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.06));
+  border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25)
+}
+html.light .votd-card{
+  background:radial-gradient(1200px 400px at -10% -40%, rgba(37,99,235,.10), transparent 40%),
+  linear-gradient(180deg, rgba(255,255,255,0.9), rgba(241,245,249,1));
+  box-shadow:0 12px 30px rgba(15,23,42,.08);
+}
+.votd-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.votd-badge{font-size:12px;font-weight:700;letter-spacing:.04em;color:#cfe0ff;
+  background:#0f1420;border:1px solid #1f2a43;border-radius:999px;padding:4px 10px}
+html.light .votd-badge{color:#1f2937;background:#e0ebff;border-color:#c7d2fe;}
+.votd-date{font-size:12px;color:var(--muted);font-family:var(--font-mono)}
+.votd-quote{margin:4px 0 10px;font-size:clamp(16px,2.2vw,20px);line-height:1.6;font-weight:500;color:var(--ink);position:relative;font-style:italic}
+.votd-quote::before{content:"\201C";position:absolute;left:-14px;top:-6px;font-size:28px;line-height:1;opacity:.25}
+.votd-quote::after{content:"\201D";margin-left:4px;opacity:.25}
+.votd-bottom{display:flex;justify-content:flex-end}
+.votd-ref{font-size:13px;color:#a9c8ff;font-weight:700;font-family:var(--font-mono)}
+html.light .votd-ref{color:#2563eb;}
+
+/* â”€â”€ Table â”€â”€ */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-top:1px solid var(--border);padding:8px;text-align:left;font-size:12px;font-family:var(--font-mono)}
+.table th{color:#cfe0ff;font-weight:600;background:rgba(255,255,255,.02)}
+html.light .table th{color:#1f2937;}
+.table tbody tr:hover{background:rgba(77,163,255,.04)}
+
+/* â”€â”€ Conversions â”€â”€ */
+.cv-wrap{display:grid;gap:14px;margin:12px 0}
+.cv-row{grid-template-columns:repeat(4,minmax(160px,1fr))}
+.cv-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
+html.light .cv-card{background:rgba(0,0,0,.01)}
+.cv-card h4{margin:0 0 8px;font-size:1rem;font-weight:600}
+.cv-io{display:flex;align-items:center;gap:8px;margin:6px 0}
+.cv-io input{
+  flex:1;padding:6px 8px;border:1px solid rgba(127,127,127,.35);border-radius:8px;
+  background:transparent;color:inherit;font-family:var(--font-mono);font-size:13px;
+  transition:border-color .2s;
+}
+.cv-io input:focus{outline:none;border-color:var(--accent)}
+.cv-out{
+  min-width:5ch;font-variant-numeric:tabular-nums;font-family:var(--font-mono);
+  font-size:14px;font-weight:600;color:var(--accent);
+  transition:color .2s;
+}
+.cv-out.flash{animation:flash .3s ease}
+@keyframes flash{0%{color:var(--good)}100%{color:var(--accent)}}
+.cv-muted{opacity:.75;font-size:.9em;font-family:var(--font-mono)}
+.cv-grid-2{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:10px}
+.cv-grid-3{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:8px}
+.cv-split{display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));gap:12px}
+.cv-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
+.cv-table td{padding:6px 8px;border-top:1px dashed rgba(127,127,127,.25);font-size:13px}
+.cv-table tr:first-child td{border-top:none}
+.cv-right{text-align:right;font-weight:600;color:var(--teal)}
+.cv-section-label{
+  margin:20px 0 8px;font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);font-family:var(--font-mono);
+  display:flex;align-items:center;gap:8px;
+}
+.cv-section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+@media (max-width:900px){
+  .cv-row{grid-template-columns:repeat(2,minmax(160px,1fr))}
+  .cv-split{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .cv-row{grid-template-columns:1fr}
+  .cv-grid-2{grid-template-columns:1fr}
+  .cv-grid-3{grid-template-columns:1fr}
+}
+
+/* â”€â”€ Sunrise/Sunset arc â”€â”€ */
+.sunbox{display:flex;flex-direction:column;gap:8px}
+.sun-legend{display:flex;gap:10px;align-items:center}
+.sun-dot{width:10px;height:10px;border-radius:50%}
+.sun-dot.fill{background:#ffd166}
+.sun-dot.hollow{border:2px solid #ffd166;background:transparent}
+
+/* â”€â”€ Theme toggle â”€â”€ */
+.theme-toggle{
+  position:fixed;bottom:20px;right:20px;z-index:1100;
+  background:#0f1420;border:1px solid var(--border);color:#ffd166;
+  border-radius:999px;padding:8px 12px;font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.35);
+  transition:transform .15s;
+}
+.theme-toggle:hover{transform:scale(1.08)}
+html.light .theme-toggle{background:#ffffff;border-color:#d0d4e5;color:#f6b500;box-shadow:0 6px 16px rgba(15,23,42,.18);}
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   SOURCING SECTION
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+.sourcing-layout{display:grid;gap:14px}
+@media(min-width:760px){.sourcing-layout{grid-template-columns:1fr 1fr}}
+
+/* CAS input area */
+.cas-textarea{
+  width:100%;min-height:80px;border:1px solid var(--border);background:#0f1218;
+  color:var(--ink);border-radius:10px;padding:10px;font-family:var(--font-mono);
+  font-size:13px;box-sizing:border-box;resize:vertical;
+  transition:border-color .2s;
+}
+.cas-textarea:focus{outline:none;border-color:var(--teal)}
+html.light .cas-textarea{background:#f8f9ff;}
+
+/* Vendor list */
+.vendor-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:4px;
+  max-height:220px;
+  overflow-y:auto;
+  padding:4px 0;
+}
+.vendor-grid::-webkit-scrollbar{width:6px}
+.vendor-grid::-webkit-scrollbar-track{background:transparent}
+.vendor-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+.vendor-item{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 6px;border-radius:6px;cursor:pointer;
+  font-size:12px;font-family:var(--font-mono);
+  transition:background .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.vendor-item:hover{background:rgba(23,229,161,.08)}
+.vendor-item input[type=checkbox]{
+  accent-color:var(--teal);width:13px;height:13px;flex-shrink:0;cursor:pointer;
+}
+.vendor-item label{cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Vendor filter input */
+.vendor-filter{
+  width:100%;padding:7px 10px;border:1px solid var(--border);
+  border-radius:8px;background:transparent;color:var(--ink);
+  font-family:var(--font-mono);font-size:12px;box-sizing:border-box;
+  margin-bottom:8px;transition:border-color .2s;
+}
+.vendor-filter:focus{outline:none;border-color:var(--teal)}
+
+/* Search button */
+.btn-search{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--teal);color:#0b0c10;border:0;
+  border-radius:10px;padding:9px 18px;font-weight:700;font-size:13px;
+  font-family:var(--font-sans);cursor:pointer;transition:opacity .15s,transform .15s;
+  margin-top:10px;
+}
+.btn-search:hover{opacity:.88;transform:translateY(-1px)}
+html.light .btn-search{color:#fff;background:var(--good)}
+
+/* select-all / clear controls */
+.vendor-controls{display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.vc-btn{
+  font-size:11px;font-family:var(--font-mono);padding:3px 8px;
+  border:1px solid var(--border);border-radius:6px;background:transparent;
+  color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s;
+}
+.vc-btn:hover{border-color:var(--teal);color:var(--teal)}
+
+/* CAS tag chips */
+.cas-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;min-height:28px}
+.cas-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:#0f1a14;border:1px solid rgba(23,229,161,.3);
+  color:var(--teal);border-radius:999px;padding:3px 10px;
+  font-size:12px;font-family:var(--font-mono);
+}
+html.light .cas-chip{background:#e6faf3;border-color:rgba(5,150,105,.3);color:#059669}
+.cas-chip .x{cursor:pointer;opacity:.6;font-size:11px}
+.cas-chip .x:hover{opacity:1}
+
+/* Search summary */
+.search-summary{
+  margin-top:10px;padding:10px 12px;
+  border:1px solid rgba(23,229,161,.2);border-radius:10px;
+  background:rgba(23,229,161,.04);font-size:12px;font-family:var(--font-mono);
+  color:var(--muted);display:none;
+}
+.search-summary.visible{display:block}
+.ss-count{color:var(--teal);font-weight:600}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <div class="nav">
-    <div class="navin">
-      <a href="/">🏠 Resume</a>
-      <a href="#events">Local Events</a>
-      <a href="#traffic">Traffic</a>
-      <a href="#stocks">Stocks</a>
-      <a href="#notes">Scratchpad</a>
-      <a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a>
+<!-- NAV -->
+<div class="nav">
+  <div class="navin">
+    <a href="/">ðŸ  Resume</a>
+    <a href="#events">Events</a>
+    <a href="#traffic">Traffic</a>
+    <a href="#stocks">Stocks</a>
+    <a href="#conversions">Conversions</a>
+    <a href="#sourcing">Sourcing</a>
+    <a href="#notes">Scratchpad</a>
+    <a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a>
+  </div>
+</div>
+
+<!-- SPORTS TICKER -->
+<div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
+
+<div class="wrap">
+<h1 class="section" id="welcome">Welcome</h1>
+
+<!-- WELCOME -->
+<div class="card cat-personal">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-icon">ðŸ‘‹</span> Welcome</div>
+    <span id="todayBadge" class="pill"></span>
+  </div>
+  <div class="bd">
+    <div class="mini muted" style="margin-bottom:8px">
+      Welcome to my private dashboard. I'm tinkering, learning, and having funâ€”feel free to explore anything on display.
+    </div>
+  </div>
+</div>
+
+<!-- WEATHER -->
+<div class="card cat-data section" id="weather" style="margin-top:16px">
+  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸŒ¤</span> Weather</div></div>
+  <div class="bd"><div id="weatherList" class="symbols"></div></div>
+</div>
+
+<!-- SUNRISE / SUNSET -->
+<div class="card cat-data section" id="sun" style="margin-top:16px">
+  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸŒ…</span> Sunrise â€¢ Sunset</div><span id="sunDate" class="pill"></span></div>
+  <div class="bd">
+    <div class="sunbox">
+      <div id="sunViz"></div>
+      <div class="sun-legend mini">
+        <span class="sun-dot fill"></span> <span class="muted">â— sun above horizon</span>
+        <span style="width:10px"></span>
+        <span class="sun-dot hollow"></span> <span class="muted">â—‹ night</span>
+      </div>
+      <div id="sunLine" class="mini"></div>
+    </div>
+  </div>
+</div>
+
+<!-- VOTD + EVENTS -->
+<div class="grid cols-2 section" id="events" style="margin-top:16px">
+  <div class="card cat-personal">
+    <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ“–</span> Verse of the Day</div></div>
+    <div class="bd">
+      <div class="votd-card">
+        <div class="votd-top">
+          <span class="votd-badge">Verse of the Day</span>
+          <span id="votdDate" class="votd-date"></span>
+        </div>
+        <blockquote id="votdText" class="votd-quote">Loadingâ€¦</blockquote>
+        <div class="votd-bottom"><span id="votdRef" class="votd-ref"></span></div>
+      </div>
     </div>
   </div>
 
-  <!-- SPORTS TICKER -->
-  <div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
+  <div class="card cat-data">
+    <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸŽŸ</span> Local Events</div><span class="pill">next 7â€“14 days</span></div>
+    <div class="bd"><div id="eventsList" class="symbols"></div></div>
+  </div>
+</div>
 
-  <div class="wrap">
-    <h1 class="section" id="welcome">Welcome</h1>
+<!-- TRAFFIC -->
+<h1 class="section" id="traffic">Traffic</h1>
+<div class="grid cols-2">
+  <div class="card cat-data">
+    <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ¢</span> To Work</div></div>
+    <iframe id="map1" title="route1"></iframe>
+  </div>
+  <div class="card cat-data">
+    <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ </span> To Home</div></div>
+    <iframe id="map2" title="route2"></iframe>
+  </div>
+</div>
 
-    <!-- WELCOME -->
-    <div class="card">
-      <div class="hd">
-        <div>Welcome</div>
-        <span id="todayBadge" class="pill"></span>
+<!-- STOCKS -->
+<div class="card cat-finance section" id="stocks" style="margin-top:16px">
+  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ“ˆ</span> Stocks</div><span class="pill">auto refresh</span></div>
+  <div class="bd"><div id="stocksList" class="symbols"></div></div>
+</div>
+
+<!-- CRYPTO -->
+<div class="card cat-finance section" id="crypto" style="margin-top:16px">
+  <div class="hd"><div class="hd-label"><span class="hd-icon">â‚¿</span> Crypto</div><button id="cryptoRefresh" class="pill">Refresh</button></div>
+  <div class="bd">
+    <div id="cryptoList" class="symbols"></div>
+    <div id="cryptoStatus" class="mini muted" style="margin-top:6px"></div>
+  </div>
+</div>
+
+<!-- PELOSI TRADES -->
+<div class="card cat-finance section" id="pelosi" style="margin-top:16px">
+  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ›</span> Nancy Pelosi â€” Disclosed Trades (latest 50)</div></div>
+  <div class="bd">
+    <div id="pelosiStatus" class="mini muted" style="margin-bottom:6px">Loadingâ€¦</div>
+    <div style="overflow:auto">
+      <table class="table" id="pelosiTable">
+        <thead>
+          <tr><th>Disclosed</th><th>Traded</th><th>Ticker / Asset</th><th>Type</th><th>Amount</th><th>PTR</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- CONVERSIONS -->
+<div class="card cat-work section" id="conversions" style="margin-top:16px">
+  <div class="hd"><div class="hd-label"><span class="hd-icon">âš—ï¸</span> Conversions</div></div>
+  <div class="bd">
+
+    <div class="cv-section-label">General</div>
+    <div class="cv-wrap cv-row">
+      <div class="cv-card">
+        <h4>F â†’ C</h4>
+        <div class="cv-io"><input id="f_in" type="number" step="any" placeholder="Â°F"><span>Â°F</span></div>
+        <div class="cv-io"><span id="c_out" class="cv-out">â€”</span><span class="cv-muted">Â°C</span></div>
       </div>
-      <div class="bd">
-        <div class="mini muted" style="margin-bottom:8px">
-          Welcome to my private dashboard. I’m tinkering, learning, and having fun—feel free to explore anything on display.
-        </div>
+      <div class="cv-card">
+        <h4>C â†’ F</h4>
+        <div class="cv-io"><input id="c_in" type="number" step="any" placeholder="Â°C"><span>Â°C</span></div>
+        <div class="cv-io"><span id="f_out" class="cv-out">â€”</span><span class="cv-muted">Â°F</span></div>
+      </div>
+      <div class="cv-card">
+        <h4>m â†’ ft</h4>
+        <div class="cv-io"><input id="m_in" type="number" step="any" placeholder="m"><span>m</span></div>
+        <div class="cv-io"><span id="ft_out" class="cv-out">â€”</span><span class="cv-muted">ft</span></div>
+      </div>
+      <div class="cv-card">
+        <h4>in â†’ cm</h4>
+        <div class="cv-io"><input id="in_in" type="number" step="any" placeholder="in"><span>in</span></div>
+        <div class="cv-io"><span id="cm_out" class="cv-out">â€”</span><span class="cv-muted">cm</span></div>
       </div>
     </div>
 
-    <!-- WEATHER -->
-    <div class="card section" id="weather" style="margin-top:16px">
-      <div class="hd"><div>Weather</div></div>
-      <div class="bd"><div id="weatherList" class="symbols"></div></div>
+    <!-- mg / g / kg converter -->
+    <div class="cv-section-label">Mass</div>
+    <div class="cv-wrap" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
+      <div class="cv-card">
+        <h4>mg â†’ g / kg</h4>
+        <div class="cv-io"><input id="mg_in" type="number" step="any" placeholder="mg"><span>mg</span></div>
+        <div class="cv-io"><span id="g_from_mg" class="cv-out">â€”</span><span class="cv-muted">g</span></div>
+        <div class="cv-io"><span id="kg_from_mg" class="cv-out">â€”</span><span class="cv-muted">kg</span></div>
+      </div>
+      <div class="cv-card">
+        <h4>g â†’ mg / kg</h4>
+        <div class="cv-io"><input id="g_in" type="number" step="any" placeholder="g"><span>g</span></div>
+        <div class="cv-io"><span id="mg_from_g" class="cv-out">â€”</span><span class="cv-muted">mg</span></div>
+        <div class="cv-io"><span id="kg_from_g" class="cv-out">â€”</span><span class="cv-muted">kg</span></div>
+      </div>
+      <div class="cv-card">
+        <h4>kg â†’ g / mg</h4>
+        <div class="cv-io"><input id="kg_in" type="number" step="any" placeholder="kg"><span>kg</span></div>
+        <div class="cv-io"><span id="g_from_kg" class="cv-out">â€”</span><span class="cv-muted">g</span></div>
+        <div class="cv-io"><span id="mg_from_kg" class="cv-out">â€”</span><span class="cv-muted">mg</span></div>
+      </div>
     </div>
 
-    <!-- SUNRISE / SUNSET -->
-    <div class="card section" id="sun" style="margin-top:16px">
-      <div class="hd"><div>Sunrise • Sunset</div><span id="sunDate" class="pill"></span></div>
-      <div class="bd">
-        <div class="sunbox">
-          <div id="sunViz"></div>
-          <div class="sun-legend mini">
-            <span class="sun-dot fill"></span> <span class="muted">● sun above horizon</span>
-            <span style="width:10px"></span>
-            <span class="sun-dot hollow"></span> <span class="muted">○ night</span>
+    <!-- Work Conversions -->
+    <div class="cv-section-label">Work</div>
+    <div class="cv-card">
+      <div class="cv-split">
+        <div>
+          <h4 style="margin-bottom:6px">Inputs</h4>
+          <div class="cv-grid-2">
+            <div class="cv-io"><input id="vol_ml" type="number" step="any" placeholder="Volume"><span>mL</span></div>
+            <div class="cv-io"><input id="density" type="number" step="any" placeholder="Density" value="0.979"><span>g/mL</span></div>
           </div>
-          <div id="sunLine" class="mini"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- VOTD + EVENTS -->
-    <div class="grid cols-2 section" id="events" style="margin-top:16px">
-      <div class="card">
-        <div class="hd"><div>Verse of the Day</div></div>
-        <div class="bd">
-          <div class="votd-card">
-            <div class="votd-top">
-              <span class="votd-badge">Verse of the Day</span>
-              <span id="votdDate" class="votd-date"></span>
-            </div>
-            <blockquote id="votdText" class="votd-quote">Loading…</blockquote>
-            <div class="votd-bottom"><span id="votdRef" class="votd-ref"></span></div>
+          <div class="cv-grid-3" style="margin-top:6px">
+            <div class="cv-io" style="margin:0"><span class="cv-muted">Factor â‰¤ 1 mL</span></div>
+            <div class="cv-io" style="margin:0"><input id="k_small" type="number" step="any" value="1.15"><span>k</span></div>
+            <div></div>
+            <div class="cv-io" style="margin:0"><span class="cv-muted">Factor &gt; 1 mL</span></div>
+            <div class="cv-io" style="margin:0"><input id="k_large" type="number" step="any" value="1.06"><span>k</span></div>
+            <div></div>
           </div>
+          <p class="cv-muted" style="margin:8px 0 4px">
+            The mL you enter decides which factor applies (â‰¤1 mL uses k=1.15, otherwise k=1.06). Results on the right update automatically.
+          </p>
+          <div style="margin-top:8px">
+            <div class="cv-io"><input id="ml_to_l" type="number" step="any" placeholder="mL â†’ L (enter mL)"><span>mL</span></div>
+            <div class="cv-io"><span class="cv-out" id="liters_out">â€”</span><span class="cv-muted">L</span></div>
+            <div class="cv-io" style="margin-top:6px"><input id="l_to_ml" type="number" step="any" placeholder="L â†’ mL (enter L)"><span>L</span></div>
+            <div class="cv-io"><span class="cv-out" id="ml_from_l_out">â€”</span><span class="cv-muted">mL</span></div>
+          </div>
+          <p class="cv-muted" style="margin-top:6px">mass (g) = volume (mL) Ã— density (g/mL) Ã— k; mg = g Ã— 1000; kg = g / 1000.</p>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="hd"><div>Local Events</div><span class="pill">next 7–14 days</span></div>
-        <div class="bd"><div id="eventsList" class="symbols"></div></div>
-      </div>
-    </div>
-
-    <!-- TRAFFIC -->
-    <h1 class="section" id="traffic">Traffic</h1>
-    <div class="grid cols-2">
-      <div class="card">
-        <div class="hd"><div>To Work</div></div>
-        <iframe id="map1" title="route1"></iframe>
-      </div>
-      <div class="card">
-        <div class="hd"><div>To Home</div></div>
-        <iframe id="map2" title="route2"></iframe>
-      </div>
-    </div>
-
-    <!-- STOCKS -->
-    <div class="card section" id="stocks" style="margin-top:16px">
-      <div class="hd"><div>Stocks</div><span class="pill">auto refresh</span></div>
-      <div class="bd"><div id="stocksList" class="symbols"></div></div>
-    </div>
-
-    <!-- CRYPTO -->
-    <div class="card section" id="crypto" style="margin-top:16px">
-      <div class="hd"><div>Crypto</div><button id="cryptoRefresh" class="pill">Refresh</button></div>
-      <div class="bd">
-        <div id="cryptoList" class="symbols"></div>
-        <div id="cryptoStatus" class="mini muted" style="margin-top:6px"></div>
-      </div>
-    </div>
-
-    <!-- PELOSI TRADES -->
-    <div class="card section" id="pelosi" style="margin-top:16px">
-      <div class="hd"><div>Nancy Pelosi — Disclosed Trades (latest 50)</div></div>
-      <div class="bd">
-        <div id="pelosiStatus" class="mini muted" style="margin-bottom:6px">Loading…</div>
-        <div style="overflow:auto">
-          <table class="table" id="pelosiTable">
-            <thead>
-              <tr><th>Disclosed</th><th>Traded</th><th>Ticker / Asset</th><th>Type</th><th>Amount</th><th>PTR</th></tr>
-            </thead>
-            <tbody></tbody>
+        <div>
+          <h4 style="margin-bottom:6px">Results</h4>
+          <table class="cv-table">
+            <tbody id="res_small">
+              <tr><td class="cv-muted">mg (â‰¤ 1 mL, k=<span id="k_small_view">1.15</span>)</td><td class="cv-right" id="mg_small">â€”</td></tr>
+              <tr><td class="cv-muted">g (â‰¤ 1 mL, k=<span id="k_small_view2">1.15</span>)</td><td class="cv-right" id="g_small">â€”</td></tr>
+              <tr><td class="cv-muted">kg (â‰¤ 1 mL, k=<span id="k_small_view3">1.15</span>)</td><td class="cv-right" id="kg_small">â€”</td></tr>
+            </tbody>
+            <tbody id="res_large" class="hidden">
+              <tr><td class="cv-muted">mg (&gt; 1 mL, k=<span id="k_large_view">1.06</span>)</td><td class="cv-right" id="mg_large">â€”</td></tr>
+              <tr><td class="cv-muted">g (&gt; 1 mL, k=<span id="k_large_view2">1.06</span>)</td><td class="cv-right" id="g_large">â€”</td></tr>
+              <tr><td class="cv-muted">kg (&gt; 1 mL, k=<span id="k_large_view3">1.06</span>)</td><td class="cv-right" id="kg_large">â€”</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- CONVERSIONS -->
-    <div class="card section" id="conversions" style="margin-top:16px">
-      <div class="hd"><div>Conversions</div></div>
-      <div class="bd">
-        <!-- Four compact tiles -->
-        <div class="cv-wrap cv-row">
-          <div class="cv-card">
-            <h4>F → C</h4>
-            <div class="cv-io"><input id="f_in" type="number" step="any" placeholder="°F"><span>°F</span></div>
-            <div class="cv-io"><span id="c_out" class="cv-out">—</span><span class="cv-muted">°C</span></div>
-          </div>
-          <div class="cv-card">
-            <h4>C → F</h4>
-            <div class="cv-io"><input id="c_in" type="number" step="any" placeholder="°C"><span>°C</span></div>
-            <div class="cv-io"><span id="f_out" class="cv-out">—</span><span class="cv-muted">°F</span></div>
-          </div>
-          <div class="cv-card">
-            <h4>m → ft</h4>
-            <div class="cv-io"><input id="m_in" type="number" step="any" placeholder="m"><span>m</span></div>
-            <div class="cv-io"><span id="ft_out" class="cv-out">—</span><span class="cv-muted">ft</span></div>
-          </div>
-          <div class="cv-card">
-            <h4>in → cm</h4>
-            <div class="cv-io"><input id="in_in" type="number" step="any" placeholder="in"><span>in</span></div>
-            <div class="cv-io"><span id="cm_out" class="cv-out">—</span><span class="cv-muted">cm</span></div>
-          </div>
+  </div>
+</div>
+
+<!-- SOURCING -->
+<div class="card cat-work section" id="sourcing" style="margin-top:16px">
+  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ”¬</span> CAS Sourcing</div><span class="pill">approved vendors only</span></div>
+  <div class="bd">
+    <div class="sourcing-layout">
+
+      <!-- Left: CAS input -->
+      <div>
+        <div class="cv-section-label">CAS Numbers</div>
+        <textarea id="casInput" class="cas-textarea" placeholder="Paste CAS numbers here, one per line or comma-separated&#10;e.g. 75-09-2&#10;64-17-5&#10;67-56-1"></textarea>
+        <div id="casChips" class="cas-chips"></div>
+        <button class="btn-search" id="btnSearch">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search Google
+        </button>
+        <div id="searchSummary" class="search-summary"></div>
+      </div>
+
+      <!-- Right: Vendors -->
+      <div>
+        <div class="cv-section-label">Approved Vendors</div>
+        <input type="text" id="vendorFilter" class="vendor-filter" placeholder="Filter vendorsâ€¦">
+        <div class="vendor-controls">
+          <button class="vc-btn" id="selectAllVendors">Select all</button>
+          <button class="vc-btn" id="clearAllVendors">Clear all</button>
+          <span id="vendorCount" class="mini muted" style="margin-left:auto"></span>
         </div>
-
-        <!-- Work Conversions -->
-        <h3 style="margin:18px 2px 6px;font-size:1.05rem">Work Conversions</h3>
-        <div class="cv-card">
-          <div class="cv-split">
-            <!-- Inputs -->
-            <div>
-              <h4 style="margin-bottom:6px">Inputs</h4>
-              <div class="cv-grid-2">
-                <div class="cv-io"><input id="vol_ml" type="number" step="any" placeholder="Volume"><span>mL</span></div>
-                <div class="cv-io"><input id="density" type="number" step="any" placeholder="Density" value="0.979"><span>g/mL</span></div>
-              </div>
-              <div class="cv-grid-3" style="margin-top:6px">
-                <div class="cv-io" style="margin:0"><span class="cv-muted">Factor ≤ 1 mL</span></div>
-                <div class="cv-io" style="margin:0"><input id="k_small" type="number" step="any" value="1.15"><span>k</span></div>
-                <div></div>
-                <div class="cv-io" style="margin:0"><span class="cv-muted">Factor &gt; 1 mL</span></div>
-                <div class="cv-io" style="margin:0"><input id="k_large" type="number" step="any" value="1.06"><span>k</span></div>
-                <div></div>
-              </div>
-
-              <p class="cv-muted" style="margin:8px 0 4px">
-                The mL you enter decides which factor applies (≤1 mL uses k=1.15, otherwise k=1.06). Results on the right update automatically.
-              </p>
-
-              <div style="margin-top:8px">
-                <div class="cv-io"><input id="ml_to_l" type="number" step="any" placeholder="mL → L (enter mL)"><span>mL</span></div>
-                <div class="cv-io"><span class="cv-out" id="liters_out">—</span><span class="cv-muted">L</span></div>
-
-                <div class="cv-io" style="margin-top:6px"><input id="l_to_ml" type="number" step="any" placeholder="L → mL (enter L)"><span>L</span></div>
-                <div class="cv-io"><span class="cv-out" id="ml_from_l_out">—</span><span class="cv-muted">mL</span></div>
-              </div>
-
-              <p class="cv-muted" style="margin-top:6px">mass (g) = volume (mL) × density (g/mL) × k; mg = g × 1000.</p>
-            </div>
-
-            <!-- Results (unchanged behavior) -->
-            <div>
-              <h4 style="margin-bottom:6px">Results</h4>
-              <table class="cv-table">
-                <tbody id="res_small">
-                  <tr><td class="cv-muted">mg (≤ 1 mL, k=<span id="k_small_view">1.15</span>)</td><td class="cv-right" id="mg_small">—</td></tr>
-                  <tr><td class="cv-muted">g  (≤ 1 mL, k=<span id="k_small_view2">1.15</span>)</td><td class="cv-right" id="g_small">—</td></tr>
-                </tbody>
-                <tbody id="res_large" class="hidden">
-                  <tr><td class="cv-muted">mg (&gt; 1 mL, k=<span id="k_large_view">1.06</span>)</td><td class="cv-right" id="mg_large">—</td></tr>
-                  <tr><td class="cv-muted">g  (&gt; 1 mL, k=<span id="k_large_view2">1.06</span>)</td><td class="cv-right" id="g_large">—</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
+        <div class="vendor-grid" id="vendorGrid"></div>
       </div>
     </div>
-
-    <!-- SCRATCHPAD -->
-    <div class="card section" id="notes" style="margin-top:16px">
-      <div class="hd"><div>Scratchpad</div><button id="clearNotes" class="pill">Clear</button></div>
-      <div class="bd"><textarea id="notesBox" placeholder="Jot quick notes…"></textarea></div>
-    </div>
-
-    <div class="btm"><a class="btn-top" href="#top">Top</a></div>
-    <div class="footer">✦ Crafted by Jordan Moddes · Built with GPT-5 Thinking ✦</div>
   </div>
+</div>
 
-  <!-- Theme toggle pill (bottom-right) -->
-  <button id="themeToggle" class="theme-toggle" aria-label="Toggle light mode">💡</button>
+<!-- SCRATCHPAD -->
+<div class="card cat-personal section" id="notes" style="margin-top:16px">
+  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ“</span> Scratchpad</div><button id="clearNotes" class="pill">Clear</button></div>
+  <div class="bd"><textarea id="notesBox" placeholder="Jot quick notesâ€¦"></textarea></div>
+</div>
+
+<div class="btm"><a class="btn-top" href="#top">â†‘ Top</a></div>
+<div class="footer">âœ¦ Crafted by Jordan Moddes Â· jmod.ai âœ¦</div>
+</div>
+
+<!-- Theme toggle -->
+<button id="themeToggle" class="theme-toggle" aria-label="Toggle light mode">ðŸ’¡</button>
 
 <script>
-  /* ========= CONFIG ========= */
-  const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
-  const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
+/* ========= CONFIG ========= */
+const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
+const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
 
-  const A = "2670 S AW Grimes Blvd, Round Rock, TX 78664";
-  const B = "411 W Main St, Round Rock, TX 78664";
+// Home = coordinates 30.3687560,-97.6260081
+// Work = 411 W Main St, Round Rock, TX 78664
+const HOME_COORDS = "30.3687560,-97.6260081";
+const WORK_ADDR  = "411 W Main St, Round Rock, TX 78664";
 
-  /* Added 23314 as requested (now 5 locations) */
-  const WEATHER_ZIPS = ["78664","53158","60030","44115","23314"];
-  const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
-  const EVENTS_ZIP = "78664";
+// Hwy 130/45 waypoint to anchor route away from I-35
+const TX130_WAYPOINT = "TX-130 and SH-45, Pflugerville, TX";
 
-  const COINS = [
-    { id:"bitcoin",  symbol:"BTC" },
-    { id:"ethereum", symbol:"ETH" },
-    { id:"solana",   symbol:"SOL" },
-    { id:"dogecoin", symbol:"DOGE" }
-  ];
+const WEATHER_ZIPS = ["78664","53158","60030","44115","23314"];
+const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
+const EVENTS_ZIP = "78664";
+const COINS = [
+  { id:"bitcoin",  symbol:"BTC" },
+  { id:"ethereum", symbol:"ETH" },
+  { id:"solana",   symbol:"SOL" },
+  { id:"dogecoin", symbol:"DOGE" }
+];
 
-  /* ========= HELPERS ========= */
-  const $ = s => document.querySelector(s);
-  const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
-  const toF = c => (c*9/5)+32;
-  const todayMMDDYYYY = () => {
-    const d = new Date(); const mm=String(d.getMonth()+1).padStart(2,"0");
-    const dd=String(d.getDate()).padStart(2,"0"); const yy=d.getFullYear();
-    return `${mm}/${dd}/${yy}`;
-  };
-  const iconFor = code => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌧️",95:"⛈️",96:"⛈️",99:"⛈️"}[code] || "🌡️");
-  const fmt = (x,d=3)=> (Number.isFinite(x)? Number(x).toFixed(d) : "—");
+/* ========= APPROVED VENDORS ========= */
+const APPROVED_VENDORS = [
+  { name:"Sigma-Aldrich Chemical Co., Inc",                 domain:"sigmaaldrich.com" },
+  { name:"VWR Scientific, Inc",                             domain:"vwr.com" },
+  { name:"Fisher Scientific",                               domain:"fishersci.com" },
+  { name:"Thermo Fisher Scientific (incl. Alfa Aesar)",     domain:"thermofisher.com" },
+  { name:"Cayman Chemical Company",                         domain:"caymanchem.com" },
+  { name:"TCI America",                                     domain:"tcichemicals.com" },
+  { name:"AK Scientific, Inc",                              domain:"aksci.com" },
+  { name:"Alfa Chemistry",                                  domain:"alfa-chemistry.com" },
+  { name:"Toronto Research Chemicals",                      domain:"trc-canada.com" },
+  { name:"Spectrum Chemicals",                              domain:"spectrumchemical.com" },
+  { name:"Strem Chemicals",                                 domain:"strem.com" },
+  { name:"Combi-Blocks",                                    domain:"combi-blocks.com" },
+  { name:"Matrix Scientific",                               domain:"matrixscientific.com" },
+  { name:"Oakwood Products, Inc",                           domain:"oakwoodchemical.com" },
+  { name:"MedChemExpress",                                  domain:"medchemexpress.com" },
+  { name:"Chemscene",                                       domain:"chemscene.com" },
+  { name:"BOC Sciences/BOCSCI inc.",                        domain:"bocsci.com" },
+  { name:"BLDpharm",                                        domain:"bldpharm.com" },
+  { name:"AccuStandards",                                   domain:"accustandards.com" },
+  { name:"Chem Service, Inc.",                              domain:"chemservice.com" },
+  { name:"Cambridge Isotopes Labs, Inc (CIL)",              domain:"isotope.com" },
+  { name:"CDN Isotopes",                                    domain:"cdnisotopes.com" },
+  { name:"Inorganic Ventures",                              domain:"inorganicventures.com" },
+  { name:"Absolute Standards, Inc",                         domain:"absolutestandards.com" },
+  { name:"Restek Corp.",                                    domain:"restek.com" },
+  { name:"Phenomenex",                                      domain:"phenomenex.com" },
+  { name:"Avanti Polar Lipids",                             domain:"avantilipids.com" },
+  { name:"Santa Cruz Biotechnology",                        domain:"scbt.com" },
+  { name:"Bachem AG",                                       domain:"bachem.com" },
+  { name:"Steraloids, Inc.",                                domain:"steraloids.com" },
+  { name:"Purisys LLC",                                     domain:"purisys.com" },
+  { name:"Noramco",                                         domain:"noramco.com" },
+  { name:"SynQuest Labs, Inc.",                             domain:"synquestlabs.com" },
+  { name:"Synthonix",                                       domain:"synthonix.com" },
+  { name:"AstaTech, Inc.",                                  domain:"astatech.com" },
+  { name:"Advanced ChemBlocks",                             domain:"advancedchemblocks.com" },
+  { name:"Manchester Organics",                             domain:"manchesterorganics.com" },
+  { name:"Larodan",                                         domain:"larodan.com" },
+  { name:"Exfluor Research Corporation",                    domain:"exfluor.com" },
+  { name:"Dalton Research Molecules",                       domain:"daltonresearch.com" },
+  { name:"Echelon Biosciences",                             domain:"echelon-inc.com" },
+  { name:"Prospec",                                         domain:"prospecbio.com" },
+  { name:"Ontario Chemicals",                               domain:"ontariochemicals.com" },
+  { name:"Pure Chemistry Scientific, Inc.",                 domain:"purechemistry.com" },
+  { name:"SelectLab Chemicals GmbH",                        domain:"selectlab.de" },
+  { name:"LGC GmbH",                                        domain:"lgcgroup.com" },
+  { name:"Phytolab GmbH and Co. KG",                        domain:"phytolab.de" },
+  { name:"abcr GmbH",                                       domain:"abcr.de" },
+  { name:"Accela Chem Bio",                                 domain:"accelacb.com" },
+  { name:"ClearSynth Laboratories",                         domain:"clearsynth.com" },
+  { name:"Veeprho Laboratories Pvt Ltd",                    domain:"veeprho.com" },
+];
 
-  /* ========= TICKER ========= */
-  async function loadTicker(){
+/* ========= HELPERS ========= */
+const $ = s => document.querySelector(s);
+const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
+const toF = c => (c*9/5)+32;
+const todayMMDDYYYY = () => {
+  const d = new Date(); const mm=String(d.getMonth()+1).padStart(2,"0");
+  const dd=String(d.getDate()).padStart(2,"0"); const yy=d.getFullYear();
+  return `${mm}/${dd}/${yy}`;
+};
+const iconFor = code => ({0:"â˜€ï¸",1:"ðŸŒ¤ï¸",2:"â›…",3:"â˜ï¸",45:"ðŸŒ«ï¸",48:"ðŸŒ«ï¸",51:"ðŸŒ¦ï¸",53:"ðŸŒ¦ï¸",55:"ðŸŒ¦ï¸",61:"ðŸŒ§ï¸",63:"ðŸŒ§ï¸",65:"ðŸŒ§ï¸",71:"â„ï¸",73:"â„ï¸",75:"â„ï¸",80:"ðŸŒ¦ï¸",81:"ðŸŒ¦ï¸",82:"ðŸŒ§ï¸",95:"â›ˆï¸",96:"â›ˆï¸",99:"â›ˆï¸"}[code] || "ðŸŒ¡ï¸");
+const fmt = (x,d=3)=> (Number.isFinite(x)? Number(x).toFixed(d) : "â€”");
+const flash = el => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); };
+
+/* ========= TICKER ========= */
+async function loadTicker(){
+  try{
+    const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
+    const items = await r.json();
+    const twice = items.concat(items);
+    $("#ticker").innerHTML = twice.map(x=>`<span class="tick-item">â€¢ ${x.title}</span>`).join("");
+  }catch{
+    $("#ticker").innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
+  }
+}
+
+/* ========= TRAFFIC â€” Hwy 130/45 route ========= */
+const googleEmbed = (o, d) => {
+  const base = `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}`;
+  const wp = enc(TX130_WAYPOINT);
+  return `${base}&origin=${enc(o)}&destination=${enc(d)}&waypoints=${wp}&mode=driving`;
+};
+function updateTraffic(){
+  $("#map1").src = googleEmbed(HOME_COORDS, WORK_ADDR);
+  $("#map2").src = googleEmbed(WORK_ADDR, HOME_COORDS);
+}
+
+/* ========= WEATHER ========= */
+async function wx(lat,lon){
+  const u = `${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`;
+  const r = await fetch(u);
+  if (r.ok) return r.json();
+  const url = new URL("https://api.open-meteo.com/v1/forecast");
+  url.search = new URLSearchParams({
+    latitude: lat, longitude: lon, timezone:"auto", wind_speed_unit:"mph",
+    current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
+    daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
+    hourly:"temperature_2m,weather_code"
+  }).toString();
+  const r2 = await fetch(url); return r2.json();
+}
+async function geo(zip){
+  const r = await fetch(`${WORKER_BASE}/geo?zip=${zip}`);
+  if (!r.ok) throw new Error("geo");
+  return r.json();
+}
+async function loadWeather(){
+  const host = $("#weatherList"); host.innerHTML = "";
+  for (const zip of WEATHER_ZIPS){
     try{
-      const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
-      const items = await r.json();
-      const twice = items.concat(items);
-      $("#ticker").innerHTML = twice.map(x=>`<span class="tick-item">• ${x.title}</span>`).join("");
-    }catch{
-      $("#ticker").innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
-    }
-  }
-
-  /* ========= TRAFFIC ========= */
-  const googleEmbed = (o,d)=>`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}&origin=${enc(o)}&destination=${enc(d)}&mode=driving`;
-  function updateTraffic(){ $("#map1").src=googleEmbed(A,B); $("#map2").src=googleEmbed(B,A); }
-
-  /* ========= WEATHER ========= */
-  async function wx(lat,lon){
-    const u = `${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`;
-    const r = await fetch(u);
-    if (r.ok) return r.json();
-    const url = new URL("https://api.open-meteo.com/v1/forecast");
-    url.search = new URLSearchParams({
-      latitude: lat, longitude: lon, timezone:"auto", wind_speed_unit:"mph",
-      current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
-      daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
-      hourly:"temperature_2m,weather_code"
-    }).toString();
-    const r2 = await fetch(url); return r2.json();
-  }
-  async function geo(zip){
-    const r = await fetch(`${WORKER_BASE}/geo?zip=${zip}`);
-    if (!r.ok) throw new Error("geo");
-    return r.json();
-  }
-  async function loadWeather(){
-    const host = $("#weatherList"); host.innerHTML = "";
-    for (const zip of WEATHER_ZIPS){
-      try{
-        const g = await geo(zip);
-        const data = await wx(g.lat, g.lon);
-        const cur = data.current;
-        const minC = data.daily.temperature_2m_min[0];
-        const maxC = data.daily.temperature_2m_max[0];
-
-        const times = data.hourly.time.map(t=>new Date(t));
-        let i = times.findIndex(t=>t>=new Date()); if (i<0) i=0;
-        const hrs = [];
-        for(let k=0;k<5 && i+k<times.length;k++){
-          hrs.push({
-            h: times[i+k].getHours().toString().padStart(2,"0"),
-            t: data.hourly.temperature_2m[i+k],
-            c: data.hourly.weather_code[i+k]
-          });
-        }
-
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `
-          <div class="top">
-            <div><strong>${g.name || zip}</strong></div>
-            <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
-          </div>
-          <div class="price">${Math.round(toF(cur.temperature_2m))}°F / ${Math.round(cur.temperature_2m)}°C</div>
-          <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}°F · Today ${Math.round(toF(minC))}°F – ${Math.round(toF(maxC))}°F</div>
-          <div class="hrow">
-            ${hrs.map(h=>`
-            <div class="hchip">
-              <div class="ico">${iconFor(h.c)}</div>
-              <div class="t mini">${Math.round(toF(h.t))}°F</div>
-              <div class="mini muted">${h.h}:00</div>
-            </div>`).join("")}
-          </div>`;
-        host.appendChild(div);
-      }catch(e){
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
-        host.appendChild(div);
+      const g = await geo(zip);
+      const data = await wx(g.lat, g.lon);
+      const cur = data.current;
+      const minC = data.daily.temperature_2m_min[0];
+      const maxC = data.daily.temperature_2m_max[0];
+      const times = data.hourly.time.map(t=>new Date(t));
+      let i = times.findIndex(t=>t>=new Date()); if (i<0) i=0;
+      const hrs = [];
+      for(let k=0;k<5 && i+k<times.length;k++){
+        hrs.push({ h: times[i+k].getHours().toString().padStart(2,"0"), t: data.hourly.temperature_2m[i+k], c: data.hourly.weather_code[i+k] });
       }
+      const div = document.createElement("div"); div.className="sym";
+      div.innerHTML = `
+        <div class="top">
+          <div><strong>${g.name || zip}</strong></div>
+          <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
+        </div>
+        <div class="price">${Math.round(toF(cur.temperature_2m))}Â°F / ${Math.round(cur.temperature_2m)}Â°C</div>
+        <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}Â°F Â· Today ${Math.round(toF(minC))}Â°F â€“ ${Math.round(toF(maxC))}Â°F</div>
+        <div class="hrow">
+          ${hrs.map(h=>`<div class="hchip"><div class="ico">${iconFor(h.c)}</div><div class="t mini">${Math.round(toF(h.t))}Â°F</div><div class="mini muted">${h.h}:00</div></div>`).join("")}
+        </div>`;
+      host.appendChild(div);
+    }catch(e){
+      const div = document.createElement("div"); div.className="sym";
+      div.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
+      host.appendChild(div);
     }
   }
+}
 
-/* ========= SUN (Visualization) — HERO SIZE ========= */
+/* ========= SUN ========= */
 async function loadSun(){
   $("#sunDate").textContent = todayMMDDYYYY();
-
   let s = null;
   try{
-    const g = await geo(WEATHER_ZIPS[0]); // first ZIP for location
+    const g = await geo(WEATHER_ZIPS[0]);
     const u = new URL("https://api.sunrisesunset.io/json");
     u.search = new URLSearchParams({ lat:g.lat, lng:g.lon, timezone:"auto" }).toString();
     const r = await fetch(u); const j = await r.json();
     s = j?.results;
   }catch{}
   if (!(s?.sunrise && s?.sunset)){ $("#sunLine").textContent="Unavailable"; return; }
-
   const sunrise = s.sunrise, sunset = s.sunset, noon = s.solar_noon || "";
-  $("#sunLine").textContent = `Sunrise ${sunrise} · Solar Noon ${noon || "—"} · Sunset ${sunset}`;
-
-  // --- HERO geometry (bigger canvas, more travel, built-in margins) ---
-  const W = 350, H = 255; // sizebox for the arch to show
-  const xL = 16, xR = 334; // the width of line for arch
-  const yBase = 180, yPeak = 50; // the hight of the arch
-  const tick = 12; // tick half-height
-  const stroke = 5; // line thickness
-  const font = 15; // label size
-  const dotR = 9; // sun radius
-  const noonLabelY = yPeak + 3; // below apex to avoid clipping
-  const arc = `M ${xL},${yBase} Q ${(xL+xR)/2},${yPeak} ${xR},${yBase}`;
-
-  // --- robust local-time parsing for "6:49:54 AM" strings ---
-  const todayISO = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
+  $("#sunLine").textContent = `Sunrise ${sunrise} Â· Solar Noon ${noon || "â€”"} Â· Sunset ${sunset}`;
+  const W=350,H=255,xL=16,xR=334,yBase=180,yPeak=50,tick=12,stroke=5,font=15,dotR=9,noonLabelY=yPeak+3;
+  const arc=`M ${xL},${yBase} Q ${(xL+xR)/2},${yPeak} ${xR},${yBase}`;
+  const todayISO = new Date().toLocaleDateString("en-CA");
   const toLocalDate = (tStr)=>{
-    const d = new Date(`${todayISO} ${tStr}`);
-    if (!isNaN(d)) return d;
-    const m = tStr.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
-    if(!m){ return new Date(); }
-    let hh = parseInt(m[1],10), mm = parseInt(m[2],10), ss = parseInt(m[3]||"0",10);
-    const ap = m[4].toUpperCase();
-    if(ap==="PM" && hh!==12) hh+=12; if(ap==="AM" && hh===12) hh=0;
-    const base = new Date(); base.setHours(hh,mm,ss,0); return base;
+    const d = new Date(`${todayISO} ${tStr}`); if (!isNaN(d)) return d;
+    const m = tStr.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i); if(!m){ return new Date(); }
+    let hh=parseInt(m[1],10),mm=parseInt(m[2],10),ss=parseInt(m[3]||"0",10);
+    const ap=m[4].toUpperCase(); if(ap==="PM"&&hh!==12)hh+=12; if(ap==="AM"&&hh===12)hh=0;
+    const base=new Date(); base.setHours(hh,mm,ss,0); return base;
   };
-
-  const sr = toLocalDate(sunrise);
-  const ss = toLocalDate(sunset);
-  const sn = noon ? toLocalDate(noon) : new Date((sr.getTime()+ss.getTime())/2);
-  const now = new Date();
-
-  // Align arc apex with real solar noon
-  const span = ss - sr;
-  const pRaw = (now - sr) / span;
-  const p = Math.max(0, Math.min(1, pRaw));
-  const r = Math.max(0, Math.min(1, (sn - sr) / span)) || 0.5;
-  const u = (p <= r) ? (p / (r || 1)) * 0.5 : 0.5 + ((p - r) / (1 - r || 1)) * 0.5;
-
-  const t = 2*u - 1;
-  const xArc = xL + (xR - xL) * u;
-  const yArc = yBase - (yBase - yPeak) * Math.sqrt(Math.max(0, 1 - t*t));
-  const isDay = now >= sr && now <= ss;
-
-  $("#sunViz").innerHTML = `
-    <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"
-         style="width:100%;height:260px;overflow:visible">
-      <!-- baseline -->
-      <line x1="${xL}" y1="${yBase}" x2="${xR}" y2="${yBase}"
-            stroke="rgba(255,255,255,.35)" stroke-width="${stroke}"/>
-      <!-- ticks -->
-      <line x1="${xL}" y1="${yBase - tick}" x2="${xL}" y2="${yBase + tick}"
-            stroke="rgba(255,255,255,.45)" stroke-width="${stroke}"/>
-      <line x1="${xR}" y1="${yBase - tick}" x2="${xR}" y2="${yBase + tick}"
-            stroke="rgba(255,255,255,.45)" stroke-width="${stroke}"/>
-      <!-- arc -->
-      <path d="${arc}" fill="none" stroke="rgba(255,209,102,.85)" stroke-width="${stroke}"/>
-      <!-- labels -->
-      <text x="${xL}" y="${yBase+12}" font-size="${font}" fill="#cbd5e1" text-anchor="start">${sunrise}</text>
-      <text x="${xR}" y="${yBase+12}" font-size="${font}" fill="#cbd5e1" text-anchor="end">${sunset}</text>
-      ${noon ? `<text x="${(xL+xR)/2}" y="${noonLabelY}" font-size="${font}" fill="#cbd5e1" text-anchor="middle">Noon ${noon}</text>` : ""}
-      <!-- marker -->
-      ${isDay
-        ? `<circle cx="${xArc}" cy="${yArc}" r="${dotR}" fill="#ffd166"><title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (day)</title></circle>`
-        : `<circle cx="${(now < sr) ? xL - 4 : xR + 4}" cy="${yBase+6}" r="${dotR}" fill="none" stroke="#ffd166" stroke-width="${stroke}">
-             <title>Now: ${now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})} (night)</title>
-           </circle>`
-      }
-    </svg>`;
+  const sr=toLocalDate(sunrise),ss2=toLocalDate(sunset),sn=noon?toLocalDate(noon):new Date((sr.getTime()+ss2.getTime())/2),now=new Date();
+  const span=ss2-sr,pRaw=(now-sr)/span,p=Math.max(0,Math.min(1,pRaw)),r=Math.max(0,Math.min(1,(sn-sr)/span))||0.5;
+  const u=(p<=r)?(p/(r||1))*0.5:0.5+((p-r)/(1-r||1))*0.5;
+  const t=2*u-1,xArc=xL+(xR-xL)*u,yArc=yBase-(yBase-yPeak)*Math.sqrt(Math.max(0,1-t*t));
+  const isDay=now>=sr&&now<=ss2;
+  $("#sunViz").innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:260px;overflow:visible">
+    <line x1="${xL}" y1="${yBase}" x2="${xR}" y2="${yBase}" stroke="rgba(255,255,255,.35)" stroke-width="${stroke}"/>
+    <line x1="${xL}" y1="${yBase-tick}" x2="${xL}" y2="${yBase+tick}" stroke="rgba(255,255,255,.45)" stroke-width="${stroke}"/>
+    <line x1="${xR}" y1="${yBase-tick}" x2="${xR}" y2="${yBase+tick}" stroke="rgba(255,255,255,.45)" stroke-width="${stroke}"/>
+    <path d="${arc}" fill="none" stroke="rgba(255,209,102,.85)" stroke-width="${stroke}"/>
+    <text x="${xL}" y="${yBase+12}" font-size="${font}" fill="#cbd5e1" text-anchor="start">${sunrise}</text>
+    <text x="${xR}" y="${yBase+12}" font-size="${font}" fill="#cbd5e1" text-anchor="end">${sunset}</text>
+    ${noon?`<text x="${(xL+xR)/2}" y="${noonLabelY}" font-size="${font}" fill="#cbd5e1" text-anchor="middle">Noon ${noon}</text>`:""}
+    ${isDay
+      ?`<circle cx="${xArc}" cy="${yArc}" r="${dotR}" fill="#ffd166"><title>Now: ${now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})} (day)</title></circle>`
+      :`<circle cx="${(now<sr)?xL-4:xR+4}" cy="${yBase+6}" r="${dotR}" fill="none" stroke="#ffd166" stroke-width="${stroke}"><title>Now: ${now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})} (night)</title></circle>`
+    }
+  </svg>`;
 }
 
-  /* ========= VOTD ========= */
-  async function loadVOTD(){
-    $("#votdDate").textContent = todayMMDDYYYY();
-    try{
-      const r = await fetch(`${WORKER_BASE}/votd`);
-      if (r.ok){
-        const j = await r.json();
-        if (j?.text){
-          $("#votdText").textContent = j.text;
-          $("#votdRef").textContent  = j.ref || "";
-          return;
-        }
-      }
-    }catch{}
-    try{
-      const r = await fetch("https://labs.bible.org/api/?passage=votd&type=json");
-      const j = await r.json();
-      const v = j?.[0];
-      if (v){
-        $("#votdText").textContent = v.text;
-        $("#votdRef").textContent  = `${v.bookname} ${v.chapter}:${v.verse}`;
-        return;
-      }
-    }catch{}
-    $("#votdText").textContent = "Verse unavailable."; $("#votdRef").textContent = "";
-  }
+/* ========= VOTD ========= */
+async function loadVOTD(){
+  $("#votdDate").textContent = todayMMDDYYYY();
+  try{
+    const r = await fetch(`${WORKER_BASE}/votd`);
+    if (r.ok){ const j = await r.json(); if (j?.text){ $("#votdText").textContent=j.text; $("#votdRef").textContent=j.ref||""; return; } }
+  }catch{}
+  try{
+    const r = await fetch("https://labs.bible.org/api/?passage=votd&type=json");
+    const j = await r.json(); const v = j?.[0];
+    if (v){ $("#votdText").textContent=v.text; $("#votdRef").textContent=`${v.bookname} ${v.chapter}:${v.verse}`; return; }
+  }catch{}
+  $("#votdText").textContent="Verse unavailable."; $("#votdRef").textContent="";
+}
 
-  /* ========= EVENTS ========= */
-  async function loadEvents(){
-    const host = $("#eventsList"); host.innerHTML = "";
-    try{
-      const r = await fetch(`${WORKER_BASE}/events?postalCode=${encodeURIComponent(EVENTS_ZIP)}`);
-      const j = await r.json();
-      if (Array.isArray(j) && j.length){
-        j.slice(0,8).forEach(ev=>{
-          const d = document.createElement("div"); d.className="sym";
-          d.innerHTML = `
-            <div class="top"><div><strong>${ev.name||"Event"}</strong></div>
-            <div class="mini muted">${ev.city||""} ${ev.state||""}</div></div>
-            <div class="mini">${ev.date||""}</div>
-            <div class="mini"><a class="pill" href="${ev.url||"#"}" target="_blank" rel="noopener">Details</a></div>`;
-          host.appendChild(d);
-        });
-        return;
-      }
-      host.innerHTML = `<div class="mini muted">No events or missing TM_KEY on Worker.</div>`;
-    }catch{
-      host.innerHTML = `<div class="mini muted">Events unavailable.</div>`;
-    }
-  }
-
-  /* ========= STOCKS ========= */
-  async function loadStocks(){
-    const host = $("#stocksList"); host.innerHTML = "";
-    try{
-      const url = `${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(","))}`;
-      const r = await fetch(url); const rows = await r.json();
-      if (!Array.isArray(rows) || !rows.length){
-        host.innerHTML = `<div class="mini muted">Quotes unavailable.</div>`; return;
-      }
-      rows.forEach(q=>{
-        const chg = q.changePercent; const badge = chg==null ? "muted" : (chg>=0?"chg up":"chg down");
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `
-          <div class="top">
-            <div><strong>${q.symbol}</strong> <span class="mini muted">${q.name||""}</span></div>
-            <div class="mini ${badge}">${chg==null?"—":`${chg>=0?"+":""}${chg.toFixed(2)}%`}</div>
-          </div>
-          <div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-        host.appendChild(div);
+/* ========= EVENTS ========= */
+async function loadEvents(){
+  const host = $("#eventsList"); host.innerHTML = "";
+  try{
+    const r = await fetch(`${WORKER_BASE}/events?postalCode=${encodeURIComponent(EVENTS_ZIP)}`);
+    const j = await r.json();
+    if (Array.isArray(j) && j.length){
+      j.slice(0,8).forEach(ev=>{
+        const d = document.createElement("div"); d.className="sym";
+        d.innerHTML=`<div class="top"><div><strong>${ev.name||"Event"}</strong></div><div class="mini muted">${ev.city||""} ${ev.state||""}</div></div><div class="mini">${ev.date||""}</div><div class="mini"><a class="pill" href="${ev.url||"#"}" target="_blank" rel="noopener">Details</a></div>`;
+        host.appendChild(d);
       });
-    }catch{
-      host.innerHTML = `<div class="mini muted">Quotes unavailable.</div>`;
+      return;
     }
-  }
+    host.innerHTML=`<div class="mini muted">No events or missing TM_KEY on Worker.</div>`;
+  }catch{ host.innerHTML=`<div class="mini muted">Events unavailable.</div>`; }
+}
 
-  /* ========= CRYPTO ========= */
-  async function loadCrypto(){
-    const host = $("#cryptoList"); const status = $("#cryptoStatus");
-    host.innerHTML = ""; status.textContent = "Loading…";
-    try{
-      const ids = COINS.map(c=>c.id).join(',');
-      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
-      const r = await fetch(url); if(!r.ok) throw 0;
-      const j = await r.json();
-      COINS.forEach(c=>{
-        const d = j[c.id]; if(!d) return;
-        const pct = d.usd_24h_change ?? 0;
-        const cls = pct>=0 ? "chg up" : "chg down";
-        const div = document.createElement("div"); div.className="sym";
-        div.innerHTML = `
-          <div class="top">
-            <div><strong>${c.symbol}</strong> <span class="mini muted">${c.id}</span></div>
-            <div class="mini ${cls}">${(pct>=0?"+":"")}${pct.toFixed(2)}%</div>
-          </div>
-          <div class="price">$${Number(d.usd||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-        host.appendChild(div);
-      });
-      status.textContent = "Live via CoinGecko";
-    }catch(e){
-      status.textContent = "Crypto unavailable.";
-    }
-  }
-  $("#cryptoRefresh").addEventListener("click", loadCrypto);
+/* ========= STOCKS ========= */
+async function loadStocks(){
+  const host = $("#stocksList"); host.innerHTML = "";
+  try{
+    const url=`${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(","))}`;
+    const r=await fetch(url); const rows=await r.json();
+    if (!Array.isArray(rows)||!rows.length){ host.innerHTML=`<div class="mini muted">Quotes unavailable.</div>`; return; }
+    rows.forEach(q=>{
+      const chg=q.changePercent; const badge=chg==null?"muted":(chg>=0?"chg up":"chg down");
+      const div=document.createElement("div"); div.className="sym";
+      div.innerHTML=`<div class="top"><div><strong>${q.symbol}</strong> <span class="mini muted">${q.name||""}</span></div><div class="mini ${badge}">${chg==null?"â€”":`${chg>=0?"+":""}${chg.toFixed(2)}%`}</div></div><div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+      host.appendChild(div);
+    });
+  }catch{ host.innerHTML=`<div class="mini muted">Quotes unavailable.</div>`; }
+}
 
-  /* ========= PELOSI ========= */
-  async function loadPelosi(){
-    const st = $("#pelosiStatus"); const tb = $("#pelosiTable tbody");
-    tb.innerHTML = ""; st.textContent = "Loading…";
-    try{
-      const r = await fetch(`${WORKER_BASE}/pelosi`);
-      const rows = await r.json();
-      rows.forEach(rw=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${rw.disclosure_date||""}</td>
-          <td>${rw.transaction_date||""}</td>
-          <td>${rw.ticker||rw.asset_description||""}</td>
-          <td>${rw.type||""}</td>
-          <td>${rw.amount||""}</td>
-          <td>${rw.ptr_link?`<a class="pill" href="${rw.ptr_link}" target="_blank" rel="noopener">PTR</a>`:""}</td>`;
-        tb.appendChild(tr);
-      });
-      st.textContent = rows.length ? "Loaded." : "No trades found.";
-    }catch(e){
-      st.textContent = "Could not load trades.";
-    }
-  }
+/* ========= CRYPTO ========= */
+async function loadCrypto(){
+  const host=$("#cryptoList"); const status=$("#cryptoStatus");
+  host.innerHTML=""; status.textContent="Loadingâ€¦";
+  try{
+    const ids=COINS.map(c=>c.id).join(',');
+    const url=`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
+    const r=await fetch(url); if(!r.ok) throw 0;
+    const j=await r.json();
+    COINS.forEach(c=>{
+      const d=j[c.id]; if(!d) return;
+      const pct=d.usd_24h_change??0; const cls=pct>=0?"chg up":"chg down";
+      const div=document.createElement("div"); div.className="sym";
+      div.innerHTML=`<div class="top"><div><strong>${c.symbol}</strong> <span class="mini muted">${c.id}</span></div><div class="mini ${cls}">${(pct>=0?"+":"")}${pct.toFixed(2)}%</div></div><div class="price">$${Number(d.usd||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+      host.appendChild(div);
+    });
+    status.textContent="Live via CoinGecko";
+  }catch(e){ status.textContent="Crypto unavailable."; }
+}
+$("#cryptoRefresh").addEventListener("click", loadCrypto);
 
-  /* ========= CONVERSIONS ========= */
-  // top tiles
-  const f_in = $("#f_in"), c_out = $("#c_out");
-  const c_in = $("#c_in"), f_out = $("#f_out");
-  const m_in = $("#m_in"), ft_out = $("#ft_out");
-  const in_in = $("#in_in"), cm_out = $("#cm_out");
+/* ========= PELOSI ========= */
+async function loadPelosi(){
+  const st=$("#pelosiStatus"); const tb=$("#pelosiTable tbody");
+  tb.innerHTML=""; st.textContent="Loadingâ€¦";
+  try{
+    const r=await fetch(`${WORKER_BASE}/pelosi`); const rows=await r.json();
+    rows.forEach(rw=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=`<td>${rw.disclosure_date||""}</td><td>${rw.transaction_date||""}</td><td>${rw.ticker||rw.asset_description||""}</td><td>${rw.type||""}</td><td>${rw.amount||""}</td><td>${rw.ptr_link?`<a class="pill" href="${rw.ptr_link}" target="_blank" rel="noopener">PTR</a>`:""}</td>`;
+      tb.appendChild(tr);
+    });
+    st.textContent=rows.length?"Loaded.":"No trades found.";
+  }catch(e){ st.textContent="Could not load trades."; }
+}
 
-  f_in?.addEventListener('input', ()=>{ const F=parseFloat(f_in.value); c_out.textContent = fmt((F-32)*5/9,2); });
-  c_in?.addEventListener('input', ()=>{ const C=parseFloat(c_in.value); f_out.textContent = fmt((C*9/5)+32,2); });
-  m_in?.addEventListener('input', ()=>{ const m=parseFloat(m_in.value); ft_out.textContent = fmt(m*3.280839895,4); });
-  in_in?.addEventListener('input', ()=>{ const inch=parseFloat(in_in.value); cm_out.textContent = fmt(inch*2.54,2); });
+/* ========= CONVERSIONS ========= */
+// General
+const f_in=$("#f_in"),c_out=$("#c_out"),c_in=$("#c_in"),f_out=$("#f_out");
+const m_in=$("#m_in"),ft_out=$("#ft_out"),in_in=$("#in_in"),cm_out=$("#cm_out");
+const setFlash = el => { el.textContent !== "â€”" && flash(el); };
 
-  // work conversions
-  const vol_ml = $("#vol_ml"), density = $("#density"), k_small = $("#k_small"), k_large = $("#k_large");
-  const mg_small = $("#mg_small"), g_small = $("#g_small"), mg_large = $("#mg_large"), g_large = $("#g_large");
-  const res_small = $("#res_small"), res_large = $("#res_large");
-  const k_small_view=$("#k_small_view"), k_small_view2=$("#k_small_view2");
-  const k_large_view=$("#k_large_view"), k_large_view2=$("#k_large_view2");
-  const ml_to_l = $("#ml_to_l"), liters_out = $("#liters_out");
-  const l_to_ml = $("#l_to_ml"), ml_from_l_out = $("#ml_from_l_out");
+f_in?.addEventListener('input', ()=>{ const F=parseFloat(f_in.value); c_out.textContent=fmt((F-32)*5/9,2); setFlash(c_out); });
+c_in?.addEventListener('input', ()=>{ const C=parseFloat(c_in.value); f_out.textContent=fmt((C*9/5)+32,2); setFlash(f_out); });
+m_in?.addEventListener('input', ()=>{ const m=parseFloat(m_in.value); ft_out.textContent=fmt(m*3.280839895,4); setFlash(ft_out); });
+in_in?.addEventListener('input', ()=>{ const inch=parseFloat(in_in.value); cm_out.textContent=fmt(inch*2.54,2); setFlash(cm_out); });
 
-  function updateWork(){
-    const V  = parseFloat(vol_ml.value);
-    const rho= parseFloat(density.value);
-    const ks = parseFloat(k_small.value);
-    const kl = parseFloat(k_large.value);
+// Mass converters
+const mg_in=$("#mg_in"),g_from_mg=$("#g_from_mg"),kg_from_mg=$("#kg_from_mg");
+const g_in=$("#g_in"),mg_from_g=$("#mg_from_g"),kg_from_g=$("#kg_from_g");
+const kg_in=$("#kg_in"),g_from_kg=$("#g_from_kg"),mg_from_kg=$("#mg_from_kg");
 
-    if (k_small_view){ k_small_view.textContent = isFinite(ks)? ks : '—'; k_small_view2.textContent = isFinite(ks)? ks : '—'; }
-    if (k_large_view){ k_large_view.textContent = isFinite(kl)? kl : '—'; k_large_view2.textContent = isFinite(kl)? kl : '—'; }
+mg_in?.addEventListener('input', ()=>{
+  const v=parseFloat(mg_in.value);
+  g_from_mg.textContent=fmt(v/1000,6); flash(g_from_mg);
+  kg_from_mg.textContent=fmt(v/1e6,9); flash(kg_from_mg);
+});
+g_in?.addEventListener('input', ()=>{
+  const v=parseFloat(g_in.value);
+  mg_from_g.textContent=fmt(v*1000,3); flash(mg_from_g);
+  kg_from_g.textContent=fmt(v/1000,6); flash(kg_from_g);
+});
+kg_in?.addEventListener('input', ()=>{
+  const v=parseFloat(kg_in.value);
+  g_from_kg.textContent=fmt(v*1000,3); flash(g_from_kg);
+  mg_from_kg.textContent=fmt(v*1e6,3); flash(mg_from_kg);
+});
 
-    if (Number.isFinite(V)){
-      if (V <= 1.000000000){
-        res_small.classList.remove('hidden'); res_large.classList.add('hidden');
-        const gS = V * rho * ks;
-        g_small.textContent  = fmt(gS,3);
-        mg_small.textContent = fmt(gS*1000,3);
-        g_large.textContent  = '—'; mg_large.textContent='—';
-      }else{
-        res_large.classList.remove('hidden'); res_small.classList.add('hidden');
-        const gL = V * rho * kl;
-        g_large.textContent  = fmt(gL,3);
-        mg_large.textContent = fmt(gL*1000,3);
-        g_small.textContent  = '—'; mg_small.textContent='—';
-      }
+// Work conversions
+const vol_ml=$("#vol_ml"),density=$("#density"),k_small=$("#k_small"),k_large=$("#k_large");
+const mg_small=$("#mg_small"),g_small=$("#g_small"),kg_small=$("#kg_small");
+const mg_large=$("#mg_large"),g_large=$("#g_large"),kg_large=$("#kg_large");
+const res_small=$("#res_small"),res_large=$("#res_large");
+const k_small_view=$("#k_small_view"),k_small_view2=$("#k_small_view2"),k_small_view3=$("#k_small_view3");
+const k_large_view=$("#k_large_view"),k_large_view2=$("#k_large_view2"),k_large_view3=$("#k_large_view3");
+const ml_to_l=$("#ml_to_l"),liters_out=$("#liters_out"),l_to_ml=$("#l_to_ml"),ml_from_l_out=$("#ml_from_l_out");
+
+function updateWork(){
+  const V=parseFloat(vol_ml.value),rho=parseFloat(density.value);
+  const ks=parseFloat(k_small.value),kl=parseFloat(k_large.value);
+  if(k_small_view){k_small_view.textContent=isFinite(ks)?ks:'â€”';k_small_view2.textContent=isFinite(ks)?ks:'â€”';if(k_small_view3)k_small_view3.textContent=isFinite(ks)?ks:'â€”';}
+  if(k_large_view){k_large_view.textContent=isFinite(kl)?kl:'â€”';k_large_view2.textContent=isFinite(kl)?kl:'â€”';if(k_large_view3)k_large_view3.textContent=isFinite(kl)?kl:'â€”';}
+  if(Number.isFinite(V)){
+    if(V<=1.000000000){
+      res_small.classList.remove('hidden'); res_large.classList.add('hidden');
+      const gS=V*rho*ks;
+      g_small.textContent=fmt(gS,3); mg_small.textContent=fmt(gS*1000,3); kg_small.textContent=fmt(gS/1000,6);
+      g_large.textContent='â€”'; mg_large.textContent='â€”'; kg_large.textContent='â€”';
     }else{
-      res_small.classList.add('hidden'); res_large.classList.add('hidden');
-      ['g_small','mg_small','g_large','mg_large'].forEach(id=>{ const el=$("#"+id); if(el) el.textContent='—'; });
+      res_large.classList.remove('hidden'); res_small.classList.add('hidden');
+      const gL=V*rho*kl;
+      g_large.textContent=fmt(gL,3); mg_large.textContent=fmt(gL*1000,3); kg_large.textContent=fmt(gL/1000,6);
+      g_small.textContent='â€”'; mg_small.textContent='â€”'; kg_small.textContent='â€”';
     }
+  }else{
+    res_small.classList.add('hidden'); res_large.classList.add('hidden');
+    ['g_small','mg_small','kg_small','g_large','mg_large','kg_large'].forEach(id=>{const el=$("#"+id);if(el)el.textContent='â€”';});
   }
-  [vol_ml,density,k_small,k_large].forEach(el=> el?.addEventListener('input', updateWork));
+}
+[vol_ml,density,k_small,k_large].forEach(el=>el?.addEventListener('input',updateWork));
+ml_to_l?.addEventListener('input',()=>{ liters_out.textContent=fmt(parseFloat(ml_to_l.value)/1000,6); flash(liters_out); });
+l_to_ml?.addEventListener('input',()=>{ ml_from_l_out.textContent=fmt(parseFloat(l_to_ml.value)*1000,3); flash(ml_from_l_out); });
 
-  ml_to_l?.addEventListener('input', ()=>{ const mL = parseFloat(ml_to_l.value); liters_out.textContent = fmt(mL/1000,6); });
-  l_to_ml?.addEventListener('input', ()=>{ const L = parseFloat(l_to_ml.value); ml_from_l_out.textContent = fmt(L*1000,3); });
+/* ========= SOURCING TOOL ========= */
+const vendorGrid = $("#vendorGrid");
+const vendorFilter = $("#vendorFilter");
+const vendorCountEl = $("#vendorCount");
+let selectedVendors = new Set();
 
-  /* ========= NOTES / INIT ========= */
-  $("#todayBadge").textContent = todayMMDDYYYY();
-  $("#votdDate").textContent  = todayMMDDYYYY();
-  $("#clearNotes").onclick = ()=>{ const t=$("#notesBox"); t.value=""; localStorage.removeItem("dashboard-notes"); };
-  const tSaved = localStorage.getItem("dashboard-notes")||""; $("#notesBox").value = tSaved;
-  $("#notesBox").addEventListener("input", e=>localStorage.setItem("dashboard-notes", e.target.value));
-
-  loadTicker();
-  updateTraffic(); setInterval(updateTraffic, 120000);
-  loadWeather();
-  loadSun(); // compute once at load
-  loadVOTD(); setInterval(loadVOTD, 30*60*1000);
-  loadEvents();
-  loadStocks(); setInterval(loadStocks, 60000);
-  loadCrypto(); setInterval(loadCrypto, 60000);
-  loadPelosi();
-
-  /* ========= THEME TOGGLE ========= */
-  const THEME_KEY = "dashboard-theme";
-  function applyTheme(theme){
-    const htmlEl = document.documentElement;
-    if(theme === "light"){
-      htmlEl.classList.add("light");
-    } else {
-      htmlEl.classList.remove("light");
-    }
-  }
-
-  // Load saved theme (default = dark)
-  const savedTheme = localStorage.getItem(THEME_KEY);
-  if(savedTheme === "light" || savedTheme === "dark"){
-    applyTheme(savedTheme);
-  }
-
-  const themeToggleBtn = document.getElementById("themeToggle");
-  themeToggleBtn.addEventListener("click", () => {
-    const htmlEl = document.documentElement;
-    const isNowLight = !htmlEl.classList.contains("light");
-    applyTheme(isNowLight ? "light" : "dark");
-    localStorage.setItem(THEME_KEY, isNowLight ? "light" : "dark");
+function renderVendors(filter=""){
+  vendorGrid.innerHTML="";
+  const q = filter.toLowerCase();
+  const visible = APPROVED_VENDORS.filter(v => !q || v.name.toLowerCase().includes(q) || v.domain.toLowerCase().includes(q));
+  visible.forEach((v,i) => {
+    const item = document.createElement("div");
+    item.className="vendor-item";
+    const id=`v_${i}_${v.domain.replace(/\./g,'_')}`;
+    const checked = selectedVendors.has(v.domain) ? "checked" : "";
+    item.innerHTML=`<input type="checkbox" id="${id}" ${checked} data-domain="${v.domain}"><label for="${id}" title="${v.name}">${v.name}</label>`;
+    item.querySelector("input").addEventListener("change", e=>{
+      if(e.target.checked) selectedVendors.add(v.domain);
+      else selectedVendors.delete(v.domain);
+      updateVendorCount();
+    });
+    vendorGrid.appendChild(item);
   });
+  updateVendorCount();
+}
+
+function updateVendorCount(){
+  vendorCountEl.textContent = `${selectedVendors.size} selected`;
+}
+
+vendorFilter.addEventListener("input", ()=>renderVendors(vendorFilter.value));
+
+$("#selectAllVendors").addEventListener("click",()=>{
+  const q=vendorFilter.value.toLowerCase();
+  APPROVED_VENDORS.filter(v=>!q||v.name.toLowerCase().includes(q)||v.domain.toLowerCase().includes(q))
+    .forEach(v=>selectedVendors.add(v.domain));
+  renderVendors(vendorFilter.value);
+});
+
+$("#clearAllVendors").addEventListener("click",()=>{
+  selectedVendors.clear();
+  renderVendors(vendorFilter.value);
+  updateVendorCount();
+});
+
+// CAS parsing
+function parseCAS(raw){
+  return raw.split(/[\n,;]+/).map(s=>s.trim()).filter(s=>/^\d{2,7}-\d{2}-\d$/.test(s));
+}
+
+let casNumbers = [];
+
+function updateCasChips(){
+  const chips = $("#casChips");
+  chips.innerHTML = casNumbers.map((c,i)=>
+    `<span class="cas-chip">${c}<span class="x" data-i="${i}">âœ•</span></span>`
+  ).join("");
+  chips.querySelectorAll(".x").forEach(x=>x.addEventListener("click",()=>{
+    casNumbers.splice(parseInt(x.dataset.i),1);
+    updateCasChips();
+  }));
+}
+
+$("#casInput").addEventListener("blur", ()=>{
+  const parsed = parseCAS($("#casInput").value);
+  parsed.forEach(c=>{ if(!casNumbers.includes(c)) casNumbers.push(c); });
+  updateCasChips();
+});
+
+$("#btnSearch").addEventListener("click", ()=>{
+  if(!casNumbers.length){ alert("Enter at least one valid CAS number (format: XXXXXXX-XX-X)"); return; }
+  if(!selectedVendors.size){ alert("Select at least one approved vendor"); return; }
+
+  const siteQuery = [...selectedVendors].map(d=>`site:${d}`).join(" OR ");
+  const summary = document.getElementById("searchSummary");
+
+  casNumbers.forEach(cas=>{
+    const q = `${cas} (${siteQuery})`;
+    const url = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+    window.open(url, "_blank", "noopener");
+  });
+
+  summary.innerHTML = `Opened <span class="ss-count">${casNumbers.length}</span> search${casNumbers.length>1?"es":""} across <span class="ss-count">${selectedVendors.size}</span> vendor${selectedVendors.size>1?"s":""}.`;
+  summary.classList.add("visible");
+});
+
+// Init vendors â€” default select the most common chem suppliers
+const defaultSelected = ["sigmaaldrich.com","vwr.com","fishersci.com","thermofisher.com","caymanchem.com","tcichemicals.com","trc-canada.com"];
+defaultSelected.forEach(d=>selectedVendors.add(d));
+renderVendors();
+
+/* ========= NOTES / INIT ========= */
+$("#todayBadge").textContent = todayMMDDYYYY();
+$("#votdDate").textContent = todayMMDDYYYY();
+$("#clearNotes").onclick=()=>{ const t=$("#notesBox"); t.value=""; localStorage.removeItem("dashboard-notes"); };
+const tSaved = localStorage.getItem("dashboard-notes")||""; $("#notesBox").value=tSaved;
+$("#notesBox").addEventListener("input",e=>localStorage.setItem("dashboard-notes",e.target.value));
+
+loadTicker();
+updateTraffic(); setInterval(updateTraffic,120000);
+loadWeather();
+loadSun();
+loadVOTD(); setInterval(loadVOTD,30*60*1000);
+loadEvents();
+loadStocks(); setInterval(loadStocks,60000);
+loadCrypto(); setInterval(loadCrypto,60000);
+loadPelosi();
+
+/* ========= ACTIVE NAV ========= */
+const sections = document.querySelectorAll('.section[id]');
+const navLinks = document.querySelectorAll('.nav a[href^="#"]');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+e.target.id));
+    }
+  });
+},{threshold:.3,rootMargin:'-60px 0px 0px 0px'});
+sections.forEach(s=>observer.observe(s));
+
+/* ========= THEME TOGGLE ========= */
+const THEME_KEY="dashboard-theme";
+function applyTheme(theme){ document.documentElement.classList.toggle("light",theme==="light"); }
+const savedTheme=localStorage.getItem(THEME_KEY);
+if(savedTheme==="light"||savedTheme==="dark") applyTheme(savedTheme);
+document.getElementById("themeToggle").addEventListener("click",()=>{
+  const isNowLight=!document.documentElement.classList.contains("light");
+  applyTheme(isNowLight?"light":"dark");
+  localStorage.setItem(THEME_KEY,isNowLight?"light":"dark");
+});
 </script>
 </body>
 </html>
