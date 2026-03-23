@@ -1,404 +1,441 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="top">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png" />
 <title>JMOD Dashboard</title>
+<meta name="color-scheme" content="dark" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
-  /* ============================================================
-     GLOBAL RESET & BASE STYLES
-     Sets up fonts, colors, and base sizing for the whole page
-  ============================================================ */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ===== TOKENS ===== */
+:root{
+  --bg:#0b0c10;
+  --bg-soft:#0e1218;
+  --card:#13151b;
+  --ink:#e8ebf4;
+  --muted:#7a8294;
+  --border:#1e2330;
+  --accent:#4da3ff;
+  --good:#17e5a1;
+  --bad:#ff6b6b;
+  --amber:#ffd166;
+  --purple:#b47dff;
+  --teal:#17e5a1;
+  --font-sans:'DM Sans',system-ui,sans-serif;
+  --font-mono:'DM Mono','Courier New',monospace;
+  --r-card:14px;
+  --r-sm:8px;
+}
+html.light{
+  --bg:#f0f2f8;
+  --bg-soft:#e4e7f2;
+  --card:#ffffff;
+  --ink:#111827;
+  --muted:#6b7280;
+  --border:#d0d4e8;
+  --accent:#2563eb;
+  --good:#059669;
+  --bad:#dc2626;
+  --amber:#d97706;
+}
 
-  :root {
-    --bg:        #0d0d0d;
-    --card:      #141414;
-    --card2:     #1a1a1a;
-    --border:    #2a2a2a;
-    --accent:    #3b82f6;
-    --accent2:   #22c55e;
-    --text:      #e5e7eb;
-    --muted:     #6b7280;
-    --yellow:    #facc15;
-    --red:       #ef4444;
-    --fs-base:   13px;   /* ← change this ONE number to scale everything */
-  }
+/* ===== RESET / BASE ===== */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);
+  font-size:14px;
+  color:var(--ink);
+  background:var(--bg);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
 
-  html { font-size: var(--fs-base); }
+/* animated bg mesh */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 900px 600px at 5% 0%,   rgba(77,163,255,.08) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 500px at 95% 100%, rgba(180,77,255,.06) 0%, transparent 65%),
+    radial-gradient(ellipse 600px 400px at 50% 50%,  rgba(23,229,161,.04) 0%, transparent 70%);
+}
+html.light body::before{
+  background:
+    radial-gradient(ellipse 900px 600px at 5% 0%,   rgba(37,99,235,.06) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 500px at 95% 100%, rgba(124,58,237,.04) 0%, transparent 65%);
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    min-height: 100vh;
-  }
+/* subtle grid overlay */
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+html.light body::after{
+  background-image:
+    linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px);
+}
 
-  /* ============================================================
-     TOP NAVIGATION BAR
-  ============================================================ */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: #111;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    gap: 1.5rem; padding: 0.5rem 1rem;
-    flex-wrap: wrap;
-  }
-  nav a {
-    color: var(--muted); text-decoration: none;
-    font-size: 0.8rem; font-weight: 500; letter-spacing: .03em;
-    transition: color .2s;
-  }
-  nav a:hover { color: var(--text); }
+a{color:inherit;text-decoration:none}
+.hidden{display:none!important}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 12px 56px}
 
-  /* ============================================================
-     NEWS TICKER (scrolling headlines bar)
-  ============================================================ */
-  .ticker-wrap {
-    background: #0a0a0a; border-bottom: 1px solid var(--border);
-    overflow: hidden; white-space: nowrap; padding: 0.3rem 0;
-  }
-  .ticker-inner {
-    display: inline-block;
-    animation: ticker 60s linear infinite;
-  }
-  .ticker-inner span {
-    font-size: 0.72rem; color: var(--muted); margin-right: 4rem;
-  }
-  .ticker-inner span b { color: var(--text); }
-  @keyframes ticker { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
+/* ===== NAV ===== */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(11,12,16,.88);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+html.light .nav{background:rgba(240,242,248,.92);}
+.navin{
+  max-width:1200px;margin:0 auto;
+  display:flex;gap:2px;align-items:center;justify-content:center;
+  padding:8px 12px;flex-wrap:wrap;
+}
+.nav a{
+  color:var(--muted);font-weight:500;font-size:12px;letter-spacing:.02em;
+  padding:5px 9px;border-radius:6px;
+  transition:color .15s,background .15s;
+  white-space:nowrap;
+}
+.nav a:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+html.light .nav a:hover{background:rgba(0,0,0,.05)}
+.nav a.active{color:var(--accent);background:rgba(77,163,255,.08)}
 
-  /* ============================================================
-     PAGE WRAPPER — limits max width on desktop
-  ============================================================ */
-  .page {
-    max-width: 960px;   /* ← was likely uncapped before, now capped */
-    margin: 0 auto;
-    padding: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
+/* ===== TICKER ===== */
+.ticker{overflow:hidden;background:transparent;border-bottom:1px solid var(--border)}
+.ticker-inner{display:inline-block;padding:6px 0;animation:tickscroll 220s linear infinite;white-space:nowrap}
+.ticker:hover .ticker-inner{animation-play-state:paused}
+.tick-item{display:inline-block;margin-right:32px;color:rgba(200,220,255,.55);font-size:11px;font-family:var(--font-mono)}
+html.light .tick-item{color:rgba(30,40,80,.5)}
+@keyframes tickscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-  /* ============================================================
-     GENERIC CARD / SECTION STYLES
-  ============================================================ */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
+/* ===== SECTION HEADINGS ===== */
+.sec-heading{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-family:var(--font-mono);
+  margin:24px 0 10px;padding-left:2px;
+}
 
-  /* Section header bar (the row with the section title) */
-  .sec-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0.45rem 0.75rem;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer; user-select: none;
-  }
-  .sec-header .sec-title {
-    display: flex; align-items: center; gap: 0.4rem;
-    font-size: 0.78rem; font-weight: 600; letter-spacing: .04em;
-    color: var(--text);
-  }
-  .sec-header .sec-title .ico {
-    width: 1.3rem; height: 1.3rem; border-radius: 4px;
-    background: var(--accent); color: #fff;
-    font-size: 0.65rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .sec-header .sec-right {
-    font-size: 0.7rem; color: var(--muted);
-    display: flex; align-items: center; gap: 0.6rem;
-  }
-  .sec-header .toggle-btn {
-    background: none; border: none; color: var(--muted);
-    font-size: 0.85rem; cursor: pointer; padding: 0 0.2rem;
-    transition: transform .3s;
-  }
-  .sec-header .toggle-btn.open { transform: rotate(45deg); }
+/* ===== CARD ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card{
+  position:relative;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r-card);
+  overflow:hidden;
+  animation:fadeUp .35s ease both;
+}
+html.light .card{box-shadow:0 4px 24px rgba(15,23,42,.06)}
 
-  .sec-body { padding: 0.6rem 0.75rem; }
-  .sec-body.hidden { display: none; }
+/* accent stripe */
+.card[data-cat="personal"]{border-top:2px solid var(--amber)}
+.card[data-cat="data"]    {border-top:2px solid var(--accent)}
+.card[data-cat="work"]    {border-top:2px solid var(--teal)}
+.card[data-cat="finance"] {border-top:2px solid var(--purple)}
 
-  /* ============================================================
-     DASHBOARD HEADER CARD (top title card)
-  ============================================================ */
-  #dash-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0.6rem 0.75rem;
-  }
-  #dash-header .logo {
-    display: flex; align-items: center; gap: 0.5rem;
-  }
-  #dash-header .logo .ico-big {
-    width: 1.8rem; height: 1.8rem; border-radius: 6px;
-    background: var(--accent); color: #fff;
-    font-size: 0.8rem; font-weight: 800;
-    display: flex; align-items: center; justify-content: center;
-  }
-  #dash-header .logo h1 { font-size: 0.95rem; font-weight: 700; }
-  #dash-header .logo p  { font-size: 0.68rem; color: var(--muted); margin-top: 1px; }
-  #dash-header .dash-date { font-size: 0.7rem; color: var(--muted); }
+/* stagger */
+.wrap > *:nth-child(1){animation-delay:.04s}
+.wrap > *:nth-child(2){animation-delay:.08s}
+.wrap > *:nth-child(3){animation-delay:.12s}
+.wrap > *:nth-child(4){animation-delay:.16s}
+.wrap > *:nth-child(5){animation-delay:.20s}
+.wrap > *:nth-child(6){animation-delay:.24s}
+.wrap > *:nth-child(7){animation-delay:.28s}
+.wrap > *:nth-child(8){animation-delay:.32s}
+.wrap > *:nth-child(9){animation-delay:.36s}
+.wrap > *:nth-child(10){animation-delay:.40s}
+.wrap > *:nth-child(11){animation-delay:.44s}
+.wrap > *:nth-child(12){animation-delay:.48s}
+.wrap > *:nth-child(13){animation-delay:.52s}
 
-  /* ============================================================
-     WEATHER SECTION
-     5 city cards in a responsive row
-  ============================================================ */
-  .weather-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0.5rem;
-  }
-  @media (max-width: 700px) {
-    .weather-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 400px) {
-    .weather-grid { grid-template-columns: 1fr; }
-  }
+.card .hd{
+  padding:11px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  background:rgba(255,255,255,.015);
+}
+html.light .card .hd{background:rgba(0,0,0,.015)}
+.hd-label{display:flex;align-items:center;gap:7px;font-weight:600;font-size:13px}
+.hd-ico{
+  width:20px;height:20px;border-radius:5px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;
+  background:rgba(255,255,255,.05);
+}
+html.light .hd-ico{background:rgba(0,0,0,.05)}
+.card .bd{padding:13px}
 
-  .wx-card {
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.5rem;
-  }
-  .wx-card .wx-city  { font-size: 0.7rem; font-weight: 600; color: var(--text); }
-  .wx-card .wx-wind  { font-size: 0.6rem; color: var(--muted); float: right; }
-  .wx-card .wx-temp  { font-size: 1.4rem; font-weight: 700; margin: 0.2rem 0 0.1rem; }
-  .wx-card .wx-cond  { font-size: 0.62rem; color: var(--muted); margin-bottom: 0.35rem; }
-  .wx-card .wx-hl    { font-size: 0.6rem; color: var(--muted); margin-bottom: 0.35rem; }
+/* ===== PILL / TAG ===== */
+.pill{
+  font-size:11px;font-family:var(--font-mono);font-weight:500;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:4px 9px;border-radius:999px;
+  cursor:default;
+  transition:background .15s,color .15s;
+  white-space:nowrap;
+}
+.pill.btn{cursor:pointer}
+.pill.btn:hover{background:rgba(77,163,255,.12);color:var(--accent);border-color:rgba(77,163,255,.3)}
+html.light .pill{background:rgba(0,0,0,.04);color:var(--muted)}
+.mini{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
 
-  .wx-hourly {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 0.2rem; margin-top: 0.3rem;
-  }
-  .wx-hourly-item {
-    background: #111; border-radius: 4px;
-    padding: 0.25rem 0.2rem; text-align: center;
-    font-size: 0.58rem; color: var(--muted); line-height: 1.5;
-  }
-  .wx-hourly-item .wh-cond { font-size: 0.7rem; }  /* emoji size */
-  .wx-hourly-item .wh-temp { color: var(--text); font-weight: 600; }
-  .wx-hourly-item .wh-time { color: var(--muted); font-size: 0.55rem; }
+/* ===== GRID ===== */
+.g2{display:grid;gap:12px}
+@media(min-width:860px){.g2{grid-template-columns:1fr 1fr}}
+.section{scroll-margin-top:64px}
 
-  /* ============================================================
-     SUNRISE & SUNSET / CLOCK SECTION
-  ============================================================ */
-  .sun-wrap {
-    display: flex; flex-direction: column; align-items: center;
-    padding: 0.5rem 0;
-  }
-  #live-clock {
-    font-size: 2.2rem; font-weight: 300; letter-spacing: .05em;
-    color: var(--text); margin-bottom: 0.5rem;
-  }
-  .sun-arc-container {
-    width: 100%; max-width: 340px;
-    position: relative; height: 120px; margin: 0 auto;
-  }
-  .sun-arc-container canvas { width: 100% !important; }
-  .sun-times {
-    display: flex; justify-content: space-between;
-    font-size: 0.68rem; color: var(--muted);
-    max-width: 340px; width: 100%; margin-top: 0.3rem;
-  }
-  .sun-times span b { color: var(--yellow); }
+/* ===== SYM TILES ===== */
+.symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.sym{
+  border:1px solid var(--border);border-radius:10px;padding:10px;
+  background:rgba(255,255,255,.02);
+  transition:transform .15s,border-color .2s,box-shadow .15s;
+}
+.sym:hover{transform:translateY(-2px);border-color:rgba(77,163,255,.3);box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.sym .top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.sym .price{font-size:18px;font-weight:700;margin-top:4px;font-family:var(--font-mono)}
+.hrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.hchip{
+  display:flex;flex-direction:column;align-items:center;
+  border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:8px;
+  padding:5px 7px;min-width:46px;
+  transition:background .15s;
+}
+.hchip:hover{background:rgba(255,255,255,.06)}
+.hchip .ico{font-size:14px;line-height:1}
+.hchip .t{font-weight:600;margin-top:2px;font-family:var(--font-mono);font-size:11px}
+.chg.up{color:var(--good)}.chg.down{color:var(--bad)}
+.chg-zero{color:var(--muted)}
 
-  /* ============================================================
-     TRAFFIC / MAPS SECTION
-     Two map iframes side by side + drive time badges
-  ============================================================ */
-  .maps-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-  }
-  @media (max-width: 600px) {
-    .maps-grid { grid-template-columns: 1fr; }
-  }
-  .map-card {
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .map-card .map-label {
-    padding: 0.35rem 0.55rem;
-    font-size: 0.7rem; font-weight: 600;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .drive-badge {
-    font-size: 0.65rem; font-weight: 600;
-    background: var(--accent); color: #fff;
-    border-radius: 4px; padding: 0.15rem 0.4rem;
-  }
-  .drive-badge.loading { background: var(--muted); }
-  .map-card iframe {
-    width: 100%; height: 200px; border: none; display: block;
-  }
+/* ===== IFRAME MAP ===== */
+iframe{width:100%;height:340px;border:0;border-radius:0 0 var(--r-card) var(--r-card);display:block}
+@media(max-width:600px){iframe{height:260px}}
 
-  /* ============================================================
-     STOCKS SECTION
-     Ticker row with mini sparklines
-  ============================================================ */
-  .stocks-row {
-    display: flex; flex-wrap: wrap; gap: 0.4rem;
-  }
-  .stock-chip {
-    background: var(--card2); border: 1px solid var(--border);
-    border-radius: 6px; padding: 0.35rem 0.5rem;
-    min-width: 90px; flex: 1 1 90px;
-  }
-  .stock-chip .st-sym  { font-size: 0.68rem; font-weight: 700; color: var(--accent); }
-  .stock-chip .st-name { font-size: 0.55rem; color: var(--muted); }
-  .stock-chip .st-price{ font-size: 0.85rem; font-weight: 600; color: var(--text); }
-  .stock-chip .st-chg  { font-size: 0.6rem; }
-  .st-up   { color: var(--accent2); }
-  .st-down { color: var(--red); }
-  .st-sparkline { width: 100%; height: 28px; margin-top: 0.2rem; }
+/* ===== TABLES ===== */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;font-family:var(--font-mono)}
+.tbl th{
+  padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);
+  color:var(--muted);font-weight:600;letter-spacing:.04em;font-size:10px;text-transform:uppercase;
+  background:rgba(255,255,255,.02);
+}
+.tbl td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04)}
+.tbl tbody tr:hover{background:rgba(77,163,255,.04)}
+html.light .tbl tbody tr:hover{background:rgba(37,99,235,.04)}
 
-  /* ============================================================
-     QUICK LINKS SECTION
-     Grid of link tiles (SAP, GitHub, etc.)
-  ============================================================ */
-  .links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 0.4rem;
-  }
-  .link-tile {
-    background: var(--card2); border: 1px solid var(--border);
-    border-radius: 6px; padding: 0.5rem 0.55rem;
-    text-decoration: none; color: var(--text);
-    transition: border-color .2s, background .2s;
-    display: block;
-  }
-  .link-tile:hover {
-    border-color: var(--accent); background: #1e2a3a;
-  }
-  .link-tile .lt-ico  { font-size: 0.6rem; font-weight: 700; color: var(--accent); }
-  .link-tile .lt-name { font-size: 0.78rem; font-weight: 600; margin-top: 0.15rem; }
-  .link-tile .lt-sub  { font-size: 0.58rem; color: var(--muted); margin-top: 0.1rem; }
+/* ===== SCRATCHPAD ===== */
+textarea{
+  width:100%;min-height:110px;
+  border:1px solid var(--border);background:rgba(255,255,255,.02);
+  color:var(--ink);border-radius:var(--r-sm);padding:10px;
+  font-family:var(--font-mono);font-size:13px;resize:vertical;
+  transition:border-color .2s;
+}
+textarea:focus{outline:none;border-color:var(--accent)}
+html.light textarea{background:rgba(0,0,0,.02)}
 
-  /* ============================================================
-     PELOSI TRADES SECTION
-  ============================================================ */
-  .trades-table-wrap { overflow-x: auto; }
-  table.trades {
-    width: 100%; border-collapse: collapse; font-size: 0.68rem;
-  }
-  table.trades th {
-    background: #111; color: var(--muted);
-    padding: 0.3rem 0.4rem; text-align: left;
-    border-bottom: 1px solid var(--border);
-    font-weight: 600; font-size: 0.62rem; letter-spacing: .04em;
-  }
-  table.trades td {
-    padding: 0.3rem 0.4rem;
-    border-bottom: 1px solid #1e1e1e;
-    color: var(--text);
-  }
-  table.trades tr:hover td { background: var(--card2); }
-  .tag-buy  { color: var(--accent2); font-weight: 600; }
-  .tag-sell { color: var(--red);     font-weight: 600; }
-  .trades-status {
-    font-size: 0.68rem; color: var(--muted);
-    padding: 0.5rem 0; text-align: center;
-  }
-  .trades-source {
-    font-size: 0.6rem; color: var(--muted);
-    padding: 0.3rem 0; text-align: right;
-  }
+/* ===== VOTD ===== */
+.votd-card{
+  border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:10px;padding:16px 14px 12px;
+  background:linear-gradient(135deg,rgba(77,163,255,.06) 0%,transparent 60%);
+}
+.votd-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap}
+.votd-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent);font-family:var(--font-mono)}
+.votd-date{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.votd-quote{
+  margin:0 0 12px;
+  font-size:clamp(15px,2vw,18px);line-height:1.65;font-weight:400;font-style:italic;
+  color:var(--ink);border:none;padding:0;
+}
+.votd-ref{font-size:12px;color:var(--accent);font-weight:600;font-family:var(--font-mono);text-align:right;display:block}
 
-  /* ============================================================
-     CONVERSIONS SECTION
-     Unit conversion calculators
-  ============================================================ */
-  .conv-group-label {
-    font-size: 0.6rem; font-weight: 700; letter-spacing: .08em;
-    color: var(--muted); text-transform: uppercase;
-    margin: 0.6rem 0 0.35rem;
-  }
-  .conv-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 0.4rem;
-  }
-  .conv-card {
-    background: var(--card2); border: 1px solid var(--border);
-    border-radius: 6px; padding: 0.45rem 0.5rem;
-  }
-  .conv-card .cc-title { font-size: 0.65rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
-  .conv-card input[type=number] {
-    width: 100%; background: #0d0d0d; border: 1px solid var(--border);
-    border-radius: 4px; color: var(--text); font-size: 0.72rem;
-    padding: 0.25rem 0.35rem; outline: none;
-  }
-  .conv-card input[type=number]:focus { border-color: var(--accent); }
-  .conv-card .cc-result {
-    font-size: 0.7rem; color: var(--accent);
-    margin-top: 0.25rem; font-weight: 600;
-  }
-  .conv-card .cc-hint { font-size: 0.58rem; color: var(--muted); margin-top: 0.1rem; }
+/* ===== CONVERSIONS ===== */
+.cv-section{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-family:var(--font-mono);
+  margin:16px 0 8px;
+  display:flex;align-items:center;gap:8px;
+}
+.cv-section::after{content:"";flex:1;height:1px;background:var(--border)}
+.cv-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.cv-tile{
+  border:1px solid var(--border);border-radius:10px;padding:11px;
+  background:rgba(255,255,255,.02);
+}
+.cv-tile h4{margin:0 0 8px;font-size:13px;font-weight:600}
+.cv-row{display:flex;align-items:center;gap:7px;margin:5px 0}
+.cv-row input{
+  flex:1;min-width:0;padding:6px 8px;
+  border:1px solid var(--border);border-radius:6px;
+  background:transparent;color:var(--ink);
+  font-family:var(--font-mono);font-size:12px;
+  transition:border-color .2s;
+}
+.cv-row input:focus{outline:none;border-color:var(--accent)}
+.cv-row .unit{font-size:11px;color:var(--muted);font-family:var(--font-mono);min-width:20px}
+.cv-out{
+  font-family:var(--font-mono);font-size:13px;font-weight:600;
+  color:var(--accent);min-width:6ch;
+  transition:color .15s;
+}
+@keyframes cvflash{0%{color:var(--good)}100%{color:var(--accent)}}
+.cv-out.flash{animation:cvflash .3s ease}
+.cv-note{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin:6px 0 0;line-height:1.5}
+.cv-work-wrap{display:grid;gap:14px}
+@media(min-width:760px){.cv-work-wrap{grid-template-columns:1fr 1fr}}
+.cv-res-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+.cv-res-table td{padding:5px 8px;border-top:1px dashed rgba(255,255,255,.07)}
+.cv-res-table tr:first-child td{border-top:none}
+.cv-res-right{text-align:right;font-weight:600;color:var(--teal)}
+.cv-inputs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cv-factors{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;align-items:center;margin-top:8px}
+.cv-factors .cv-row{margin:0}
 
-  /* ============================================================
-     NOTES / SCRATCH PAD SECTION
-  ============================================================ */
-  .notes-wrap textarea {
-    width: 100%; min-height: 100px;
-    background: var(--card2); border: 1px solid var(--border);
-    border-radius: 6px; color: var(--text);
-    font-size: 0.75rem; padding: 0.5rem;
-    resize: vertical; outline: none; font-family: monospace;
-  }
-  .notes-wrap textarea:focus { border-color: var(--accent); }
-  .notes-status { font-size: 0.6rem; color: var(--muted); margin-top: 0.2rem; text-align: right; }
+/* ===== SOURCING ===== */
+.src-layout{display:grid;gap:14px}
+@media(min-width:720px){.src-layout{grid-template-columns:1fr 1fr}}
+.cas-input{
+  width:100%;min-height:76px;
+  border:1px solid var(--border);background:rgba(255,255,255,.02);
+  color:var(--ink);border-radius:8px;padding:9px;
+  font-family:var(--font-mono);font-size:12px;box-sizing:border-box;resize:vertical;
+  transition:border-color .2s;
+}
+.cas-input:focus{outline:none;border-color:var(--teal)}
+.cas-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;min-height:22px}
+.cas-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(23,229,161,.08);border:1px solid rgba(23,229,161,.25);
+  color:var(--teal);border-radius:999px;padding:2px 9px;
+  font-size:11px;font-family:var(--font-mono);
+}
+.cas-chip .x{cursor:pointer;opacity:.5;font-size:10px;margin-left:2px}
+.cas-chip .x:hover{opacity:1}
+.vnd-filter{
+  width:100%;padding:7px 10px;
+  border:1px solid var(--border);border-radius:7px;
+  background:transparent;color:var(--ink);
+  font-family:var(--font-mono);font-size:12px;
+  margin-bottom:7px;transition:border-color .2s;
+}
+.vnd-filter:focus{outline:none;border-color:var(--teal)}
+.vnd-controls{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.vnd-btn{
+  font-size:11px;font-family:var(--font-mono);
+  padding:3px 8px;border:1px solid var(--border);border-radius:5px;
+  background:transparent;color:var(--muted);cursor:pointer;
+  transition:border-color .15s,color .15s;
+}
+.vnd-btn:hover{border-color:var(--teal);color:var(--teal)}
+.vnd-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:2px;
+  max-height:200px;overflow-y:auto;padding:2px 0;
+}
+.vnd-grid::-webkit-scrollbar{width:4px}
+.vnd-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.vnd-item{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 6px;border-radius:5px;cursor:pointer;
+  font-size:11px;font-family:var(--font-mono);
+  transition:background .1s;
+}
+.vnd-item:hover{background:rgba(23,229,161,.07)}
+.vnd-item input[type=checkbox]{accent-color:var(--teal);width:12px;height:12px;flex-shrink:0;cursor:pointer}
+.vnd-item label{cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.btn-search{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--teal);color:#0a0f0e;
+  border:none;border-radius:8px;padding:9px 16px;
+  font-weight:700;font-size:12px;font-family:var(--font-sans);
+  cursor:pointer;margin-top:10px;
+  transition:opacity .15s,transform .15s;
+}
+.btn-search:hover{opacity:.85;transform:translateY(-1px)}
+.src-result{
+  margin-top:9px;padding:8px 11px;
+  border:1px solid rgba(23,229,161,.2);border-radius:8px;
+  background:rgba(23,229,161,.04);
+  font-size:11px;font-family:var(--font-mono);color:var(--muted);display:none;
+}
+.src-result.show{display:block}
+.src-result b{color:var(--teal)}
 
-  /* ============================================================
-     SOURCING NOTES SECTION (same style as notes)
-  ============================================================ */
-  .sourcing-wrap textarea {
-    width: 100%; min-height: 80px;
-    background: var(--card2); border: 1px solid var(--border);
-    border-radius: 6px; color: var(--text);
-    font-size: 0.75rem; padding: 0.5rem;
-    resize: vertical; outline: none; font-family: monospace;
-  }
+/* ===== QUICK LINKS (new section) ===== */
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.link-tile{
+  display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+  border:1px solid var(--border);border-radius:10px;padding:11px 12px;
+  background:rgba(255,255,255,.02);
+  transition:border-color .2s,transform .15s,background .15s;
+  cursor:pointer;
+  text-decoration:none;color:var(--ink);
+}
+.link-tile:hover{border-color:rgba(77,163,255,.35);transform:translateY(-2px);background:rgba(77,163,255,.04)}
+.link-tile .lt-ico{font-size:18px;line-height:1;margin-bottom:2px}
+.link-tile .lt-label{font-size:12px;font-weight:600}
+.link-tile .lt-sub{font-size:10px;color:var(--muted);font-family:var(--font-mono)}
 
-  /* ============================================================
-     JMOD CO. SECTION (company info placeholder)
-  ============================================================ */
-  .jmod-row {
-    display: flex; flex-wrap: wrap; gap: 0.4rem;
-  }
-  .jmod-stat {
-    background: var(--card2); border: 1px solid var(--border);
-    border-radius: 6px; padding: 0.4rem 0.6rem;
-    flex: 1 1 120px;
-  }
-  .jmod-stat .js-label { font-size: 0.58rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-  .jmod-stat .js-value { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-top: 0.1rem; }
+/* ===== FOOTER / BACK TO TOP ===== */
+.btm{display:flex;justify-content:center;margin:28px 0 8px}
+.btn-top{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--muted);padding:7px 16px;
+  border-radius:999px;font-size:12px;font-family:var(--font-mono);
+  cursor:pointer;transition:color .15s,border-color .15s;
+}
+.btn-top:hover{color:var(--accent);border-color:rgba(77,163,255,.4)}
+.footer{color:var(--muted);text-align:center;padding-bottom:20px;font-size:11px;font-family:var(--font-mono)}
 
-  /* ============================================================
-     FOOTER
-  ============================================================ */
-  footer {
-    text-align: center; font-size: 0.6rem; color: var(--muted);
-    padding: 0.75rem 0 1rem;
-  }
+/* ===== SUNRISE SVG ===== */
+.sunbox{display:flex;flex-direction:column;gap:8px}
+.sun-leg{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.sun-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.sun-dot.f{background:var(--amber)}
+.sun-dot.h{border:2px solid var(--amber);background:transparent}
 
-  /* ============================================================
-     MOBILE TWEAKS (anything under 640px wide)
-  ============================================================ */
-  @media (max-width: 640px) {
-    :root { --fs-base: 13px; }
-    .weather-grid { grid-template-columns: 1fr 1fr; }
-    #live-clock { font-size: 1.6rem; }
-  }
+/* ===== THEME TOGGLE ===== */
+.theme-toggle{
+  position:fixed;bottom:18px;right:16px;z-index:200;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--amber);border-radius:999px;
+  padding:7px 11px;font-size:16px;
+  cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4);
+  transition:transform .15s;display:flex;align-items:center;
+}
+.theme-toggle:hover{transform:scale(1.1)}
+
+/* ===== MOBILE TWEAKS ===== */
+@media(max-width:600px){
+  .navin{gap:1px;padding:6px 8px}
+  .nav a{font-size:11px;padding:4px 6px}
+  .symbols{grid-template-columns:1fr 1fr}
+  .cv-grid{grid-template-columns:1fr 1fr}
+  .cv-work-wrap{grid-template-columns:1fr}
+  .src-layout{grid-template-columns:1fr}
+  .links-grid{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:1fr}
+  h1.sec-heading{font-size:10px}
+}
+@media(max-width:380px){
+  .symbols{grid-template-columns:1fr}
+  .cv-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -442,74 +479,23 @@
   <div class="bd"><div id="weatherList" class="symbols"><div class="mini">Loading...</div></div></div>
 </div>
 
-  <!-- ──────────────────────────────────────────────────────────
-       SUNRISE & SUNSET / CLOCK SECTION
-       Shows live clock and animated sun arc for Round Rock TX
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="sunrise">
-    <div class="sec-header" onclick="toggleSection('sun-body','sun-toggle')">
-      <div class="sec-title">
-        <div class="ico">☀</div>
-        Sunrise &amp; Sunset
+<!-- SUN -->
+<div class="card section" id="sun" data-cat="data" style="margin-top:12px;animation-delay:.12s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">~</span> Sunrise &amp; Sunset</div>
+    <span id="sunDate" class="pill"></span>
+  </div>
+  <div class="bd">
+    <div class="sunbox">
+      <div id="sunViz"></div>
+      <div class="sun-leg mini">
+        <span class="sun-dot f"></span><span>Day</span>
+        <span class="sun-dot h"></span><span>Night</span>
       </div>
-      <div class="sec-right">
-        <span id="sun-date-label"></span>
-        <button class="toggle-btn open" id="sun-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="sun-body">
-      <div class="sun-wrap">
-        <div id="live-clock">--:--:-- --</div>
-        <div class="sun-arc-container">
-          <canvas id="sun-canvas" width="340" height="120"></canvas>
-        </div>
-        <div class="sun-times">
-          <span>🌅 Rise: <b id="sun-rise">--</b></span>
-          <span>🌇 Set: <b id="sun-set">--</b></span>
-        </div>
-      </div>
+      <div id="sunLine" class="mini"></div>
     </div>
   </div>
-
-  <!-- ──────────────────────────────────────────────────────────
-       TRAFFIC / MAPS SECTION
-       Two Google Maps embeds side by side:
-         Left  = To Work  (home → 411 W Main St, Round Rock)
-         Right = To Home  (411 W Main St → 4800 E Yager Ln)
-       Drive time badges are fetched from a free OSRM API
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="traffic">
-    <div class="sec-header" onclick="toggleSection('traffic-body','traffic-toggle')">
-      <div class="sec-title">
-        <div class="ico">🚗</div>
-        Traffic &amp; Maps
-      </div>
-      <div class="sec-right">
-        <button class="toggle-btn open" id="traffic-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="traffic-body">
-      <div class="maps-grid">
-
-        <!-- LEFT MAP: To Work -->
-        <div class="map-card">
-          <div class="map-label">
-            🏢 To Work
-            <span class="drive-badge loading" id="drive-to-work">⏱ Calculating…</span>
-          </div>
-          <!-- 
-            Route: 4800 E Yager Ln Manor TX  →  411 W Main St Round Rock TX
-            Via SH-45 and TX-130
-          -->
-          <iframe
-            id="map-to-work"
-            src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&origin=4800+E+Yager+Ln,+Manor,+TX+78653&destination=411+W+Main+St,+Round+Rock,+TX+78664&waypoints=SH-45+and+TX-130,+Pflugerville,+TX&mode=driving"
-            allowfullscreen loading="lazy">
-          </iframe>
-        </div>
-
-        <!-- RIGHT MAP: To Home -->
-  </div>
+</div>
 
 <!-- VOTD + EVENTS -->
 <div class="g2 section" id="events" style="margin-top:12px;animation-delay:.16s">
@@ -529,6 +515,19 @@
   <div class="card" data-cat="data">
     <div class="hd"><div class="hd-label"><span class="hd-ico">E</span> Local Events</div><span class="pill">7&ndash;14 days</span></div>
     <div class="bd"><div id="eventsList" class="symbols"><div class="mini">Loading...</div></div></div>
+  </div>
+</div>
+
+<!-- TRAFFIC -->
+<div class="sec-heading section" id="traffic" style="animation-delay:.20s">Traffic</div>
+<div class="g2" style="animation-delay:.20s">
+  <div class="card" data-cat="data">
+    <div class="hd"><div class="hd-label"><span class="hd-ico">&#8599;</span> To Work</div></div>
+    <iframe id="map1" title="To Work"></iframe>
+  </div>
+  <div class="card" data-cat="data">
+    <div class="hd"><div class="hd-label"><span class="hd-ico">&#8600;</span> To Home</div></div>
+    <iframe id="map2" title="To Home"></iframe>
   </div>
 </div>
 
@@ -721,304 +720,16 @@
 <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">&#9788;</button>
 
 <script>
-<!-- ============================================================
-     ALL JAVASCRIPT BELOW
-     Organised by feature — each block is clearly labelled
-============================================================ -->
-<script>
-
-/* ============================================================
-   SECTION TOGGLE HELPER
-   Called when you click a section header to expand/collapse it
-============================================================ */
-function toggleSection(bodyId, btnId) {
-  const body = document.getElementById(bodyId);
-  const btn  = document.getElementById(btnId);
-  if (!body) return;
-  body.classList.toggle('hidden');
-  btn.classList.toggle('open');
-}
-
-
-/* ============================================================
-   DATE DISPLAY
-   Sets the date shown in the dashboard header and sun section
-============================================================ */
-(function setDates() {
-  const now = new Date();
-  const opts = { month: '2-digit', day: '2-digit', year: 'numeric' };
-  const str  = now.toLocaleDateString('en-US', opts).replace(/\//g, '/');
-  const el   = document.getElementById('dash-date');
-  const sun  = document.getElementById('sun-date-label');
-  if (el)  el.textContent  = str;
-  if (sun) sun.textContent = str;
-})();
-
-
-/* ============================================================
-   LIVE CLOCK
-   Updates every second — shown in the Sunrise & Sunset section
-============================================================ */
-function updateClock() {
-  const now = new Date();
-  let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-  const ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12 || 12;
-  const pad = n => String(n).padStart(2, '0');
-  const el = document.getElementById('live-clock');
-  if (el) el.textContent = `${pad(h)}:${pad(m)}:${pad(s)} ${ampm}`;
-}
-setInterval(updateClock, 1000);
-updateClock();
-
-
-/* ============================================================
-   WEATHER EMOJI HELPER
-   Converts a WMO weather code (from Open-Meteo API) to an emoji
-   Full code list: https://open-meteo.com/en/docs#weathervariables
-============================================================ */
-function wxEmoji(code) {
-  if (code === 0)                    return '☀️';   // Clear sky
-  if (code === 1)                    return '🌤️';  // Mainly clear
-  if (code === 2)                    return '⛅';   // Partly cloudy
-  if (code === 3)                    return '☁️';   // Overcast
-  if ([45,48].includes(code))        return '🌫️';  // Fog
-  if ([51,53,55].includes(code))     return '🌦️';  // Drizzle
-  if ([61,63,65].includes(code))     return '🌧️';  // Rain
-  if ([71,73,75,77].includes(code))  return '❄️';   // Snow
-  if ([80,81,82].includes(code))     return '🌦️';  // Rain showers
-  if ([85,86].includes(code))        return '🌨️';  // Snow showers
-  if ([95,96,99].includes(code))     return '⛈️';  // Thunderstorm
-  return '🌡️'; // fallback
-}
-
-
-/* ============================================================
-   WEATHER DATA FETCH
-   Uses Open-Meteo (free, no API key needed)
-   Fetches current conditions + hourly forecast for 5 cities
-============================================================ */
-const CITIES = [
-  { name: 'Round Rock, TX',      lat: 30.5083, lon: -97.6789 },
-  { name: 'Pleasant Prairie, WI',lat: 42.5225, lon: -87.8770 },
-  { name: 'Grayslake, IL',       lat: 42.3442, lon: -88.0415 },
-  { name: 'Cleveland, OH',       lat: 41.4993, lon: -81.6944 },
-  { name: 'Carrollton, VA',      lat: 36.9596, lon: -76.5491 },
-];
-
-async function loadWeather() {
-  const grid = document.getElementById('weather-grid');
-  const upd  = document.getElementById('wx-updated');
-
-  // Build batch URL — fetch all cities in one request
-  const params = CITIES.map(c =>
-    `latitude=${c.lat}&longitude=${c.lon}`
-  ).join('&');
-
-  // We need one request per city (Open-Meteo doesn't batch multiple locations)
-  const fetches = CITIES.map(c =>
-    fetch(
-      `https://api.open-meteo.com/v1/forecast?` +
-      `latitude=${c.lat}&longitude=${c.lon}` +
-      `&current=temperature_2m,apparent_temperature,wind_speed_10m,weather_code` +
-      `&hourly=temperature_2m,weather_code` +
-      `&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset` +
-      `&temperature_unit=fahrenheit&wind_speed_unit=mph` +
-      `&forecast_days=2&timezone=auto`
-    ).then(r => r.json())
-  );
-
-  try {
-    const results = await Promise.all(fetches);
-    grid.innerHTML = '';
-
-    results.forEach((data, i) => {
-      const city = CITIES[i];
-      const cur  = data.current;
-      const hrly = data.hourly;
-      const day  = data.daily;
-
-      const temp   = Math.round(cur.temperature_2m);
-      const feels  = Math.round(cur.apparent_temperature);
-      const wind   = Math.round(cur.wind_speed_10m);
-      const code   = cur.weather_code;
-      const emoji  = wxEmoji(code);
-      const hi     = Math.round(day.temperature_2m_max[0]);
-      const lo     = Math.round(day.temperature_2m_min[0]);
-
-      // Get sunrise/sunset for Round Rock to draw the arc
-      if (i === 0) {
-        const rise = day.sunrise[0]; // ISO string
-        const set  = day.sunset[0];
-        drawSunArc(rise, set);
-        document.getElementById('sun-rise').textContent = fmtTime(rise);
-        document.getElementById('sun-set').textContent  = fmtTime(set);
-      }
-
-      // Build 6 upcoming hourly slots (next 6 hours from now)
-      const nowHour = new Date().getHours();
-      let hourSlots = [];
-      for (let h = 0; h < hrly.time.length && hourSlots.length < 6; h++) {
-        const t = new Date(hrly.time[h]);
-        if (t > new Date()) {
-          hourSlots.push({
-            time:  t.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-            temp:  Math.round(hrly.temperature_2m[h]),
-            emoji: wxEmoji(hrly.weather_code[h]),
-          });
-        }
-      }
-
-      // Render the city card
-      const card = document.createElement('div');
-      card.className = 'wx-card';
-      card.innerHTML = `
-        <div>
-          <span class="wx-city">${city.name}</span>
-          <span class="wx-wind">${wind} mph</span>
-        </div>
-        <div class="wx-temp">${temp}°F</div>
-        <div class="wx-cond">${emoji} Feels ${feels}°F</div>
-        <div class="wx-hl">Hi ${hi}° / Lo ${lo}°</div>
-        <div class="wx-hourly">
-          ${hourSlots.map(s => `
-            <div class="wx-hourly-item">
-              <div class="wh-cond">${s.emoji}</div>
-              <div class="wh-temp">${s.temp}°</div>
-              <div class="wh-time">${s.time}</div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-
-    if (upd) {
-      const now = new Date();
-      upd.textContent = `Updated ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
-    }
-
-  } catch (err) {
-    grid.innerHTML = `<div style="color:var(--red);font-size:0.7rem;padding:0.5rem">Weather unavailable: ${err.message}</div>`;
-  }
-}
-
-// Format ISO datetime to readable time string
-function fmtTime(isoStr) {
-  return new Date(isoStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-}
-
-loadWeather();
-// Refresh weather every 10 minutes
-setInterval(loadWeather, 600000);
-
-
-/* ============================================================
-   SUN ARC CANVAS DRAWING
-   Draws a semicircle arc with the sun position based on
-   current time vs. today's sunrise and sunset times
-============================================================ */
-function drawSunArc(riseISO, setISO) {
-  const canvas = document.getElementById('sun-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  ctx.clearRect(0, 0, W, H);
-
-  const rise = new Date(riseISO).getTime();
-  const set  = new Date(setISO).getTime();
-  const now  = Date.now();
-
-  // Progress 0 (sunrise) → 1 (sunset)
-  const progress = Math.max(0, Math.min(1, (now - rise) / (set - rise)));
-
-  const cx = W / 2, cy = H - 10;
-  const r  = H - 20;
-
-  // Draw arc track (grey)
-  ctx.beginPath();
-  ctx.arc(cx, cy, r, Math.PI, 0, false);
-  ctx.strokeStyle = '#333';
-  ctx.lineWidth   = 3;
-  ctx.stroke();
-
-  // Draw progress arc (yellow)
-  const endAngle = Math.PI - (progress * Math.PI);
-  ctx.beginPath();
-  ctx.arc(cx, cy, r, Math.PI, endAngle, true);
-  ctx.strokeStyle = '#facc15';
-  ctx.lineWidth   = 3;
-  ctx.stroke();
-
-  // Draw sun dot
-  const angle = Math.PI + progress * Math.PI;
-  const sx = cx + r * Math.cos(angle);
-  const sy = cy + r * Math.sin(angle);
-  ctx.beginPath();
-  ctx.arc(sx, sy, 8, 0, Math.PI * 2);
-  ctx.fillStyle = '#facc15';
-  ctx.fill();
-}
-
-// Redraw arc every minute so sun moves
-setInterval(() => {
-  const rise = document.getElementById('sun-rise');
-  const set  = document.getElementById('sun-set');
-  // Re-fetch is handled by weather interval; just redraw if we have data
-}, 60000);
-
-
-/* ============================================================
-   DRIVE TIME via OSRM (Open Source Routing Machine)
-   Free, no API key required
-   Coordinates:
-     Home (4800 E Yager Ln):  30.3494, -97.6239
-     Work (411 W Main St RR): 30.5085, -97.6789
-============================================================ */
-const HOME_COORD = '30.3494,-97.6239';
-const WORK_COORD = '30.5085,-97.6789';
-
-async function fetchDriveTime(fromCoord, toCoord, badgeId) {
-  const badge = document.getElementById(badgeId);
-  if (!badge) return;
-
-  // OSRM public demo server — driving profile
-  const [fromLat, fromLon] = fromCoord.split(',');
-  const [toLat,   toLon  ] = toCoord.split(',');
-
-  const url = `https://router.project-osrm.org/route/v1/driving/` +
-              `${fromLon},${fromLat};${toLon},${toLat}` +
-              `?overview=false`;
-
-  try {
-    const res  = await fetch(url);
-    const data = await res.json();
-    if (data.code === 'Ok') {
-      const secs = data.routes[0].duration;
-      const mins = Math.round(secs / 60);
-      const hrs  = Math.floor(mins / 60);
-      const rem  = mins % 60;
-      const label = hrs > 0 ? `${hrs}h ${rem}m` : `${mins} min`;
-      badge.textContent   = `🕐 ~${label}`;
-      badge.style.background = 'var(--accent)';
-    } else {
-      badge.textContent = '⚠ Route unavailable';
-      badge.style.background = 'var(--muted)';
-    }
-  } catch (e) {
-    badge.textContent = '⚠ Offline';
-    badge.style.background = 'var(--muted)';
-  }
-}
-
-// Fetch both drive times on load
-fetchDriveTime(HOME_COORD, WORK_COORD, 'drive-to-work');
-fetchDriveTime(WORK_COORD, HOME_COORD, 'drive-to-home');
-// Refresh every 5 minutes
-setInterval(() => {
-  fetchDriveTime(HOME_COORD, WORK_COORD, 'drive-to-work');
-  fetchDriveTime(WORK_COORD, HOME_COORD, 'drive-to-home');
-}, 300000);
+/* ===== CONFIG ===== */
+const WORKER    = "https://jmoddashboard.jmodwork.workers.dev";
+const MAPS_KEY  = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
+const HOME      = "30.3687560,-97.6260081";
+const WORK      = "411 W Main St, Round Rock, TX 78664";
+const WP_130_45 = "TX-130 and SH-45, Pflugerville, TX";
+const WX_ZIPS   = ["78664","53158","60030","44115","23314"];
+const EV_ZIP    = "78664";
+const STOCKS    = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
+const COINS     = [{id:"bitcoin",sym:"BTC"},{id:"ethereum",sym:"ETH"},{id:"solana",sym:"SOL"},{id:"dogecoin",sym:"DOGE"}];
 
 /* ===== QUICK LINKS DATA ===== */
 const QUICK_LINKS = [
@@ -1090,413 +801,402 @@ const VENDORS = [
   {name:"Veeprho Laboratories",          d:"veeprho.com"},
 ];
 
+/* ===== HELPERS ===== */
+const $  = s => document.querySelector(s);
+const enc = s => encodeURIComponent(s);
+const toF = c => (c*9/5)+32;
+const fmt = (x,d=3) => Number.isFinite(x) ? Number(x).toFixed(d) : "--";
+const todayStr = () => {
+  const d=new Date(),mm=String(d.getMonth()+1).padStart(2,"0"),dd=String(d.getDate()).padStart(2,"0");
+  return `${mm}/${dd}/${d.getFullYear()}`;
+};
+const wxIcon = code => ({0:"Sun",1:"MostlySun",2:"PartCloud",3:"Cloudy",45:"Fog",48:"Fog",51:"LtRain",53:"Rain",55:"Rain",61:"Rain",63:"Rain",65:"HvyRain",71:"Snow",73:"Snow",75:"Snow",80:"Showers",81:"Showers",82:"HvyShwrs",95:"Thunder",96:"Thunder",99:"Thunder"}[code]||"");
+// Use text abbrevs instead of emoji to avoid encoding issues
+const wxText = code => ({0:"Sunny",1:"Mostly Sunny",2:"Partly Cloudy",3:"Cloudy",45:"Foggy",48:"Foggy",51:"Lt. Rain",53:"Rain",55:"Rain",61:"Rain",63:"Rain",65:"Hvy Rain",71:"Snow",73:"Snow",75:"Snow",80:"Showers",81:"Showers",82:"Hvy Showers",95:"Thunderstorm",96:"Thunderstorm",99:"Thunderstorm"}[code]||"--");
+const flash = el => { el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); };
 
-
-/* ============================================================
-   STOCKS DATA
-   Uses Yahoo Finance via a CORS proxy (allorigins)
-   Shows delayed quotes (~15 min) — free, no key needed
-============================================================ */
-const TICKERS = ['SPY','QQQ','AAPL','NVDA','MSFT','AMZN','TSLA','MRK'];
-
-async function loadStocks() {
-  const row  = document.getElementById('stocks-row');
-  const upd  = document.getElementById('stocks-updated');
-  const syms = TICKERS.join('%2C');
-
-  // Use Yahoo Finance v8 via allorigins proxy
-  const url = `https://api.allorigins.win/get?url=${encodeURIComponent(
-    `https://query1.finance.yahoo.com/v8/finance/spark?symbols=${syms}&range=1d&interval=5m`
-  )}`;
-
-  try {
-    const res  = await fetch(url);
-    const json = await res.json();
-    const data = JSON.parse(json.contents);
-    const spark = data.spark?.result || [];
-
-    row.innerHTML = '';
-
-    spark.forEach(item => {
-      const sym    = item.symbol;
-      const r      = item.response?.[0];
-      const meta   = r?.meta || {};
-      const closes = r?.indicators?.quote?.[0]?.close || [];
-      const price  = meta.regularMarketPrice || 0;
-      const prev   = meta.chartPreviousClose  || 0;
-      const chg    = price - prev;
-      const pct    = prev ? (chg / prev * 100) : 0;
-      const up     = chg >= 0;
-
-      // Build mini sparkline points
-      const valid  = closes.filter(v => v != null);
-      const min    = Math.min(...valid);
-      const max    = Math.max(...valid);
-      const pts    = valid.map((v, i) => {
-        const x = (i / (valid.length - 1)) * 100;
-        const y = max === min ? 14 : 28 - ((v - min) / (max - min)) * 24;
-        return `${x},${y}`;
-      }).join(' ');
-
-      const chip = document.createElement('div');
-      chip.className = 'stock-chip';
-      chip.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:baseline">
-          <span class="st-sym">${sym}</span>
-          <span class="st-chg ${up ? 'st-up' : 'st-down'}">${up ? '▲' : '▼'} ${Math.abs(pct).toFixed(2)}%</span>
-        </div>
-        <div class="st-price">$${price.toFixed(2)}</div>
-        <svg class="st-sparkline" viewBox="0 0 100 28" preserveAspectRatio="none">
-          <polyline points="${pts}"
-            fill="none"
-            stroke="${up ? '#22c55e' : '#ef4444'}"
-            stroke-width="1.5" />
-        </svg>
-      `;
-      row.appendChild(chip);
-    });
-
-    if (upd) {
-      const now = new Date();
-      upd.textContent = `Updated ${now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}`;
-    }
-
-  } catch (err) {
-    if (row) row.innerHTML = `<div style="color:var(--red);font-size:0.7rem">Stocks unavailable: ${err.message}</div>`;
+/* ===== TICKER ===== */
+async function loadTicker(){
+  try{
+    const r=await fetch(`${WORKER}/ticker?sources=nfl,f1,general`);
+    const items=await r.json();
+    const twice=items.concat(items);
+    $("#ticker").innerHTML=twice.map(x=>`<span class="tick-item">// ${x.title}</span>`).join("");
+  }catch{
+    $("#ticker").innerHTML=`<span class="tick-item">// Ticker unavailable</span>`.repeat(8);
   }
 }
 
-loadStocks();
-setInterval(loadStocks, 300000); // refresh every 5 min
-
-
-/* ============================================================
-   NANCY PELOSI TRADES
-   Tries multiple data sources in order until one works.
-   Sources tried:
-     1. Quiver Quant public trades API
-     2. HouseStockWatcher raw JSON
-     3. Housestockwatcher S3 fallback
-     4. Capitol Trades via allorigins
-     5. Static fallback with direct eFD link
-============================================================ */
-async function loadPelosiTrades() {
-  const statusEl = document.getElementById('trades-status');
-  const bodyEl   = document.getElementById('trades-body');
-  const srcLabel = document.getElementById('trades-source-label');
-  const srcNote  = document.getElementById('trades-source-note');
-
-  const setStatus = msg => { if (statusEl) statusEl.textContent = msg; };
-
-  // Helper: render a rows array [{date, ticker, asset, type, amount}]
-  function renderTrades(rows, sourceName) {
-    if (!rows || rows.length === 0) return false;
-    bodyEl.innerHTML = rows.slice(0, 30).map(r => `
-      <tr>
-        <td>${r.date || '—'}</td>
-        <td><b>${r.ticker || '—'}</b></td>
-        <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.asset || '—'}</td>
-        <td class="${(r.type||'').toLowerCase().includes('purchase') || (r.type||'').toLowerCase().includes('buy') ? 'tag-buy' : 'tag-sell'}">
-          ${r.type || '—'}
-        </td>
-        <td>${r.amount || '—'}</td>
-      </tr>
-    `).join('');
-    if (statusEl) statusEl.style.display = 'none';
-    if (srcLabel) srcLabel.textContent = `via ${sourceName}`;
-    if (srcNote)  srcNote.textContent  = `Source: ${sourceName} · Showing most recent 30 transactions`;
-    return true;
-  }
-
-  // ── SOURCE 1: Quiver Quant (no key needed for congressional) ──
-  setStatus('🔄 Trying source 1/5…');
-  try {
-    const r = await fetch('https://api.quiverquant.com/beta/historical/congresstrading/NancyPelosi', {
-      headers: { 'X-CSRFToken': 'disable' }
-    });
-    if (r.ok) {
-      const data = await r.json();
-      const rows = data.slice(0,30).map(t => ({
-        date:   t.TransactionDate || t.ReportDate,
-        ticker: t.Ticker,
-        asset:  t.Asset || t.Ticker,
-        type:   t.Transaction,
-        amount: t.Range || t.Amount,
-      }));
-      if (renderTrades(rows, 'Quiver Quant')) return;
-    }
-  } catch(e) {}
-
-  // ── SOURCE 2: HouseStockWatcher main API ──
-  setStatus('🔄 Trying source 2/5…');
-  try {
-    const r = await fetch('https://house-stock-watcher-data.s3-us-gov-west-1.amazonaws.com/data/all_transactions.json');
-    if (r.ok) {
-      const data = await r.json();
-      const pelosi = data
-        .filter(t => (t.representative || '').toLowerCase().includes('pelosi'))
-        .sort((a,b) => new Date(b.transaction_date) - new Date(a.transaction_date))
-        .slice(0, 30);
-      const rows = pelosi.map(t => ({
-        date:   t.transaction_date,
-        ticker: t.ticker,
-        asset:  t.asset_description,
-        type:   t.type,
-        amount: t.amount,
-      }));
-      if (renderTrades(rows, 'HouseStockWatcher')) return;
-    }
-  } catch(e) {}
-
-  // ── SOURCE 3: HouseStockWatcher via allorigins ──
-  setStatus('🔄 Trying source 3/5…');
-  try {
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-      'https://house-stock-watcher-data.s3-us-gov-west-1.amazonaws.com/data/all_transactions.json'
-    )}`;
-    const r = await fetch(proxyUrl);
-    if (r.ok) {
-      const json = await r.json();
-      const data = JSON.parse(json.contents);
-      const pelosi = data
-        .filter(t => (t.representative || '').toLowerCase().includes('pelosi'))
-        .sort((a,b) => new Date(b.transaction_date) - new Date(a.transaction_date))
-        .slice(0, 30);
-      const rows = pelosi.map(t => ({
-        date:   t.transaction_date,
-        ticker: t.ticker,
-        asset:  t.asset_description,
-        type:   t.type,
-        amount: t.amount,
-      }));
-      if (renderTrades(rows, 'HouseStockWatcher (proxy)')) return;
-    }
-  } catch(e) {}
-
-  // ── SOURCE 4: Capitol Trades public JSON ──
-  setStatus('🔄 Trying source 4/5…');
-  try {
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-      'https://efts.sec.gov/LATEST/search-index?q=%22Pelosi%22&dateRange=custom&startdt=2022-01-01&forms=LD-203'
-    )}`;
-    const r = await fetch(proxyUrl);
-    if (r.ok) {
-      const json = await r.json();
-      // Capitol Trades JSON
-      const proxyUrl2 = `https://api.allorigins.win/get?url=${encodeURIComponent(
-        'https://www.capitoltrades.com/trades?politician=P000197&per_page=30'
-      )}`;
-      const r2 = await fetch(proxyUrl2);
-      if (r2.ok) {
-        const json2 = await r2.json();
-        // Parse HTML table from Capitol Trades
-        const parser = new DOMParser();
-        const doc    = parser.parseFromString(json2.contents, 'text/html');
-        const tableRows = doc.querySelectorAll('table tbody tr');
-        const rows = [];
-        tableRows.forEach(tr => {
-          const tds = tr.querySelectorAll('td');
-          if (tds.length >= 5) {
-            rows.push({
-              date:   tds[0]?.textContent?.trim(),
-              ticker: tds[1]?.textContent?.trim(),
-              asset:  tds[2]?.textContent?.trim(),
-              type:   tds[3]?.textContent?.trim(),
-              amount: tds[4]?.textContent?.trim(),
-            });
-          }
-        });
-        if (renderTrades(rows, 'Capitol Trades')) return;
-      }
-    }
-  } catch(e) {}
-
-  // ── SOURCE 5: Static fallback ──
-  setStatus('');
-  bodyEl.innerHTML = `
-    <tr>
-      <td colspan="5" style="text-align:center;padding:1rem;color:var(--muted)">
-        All live sources unavailable.
-        <br><br>
-        <a href="https://disclosures.house.gov/FinancialDisclosure/ViewMemberSearchResult" 
-           target="_blank" 
-           style="color:var(--accent);font-size:0.72rem">
-          📋 View Official eFD Disclosures on house.gov →
-        </a>
-        <br>
-        <a href="https://www.capitoltrades.com/trades?politician=P000197"
-           target="_blank"
-           style="color:var(--accent);font-size:0.72rem;margin-top:0.3rem;display:block">
-          📊 View on CapitolTrades.com →
-        </a>
-        <br>
-        <a href="https://efts.sec.gov/LATEST/search-index?q=%22Pelosi%22&forms=LD-203"
-           target="_blank"
-           style="color:var(--accent);font-size:0.72rem">
-          🔍 View SEC filings →
-        </a>
-      </td>
-    </tr>
-  `;
-  if (srcLabel) srcLabel.textContent = 'offline';
+/* ===== TRAFFIC ===== */
+function updateTraffic(){
+  const base=`https://www.google.com/maps/embed/v1/directions?key=${MAPS_KEY}`;
+  const wp=enc(WP_130_45);
+  $("#map1").src=`${base}&origin=${enc(HOME)}&destination=${enc(WORK)}&waypoints=${wp}&mode=driving`;
+  $("#map2").src=`${base}&origin=${enc(WORK)}&destination=${enc(HOME)}&waypoints=${wp}&mode=driving`;
 }
 
-loadPelosiTrades();
-
-
-/* ============================================================
-   NEWS TICKER
-   Fetches ESPN headlines via allorigins CORS proxy
-============================================================ */
-async function loadTicker() {
-  const inner = document.getElementById('ticker-inner');
-  try {
-    const res  = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(
-      'https://www.espn.com/espn/rss/news'
-    )}`);
-    const json = await res.json();
-    const parser  = new DOMParser();
-    const xml     = parser.parseFromString(json.contents, 'text/xml');
-    const items   = xml.querySelectorAll('item');
-    if (items.length) {
-      inner.innerHTML = Array.from(items).slice(0, 12).map(item =>
-        `<span>// <b>${item.querySelector('title')?.textContent || ''}</b></span>`
-      ).join('');
-    }
-  } catch(e) {
-    if (inner) inner.innerHTML = '<span>// Headlines unavailable</span>';
-  }
+/* ===== WEATHER ===== */
+async function geo(zip){
+  const r=await fetch(`${WORKER}/geo?zip=${zip}`);
+  if(!r.ok) throw new Error("geo");
+  return r.json();
 }
-loadTicker();
-
-
-/* ============================================================
-   JMOD CO. SECTION — GitHub repo count
-   Fetches public repo count from GitHub API
-============================================================ */
-async function loadJmodStats() {
-  try {
-    const r    = await fetch('https://api.github.com/users/jordanmoddes');
-    const data = await r.json();
-    const el   = document.getElementById('jmod-repos');
-    if (el) el.textContent = data.public_repos ?? '—';
-  } catch(e) {}
-
-  const upd = document.getElementById('jmod-updated');
-  if (upd) upd.textContent = new Date().toLocaleDateString('en-US');
-}
-loadJmodStats();
-
-
-/* ============================================================
-   NOTES AUTO-SAVE
-   Saves textarea content to localStorage on every keystroke
-   Key = the textarea's id
-============================================================ */
-function saveNote(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  localStorage.setItem('jmod_' + id, el.value);
-  if (id === 'notes-ta') {
-    const st = document.getElementById('notes-status');
-    if (st) { st.textContent = 'Saved ✓'; setTimeout(() => st.textContent = 'Auto-saved locally', 1500); }
-  }
-}
-
-// Restore saved notes on page load
-window.addEventListener('DOMContentLoaded', () => {
-  ['notes-ta', 'sourcing-ta'].forEach(id => {
-    const el  = document.getElementById(id);
-    const val = localStorage.getItem('jmod_' + id);
-    if (el && val) el.value = val;
+async function wxFetch(lat,lon){
+  try{
+    const r=await fetch(`${WORKER}/wx?lat=${lat}&lon=${lon}`);
+    if(r.ok) return r.json();
+  }catch{}
+  const url=new URL("https://api.open-meteo.com/v1/forecast");
+  url.search=new URLSearchParams({
+    latitude:lat,longitude:lon,timezone:"auto",wind_speed_unit:"mph",
+    current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
+    daily:"temperature_2m_max,temperature_2m_min,weather_code",
+    hourly:"temperature_2m,weather_code"
   });
+  const r2=await fetch(url);
+  return r2.json();
+}
+async function loadWeather(){
+  const host=$("#weatherList"); host.innerHTML="";
+  for(const zip of WX_ZIPS){
+    try{
+      const g=await geo(zip);
+      const d=await wxFetch(g.lat,g.lon);
+      const cur=d.current;
+      const minC=d.daily.temperature_2m_min[0], maxC=d.daily.temperature_2m_max[0];
+      const times=d.hourly.time.map(t=>new Date(t));
+      let i=times.findIndex(t=>t>=new Date()); if(i<0) i=0;
+      const hrs=[];
+      for(let k=0;k<5&&i+k<times.length;k++) hrs.push({h:times[i+k].getHours().toString().padStart(2,"0"),t:d.hourly.temperature_2m[i+k],c:d.hourly.weather_code[i+k]});
+      const el=document.createElement("div"); el.className="sym";
+      el.innerHTML=`
+        <div class="top">
+          <strong style="font-size:12px">${g.name||zip}</strong>
+          <span class="mini">${Math.round(cur.wind_speed_10m)} mph</span>
+        </div>
+        <div class="price">${Math.round(toF(cur.temperature_2m))}&deg;F</div>
+        <div class="mini" style="margin-top:2px">${wxText(cur.weather_code)} &middot; Feels ${Math.round(toF(cur.apparent_temperature))}&deg;F</div>
+        <div class="mini" style="margin-top:1px">Hi ${Math.round(toF(maxC))}&deg; / Lo ${Math.round(toF(minC))}&deg;</div>
+        <div class="hrow">
+          ${hrs.map(h=>`<div class="hchip"><div class="mini" style="font-size:9px">${wxText(h.c).split(" ")[0]}</div><div class="t">${Math.round(toF(h.t))}&deg;</div><div class="mini">${h.h}:00</div></div>`).join("")}
+        </div>`;
+      host.appendChild(el);
+    }catch{
+      const el=document.createElement("div"); el.className="sym";
+      el.innerHTML=`<div class="top"><strong>${zip}</strong></div><div class="mini">Unavailable</div>`;
+      host.appendChild(el);
+    }
+  }
+}
+
+/* ===== SUN ===== */
+async function loadSun(){
+  $("#sunDate").textContent=todayStr();
+  let s=null;
+  try{
+    const g=await geo(WX_ZIPS[0]);
+    const u=new URL("https://api.sunrisesunset.io/json");
+    u.search=new URLSearchParams({lat:g.lat,lng:g.lon,timezone:"auto"});
+    const r=await fetch(u); const j=await r.json(); s=j?.results;
+  }catch{}
+  if(!s?.sunrise||!s?.sunset){$("#sunLine").textContent="Unavailable"; return;}
+  const {sunrise,sunset,solar_noon:noon}=s;
+  $("#sunLine").textContent=`Sunrise ${sunrise} \u00b7 Noon ${noon||"--"} \u00b7 Sunset ${sunset}`;
+  const W=340,H=200,xL=14,xR=326,yB=155,yP=42,tk=10,sw=4,fs=13,dr=8;
+  const arc=`M ${xL},${yB} Q ${(xL+xR)/2},${yP} ${xR},${yB}`;
+  const todayISO=new Date().toLocaleDateString("en-CA");
+  const toLD=t=>{
+    const d=new Date(`${todayISO} ${t}`); if(!isNaN(d)) return d;
+    const m=t.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i); if(!m) return new Date();
+    let hh=parseInt(m[1]),mm=parseInt(m[2]),ss=parseInt(m[3]||"0");
+    const ap=m[4].toUpperCase(); if(ap==="PM"&&hh!==12)hh+=12; if(ap==="AM"&&hh===12)hh=0;
+    const b=new Date(); b.setHours(hh,mm,ss,0); return b;
+  };
+  const sr=toLD(sunrise),ss2=toLD(sunset),sn=noon?toLD(noon):new Date((sr.getTime()+ss2.getTime())/2),now=new Date();
+  const span=ss2-sr,p=Math.max(0,Math.min(1,(now-sr)/span)),r=Math.max(0,Math.min(1,(sn-sr)/span))||.5;
+  const u=(p<=r)?(p/r)*.5:.5+((p-r)/(1-r))*.5;
+  const t=2*u-1,xA=xL+(xR-xL)*u,yA=yB-(yB-yP)*Math.sqrt(Math.max(0,1-t*t));
+  const isDay=now>=sr&&now<=ss2;
+  const tc="rgba(255,255,255,.35)";
+  $("#sunViz").innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;overflow:visible;display:block">
+    <line x1="${xL}" y1="${yB}" x2="${xR}" y2="${yB}" stroke="${tc}" stroke-width="${sw}"/>
+    <line x1="${xL}" y1="${yB-tk}" x2="${xL}" y2="${yB+tk}" stroke="${tc}" stroke-width="${sw}"/>
+    <line x1="${xR}" y1="${yB-tk}" x2="${xR}" y2="${yB+tk}" stroke="${tc}" stroke-width="${sw}"/>
+    <path d="${arc}" fill="none" stroke="rgba(255,209,102,.8)" stroke-width="${sw}"/>
+    <text x="${xL}" y="${yB+18}" font-size="${fs}" fill="#8a9bb5" text-anchor="start" font-family="DM Mono,monospace">${sunrise}</text>
+    <text x="${xR}" y="${yB+18}" font-size="${fs}" fill="#8a9bb5" text-anchor="end" font-family="DM Mono,monospace">${sunset}</text>
+    ${noon?`<text x="${(xL+xR)/2}" y="${yP-8}" font-size="${fs}" fill="#8a9bb5" text-anchor="middle" font-family="DM Mono,monospace">${noon}</text>`:""}
+    ${isDay
+      ?`<circle cx="${xA}" cy="${yA}" r="${dr}" fill="#ffd166"/>`
+      :`<circle cx="${now<sr?xL-3:xR+3}" cy="${yB+4}" r="${dr}" fill="none" stroke="#ffd166" stroke-width="2.5"/>`
+    }
+  </svg>`;
+}
+
+/* ===== VOTD ===== */
+async function loadVOTD(){
+  $("#votdDate").textContent=todayStr();
+  try{
+    const r=await fetch(`${WORKER}/votd`);
+    if(r.ok){const j=await r.json();if(j?.text){$("#votdText").textContent=j.text;$("#votdRef").textContent=j.ref||"";return;}}
+  }catch{}
+  try{
+    const r=await fetch("https://labs.bible.org/api/?passage=votd&type=json");
+    const j=await r.json(); const v=j?.[0];
+    if(v){$("#votdText").textContent=v.text;$("#votdRef").textContent=`${v.bookname} ${v.chapter}:${v.verse}`;return;}
+  }catch{}
+  $("#votdText").textContent="Verse unavailable.";
+}
+
+/* ===== EVENTS ===== */
+async function loadEvents(){
+  const host=$("#eventsList"); host.innerHTML="";
+  try{
+    const r=await fetch(`${WORKER}/events?postalCode=${enc(EV_ZIP)}`);
+    const j=await r.json();
+    if(Array.isArray(j)&&j.length){
+      j.slice(0,8).forEach(ev=>{
+        const el=document.createElement("div"); el.className="sym";
+        el.innerHTML=`<div class="top"><strong style="font-size:12px">${ev.name||"Event"}</strong><span class="mini">${ev.city||""} ${ev.state||""}</span></div><div class="mini" style="margin-top:4px">${ev.date||""}</div><div style="margin-top:6px"><a class="pill" href="${ev.url||"#"}" target="_blank" rel="noopener">Details</a></div>`;
+        host.appendChild(el);
+      });
+      return;
+    }
+    host.innerHTML=`<div class="mini">No events found.</div>`;
+  }catch{host.innerHTML=`<div class="mini">Events unavailable.</div>`;}
+}
+
+/* ===== STOCKS ===== */
+async function loadStocks(){
+  const host=$("#stocksList"); host.innerHTML="";
+  try{
+    const r=await fetch(`${WORKER}/quotes?symbols=${enc(STOCKS.join(","))}`);
+    const rows=await r.json();
+    if(!Array.isArray(rows)||!rows.length){host.innerHTML=`<div class="mini">Unavailable.</div>`;return;}
+    rows.forEach(q=>{
+      const pct=q.changePercent;
+      const cls=pct==null?"chg-zero":(pct>=0?"chg up":"chg down");
+      const el=document.createElement("div"); el.className="sym";
+      el.innerHTML=`<div class="top"><div><strong>${q.symbol}</strong> <span class="mini">${q.name||""}</span></div><div class="mini ${cls}">${pct==null?"--":`${pct>=0?"+":""}${pct.toFixed(2)}%`}</div></div><div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+      host.appendChild(el);
+    });
+  }catch{host.innerHTML=`<div class="mini">Unavailable.</div>`;}
+}
+
+/* ===== CRYPTO ===== */
+async function loadCrypto(){
+  const host=$("#cryptoList"),st=$("#cryptoStatus");
+  host.innerHTML=""; st.textContent="Loading...";
+  try{
+    const ids=COINS.map(c=>c.id).join(",");
+    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+    if(!r.ok) throw 0;
+    const j=await r.json();
+    COINS.forEach(c=>{
+      const d=j[c.id]; if(!d) return;
+      const pct=d.usd_24h_change??0; const cls=pct>=0?"chg up":"chg down";
+      const el=document.createElement("div"); el.className="sym";
+      el.innerHTML=`<div class="top"><div><strong>${c.sym}</strong> <span class="mini">${c.id}</span></div><div class="mini ${cls}">${pct>=0?"+":""}${pct.toFixed(2)}%</div></div><div class="price">$${Number(d.usd||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+      host.appendChild(el);
+    });
+    st.textContent="Live via CoinGecko";
+  }catch{st.textContent="Unavailable.";}
+}
+$("#cryptoRefresh").addEventListener("click",loadCrypto);
+
+/* ===== PELOSI ===== */
+const PELOSI_SOURCES = [
+  ()=>fetch(`${WORKER}/pelosi`),
+  ()=>fetch("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/filingsdata.json")
+];
+async function loadPelosi(){
+  const st=$("#pelosiStatus"),tb=$("#pelosiTable tbody");
+  tb.innerHTML=""; st.textContent="Loading...";
+  let rows=null;
+  // Try worker first
+  try{
+    const r=await fetch(`${WORKER}/pelosi`);
+    if(r.ok){
+      const j=await r.json();
+      if(Array.isArray(j)&&j.length){ rows=j; }
+    }
+  }catch{}
+  // Fallback: public S3 dataset
+  if(!rows){
+    try{
+      const r=await fetch("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/filingsdata.json");
+      if(r.ok){
+        const all=await r.json();
+        // Filter to Pelosi only, sort by date desc, take 50
+        rows=all
+          .filter(f=>f.representative&&f.representative.toLowerCase().includes("pelosi"))
+          .sort((a,b)=>new Date(b.disclosure_date||0)-new Date(a.disclosure_date||0))
+          .slice(0,50)
+          .map(f=>({
+            disclosure_date:f.disclosure_date||"",
+            transaction_date:f.transaction_date||"",
+            ticker:f.ticker||f.asset_description||"",
+            type:f.type||"",
+            amount:f.amount||"",
+            ptr_link:f.ptr_link||""
+          }));
+      }
+    }catch{}
+  }
+  if(rows&&rows.length){
+    rows.forEach(rw=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=`<td>${rw.disclosure_date}</td><td>${rw.transaction_date}</td><td>${rw.ticker}</td><td>${rw.type}</td><td>${rw.amount}</td><td>${rw.ptr_link?`<a href="${rw.ptr_link}" target="_blank" rel="noopener" class="pill" style="cursor:pointer">PTR</a>`:""}</td>`;
+      tb.appendChild(tr);
+    });
+    st.textContent=`${rows.length} trades loaded`;
+  }else{
+    st.textContent="Could not load trades. Both sources unavailable.";
+  }
+}
+$("#pelosiRefresh").addEventListener("click",loadPelosi);
+
+/* ===== QUICK LINKS ===== */
+function renderLinks(){
+  const grid=$("#linksGrid");
+  grid.innerHTML=QUICK_LINKS.map(l=>`
+    <a class="link-tile" href="${l.url}" target="_blank" rel="noopener">
+      <span class="lt-ico" style="font-size:13px;font-weight:700;font-family:var(--font-mono);color:var(--accent)">${l.ico}</span>
+      <span class="lt-label">${l.label}</span>
+      <span class="lt-sub">${l.sub}</span>
+    </a>`).join("");
+}
+
+/* ===== CONVERSIONS ===== */
+// General
+const gv=(id)=>parseFloat($(id)?.value);
+const so=(id,v,d=2)=>{ const el=$(id); if(el){el.textContent=fmt(v,d); if(Number.isFinite(v)) flash(el);} };
+$('#f_in')?.addEventListener('input',()=>so('#c_out',(gv('#f_in')-32)*5/9));
+$('#c_in')?.addEventListener('input',()=>so('#f_out',gv('#c_in')*9/5+32));
+$('#m_in')?.addEventListener('input',()=>so('#ft_out',gv('#m_in')*3.280839895,4));
+$('#in_in')?.addEventListener('input',()=>so('#cm_out',gv('#in_in')*2.54));
+// Mass
+$('#mg_in')?.addEventListener('input',()=>{ const v=gv('#mg_in'); so('#g_from_mg',v/1000,6); so('#kg_from_mg',v/1e6,9); });
+$('#g_in')?.addEventListener('input',()=>{ const v=gv('#g_in'); so('#mg_from_g',v*1000,3); so('#kg_from_g',v/1000,6); });
+$('#kg_in')?.addEventListener('input',()=>{ const v=gv('#kg_in'); so('#g_from_kg',v*1000,3); so('#mg_from_kg',v*1e6,3); });
+// Work
+function updateWork(){
+  const V=gv('#vol_ml'),rho=gv('#density'),ks=gv('#k_small'),kl=gv('#k_large');
+  ['#ksv1','#ksv2','#ksv3'].forEach(id=>{const el=$(id);if(el)el.textContent=isFinite(ks)?ks:'--';});
+  ['#klv1','#klv2','#klv3'].forEach(id=>{const el=$(id);if(el)el.textContent=isFinite(kl)?kl:'--';});
+  if(Number.isFinite(V)){
+    if(V<=1){
+      $('#res_small').classList.remove('hidden'); $('#res_large').classList.add('hidden');
+      const g=V*rho*ks;
+      so('#mg_small',g*1000,3); so('#g_small',g,4); so('#kg_small',g/1000,7);
+      ['#mg_large','#g_large','#kg_large'].forEach(id=>{const el=$(id);if(el)el.textContent='--';});
+    }else{
+      $('#res_large').classList.remove('hidden'); $('#res_small').classList.add('hidden');
+      const g=V*rho*kl;
+      so('#mg_large',g*1000,3); so('#g_large',g,4); so('#kg_large',g/1000,7);
+      ['#mg_small','#g_small','#kg_small'].forEach(id=>{const el=$(id);if(el)el.textContent='--';});
+    }
+  }else{
+    $('#res_small').classList.add('hidden'); $('#res_large').classList.add('hidden');
+  }
+}
+['#vol_ml','#density','#k_small','#k_large'].forEach(id=>$(id)?.addEventListener('input',updateWork));
+$('#ml_to_l')?.addEventListener('input',()=>so('#liters_out',gv('#ml_to_l')/1000,6));
+$('#l_to_ml')?.addEventListener('input',()=>so('#ml_from_l_out',gv('#l_to_ml')*1000,3));
+
+/* ===== SOURCING ===== */
+let selVendors=new Set(), casNums=[];
+const DEFAULT_SEL=["sigmaaldrich.com","vwr.com","fishersci.com","thermofisher.com","caymanchem.com","tcichemicals.com","trc-canada.com"];
+DEFAULT_SEL.forEach(d=>selVendors.add(d));
+
+function renderVendors(q=""){
+  const g=$("#vndGrid"); g.innerHTML="";
+  const lq=q.toLowerCase();
+  VENDORS.filter(v=>!lq||v.name.toLowerCase().includes(lq)||v.d.includes(lq)).forEach((v,i)=>{
+    const id=`vnd_${i}`;
+    const el=document.createElement("div"); el.className="vnd-item";
+    el.innerHTML=`<input type="checkbox" id="${id}" data-d="${v.d}" ${selVendors.has(v.d)?"checked":""}><label for="${id}" title="${v.name} (${v.d})">${v.name}</label>`;
+    el.querySelector("input").addEventListener("change",e=>{
+      e.target.checked?selVendors.add(v.d):selVendors.delete(v.d);
+      updateVndCount();
+    });
+    g.appendChild(el);
+  });
+  updateVndCount();
+}
+function updateVndCount(){ const el=$("#vndCount"); if(el) el.textContent=`${selVendors.size} selected`; }
+$("#vndFilter").addEventListener("input",()=>renderVendors($("#vndFilter").value));
+$("#selAll").addEventListener("click",()=>{
+  const q=$("#vndFilter").value.toLowerCase();
+  VENDORS.filter(v=>!q||v.name.toLowerCase().includes(q)||v.d.includes(q)).forEach(v=>selVendors.add(v.d));
+  renderVendors(q);
+});
+$("#clrAll").addEventListener("click",()=>{ selVendors.clear(); renderVendors($("#vndFilter").value); });
+
+function parseCAS(raw){ return raw.split(/[\n,;]+/).map(s=>s.trim()).filter(s=>/^\d{2,7}-\d{2}-\d$/.test(s)); }
+let casNumbers=[];
+function renderChips(){
+  const c=$("#casChips");
+  c.innerHTML=casNumbers.map((n,i)=>`<span class="cas-chip">${n}<span class="x" data-i="${i}">x</span></span>`).join("");
+  c.querySelectorAll(".x").forEach(x=>x.addEventListener("click",()=>{ casNumbers.splice(+x.dataset.i,1); renderChips(); }));
+}
+$("#casInput").addEventListener("blur",()=>{
+  parseCAS($("#casInput").value).forEach(n=>{ if(!casNumbers.includes(n)) casNumbers.push(n); });
+  renderChips();
+});
+$("#btnSearch").addEventListener("click",()=>{
+  if(!casNumbers.length){ alert("Enter at least one valid CAS number (format: XX-XX-X)"); return; }
+  if(!selVendors.size){ alert("Select at least one vendor"); return; }
+  const sites=[...selVendors].map(d=>`site:${d}`).join(" OR ");
+  casNumbers.forEach(n=>window.open(`https://www.google.com/search?q=${encodeURIComponent(`${n} (${sites})`)}`, "_blank","noopener"));
+  const r=$("#srcResult");
+  r.innerHTML=`Opened <b>${casNumbers.length}</b> search${casNumbers.length>1?"es":""} across <b>${selVendors.size}</b> vendor${selVendors.size>1?"s":""}.`;
+  r.classList.add("show");
 });
 
+/* ===== NOTES ===== */
+const notesKey="dashboard-notes";
+const notesBox=$("#notesBox");
+notesBox.value=localStorage.getItem(notesKey)||"";
+notesBox.addEventListener("input",()=>localStorage.setItem(notesKey,notesBox.value));
+$("#clearNotes").addEventListener("click",()=>{ notesBox.value=""; localStorage.removeItem(notesKey); });
 
-/* ============================================================
-   CONVERSION CALCULATORS
-   Each function reads an input field and writes the result
-============================================================ */
+/* ===== INIT BADGES ===== */
+$("#todayBadge").textContent=todayStr();
+$("#votdDate").textContent=todayStr();
 
-// °F to °C
-function ftoc() {
-  const v = parseFloat(document.getElementById('ftoc-in').value);
-  document.getElementById('ftoc-out').textContent =
-    isNaN(v) ? '-- °C' : `${((v - 32) * 5/9).toFixed(2)} °C`;
-}
+/* ===== ACTIVE NAV ===== */
+const navLinks=document.querySelectorAll('.nav a[href^="#"]');
+const sections=document.querySelectorAll('.section[id]');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
+  });
+},{threshold:.25,rootMargin:'-55px 0px 0px 0px'});
+sections.forEach(s=>io.observe(s));
 
-// °C to °F
-function ctof() {
-  const v = parseFloat(document.getElementById('ctof-in').value);
-  document.getElementById('ctof-out').textContent =
-    isNaN(v) ? '-- °F' : `${(v * 9/5 + 32).toFixed(2)} °F`;
-}
+/* ===== THEME ===== */
+const TK="dashboard-theme";
+function applyTheme(t){ document.documentElement.classList.toggle("light",t==="light"); }
+applyTheme(localStorage.getItem(TK)||"dark");
+$("#themeToggle").addEventListener("click",()=>{
+  const light=!document.documentElement.classList.contains("light");
+  applyTheme(light?"light":"dark");
+  localStorage.setItem(TK,light?"light":"dark");
+});
 
-// metres to feet
-function mtoft() {
-  const v = parseFloat(document.getElementById('mtoft-in').value);
-  document.getElementById('mtoft-out').textContent =
-    isNaN(v) ? '-- ft' : `${(v * 3.28084).toFixed(4)} ft`;
-}
-
-// inches to centimetres
-function intocm() {
-  const v = parseFloat(document.getElementById('intocm-in').value);
-  document.getElementById('intocm-out').textContent =
-    isNaN(v) ? '-- cm' : `${(v * 2.54).toFixed(4)} cm`;
-}
-
-// mg → g and kg
-function mgConv() {
-  const v = parseFloat(document.getElementById('mg-in').value);
-  document.getElementById('mg-g').textContent  = isNaN(v) ? '-- g'  : `${(v / 1000).toFixed(6)} g`;
-  document.getElementById('mg-kg').textContent = isNaN(v) ? '-- kg' : `${(v / 1e6).toFixed(9)} kg`;
-}
-
-// g → mg and kg
-function gConv() {
-  const v = parseFloat(document.getElementById('g-in').value);
-  document.getElementById('g-mg').textContent = isNaN(v) ? '-- mg' : `${(v * 1000).toFixed(3)} mg`;
-  document.getElementById('g-kg').textContent = isNaN(v) ? '-- kg' : `${(v / 1000).toFixed(6)} kg`;
-}
-
-// kg → g and mg
-function kgConv() {
-  const v = parseFloat(document.getElementById('kg-in').value);
-  document.getElementById('kg-g').textContent  = isNaN(v) ? '-- g'  : `${(v * 1000).toFixed(3)} g`;
-  document.getElementById('kg-mg').textContent = isNaN(v) ? '-- mg' : `${(v * 1e6).toFixed(0)} mg`;
-}
-
-// mL → L
-function mltol() {
-  const v = parseFloat(document.getElementById('mltol-in').value);
-  document.getElementById('mltol-out').textContent = isNaN(v) ? '-- L' : `${(v / 1000).toFixed(6)} L`;
-}
-
-// L → mL
-function ltoml() {
-  const v = parseFloat(document.getElementById('ltoml-in').value);
-  document.getElementById('ltoml-out').textContent = isNaN(v) ? '-- mL' : `${(v * 1000).toFixed(3)} mL`;
-}
-
-// Lab mass = volume × density × k
-function labCalc() {
-  const vol  = parseFloat(document.getElementById('lab-vol').value);
-  const dens = parseFloat(document.getElementById('lab-dens').value);
-  if (isNaN(vol) || isNaN(dens)) {
-    ['lab-mg','lab-g','lab-kg'].forEach(id =>
-      document.getElementById(id).textContent = '--');
-    return;
-  }
-  const k   = vol < 1 ? 1.15 : 1.06;
-  const mg  = vol * dens * k * 1000;
-  const g   = mg / 1000;
-  const kg  = g  / 1000;
-  document.getElementById('lab-mg').textContent = `${mg.toFixed(2)} mg  (k=${k})`;
-  document.getElementById('lab-g').textContent  = `${g.toFixed(5)} g   (k=${k})`;
-  document.getElementById('lab-kg').textContent = `${kg.toFixed(8)} kg  (k=${k})`;
-}
-
+/* ===== BOOT ===== */
+loadTicker();
+updateTraffic(); setInterval(updateTraffic,120000);
+loadWeather();   setInterval(loadWeather,300000);
+loadSun();
+loadVOTD();      setInterval(loadVOTD,30*60*1000);
+loadEvents();
+loadStocks();    setInterval(loadStocks,60000);
+loadCrypto();    setInterval(loadCrypto,60000);
+loadPelosi();
+renderLinks();
+renderVendors();
 </script>
 </body>
 </html>
