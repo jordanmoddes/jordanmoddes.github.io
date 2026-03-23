@@ -1,450 +1,495 @@
 <!DOCTYPE html>
 <html lang="en" id="top">
 <head>
-<meta charset="utf-8" />
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png" />
-<title>JMOD's Dashboard</title>
-<meta name="color-scheme" content="dark light" />
+<title>JMOD Dashboard</title>
+<meta name="color-scheme" content="dark" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+/* ===== TOKENS ===== */
 :root{
   --bg:#0b0c10;
   --bg-soft:#0e1218;
   --card:#13151b;
   --ink:#e8ebf4;
-  --muted:#a2a8b6;
-  --border:#222631;
+  --muted:#7a8294;
+  --border:#1e2330;
   --accent:#4da3ff;
   --good:#17e5a1;
-  --bad:#ff7b7b;
+  --bad:#ff6b6b;
   --amber:#ffd166;
-  --teal:#17e5a1;
   --purple:#b47dff;
-  --font-sans:'DM Sans',sans-serif;
-  --font-mono:'DM Mono',monospace;
+  --teal:#17e5a1;
+  --font-sans:'DM Sans',system-ui,sans-serif;
+  --font-mono:'DM Mono','Courier New',monospace;
+  --r-card:14px;
+  --r-sm:8px;
 }
-
 html.light{
-  --bg:#f4f5fb;
-  --bg-soft:#e7e9f5;
+  --bg:#f0f2f8;
+  --bg-soft:#e4e7f2;
   --card:#ffffff;
   --ink:#111827;
   --muted:#6b7280;
-  --border:#d3d7e6;
+  --border:#d0d4e8;
   --accent:#2563eb;
   --good:#059669;
   --bad:#dc2626;
   --amber:#d97706;
 }
 
-html,body{height:100%}
+/* ===== RESET / BASE ===== */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
 html{scroll-behavior:smooth}
-.hidden{display:none;}
-
 body{
-  margin:0;
   font-family:var(--font-sans);
+  font-size:14px;
   color:var(--ink);
-  background:
-    radial-gradient(1200px 800px at 10% -20%, rgba(77,163,255,.10), transparent 60%),
-    radial-gradient(900px 700px at 90% 120%, rgba(180,77,255,.08), transparent 60%),
-    linear-gradient(180deg,var(--bg),var(--bg-soft));
-  position:relative;
+  background:var(--bg);
   overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
 }
+
+/* animated bg mesh */
 body::before{
-  content:""; position:fixed; inset:-2px;
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px,
-    linear-gradient(0deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/40px 40px;
-  opacity:.15; pointer-events:none; z-index:0;
-  animation:floatBG 40s linear infinite;
+    radial-gradient(ellipse 900px 600px at 5% 0%,   rgba(77,163,255,.08) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 500px at 95% 100%, rgba(180,77,255,.06) 0%, transparent 65%),
+    radial-gradient(ellipse 600px 400px at 50% 50%,  rgba(23,229,161,.04) 0%, transparent 70%);
 }
 html.light body::before{
   background:
-    linear-gradient(90deg, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/40px 40px,
-    linear-gradient(0deg, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/40px 40px;
-  opacity:.22;
+    radial-gradient(ellipse 900px 600px at 5% 0%,   rgba(37,99,235,.06) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 500px at 95% 100%, rgba(124,58,237,.04) 0%, transparent 65%);
 }
-@keyframes floatBG{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+
+/* subtle grid overlay */
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+html.light body::after{
+  background-image:
+    linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px);
+}
 
 a{color:inherit;text-decoration:none}
-.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 14px 48px}
+.hidden{display:none!important}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 12px 56px}
 
-/* â”€â”€ Nav â”€â”€ */
+/* ===== NAV ===== */
 .nav{
-  position:sticky;top:0;z-index:1000;
-  background:#0d0f14cc;
-  backdrop-filter:blur(8px);
-  border-bottom:0;
+  position:sticky;top:0;z-index:100;
+  background:rgba(11,12,16,.88);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
 }
-html.light .nav{background:rgba(248,250,255,0.94);border-bottom:1px solid var(--border);}
-.navin{max-width:1200px;margin:0 auto;display:flex;gap:18px;align-items:center;
-  justify-content:center;padding:12px}
-.nav a{color:#f1f3f7;font-weight:600;font-size:13px;letter-spacing:.01em;
-  padding:5px 10px;border-radius:8px;transition:background .15s,color .15s;position:relative}
-html.light .nav a{color:#111827;}
-.nav a:hover{background:rgba(77,163,255,.12);color:var(--accent)}
-.nav a.active{color:var(--accent)}
-.nav a.active::after{
-  content:"";position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);
-  width:4px;height:4px;border-radius:50%;background:var(--accent);
+html.light .nav{background:rgba(240,242,248,.92);}
+.navin{
+  max-width:1200px;margin:0 auto;
+  display:flex;gap:2px;align-items:center;justify-content:center;
+  padding:8px 12px;flex-wrap:wrap;
 }
+.nav a{
+  color:var(--muted);font-weight:500;font-size:12px;letter-spacing:.02em;
+  padding:5px 9px;border-radius:6px;
+  transition:color .15s,background .15s;
+  white-space:nowrap;
+}
+.nav a:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+html.light .nav a:hover{background:rgba(0,0,0,.05)}
+.nav a.active{color:var(--accent);background:rgba(77,163,255,.08)}
 
-/* â”€â”€ Ticker â”€â”€ */
-.ticker{white-space:nowrap;overflow:hidden;background:#0e121800;border:0}
-.ticker-inner{display:inline-block;padding-block:8px;animation:scroll 200s linear infinite}
+/* ===== TICKER ===== */
+.ticker{overflow:hidden;background:transparent;border-bottom:1px solid var(--border)}
+.ticker-inner{display:inline-block;padding:6px 0;animation:tickscroll 220s linear infinite;white-space:nowrap}
 .ticker:hover .ticker-inner{animation-play-state:paused}
-.tick-item{display:inline-block;margin-right:28px;color:#cfe0ff;font-size:12px;font-family:var(--font-mono)}
-html.light .tick-item{color:#1f2937;}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick-item{display:inline-block;margin-right:32px;color:rgba(200,220,255,.55);font-size:11px;font-family:var(--font-mono)}
+html.light .tick-item{color:rgba(30,40,80,.5)}
+@keyframes tickscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* â”€â”€ Card entrance animation â”€â”€ */
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:translateY(0)}
+/* ===== SECTION HEADINGS ===== */
+.sec-heading{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-family:var(--font-mono);
+  margin:24px 0 10px;padding-left:2px;
 }
+
+/* ===== CARD ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .card{
+  position:relative;
   background:var(--card);
   border:1px solid var(--border);
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.35);
-  animation:cardIn .4s ease both;
+  border-radius:var(--r-card);
+  overflow:hidden;
+  animation:fadeUp .35s ease both;
 }
-html.light .card{box-shadow:0 12px 30px rgba(15,23,42,.08);}
+html.light .card{box-shadow:0 4px 24px rgba(15,23,42,.06)}
 
-/* stagger children */
-.wrap > *:nth-child(1){animation-delay:.05s}
-.wrap > *:nth-child(2){animation-delay:.10s}
-.wrap > *:nth-child(3){animation-delay:.15s}
-.wrap > *:nth-child(4){animation-delay:.20s}
-.wrap > *:nth-child(5){animation-delay:.25s}
-.wrap > *:nth-child(6){animation-delay:.30s}
-.wrap > *:nth-child(7){animation-delay:.35s}
-.wrap > *:nth-child(8){animation-delay:.40s}
-.wrap > *:nth-child(9){animation-delay:.45s}
-.wrap > *:nth-child(10){animation-delay:.50s}
+/* accent stripe */
+.card[data-cat="personal"]{border-top:2px solid var(--amber)}
+.card[data-cat="data"]    {border-top:2px solid var(--accent)}
+.card[data-cat="work"]    {border-top:2px solid var(--teal)}
+.card[data-cat="finance"] {border-top:2px solid var(--purple)}
 
-/* â”€â”€ Card accent borders by category â”€â”€ */
-.card.cat-data   {border-left:3px solid var(--accent)}
-.card.cat-work   {border-left:3px solid var(--teal)}
-.card.cat-personal{border-left:3px solid var(--amber)}
-.card.cat-finance{border-left:3px solid var(--purple)}
+/* stagger */
+.wrap > *:nth-child(1){animation-delay:.04s}
+.wrap > *:nth-child(2){animation-delay:.08s}
+.wrap > *:nth-child(3){animation-delay:.12s}
+.wrap > *:nth-child(4){animation-delay:.16s}
+.wrap > *:nth-child(5){animation-delay:.20s}
+.wrap > *:nth-child(6){animation-delay:.24s}
+.wrap > *:nth-child(7){animation-delay:.28s}
+.wrap > *:nth-child(8){animation-delay:.32s}
+.wrap > *:nth-child(9){animation-delay:.36s}
+.wrap > *:nth-child(10){animation-delay:.40s}
+.wrap > *:nth-child(11){animation-delay:.44s}
+.wrap > *:nth-child(12){animation-delay:.48s}
+.wrap > *:nth-child(13){animation-delay:.52s}
 
-h1{font-size:22px;margin:16px 0;font-family:var(--font-sans);font-weight:700;letter-spacing:-.01em}
-.grid{display:grid;gap:16px}
-@media(min-width:900px){.grid.cols-2{grid-template-columns:1fr 1fr}}
-.card .hd{padding:12px 14px;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;gap:8px}
-.card .bd{padding:14px}
+.card .hd{
+  padding:11px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  background:rgba(255,255,255,.015);
+}
+html.light .card .hd{background:rgba(0,0,0,.015)}
+.hd-label{display:flex;align-items:center;gap:7px;font-weight:600;font-size:13px}
+.hd-ico{
+  width:20px;height:20px;border-radius:5px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;
+  background:rgba(255,255,255,.05);
+}
+html.light .hd-ico{background:rgba(0,0,0,.05)}
+.card .bd{padding:13px}
 
-/* section label in hd */
-.hd-label{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
-.hd-icon{font-size:16px;line-height:1}
-
+/* ===== PILL / TAG ===== */
 .pill{
-  font-size:12px;
-  background:#0f1420;
-  border:1px solid #1f2a43;
-  color:#a9c8ff;
-  padding:5px 10px;
-  border-radius:999px;
-  font-family:var(--font-mono);
-  cursor:pointer;
+  font-size:11px;font-family:var(--font-mono);font-weight:500;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:4px 9px;border-radius:999px;
+  cursor:default;
+  transition:background .15s,color .15s;
+  white-space:nowrap;
+}
+.pill.btn{cursor:pointer}
+.pill.btn:hover{background:rgba(77,163,255,.12);color:var(--accent);border-color:rgba(77,163,255,.3)}
+html.light .pill{background:rgba(0,0,0,.04);color:var(--muted)}
+.mini{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+
+/* ===== GRID ===== */
+.g2{display:grid;gap:12px}
+@media(min-width:860px){.g2{grid-template-columns:1fr 1fr}}
+.section{scroll-margin-top:64px}
+
+/* ===== SYM TILES ===== */
+.symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.sym{
+  border:1px solid var(--border);border-radius:10px;padding:10px;
+  background:rgba(255,255,255,.02);
+  transition:transform .15s,border-color .2s,box-shadow .15s;
+}
+.sym:hover{transform:translateY(-2px);border-color:rgba(77,163,255,.3);box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.sym .top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.sym .price{font-size:18px;font-weight:700;margin-top:4px;font-family:var(--font-mono)}
+.hrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.hchip{
+  display:flex;flex-direction:column;align-items:center;
+  border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:8px;
+  padding:5px 7px;min-width:46px;
   transition:background .15s;
 }
-.pill:hover{background:#182035}
-html.light .pill{background:#f3f5ff;border-color:#d0d4e5;color:#111827;}
-.mini{font-size:12px;color:#cbd5e1;font-family:var(--font-mono)}
-html.light .mini{color:#4b5563;}
-.muted{color:var(--muted)}
-.section{scroll-margin-top:72px}
-iframe{width:100%;height:360px;border:0;border-radius:0 0 16px 16px}
+.hchip:hover{background:rgba(255,255,255,.06)}
+.hchip .ico{font-size:14px;line-height:1}
+.hchip .t{font-weight:600;margin-top:2px;font-family:var(--font-mono);font-size:11px}
+.chg.up{color:var(--good)}.chg.down{color:var(--bad)}
+.chg-zero{color:var(--muted)}
 
-/* â”€â”€ Sym tiles â”€â”€ */
-.symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-.sym{
-  border:1px solid var(--border);border-radius:12px;padding:10px;
-  transition:transform .15s,box-shadow .15s,border-color .15s;
-  cursor:default;
-}
-.sym:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3);border-color:rgba(77,163,255,.3)}
-html.light .sym:hover{box-shadow:0 8px 20px rgba(15,23,42,.12)}
-.sym .top{display:flex;justify-content:space-between;gap:8px}
-.sym .price{font-size:20px;font-weight:800;margin-top:4px;font-family:var(--font-mono)}
-.hrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-.hchip{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  border:1px solid var(--border);background:#0f1218;border-radius:10px;
-  padding:6px 8px;min-width:52px;transition:background .15s;
-}
-.hchip:hover{background:#151b28}
-html.light .hchip{background:#f5f7ff;}
-.hchip .ico{font-size:18px;line-height:1}
-.hchip .t{font-weight:700;margin-top:2px;font-family:var(--font-mono)}
-.chg.up{color:var(--good)} .chg.down{color:var(--bad)}
+/* ===== IFRAME MAP ===== */
+iframe{width:100%;height:340px;border:0;border-radius:0 0 var(--r-card) var(--r-card);display:block}
+@media(max-width:600px){iframe{height:260px}}
 
-/* â”€â”€ Notes â”€â”€ */
+/* ===== TABLES ===== */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;font-family:var(--font-mono)}
+.tbl th{
+  padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);
+  color:var(--muted);font-weight:600;letter-spacing:.04em;font-size:10px;text-transform:uppercase;
+  background:rgba(255,255,255,.02);
+}
+.tbl td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04)}
+.tbl tbody tr:hover{background:rgba(77,163,255,.04)}
+html.light .tbl tbody tr:hover{background:rgba(37,99,235,.04)}
+
+/* ===== SCRATCHPAD ===== */
 textarea{
-  width:100%;min-height:120px;border:1px solid var(--border);background:#0f1218;
-  color:var(--ink);border-radius:12px;padding:10px;font-family:var(--font-mono);
-  font-size:13px;box-sizing:border-box;resize:vertical;transition:border-color .2s;
+  width:100%;min-height:110px;
+  border:1px solid var(--border);background:rgba(255,255,255,.02);
+  color:var(--ink);border-radius:var(--r-sm);padding:10px;
+  font-family:var(--font-mono);font-size:13px;resize:vertical;
+  transition:border-color .2s;
 }
 textarea:focus{outline:none;border-color:var(--accent)}
-html.light textarea{background:#f8f9ff;}
+html.light textarea{background:rgba(0,0,0,.02)}
 
-/* â”€â”€ Back to top / footer â”€â”€ */
-.btm{display:flex;justify-content:center;margin:28px 0}
-.btn-top{
-  background:#0f1420;border:1px solid var(--border);color:#a9c8ff;padding:8px 14px;
-  border-radius:999px;font-weight:600;font-size:13px;cursor:pointer;transition:background .15s,transform .15s;
-}
-.btn-top:hover{background:#182035;transform:translateY(-1px)}
-html.light .btn-top{background:#f3f5ff;border-color:#d0d4e5;color:#111827;}
-.footer{color:#9aa3b6;text-align:center;padding-bottom:24px;font-size:12px;font-family:var(--font-mono)}
-html.light .footer{color:#6b7280;}
-
-/* â”€â”€ VOTD â”€â”€ */
+/* ===== VOTD ===== */
 .votd-card{
-  position:relative;border:1px solid var(--border);border-left:4px solid var(--accent);
-  background:radial-gradient(1200px 400px at -10% -40%, rgba(77,163,255,.12), transparent 40%),
-  linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.06));
-  border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25)
+  border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:10px;padding:16px 14px 12px;
+  background:linear-gradient(135deg,rgba(77,163,255,.06) 0%,transparent 60%);
 }
-html.light .votd-card{
-  background:radial-gradient(1200px 400px at -10% -40%, rgba(37,99,235,.10), transparent 40%),
-  linear-gradient(180deg, rgba(255,255,255,0.9), rgba(241,245,249,1));
-  box-shadow:0 12px 30px rgba(15,23,42,.08);
+.votd-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap}
+.votd-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent);font-family:var(--font-mono)}
+.votd-date{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.votd-quote{
+  margin:0 0 12px;
+  font-size:clamp(15px,2vw,18px);line-height:1.65;font-weight:400;font-style:italic;
+  color:var(--ink);border:none;padding:0;
 }
-.votd-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.votd-badge{font-size:12px;font-weight:700;letter-spacing:.04em;color:#cfe0ff;
-  background:#0f1420;border:1px solid #1f2a43;border-radius:999px;padding:4px 10px}
-html.light .votd-badge{color:#1f2937;background:#e0ebff;border-color:#c7d2fe;}
-.votd-date{font-size:12px;color:var(--muted);font-family:var(--font-mono)}
-.votd-quote{margin:4px 0 10px;font-size:clamp(16px,2.2vw,20px);line-height:1.6;font-weight:500;color:var(--ink);position:relative;font-style:italic}
-.votd-quote::before{content:"\201C";position:absolute;left:-14px;top:-6px;font-size:28px;line-height:1;opacity:.25}
-.votd-quote::after{content:"\201D";margin-left:4px;opacity:.25}
-.votd-bottom{display:flex;justify-content:flex-end}
-.votd-ref{font-size:13px;color:#a9c8ff;font-weight:700;font-family:var(--font-mono)}
-html.light .votd-ref{color:#2563eb;}
+.votd-ref{font-size:12px;color:var(--accent);font-weight:600;font-family:var(--font-mono);text-align:right;display:block}
 
-/* â”€â”€ Table â”€â”€ */
-.table{width:100%;border-collapse:collapse}
-.table th,.table td{border-top:1px solid var(--border);padding:8px;text-align:left;font-size:12px;font-family:var(--font-mono)}
-.table th{color:#cfe0ff;font-weight:600;background:rgba(255,255,255,.02)}
-html.light .table th{color:#1f2937;}
-.table tbody tr:hover{background:rgba(77,163,255,.04)}
-
-/* â”€â”€ Conversions â”€â”€ */
-.cv-wrap{display:grid;gap:14px;margin:12px 0}
-.cv-row{grid-template-columns:repeat(4,minmax(160px,1fr))}
-.cv-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
-html.light .cv-card{background:rgba(0,0,0,.01)}
-.cv-card h4{margin:0 0 8px;font-size:1rem;font-weight:600}
-.cv-io{display:flex;align-items:center;gap:8px;margin:6px 0}
-.cv-io input{
-  flex:1;padding:6px 8px;border:1px solid rgba(127,127,127,.35);border-radius:8px;
-  background:transparent;color:inherit;font-family:var(--font-mono);font-size:13px;
-  transition:border-color .2s;
-}
-.cv-io input:focus{outline:none;border-color:var(--accent)}
-.cv-out{
-  min-width:5ch;font-variant-numeric:tabular-nums;font-family:var(--font-mono);
-  font-size:14px;font-weight:600;color:var(--accent);
-  transition:color .2s;
-}
-.cv-out.flash{animation:flash .3s ease}
-@keyframes flash{0%{color:var(--good)}100%{color:var(--accent)}}
-.cv-muted{opacity:.75;font-size:.9em;font-family:var(--font-mono)}
-.cv-grid-2{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:10px}
-.cv-grid-3{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:8px}
-.cv-split{display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));gap:12px}
-.cv-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
-.cv-table td{padding:6px 8px;border-top:1px dashed rgba(127,127,127,.25);font-size:13px}
-.cv-table tr:first-child td{border-top:none}
-.cv-right{text-align:right;font-weight:600;color:var(--teal)}
-.cv-section-label{
-  margin:20px 0 8px;font-size:11px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--muted);font-family:var(--font-mono);
+/* ===== CONVERSIONS ===== */
+.cv-section{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);font-family:var(--font-mono);
+  margin:16px 0 8px;
   display:flex;align-items:center;gap:8px;
 }
-.cv-section-label::after{content:"";flex:1;height:1px;background:var(--border)}
-@media (max-width:900px){
-  .cv-row{grid-template-columns:repeat(2,minmax(160px,1fr))}
-  .cv-split{grid-template-columns:1fr}
+.cv-section::after{content:"";flex:1;height:1px;background:var(--border)}
+.cv-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.cv-tile{
+  border:1px solid var(--border);border-radius:10px;padding:11px;
+  background:rgba(255,255,255,.02);
 }
-@media (max-width:520px){
-  .cv-row{grid-template-columns:1fr}
-  .cv-grid-2{grid-template-columns:1fr}
-  .cv-grid-3{grid-template-columns:1fr}
-}
-
-/* â”€â”€ Sunrise/Sunset arc â”€â”€ */
-.sunbox{display:flex;flex-direction:column;gap:8px}
-.sun-legend{display:flex;gap:10px;align-items:center}
-.sun-dot{width:10px;height:10px;border-radius:50%}
-.sun-dot.fill{background:#ffd166}
-.sun-dot.hollow{border:2px solid #ffd166;background:transparent}
-
-/* â”€â”€ Theme toggle â”€â”€ */
-.theme-toggle{
-  position:fixed;bottom:20px;right:20px;z-index:1100;
-  background:#0f1420;border:1px solid var(--border);color:#ffd166;
-  border-radius:999px;padding:8px 12px;font-size:18px;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.35);
-  transition:transform .15s;
-}
-.theme-toggle:hover{transform:scale(1.08)}
-html.light .theme-toggle{background:#ffffff;border-color:#d0d4e5;color:#f6b500;box-shadow:0 6px 16px rgba(15,23,42,.18);}
-
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SOURCING SECTION
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-.sourcing-layout{display:grid;gap:14px}
-@media(min-width:760px){.sourcing-layout{grid-template-columns:1fr 1fr}}
-
-/* CAS input area */
-.cas-textarea{
-  width:100%;min-height:80px;border:1px solid var(--border);background:#0f1218;
-  color:var(--ink);border-radius:10px;padding:10px;font-family:var(--font-mono);
-  font-size:13px;box-sizing:border-box;resize:vertical;
+.cv-tile h4{margin:0 0 8px;font-size:13px;font-weight:600}
+.cv-row{display:flex;align-items:center;gap:7px;margin:5px 0}
+.cv-row input{
+  flex:1;min-width:0;padding:6px 8px;
+  border:1px solid var(--border);border-radius:6px;
+  background:transparent;color:var(--ink);
+  font-family:var(--font-mono);font-size:12px;
   transition:border-color .2s;
 }
-.cas-textarea:focus{outline:none;border-color:var(--teal)}
-html.light .cas-textarea{background:#f8f9ff;}
-
-/* Vendor list */
-.vendor-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:4px;
-  max-height:220px;
-  overflow-y:auto;
-  padding:4px 0;
+.cv-row input:focus{outline:none;border-color:var(--accent)}
+.cv-row .unit{font-size:11px;color:var(--muted);font-family:var(--font-mono);min-width:20px}
+.cv-out{
+  font-family:var(--font-mono);font-size:13px;font-weight:600;
+  color:var(--accent);min-width:6ch;
+  transition:color .15s;
 }
-.vendor-grid::-webkit-scrollbar{width:6px}
-.vendor-grid::-webkit-scrollbar-track{background:transparent}
-.vendor-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@keyframes cvflash{0%{color:var(--good)}100%{color:var(--accent)}}
+.cv-out.flash{animation:cvflash .3s ease}
+.cv-note{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin:6px 0 0;line-height:1.5}
+.cv-work-wrap{display:grid;gap:14px}
+@media(min-width:760px){.cv-work-wrap{grid-template-columns:1fr 1fr}}
+.cv-res-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px}
+.cv-res-table td{padding:5px 8px;border-top:1px dashed rgba(255,255,255,.07)}
+.cv-res-table tr:first-child td{border-top:none}
+.cv-res-right{text-align:right;font-weight:600;color:var(--teal)}
+.cv-inputs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cv-factors{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;align-items:center;margin-top:8px}
+.cv-factors .cv-row{margin:0}
 
-.vendor-item{
+/* ===== SOURCING ===== */
+.src-layout{display:grid;gap:14px}
+@media(min-width:720px){.src-layout{grid-template-columns:1fr 1fr}}
+.cas-input{
+  width:100%;min-height:76px;
+  border:1px solid var(--border);background:rgba(255,255,255,.02);
+  color:var(--ink);border-radius:8px;padding:9px;
+  font-family:var(--font-mono);font-size:12px;box-sizing:border-box;resize:vertical;
+  transition:border-color .2s;
+}
+.cas-input:focus{outline:none;border-color:var(--teal)}
+.cas-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;min-height:22px}
+.cas-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(23,229,161,.08);border:1px solid rgba(23,229,161,.25);
+  color:var(--teal);border-radius:999px;padding:2px 9px;
+  font-size:11px;font-family:var(--font-mono);
+}
+.cas-chip .x{cursor:pointer;opacity:.5;font-size:10px;margin-left:2px}
+.cas-chip .x:hover{opacity:1}
+.vnd-filter{
+  width:100%;padding:7px 10px;
+  border:1px solid var(--border);border-radius:7px;
+  background:transparent;color:var(--ink);
+  font-family:var(--font-mono);font-size:12px;
+  margin-bottom:7px;transition:border-color .2s;
+}
+.vnd-filter:focus{outline:none;border-color:var(--teal)}
+.vnd-controls{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.vnd-btn{
+  font-size:11px;font-family:var(--font-mono);
+  padding:3px 8px;border:1px solid var(--border);border-radius:5px;
+  background:transparent;color:var(--muted);cursor:pointer;
+  transition:border-color .15s,color .15s;
+}
+.vnd-btn:hover{border-color:var(--teal);color:var(--teal)}
+.vnd-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:2px;
+  max-height:200px;overflow-y:auto;padding:2px 0;
+}
+.vnd-grid::-webkit-scrollbar{width:4px}
+.vnd-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.vnd-item{
   display:flex;align-items:center;gap:6px;
-  padding:4px 6px;border-radius:6px;cursor:pointer;
-  font-size:12px;font-family:var(--font-mono);
-  transition:background .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding:4px 6px;border-radius:5px;cursor:pointer;
+  font-size:11px;font-family:var(--font-mono);
+  transition:background .1s;
 }
-.vendor-item:hover{background:rgba(23,229,161,.08)}
-.vendor-item input[type=checkbox]{
-  accent-color:var(--teal);width:13px;height:13px;flex-shrink:0;cursor:pointer;
-}
-.vendor-item label{cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-/* Vendor filter input */
-.vendor-filter{
-  width:100%;padding:7px 10px;border:1px solid var(--border);
-  border-radius:8px;background:transparent;color:var(--ink);
-  font-family:var(--font-mono);font-size:12px;box-sizing:border-box;
-  margin-bottom:8px;transition:border-color .2s;
-}
-.vendor-filter:focus{outline:none;border-color:var(--teal)}
-
-/* Search button */
+.vnd-item:hover{background:rgba(23,229,161,.07)}
+.vnd-item input[type=checkbox]{accent-color:var(--teal);width:12px;height:12px;flex-shrink:0;cursor:pointer}
+.vnd-item label{cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
 .btn-search{
   display:inline-flex;align-items:center;gap:6px;
-  background:var(--teal);color:#0b0c10;border:0;
-  border-radius:10px;padding:9px 18px;font-weight:700;font-size:13px;
-  font-family:var(--font-sans);cursor:pointer;transition:opacity .15s,transform .15s;
-  margin-top:10px;
+  background:var(--teal);color:#0a0f0e;
+  border:none;border-radius:8px;padding:9px 16px;
+  font-weight:700;font-size:12px;font-family:var(--font-sans);
+  cursor:pointer;margin-top:10px;
+  transition:opacity .15s,transform .15s;
 }
-.btn-search:hover{opacity:.88;transform:translateY(-1px)}
-html.light .btn-search{color:#fff;background:var(--good)}
+.btn-search:hover{opacity:.85;transform:translateY(-1px)}
+.src-result{
+  margin-top:9px;padding:8px 11px;
+  border:1px solid rgba(23,229,161,.2);border-radius:8px;
+  background:rgba(23,229,161,.04);
+  font-size:11px;font-family:var(--font-mono);color:var(--muted);display:none;
+}
+.src-result.show{display:block}
+.src-result b{color:var(--teal)}
 
-/* select-all / clear controls */
-.vendor-controls{display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap}
-.vc-btn{
-  font-size:11px;font-family:var(--font-mono);padding:3px 8px;
-  border:1px solid var(--border);border-radius:6px;background:transparent;
-  color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s;
+/* ===== QUICK LINKS (new section) ===== */
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.link-tile{
+  display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+  border:1px solid var(--border);border-radius:10px;padding:11px 12px;
+  background:rgba(255,255,255,.02);
+  transition:border-color .2s,transform .15s,background .15s;
+  cursor:pointer;
+  text-decoration:none;color:var(--ink);
 }
-.vc-btn:hover{border-color:var(--teal);color:var(--teal)}
+.link-tile:hover{border-color:rgba(77,163,255,.35);transform:translateY(-2px);background:rgba(77,163,255,.04)}
+.link-tile .lt-ico{font-size:18px;line-height:1;margin-bottom:2px}
+.link-tile .lt-label{font-size:12px;font-weight:600}
+.link-tile .lt-sub{font-size:10px;color:var(--muted);font-family:var(--font-mono)}
 
-/* CAS tag chips */
-.cas-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;min-height:28px}
-.cas-chip{
-  display:inline-flex;align-items:center;gap:5px;
-  background:#0f1a14;border:1px solid rgba(23,229,161,.3);
-  color:var(--teal);border-radius:999px;padding:3px 10px;
-  font-size:12px;font-family:var(--font-mono);
+/* ===== FOOTER / BACK TO TOP ===== */
+.btm{display:flex;justify-content:center;margin:28px 0 8px}
+.btn-top{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--muted);padding:7px 16px;
+  border-radius:999px;font-size:12px;font-family:var(--font-mono);
+  cursor:pointer;transition:color .15s,border-color .15s;
 }
-html.light .cas-chip{background:#e6faf3;border-color:rgba(5,150,105,.3);color:#059669}
-.cas-chip .x{cursor:pointer;opacity:.6;font-size:11px}
-.cas-chip .x:hover{opacity:1}
+.btn-top:hover{color:var(--accent);border-color:rgba(77,163,255,.4)}
+.footer{color:var(--muted);text-align:center;padding-bottom:20px;font-size:11px;font-family:var(--font-mono)}
 
-/* Search summary */
-.search-summary{
-  margin-top:10px;padding:10px 12px;
-  border:1px solid rgba(23,229,161,.2);border-radius:10px;
-  background:rgba(23,229,161,.04);font-size:12px;font-family:var(--font-mono);
-  color:var(--muted);display:none;
+/* ===== SUNRISE SVG ===== */
+.sunbox{display:flex;flex-direction:column;gap:8px}
+.sun-leg{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.sun-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.sun-dot.f{background:var(--amber)}
+.sun-dot.h{border:2px solid var(--amber);background:transparent}
+
+/* ===== THEME TOGGLE ===== */
+.theme-toggle{
+  position:fixed;bottom:18px;right:16px;z-index:200;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--amber);border-radius:999px;
+  padding:7px 11px;font-size:16px;
+  cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4);
+  transition:transform .15s;display:flex;align-items:center;
 }
-.search-summary.visible{display:block}
-.ss-count{color:var(--teal);font-weight:600}
+.theme-toggle:hover{transform:scale(1.1)}
+
+/* ===== MOBILE TWEAKS ===== */
+@media(max-width:600px){
+  .navin{gap:1px;padding:6px 8px}
+  .nav a{font-size:11px;padding:4px 6px}
+  .symbols{grid-template-columns:1fr 1fr}
+  .cv-grid{grid-template-columns:1fr 1fr}
+  .cv-work-wrap{grid-template-columns:1fr}
+  .src-layout{grid-template-columns:1fr}
+  .links-grid{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:1fr}
+  h1.sec-heading{font-size:10px}
+}
+@media(max-width:380px){
+  .symbols{grid-template-columns:1fr}
+  .cv-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<div class="nav">
+<nav class="nav" aria-label="Dashboard nav">
   <div class="navin">
-    <a href="/">ðŸ  Resume</a>
-    <a href="#events">Events</a>
+    <a href="/">Resume</a>
+    <a href="#weather">Weather</a>
     <a href="#traffic">Traffic</a>
     <a href="#stocks">Stocks</a>
-    <a href="#conversions">Conversions</a>
+    <a href="#links">Links</a>
+    <a href="#conversions">Convert</a>
     <a href="#sourcing">Sourcing</a>
-    <a href="#notes">Scratchpad</a>
-    <a href="https://www.jordanmoddes.com/jmodco/">Jmod Co.</a>
+    <a href="#notes">Notes</a>
+    <a href="https://www.jordanmoddes.com/jmodco/" target="_blank" rel="noopener">Jmod Co.</a>
   </div>
-</div>
+</nav>
 
-<!-- SPORTS TICKER -->
-<div class="ticker"><div id="ticker" class="ticker-inner"></div></div>
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true"><div id="ticker" class="ticker-inner">Loading...</div></div>
 
 <div class="wrap">
-<h1 class="section" id="welcome">Welcome</h1>
 
 <!-- WELCOME -->
-<div class="card cat-personal">
+<div class="card section" id="welcome" data-cat="personal" style="margin-top:14px;animation-delay:.04s">
   <div class="hd">
-    <div class="hd-label"><span class="hd-icon">ðŸ‘‹</span> Welcome</div>
+    <div class="hd-label"><span class="hd-ico">J</span> JMOD Dashboard</div>
     <span id="todayBadge" class="pill"></span>
   </div>
-  <div class="bd">
-    <div class="mini muted" style="margin-bottom:8px">
-      Welcome to my private dashboard. I'm tinkering, learning, and having funâ€”feel free to explore anything on display.
-    </div>
+  <div class="bd" style="color:var(--muted);font-size:13px">
+    Private dashboard &mdash; tinkering, learning, having fun. Explore anything on display.
   </div>
 </div>
 
 <!-- WEATHER -->
-<div class="card cat-data section" id="weather" style="margin-top:16px">
-  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸŒ¤</span> Weather</div></div>
-  <div class="bd"><div id="weatherList" class="symbols"></div></div>
+<div class="card section" id="weather" data-cat="data" style="margin-top:12px;animation-delay:.08s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">W</span> Weather</div>
+  </div>
+  <div class="bd"><div id="weatherList" class="symbols"><div class="mini">Loading...</div></div></div>
 </div>
 
-<!-- SUNRISE / SUNSET -->
-<div class="card cat-data section" id="sun" style="margin-top:16px">
-  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸŒ…</span> Sunrise â€¢ Sunset</div><span id="sunDate" class="pill"></span></div>
+<!-- SUN -->
+<div class="card section" id="sun" data-cat="data" style="margin-top:12px;animation-delay:.12s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">~</span> Sunrise &amp; Sunset</div>
+    <span id="sunDate" class="pill"></span>
+  </div>
   <div class="bd">
     <div class="sunbox">
       <div id="sunViz"></div>
-      <div class="sun-legend mini">
-        <span class="sun-dot fill"></span> <span class="muted">â— sun above horizon</span>
-        <span style="width:10px"></span>
-        <span class="sun-dot hollow"></span> <span class="muted">â—‹ night</span>
+      <div class="sun-leg mini">
+        <span class="sun-dot f"></span><span>Day</span>
+        <span class="sun-dot h"></span><span>Night</span>
       </div>
       <div id="sunLine" class="mini"></div>
     </div>
@@ -452,168 +497,176 @@ html.light .cas-chip{background:#e6faf3;border-color:rgba(5,150,105,.3);color:#0
 </div>
 
 <!-- VOTD + EVENTS -->
-<div class="grid cols-2 section" id="events" style="margin-top:16px">
-  <div class="card cat-personal">
-    <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ“–</span> Verse of the Day</div></div>
+<div class="g2 section" id="events" style="margin-top:12px;animation-delay:.16s">
+  <div class="card" data-cat="personal">
+    <div class="hd"><div class="hd-label"><span class="hd-ico">V</span> Verse of the Day</div></div>
     <div class="bd">
       <div class="votd-card">
         <div class="votd-top">
           <span class="votd-badge">Verse of the Day</span>
           <span id="votdDate" class="votd-date"></span>
         </div>
-        <blockquote id="votdText" class="votd-quote">Loadingâ€¦</blockquote>
-        <div class="votd-bottom"><span id="votdRef" class="votd-ref"></span></div>
+        <p id="votdText" class="votd-quote">Loading&hellip;</p>
+        <span id="votdRef" class="votd-ref"></span>
       </div>
     </div>
   </div>
-
-  <div class="card cat-data">
-    <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸŽŸ</span> Local Events</div><span class="pill">next 7â€“14 days</span></div>
-    <div class="bd"><div id="eventsList" class="symbols"></div></div>
+  <div class="card" data-cat="data">
+    <div class="hd"><div class="hd-label"><span class="hd-ico">E</span> Local Events</div><span class="pill">7&ndash;14 days</span></div>
+    <div class="bd"><div id="eventsList" class="symbols"><div class="mini">Loading...</div></div></div>
   </div>
 </div>
 
 <!-- TRAFFIC -->
-<h1 class="section" id="traffic">Traffic</h1>
-<div class="grid cols-2">
-  <div class="card cat-data">
-    <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ¢</span> To Work</div></div>
-    <iframe id="map1" title="route1"></iframe>
+<div class="sec-heading section" id="traffic" style="animation-delay:.20s">Traffic</div>
+<div class="g2" style="animation-delay:.20s">
+  <div class="card" data-cat="data">
+    <div class="hd"><div class="hd-label"><span class="hd-ico">&#8599;</span> To Work</div></div>
+    <iframe id="map1" title="To Work"></iframe>
   </div>
-  <div class="card cat-data">
-    <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ </span> To Home</div></div>
-    <iframe id="map2" title="route2"></iframe>
+  <div class="card" data-cat="data">
+    <div class="hd"><div class="hd-label"><span class="hd-ico">&#8600;</span> To Home</div></div>
+    <iframe id="map2" title="To Home"></iframe>
   </div>
 </div>
 
 <!-- STOCKS -->
-<div class="card cat-finance section" id="stocks" style="margin-top:16px">
-  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ“ˆ</span> Stocks</div><span class="pill">auto refresh</span></div>
-  <div class="bd"><div id="stocksList" class="symbols"></div></div>
+<div class="card section" id="stocks" data-cat="finance" style="margin-top:12px;animation-delay:.24s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">$</span> Stocks</div>
+    <span class="pill">auto-refresh 60s</span>
+  </div>
+  <div class="bd"><div id="stocksList" class="symbols"><div class="mini">Loading...</div></div></div>
 </div>
 
 <!-- CRYPTO -->
-<div class="card cat-finance section" id="crypto" style="margin-top:16px">
-  <div class="hd"><div class="hd-label"><span class="hd-icon">â‚¿</span> Crypto</div><button id="cryptoRefresh" class="pill">Refresh</button></div>
+<div class="card section" id="crypto" data-cat="finance" style="margin-top:12px;animation-delay:.26s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">C</span> Crypto</div>
+    <button id="cryptoRefresh" class="pill btn">Refresh</button>
+  </div>
   <div class="bd">
-    <div id="cryptoList" class="symbols"></div>
-    <div id="cryptoStatus" class="mini muted" style="margin-top:6px"></div>
+    <div id="cryptoList" class="symbols"><div class="mini">Loading...</div></div>
+    <div id="cryptoStatus" class="mini" style="margin-top:6px"></div>
   </div>
 </div>
 
-<!-- PELOSI TRADES -->
-<div class="card cat-finance section" id="pelosi" style="margin-top:16px">
-  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ›</span> Nancy Pelosi â€” Disclosed Trades (latest 50)</div></div>
+<!-- PELOSI -->
+<div class="card section" id="pelosi" data-cat="finance" style="margin-top:12px;animation-delay:.28s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">P</span> Nancy Pelosi &mdash; Disclosed Trades</div>
+    <button id="pelosiRefresh" class="pill btn">Refresh</button>
+  </div>
   <div class="bd">
-    <div id="pelosiStatus" class="mini muted" style="margin-bottom:6px">Loadingâ€¦</div>
-    <div style="overflow:auto">
-      <table class="table" id="pelosiTable">
-        <thead>
-          <tr><th>Disclosed</th><th>Traded</th><th>Ticker / Asset</th><th>Type</th><th>Amount</th><th>PTR</th></tr>
-        </thead>
+    <div id="pelosiStatus" class="mini" style="margin-bottom:8px">Loading&hellip;</div>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <table class="tbl" id="pelosiTable">
+        <thead><tr>
+          <th>Disclosed</th><th>Traded</th><th>Ticker / Asset</th><th>Type</th><th>Amount</th><th>PTR</th>
+        </tr></thead>
         <tbody></tbody>
       </table>
     </div>
   </div>
 </div>
 
+<!-- QUICK LINKS (new section) -->
+<div class="card section" id="links" data-cat="personal" style="margin-top:12px;animation-delay:.30s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">L</span> Quick Links</div>
+    <span class="pill">pinned</span>
+  </div>
+  <div class="bd">
+    <div class="links-grid" id="linksGrid"></div>
+  </div>
+</div>
+
 <!-- CONVERSIONS -->
-<div class="card cat-work section" id="conversions" style="margin-top:16px">
-  <div class="hd"><div class="hd-label"><span class="hd-icon">âš—ï¸</span> Conversions</div></div>
+<div class="card section" id="conversions" data-cat="work" style="margin-top:12px;animation-delay:.32s">
+  <div class="hd"><div class="hd-label"><span class="hd-ico">~</span> Conversions</div></div>
   <div class="bd">
 
-    <div class="cv-section-label">General</div>
-    <div class="cv-wrap cv-row">
-      <div class="cv-card">
-        <h4>F â†’ C</h4>
-        <div class="cv-io"><input id="f_in" type="number" step="any" placeholder="Â°F"><span>Â°F</span></div>
-        <div class="cv-io"><span id="c_out" class="cv-out">â€”</span><span class="cv-muted">Â°C</span></div>
+    <div class="cv-section">General</div>
+    <div class="cv-grid">
+      <div class="cv-tile">
+        <h4>F &rarr; C</h4>
+        <div class="cv-row"><input id="f_in" type="number" step="any" placeholder="&deg;F"><span class="unit">&deg;F</span></div>
+        <div class="cv-row"><span id="c_out" class="cv-out">--</span><span class="unit">&deg;C</span></div>
       </div>
-      <div class="cv-card">
-        <h4>C â†’ F</h4>
-        <div class="cv-io"><input id="c_in" type="number" step="any" placeholder="Â°C"><span>Â°C</span></div>
-        <div class="cv-io"><span id="f_out" class="cv-out">â€”</span><span class="cv-muted">Â°F</span></div>
+      <div class="cv-tile">
+        <h4>C &rarr; F</h4>
+        <div class="cv-row"><input id="c_in" type="number" step="any" placeholder="&deg;C"><span class="unit">&deg;C</span></div>
+        <div class="cv-row"><span id="f_out" class="cv-out">--</span><span class="unit">&deg;F</span></div>
       </div>
-      <div class="cv-card">
-        <h4>m â†’ ft</h4>
-        <div class="cv-io"><input id="m_in" type="number" step="any" placeholder="m"><span>m</span></div>
-        <div class="cv-io"><span id="ft_out" class="cv-out">â€”</span><span class="cv-muted">ft</span></div>
+      <div class="cv-tile">
+        <h4>m &rarr; ft</h4>
+        <div class="cv-row"><input id="m_in" type="number" step="any" placeholder="m"><span class="unit">m</span></div>
+        <div class="cv-row"><span id="ft_out" class="cv-out">--</span><span class="unit">ft</span></div>
       </div>
-      <div class="cv-card">
-        <h4>in â†’ cm</h4>
-        <div class="cv-io"><input id="in_in" type="number" step="any" placeholder="in"><span>in</span></div>
-        <div class="cv-io"><span id="cm_out" class="cv-out">â€”</span><span class="cv-muted">cm</span></div>
-      </div>
-    </div>
-
-    <!-- mg / g / kg converter -->
-    <div class="cv-section-label">Mass</div>
-    <div class="cv-wrap" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
-      <div class="cv-card">
-        <h4>mg â†’ g / kg</h4>
-        <div class="cv-io"><input id="mg_in" type="number" step="any" placeholder="mg"><span>mg</span></div>
-        <div class="cv-io"><span id="g_from_mg" class="cv-out">â€”</span><span class="cv-muted">g</span></div>
-        <div class="cv-io"><span id="kg_from_mg" class="cv-out">â€”</span><span class="cv-muted">kg</span></div>
-      </div>
-      <div class="cv-card">
-        <h4>g â†’ mg / kg</h4>
-        <div class="cv-io"><input id="g_in" type="number" step="any" placeholder="g"><span>g</span></div>
-        <div class="cv-io"><span id="mg_from_g" class="cv-out">â€”</span><span class="cv-muted">mg</span></div>
-        <div class="cv-io"><span id="kg_from_g" class="cv-out">â€”</span><span class="cv-muted">kg</span></div>
-      </div>
-      <div class="cv-card">
-        <h4>kg â†’ g / mg</h4>
-        <div class="cv-io"><input id="kg_in" type="number" step="any" placeholder="kg"><span>kg</span></div>
-        <div class="cv-io"><span id="g_from_kg" class="cv-out">â€”</span><span class="cv-muted">g</span></div>
-        <div class="cv-io"><span id="mg_from_kg" class="cv-out">â€”</span><span class="cv-muted">mg</span></div>
+      <div class="cv-tile">
+        <h4>in &rarr; cm</h4>
+        <div class="cv-row"><input id="in_in" type="number" step="any" placeholder="in"><span class="unit">in</span></div>
+        <div class="cv-row"><span id="cm_out" class="cv-out">--</span><span class="unit">cm</span></div>
       </div>
     </div>
 
-    <!-- Work Conversions -->
-    <div class="cv-section-label">Work</div>
-    <div class="cv-card">
-      <div class="cv-split">
-        <div>
-          <h4 style="margin-bottom:6px">Inputs</h4>
-          <div class="cv-grid-2">
-            <div class="cv-io"><input id="vol_ml" type="number" step="any" placeholder="Volume"><span>mL</span></div>
-            <div class="cv-io"><input id="density" type="number" step="any" placeholder="Density" value="0.979"><span>g/mL</span></div>
-          </div>
-          <div class="cv-grid-3" style="margin-top:6px">
-            <div class="cv-io" style="margin:0"><span class="cv-muted">Factor â‰¤ 1 mL</span></div>
-            <div class="cv-io" style="margin:0"><input id="k_small" type="number" step="any" value="1.15"><span>k</span></div>
-            <div></div>
-            <div class="cv-io" style="margin:0"><span class="cv-muted">Factor &gt; 1 mL</span></div>
-            <div class="cv-io" style="margin:0"><input id="k_large" type="number" step="any" value="1.06"><span>k</span></div>
-            <div></div>
-          </div>
-          <p class="cv-muted" style="margin:8px 0 4px">
-            The mL you enter decides which factor applies (â‰¤1 mL uses k=1.15, otherwise k=1.06). Results on the right update automatically.
-          </p>
-          <div style="margin-top:8px">
-            <div class="cv-io"><input id="ml_to_l" type="number" step="any" placeholder="mL â†’ L (enter mL)"><span>mL</span></div>
-            <div class="cv-io"><span class="cv-out" id="liters_out">â€”</span><span class="cv-muted">L</span></div>
-            <div class="cv-io" style="margin-top:6px"><input id="l_to_ml" type="number" step="any" placeholder="L â†’ mL (enter L)"><span>L</span></div>
-            <div class="cv-io"><span class="cv-out" id="ml_from_l_out">â€”</span><span class="cv-muted">mL</span></div>
-          </div>
-          <p class="cv-muted" style="margin-top:6px">mass (g) = volume (mL) Ã— density (g/mL) Ã— k; mg = g Ã— 1000; kg = g / 1000.</p>
-        </div>
+    <div class="cv-section">Mass</div>
+    <div class="cv-grid">
+      <div class="cv-tile">
+        <h4>mg &rarr; g / kg</h4>
+        <div class="cv-row"><input id="mg_in" type="number" step="any" placeholder="mg"><span class="unit">mg</span></div>
+        <div class="cv-row"><span id="g_from_mg" class="cv-out">--</span><span class="unit">g</span></div>
+        <div class="cv-row"><span id="kg_from_mg" class="cv-out">--</span><span class="unit">kg</span></div>
+      </div>
+      <div class="cv-tile">
+        <h4>g &rarr; mg / kg</h4>
+        <div class="cv-row"><input id="g_in" type="number" step="any" placeholder="g"><span class="unit">g</span></div>
+        <div class="cv-row"><span id="mg_from_g" class="cv-out">--</span><span class="unit">mg</span></div>
+        <div class="cv-row"><span id="kg_from_g" class="cv-out">--</span><span class="unit">kg</span></div>
+      </div>
+      <div class="cv-tile">
+        <h4>kg &rarr; g / mg</h4>
+        <div class="cv-row"><input id="kg_in" type="number" step="any" placeholder="kg"><span class="unit">kg</span></div>
+        <div class="cv-row"><span id="g_from_kg" class="cv-out">--</span><span class="unit">g</span></div>
+        <div class="cv-row"><span id="mg_from_kg" class="cv-out">--</span><span class="unit">mg</span></div>
+      </div>
+    </div>
 
-        <div>
-          <h4 style="margin-bottom:6px">Results</h4>
-          <table class="cv-table">
-            <tbody id="res_small">
-              <tr><td class="cv-muted">mg (â‰¤ 1 mL, k=<span id="k_small_view">1.15</span>)</td><td class="cv-right" id="mg_small">â€”</td></tr>
-              <tr><td class="cv-muted">g (â‰¤ 1 mL, k=<span id="k_small_view2">1.15</span>)</td><td class="cv-right" id="g_small">â€”</td></tr>
-              <tr><td class="cv-muted">kg (â‰¤ 1 mL, k=<span id="k_small_view3">1.15</span>)</td><td class="cv-right" id="kg_small">â€”</td></tr>
-            </tbody>
-            <tbody id="res_large" class="hidden">
-              <tr><td class="cv-muted">mg (&gt; 1 mL, k=<span id="k_large_view">1.06</span>)</td><td class="cv-right" id="mg_large">â€”</td></tr>
-              <tr><td class="cv-muted">g (&gt; 1 mL, k=<span id="k_large_view2">1.06</span>)</td><td class="cv-right" id="g_large">â€”</td></tr>
-              <tr><td class="cv-muted">kg (&gt; 1 mL, k=<span id="k_large_view3">1.06</span>)</td><td class="cv-right" id="kg_large">â€”</td></tr>
-            </tbody>
-          </table>
+    <div class="cv-section">Work</div>
+    <div class="cv-work-wrap">
+      <div>
+        <p class="cv-note" style="margin:0 0 10px">mass (g) = volume &times; density &times; k &nbsp;|&nbsp; mg = g &times; 1000 &nbsp;|&nbsp; kg = g / 1000</p>
+        <div class="cv-inputs-grid">
+          <div class="cv-row"><input id="vol_ml" type="number" step="any" placeholder="Volume"><span class="unit">mL</span></div>
+          <div class="cv-row"><input id="density" type="number" step="any" value="0.979" placeholder="Density"><span class="unit">g/mL</span></div>
         </div>
+        <div class="cv-factors" style="margin-top:10px">
+          <span class="mini">k (=&lt; 1 mL)</span>
+          <div class="cv-row" style="margin:0"><input id="k_small" type="number" step="any" value="1.15"><span class="unit">k</span></div>
+          <span class="mini">k (&gt; 1 mL)</span>
+          <div class="cv-row" style="margin:0"><input id="k_large" type="number" step="any" value="1.06"><span class="unit">k</span></div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="cv-row"><input id="ml_to_l" type="number" step="any" placeholder="mL to L"><span class="unit">mL</span></div>
+          <div class="cv-row"><span id="liters_out" class="cv-out">--</span><span class="unit">L</span></div>
+          <div class="cv-row" style="margin-top:6px"><input id="l_to_ml" type="number" step="any" placeholder="L to mL"><span class="unit">L</span></div>
+          <div class="cv-row"><span id="ml_from_l_out" class="cv-out">--</span><span class="unit">mL</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="cv-note" style="margin:0 0 8px">Results</p>
+        <table class="cv-res-table">
+          <tbody id="res_small">
+            <tr><td class="mini">mg (k=<span id="ksv1">1.15</span>)</td><td class="cv-res-right" id="mg_small">--</td></tr>
+            <tr><td class="mini">g  (k=<span id="ksv2">1.15</span>)</td><td class="cv-res-right" id="g_small">--</td></tr>
+            <tr><td class="mini">kg (k=<span id="ksv3">1.15</span>)</td><td class="cv-res-right" id="kg_small">--</td></tr>
+          </tbody>
+          <tbody id="res_large" class="hidden">
+            <tr><td class="mini">mg (k=<span id="klv1">1.06</span>)</td><td class="cv-res-right" id="mg_large">--</td></tr>
+            <tr><td class="mini">g  (k=<span id="klv2">1.06</span>)</td><td class="cv-res-right" id="g_large">--</td></tr>
+            <tr><td class="mini">kg (k=<span id="klv3">1.06</span>)</td><td class="cv-res-right" id="kg_large">--</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -621,545 +674,528 @@ html.light .cas-chip{background:#e6faf3;border-color:rgba(5,150,105,.3);color:#0
 </div>
 
 <!-- SOURCING -->
-<div class="card cat-work section" id="sourcing" style="margin-top:16px">
-  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ”¬</span> CAS Sourcing</div><span class="pill">approved vendors only</span></div>
+<div class="card section" id="sourcing" data-cat="work" style="margin-top:12px;animation-delay:.34s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">S</span> CAS Sourcing</div>
+    <span class="pill">approved vendors</span>
+  </div>
   <div class="bd">
-    <div class="sourcing-layout">
-
-      <!-- Left: CAS input -->
+    <div class="src-layout">
       <div>
-        <div class="cv-section-label">CAS Numbers</div>
-        <textarea id="casInput" class="cas-textarea" placeholder="Paste CAS numbers here, one per line or comma-separated&#10;e.g. 75-09-2&#10;64-17-5&#10;67-56-1"></textarea>
+        <div class="cv-section" style="margin-top:0">CAS Numbers</div>
+        <textarea id="casInput" class="cas-input" placeholder="One per line or comma-separated&#10;e.g. 75-09-2&#10;64-17-5"></textarea>
         <div id="casChips" class="cas-chips"></div>
-        <button class="btn-search" id="btnSearch">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Search Google
-        </button>
-        <div id="searchSummary" class="search-summary"></div>
+        <button class="btn-search" id="btnSearch">Search Google</button>
+        <div id="srcResult" class="src-result"></div>
       </div>
-
-      <!-- Right: Vendors -->
       <div>
-        <div class="cv-section-label">Approved Vendors</div>
-        <input type="text" id="vendorFilter" class="vendor-filter" placeholder="Filter vendorsâ€¦">
-        <div class="vendor-controls">
-          <button class="vc-btn" id="selectAllVendors">Select all</button>
-          <button class="vc-btn" id="clearAllVendors">Clear all</button>
-          <span id="vendorCount" class="mini muted" style="margin-left:auto"></span>
+        <div class="cv-section" style="margin-top:0">Vendors</div>
+        <input type="text" id="vndFilter" class="vnd-filter" placeholder="Filter vendors...">
+        <div class="vnd-controls">
+          <button class="vnd-btn" id="selAll">All</button>
+          <button class="vnd-btn" id="clrAll">None</button>
+          <span id="vndCount" class="mini" style="margin-left:auto"></span>
         </div>
-        <div class="vendor-grid" id="vendorGrid"></div>
+        <div class="vnd-grid" id="vndGrid"></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- SCRATCHPAD -->
-<div class="card cat-personal section" id="notes" style="margin-top:16px">
-  <div class="hd"><div class="hd-label"><span class="hd-icon">ðŸ“</span> Scratchpad</div><button id="clearNotes" class="pill">Clear</button></div>
-  <div class="bd"><textarea id="notesBox" placeholder="Jot quick notesâ€¦"></textarea></div>
+<div class="card section" id="notes" data-cat="personal" style="margin-top:12px;animation-delay:.36s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">N</span> Scratchpad</div>
+    <button id="clearNotes" class="pill btn">Clear</button>
+  </div>
+  <div class="bd"><textarea id="notesBox" placeholder="Quick notes, saved locally..."></textarea></div>
 </div>
 
-<div class="btm"><a class="btn-top" href="#top">â†‘ Top</a></div>
-<div class="footer">âœ¦ Crafted by Jordan Moddes Â· jmod.ai âœ¦</div>
-</div>
+<div class="btm"><button class="btn-top" onclick="location.href='#top'">Back to top</button></div>
+<div class="footer">&#10022; Jordan Moddes &mdash; jmod.ai &#10022;</div>
 
-<!-- Theme toggle -->
-<button id="themeToggle" class="theme-toggle" aria-label="Toggle light mode">ðŸ’¡</button>
+</div><!-- /wrap -->
+
+<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">&#9788;</button>
 
 <script>
-/* ========= CONFIG ========= */
-const WORKER_BASE = "https://jmoddashboard.jmodwork.workers.dev";
-const GOOGLE_MAPS_API_KEY = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
+/* ===== CONFIG ===== */
+const WORKER    = "https://jmoddashboard.jmodwork.workers.dev";
+const MAPS_KEY  = "AIzaSyCePcq9W-S5yxscXJ2N2MBMoGtpeTAXZnQ";
+const HOME      = "30.3687560,-97.6260081";
+const WORK      = "411 W Main St, Round Rock, TX 78664";
+const WP_130_45 = "TX-130 and SH-45, Pflugerville, TX";
+const WX_ZIPS   = ["78664","53158","60030","44115","23314"];
+const EV_ZIP    = "78664";
+const STOCKS    = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
+const COINS     = [{id:"bitcoin",sym:"BTC"},{id:"ethereum",sym:"ETH"},{id:"solana",sym:"SOL"},{id:"dogecoin",sym:"DOGE"}];
 
-// Home = coordinates 30.3687560,-97.6260081
-// Work = 411 W Main St, Round Rock, TX 78664
-const HOME_COORDS = "30.3687560,-97.6260081";
-const WORK_ADDR  = "411 W Main St, Round Rock, TX 78664";
-
-// Hwy 130/45 waypoint to anchor route away from I-35
-const TX130_WAYPOINT = "TX-130 and SH-45, Pflugerville, TX";
-
-const WEATHER_ZIPS = ["78664","53158","60030","44115","23314"];
-const STOCKS = ["BRK.A","BRK.B","AAPL","NVDA","AXP","DAL","HHH","ABNB","SNAP","MOS","RIVN","KO","FWONK","TSLA","AMZN","GNW"];
-const EVENTS_ZIP = "78664";
-const COINS = [
-  { id:"bitcoin",  symbol:"BTC" },
-  { id:"ethereum", symbol:"ETH" },
-  { id:"solana",   symbol:"SOL" },
-  { id:"dogecoin", symbol:"DOGE" }
+/* ===== QUICK LINKS DATA ===== */
+const QUICK_LINKS = [
+  { label:"SAP",         sub:"ERP",           ico:"S",  url:"https://www.sap.com" },
+  { label:"SmartSheet",  sub:"Projects",       ico:"SS", url:"https://app.smartsheet.com" },
+  { label:"Coupa",       sub:"Procurement",    ico:"Co", url:"https://milliporesigma.coupahost.com" },
+  { label:"Ariba",       sub:"Sourcing",       ico:"Ar", url:"https://service.ariba.com" },
+  { label:"Outlook",     sub:"Email",          ico:"@",  url:"https://outlook.office.com" },
+  { label:"Teams",       sub:"Comms",          ico:"T",  url:"https://teams.microsoft.com" },
+  { label:"SharePoint",  sub:"Docs",           ico:"SP", url:"https://www.office.com/launch/sharepoint" },
+  { label:"PubChem",     sub:"CAS lookup",     ico:"PC", url:"https://pubchem.ncbi.nlm.nih.gov" },
+  { label:"FDA Recalls", sub:"Safety alerts",  ico:"FDA",url:"https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts" },
+  { label:"USP Catalog", sub:"Standards",      ico:"USP",url:"https://store.usp.org" },
+  { label:"SDS Search",  sub:"Safety data",    ico:"SDS",url:"https://www.sigmaaldrich.com/US/en/sds" },
+  { label:"FedEx Track", sub:"Logistics",      ico:"FX", url:"https://www.fedex.com/en-us/tracking.html" },
 ];
 
-/* ========= APPROVED VENDORS ========= */
-const APPROVED_VENDORS = [
-  { name:"Sigma-Aldrich Chemical Co., Inc",                 domain:"sigmaaldrich.com" },
-  { name:"VWR Scientific, Inc",                             domain:"vwr.com" },
-  { name:"Fisher Scientific",                               domain:"fishersci.com" },
-  { name:"Thermo Fisher Scientific (incl. Alfa Aesar)",     domain:"thermofisher.com" },
-  { name:"Cayman Chemical Company",                         domain:"caymanchem.com" },
-  { name:"TCI America",                                     domain:"tcichemicals.com" },
-  { name:"AK Scientific, Inc",                              domain:"aksci.com" },
-  { name:"Alfa Chemistry",                                  domain:"alfa-chemistry.com" },
-  { name:"Toronto Research Chemicals",                      domain:"trc-canada.com" },
-  { name:"Spectrum Chemicals",                              domain:"spectrumchemical.com" },
-  { name:"Strem Chemicals",                                 domain:"strem.com" },
-  { name:"Combi-Blocks",                                    domain:"combi-blocks.com" },
-  { name:"Matrix Scientific",                               domain:"matrixscientific.com" },
-  { name:"Oakwood Products, Inc",                           domain:"oakwoodchemical.com" },
-  { name:"MedChemExpress",                                  domain:"medchemexpress.com" },
-  { name:"Chemscene",                                       domain:"chemscene.com" },
-  { name:"BOC Sciences/BOCSCI inc.",                        domain:"bocsci.com" },
-  { name:"BLDpharm",                                        domain:"bldpharm.com" },
-  { name:"AccuStandards",                                   domain:"accustandards.com" },
-  { name:"Chem Service, Inc.",                              domain:"chemservice.com" },
-  { name:"Cambridge Isotopes Labs, Inc (CIL)",              domain:"isotope.com" },
-  { name:"CDN Isotopes",                                    domain:"cdnisotopes.com" },
-  { name:"Inorganic Ventures",                              domain:"inorganicventures.com" },
-  { name:"Absolute Standards, Inc",                         domain:"absolutestandards.com" },
-  { name:"Restek Corp.",                                    domain:"restek.com" },
-  { name:"Phenomenex",                                      domain:"phenomenex.com" },
-  { name:"Avanti Polar Lipids",                             domain:"avantilipids.com" },
-  { name:"Santa Cruz Biotechnology",                        domain:"scbt.com" },
-  { name:"Bachem AG",                                       domain:"bachem.com" },
-  { name:"Steraloids, Inc.",                                domain:"steraloids.com" },
-  { name:"Purisys LLC",                                     domain:"purisys.com" },
-  { name:"Noramco",                                         domain:"noramco.com" },
-  { name:"SynQuest Labs, Inc.",                             domain:"synquestlabs.com" },
-  { name:"Synthonix",                                       domain:"synthonix.com" },
-  { name:"AstaTech, Inc.",                                  domain:"astatech.com" },
-  { name:"Advanced ChemBlocks",                             domain:"advancedchemblocks.com" },
-  { name:"Manchester Organics",                             domain:"manchesterorganics.com" },
-  { name:"Larodan",                                         domain:"larodan.com" },
-  { name:"Exfluor Research Corporation",                    domain:"exfluor.com" },
-  { name:"Dalton Research Molecules",                       domain:"daltonresearch.com" },
-  { name:"Echelon Biosciences",                             domain:"echelon-inc.com" },
-  { name:"Prospec",                                         domain:"prospecbio.com" },
-  { name:"Ontario Chemicals",                               domain:"ontariochemicals.com" },
-  { name:"Pure Chemistry Scientific, Inc.",                 domain:"purechemistry.com" },
-  { name:"SelectLab Chemicals GmbH",                        domain:"selectlab.de" },
-  { name:"LGC GmbH",                                        domain:"lgcgroup.com" },
-  { name:"Phytolab GmbH and Co. KG",                        domain:"phytolab.de" },
-  { name:"abcr GmbH",                                       domain:"abcr.de" },
-  { name:"Accela Chem Bio",                                 domain:"accelacb.com" },
-  { name:"ClearSynth Laboratories",                         domain:"clearsynth.com" },
-  { name:"Veeprho Laboratories Pvt Ltd",                    domain:"veeprho.com" },
+/* ===== VENDORS ===== */
+const VENDORS = [
+  {name:"Sigma-Aldrich",                 d:"sigmaaldrich.com"},
+  {name:"VWR Scientific",                d:"vwr.com"},
+  {name:"Fisher Scientific",             d:"fishersci.com"},
+  {name:"Thermo Fisher / Alfa Aesar",    d:"thermofisher.com"},
+  {name:"Cayman Chemical",               d:"caymanchem.com"},
+  {name:"TCI America",                   d:"tcichemicals.com"},
+  {name:"AK Scientific",                 d:"aksci.com"},
+  {name:"Alfa Chemistry",                d:"alfa-chemistry.com"},
+  {name:"Toronto Research Chemicals",    d:"trc-canada.com"},
+  {name:"Spectrum Chemicals",            d:"spectrumchemical.com"},
+  {name:"Strem Chemicals",               d:"strem.com"},
+  {name:"Combi-Blocks",                  d:"combi-blocks.com"},
+  {name:"Matrix Scientific",             d:"matrixscientific.com"},
+  {name:"Oakwood Products",              d:"oakwoodchemical.com"},
+  {name:"MedChemExpress",                d:"medchemexpress.com"},
+  {name:"Chemscene",                     d:"chemscene.com"},
+  {name:"BOC Sciences",                  d:"bocsci.com"},
+  {name:"BLDpharm",                      d:"bldpharm.com"},
+  {name:"AccuStandards",                 d:"accustandards.com"},
+  {name:"Chem Service",                  d:"chemservice.com"},
+  {name:"Cambridge Isotopes (CIL)",      d:"isotope.com"},
+  {name:"CDN Isotopes",                  d:"cdnisotopes.com"},
+  {name:"Inorganic Ventures",            d:"inorganicventures.com"},
+  {name:"Absolute Standards",            d:"absolutestandards.com"},
+  {name:"Restek",                        d:"restek.com"},
+  {name:"Phenomenex",                    d:"phenomenex.com"},
+  {name:"Avanti Polar Lipids",           d:"avantilipids.com"},
+  {name:"Santa Cruz Biotech",            d:"scbt.com"},
+  {name:"Bachem AG",                     d:"bachem.com"},
+  {name:"Steraloids",                    d:"steraloids.com"},
+  {name:"Purisys",                       d:"purisys.com"},
+  {name:"Noramco",                       d:"noramco.com"},
+  {name:"SynQuest Labs",                 d:"synquestlabs.com"},
+  {name:"Synthonix",                     d:"synthonix.com"},
+  {name:"AstaTech",                      d:"astatech.com"},
+  {name:"Advanced ChemBlocks",           d:"advancedchemblocks.com"},
+  {name:"Manchester Organics",           d:"manchesterorganics.com"},
+  {name:"Larodan",                       d:"larodan.com"},
+  {name:"Exfluor Research",              d:"exfluor.com"},
+  {name:"Echelon Biosciences",           d:"echelon-inc.com"},
+  {name:"Prospec",                       d:"prospecbio.com"},
+  {name:"Ontario Chemicals",             d:"ontariochemicals.com"},
+  {name:"Pure Chemistry Scientific",     d:"purechemistry.com"},
+  {name:"SelectLab Chemicals",           d:"selectlab.de"},
+  {name:"LGC GmbH",                      d:"lgcgroup.com"},
+  {name:"Phytolab GmbH",                 d:"phytolab.de"},
+  {name:"abcr GmbH",                     d:"abcr.de"},
+  {name:"Accela Chem Bio",               d:"accelacb.com"},
+  {name:"ClearSynth",                    d:"clearsynth.com"},
+  {name:"Veeprho Laboratories",          d:"veeprho.com"},
 ];
 
-/* ========= HELPERS ========= */
-const $ = s => document.querySelector(s);
-const enc = s => encodeURIComponent(s).replace(/%20/g,'+');
+/* ===== HELPERS ===== */
+const $  = s => document.querySelector(s);
+const enc = s => encodeURIComponent(s);
 const toF = c => (c*9/5)+32;
-const todayMMDDYYYY = () => {
-  const d = new Date(); const mm=String(d.getMonth()+1).padStart(2,"0");
-  const dd=String(d.getDate()).padStart(2,"0"); const yy=d.getFullYear();
-  return `${mm}/${dd}/${yy}`;
+const fmt = (x,d=3) => Number.isFinite(x) ? Number(x).toFixed(d) : "--";
+const todayStr = () => {
+  const d=new Date(),mm=String(d.getMonth()+1).padStart(2,"0"),dd=String(d.getDate()).padStart(2,"0");
+  return `${mm}/${dd}/${d.getFullYear()}`;
 };
-const iconFor = code => ({0:"â˜€ï¸",1:"ðŸŒ¤ï¸",2:"â›…",3:"â˜ï¸",45:"ðŸŒ«ï¸",48:"ðŸŒ«ï¸",51:"ðŸŒ¦ï¸",53:"ðŸŒ¦ï¸",55:"ðŸŒ¦ï¸",61:"ðŸŒ§ï¸",63:"ðŸŒ§ï¸",65:"ðŸŒ§ï¸",71:"â„ï¸",73:"â„ï¸",75:"â„ï¸",80:"ðŸŒ¦ï¸",81:"ðŸŒ¦ï¸",82:"ðŸŒ§ï¸",95:"â›ˆï¸",96:"â›ˆï¸",99:"â›ˆï¸"}[code] || "ðŸŒ¡ï¸");
-const fmt = (x,d=3)=> (Number.isFinite(x)? Number(x).toFixed(d) : "â€”");
-const flash = el => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); };
+const wxIcon = code => ({0:"Sun",1:"MostlySun",2:"PartCloud",3:"Cloudy",45:"Fog",48:"Fog",51:"LtRain",53:"Rain",55:"Rain",61:"Rain",63:"Rain",65:"HvyRain",71:"Snow",73:"Snow",75:"Snow",80:"Showers",81:"Showers",82:"HvyShwrs",95:"Thunder",96:"Thunder",99:"Thunder"}[code]||"");
+// Use text abbrevs instead of emoji to avoid encoding issues
+const wxText = code => ({0:"Sunny",1:"Mostly Sunny",2:"Partly Cloudy",3:"Cloudy",45:"Foggy",48:"Foggy",51:"Lt. Rain",53:"Rain",55:"Rain",61:"Rain",63:"Rain",65:"Hvy Rain",71:"Snow",73:"Snow",75:"Snow",80:"Showers",81:"Showers",82:"Hvy Showers",95:"Thunderstorm",96:"Thunderstorm",99:"Thunderstorm"}[code]||"--");
+const flash = el => { el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); };
 
-/* ========= TICKER ========= */
+/* ===== TICKER ===== */
 async function loadTicker(){
   try{
-    const r = await fetch(`${WORKER_BASE}/ticker?sources=nfl,f1,general`);
-    const items = await r.json();
-    const twice = items.concat(items);
-    $("#ticker").innerHTML = twice.map(x=>`<span class="tick-item">â€¢ ${x.title}</span>`).join("");
+    const r=await fetch(`${WORKER}/ticker?sources=nfl,f1,general`);
+    const items=await r.json();
+    const twice=items.concat(items);
+    $("#ticker").innerHTML=twice.map(x=>`<span class="tick-item">// ${x.title}</span>`).join("");
   }catch{
-    $("#ticker").innerHTML = `<span class="tick-item">Ticker unavailable</span>`;
+    $("#ticker").innerHTML=`<span class="tick-item">// Ticker unavailable</span>`.repeat(8);
   }
 }
 
-/* ========= TRAFFIC â€” Hwy 130/45 route ========= */
-const googleEmbed = (o, d) => {
-  const base = `https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_MAPS_API_KEY}`;
-  const wp = enc(TX130_WAYPOINT);
-  return `${base}&origin=${enc(o)}&destination=${enc(d)}&waypoints=${wp}&mode=driving`;
-};
+/* ===== TRAFFIC ===== */
 function updateTraffic(){
-  $("#map1").src = googleEmbed(HOME_COORDS, WORK_ADDR);
-  $("#map2").src = googleEmbed(WORK_ADDR, HOME_COORDS);
+  const base=`https://www.google.com/maps/embed/v1/directions?key=${MAPS_KEY}`;
+  const wp=enc(WP_130_45);
+  $("#map1").src=`${base}&origin=${enc(HOME)}&destination=${enc(WORK)}&waypoints=${wp}&mode=driving`;
+  $("#map2").src=`${base}&origin=${enc(WORK)}&destination=${enc(HOME)}&waypoints=${wp}&mode=driving`;
 }
 
-/* ========= WEATHER ========= */
-async function wx(lat,lon){
-  const u = `${WORKER_BASE}/wx?lat=${lat}&lon=${lon}`;
-  const r = await fetch(u);
-  if (r.ok) return r.json();
-  const url = new URL("https://api.open-meteo.com/v1/forecast");
-  url.search = new URLSearchParams({
-    latitude: lat, longitude: lon, timezone:"auto", wind_speed_unit:"mph",
-    current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
-    daily:"temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code",
-    hourly:"temperature_2m,weather_code"
-  }).toString();
-  const r2 = await fetch(url); return r2.json();
-}
+/* ===== WEATHER ===== */
 async function geo(zip){
-  const r = await fetch(`${WORKER_BASE}/geo?zip=${zip}`);
-  if (!r.ok) throw new Error("geo");
+  const r=await fetch(`${WORKER}/geo?zip=${zip}`);
+  if(!r.ok) throw new Error("geo");
   return r.json();
 }
+async function wxFetch(lat,lon){
+  try{
+    const r=await fetch(`${WORKER}/wx?lat=${lat}&lon=${lon}`);
+    if(r.ok) return r.json();
+  }catch{}
+  const url=new URL("https://api.open-meteo.com/v1/forecast");
+  url.search=new URLSearchParams({
+    latitude:lat,longitude:lon,timezone:"auto",wind_speed_unit:"mph",
+    current:"temperature_2m,apparent_temperature,wind_speed_10m,weather_code",
+    daily:"temperature_2m_max,temperature_2m_min,weather_code",
+    hourly:"temperature_2m,weather_code"
+  });
+  const r2=await fetch(url);
+  return r2.json();
+}
 async function loadWeather(){
-  const host = $("#weatherList"); host.innerHTML = "";
-  for (const zip of WEATHER_ZIPS){
+  const host=$("#weatherList"); host.innerHTML="";
+  for(const zip of WX_ZIPS){
     try{
-      const g = await geo(zip);
-      const data = await wx(g.lat, g.lon);
-      const cur = data.current;
-      const minC = data.daily.temperature_2m_min[0];
-      const maxC = data.daily.temperature_2m_max[0];
-      const times = data.hourly.time.map(t=>new Date(t));
-      let i = times.findIndex(t=>t>=new Date()); if (i<0) i=0;
-      const hrs = [];
-      for(let k=0;k<5 && i+k<times.length;k++){
-        hrs.push({ h: times[i+k].getHours().toString().padStart(2,"0"), t: data.hourly.temperature_2m[i+k], c: data.hourly.weather_code[i+k] });
-      }
-      const div = document.createElement("div"); div.className="sym";
-      div.innerHTML = `
+      const g=await geo(zip);
+      const d=await wxFetch(g.lat,g.lon);
+      const cur=d.current;
+      const minC=d.daily.temperature_2m_min[0], maxC=d.daily.temperature_2m_max[0];
+      const times=d.hourly.time.map(t=>new Date(t));
+      let i=times.findIndex(t=>t>=new Date()); if(i<0) i=0;
+      const hrs=[];
+      for(let k=0;k<5&&i+k<times.length;k++) hrs.push({h:times[i+k].getHours().toString().padStart(2,"0"),t:d.hourly.temperature_2m[i+k],c:d.hourly.weather_code[i+k]});
+      const el=document.createElement("div"); el.className="sym";
+      el.innerHTML=`
         <div class="top">
-          <div><strong>${g.name || zip}</strong></div>
-          <div class="mini">${Math.round(cur.wind_speed_10m)} mph wind</div>
+          <strong style="font-size:12px">${g.name||zip}</strong>
+          <span class="mini">${Math.round(cur.wind_speed_10m)} mph</span>
         </div>
-        <div class="price">${Math.round(toF(cur.temperature_2m))}Â°F / ${Math.round(cur.temperature_2m)}Â°C</div>
-        <div class="mini muted">Feels ${Math.round(toF(cur.apparent_temperature))}Â°F Â· Today ${Math.round(toF(minC))}Â°F â€“ ${Math.round(toF(maxC))}Â°F</div>
+        <div class="price">${Math.round(toF(cur.temperature_2m))}&deg;F</div>
+        <div class="mini" style="margin-top:2px">${wxText(cur.weather_code)} &middot; Feels ${Math.round(toF(cur.apparent_temperature))}&deg;F</div>
+        <div class="mini" style="margin-top:1px">Hi ${Math.round(toF(maxC))}&deg; / Lo ${Math.round(toF(minC))}&deg;</div>
         <div class="hrow">
-          ${hrs.map(h=>`<div class="hchip"><div class="ico">${iconFor(h.c)}</div><div class="t mini">${Math.round(toF(h.t))}Â°F</div><div class="mini muted">${h.h}:00</div></div>`).join("")}
+          ${hrs.map(h=>`<div class="hchip"><div class="mini" style="font-size:9px">${wxText(h.c).split(" ")[0]}</div><div class="t">${Math.round(toF(h.t))}&deg;</div><div class="mini">${h.h}:00</div></div>`).join("")}
         </div>`;
-      host.appendChild(div);
-    }catch(e){
-      const div = document.createElement("div"); div.className="sym";
-      div.innerHTML = `<div class="top"><strong>${zip}</strong></div><div class="mini muted">Weather unavailable</div>`;
-      host.appendChild(div);
+      host.appendChild(el);
+    }catch{
+      const el=document.createElement("div"); el.className="sym";
+      el.innerHTML=`<div class="top"><strong>${zip}</strong></div><div class="mini">Unavailable</div>`;
+      host.appendChild(el);
     }
   }
 }
 
-/* ========= SUN ========= */
+/* ===== SUN ===== */
 async function loadSun(){
-  $("#sunDate").textContent = todayMMDDYYYY();
-  let s = null;
+  $("#sunDate").textContent=todayStr();
+  let s=null;
   try{
-    const g = await geo(WEATHER_ZIPS[0]);
-    const u = new URL("https://api.sunrisesunset.io/json");
-    u.search = new URLSearchParams({ lat:g.lat, lng:g.lon, timezone:"auto" }).toString();
-    const r = await fetch(u); const j = await r.json();
-    s = j?.results;
+    const g=await geo(WX_ZIPS[0]);
+    const u=new URL("https://api.sunrisesunset.io/json");
+    u.search=new URLSearchParams({lat:g.lat,lng:g.lon,timezone:"auto"});
+    const r=await fetch(u); const j=await r.json(); s=j?.results;
   }catch{}
-  if (!(s?.sunrise && s?.sunset)){ $("#sunLine").textContent="Unavailable"; return; }
-  const sunrise = s.sunrise, sunset = s.sunset, noon = s.solar_noon || "";
-  $("#sunLine").textContent = `Sunrise ${sunrise} Â· Solar Noon ${noon || "â€”"} Â· Sunset ${sunset}`;
-  const W=350,H=255,xL=16,xR=334,yBase=180,yPeak=50,tick=12,stroke=5,font=15,dotR=9,noonLabelY=yPeak+3;
-  const arc=`M ${xL},${yBase} Q ${(xL+xR)/2},${yPeak} ${xR},${yBase}`;
-  const todayISO = new Date().toLocaleDateString("en-CA");
-  const toLocalDate = (tStr)=>{
-    const d = new Date(`${todayISO} ${tStr}`); if (!isNaN(d)) return d;
-    const m = tStr.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i); if(!m){ return new Date(); }
-    let hh=parseInt(m[1],10),mm=parseInt(m[2],10),ss=parseInt(m[3]||"0",10);
+  if(!s?.sunrise||!s?.sunset){$("#sunLine").textContent="Unavailable"; return;}
+  const {sunrise,sunset,solar_noon:noon}=s;
+  $("#sunLine").textContent=`Sunrise ${sunrise} \u00b7 Noon ${noon||"--"} \u00b7 Sunset ${sunset}`;
+  const W=340,H=200,xL=14,xR=326,yB=155,yP=42,tk=10,sw=4,fs=13,dr=8;
+  const arc=`M ${xL},${yB} Q ${(xL+xR)/2},${yP} ${xR},${yB}`;
+  const todayISO=new Date().toLocaleDateString("en-CA");
+  const toLD=t=>{
+    const d=new Date(`${todayISO} ${t}`); if(!isNaN(d)) return d;
+    const m=t.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i); if(!m) return new Date();
+    let hh=parseInt(m[1]),mm=parseInt(m[2]),ss=parseInt(m[3]||"0");
     const ap=m[4].toUpperCase(); if(ap==="PM"&&hh!==12)hh+=12; if(ap==="AM"&&hh===12)hh=0;
-    const base=new Date(); base.setHours(hh,mm,ss,0); return base;
+    const b=new Date(); b.setHours(hh,mm,ss,0); return b;
   };
-  const sr=toLocalDate(sunrise),ss2=toLocalDate(sunset),sn=noon?toLocalDate(noon):new Date((sr.getTime()+ss2.getTime())/2),now=new Date();
-  const span=ss2-sr,pRaw=(now-sr)/span,p=Math.max(0,Math.min(1,pRaw)),r=Math.max(0,Math.min(1,(sn-sr)/span))||0.5;
-  const u=(p<=r)?(p/(r||1))*0.5:0.5+((p-r)/(1-r||1))*0.5;
-  const t=2*u-1,xArc=xL+(xR-xL)*u,yArc=yBase-(yBase-yPeak)*Math.sqrt(Math.max(0,1-t*t));
+  const sr=toLD(sunrise),ss2=toLD(sunset),sn=noon?toLD(noon):new Date((sr.getTime()+ss2.getTime())/2),now=new Date();
+  const span=ss2-sr,p=Math.max(0,Math.min(1,(now-sr)/span)),r=Math.max(0,Math.min(1,(sn-sr)/span))||.5;
+  const u=(p<=r)?(p/r)*.5:.5+((p-r)/(1-r))*.5;
+  const t=2*u-1,xA=xL+(xR-xL)*u,yA=yB-(yB-yP)*Math.sqrt(Math.max(0,1-t*t));
   const isDay=now>=sr&&now<=ss2;
-  $("#sunViz").innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:260px;overflow:visible">
-    <line x1="${xL}" y1="${yBase}" x2="${xR}" y2="${yBase}" stroke="rgba(255,255,255,.35)" stroke-width="${stroke}"/>
-    <line x1="${xL}" y1="${yBase-tick}" x2="${xL}" y2="${yBase+tick}" stroke="rgba(255,255,255,.45)" stroke-width="${stroke}"/>
-    <line x1="${xR}" y1="${yBase-tick}" x2="${xR}" y2="${yBase+tick}" stroke="rgba(255,255,255,.45)" stroke-width="${stroke}"/>
-    <path d="${arc}" fill="none" stroke="rgba(255,209,102,.85)" stroke-width="${stroke}"/>
-    <text x="${xL}" y="${yBase+12}" font-size="${font}" fill="#cbd5e1" text-anchor="start">${sunrise}</text>
-    <text x="${xR}" y="${yBase+12}" font-size="${font}" fill="#cbd5e1" text-anchor="end">${sunset}</text>
-    ${noon?`<text x="${(xL+xR)/2}" y="${noonLabelY}" font-size="${font}" fill="#cbd5e1" text-anchor="middle">Noon ${noon}</text>`:""}
+  const tc="rgba(255,255,255,.35)";
+  $("#sunViz").innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;overflow:visible;display:block">
+    <line x1="${xL}" y1="${yB}" x2="${xR}" y2="${yB}" stroke="${tc}" stroke-width="${sw}"/>
+    <line x1="${xL}" y1="${yB-tk}" x2="${xL}" y2="${yB+tk}" stroke="${tc}" stroke-width="${sw}"/>
+    <line x1="${xR}" y1="${yB-tk}" x2="${xR}" y2="${yB+tk}" stroke="${tc}" stroke-width="${sw}"/>
+    <path d="${arc}" fill="none" stroke="rgba(255,209,102,.8)" stroke-width="${sw}"/>
+    <text x="${xL}" y="${yB+18}" font-size="${fs}" fill="#8a9bb5" text-anchor="start" font-family="DM Mono,monospace">${sunrise}</text>
+    <text x="${xR}" y="${yB+18}" font-size="${fs}" fill="#8a9bb5" text-anchor="end" font-family="DM Mono,monospace">${sunset}</text>
+    ${noon?`<text x="${(xL+xR)/2}" y="${yP-8}" font-size="${fs}" fill="#8a9bb5" text-anchor="middle" font-family="DM Mono,monospace">${noon}</text>`:""}
     ${isDay
-      ?`<circle cx="${xArc}" cy="${yArc}" r="${dotR}" fill="#ffd166"><title>Now: ${now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})} (day)</title></circle>`
-      :`<circle cx="${(now<sr)?xL-4:xR+4}" cy="${yBase+6}" r="${dotR}" fill="none" stroke="#ffd166" stroke-width="${stroke}"><title>Now: ${now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})} (night)</title></circle>`
+      ?`<circle cx="${xA}" cy="${yA}" r="${dr}" fill="#ffd166"/>`
+      :`<circle cx="${now<sr?xL-3:xR+3}" cy="${yB+4}" r="${dr}" fill="none" stroke="#ffd166" stroke-width="2.5"/>`
     }
   </svg>`;
 }
 
-/* ========= VOTD ========= */
+/* ===== VOTD ===== */
 async function loadVOTD(){
-  $("#votdDate").textContent = todayMMDDYYYY();
+  $("#votdDate").textContent=todayStr();
   try{
-    const r = await fetch(`${WORKER_BASE}/votd`);
-    if (r.ok){ const j = await r.json(); if (j?.text){ $("#votdText").textContent=j.text; $("#votdRef").textContent=j.ref||""; return; } }
+    const r=await fetch(`${WORKER}/votd`);
+    if(r.ok){const j=await r.json();if(j?.text){$("#votdText").textContent=j.text;$("#votdRef").textContent=j.ref||"";return;}}
   }catch{}
   try{
-    const r = await fetch("https://labs.bible.org/api/?passage=votd&type=json");
-    const j = await r.json(); const v = j?.[0];
-    if (v){ $("#votdText").textContent=v.text; $("#votdRef").textContent=`${v.bookname} ${v.chapter}:${v.verse}`; return; }
+    const r=await fetch("https://labs.bible.org/api/?passage=votd&type=json");
+    const j=await r.json(); const v=j?.[0];
+    if(v){$("#votdText").textContent=v.text;$("#votdRef").textContent=`${v.bookname} ${v.chapter}:${v.verse}`;return;}
   }catch{}
-  $("#votdText").textContent="Verse unavailable."; $("#votdRef").textContent="";
+  $("#votdText").textContent="Verse unavailable.";
 }
 
-/* ========= EVENTS ========= */
+/* ===== EVENTS ===== */
 async function loadEvents(){
-  const host = $("#eventsList"); host.innerHTML = "";
+  const host=$("#eventsList"); host.innerHTML="";
   try{
-    const r = await fetch(`${WORKER_BASE}/events?postalCode=${encodeURIComponent(EVENTS_ZIP)}`);
-    const j = await r.json();
-    if (Array.isArray(j) && j.length){
+    const r=await fetch(`${WORKER}/events?postalCode=${enc(EV_ZIP)}`);
+    const j=await r.json();
+    if(Array.isArray(j)&&j.length){
       j.slice(0,8).forEach(ev=>{
-        const d = document.createElement("div"); d.className="sym";
-        d.innerHTML=`<div class="top"><div><strong>${ev.name||"Event"}</strong></div><div class="mini muted">${ev.city||""} ${ev.state||""}</div></div><div class="mini">${ev.date||""}</div><div class="mini"><a class="pill" href="${ev.url||"#"}" target="_blank" rel="noopener">Details</a></div>`;
-        host.appendChild(d);
+        const el=document.createElement("div"); el.className="sym";
+        el.innerHTML=`<div class="top"><strong style="font-size:12px">${ev.name||"Event"}</strong><span class="mini">${ev.city||""} ${ev.state||""}</span></div><div class="mini" style="margin-top:4px">${ev.date||""}</div><div style="margin-top:6px"><a class="pill" href="${ev.url||"#"}" target="_blank" rel="noopener">Details</a></div>`;
+        host.appendChild(el);
       });
       return;
     }
-    host.innerHTML=`<div class="mini muted">No events or missing TM_KEY on Worker.</div>`;
-  }catch{ host.innerHTML=`<div class="mini muted">Events unavailable.</div>`; }
+    host.innerHTML=`<div class="mini">No events found.</div>`;
+  }catch{host.innerHTML=`<div class="mini">Events unavailable.</div>`;}
 }
 
-/* ========= STOCKS ========= */
+/* ===== STOCKS ===== */
 async function loadStocks(){
-  const host = $("#stocksList"); host.innerHTML = "";
+  const host=$("#stocksList"); host.innerHTML="";
   try{
-    const url=`${WORKER_BASE}/quotes?symbols=${encodeURIComponent(STOCKS.join(","))}`;
-    const r=await fetch(url); const rows=await r.json();
-    if (!Array.isArray(rows)||!rows.length){ host.innerHTML=`<div class="mini muted">Quotes unavailable.</div>`; return; }
+    const r=await fetch(`${WORKER}/quotes?symbols=${enc(STOCKS.join(","))}`);
+    const rows=await r.json();
+    if(!Array.isArray(rows)||!rows.length){host.innerHTML=`<div class="mini">Unavailable.</div>`;return;}
     rows.forEach(q=>{
-      const chg=q.changePercent; const badge=chg==null?"muted":(chg>=0?"chg up":"chg down");
-      const div=document.createElement("div"); div.className="sym";
-      div.innerHTML=`<div class="top"><div><strong>${q.symbol}</strong> <span class="mini muted">${q.name||""}</span></div><div class="mini ${badge}">${chg==null?"â€”":`${chg>=0?"+":""}${chg.toFixed(2)}%`}</div></div><div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-      host.appendChild(div);
+      const pct=q.changePercent;
+      const cls=pct==null?"chg-zero":(pct>=0?"chg up":"chg down");
+      const el=document.createElement("div"); el.className="sym";
+      el.innerHTML=`<div class="top"><div><strong>${q.symbol}</strong> <span class="mini">${q.name||""}</span></div><div class="mini ${cls}">${pct==null?"--":`${pct>=0?"+":""}${pct.toFixed(2)}%`}</div></div><div class="price">$${Number(q.price||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+      host.appendChild(el);
     });
-  }catch{ host.innerHTML=`<div class="mini muted">Quotes unavailable.</div>`; }
+  }catch{host.innerHTML=`<div class="mini">Unavailable.</div>`;}
 }
 
-/* ========= CRYPTO ========= */
+/* ===== CRYPTO ===== */
 async function loadCrypto(){
-  const host=$("#cryptoList"); const status=$("#cryptoStatus");
-  host.innerHTML=""; status.textContent="Loadingâ€¦";
+  const host=$("#cryptoList"),st=$("#cryptoStatus");
+  host.innerHTML=""; st.textContent="Loading...";
   try{
-    const ids=COINS.map(c=>c.id).join(',');
-    const url=`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
-    const r=await fetch(url); if(!r.ok) throw 0;
+    const ids=COINS.map(c=>c.id).join(",");
+    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+    if(!r.ok) throw 0;
     const j=await r.json();
     COINS.forEach(c=>{
       const d=j[c.id]; if(!d) return;
       const pct=d.usd_24h_change??0; const cls=pct>=0?"chg up":"chg down";
-      const div=document.createElement("div"); div.className="sym";
-      div.innerHTML=`<div class="top"><div><strong>${c.symbol}</strong> <span class="mini muted">${c.id}</span></div><div class="mini ${cls}">${(pct>=0?"+":"")}${pct.toFixed(2)}%</div></div><div class="price">$${Number(d.usd||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
-      host.appendChild(div);
+      const el=document.createElement("div"); el.className="sym";
+      el.innerHTML=`<div class="top"><div><strong>${c.sym}</strong> <span class="mini">${c.id}</span></div><div class="mini ${cls}">${pct>=0?"+":""}${pct.toFixed(2)}%</div></div><div class="price">$${Number(d.usd||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`;
+      host.appendChild(el);
     });
-    status.textContent="Live via CoinGecko";
-  }catch(e){ status.textContent="Crypto unavailable."; }
+    st.textContent="Live via CoinGecko";
+  }catch{st.textContent="Unavailable.";}
 }
-$("#cryptoRefresh").addEventListener("click", loadCrypto);
+$("#cryptoRefresh").addEventListener("click",loadCrypto);
 
-/* ========= PELOSI ========= */
+/* ===== PELOSI ===== */
+const PELOSI_SOURCES = [
+  ()=>fetch(`${WORKER}/pelosi`),
+  ()=>fetch("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/filingsdata.json")
+];
 async function loadPelosi(){
-  const st=$("#pelosiStatus"); const tb=$("#pelosiTable tbody");
-  tb.innerHTML=""; st.textContent="Loadingâ€¦";
+  const st=$("#pelosiStatus"),tb=$("#pelosiTable tbody");
+  tb.innerHTML=""; st.textContent="Loading...";
+  let rows=null;
+  // Try worker first
   try{
-    const r=await fetch(`${WORKER_BASE}/pelosi`); const rows=await r.json();
+    const r=await fetch(`${WORKER}/pelosi`);
+    if(r.ok){
+      const j=await r.json();
+      if(Array.isArray(j)&&j.length){ rows=j; }
+    }
+  }catch{}
+  // Fallback: public S3 dataset
+  if(!rows){
+    try{
+      const r=await fetch("https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/filingsdata.json");
+      if(r.ok){
+        const all=await r.json();
+        // Filter to Pelosi only, sort by date desc, take 50
+        rows=all
+          .filter(f=>f.representative&&f.representative.toLowerCase().includes("pelosi"))
+          .sort((a,b)=>new Date(b.disclosure_date||0)-new Date(a.disclosure_date||0))
+          .slice(0,50)
+          .map(f=>({
+            disclosure_date:f.disclosure_date||"",
+            transaction_date:f.transaction_date||"",
+            ticker:f.ticker||f.asset_description||"",
+            type:f.type||"",
+            amount:f.amount||"",
+            ptr_link:f.ptr_link||""
+          }));
+      }
+    }catch{}
+  }
+  if(rows&&rows.length){
     rows.forEach(rw=>{
       const tr=document.createElement("tr");
-      tr.innerHTML=`<td>${rw.disclosure_date||""}</td><td>${rw.transaction_date||""}</td><td>${rw.ticker||rw.asset_description||""}</td><td>${rw.type||""}</td><td>${rw.amount||""}</td><td>${rw.ptr_link?`<a class="pill" href="${rw.ptr_link}" target="_blank" rel="noopener">PTR</a>`:""}</td>`;
+      tr.innerHTML=`<td>${rw.disclosure_date}</td><td>${rw.transaction_date}</td><td>${rw.ticker}</td><td>${rw.type}</td><td>${rw.amount}</td><td>${rw.ptr_link?`<a href="${rw.ptr_link}" target="_blank" rel="noopener" class="pill" style="cursor:pointer">PTR</a>`:""}</td>`;
       tb.appendChild(tr);
     });
-    st.textContent=rows.length?"Loaded.":"No trades found.";
-  }catch(e){ st.textContent="Could not load trades."; }
-}
-
-/* ========= CONVERSIONS ========= */
-// General
-const f_in=$("#f_in"),c_out=$("#c_out"),c_in=$("#c_in"),f_out=$("#f_out");
-const m_in=$("#m_in"),ft_out=$("#ft_out"),in_in=$("#in_in"),cm_out=$("#cm_out");
-const setFlash = el => { el.textContent !== "â€”" && flash(el); };
-
-f_in?.addEventListener('input', ()=>{ const F=parseFloat(f_in.value); c_out.textContent=fmt((F-32)*5/9,2); setFlash(c_out); });
-c_in?.addEventListener('input', ()=>{ const C=parseFloat(c_in.value); f_out.textContent=fmt((C*9/5)+32,2); setFlash(f_out); });
-m_in?.addEventListener('input', ()=>{ const m=parseFloat(m_in.value); ft_out.textContent=fmt(m*3.280839895,4); setFlash(ft_out); });
-in_in?.addEventListener('input', ()=>{ const inch=parseFloat(in_in.value); cm_out.textContent=fmt(inch*2.54,2); setFlash(cm_out); });
-
-// Mass converters
-const mg_in=$("#mg_in"),g_from_mg=$("#g_from_mg"),kg_from_mg=$("#kg_from_mg");
-const g_in=$("#g_in"),mg_from_g=$("#mg_from_g"),kg_from_g=$("#kg_from_g");
-const kg_in=$("#kg_in"),g_from_kg=$("#g_from_kg"),mg_from_kg=$("#mg_from_kg");
-
-mg_in?.addEventListener('input', ()=>{
-  const v=parseFloat(mg_in.value);
-  g_from_mg.textContent=fmt(v/1000,6); flash(g_from_mg);
-  kg_from_mg.textContent=fmt(v/1e6,9); flash(kg_from_mg);
-});
-g_in?.addEventListener('input', ()=>{
-  const v=parseFloat(g_in.value);
-  mg_from_g.textContent=fmt(v*1000,3); flash(mg_from_g);
-  kg_from_g.textContent=fmt(v/1000,6); flash(kg_from_g);
-});
-kg_in?.addEventListener('input', ()=>{
-  const v=parseFloat(kg_in.value);
-  g_from_kg.textContent=fmt(v*1000,3); flash(g_from_kg);
-  mg_from_kg.textContent=fmt(v*1e6,3); flash(mg_from_kg);
-});
-
-// Work conversions
-const vol_ml=$("#vol_ml"),density=$("#density"),k_small=$("#k_small"),k_large=$("#k_large");
-const mg_small=$("#mg_small"),g_small=$("#g_small"),kg_small=$("#kg_small");
-const mg_large=$("#mg_large"),g_large=$("#g_large"),kg_large=$("#kg_large");
-const res_small=$("#res_small"),res_large=$("#res_large");
-const k_small_view=$("#k_small_view"),k_small_view2=$("#k_small_view2"),k_small_view3=$("#k_small_view3");
-const k_large_view=$("#k_large_view"),k_large_view2=$("#k_large_view2"),k_large_view3=$("#k_large_view3");
-const ml_to_l=$("#ml_to_l"),liters_out=$("#liters_out"),l_to_ml=$("#l_to_ml"),ml_from_l_out=$("#ml_from_l_out");
-
-function updateWork(){
-  const V=parseFloat(vol_ml.value),rho=parseFloat(density.value);
-  const ks=parseFloat(k_small.value),kl=parseFloat(k_large.value);
-  if(k_small_view){k_small_view.textContent=isFinite(ks)?ks:'â€”';k_small_view2.textContent=isFinite(ks)?ks:'â€”';if(k_small_view3)k_small_view3.textContent=isFinite(ks)?ks:'â€”';}
-  if(k_large_view){k_large_view.textContent=isFinite(kl)?kl:'â€”';k_large_view2.textContent=isFinite(kl)?kl:'â€”';if(k_large_view3)k_large_view3.textContent=isFinite(kl)?kl:'â€”';}
-  if(Number.isFinite(V)){
-    if(V<=1.000000000){
-      res_small.classList.remove('hidden'); res_large.classList.add('hidden');
-      const gS=V*rho*ks;
-      g_small.textContent=fmt(gS,3); mg_small.textContent=fmt(gS*1000,3); kg_small.textContent=fmt(gS/1000,6);
-      g_large.textContent='â€”'; mg_large.textContent='â€”'; kg_large.textContent='â€”';
-    }else{
-      res_large.classList.remove('hidden'); res_small.classList.add('hidden');
-      const gL=V*rho*kl;
-      g_large.textContent=fmt(gL,3); mg_large.textContent=fmt(gL*1000,3); kg_large.textContent=fmt(gL/1000,6);
-      g_small.textContent='â€”'; mg_small.textContent='â€”'; kg_small.textContent='â€”';
-    }
+    st.textContent=`${rows.length} trades loaded`;
   }else{
-    res_small.classList.add('hidden'); res_large.classList.add('hidden');
-    ['g_small','mg_small','kg_small','g_large','mg_large','kg_large'].forEach(id=>{const el=$("#"+id);if(el)el.textContent='â€”';});
+    st.textContent="Could not load trades. Both sources unavailable.";
   }
 }
-[vol_ml,density,k_small,k_large].forEach(el=>el?.addEventListener('input',updateWork));
-ml_to_l?.addEventListener('input',()=>{ liters_out.textContent=fmt(parseFloat(ml_to_l.value)/1000,6); flash(liters_out); });
-l_to_ml?.addEventListener('input',()=>{ ml_from_l_out.textContent=fmt(parseFloat(l_to_ml.value)*1000,3); flash(ml_from_l_out); });
+$("#pelosiRefresh").addEventListener("click",loadPelosi);
 
-/* ========= SOURCING TOOL ========= */
-const vendorGrid = $("#vendorGrid");
-const vendorFilter = $("#vendorFilter");
-const vendorCountEl = $("#vendorCount");
-let selectedVendors = new Set();
+/* ===== QUICK LINKS ===== */
+function renderLinks(){
+  const grid=$("#linksGrid");
+  grid.innerHTML=QUICK_LINKS.map(l=>`
+    <a class="link-tile" href="${l.url}" target="_blank" rel="noopener">
+      <span class="lt-ico" style="font-size:13px;font-weight:700;font-family:var(--font-mono);color:var(--accent)">${l.ico}</span>
+      <span class="lt-label">${l.label}</span>
+      <span class="lt-sub">${l.sub}</span>
+    </a>`).join("");
+}
 
-function renderVendors(filter=""){
-  vendorGrid.innerHTML="";
-  const q = filter.toLowerCase();
-  const visible = APPROVED_VENDORS.filter(v => !q || v.name.toLowerCase().includes(q) || v.domain.toLowerCase().includes(q));
-  visible.forEach((v,i) => {
-    const item = document.createElement("div");
-    item.className="vendor-item";
-    const id=`v_${i}_${v.domain.replace(/\./g,'_')}`;
-    const checked = selectedVendors.has(v.domain) ? "checked" : "";
-    item.innerHTML=`<input type="checkbox" id="${id}" ${checked} data-domain="${v.domain}"><label for="${id}" title="${v.name}">${v.name}</label>`;
-    item.querySelector("input").addEventListener("change", e=>{
-      if(e.target.checked) selectedVendors.add(v.domain);
-      else selectedVendors.delete(v.domain);
-      updateVendorCount();
+/* ===== CONVERSIONS ===== */
+// General
+const gv=(id)=>parseFloat($(id)?.value);
+const so=(id,v,d=2)=>{ const el=$(id); if(el){el.textContent=fmt(v,d); if(Number.isFinite(v)) flash(el);} };
+$('#f_in')?.addEventListener('input',()=>so('#c_out',(gv('#f_in')-32)*5/9));
+$('#c_in')?.addEventListener('input',()=>so('#f_out',gv('#c_in')*9/5+32));
+$('#m_in')?.addEventListener('input',()=>so('#ft_out',gv('#m_in')*3.280839895,4));
+$('#in_in')?.addEventListener('input',()=>so('#cm_out',gv('#in_in')*2.54));
+// Mass
+$('#mg_in')?.addEventListener('input',()=>{ const v=gv('#mg_in'); so('#g_from_mg',v/1000,6); so('#kg_from_mg',v/1e6,9); });
+$('#g_in')?.addEventListener('input',()=>{ const v=gv('#g_in'); so('#mg_from_g',v*1000,3); so('#kg_from_g',v/1000,6); });
+$('#kg_in')?.addEventListener('input',()=>{ const v=gv('#kg_in'); so('#g_from_kg',v*1000,3); so('#mg_from_kg',v*1e6,3); });
+// Work
+function updateWork(){
+  const V=gv('#vol_ml'),rho=gv('#density'),ks=gv('#k_small'),kl=gv('#k_large');
+  ['#ksv1','#ksv2','#ksv3'].forEach(id=>{const el=$(id);if(el)el.textContent=isFinite(ks)?ks:'--';});
+  ['#klv1','#klv2','#klv3'].forEach(id=>{const el=$(id);if(el)el.textContent=isFinite(kl)?kl:'--';});
+  if(Number.isFinite(V)){
+    if(V<=1){
+      $('#res_small').classList.remove('hidden'); $('#res_large').classList.add('hidden');
+      const g=V*rho*ks;
+      so('#mg_small',g*1000,3); so('#g_small',g,4); so('#kg_small',g/1000,7);
+      ['#mg_large','#g_large','#kg_large'].forEach(id=>{const el=$(id);if(el)el.textContent='--';});
+    }else{
+      $('#res_large').classList.remove('hidden'); $('#res_small').classList.add('hidden');
+      const g=V*rho*kl;
+      so('#mg_large',g*1000,3); so('#g_large',g,4); so('#kg_large',g/1000,7);
+      ['#mg_small','#g_small','#kg_small'].forEach(id=>{const el=$(id);if(el)el.textContent='--';});
+    }
+  }else{
+    $('#res_small').classList.add('hidden'); $('#res_large').classList.add('hidden');
+  }
+}
+['#vol_ml','#density','#k_small','#k_large'].forEach(id=>$(id)?.addEventListener('input',updateWork));
+$('#ml_to_l')?.addEventListener('input',()=>so('#liters_out',gv('#ml_to_l')/1000,6));
+$('#l_to_ml')?.addEventListener('input',()=>so('#ml_from_l_out',gv('#l_to_ml')*1000,3));
+
+/* ===== SOURCING ===== */
+let selVendors=new Set(), casNums=[];
+const DEFAULT_SEL=["sigmaaldrich.com","vwr.com","fishersci.com","thermofisher.com","caymanchem.com","tcichemicals.com","trc-canada.com"];
+DEFAULT_SEL.forEach(d=>selVendors.add(d));
+
+function renderVendors(q=""){
+  const g=$("#vndGrid"); g.innerHTML="";
+  const lq=q.toLowerCase();
+  VENDORS.filter(v=>!lq||v.name.toLowerCase().includes(lq)||v.d.includes(lq)).forEach((v,i)=>{
+    const id=`vnd_${i}`;
+    const el=document.createElement("div"); el.className="vnd-item";
+    el.innerHTML=`<input type="checkbox" id="${id}" data-d="${v.d}" ${selVendors.has(v.d)?"checked":""}><label for="${id}" title="${v.name} (${v.d})">${v.name}</label>`;
+    el.querySelector("input").addEventListener("change",e=>{
+      e.target.checked?selVendors.add(v.d):selVendors.delete(v.d);
+      updateVndCount();
     });
-    vendorGrid.appendChild(item);
+    g.appendChild(el);
   });
-  updateVendorCount();
+  updateVndCount();
 }
+function updateVndCount(){ const el=$("#vndCount"); if(el) el.textContent=`${selVendors.size} selected`; }
+$("#vndFilter").addEventListener("input",()=>renderVendors($("#vndFilter").value));
+$("#selAll").addEventListener("click",()=>{
+  const q=$("#vndFilter").value.toLowerCase();
+  VENDORS.filter(v=>!q||v.name.toLowerCase().includes(q)||v.d.includes(q)).forEach(v=>selVendors.add(v.d));
+  renderVendors(q);
+});
+$("#clrAll").addEventListener("click",()=>{ selVendors.clear(); renderVendors($("#vndFilter").value); });
 
-function updateVendorCount(){
-  vendorCountEl.textContent = `${selectedVendors.size} selected`;
+function parseCAS(raw){ return raw.split(/[\n,;]+/).map(s=>s.trim()).filter(s=>/^\d{2,7}-\d{2}-\d$/.test(s)); }
+let casNumbers=[];
+function renderChips(){
+  const c=$("#casChips");
+  c.innerHTML=casNumbers.map((n,i)=>`<span class="cas-chip">${n}<span class="x" data-i="${i}">x</span></span>`).join("");
+  c.querySelectorAll(".x").forEach(x=>x.addEventListener("click",()=>{ casNumbers.splice(+x.dataset.i,1); renderChips(); }));
 }
-
-vendorFilter.addEventListener("input", ()=>renderVendors(vendorFilter.value));
-
-$("#selectAllVendors").addEventListener("click",()=>{
-  const q=vendorFilter.value.toLowerCase();
-  APPROVED_VENDORS.filter(v=>!q||v.name.toLowerCase().includes(q)||v.domain.toLowerCase().includes(q))
-    .forEach(v=>selectedVendors.add(v.domain));
-  renderVendors(vendorFilter.value);
+$("#casInput").addEventListener("blur",()=>{
+  parseCAS($("#casInput").value).forEach(n=>{ if(!casNumbers.includes(n)) casNumbers.push(n); });
+  renderChips();
+});
+$("#btnSearch").addEventListener("click",()=>{
+  if(!casNumbers.length){ alert("Enter at least one valid CAS number (format: XX-XX-X)"); return; }
+  if(!selVendors.size){ alert("Select at least one vendor"); return; }
+  const sites=[...selVendors].map(d=>`site:${d}`).join(" OR ");
+  casNumbers.forEach(n=>window.open(`https://www.google.com/search?q=${encodeURIComponent(`${n} (${sites})`)}`, "_blank","noopener"));
+  const r=$("#srcResult");
+  r.innerHTML=`Opened <b>${casNumbers.length}</b> search${casNumbers.length>1?"es":""} across <b>${selVendors.size}</b> vendor${selVendors.size>1?"s":""}.`;
+  r.classList.add("show");
 });
 
-$("#clearAllVendors").addEventListener("click",()=>{
-  selectedVendors.clear();
-  renderVendors(vendorFilter.value);
-  updateVendorCount();
-});
+/* ===== NOTES ===== */
+const notesKey="dashboard-notes";
+const notesBox=$("#notesBox");
+notesBox.value=localStorage.getItem(notesKey)||"";
+notesBox.addEventListener("input",()=>localStorage.setItem(notesKey,notesBox.value));
+$("#clearNotes").addEventListener("click",()=>{ notesBox.value=""; localStorage.removeItem(notesKey); });
 
-// CAS parsing
-function parseCAS(raw){
-  return raw.split(/[\n,;]+/).map(s=>s.trim()).filter(s=>/^\d{2,7}-\d{2}-\d$/.test(s));
-}
+/* ===== INIT BADGES ===== */
+$("#todayBadge").textContent=todayStr();
+$("#votdDate").textContent=todayStr();
 
-let casNumbers = [];
-
-function updateCasChips(){
-  const chips = $("#casChips");
-  chips.innerHTML = casNumbers.map((c,i)=>
-    `<span class="cas-chip">${c}<span class="x" data-i="${i}">âœ•</span></span>`
-  ).join("");
-  chips.querySelectorAll(".x").forEach(x=>x.addEventListener("click",()=>{
-    casNumbers.splice(parseInt(x.dataset.i),1);
-    updateCasChips();
-  }));
-}
-
-$("#casInput").addEventListener("blur", ()=>{
-  const parsed = parseCAS($("#casInput").value);
-  parsed.forEach(c=>{ if(!casNumbers.includes(c)) casNumbers.push(c); });
-  updateCasChips();
-});
-
-$("#btnSearch").addEventListener("click", ()=>{
-  if(!casNumbers.length){ alert("Enter at least one valid CAS number (format: XXXXXXX-XX-X)"); return; }
-  if(!selectedVendors.size){ alert("Select at least one approved vendor"); return; }
-
-  const siteQuery = [...selectedVendors].map(d=>`site:${d}`).join(" OR ");
-  const summary = document.getElementById("searchSummary");
-
-  casNumbers.forEach(cas=>{
-    const q = `${cas} (${siteQuery})`;
-    const url = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
-    window.open(url, "_blank", "noopener");
+/* ===== ACTIVE NAV ===== */
+const navLinks=document.querySelectorAll('.nav a[href^="#"]');
+const sections=document.querySelectorAll('.section[id]');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
   });
+},{threshold:.25,rootMargin:'-55px 0px 0px 0px'});
+sections.forEach(s=>io.observe(s));
 
-  summary.innerHTML = `Opened <span class="ss-count">${casNumbers.length}</span> search${casNumbers.length>1?"es":""} across <span class="ss-count">${selectedVendors.size}</span> vendor${selectedVendors.size>1?"s":""}.`;
-  summary.classList.add("visible");
+/* ===== THEME ===== */
+const TK="dashboard-theme";
+function applyTheme(t){ document.documentElement.classList.toggle("light",t==="light"); }
+applyTheme(localStorage.getItem(TK)||"dark");
+$("#themeToggle").addEventListener("click",()=>{
+  const light=!document.documentElement.classList.contains("light");
+  applyTheme(light?"light":"dark");
+  localStorage.setItem(TK,light?"light":"dark");
 });
 
-// Init vendors â€” default select the most common chem suppliers
-const defaultSelected = ["sigmaaldrich.com","vwr.com","fishersci.com","thermofisher.com","caymanchem.com","tcichemicals.com","trc-canada.com"];
-defaultSelected.forEach(d=>selectedVendors.add(d));
-renderVendors();
-
-/* ========= NOTES / INIT ========= */
-$("#todayBadge").textContent = todayMMDDYYYY();
-$("#votdDate").textContent = todayMMDDYYYY();
-$("#clearNotes").onclick=()=>{ const t=$("#notesBox"); t.value=""; localStorage.removeItem("dashboard-notes"); };
-const tSaved = localStorage.getItem("dashboard-notes")||""; $("#notesBox").value=tSaved;
-$("#notesBox").addEventListener("input",e=>localStorage.setItem("dashboard-notes",e.target.value));
-
+/* ===== BOOT ===== */
 loadTicker();
 updateTraffic(); setInterval(updateTraffic,120000);
-loadWeather();
+loadWeather();   setInterval(loadWeather,300000);
 loadSun();
-loadVOTD(); setInterval(loadVOTD,30*60*1000);
+loadVOTD();      setInterval(loadVOTD,30*60*1000);
 loadEvents();
-loadStocks(); setInterval(loadStocks,60000);
-loadCrypto(); setInterval(loadCrypto,60000);
+loadStocks();    setInterval(loadStocks,60000);
+loadCrypto();    setInterval(loadCrypto,60000);
 loadPelosi();
-
-/* ========= ACTIVE NAV ========= */
-const sections = document.querySelectorAll('.section[id]');
-const navLinks = document.querySelectorAll('.nav a[href^="#"]');
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+e.target.id));
-    }
-  });
-},{threshold:.3,rootMargin:'-60px 0px 0px 0px'});
-sections.forEach(s=>observer.observe(s));
-
-/* ========= THEME TOGGLE ========= */
-const THEME_KEY="dashboard-theme";
-function applyTheme(theme){ document.documentElement.classList.toggle("light",theme==="light"); }
-const savedTheme=localStorage.getItem(THEME_KEY);
-if(savedTheme==="light"||savedTheme==="dark") applyTheme(savedTheme);
-document.getElementById("themeToggle").addEventListener("click",()=>{
-  const isNowLight=!document.documentElement.classList.contains("light");
-  applyTheme(isNowLight?"light":"dark");
-  localStorage.setItem(THEME_KEY,isNowLight?"light":"dark");
-});
+renderLinks();
+renderVendors();
 </script>
 </body>
 </html>
