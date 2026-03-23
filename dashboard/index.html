@@ -1346,5 +1346,263 @@ const sov = (id, v, d = 2) => {
   if (el) el.textContent = Number.isFinite(v) ? v.toFixed(d) : '--';
 };
 
-document.getElementById('f_in')?.addEventListener('input', () => sov('c_out', (gv('f_in') - 32) * 5 / 9
+document.getElementById('f_in')?.addEventListener('input', () => sov('c_out', (gv('f_in') - 32) * 5 / 9));
+document.getElementById('c_in')?.addEventListener('input', () => sov('f_out', gv('c_in') * 9 / 5 + 32));
+document.getElementById('m_in')?.addEventListener('input', () => sov('ft_out', gv('m_in') * 3.280839895, 4));
+document.getElementById('in_in')?.addEventListener('input', () => sov('cm_out', gv('in_in') * 2.54));
+
+// Mass
+document.getElementById('mg_in')?.addEventListener('input', () => {
+  const v = gv('mg_in');
+  sov('g_from_mg',  v / 1000, 6);
+  sov('kg_from_mg', v / 1e6,  9);
+});
+document.getElementById('g_in')?.addEventListener('input', () => {
+  const v = gv('g_in');
+  sov('mg_from_g', v * 1000, 3);
+  sov('kg_from_g', v / 1000, 6);
+});
+document.getElementById('kg_in')?.addEventListener('input', () => {
+  const v = gv('kg_in');
+  sov('g_from_kg',  v * 1000, 3);
+  sov('mg_from_kg', v * 1e6,  3);
+});
+
+// Work / Volume
+function updateWork() {
+  const V   = gv('vol_ml');
+  const rho = gv('density');
+  const ks  = gv('k_small');
+  const kl  = gv('k_large');
+
+  ['ksv1','ksv2','ksv3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = Number.isFinite(ks) ? ks : '--';
+  });
+  ['klv1','klv2','klv3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = Number.isFinite(kl) ? kl : '--';
+  });
+
+  const rsm = document.getElementById('res_small');
+  const rlg = document.getElementById('res_large');
+
+  if (Number.isFinite(V)) {
+    if (V <= 1) {
+      rsm?.classList.remove('hidden');
+      rlg?.classList.add('hidden');
+      const g = V * rho * ks;
+      sov('mg_small', g * 1000, 3);
+      sov('g_small',  g,        4);
+      sov('kg_small', g / 1000, 7);
+      ['mg_large','g_large','kg_large'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '--';
+      });
+    } else {
+      rlg?.classList.remove('hidden');
+      rsm?.classList.add('hidden');
+      const g = V * rho * kl;
+      sov('mg_large', g * 1000, 3);
+      sov('g_large',  g,        4);
+      sov('kg_large', g / 1000, 7);
+      ['mg_small','g_small','kg_small'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '--';
+      });
+    }
+  } else {
+    rsm?.classList.add('hidden');
+    rlg?.classList.add('hidden');
+  }
+}
+
+['vol_ml','density','k_small','k_large'].forEach(id =>
+  document.getElementById(id)?.addEventListener('input', updateWork)
+);
+document.getElementById('ml_to_l')?.addEventListener('input', () =>
+  sov('liters_out', gv('ml_to_l') / 1000, 6)
+);
+document.getElementById('l_to_ml')?.addEventListener('input', () =>
+  sov('ml_from_l_out', gv('l_to_ml') * 1000, 3)
+);
+
+/* ── 15. SOURCING / CAS ────────────────────────────────────── */
+const VENDORS = [
+  {name:'Sigma-Aldrich',              d:'sigmaaldrich.com'},
+  {name:'VWR Scientific',             d:'vwr.com'},
+  {name:'Fisher Scientific',          d:'fishersci.com'},
+  {name:'Thermo Fisher / Alfa Aesar', d:'thermofisher.com'},
+  {name:'Cayman Chemical',            d:'caymanchem.com'},
+  {name:'TCI America',                d:'tcichemicals.com'},
+  {name:'AK Scientific',              d:'aksci.com'},
+  {name:'Alfa Chemistry',             d:'alfa-chemistry.com'},
+  {name:'Toronto Research Chemicals', d:'trc-canada.com'},
+  {name:'Spectrum Chemicals',         d:'spectrumchemical.com'},
+  {name:'Strem Chemicals',            d:'strem.com'},
+  {name:'Combi-Blocks',               d:'combi-blocks.com'},
+  {name:'Matrix Scientific',          d:'matrixscientific.com'},
+  {name:'Oakwood Products',           d:'oakwoodchemical.com'},
+  {name:'MedChemExpress',             d:'medchemexpress.com'},
+  {name:'Chemscene',                  d:'chemscene.com'},
+  {name:'BOC Sciences',               d:'bocsci.com'},
+  {name:'BLDpharm',                   d:'bldpharm.com'},
+  {name:'AccuStandards',              d:'accustandards.com'},
+  {name:'Chem Service',               d:'chemservice.com'},
+  {name:'Cambridge Isotopes (CIL)',   d:'isotope.com'},
+  {name:'CDN Isotopes',               d:'cdnisotopes.com'},
+  {name:'Inorganic Ventures',         d:'inorganicventures.com'},
+  {name:'Absolute Standards',         d:'absolutestandards.com'},
+  {name:'Restek',                     d:'restek.com'},
+  {name:'Phenomenex',                 d:'phenomenex.com'},
+  {name:'Avanti Polar Lipids',        d:'avantilipids.com'},
+  {name:'Santa Cruz Biotech',         d:'scbt.com'},
+  {name:'Bachem AG',                  d:'bachem.com'},
+  {name:'Steraloids',                 d:'steraloids.com'},
+  {name:'Purisys',                    d:'purisys.com'},
+  {name:'Noramco',                    d:'noramco.com'},
+  {name:'SynQuest Labs',              d:'synquestlabs.com'},
+  {name:'Synthonix',                  d:'synthonix.com'},
+  {name:'AstaTech',                   d:'astatech.com'},
+  {name:'Advanced ChemBlocks',        d:'advancedchemblocks.com'},
+  {name:'Manchester Organics',        d:'manchesterorganics.com'},
+  {name:'Larodan',                    d:'larodan.com'},
+  {name:'Exfluor Research',           d:'exfluor.com'},
+  {name:'Echelon Biosciences',        d:'echelon-inc.com'},
+  {name:'Prospec',                    d:'prospecbio.com'},
+  {name:'Ontario Chemicals',          d:'ontariochemicals.com'},
+  {name:'Pure Chemistry Scientific',  d:'purechemistry.com'},
+  {name:'SelectLab Chemicals',        d:'selectlab.de'},
+  {name:'LGC GmbH',                   d:'lgcgroup.com'},
+  {name:'Phytolab GmbH',              d:'phytolab.de'},
+  {name:'abcr GmbH',                  d:'abcr.de'},
+  {name:'Accela Chem Bio',            d:'accelacb.com'},
+  {name:'ClearSynth',                 d:'clearsynth.com'},
+  {name:'Veeprho Laboratories',       d:'veeprho.com'},
+];
+
+const DEFAULT_SEL = [
+  'sigmaaldrich.com','vwr.com','fishersci.com','thermofisher.com',
+  'caymanchem.com','tcichemicals.com','trc-canada.com'
+];
+let selVendors = new Set(DEFAULT_SEL);
+let casNumbers = [];
+
+function parseCAS(raw) {
+  return raw.split(/[\n,;]+/).map(s => s.trim()).filter(s => /^\d{2,7}-\d{2}-\d$/.test(s));
+}
+
+function renderChips() {
+  const c = document.getElementById('casChips');
+  if (!c) return;
+  c.innerHTML = casNumbers.map((n, i) =>
+    `<span class="cas-chip">${n}<span class="x" data-i="${i}">x</span></span>`
+  ).join('');
+  c.querySelectorAll('.x').forEach(x =>
+    x.addEventListener('click', () => { casNumbers.splice(+x.dataset.i, 1); renderChips(); })
+  );
+}
+
+function updateVndCount() {
+  const el = document.getElementById('vndCount');
+  if (el) el.textContent = `${selVendors.size} selected`;
+}
+
+function renderVendors(q = '') {
+  const g = document.getElementById('vndGrid');
+  if (!g) return;
+  g.innerHTML = '';
+  const lq = q.toLowerCase();
+  VENDORS.filter(v => !lq || v.name.toLowerCase().includes(lq) || v.d.includes(lq))
+    .forEach((v, i) => {
+      const id  = `vnd_${i}`;
+      const div = document.createElement('div');
+      div.className = 'vnd-item';
+      div.innerHTML = `<input type="checkbox" id="${id}" data-d="${v.d}" ${selVendors.has(v.d) ? 'checked' : ''}><label for="${id}" title="${v.name} (${v.d})">${v.name}</label>`;
+      div.querySelector('input').addEventListener('change', e => {
+        e.target.checked ? selVendors.add(v.d) : selVendors.delete(v.d);
+        updateVndCount();
+      });
+      g.appendChild(div);
+    });
+  updateVndCount();
+}
+
+document.getElementById('vndFilter')?.addEventListener('input', () =>
+  renderVendors(document.getElementById('vndFilter').value)
+);
+document.getElementById('selAll')?.addEventListener('click', () => {
+  const q = document.getElementById('vndFilter')?.value.toLowerCase() || '';
+  VENDORS.filter(v => !q || v.name.toLowerCase().includes(q) || v.d.includes(q))
+    .forEach(v => selVendors.add(v.d));
+  renderVendors(q);
+});
+document.getElementById('clrAll')?.addEventListener('click', () => {
+  selVendors.clear();
+  renderVendors(document.getElementById('vndFilter')?.value || '');
+});
+
+document.getElementById('casInput')?.addEventListener('blur', () => {
+  parseCAS(document.getElementById('casInput').value)
+    .forEach(n => { if (!casNumbers.includes(n)) casNumbers.push(n); });
+  renderChips();
+});
+
+document.getElementById('btnSearch')?.addEventListener('click', () => {
+  if (!casNumbers.length) { alert('Enter at least one valid CAS number (format: XX-XX-X)'); return; }
+  if (!selVendors.size)   { alert('Select at least one vendor'); return; }
+  const sites = [...selVendors].map(d => `site:${d}`).join(' OR ');
+  casNumbers.forEach(n =>
+    window.open(`https://www.google.com/search?q=${encodeURIComponent(`${n} (${sites})`)}`, '_blank', 'noopener')
+  );
+  const r = document.getElementById('srcResult');
+  if (r) {
+    r.innerHTML = `Opened <b>${casNumbers.length}</b> search${casNumbers.length > 1 ? 'es' : ''} across <b>${selVendors.size}</b> vendor${selVendors.size > 1 ? 's' : ''}.`;
+    r.classList.add('show');
+  }
+});
+
+renderVendors();
+
+/* ── 16. NOTES / SCRATCHPAD ────────────────────────────────── */
+const NOTES_KEY = 'dashboard-notes';
+const notesBox  = document.getElementById('notesBox');
+if (notesBox) {
+  notesBox.value = localStorage.getItem(NOTES_KEY) || '';
+  notesBox.addEventListener('input', () => localStorage.setItem(NOTES_KEY, notesBox.value));
+}
+document.getElementById('clearNotes')?.addEventListener('click', () => {
+  if (notesBox) notesBox.value = '';
+  localStorage.removeItem(NOTES_KEY);
+});
+
+/* ── 17. THEME TOGGLE ──────────────────────────────────────── */
+const THEME_KEY = 'dashboard-theme';
+function applyTheme(t) {
+  document.documentElement.classList.toggle('light', t === 'light');
+}
+applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
+document.getElementById('themeToggle')?.addEventListener('click', () => {
+  const isLight = !document.documentElement.classList.contains('light');
+  applyTheme(isLight ? 'light' : 'dark');
+  localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
+});
+
+/* ── 18. ACTIVE NAV HIGHLIGHT ──────────────────────────────── */
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+const sections = document.querySelectorAll('.section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a =>
+        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)
+      );
+    }
+  });
+}, { threshold: 0.25, rootMargin: '-55px 0px 0px 0px' });
+sections.forEach(s => observer.observe(s));
+
+</script>
+</body>
+</html>
 
