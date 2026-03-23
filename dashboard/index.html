@@ -403,74 +403,44 @@
 </head>
 <body>
 
-<!-- ============================================================
-     TOP NAVIGATION BAR
-     Links that jump to each section on the page
-============================================================ -->
-<nav>
-  <a href="#weather">Weather</a>
-  <a href="#traffic">Traffic</a>
-  <a href="#stocks">Stocks</a>
-  <a href="#links">Links</a>
-  <a href="#convert">Convert</a>
-  <a href="#sourcing">Sourcing</a>
-  <a href="#notes">Notes</a>
-  <a href="#jmod">Jmod Co.</a>
+<!-- NAV -->
+<nav class="nav" aria-label="Dashboard nav">
+  <div class="navin">
+    <a href="/">Resume</a>
+    <a href="#weather">Weather</a>
+    <a href="#traffic">Traffic</a>
+    <a href="#stocks">Stocks</a>
+    <a href="#links">Links</a>
+    <a href="#conversions">Convert</a>
+    <a href="#sourcing">Sourcing</a>
+    <a href="#notes">Notes</a>
+    <a href="https://www.jordanmoddes.com/jmodco/" target="_blank" rel="noopener">Jmod Co.</a>
+  </div>
 </nav>
 
-<!-- ============================================================
-     NEWS TICKER BAR
-     Fetches ESPN headlines and scrolls them across
-============================================================ -->
-<div class="ticker-wrap">
-  <div class="ticker-inner" id="ticker-inner">
-    <span>Loading headlines…</span>
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true"><div id="ticker" class="ticker-inner">Loading...</div></div>
+
+<div class="wrap">
+
+<!-- WELCOME -->
+<div class="card section" id="welcome" data-cat="personal" style="margin-top:14px;animation-delay:.04s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">J</span> JMOD Dashboard</div>
+    <span id="todayBadge" class="pill"></span>
+  </div>
+  <div class="bd" style="color:var(--muted);font-size:13px">
+    Private dashboard &mdash; tinkering, learning, having fun. Explore anything on display.
   </div>
 </div>
 
-<!-- ============================================================
-     MAIN PAGE WRAPPER
-     Everything inside here is limited to 960px wide
-============================================================ -->
-<div class="page">
-
-  <!-- ──────────────────────────────────────────────────────────
-       DASHBOARD HEADER CARD
-       Shows title, subtitle, and today's date
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="dash-header">
-    <div class="logo">
-      <div class="ico-big">J</div>
-      <div>
-        <h1>JMOD Dashboard</h1>
-        <p>Private dashboard — tinkering, learning, having fun. Explore anything on display.</p>
-      </div>
-    </div>
-    <div class="dash-date" id="dash-date"></div>
+<!-- WEATHER -->
+<div class="card section" id="weather" data-cat="data" style="margin-top:12px;animation-delay:.08s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">W</span> Weather</div>
   </div>
-
-  <!-- ──────────────────────────────────────────────────────────
-       WEATHER SECTION
-       Shows 5 cities with current temp, conditions (emoji),
-       wind, hi/lo, and hourly forecast tiles
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="weather">
-    <div class="sec-header" onclick="toggleSection('weather-body','weather-toggle')">
-      <div class="sec-title">
-        <div class="ico">W</div>
-        Weather
-      </div>
-      <div class="sec-right">
-        <span id="wx-updated"></span>
-        <button class="toggle-btn open" id="weather-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="weather-body">
-      <div class="weather-grid" id="weather-grid">
-        <div class="wx-card"><div class="wx-city">Loading…</div></div>
-      </div>
-    </div>
-  </div>
+  <div class="bd"><div id="weatherList" class="symbols"><div class="mini">Loading...</div></div></div>
+</div>
 
   <!-- ──────────────────────────────────────────────────────────
        SUNRISE & SUNSET / CLOCK SECTION
@@ -539,389 +509,218 @@
         </div>
 
         <!-- RIGHT MAP: To Home -->
-        <div class="map-card">
-          <div class="map-label">
-            🏠 To Home
-            <span class="drive-badge loading" id="drive-to-home">⏱ Calculating…</span>
-          </div>
-          <!-- 
-            Route: 411 W Main St Round Rock TX  →  4800 E Yager Ln Manor TX
-            Via TX-130 S and SH-45 E (natural homebound path)
-          -->
-          <iframe
-            id="map-to-home"
-            src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&origin=411+W+Main+St,+Round+Rock,+TX+78664&destination=4800+E+Yager+Ln,+Manor,+TX+78653&waypoints=TX-130+S+and+SH-45+E,+Pflugerville,+TX&mode=driving"
-            allowfullscreen loading="lazy">
-          </iframe>
+  </div>
+
+<!-- VOTD + EVENTS -->
+<div class="g2 section" id="events" style="margin-top:12px;animation-delay:.16s">
+  <div class="card" data-cat="personal">
+    <div class="hd"><div class="hd-label"><span class="hd-ico">V</span> Verse of the Day</div></div>
+    <div class="bd">
+      <div class="votd-card">
+        <div class="votd-top">
+          <span class="votd-badge">Verse of the Day</span>
+          <span id="votdDate" class="votd-date"></span>
         </div>
-
-      </div>
-      <!-- Drive time note -->
-      <p style="font-size:0.6rem;color:var(--muted);margin-top:0.4rem;">
-        ⚡ Drive times estimated via OSRM open routing — may differ from live traffic.
-      </p>
-    </div>
-  </div>
-
-  <!-- ──────────────────────────────────────────────────────────
-       STOCKS SECTION
-       Shows real-time (delayed) quotes for key tickers
-       Data from Yahoo Finance via allorigins CORS proxy
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="stocks">
-    <div class="sec-header" onclick="toggleSection('stocks-body','stocks-toggle')">
-      <div class="sec-title">
-        <div class="ico">📈</div>
-        Stocks
-      </div>
-      <div class="sec-right">
-        <span id="stocks-updated"></span>
-        <button class="toggle-btn open" id="stocks-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="stocks-body">
-      <div class="stocks-row" id="stocks-row">
-        <div style="font-size:0.68rem;color:var(--muted)">Loading quotes…</div>
+        <p id="votdText" class="votd-quote">Loading&hellip;</p>
+        <span id="votdRef" class="votd-ref"></span>
       </div>
     </div>
   </div>
+  <div class="card" data-cat="data">
+    <div class="hd"><div class="hd-label"><span class="hd-ico">E</span> Local Events</div><span class="pill">7&ndash;14 days</span></div>
+    <div class="bd"><div id="eventsList" class="symbols"><div class="mini">Loading...</div></div></div>
+  </div>
+</div>
 
-  <!-- ──────────────────────────────────────────────────────────
-       QUICK LINKS SECTION
-       Pinned shortcut tiles to frequently-used work sites
-       CHANGES MADE:
-         - SAP  → https://ep.merck.de/irj/portal/sapguisso
-         - Coupa REMOVED
-         - GitHub ADDED
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="links">
-    <div class="sec-header" onclick="toggleSection('links-body','links-toggle')">
-      <div class="sec-title">
-        <div class="ico">🔗</div>
-        Quick Links
-      </div>
-      <div class="sec-right">
-        <span style="font-size:0.6rem;background:#1e2a1e;color:var(--accent2);padding:0.1rem 0.35rem;border-radius:3px;">pinned</span>
-        <button class="toggle-btn open" id="links-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="links-body">
-      <div class="links-grid">
+<!-- STOCKS -->
+<div class="card section" id="stocks" data-cat="finance" style="margin-top:12px;animation-delay:.24s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">$</span> Stocks</div>
+    <span class="pill">auto-refresh 60s</span>
+  </div>
+  <div class="bd"><div id="stocksList" class="symbols"><div class="mini">Loading...</div></div></div>
+</div>
 
-        <!-- SAP - updated link -->
-        <a class="link-tile" href="https://ep.merck.de/irj/portal/sapguisso" target="_blank">
-          <div class="lt-ico">S</div>
-          <div class="lt-name">SAP</div>
-          <div class="lt-sub">ERP</div>
-        </a>
+<!-- CRYPTO -->
+<div class="card section" id="crypto" data-cat="finance" style="margin-top:12px;animation-delay:.26s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">C</span> Crypto</div>
+    <button id="cryptoRefresh" class="pill btn">Refresh</button>
+  </div>
+  <div class="bd">
+    <div id="cryptoList" class="symbols"><div class="mini">Loading...</div></div>
+    <div id="cryptoStatus" class="mini" style="margin-top:6px"></div>
+  </div>
+</div>
 
-        <!-- SmartSheet -->
-        <a class="link-tile" href="https://app.smartsheet.com" target="_blank">
-          <div class="lt-ico">SS</div>
-          <div class="lt-name">SmartSheet</div>
-          <div class="lt-sub">Projects</div>
-        </a>
-
-        <!-- Ariba -->
-        <a class="link-tile" href="https://service.ariba.com" target="_blank">
-          <div class="lt-ico">Ar</div>
-          <div class="lt-name">Ariba</div>
-          <div class="lt-sub">Sourcing</div>
-        </a>
-
-        <!-- Outlook -->
-        <a class="link-tile" href="https://outlook.office.com" target="_blank">
-          <div class="lt-ico">@</div>
-          <div class="lt-name">Outlook</div>
-          <div class="lt-sub">Email</div>
-        </a>
-
-        <!-- Teams -->
-        <a class="link-tile" href="https://teams.microsoft.com" target="_blank">
-          <div class="lt-ico">T</div>
-          <div class="lt-name">Teams</div>
-          <div class="lt-sub">Comms</div>
-        </a>
-
-        <!-- SharePoint -->
-        <a class="link-tile" href="https://merck.sharepoint.com" target="_blank">
-          <div class="lt-ico">SP</div>
-          <div class="lt-name">SharePoint</div>
-          <div class="lt-sub">Docs</div>
-        </a>
-
-        <!-- PubChem -->
-        <a class="link-tile" href="https://pubchem.ncbi.nlm.nih.gov" target="_blank">
-          <div class="lt-ico">PC</div>
-          <div class="lt-name">PubChem</div>
-          <div class="lt-sub">CAS lookup</div>
-        </a>
-
-        <!-- FDA -->
-        <a class="link-tile" href="https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts" target="_blank">
-          <div class="lt-ico">FDA</div>
-          <div class="lt-name">FDA Recalls</div>
-          <div class="lt-sub">Safety alerts</div>
-        </a>
-
-        <!-- USP -->
-        <a class="link-tile" href="https://store.usp.org" target="_blank">
-          <div class="lt-ico">USP</div>
-          <div class="lt-name">USP Catalog</div>
-          <div class="lt-sub">Standards</div>
-        </a>
-
-        <!-- SDS Search -->
-        <a class="link-tile" href="https://www.sigmaaldrich.com/US/en/support/sds-search" target="_blank">
-          <div class="lt-ico">SDS</div>
-          <div class="lt-name">SDS Search</div>
-          <div class="lt-sub">Safety data</div>
-        </a>
-
-        <!-- FedEx -->
-        <a class="link-tile" href="https://www.fedex.com/en-us/tracking.html" target="_blank">
-          <div class="lt-ico">FX</div>
-          <div class="lt-name">FedEx Track</div>
-          <div class="lt-sub">Logistics</div>
-        </a>
-
-        <!-- GitHub - NEW -->
-        <a class="link-tile" href="https://github.com/jordanmoddes/jordanmoddes.github.io" target="_blank">
-          <div class="lt-ico">GH</div>
-          <div class="lt-name">GitHub</div>
-          <div class="lt-sub">My Repo</div>
-        </a>
-
-      </div>
+<!-- PELOSI -->
+<div class="card section" id="pelosi" data-cat="finance" style="margin-top:12px;animation-delay:.28s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">P</span> Nancy Pelosi &mdash; Disclosed Trades</div>
+    <button id="pelosiRefresh" class="pill btn">Refresh</button>
+  </div>
+  <div class="bd">
+    <div id="pelosiStatus" class="mini" style="margin-bottom:8px">Loading&hellip;</div>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <table class="tbl" id="pelosiTable">
+        <thead><tr>
+          <th>Disclosed</th><th>Traded</th><th>Ticker / Asset</th><th>Type</th><th>Amount</th><th>PTR</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
+</div>
 
-  <!-- ──────────────────────────────────────────────────────────
-       PELOSI TRADES SECTION
-       Attempts multiple data sources in sequence:
-       1. Quiver Quant public API
-       2. HouseStockWatcher API
-       3. Capitol Trades (scrape via allorigins)
-       4. OpenSecrets summary
-       5. Static fallback with direct link
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="pelosi">
-    <div class="sec-header" onclick="toggleSection('pelosi-body','pelosi-toggle')">
-      <div class="sec-title">
-        <div class="ico">📊</div>
-        Nancy Pelosi — Disclosed Trades
+<!-- QUICK LINKS (new section) -->
+<div class="card section" id="links" data-cat="personal" style="margin-top:12px;animation-delay:.30s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">L</span> Quick Links</div>
+    <span class="pill">pinned</span>
+  </div>
+  <div class="bd">
+    <div class="links-grid" id="linksGrid"></div>
+  </div>
+</div>
+
+<!-- CONVERSIONS -->
+<div class="card section" id="conversions" data-cat="work" style="margin-top:12px;animation-delay:.32s">
+  <div class="hd"><div class="hd-label"><span class="hd-ico">~</span> Conversions</div></div>
+  <div class="bd">
+
+    <div class="cv-section">General</div>
+    <div class="cv-grid">
+      <div class="cv-tile">
+        <h4>F &rarr; C</h4>
+        <div class="cv-row"><input id="f_in" type="number" step="any" placeholder="&deg;F"><span class="unit">&deg;F</span></div>
+        <div class="cv-row"><span id="c_out" class="cv-out">--</span><span class="unit">&deg;C</span></div>
       </div>
-      <div class="sec-right">
-        <span id="trades-source-label"></span>
-        <button class="toggle-btn open" id="pelosi-toggle">+</button>
+      <div class="cv-tile">
+        <h4>C &rarr; F</h4>
+        <div class="cv-row"><input id="c_in" type="number" step="any" placeholder="&deg;C"><span class="unit">&deg;C</span></div>
+        <div class="cv-row"><span id="f_out" class="cv-out">--</span><span class="unit">&deg;F</span></div>
+      </div>
+      <div class="cv-tile">
+        <h4>m &rarr; ft</h4>
+        <div class="cv-row"><input id="m_in" type="number" step="any" placeholder="m"><span class="unit">m</span></div>
+        <div class="cv-row"><span id="ft_out" class="cv-out">--</span><span class="unit">ft</span></div>
+      </div>
+      <div class="cv-tile">
+        <h4>in &rarr; cm</h4>
+        <div class="cv-row"><input id="in_in" type="number" step="any" placeholder="in"><span class="unit">in</span></div>
+        <div class="cv-row"><span id="cm_out" class="cv-out">--</span><span class="unit">cm</span></div>
       </div>
     </div>
-    <div class="sec-body" id="pelosi-body">
-      <div id="trades-status" class="trades-status">🔄 Loading trade data…</div>
-      <div class="trades-table-wrap">
-        <table class="trades" id="trades-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Ticker</th>
-              <th>Asset</th>
-              <th>Type</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody id="trades-body"></tbody>
+
+    <div class="cv-section">Mass</div>
+    <div class="cv-grid">
+      <div class="cv-tile">
+        <h4>mg &rarr; g / kg</h4>
+        <div class="cv-row"><input id="mg_in" type="number" step="any" placeholder="mg"><span class="unit">mg</span></div>
+        <div class="cv-row"><span id="g_from_mg" class="cv-out">--</span><span class="unit">g</span></div>
+        <div class="cv-row"><span id="kg_from_mg" class="cv-out">--</span><span class="unit">kg</span></div>
+      </div>
+      <div class="cv-tile">
+        <h4>g &rarr; mg / kg</h4>
+        <div class="cv-row"><input id="g_in" type="number" step="any" placeholder="g"><span class="unit">g</span></div>
+        <div class="cv-row"><span id="mg_from_g" class="cv-out">--</span><span class="unit">mg</span></div>
+        <div class="cv-row"><span id="kg_from_g" class="cv-out">--</span><span class="unit">kg</span></div>
+      </div>
+      <div class="cv-tile">
+        <h4>kg &rarr; g / mg</h4>
+        <div class="cv-row"><input id="kg_in" type="number" step="any" placeholder="kg"><span class="unit">kg</span></div>
+        <div class="cv-row"><span id="g_from_kg" class="cv-out">--</span><span class="unit">g</span></div>
+        <div class="cv-row"><span id="mg_from_kg" class="cv-out">--</span><span class="unit">mg</span></div>
+      </div>
+    </div>
+
+    <div class="cv-section">Work</div>
+    <div class="cv-work-wrap">
+      <div>
+        <p class="cv-note" style="margin:0 0 10px">mass (g) = volume &times; density &times; k &nbsp;|&nbsp; mg = g &times; 1000 &nbsp;|&nbsp; kg = g / 1000</p>
+        <div class="cv-inputs-grid">
+          <div class="cv-row"><input id="vol_ml" type="number" step="any" placeholder="Volume"><span class="unit">mL</span></div>
+          <div class="cv-row"><input id="density" type="number" step="any" value="0.979" placeholder="Density"><span class="unit">g/mL</span></div>
+        </div>
+        <div class="cv-factors" style="margin-top:10px">
+          <span class="mini">k (=&lt; 1 mL)</span>
+          <div class="cv-row" style="margin:0"><input id="k_small" type="number" step="any" value="1.15"><span class="unit">k</span></div>
+          <span class="mini">k (&gt; 1 mL)</span>
+          <div class="cv-row" style="margin:0"><input id="k_large" type="number" step="any" value="1.06"><span class="unit">k</span></div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="cv-row"><input id="ml_to_l" type="number" step="any" placeholder="mL to L"><span class="unit">mL</span></div>
+          <div class="cv-row"><span id="liters_out" class="cv-out">--</span><span class="unit">L</span></div>
+          <div class="cv-row" style="margin-top:6px"><input id="l_to_ml" type="number" step="any" placeholder="L to mL"><span class="unit">L</span></div>
+          <div class="cv-row"><span id="ml_from_l_out" class="cv-out">--</span><span class="unit">mL</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="cv-note" style="margin:0 0 8px">Results</p>
+        <table class="cv-res-table">
+          <tbody id="res_small">
+            <tr><td class="mini">mg (k=<span id="ksv1">1.15</span>)</td><td class="cv-res-right" id="mg_small">--</td></tr>
+            <tr><td class="mini">g  (k=<span id="ksv2">1.15</span>)</td><td class="cv-res-right" id="g_small">--</td></tr>
+            <tr><td class="mini">kg (k=<span id="ksv3">1.15</span>)</td><td class="cv-res-right" id="kg_small">--</td></tr>
+          </tbody>
+          <tbody id="res_large" class="hidden">
+            <tr><td class="mini">mg (k=<span id="klv1">1.06</span>)</td><td class="cv-res-right" id="mg_large">--</td></tr>
+            <tr><td class="mini">g  (k=<span id="klv2">1.06</span>)</td><td class="cv-res-right" id="g_large">--</td></tr>
+            <tr><td class="mini">kg (k=<span id="klv3">1.06</span>)</td><td class="cv-res-right" id="kg_large">--</td></tr>
+          </tbody>
         </table>
       </div>
-      <div class="trades-source" id="trades-source-note"></div>
     </div>
+
   </div>
+</div>
 
-  <!-- ──────────────────────────────────────────────────────────
-       CONVERSIONS SECTION
-       Unit converters: temp, length, mass, lab volumes
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="convert">
-    <div class="sec-header" onclick="toggleSection('conv-body','conv-toggle')">
-      <div class="sec-title">
-        <div class="ico">⚗</div>
-        Conversions
+<!-- SOURCING -->
+<div class="card section" id="sourcing" data-cat="work" style="margin-top:12px;animation-delay:.34s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">S</span> CAS Sourcing</div>
+    <span class="pill">approved vendors</span>
+  </div>
+  <div class="bd">
+    <div class="src-layout">
+      <div>
+        <div class="cv-section" style="margin-top:0">CAS Numbers</div>
+        <textarea id="casInput" class="cas-input" placeholder="One per line or comma-separated&#10;e.g. 75-09-2&#10;64-17-5"></textarea>
+        <div id="casChips" class="cas-chips"></div>
+        <button class="btn-search" id="btnSearch">Search Google</button>
+        <div id="srcResult" class="src-result"></div>
       </div>
-      <div class="sec-right">
-        <button class="toggle-btn open" id="conv-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="conv-body">
-
-      <!-- GENERAL conversions -->
-      <div class="conv-group-label">General</div>
-      <div class="conv-grid">
-
-        <div class="conv-card">
-          <div class="cc-title">°F → °C</div>
-          <input type="number" id="ftoc-in" placeholder="°F" oninput="ftoc()">
-          <div class="cc-result" id="ftoc-out">-- °C</div>
+      <div>
+        <div class="cv-section" style="margin-top:0">Vendors</div>
+        <input type="text" id="vndFilter" class="vnd-filter" placeholder="Filter vendors...">
+        <div class="vnd-controls">
+          <button class="vnd-btn" id="selAll">All</button>
+          <button class="vnd-btn" id="clrAll">None</button>
+          <span id="vndCount" class="mini" style="margin-left:auto"></span>
         </div>
-
-        <div class="conv-card">
-          <div class="cc-title">°C → °F</div>
-          <input type="number" id="ctof-in" placeholder="°C" oninput="ctof()">
-          <div class="cc-result" id="ctof-out">-- °F</div>
-        </div>
-
-        <div class="conv-card">
-          <div class="cc-title">m → ft</div>
-          <input type="number" id="mtoft-in" placeholder="m" oninput="mtoft()">
-          <div class="cc-result" id="mtoft-out">-- ft</div>
-        </div>
-
-        <div class="conv-card">
-          <div class="cc-title">in → cm</div>
-          <input type="number" id="intocm-in" placeholder="in" oninput="intocm()">
-          <div class="cc-result" id="intocm-out">-- cm</div>
-        </div>
-
-      </div>
-
-      <!-- MASS conversions -->
-      <div class="conv-group-label">Mass</div>
-      <div class="conv-grid">
-
-        <div class="conv-card">
-          <div class="cc-title">mg → g / kg</div>
-          <input type="number" id="mg-in" placeholder="mg" oninput="mgConv()">
-          <div class="cc-result" id="mg-g">-- g</div>
-          <div class="cc-result" id="mg-kg">-- kg</div>
-        </div>
-
-        <div class="conv-card">
-          <div class="cc-title">g → mg / kg</div>
-          <input type="number" id="g-in" placeholder="g" oninput="gConv()">
-          <div class="cc-result" id="g-mg">-- mg</div>
-          <div class="cc-result" id="g-kg">-- kg</div>
-        </div>
-
-        <div class="conv-card">
-          <div class="cc-title">kg → g / mg</div>
-          <input type="number" id="kg-in" placeholder="kg" oninput="kgConv()">
-          <div class="cc-result" id="kg-g">-- g</div>
-          <div class="cc-result" id="kg-mg">-- mg</div>
-        </div>
-
-      </div>
-
-      <!-- WORK / LAB volume conversions -->
-      <div class="conv-group-label">Lab / Work</div>
-      <div class="conv-grid">
-
-        <div class="conv-card">
-          <div class="cc-title">mL → L</div>
-          <input type="number" id="mltol-in" placeholder="mL" oninput="mltol()">
-          <div class="cc-result" id="mltol-out">-- L</div>
-        </div>
-
-        <div class="conv-card">
-          <div class="cc-title">L → mL</div>
-          <input type="number" id="ltoml-in" placeholder="L" oninput="ltoml()">
-          <div class="cc-result" id="ltoml-out">-- mL</div>
-        </div>
-
-        <div class="conv-card">
-          <div class="cc-title">mass = vol × density × k</div>
-          <input type="number" id="lab-vol" placeholder="Volume (mL)" oninput="labCalc()" style="margin-bottom:0.2rem">
-          <input type="number" id="lab-dens" placeholder="Density (g/mL)" oninput="labCalc()">
-          <div class="cc-hint">k &lt; 1mL = 1.15 | k &gt; 1mL = 1.06</div>
-          <div class="cc-result" id="lab-mg">-- mg</div>
-          <div class="cc-result" id="lab-g">-- g</div>
-          <div class="cc-result" id="lab-kg">-- kg</div>
-        </div>
-
+        <div class="vnd-grid" id="vndGrid"></div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ──────────────────────────────────────────────────────────
-       SOURCING NOTES SECTION
-       Quick text area for sourcing-related notes
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="sourcing">
-    <div class="sec-header" onclick="toggleSection('sourcing-body','sourcing-toggle')">
-      <div class="sec-title">
-        <div class="ico">📋</div>
-        Sourcing Notes
-      </div>
-      <div class="sec-right">
-        <button class="toggle-btn open" id="sourcing-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="sourcing-body">
-      <div class="sourcing-wrap">
-        <textarea id="sourcing-ta" placeholder="Sourcing notes, RFQ details, vendor info…" oninput="saveNote('sourcing-ta')"></textarea>
-      </div>
-    </div>
+<!-- SCRATCHPAD -->
+<div class="card section" id="notes" data-cat="personal" style="margin-top:12px;animation-delay:.36s">
+  <div class="hd">
+    <div class="hd-label"><span class="hd-ico">N</span> Scratchpad</div>
+    <button id="clearNotes" class="pill btn">Clear</button>
   </div>
+  <div class="bd"><textarea id="notesBox" placeholder="Quick notes, saved locally..."></textarea></div>
+</div>
 
-  <!-- ──────────────────────────────────────────────────────────
-       SCRATCH PAD / NOTES SECTION
-       Auto-saves to localStorage so notes persist on refresh
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="notes">
-    <div class="sec-header" onclick="toggleSection('notes-body','notes-toggle')">
-      <div class="sec-title">
-        <div class="ico">📝</div>
-        Scratch Pad
-      </div>
-      <div class="sec-right">
-        <button class="toggle-btn open" id="notes-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="notes-body">
-      <div class="notes-wrap">
-        <textarea id="notes-ta" placeholder="Type anything… auto-saved in your browser." oninput="saveNote('notes-ta')"></textarea>
-        <div class="notes-status" id="notes-status">Auto-saved locally</div>
-      </div>
-    </div>
-  </div>
+<div class="btm"><button class="btn-top" onclick="location.href='#top'">Back to top</button></div>
+<div class="footer">&#10022; Jordan Moddes &mdash; jmod.ai &#10022;</div>
 
-  <!-- ──────────────────────────────────────────────────────────
-       JMOD CO. SECTION
-       Personal company / project stats placeholder
-  ────────────────────────────────────────────────────────── -->
-  <div class="card" id="jmod">
-    <div class="sec-header" onclick="toggleSection('jmod-body','jmod-toggle')">
-      <div class="sec-title">
-        <div class="ico">J</div>
-        Jmod Co.
-      </div>
-      <div class="sec-right">
-        <button class="toggle-btn open" id="jmod-toggle">+</button>
-      </div>
-    </div>
-    <div class="sec-body" id="jmod-body">
-      <div class="jmod-row">
-        <div class="jmod-stat">
-          <div class="js-label">GitHub Repos</div>
-          <div class="js-value" id="jmod-repos">—</div>
-        </div>
-        <div class="jmod-stat">
-          <div class="js-label">Dashboard Version</div>
-          <div class="js-value">v3.0</div>
-        </div>
-        <div class="jmod-stat">
-          <div class="js-label">Last Updated</div>
-          <div class="js-value" id="jmod-updated">—</div>
-        </div>
-        <div class="jmod-stat">
-          <div class="js-label">Status</div>
-          <div class="js-value" style="color:var(--accent2)">🟢 Online</div>
-        </div>
-      </div>
-    </div>
-  </div>
+</div><!-- /wrap -->
 
-  <footer>JMOD Dashboard · Private · Built for personal use</footer>
-</div><!-- end .page -->
+<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">&#9788;</button>
 
-
+<script>
 <!-- ============================================================
      ALL JAVASCRIPT BELOW
      Organised by feature — each block is clearly labelled
@@ -1220,6 +1019,77 @@ setInterval(() => {
   fetchDriveTime(HOME_COORD, WORK_COORD, 'drive-to-work');
   fetchDriveTime(WORK_COORD, HOME_COORD, 'drive-to-home');
 }, 300000);
+
+/* ===== QUICK LINKS DATA ===== */
+const QUICK_LINKS = [
+  { label:"SAP",         sub:"ERP",           ico:"S",  url:"https://www.sap.com" },
+  { label:"SmartSheet",  sub:"Projects",       ico:"SS", url:"https://app.smartsheet.com" },
+  { label:"Coupa",       sub:"Procurement",    ico:"Co", url:"https://milliporesigma.coupahost.com" },
+  { label:"Ariba",       sub:"Sourcing",       ico:"Ar", url:"https://service.ariba.com" },
+  { label:"Outlook",     sub:"Email",          ico:"@",  url:"https://outlook.office.com" },
+  { label:"Teams",       sub:"Comms",          ico:"T",  url:"https://teams.microsoft.com" },
+  { label:"SharePoint",  sub:"Docs",           ico:"SP", url:"https://www.office.com/launch/sharepoint" },
+  { label:"PubChem",     sub:"CAS lookup",     ico:"PC", url:"https://pubchem.ncbi.nlm.nih.gov" },
+  { label:"FDA Recalls", sub:"Safety alerts",  ico:"FDA",url:"https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts" },
+  { label:"USP Catalog", sub:"Standards",      ico:"USP",url:"https://store.usp.org" },
+  { label:"SDS Search",  sub:"Safety data",    ico:"SDS",url:"https://www.sigmaaldrich.com/US/en/sds" },
+  { label:"FedEx Track", sub:"Logistics",      ico:"FX", url:"https://www.fedex.com/en-us/tracking.html" },
+];
+
+/* ===== VENDORS ===== */
+const VENDORS = [
+  {name:"Sigma-Aldrich",                 d:"sigmaaldrich.com"},
+  {name:"VWR Scientific",                d:"vwr.com"},
+  {name:"Fisher Scientific",             d:"fishersci.com"},
+  {name:"Thermo Fisher / Alfa Aesar",    d:"thermofisher.com"},
+  {name:"Cayman Chemical",               d:"caymanchem.com"},
+  {name:"TCI America",                   d:"tcichemicals.com"},
+  {name:"AK Scientific",                 d:"aksci.com"},
+  {name:"Alfa Chemistry",                d:"alfa-chemistry.com"},
+  {name:"Toronto Research Chemicals",    d:"trc-canada.com"},
+  {name:"Spectrum Chemicals",            d:"spectrumchemical.com"},
+  {name:"Strem Chemicals",               d:"strem.com"},
+  {name:"Combi-Blocks",                  d:"combi-blocks.com"},
+  {name:"Matrix Scientific",             d:"matrixscientific.com"},
+  {name:"Oakwood Products",              d:"oakwoodchemical.com"},
+  {name:"MedChemExpress",                d:"medchemexpress.com"},
+  {name:"Chemscene",                     d:"chemscene.com"},
+  {name:"BOC Sciences",                  d:"bocsci.com"},
+  {name:"BLDpharm",                      d:"bldpharm.com"},
+  {name:"AccuStandards",                 d:"accustandards.com"},
+  {name:"Chem Service",                  d:"chemservice.com"},
+  {name:"Cambridge Isotopes (CIL)",      d:"isotope.com"},
+  {name:"CDN Isotopes",                  d:"cdnisotopes.com"},
+  {name:"Inorganic Ventures",            d:"inorganicventures.com"},
+  {name:"Absolute Standards",            d:"absolutestandards.com"},
+  {name:"Restek",                        d:"restek.com"},
+  {name:"Phenomenex",                    d:"phenomenex.com"},
+  {name:"Avanti Polar Lipids",           d:"avantilipids.com"},
+  {name:"Santa Cruz Biotech",            d:"scbt.com"},
+  {name:"Bachem AG",                     d:"bachem.com"},
+  {name:"Steraloids",                    d:"steraloids.com"},
+  {name:"Purisys",                       d:"purisys.com"},
+  {name:"Noramco",                       d:"noramco.com"},
+  {name:"SynQuest Labs",                 d:"synquestlabs.com"},
+  {name:"Synthonix",                     d:"synthonix.com"},
+  {name:"AstaTech",                      d:"astatech.com"},
+  {name:"Advanced ChemBlocks",           d:"advancedchemblocks.com"},
+  {name:"Manchester Organics",           d:"manchesterorganics.com"},
+  {name:"Larodan",                       d:"larodan.com"},
+  {name:"Exfluor Research",              d:"exfluor.com"},
+  {name:"Echelon Biosciences",           d:"echelon-inc.com"},
+  {name:"Prospec",                       d:"prospecbio.com"},
+  {name:"Ontario Chemicals",             d:"ontariochemicals.com"},
+  {name:"Pure Chemistry Scientific",     d:"purechemistry.com"},
+  {name:"SelectLab Chemicals",           d:"selectlab.de"},
+  {name:"LGC GmbH",                      d:"lgcgroup.com"},
+  {name:"Phytolab GmbH",                 d:"phytolab.de"},
+  {name:"abcr GmbH",                     d:"abcr.de"},
+  {name:"Accela Chem Bio",               d:"accelacb.com"},
+  {name:"ClearSynth",                    d:"clearsynth.com"},
+  {name:"Veeprho Laboratories",          d:"veeprho.com"},
+];
+
 
 
 /* ============================================================
