@@ -24,12 +24,12 @@
   --rose-light: #FFE4E6;
   --purple: #7C3AED;
   --purple-light: #EDE9FE;
+  --teal: #0D9488;
+  --teal-light: #CCFBF1;
   --r: 14px;
   --r-sm: 10px;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
 body {
   font-family: 'Outfit', sans-serif;
   background: var(--bg);
@@ -49,7 +49,6 @@ body {
   z-index: 100;
   transition: opacity 1.6s ease;
 }
-
 .g-sub { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-xsoft); margin-bottom: 20px; }
 .g-name { font-size: 42px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
 .g-tagline { font-size: 16px; color: var(--text-soft); font-weight: 500; margin-bottom: 48px; line-height: 1.6; max-width: 280px; }
@@ -65,77 +64,54 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 0 16px;
 }
-
 .nav-back {
   display: flex; align-items: center; gap: 6px;
   background: none; border: none; cursor: pointer;
   color: var(--accent); font-size: 15px; font-weight: 600;
-  font-family: 'Outfit', sans-serif;
-  padding: 6px 0;
+  font-family: 'Outfit', sans-serif; padding: 6px 0;
 }
-
 .nav-title { font-size: 15px; font-weight: 700; color: var(--text-soft); }
-
 .streak-badge {
   font-size: 13px; font-weight: 700;
-  background: var(--amber-light);
-  color: var(--amber);
+  background: var(--amber-light); color: var(--amber);
   padding: 5px 11px; border-radius: 999px;
   border: 1px solid rgba(217,119,6,0.2);
 }
 
 /* ===== HOME ===== */
-.home-top {
-  padding: 32px 0 24px;
-}
-
+.home-top { padding: 32px 0 24px; }
 .home-greeting { font-size: 13px; font-weight: 600; color: var(--text-xsoft); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
 .home-title { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 6px; line-height: 1.2; }
 .home-sub { font-size: 14px; color: var(--text-soft); font-weight: 500; }
-
 .streak-row { margin: 20px 0 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 /* ===== BACKUP BUTTON ===== */
 .backup-btn {
   display: flex; align-items: center; gap: 5px;
-  background: none;
-  border: 1.5px solid var(--border);
-  border-radius: 999px;
-  padding: 5px 12px;
+  background: none; border: 1.5px solid var(--border);
+  border-radius: 999px; padding: 5px 12px;
   font-family: 'Outfit', sans-serif;
   font-size: 12px; font-weight: 600;
-  color: var(--text-soft);
-  cursor: pointer;
-  transition: all 0.14s;
+  color: var(--text-soft); cursor: pointer; transition: all 0.14s;
 }
 .backup-btn:active { background: var(--surface2); transform: scale(0.96); }
-.backup-btn svg { flex-shrink: 0; }
 
 /* ===== GAME CARDS ===== */
 .game-list { display: flex; flex-direction: column; gap: 12px; }
-
 .game-tile {
-  background: var(--surface);
-  border-radius: var(--r);
-  padding: 20px;
-  border: 1.5px solid var(--border);
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
+  background: var(--surface); border-radius: var(--r);
+  padding: 20px; border: 1.5px solid var(--border);
+  cursor: pointer; text-align: left; width: 100%;
   font-family: 'Outfit', sans-serif;
   display: flex; align-items: center; gap: 16px;
-  transition: all 0.15s;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: all 0.15s; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
-
 .game-tile:active { transform: scale(0.98); background: var(--surface2); }
-
 .game-tile-icon {
   width: 48px; height: 48px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   font-size: 22px; flex-shrink: 0;
 }
-
 .game-tile-body { flex: 1; }
 .game-tile-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
 .game-tile-desc { font-size: 13px; color: var(--text-soft); font-weight: 500; }
@@ -148,342 +124,313 @@ body {
   margin: 24px 0 12px;
 }
 
-/* ===== MEMORY GAME ===== */
+/* ===== STAT BAR ===== */
 .mem-bar {
-  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 8px; margin-bottom: 20px;
 }
-
-.mem-stat {
-  background: var(--surface);
-  border-radius: var(--r-sm);
-  padding: 10px 8px;
-  text-align: center;
-  border: 1.5px solid var(--border);
+.mem-bar-3 {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-bottom: 20px;
 }
+.mem-stat {
+  background: var(--surface); border-radius: var(--r-sm);
+  padding: 10px 8px; text-align: center; border: 1.5px solid var(--border);
+}
+.mem-stat-val { font-size: 18px; font-weight: 800; color: var(--text); }
+.mem-stat-lbl { font-size: 10px; font-weight: 600; color: var(--text-xsoft); text-transform: uppercase; letter-spacing: 0.5px; }
+.mem-stat-delta { font-size: 10px; font-weight: 700; margin-top: 1px; }
+.mem-stat-delta.better { color: var(--green); }
+.mem-stat-delta.worse { color: var(--rose); }
+.mem-stat-delta.same { color: var(--text-xsoft); }
 
-.mem-stat-val { font-size: 20px; font-weight: 800; color: var(--text); }
-.mem-stat-lbl { font-size: 11px; font-weight: 600; color: var(--text-xsoft); text-transform: uppercase; letter-spacing: 0.5px; }
-
+/* ===== MEMORY GAME ===== */
 #memGrid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 9px;
 }
-
 .mc {
-  aspect-ratio: 1;
-  border-radius: 12px;
-  cursor: pointer;
-  position: relative;
-  transform-style: preserve-3d;
+  aspect-ratio: 1; border-radius: 12px; cursor: pointer;
+  position: relative; transform-style: preserve-3d;
   transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .mc.flipped { transform: rotateY(180deg); }
 .mc.matched { transform: rotateY(180deg); animation: matchBounce 0.3s ease 0.1s; }
 @keyframes matchBounce { 0%{transform:rotateY(180deg) scale(1)} 50%{transform:rotateY(180deg) scale(1.1)} 100%{transform:rotateY(180deg) scale(1)} }
-
 .mc-f, .mc-b {
-  position: absolute; inset: 0;
-  border-radius: 12px;
+  position: absolute; inset: 0; border-radius: 12px;
   backface-visibility: hidden;
   display: flex; align-items: center; justify-content: center;
 }
-
-.mc-f {
-  background: #E8E4DF;
-  font-size: 13px; font-weight: 800;
-  color: #B8B0A8;
-  border: 1.5px solid rgba(0,0,0,0.06);
-}
-
-.mc-b {
-  background: var(--surface);
-  font-size: clamp(22px, 5.5vw, 28px);
-  transform: rotateY(180deg);
-  border: 1.5px solid var(--border);
-}
-
-.mc.matched .mc-b {
-  background: var(--green-light);
-  border-color: rgba(22,163,74,0.25);
-}
+.mc-f { background: #E8E4DF; font-size: 13px; font-weight: 800; color: #B8B0A8; border: 1.5px solid rgba(0,0,0,0.06); }
+.mc-b { background: var(--surface); font-size: clamp(22px, 5.5vw, 28px); transform: rotateY(180deg); border: 1.5px solid var(--border); }
+.mc.matched .mc-b { background: var(--green-light); border-color: rgba(22,163,74,0.25); }
 
 /* ===== INLINE RESULT ===== */
 .result-box {
-  border-radius: var(--r-sm);
-  padding: 14px 16px;
-  font-size: 14px; font-weight: 600;
-  line-height: 1.55;
-  margin-top: 16px;
-  animation: fadeSlide 0.25s ease;
+  border-radius: var(--r-sm); padding: 14px 16px;
+  font-size: 14px; font-weight: 600; line-height: 1.55;
+  margin-top: 16px; animation: fadeSlide 0.25s ease;
 }
-
 @keyframes fadeSlide { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-
 .result-box.correct { background: var(--green-light); color: #14532D; border: 1px solid rgba(22,163,74,0.2); }
 .result-box.wrong { background: var(--amber-light); color: #78350F; border: 1px solid rgba(217,119,6,0.2); }
 
 /* ===== WIN PANEL ===== */
 .win-panel {
-  background: var(--surface);
-  border-radius: var(--r);
-  padding: 28px 24px;
-  text-align: center;
+  background: var(--surface); border-radius: var(--r);
+  padding: 28px 24px; text-align: center;
   border: 1.5px solid var(--border);
-  animation: fadeSlide 0.35s ease;
-  margin-top: 16px;
+  animation: fadeSlide 0.35s ease; margin-top: 16px;
 }
-
 .win-icon { font-size: 48px; margin-bottom: 12px; display: block; }
 .win-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
 .win-msg { font-size: 14px; color: var(--text-soft); font-weight: 500; margin-bottom: 24px; line-height: 1.6; }
 
 /* ===== BUTTONS ===== */
 .btn {
-  width: 100%;
-  padding: 14px 20px;
-  border-radius: var(--r-sm);
-  border: none;
+  width: 100%; padding: 14px 20px;
+  border-radius: var(--r-sm); border: none;
   font-family: 'Outfit', sans-serif;
   font-size: 15px; font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s;
-  margin-bottom: 8px;
+  cursor: pointer; transition: all 0.15s; margin-bottom: 8px;
 }
-
 .btn:active { transform: scale(0.97); }
 .btn-primary { background: var(--accent); color: white; }
 .btn-ghost { background: var(--surface2); color: var(--text-soft); border: 1.5px solid var(--border); }
 
 /* ===== SCENARIO ===== */
 .scenario-wrap { display: flex; flex-direction: column; gap: 10px; }
-
-.scenario-header {
-  background: var(--surface);
-  border-radius: var(--r);
-  padding: 20px;
-  border: 1.5px solid var(--border);
-}
-
+.scenario-header { background: var(--surface); border-radius: var(--r); padding: 20px; border: 1.5px solid var(--border); }
 .prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .prog-track { flex: 1; height: 5px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
 .prog-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.4s ease; }
 .prog-lbl { font-size: 12px; font-weight: 700; color: var(--text-xsoft); }
-
-.sc-tag {
-  display: inline-block; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.8px; text-transform: uppercase;
-  color: var(--text-xsoft); margin-bottom: 8px;
-}
-
+.sc-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-xsoft); margin-bottom: 8px; }
 .sc-q { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.6; }
-
 .opt-btn {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-sm);
-  padding: 14px 16px;
-  text-align: left;
-  width: 100%;
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px; font-weight: 600;
-  color: var(--text);
-  cursor: pointer;
-  display: flex; align-items: flex-start; gap: 10px;
-  transition: all 0.14s;
-  line-height: 1.5;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: 14px 16px;
+  text-align: left; width: 100%; font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 600; color: var(--text);
+  cursor: pointer; display: flex; align-items: flex-start; gap: 10px;
+  transition: all 0.14s; line-height: 1.5;
 }
-
 .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
 .opt-btn:active:not(:disabled) { transform: scale(0.98); }
 .opt-btn:disabled { cursor: default; }
 .opt-btn.correct { background: var(--green-light); border-color: rgba(22,163,74,0.35); color: #14532D; }
 .opt-btn.wrong { background: var(--rose-light); border-color: rgba(225,29,72,0.2); color: #9F1239; opacity: 0.75; }
-
 .opt-letter {
   width: 24px; height: 24px; border-radius: 6px;
   background: var(--surface2); color: var(--text-soft);
   font-size: 12px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.14s;
+  flex-shrink: 0; transition: all 0.14s;
 }
-
 .opt-btn.correct .opt-letter { background: #BBF7D0; color: #166534; }
 .opt-btn.wrong .opt-letter { background: #FECDD3; color: #9F1239; }
 
 /* ===== WORD PUZZLE ===== */
-.word-grid {
-  display: flex; flex-direction: column; gap: 6px;
-  margin-bottom: 16px;
-}
-
+.word-grid { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
 .word-row { display: flex; gap: 6px; justify-content: center; }
-
 .word-cell {
-  width: clamp(44px, 12vw, 56px);
-  height: clamp(44px, 12vw, 56px);
-  border-radius: 8px;
-  border: 2px solid var(--border);
+  width: clamp(44px, 12vw, 56px); height: clamp(44px, 12vw, 56px);
+  border-radius: 8px; border: 2px solid var(--border);
   background: var(--surface);
   display: flex; align-items: center; justify-content: center;
-  font-size: clamp(17px, 4vw, 20px);
-  font-weight: 800;
-  text-transform: uppercase;
-  transition: all 0.12s;
+  font-size: clamp(17px, 4vw, 20px); font-weight: 800;
+  text-transform: uppercase; transition: all 0.12s;
 }
-
 .word-cell.filled { border-color: var(--text-soft); }
 .word-cell.correct { background: var(--green); border-color: var(--green); color: white; }
 .word-cell.present { background: var(--amber); border-color: var(--amber); color: white; }
 .word-cell.absent { background: #6B6560; border-color: #6B6560; color: white; }
 .word-cell.current-row { border-color: var(--accent); }
-
-.word-cell.pop {
-  animation: cellPop 0.12s ease;
-}
+.word-cell.pop { animation: cellPop 0.12s ease; }
 @keyframes cellPop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
-
 .word-cell.shake { animation: cellShake 0.35s ease; }
-@keyframes cellShake {
-  0%,100%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)}
-}
-
-.word-cell.flip {
-  animation: cellFlip 0.4s ease forwards;
-}
-@keyframes cellFlip {
-  0%{transform:scaleY(1)} 50%{transform:scaleY(0)} 100%{transform:scaleY(1)}
-}
-
+@keyframes cellShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
+.word-cell.flip { animation: cellFlip 0.4s ease forwards; }
+@keyframes cellFlip { 0%{transform:scaleY(1)} 50%{transform:scaleY(0)} 100%{transform:scaleY(1)} }
 .keyboard { display: flex; flex-direction: column; gap: 6px; }
 .kb-row { display: flex; gap: 5px; justify-content: center; }
-
 .kb-key {
-  min-width: clamp(26px, 7vw, 36px);
-  height: clamp(44px, 10vw, 52px);
-  border-radius: 6px;
-  border: none;
-  background: var(--surface2);
-  color: var(--text);
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(11px, 3vw, 14px);
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.12s;
-  flex: 1;
-  max-width: 44px;
+  min-width: clamp(26px, 7vw, 36px); height: clamp(44px, 10vw, 52px);
+  border-radius: 6px; border: none; background: var(--surface2);
+  color: var(--text); font-family: 'Outfit', sans-serif;
+  font-size: clamp(11px, 3vw, 14px); font-weight: 700;
+  cursor: pointer; transition: all 0.12s; flex: 1; max-width: 44px;
 }
-
 .kb-key.wide { flex: 1.5; max-width: 64px; font-size: clamp(10px, 2.5vw, 12px); }
 .kb-key:active { transform: scale(0.93); }
 .kb-key.k-correct { background: var(--green); color: white; }
 .kb-key.k-present { background: var(--amber); color: white; }
 .kb-key.k-absent { background: #9E9891; color: white; }
-
 .word-msg {
   text-align: center; font-size: 14px; font-weight: 700;
-  padding: 10px; border-radius: var(--r-sm);
-  margin-bottom: 12px;
+  padding: 10px; border-radius: var(--r-sm); margin-bottom: 12px;
   animation: fadeSlide 0.2s ease;
 }
-
 .word-msg.good { background: var(--green-light); color: #14532D; }
 .word-msg.bad { background: var(--rose-light); color: #9F1239; }
 .word-msg.info { background: var(--amber-light); color: #78350F; }
 
 /* ===== TRIVIA ===== */
-.trivia-q {
-  background: var(--surface);
-  border-radius: var(--r);
-  padding: 20px;
-  border: 1.5px solid var(--border);
-  margin-bottom: 10px;
-}
-
+.trivia-q { background: var(--surface); border-radius: var(--r); padding: 20px; border: 1.5px solid var(--border); margin-bottom: 10px; }
 .trivia-num { font-size: 11px; font-weight: 700; color: var(--text-xsoft); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; }
 .trivia-text { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.6; }
-
-/* Decade tag */
 .decade-tag {
-  display: inline-block;
-  font-size: 11px; font-weight: 700;
+  display: inline-block; font-size: 11px; font-weight: 700;
   letter-spacing: 0.6px; text-transform: uppercase;
-  background: var(--purple-light);
-  color: var(--purple);
-  border-radius: 5px;
-  padding: 2px 7px;
-  margin-bottom: 8px;
+  background: var(--purple-light); color: var(--purple);
+  border-radius: 5px; padding: 2px 7px; margin-bottom: 8px;
 }
-
 .trivia-opts { display: flex; flex-direction: column; gap: 8px; }
-
 .trivia-opt {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-sm);
-  padding: 13px 16px;
-  text-align: left;
-  width: 100%;
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px; font-weight: 600;
-  color: var(--text);
-  cursor: pointer;
-  display: flex; align-items: center; gap: 10px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: 13px 16px;
+  text-align: left; width: 100%; font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 600; color: var(--text);
+  cursor: pointer; display: flex; align-items: center; gap: 10px;
   transition: all 0.14s;
 }
-
 .trivia-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
 .trivia-opt:active:not(:disabled) { transform: scale(0.98); }
 .trivia-opt:disabled { cursor: default; }
 .trivia-opt.correct { background: var(--green-light); border-color: rgba(22,163,74,0.35); color: #14532D; }
 .trivia-opt.wrong { background: var(--rose-light); border-color: rgba(225,29,72,0.2); color: #9F1239; opacity: 0.7; }
-
-.trivia-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--border); flex-shrink: 0;
-  transition: all 0.14s;
-}
-
+.trivia-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: all 0.14s; }
 .trivia-opt.correct .trivia-dot { background: var(--green); }
 .trivia-opt.wrong .trivia-dot { background: var(--rose); }
-
-/* ===== LOADING SPINNER ===== */
-.trivia-loading {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 14px; padding: 52px 24px;
-}
-
-.spinner {
-  width: 36px; height: 36px;
-  border: 3px solid var(--surface2);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
+.trivia-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 52px 24px; }
+.spinner { width: 36px; height: 36px; border: 3px solid var(--surface2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.trivia-loading-text {
-  font-size: 14px; font-weight: 600; color: var(--text-soft);
-}
+.trivia-loading-text { font-size: 14px; font-weight: 600; color: var(--text-soft); }
 
 /* ===== COMPLETE ===== */
-.complete {
-  background: var(--surface);
-  border-radius: var(--r);
-  padding: 32px 24px;
-  text-align: center;
-  border: 1.5px solid var(--border);
-  animation: fadeSlide 0.35s ease;
-}
-
+.complete { background: var(--surface); border-radius: var(--r); padding: 32px 24px; text-align: center; border: 1.5px solid var(--border); animation: fadeSlide 0.35s ease; }
 .complete-icon { font-size: 52px; display: block; margin-bottom: 14px; }
 .complete-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
 .complete-score { font-size: 15px; color: var(--text-soft); font-weight: 500; margin-bottom: 28px; line-height: 1.6; }
 
+/* ===== SEQUENCE MEMORY ===== */
+.seq-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; margin-bottom: 20px;
+}
+.seq-btn {
+  height: 130px; border-radius: 18px; border: none;
+  cursor: pointer; transition: all 0.12s;
+  position: relative; overflow: hidden;
+}
+.seq-btn:active { transform: scale(0.96); }
+.seq-btn.seq-flash { filter: brightness(1.55) saturate(1.3); transform: scale(0.97); }
+.seq-btn[data-c="red"]    { background: #EF4444; box-shadow: 0 4px 16px rgba(239,68,68,0.25); }
+.seq-btn[data-c="blue"]   { background: #3B82F6; box-shadow: 0 4px 16px rgba(59,130,246,0.25); }
+.seq-btn[data-c="green"]  { background: #22C55E; box-shadow: 0 4px 16px rgba(34,197,94,0.25); }
+.seq-btn[data-c="yellow"] { background: #F59E0B; box-shadow: 0 4px 16px rgba(245,158,11,0.25); }
+.seq-status {
+  text-align: center; padding: 12px 16px;
+  background: var(--surface); border-radius: var(--r-sm);
+  border: 1.5px solid var(--border); margin-bottom: 14px;
+}
+.seq-status-label { font-size: 12px; font-weight: 700; color: var(--text-xsoft); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+.seq-status-val { font-size: 22px; font-weight: 800; color: var(--text); }
+.seq-msg {
+  text-align: center; font-size: 15px; font-weight: 700;
+  padding: 14px; border-radius: var(--r-sm);
+  background: var(--accent-light); color: var(--accent);
+  margin-bottom: 14px; animation: fadeSlide 0.2s ease;
+}
+.seq-msg.watching { background: var(--amber-light); color: var(--amber); }
+.seq-msg.go { background: var(--green-light); color: #14532D; }
+.seq-msg.fail { background: var(--rose-light); color: #9F1239; }
+
+/* ===== SPOT THE DIFFERENCE ===== */
+.spot-wrap {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 16px;
+}
+.spot-label {
+  font-size: 11px; font-weight: 700; color: var(--text-xsoft);
+  letter-spacing: 0.8px; text-transform: uppercase;
+  text-align: center; margin-bottom: 2px;
+}
+.spot-panel {
+  border-radius: var(--r); overflow: hidden;
+  border: 1.5px solid var(--border);
+  position: relative; background: var(--surface);
+  cursor: crosshair;
+}
+.spot-panel svg { display: block; width: 100%; height: auto; }
+.spot-hotspot {
+  position: absolute; border-radius: 50%;
+  border: 2.5px dashed transparent;
+  pointer-events: all; cursor: pointer;
+  transition: all 0.16s;
+}
+.spot-hotspot:hover { border-color: rgba(45,107,228,0.4); background: rgba(45,107,228,0.07); }
+.spot-hotspot.found { border-color: var(--green) !important; background: rgba(22,163,74,0.15) !important; animation: foundPop 0.3s ease; pointer-events: none; }
+.spot-hotspot.missed { border-color: var(--rose) !important; background: rgba(225,29,72,0.12) !important; animation: foundPop 0.3s ease; }
+@keyframes foundPop { 0%{transform:scale(0.8)} 60%{transform:scale(1.15)} 100%{transform:scale(1)} }
+.spot-progress {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface); border-radius: var(--r-sm);
+  padding: 10px 14px; border: 1.5px solid var(--border);
+}
+.spot-found-count { font-size: 15px; font-weight: 800; color: var(--text); }
+.spot-found-label { font-size: 12px; font-weight: 600; color: var(--text-soft); }
+.spot-dots { display: flex; gap: 6px; }
+.spot-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--surface2); border: 1.5px solid var(--border); transition: all 0.2s; }
+.spot-dot.found { background: var(--green); border-color: var(--green); }
+.spot-hint-btn {
+  background: none; border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: 8px 14px;
+  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-soft); cursor: pointer; transition: all 0.14s;
+}
+.spot-hint-btn:active { background: var(--surface2); }
+.spot-hint-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ===== BRAIN TEASERS ===== */
+.brain-q-card {
+  background: var(--surface); border-radius: var(--r);
+  padding: 22px 20px; border: 1.5px solid var(--border); margin-bottom: 10px;
+}
+.brain-type-tag {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  background: var(--teal-light); color: var(--teal);
+  border-radius: 5px; padding: 2px 7px; margin-bottom: 10px;
+}
+.brain-q-text { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.6; }
+.brain-q-sub { font-size: 13px; color: var(--text-soft); font-weight: 500; margin-top: 6px; }
+.brain-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+.brain-opt {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); padding: 14px 10px;
+  text-align: center; font-family: 'Outfit', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--text);
+  cursor: pointer; transition: all 0.14s;
+}
+.brain-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
+.brain-opt:active:not(:disabled) { transform: scale(0.97); }
+.brain-opt:disabled { cursor: default; }
+.brain-opt.correct { background: var(--green-light); border-color: rgba(22,163,74,0.35); color: #14532D; }
+.brain-opt.wrong { background: var(--rose-light); border-color: rgba(225,29,72,0.2); color: #9F1239; opacity: 0.75; }
+.brain-opts-full { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.brain-timer-ring {
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.brain-timer-ring svg { transform: rotate(-90deg); }
+.brain-timer-text {
+  position: absolute; font-size: 15px; font-weight: 800; color: var(--text);
+}
+.brain-timer-wrap { position: relative; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; }
+
+/* ===== HIDDEN ===== */
 .hidden { display: none !important; }
 </style>
 </head>
@@ -492,14 +439,16 @@ body {
 <!-- GREETING -->
 <div id="greeting">
   <div class="g-sub">Good morning</div>
-  <div class="g-name">Hi Debbie ðŸ‘‹</div>
+  <div class="g-name">Hi Debbie &#128075;</div>
   <div class="g-tagline">A little something to keep that sharp mind going.</div>
-  <span class="g-heart">â¤ï¸</span>
-  <div class="g-from">â€” from your grandson</div>
+  <span class="g-heart">&#10084;&#65039;</span>
+  <div class="g-from">&#8212; from your grandson</div>
 </div>
 
 <!-- APP -->
 <div id="app" class="hidden">
+
+  <!-- HOME -->
   <div id="screen-home">
     <div class="home-top">
       <div class="home-greeting">Brain Lab</div>
@@ -507,50 +456,69 @@ body {
       <div class="home-sub">All brain. No filler.</div>
     </div>
     <div class="streak-row">
-      <span class="streak-badge">ðŸ”¥ <span id="streak">0</span> day streak</span>
-      <button class="backup-btn" onclick="backupStats()" title="Export your stats as a file">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
+      <span class="streak-badge">&#128293; <span id="streak">0</span> day streak</span>
+      <button class="backup-btn" onclick="backupStats()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Back up
       </button>
     </div>
-
     <div class="section-label">Games</div>
     <div class="game-list">
       <button class="game-tile" onclick="go('memory')">
-        <div class="game-tile-icon" style="background:#EBF1FD;">ðŸƒ</div>
+        <div class="game-tile-icon" style="background:#EBF1FD;">&#127183;</div>
         <div class="game-tile-body">
           <div class="game-tile-name">Memory Match</div>
           <div class="game-tile-desc">Find the pairs. Beat your best.</div>
         </div>
-        <div class="game-tile-arrow">â€º</div>
+        <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('word')">
-        <div class="game-tile-icon" style="background:#DCFCE7;">ðŸ”¤</div>
+        <div class="game-tile-icon" style="background:#DCFCE7;">&#128292;</div>
         <div class="game-tile-body">
           <div class="game-tile-name">Word Puzzle</div>
           <div class="game-tile-desc">Guess the 5-letter word in 6 tries.</div>
         </div>
-        <div class="game-tile-arrow">â€º</div>
+        <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('trivia')">
-        <div class="game-tile-icon" style="background:#EDE9FE;">ðŸ§©</div>
+        <div class="game-tile-icon" style="background:#EDE9FE;">&#129513;</div>
         <div class="game-tile-body">
           <div class="game-tile-name">Trivia Mix</div>
-          <div class="game-tile-desc">History, science, nature â€” mix of everything good.</div>
+          <div class="game-tile-desc">History, science, nature &#8212; mix of everything good.</div>
         </div>
-        <div class="game-tile-arrow">â€º</div>
+        <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('decisions')">
-        <div class="game-tile-icon" style="background:#FEF3C7;">ðŸ’¼</div>
+        <div class="game-tile-icon" style="background:#FEF3C7;">&#128188;</div>
         <div class="game-tile-body">
           <div class="game-tile-name">Decision Maker</div>
-          <div class="game-tile-desc">Classic business dilemmas. What's the right call?</div>
+          <div class="game-tile-desc">Classic business dilemmas. What&#8217;s the right call?</div>
         </div>
-        <div class="game-tile-arrow">â€º</div>
+        <div class="game-tile-arrow">&#8250;</div>
+      </button>
+      <button class="game-tile" onclick="go('sequence')">
+        <div class="game-tile-icon" style="background:#CCFBF1;">&#127918;</div>
+        <div class="game-tile-body">
+          <div class="game-tile-name">Sequence Memory</div>
+          <div class="game-tile-desc">Watch the pattern. Repeat it back. Go as long as you can.</div>
+        </div>
+        <div class="game-tile-arrow">&#8250;</div>
+      </button>
+      <button class="game-tile" onclick="go('spot')">
+        <div class="game-tile-icon" style="background:#FEE2E2;">&#128269;</div>
+        <div class="game-tile-body">
+          <div class="game-tile-name">Spot the Difference</div>
+          <div class="game-tile-desc">Two pictures. Something changed. Find it.</div>
+        </div>
+        <div class="game-tile-arrow">&#8250;</div>
+      </button>
+      <button class="game-tile" onclick="go('brain')">
+        <div class="game-tile-icon" style="background:#FEF9C3;">&#129504;</div>
+        <div class="game-tile-body">
+          <div class="game-tile-name">Brain Teasers</div>
+          <div class="game-tile-desc">Math, logic, odd-one-out. Quick and satisfying.</div>
+        </div>
+        <div class="game-tile-arrow">&#8250;</div>
       </button>
     </div>
   </div>
@@ -558,42 +526,48 @@ body {
   <!-- MEMORY -->
   <div id="screen-memory" class="hidden">
     <div class="nav">
-      <button class="nav-back" onclick="go('home')">â€¹ Back</button>
+      <button class="nav-back" onclick="go('home')">&#8249; Back</button>
       <div class="nav-title">Memory Match</div>
-      <span class="streak-badge">ðŸ”¥ <span id="memStreakBadge">0</span></span>
+      <span class="streak-badge">&#128293; <span id="memStreakBadge">0</span></span>
     </div>
     <div class="mem-bar">
       <div class="mem-stat"><div class="mem-stat-val" id="memMoves">0</div><div class="mem-stat-lbl">Moves</div></div>
       <div class="mem-stat"><div class="mem-stat-val" id="memPairs">0/8</div><div class="mem-stat-lbl">Pairs</div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="memBestDisp">â€”</div><div class="mem-stat-lbl">Best</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="memBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="memBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="memLastDisp">&#8212;</div><div class="mem-stat-lbl">Last</div></div>
     </div>
     <div id="memGrid"></div>
     <div id="memWin" class="win-panel hidden">
-      <span class="win-icon">ðŸ†</span>
+      <span class="win-icon">&#127942;</span>
       <div class="win-title" id="winTitle">All pairs found!</div>
       <div class="win-msg" id="winMsg"></div>
       <button class="btn btn-primary" onclick="initMemory()">Play again</button>
-      <button class="btn btn-ghost" onclick="go('home')">â† Home</button>
+      <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
     </div>
   </div>
 
   <!-- WORD PUZZLE -->
   <div id="screen-word" class="hidden">
     <div class="nav">
-      <button class="nav-back" onclick="go('home')">â€¹ Back</button>
+      <button class="nav-back" onclick="go('home')">&#8249; Back</button>
       <div class="nav-title">Word Puzzle</div>
-      <span class="streak-badge">ðŸ”¥ <span id="wordStreakBadge">0</span></span>
+      <span class="streak-badge">&#128293; <span id="wordStreakBadge">0</span></span>
+    </div>
+    <div class="mem-bar-3" style="margin-bottom:12px;">
+      <div class="mem-stat"><div class="mem-stat-val" id="wordWinsDisp">0</div><div class="mem-stat-lbl">Wins</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="wordBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="wordBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="wordAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg</div></div>
     </div>
     <div id="wordMsg" class="word-msg hidden"></div>
     <div class="word-grid" id="wordGrid"></div>
     <div class="keyboard" id="keyboard"></div>
     <div id="wordResult" class="hidden" style="margin-top:20px;">
       <div class="win-panel">
-        <span class="win-icon" id="wordResultIcon">ðŸŽ‰</span>
+        <span class="win-icon" id="wordResultIcon">&#127881;</span>
         <div class="win-title" id="wordResultTitle"></div>
         <div class="win-msg" id="wordResultMsg"></div>
         <button class="btn btn-primary" onclick="initWord()">New word</button>
-        <button class="btn btn-ghost" onclick="go('home')">â† Home</button>
+        <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
       </div>
     </div>
   </div>
@@ -601,9 +575,14 @@ body {
   <!-- TRIVIA -->
   <div id="screen-trivia" class="hidden">
     <div class="nav">
-      <button class="nav-back" onclick="go('home')">â€¹ Back</button>
+      <button class="nav-back" onclick="go('home')">&#8249; Back</button>
       <div class="nav-title">Trivia Mix</div>
-      <span class="streak-badge">ðŸ”¥ <span id="triviaStreakBadge">0</span></span>
+      <span class="streak-badge">&#128293; <span id="triviaStreakBadge">0</span></span>
+    </div>
+    <div class="mem-bar-3" style="margin-bottom:12px;" id="triviaStats">
+      <div class="mem-stat"><div class="mem-stat-val" id="triviaRoundsDisp">0</div><div class="mem-stat-lbl">Rounds</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="triviaBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="triviaBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="triviaAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg %</div></div>
     </div>
     <div id="triviaContent"></div>
   </div>
@@ -611,19 +590,113 @@ body {
   <!-- DECISIONS -->
   <div id="screen-decisions" class="hidden">
     <div class="nav">
-      <button class="nav-back" onclick="go('home')">â€¹ Back</button>
+      <button class="nav-back" onclick="go('home')">&#8249; Back</button>
       <div class="nav-title">Decision Maker</div>
-      <span class="streak-badge">ðŸ”¥ <span id="decStreakBadge">0</span></span>
+      <span class="streak-badge">&#128293; <span id="decStreakBadge">0</span></span>
+    </div>
+    <div class="mem-bar-3" style="margin-bottom:12px;">
+      <div class="mem-stat"><div class="mem-stat-val" id="decRoundsDisp">0</div><div class="mem-stat-lbl">Rounds</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="decBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="decBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="decAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg</div></div>
     </div>
     <div id="decContent"></div>
   </div>
-</div>
+
+  <!-- SEQUENCE MEMORY -->
+  <div id="screen-sequence" class="hidden">
+    <div class="nav">
+      <button class="nav-back" onclick="go('home')">&#8249; Back</button>
+      <div class="nav-title">Sequence Memory</div>
+      <span class="streak-badge">&#128293; <span id="seqStreakBadge">0</span></span>
+    </div>
+    <div class="mem-bar-3" style="margin-bottom:14px;">
+      <div class="mem-stat"><div class="mem-stat-val" id="seqLevel">1</div><div class="mem-stat-lbl">Round</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="seqBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="seqBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="seqLastDisp">&#8212;</div><div class="mem-stat-lbl">Last</div></div>
+    </div>
+    <div id="seqMsg" class="seq-msg watching">Watch the pattern&#8230;</div>
+    <div class="seq-grid">
+      <button class="seq-btn" data-c="red"    onclick="onSeqTap('red')"></button>
+      <button class="seq-btn" data-c="blue"   onclick="onSeqTap('blue')"></button>
+      <button class="seq-btn" data-c="green"  onclick="onSeqTap('green')"></button>
+      <button class="seq-btn" data-c="yellow" onclick="onSeqTap('yellow')"></button>
+    </div>
+    <div id="seqResult" class="hidden">
+      <div class="win-panel">
+        <span class="win-icon">&#128081;</span>
+        <div class="win-title" id="seqResultTitle"></div>
+        <div class="win-msg" id="seqResultMsg"></div>
+        <button class="btn btn-primary" onclick="initSequence()">Play again</button>
+        <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPOT THE DIFFERENCE -->
+  <div id="screen-spot" class="hidden">
+    <div class="nav">
+      <button class="nav-back" onclick="go('home')">&#8249; Back</button>
+      <div class="nav-title">Spot the Difference</div>
+      <span class="streak-badge">&#128293; <span id="spotStreakBadge">0</span></span>
+    </div>
+    <div class="mem-bar-3" style="margin-bottom:12px;">
+      <div class="mem-stat"><div class="mem-stat-val" id="spotRoundsDisp">0</div><div class="mem-stat-lbl">Rounds</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="spotBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="spotBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="spotAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg</div></div>
+    </div>
+    <div id="spotContent"></div>
+  </div>
+
+  <!-- BRAIN TEASERS -->
+  <div id="screen-brain" class="hidden">
+    <div class="nav">
+      <button class="nav-back" onclick="go('home')">&#8249; Back</button>
+      <div class="nav-title">Brain Teasers</div>
+      <span class="streak-badge">&#128293; <span id="brainStreakBadge">0</span></span>
+    </div>
+    <div class="mem-bar-3" style="margin-bottom:12px;">
+      <div class="mem-stat"><div class="mem-stat-val" id="brainRoundsDisp">0</div><div class="mem-stat-lbl">Rounds</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="brainBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="brainBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="brainAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg %</div></div>
+    </div>
+    <div id="brainContent"></div>
+  </div>
+
+</div><!-- /app -->
 
 <script>
 // ================================================================
+// UTILS
+// ================================================================
+function ls(k, v) {
+  if (v === undefined) return localStorage.getItem(k);
+  localStorage.setItem(k, v);
+}
+function lsNum(k) { return parseFloat(ls(k)) || 0; }
+function lsArr(k) { try { return JSON.parse(ls(k)) || []; } catch(e) { return []; } }
+function lsSaveArr(k, arr) { ls(k, JSON.stringify(arr)); }
+
+function deltaLabel(cur, prev, lowerIsBetter) {
+  if (!prev && prev !== 0) return '';
+  if (cur === prev) return '=';
+  const improved = lowerIsBetter ? cur < prev : cur > prev;
+  const diff = Math.abs(cur - prev);
+  return (improved ? '&#9650; ' : '&#9660; ') + diff;
+}
+function setDelta(id, cur, prev, lowerIsBetter) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (!prev && prev !== 0) { el.innerHTML = ''; return; }
+  const improved = lowerIsBetter ? cur < prev : cur > prev;
+  const same = cur === prev;
+  el.innerHTML = deltaLabel(cur, prev, lowerIsBetter);
+  el.className = 'mem-stat-delta ' + (same ? 'same' : improved ? 'better' : 'worse');
+}
+
+// ================================================================
 // MEMORY
 // ================================================================
-const EMOJIS = ['ðŸ¦‹','ðŸŒ¿','â­','ðŸŽµ','ðŸŒŠ','ðŸ”ï¸','ðŸŒº','ðŸŽ'];
+const EMOJIS = ['\u{1F98B}','\u{1F33F}','\u{2B50}','\u{1F3B5}','\u{1F30A}','\u{1F3D4}','\u{1F33A}','\u{1F34E}'];
 let mCards=[], mFlipped=[], mMatched=[], mMoves=0, mCount=0;
 
 function initMemory() {
@@ -632,15 +705,12 @@ function initMemory() {
   document.getElementById('memWin').classList.add('hidden');
   document.getElementById('memGrid').classList.remove('hidden');
   renderMemStats();
-
-  const g = document.getElementById('memGrid');
-  g.innerHTML='';
+  const g = document.getElementById('memGrid'); g.innerHTML='';
   pairs.forEach((e,i)=>{
     const d=document.createElement('div');
     d.className='mc'; d.dataset.v=e; d.dataset.i=i;
-    d.innerHTML=`<div class="mc-f">Â·</div><div class="mc-b">${e}</div>`;
-    d.addEventListener('click',onMemClick);
-    g.appendChild(d);
+    d.innerHTML='<div class="mc-f">&middot;</div><div class="mc-b">'+e+'</div>';
+    d.addEventListener('click',onMemClick); g.appendChild(d);
   });
 }
 
@@ -655,15 +725,17 @@ function onMemClick(ev) {
       mMatched.push(...mFlipped); mCount++; mFlipped=[];
       renderMemStats();
       if(mCount===8){
-        const best=parseInt(localStorage.getItem('memBest')||'9999');
-        if(mMoves<best) localStorage.setItem('memBest',mMoves);
+        const prev = lsNum('memBest') || null;
+        const best = prev ? Math.min(mMoves, prev) : mMoves;
+        ls('memLast', mMoves);
+        ls('memBest', best);
         renderMemStats(); updateStreak();
         setTimeout(()=>{
           document.getElementById('memGrid').classList.add('hidden');
           document.getElementById('winTitle').textContent = mMoves<=14?'Flawless.':'All pairs found!';
-          document.getElementById('winMsg').textContent = mMoves<=14
-            ?`${mMoves} moves â€” that's exceptional.`
-            :mMoves<=20?`${mMoves} moves. Sharp.`:`${mMoves} moves â€” got there!`;
+          let msg = mMoves<=14?`${mMoves} moves &#8212; exceptional.`:mMoves<=20?`${mMoves} moves. Sharp.`:`${mMoves} moves &#8212; got there!`;
+          if(prev && mMoves < prev) msg += ` New best! (was ${prev})`;
+          document.getElementById('winMsg').innerHTML = msg;
           document.getElementById('memWin').classList.remove('hidden');
           confetti();
         },400);
@@ -675,15 +747,18 @@ function onMemClick(ev) {
 }
 
 function renderMemStats(){
-  document.getElementById('memMoves').textContent=mMoves;
-  document.getElementById('memPairs').textContent=mCount+'/8';
-  const b=localStorage.getItem('memBest');
-  document.getElementById('memBestDisp').textContent=b||'â€”';
-  document.getElementById('memStreakBadge').textContent=localStorage.getItem('dbStreak')||'0';
+  document.getElementById('memMoves').textContent = mMoves;
+  document.getElementById('memPairs').textContent = mCount+'/8';
+  const best = ls('memBest');
+  const last = ls('memLast');
+  document.getElementById('memBestDisp').textContent = best||'&#8212;';
+  document.getElementById('memLastDisp').textContent = last||'&#8212;';
+  document.getElementById('memStreakBadge').textContent = lsNum('dbStreak');
+  if(best && last) setDelta('memBestDelta', parseInt(best), parseInt(last), true);
 }
 
 // ================================================================
-// WORD PUZZLE (Wordle-style)
+// WORD PUZZLE
 // ================================================================
 const WORDS = [
   'CRANE','PLANT','SHARP','BRISK','CHART','FLAME','BRAVE','CLAMP',
@@ -696,10 +771,8 @@ const WORDS = [
   'KARMA','LEMON','MAPLE','NERVE','ORBIT','PROBE','QUEEN','REALM',
   'STAGE','TIGER','UNITE','VIOLA','WAGER','YOUTH','ZEBRA','BLAZE',
   'CRISP','DELTA','ELBOW','FINCH','GROVE','HOARD','INSET','JELLY',
-  'KNEEL','MERGE','ONSET','QUEST','ROUSE',
-  'SHAWL','USHER','VENOM','WHEAT','YEARN'
+  'KNEEL','MERGE','ONSET','QUEST','ROUSE','SHAWL','USHER','VENOM','WHEAT','YEARN'
 ];
-
 let wTarget='', wGuesses=[], wCurrent='', wDone=false;
 const ROWS=6, COLS=5;
 
@@ -708,9 +781,27 @@ function initWord() {
   wGuesses=[]; wCurrent=''; wDone=false;
   document.getElementById('wordResult').classList.add('hidden');
   document.getElementById('wordMsg').classList.add('hidden');
-  buildWordGrid();
-  buildKeyboard();
-  document.getElementById('wordStreakBadge').textContent=localStorage.getItem('dbStreak')||'0';
+  buildWordGrid(); buildKeyboard();
+  renderWordStats();
+}
+
+function renderWordStats() {
+  const wins = lsArr('wordWins');
+  const best = ls('wordBest');
+  document.getElementById('wordWinsDisp').textContent = wins.length;
+  document.getElementById('wordBestDisp').textContent = best || '&#8212;';
+  document.getElementById('wordStreakBadge').textContent = lsNum('dbStreak');
+  if(wins.length > 1) {
+    const avg = (wins.reduce((a,b)=>a+b,0)/wins.length).toFixed(1);
+    document.getElementById('wordAvgDisp').textContent = avg;
+  } else {
+    document.getElementById('wordAvgDisp').textContent = '&#8212;';
+  }
+  if(wins.length >= 2) {
+    const last = wins[wins.length-1];
+    const prev = wins[wins.length-2];
+    setDelta('wordBestDelta', last, prev, true);
+  }
 }
 
 function buildWordGrid(){
@@ -726,7 +817,7 @@ function buildWordGrid(){
 }
 
 function buildKeyboard(){
-  const rows=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENTER','Z','X','C','V','B','N','M','âŒ«']];
+  const rows=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENTER','Z','X','C','V','B','N','M','\u232B']];
   const kb=document.getElementById('keyboard'); kb.innerHTML='';
   rows.forEach(row=>{
     const div=document.createElement('div'); div.className='kb-row';
@@ -742,20 +833,15 @@ function buildKeyboard(){
 
 function onKey(k){
   if(wDone) return;
-  if(k==='âŒ«'){
-    wCurrent=wCurrent.slice(0,-1); updateCurrentRow(); return;
-  }
-  if(k==='ENTER'){
-    if(wCurrent.length<COLS){ showWordMsg('Not enough letters','bad'); return; }
-    submitGuess(); return;
-  }
+  if(k==='\u232B'){ wCurrent=wCurrent.slice(0,-1); updateCurrentRow(); return; }
+  if(k==='ENTER'){ if(wCurrent.length<COLS){ showWordMsg('Not enough letters','bad'); return; } submitGuess(); return; }
   if(wCurrent.length<COLS) { wCurrent+=k; updateCurrentRow(); }
 }
 
 document.addEventListener('keydown',e=>{
   if(document.getElementById('screen-word').classList.contains('hidden')) return;
   if(e.key==='Enter') onKey('ENTER');
-  else if(e.key==='Backspace') onKey('âŒ«');
+  else if(e.key==='Backspace') onKey('\u232B');
   else if(/^[a-zA-Z]$/.test(e.key)) onKey(e.key.toUpperCase());
 });
 
@@ -766,63 +852,63 @@ function updateCurrentRow(){
     const ch=wCurrent[c]||'';
     cell.textContent=ch;
     cell.className='word-cell'+(ch?' filled current-row':'');
-    if(ch) { cell.classList.add('pop'); setTimeout(()=>cell.classList.remove('pop'),120); }
+    if(ch){cell.classList.add('pop');setTimeout(()=>cell.classList.remove('pop'),120);}
   }
 }
 
 function submitGuess(){
   const guess=wCurrent;
-  const result=scoreGuess(guess, wTarget);
+  const result=scoreGuess(guess,wTarget);
   const r=wGuesses.length;
   document.getElementById('wordMsg').classList.add('hidden');
-
   result.forEach((res,c)=>{
     const cell=document.getElementById(`wc-${r}-${c}`);
     cell.className='word-cell filled';
-    setTimeout(()=>{
-      cell.classList.add('flip');
-      setTimeout(()=>{ cell.classList.remove('flip'); cell.classList.add(res); },200);
-    }, c*80);
+    setTimeout(()=>{ cell.classList.add('flip'); setTimeout(()=>{ cell.classList.remove('flip'); cell.classList.add(res); },200); }, c*80);
   });
-
   setTimeout(()=>updateKbColors(guess,result), COLS*80+250);
-
   wGuesses.push(guess); wCurrent='';
-
   if(guess===wTarget){
-    wDone=true; updateStreak(); confetti();
+    wDone=true;
+    const prevBest = parseInt(ls('wordBest')) || null;
+    const wins = lsArr('wordWins');
+    wins.push(wGuesses.length);
+    lsSaveArr('wordWins', wins);
+    if(!prevBest || wGuesses.length < prevBest) ls('wordBest', wGuesses.length);
+    updateStreak(); confetti();
     setTimeout(()=>{
       const msgs=['Perfect!','Got it!','Nice work!','Sharp!','Correct!','You got it!'];
-      document.getElementById('wordResultIcon').textContent='ðŸŽ‰';
+      document.getElementById('wordResultIcon').textContent='\uD83C\uDF89';
       document.getElementById('wordResultTitle').textContent=msgs[Math.min(wGuesses.length-1,5)];
-      document.getElementById('wordResultMsg').textContent=`"${wTarget}" â€” solved in ${wGuesses.length} ${wGuesses.length===1?'try':'tries'}.`;
+      let msg = `"${wTarget}" &#8212; solved in ${wGuesses.length} ${wGuesses.length===1?'try':'tries'}.`;
+      if(prevBest && wGuesses.length < prevBest) msg += ` New best!`;
+      document.getElementById('wordResultMsg').innerHTML = msg;
       document.getElementById('wordResult').classList.remove('hidden');
+      renderWordStats();
     }, COLS*80+600);
     return;
   }
-
   if(wGuesses.length===ROWS){
     wDone=true;
     setTimeout(()=>{
-      document.getElementById('wordResultIcon').textContent='ðŸ˜…';
+      document.getElementById('wordResultIcon').textContent='\uD83D\uDE05';
       document.getElementById('wordResultTitle').textContent='Almost!';
-      document.getElementById('wordResultMsg').textContent=`The word was "${wTarget}". Give it another go!`;
+      document.getElementById('wordResultMsg').innerHTML=`The word was "${wTarget}". Give it another go!`;
       document.getElementById('wordResult').classList.remove('hidden');
     }, COLS*80+500);
     return;
   }
-
   updateCurrentRow();
 }
 
 function scoreGuess(guess, target){
   const res=Array(COLS).fill('absent');
   const tArr=[...target], used=Array(COLS).fill(false);
-  for(let i=0;i<COLS;i++) if(guess[i]===tArr[i]){ res[i]='correct'; used[i]=true; }
+  for(let i=0;i<COLS;i++) if(guess[i]===tArr[i]){res[i]='correct';used[i]=true;}
   for(let i=0;i<COLS;i++){
     if(res[i]==='correct') continue;
     for(let j=0;j<COLS;j++){
-      if(!used[j]&&res[j]!=='correct'&&guess[i]===tArr[j]){ res[i]='present'; used[j]=true; break; }
+      if(!used[j]&&res[j]!=='correct'&&guess[i]===tArr[j]){res[i]='present';used[j]=true;break;}
     }
   }
   return res;
@@ -835,132 +921,107 @@ function updateKbColors(guess, result){
     document.querySelectorAll('.kb-key').forEach(btn=>{
       if(btn.dataset.k===k){
         const cur=btn.classList.contains('k-correct')?'correct':btn.classList.contains('k-present')?'present':btn.classList.contains('k-absent')?'absent':null;
-        if(!cur||priority[res]>priority[cur]){
-          btn.className=`kb-key${k.length>1?' wide':''} k-${res}`;
-        }
+        if(!cur||priority[res]>priority[cur]) btn.className=`kb-key${k.length>1?' wide':''} k-${res}`;
       }
     });
   });
 }
 
-function showWordMsg(msg, type){
+function showWordMsg(msg,type){
   const el=document.getElementById('wordMsg');
   el.textContent=msg; el.className=`word-msg ${type}`;
   el.classList.remove('hidden');
   setTimeout(()=>el.classList.add('hidden'),1600);
   for(let c=0;c<COLS;c++){
     const cell=document.getElementById(`wc-${wGuesses.length}-${c}`);
-    cell.classList.add('shake');
-    setTimeout(()=>cell.classList.remove('shake'),350);
+    cell.classList.add('shake'); setTimeout(()=>cell.classList.remove('shake'),350);
   }
 }
 
 // ================================================================
-// TRIVIA â€” fallback bank (weighted 1960sâ€“1990s)
+// TRIVIA
 // ================================================================
 const triviaFallback = [
-  // --- 1960s ---
-  { q:"Which band released the album 'Sgt. Pepper's Lonely Hearts Club Band' in 1967?", opts:["The Rolling Stones","The Beatles","The Who","The Kinks"], a:1, decade:"1960s" },
-  { q:"In what year did Neil Armstrong first walk on the Moon?", opts:["1966","1967","1968","1969"], a:3, decade:"1960s" },
-  { q:"Which U.S. President was assassinated in Dallas in 1963?", opts:["Lyndon B. Johnson","Richard Nixon","John F. Kennedy","Dwight Eisenhower"], a:2, decade:"1960s" },
-  { q:"What was the name of the famous 1969 music festival held in New York?", opts:["Coachella","Glastonbury","Woodstock","Monterey Pop"], a:2, decade:"1960s" },
-  { q:"Which civil rights leader delivered the 'I Have a Dream' speech in 1963?", opts:["Malcolm X","John Lewis","Medgar Evers","Martin Luther King Jr."], a:3, decade:"1960s" },
-  // --- 1970s ---
-  { q:"Which movie, released in 1977, started the Star Wars franchise?", opts:["The Empire Strikes Back","A New Hope","Return of the Jedi","Rogue One"], a:1, decade:"1970s" },
-  { q:"What card game became enormously popular in the 1970s and uses colored cards and 'Draw 4'?", opts:["Go Fish","Rummy","Skip-Bo","Uno"], a:3, decade:"1970s" },
-  { q:"In what year did the Watergate scandal force a U.S. President to resign?", opts:["1971","1972","1973","1974"], a:3, decade:"1970s" },
-  { q:"Which disco anthem by the Bee Gees topped charts in 1977?", opts:["Night Fever","Stayin' Alive","How Deep Is Your Love","More Than a Woman"], a:1, decade:"1970s" },
-  { q:"What board game involves buying and trading properties like Boardwalk and Park Place?", opts:["Scrabble","Clue","Risk","Monopoly"], a:3, decade:"1970s" },
-  // --- 1980s ---
-  { q:"What was the best-selling video game console of the mid-1980s in North America?", opts:["Atari 2600","ColecoVision","Nintendo Entertainment System","Sega Master System"], a:2, decade:"1980s" },
-  { q:"Which Michael Jackson album, released in 1982, became the best-selling album of all time?", opts:["Off the Wall","Bad","Dangerous","Thriller"], a:3, decade:"1980s" },
-  { q:"In what year did the Berlin Wall fall?", opts:["1987","1988","1989","1990"], a:2, decade:"1980s" },
-  { q:"Which actress starred in the 1987 film 'Dirty Dancing'?", opts:["Molly Ringwald","Demi Moore","Jennifer Grey","Meg Ryan"], a:2, decade:"1980s" },
-  { q:"What TV show featured the Huxtable family and became one of the top-rated shows of the 1980s?", opts:["Family Ties","Growing Pains","The Cosby Show","Cheers"], a:2, decade:"1980s" },
-  // --- 1990s ---
-  { q:"Which popular sitcom about a group of friends in New York City premiered in 1994?", opts:["Seinfeld","Frasier","Friends","Will & Grace"], a:2, decade:"1990s" },
-  { q:"What was the name of the first widely used web browser, released in 1993?", opts:["Internet Explorer","Netscape","Mosaic","Opera"], a:2, decade:"1990s" },
-  { q:"Which 1994 film starring Tom Hanks features the famous line about a box of chocolates?", opts:["Philadelphia","Cast Away","The Green Mile","Forrest Gump"], a:3, decade:"1990s" },
-  { q:"Which pop group released 'Wannabe' in 1996 as their debut single?", opts:["TLC","Destiny's Child","Spice Girls","En Vogue"], a:2, decade:"1990s" },
-  { q:"What gaming device, launched in 1989, could fit in your pocket and played Tetris?", opts:["Sega Game Gear","Atari Lynx","Nintendo Game Boy","TurboExpress"], a:2, decade:"1990s" },
-  // --- General / timeless ---
-  { q:"What is the largest planet in our solar system?", opts:["Saturn","Jupiter","Neptune","Uranus"], a:1 },
-  { q:"Which element has the chemical symbol 'Au'?", opts:["Silver","Aluminum","Gold","Copper"], a:2 },
-  { q:"What is the capital of Australia?", opts:["Sydney","Melbourne","Brisbane","Canberra"], a:3 },
-  { q:"How many bones are in the adult human body?", opts:["196","206","216","226"], a:1 },
-  { q:"Who painted the Mona Lisa?", opts:["Michelangelo","Raphael","Leonardo da Vinci","Botticelli"], a:2 },
-  { q:"What is the hardest natural substance on Earth?", opts:["Gold","Iron","Quartz","Diamond"], a:3 },
-  { q:"What is the tallest mountain in the world?", opts:["K2","Everest","Kilimanjaro","Mont Blanc"], a:1 },
-  { q:"Which ocean is the largest by area?", opts:["Atlantic","Indian","Arctic","Pacific"], a:3 },
-  { q:"What is the longest river in the world?", opts:["Amazon","Congo","Yangtze","Nile"], a:3 },
-  { q:"Which instrument has 88 keys?", opts:["Organ","Accordion","Piano","Harpsichord"], a:2 },
+  {q:"Which band released the album 'Sgt. Pepper's Lonely Hearts Club Band' in 1967?",opts:["The Rolling Stones","The Beatles","The Who","The Kinks"],a:1,decade:"1960s"},
+  {q:"In what year did Neil Armstrong first walk on the Moon?",opts:["1966","1967","1968","1969"],a:3,decade:"1960s"},
+  {q:"Which U.S. President was assassinated in Dallas in 1963?",opts:["Lyndon B. Johnson","Richard Nixon","John F. Kennedy","Dwight Eisenhower"],a:2,decade:"1960s"},
+  {q:"What was the name of the famous 1969 music festival held in New York?",opts:["Coachella","Glastonbury","Woodstock","Monterey Pop"],a:2,decade:"1960s"},
+  {q:"Which civil rights leader delivered the 'I Have a Dream' speech in 1963?",opts:["Malcolm X","John Lewis","Medgar Evers","Martin Luther King Jr."],a:3,decade:"1960s"},
+  {q:"Which movie released in 1977 started the Star Wars franchise?",opts:["The Empire Strikes Back","A New Hope","Return of the Jedi","Rogue One"],a:1,decade:"1970s"},
+  {q:"In what year did the Watergate scandal force a U.S. President to resign?",opts:["1971","1972","1973","1974"],a:3,decade:"1970s"},
+  {q:"Which disco song by the Bee Gees topped charts in 1977?",opts:["Night Fever","Stayin' Alive","How Deep Is Your Love","More Than a Woman"],a:1,decade:"1970s"},
+  {q:"What board game involves buying and trading properties like Boardwalk and Park Place?",opts:["Scrabble","Clue","Risk","Monopoly"],a:3,decade:"1970s"},
+  {q:"Which Michael Jackson album released in 1982 became the best-selling album of all time?",opts:["Off the Wall","Bad","Dangerous","Thriller"],a:3,decade:"1980s"},
+  {q:"In what year did the Berlin Wall fall?",opts:["1987","1988","1989","1990"],a:2,decade:"1980s"},
+  {q:"Which actress starred in the 1987 film 'Dirty Dancing'?",opts:["Molly Ringwald","Demi Moore","Jennifer Grey","Meg Ryan"],a:2,decade:"1980s"},
+  {q:"What TV show featured the Huxtable family and became a top-rated show of the 1980s?",opts:["Family Ties","Growing Pains","The Cosby Show","Cheers"],a:2,decade:"1980s"},
+  {q:"Which popular sitcom about friends in New York City premiered in 1994?",opts:["Seinfeld","Frasier","Friends","Will & Grace"],a:2,decade:"1990s"},
+  {q:"Which 1994 film starring Tom Hanks features the famous line about a box of chocolates?",opts:["Philadelphia","Cast Away","The Green Mile","Forrest Gump"],a:3,decade:"1990s"},
+  {q:"Which pop group released 'Wannabe' in 1996 as their debut single?",opts:["TLC","Destiny's Child","Spice Girls","En Vogue"],a:2,decade:"1990s"},
+  {q:"What gaming device launched in 1989 could fit in your pocket and played Tetris?",opts:["Sega Game Gear","Atari Lynx","Nintendo Game Boy","TurboExpress"],a:2,decade:"1990s"},
+  {q:"What is the largest planet in our solar system?",opts:["Saturn","Jupiter","Neptune","Uranus"],a:1},
+  {q:"Which element has the chemical symbol 'Au'?",opts:["Silver","Aluminum","Gold","Copper"],a:2},
+  {q:"What is the capital of Australia?",opts:["Sydney","Melbourne","Brisbane","Canberra"],a:3},
+  {q:"How many bones are in the adult human body?",opts:["196","206","216","226"],a:1},
+  {q:"Who painted the Mona Lisa?",opts:["Michelangelo","Raphael","Leonardo da Vinci","Botticelli"],a:2},
+  {q:"What is the hardest natural substance on Earth?",opts:["Gold","Iron","Quartz","Diamond"],a:3},
+  {q:"What is the tallest mountain in the world?",opts:["K2","Everest","Kilimanjaro","Mont Blanc"],a:1},
+  {q:"Which ocean is the largest by area?",opts:["Atlantic","Indian","Arctic","Pacific"],a:3},
+  {q:"What is the longest river in the world?",opts:["Amazon","Congo","Yangtze","Nile"],a:3},
+  {q:"Which instrument has 88 keys?",opts:["Organ","Accordion","Piano","Harpsichord"],a:2},
+  {q:"What gas do plants primarily absorb during photosynthesis?",opts:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],a:2},
+  {q:"Which bird is a symbol of peace?",opts:["Eagle","Crane","Dove","Swan"],a:2},
+  {q:"What is the largest organ of the human body?",opts:["Liver","Brain","Lung","Skin"],a:3},
 ];
 
 let tQuestions=[], tIdx=0, tScore=0, tAnswered=false;
 const T_PER_ROUND=7;
-const TRIVIA_API = 'https://moddes-backend.onrender.com/debbie';
-const TRIVIA_TIMEOUT_MS = 6000;
+const TRIVIA_API='https://moddes-backend.onrender.com/debbie';
+const TRIVIA_TIMEOUT_MS=20000;
 
-// Normalise questions from API or fallback into a consistent shape
-function normaliseQuestion(q) {
-  return {
-    q: q.q,
-    opts: q.opts,
-    a: typeof q.a === 'number' ? q.a : parseInt(q.a),
-    decade: q.decade || null,
-  };
+function normaliseQ(q){ return {q:q.q,opts:q.opts,a:typeof q.a==='number'?q.a:parseInt(q.a),decade:q.decade||null}; }
+
+async function fetchTriviaQuestions(){
+  const ctrl=new AbortController();
+  const tid=setTimeout(()=>ctrl.abort(),TRIVIA_TIMEOUT_MS);
+  try{
+    const res=await fetch(TRIVIA_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'trivia'}),signal:ctrl.signal});
+    clearTimeout(tid);
+    if(!res.ok) throw new Error('non-2xx');
+    const json=await res.json();
+    if(!json.data||!Array.isArray(json.data)||json.data.length===0) throw new Error('empty');
+    return json.data.map(normaliseQ);
+  }catch(e){ clearTimeout(tid); return null; }
 }
 
-async function fetchTriviaQuestions() {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), TRIVIA_TIMEOUT_MS);
-  try {
-    const res = await fetch(TRIVIA_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'trivia' }),
-      signal: controller.signal,
-    });
-    clearTimeout(timeoutId);
-    if (!res.ok) throw new Error('Non-2xx response');
-    const json = await res.json();
-    if (!json.data || !Array.isArray(json.data) || json.data.length === 0) throw new Error('Empty data');
-    return json.data.map(normaliseQuestion);
-  } catch (e) {
-    clearTimeout(timeoutId);
-    return null; // signal fallback
-  }
+function showTriviaSpinner(){
+  document.getElementById('triviaContent').innerHTML='<div class="trivia-loading"><div class="spinner"></div><div class="trivia-loading-text">Loading questions&#8230;</div></div>';
 }
 
-function showTriviaSpinner() {
-  document.getElementById('triviaContent').innerHTML = `
-    <div class="trivia-loading">
-      <div class="spinner"></div>
-      <div class="trivia-loading-text">Loading questionsâ€¦</div>
-    </div>
-  `;
-}
-
-async function initTrivia() {
-  tIdx=0; tScore=0; tAnswered=false;
-  document.getElementById('triviaStreakBadge').textContent=localStorage.getItem('dbStreak')||'0';
-
-  showTriviaSpinner();
-
-  const apiQuestions = await fetchTriviaQuestions();
-
-  if (apiQuestions && apiQuestions.length >= T_PER_ROUND) {
-    tQuestions = apiQuestions.slice(0, T_PER_ROUND);
-  } else if (apiQuestions && apiQuestions.length > 0) {
-    // API returned fewer than needed â€” pad with fallback
-    const needed = T_PER_ROUND - apiQuestions.length;
-    const extra = [...triviaFallback].sort(()=>Math.random()-0.5).slice(0, needed);
-    tQuestions = [...apiQuestions, ...extra.map(normaliseQuestion)];
+function renderTriviaStats(){
+  const rounds = lsNum('triviaRounds');
+  const best = ls('triviaBest');
+  const scores = lsArr('triviaScores');
+  document.getElementById('triviaRoundsDisp').textContent = rounds;
+  document.getElementById('triviaBestDisp').textContent = best ? best+'%' : '&#8212;';
+  document.getElementById('triviaStreakBadge').textContent = lsNum('dbStreak');
+  if(scores.length > 1){
+    const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+    document.getElementById('triviaAvgDisp').textContent = avg+'%';
+    setDelta('triviaBestDelta', scores[scores.length-1], scores[scores.length-2], false);
   } else {
-    // Full fallback
-    tQuestions = [...triviaFallback].sort(()=>Math.random()-0.5).slice(0, T_PER_ROUND);
+    document.getElementById('triviaAvgDisp').textContent = '&#8212;';
   }
+}
 
+async function initTrivia(){
+  tIdx=0; tScore=0; tAnswered=false;
+  renderTriviaStats();
+  showTriviaSpinner();
+  const api = await fetchTriviaQuestions();
+  if(api && api.length>=T_PER_ROUND){ tQuestions=api.slice(0,T_PER_ROUND); }
+  else if(api && api.length>0){ const n=T_PER_ROUND-api.length; const ex=[...triviaFallback].sort(()=>Math.random()-0.5).slice(0,n); tQuestions=[...api,...ex.map(normaliseQ)]; }
+  else { tQuestions=[...triviaFallback].sort(()=>Math.random()-0.5).slice(0,T_PER_ROUND); }
   renderTrivia();
 }
 
@@ -969,122 +1030,93 @@ function renderTrivia(){
   tAnswered=false;
   const q=tQuestions[tIdx];
   const prog=((tIdx)/tQuestions.length)*100;
-  const decadeHtml = q.decade
-    ? `<div class="decade-tag">${q.decade}</div>`
-    : '';
+  const decHtml=q.decade?`<div class="decade-tag">${q.decade}</div>`:'';
   document.getElementById('triviaContent').innerHTML=`
     <div class="trivia-q">
       <div class="prog-row" style="margin-bottom:14px">
         <div class="prog-track"><div class="prog-fill" style="width:${prog}%"></div></div>
         <div class="prog-lbl">${tIdx+1}/${tQuestions.length}</div>
       </div>
-      ${decadeHtml}
+      ${decHtml}
       <div class="trivia-num">Question ${tIdx+1}</div>
       <div class="trivia-text">${q.q}</div>
     </div>
     <div class="trivia-opts">
-      ${q.opts.map((o,i)=>`
-        <button class="trivia-opt" id="topt${i}" onclick="onTrivia(${i})">
-          <span class="trivia-dot"></span>${o}
-        </button>`).join('')}
+      ${q.opts.map((o,i)=>`<button class="trivia-opt" id="topt${i}" onclick="onTrivia(${i})"><span class="trivia-dot"></span>${o}</button>`).join('')}
     </div>
-    <div id="tResult"></div>
-  `;
+    <div id="tResult"></div>`;
 }
 
 function onTrivia(choice){
   if(tAnswered) return; tAnswered=true;
   const q=tQuestions[tIdx];
   q.opts.forEach((_,i)=>{
-    const btn=document.getElementById('topt'+i);
-    btn.disabled=true;
+    const btn=document.getElementById('topt'+i); btn.disabled=true;
     if(i===q.a) btn.classList.add('correct');
     else if(i===choice&&choice!==q.a) btn.classList.add('wrong');
   });
   if(choice===q.a) tScore++;
-  document.getElementById('tResult').innerHTML=`
-    <div class="result-box ${choice===q.a?'correct':'wrong'}" style="margin-top:12px">
-      ${choice===q.a?'âœ“ Correct!':'That\'s a tough one â€” the answer was: <strong>'+q.opts[q.a]+'</strong>'}
-    </div>
-  `;
+  document.getElementById('tResult').innerHTML=`<div class="result-box ${choice===q.a?'correct':'wrong'}" style="margin-top:12px">${choice===q.a?'&#10003; Correct!':'That\'s a tough one &#8212; the answer was: <strong>'+q.opts[q.a]+'</strong>'}</div>`;
   setTimeout(()=>{ tIdx++; renderTrivia(); }, 1800);
 }
 
 function showTriviaComplete(){
   updateStreak(); confetti();
   const pct=Math.round((tScore/tQuestions.length)*100);
+  const prevBest = parseInt(ls('triviaBest')) || null;
+  const scores = lsArr('triviaScores');
+  scores.push(pct);
+  lsSaveArr('triviaScores', scores);
+  ls('triviaRounds', lsNum('triviaRounds')+1);
+  if(!prevBest || pct > prevBest) ls('triviaBest', pct);
+  renderTriviaStats();
+  let extra = '';
+  if(prevBest && pct > prevBest) extra = ` New best!`;
   document.getElementById('triviaContent').innerHTML=`
     <div class="complete">
-      <span class="complete-icon">${pct===100?'ðŸ†':pct>=70?'ðŸŽ¯':'ðŸ’¡'}</span>
+      <span class="complete-icon">${pct===100?'\uD83C\uDFC6':pct>=70?'\uD83C\uDFAF':'\uD83D\uDCA1'}</span>
       <div class="complete-title">${tScore} / ${tQuestions.length}</div>
-      <div class="complete-score">${pct===100?'Perfect round!':pct>=85?'Really sharp.':pct>=70?'Solid work.':'Good effort â€” try again?'}</div>
+      <div class="complete-score">${pct===100?'Perfect round!':pct>=85?'Really sharp.':pct>=70?'Solid work.':'Good effort &#8212; try again?'}${extra}</div>
       <button class="btn btn-primary" onclick="initTrivia()">Play again</button>
-      <button class="btn btn-ghost" onclick="go('home')">â† Home</button>
-    </div>
-  `;
+      <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
+    </div>`;
 }
 
 // ================================================================
 // DECISIONS
 // ================================================================
 const decisions = [
-  {
-    tag:"Classic dilemma",
-    q:"A long-time supplier offers you a 20% discount if you commit to an exclusive 3-year contract. A newer competitor offers 10% off with no lock-in. What do you do?",
-    opts:["Take the exclusive deal â€” savings now, sort later","Decline both and keep full flexibility","Negotiate: ask the supplier for shorter term with same discount","Accept the newer competitor's deal"],
-    a:2,
-    fb:"Negotiating first is almost always the right first move. You might get the same savings with far less lock-in.",
-    fbw:"Smart instinct, but there's usually a better angle before making the final call."
-  },
-  {
-    tag:"People problem",
-    q:"Your best performer is clashing repeatedly with a newer team member who has real potential. Productivity is slipping for both. What's your move?",
-    opts:["Separate them â€” put them on different projects indefinitely","Address it directly: meet with each, then together if needed","Wait it out â€” personalities usually sort themselves","Let the team manage it naturally"],
-    a:1,
-    fb:"Direct, honest conversation â€” separately then together â€” usually resolves this faster than any workaround.",
-    fbw:"Avoidance and workarounds tend to let the problem grow. Direct is usually better here."
-  },
-  {
-    tag:"Budget crunch",
-    q:"You're 15% over budget midway through the year. Leadership wants cuts. What do you cut first?",
-    opts:["Across-the-board 15% trim on every line item","Identify the lowest-ROI spending first, cut those fully","Freeze all discretionary spending immediately","Ask for a budget extension instead"],
-    a:1,
-    fb:"Targeted cuts based on actual ROI protect the things that matter most and show strategic judgment.",
-    fbw:"Across-the-board and blanket freezes are blunt instruments â€” they often cut things you'll regret losing."
-  },
-  {
-    tag:"Process question",
-    q:"A new system would save the team 4 hours a week, but there's a steep learning curve and a 6-week disruption. Do you implement it?",
-    opts:["Yes â€” the long-term math is clear","No â€” 6 weeks of disruption isn't worth it","Pilot it with one team member first, evaluate results","Wait until a quieter time of year"],
-    a:2,
-    fb:"Piloting lets you capture real data on the disruption and benefit before committing the whole team.",
-    fbw:"The pilot approach usually de-risks the decision significantly â€” it's worth that extra step."
-  },
-  {
-    tag:"Communication",
-    q:"You need to share difficult news with your team â€” a project they worked hard on has been cancelled. How do you handle it?",
-    opts:["Send a group email explaining the situation clearly","Announce in the next regular team meeting","Tell them individually in brief 1-on-1s first","Delegate the announcement to someone else"],
-    a:2,
-    fb:"Individual conversations first show respect for the people involved and give each person space to react without an audience.",
-    fbw:"Group announcements for hard news can make people feel like a number. Individual first is usually the more human approach."
-  },
-  {
-    tag:"Risk & reward",
-    q:"A vendor offers an amazing deal but they're brand new with no track record. The savings are significant. Do you take it?",
-    opts:["Yes â€” the numbers make sense","No â€” no track record means too much risk","Start with a small pilot contract, option to expand","Ask for references and third-party validation first"],
-    a:3,
-    fb:"Verification first â€” references, reviews, third-party validation â€” dramatically reduces blind risk without killing the opportunity.",
-    fbw:"Good instinct around the risk. Getting third-party validation before committing is usually the smart middle path."
-  },
+  {tag:"Classic dilemma",q:"A long-time supplier offers you a 20% discount if you commit to an exclusive 3-year contract. A newer competitor offers 10% off with no lock-in. What do you do?",opts:["Take the exclusive deal &#8212; savings now, sort later","Decline both and keep full flexibility","Negotiate: ask the supplier for shorter term with same discount","Accept the newer competitor's deal"],a:2,fb:"Negotiating first is almost always the right first move. You might get the same savings with far less lock-in.",fbw:"Smart instinct, but there's usually a better angle before making the final call."},
+  {tag:"People problem",q:"Your best performer is clashing repeatedly with a newer team member who has real potential. Productivity is slipping for both. What's your move?",opts:["Separate them &#8212; put them on different projects indefinitely","Address it directly: meet with each, then together if needed","Wait it out &#8212; personalities usually sort themselves","Let the team manage it naturally"],a:1,fb:"Direct, honest conversation &#8212; separately then together &#8212; usually resolves this faster than any workaround.",fbw:"Avoidance and workarounds tend to let the problem grow. Direct is usually better here."},
+  {tag:"Budget crunch",q:"You're 15% over budget midway through the year. Leadership wants cuts. What do you cut first?",opts:["Across-the-board 15% trim on every line item","Identify the lowest-ROI spending first, cut those fully","Freeze all discretionary spending immediately","Ask for a budget extension instead"],a:1,fb:"Targeted cuts based on actual ROI protect the things that matter most and show strategic judgment.",fbw:"Across-the-board and blanket freezes are blunt instruments &#8212; they often cut things you'll regret losing."},
+  {tag:"Process question",q:"A new system would save the team 4 hours a week, but there's a steep learning curve and a 6-week disruption. Do you implement it?",opts:["Yes &#8212; the long-term math is clear","No &#8212; 6 weeks of disruption isn't worth it","Pilot it with one team member first, evaluate results","Wait until a quieter time of year"],a:2,fb:"Piloting lets you capture real data on the disruption and benefit before committing the whole team.",fbw:"The pilot approach usually de-risks the decision significantly &#8212; it's worth that extra step."},
+  {tag:"Communication",q:"You need to share difficult news with your team &#8212; a project they worked hard on has been cancelled. How do you handle it?",opts:["Send a group email explaining the situation clearly","Announce in the next regular team meeting","Tell them individually in brief 1-on-1s first","Delegate the announcement to someone else"],a:2,fb:"Individual conversations first show respect for the people involved and give each person space to react without an audience.",fbw:"Group announcements for hard news can make people feel like a number. Individual first is usually the more human approach."},
+  {tag:"Risk & reward",q:"A vendor offers an amazing deal but they're brand new with no track record. The savings are significant. Do you take it?",opts:["Yes &#8212; the numbers make sense","No &#8212; no track record means too much risk","Start with a small pilot contract, option to expand","Ask for references and third-party validation first"],a:3,fb:"Verification first &#8212; references, reviews, third-party validation &#8212; dramatically reduces blind risk without killing the opportunity.",fbw:"Good instinct around the risk. Getting third-party validation before committing is usually the smart middle path."},
 ];
 
 let dIdx=0, dDone=false;
 
+function renderDecStats(){
+  const rounds = lsNum('decRounds');
+  const scores = lsArr('decScores');
+  const best = ls('decBest');
+  document.getElementById('decRoundsDisp').textContent = rounds;
+  document.getElementById('decBestDisp').textContent = best !== null ? best+'/5' : '&#8212;';
+  document.getElementById('decStreakBadge').textContent = lsNum('dbStreak');
+  if(scores.length > 1){
+    const avg = (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1);
+    document.getElementById('decAvgDisp').textContent = avg;
+    setDelta('decBestDelta', scores[scores.length-1], scores[scores.length-2], false);
+  } else {
+    document.getElementById('decAvgDisp').textContent = '&#8212;';
+  }
+}
+
 function initDecisions(){
-  const shuffled=[...decisions].sort(()=>Math.random()-0.5);
+  window._decSet = [...decisions].sort(()=>Math.random()-0.5).slice(0,5);
+  window._decScore = 0;
   dIdx=0; dDone=false;
-  document.getElementById('decStreakBadge').textContent=localStorage.getItem('dbStreak')||'0';
-  window._decSet=shuffled.slice(0,5);
+  renderDecStats();
   renderDecision();
 }
 
@@ -1103,79 +1135,681 @@ function renderDecision(){
       <div class="sc-q">${d.q}</div>
     </div>
     <div class="scenario-wrap" id="decOpts">
-      ${d.opts.map((o,i)=>`
-        <button class="opt-btn" id="dopt${i}" onclick="onDecision(${i})">
-          <span class="opt-letter">${String.fromCharCode(65+i)}</span>
-          <span>${o}</span>
-        </button>`).join('')}
+      ${d.opts.map((o,i)=>`<button class="opt-btn" id="dopt${i}" onclick="onDecision(${i})"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></button>`).join('')}
     </div>
-    <div id="decResult"></div>
-  `;
+    <div id="decResult"></div>`;
 }
 
 function onDecision(choice){
   if(dDone) return; dDone=true;
   const d=window._decSet[dIdx];
   d.opts.forEach((_,i)=>{
-    const btn=document.getElementById('dopt'+i);
-    btn.disabled=true;
+    const btn=document.getElementById('dopt'+i); btn.disabled=true;
     if(i===d.a) btn.classList.add('correct');
     else if(i===choice&&choice!==d.a) btn.classList.add('wrong');
   });
+  if(choice===d.a) window._decScore++;
   const correct=(choice===d.a);
-  document.getElementById('decResult').innerHTML=`
-    <div class="result-box ${correct?'correct':'wrong'}" style="margin-top:12px">
-      ${correct?'âœ“ '+d.fb:d.fbw+' <strong>Best call: '+d.opts[d.a]+'</strong>'}
-    </div>
-  `;
+  document.getElementById('decResult').innerHTML=`<div class="result-box ${correct?'correct':'wrong'}" style="margin-top:12px">${correct?'&#10003; '+d.fb:d.fbw+' <strong>Best call: '+d.opts[d.a]+'</strong>'}</div>`;
   setTimeout(()=>{ dIdx++; renderDecision(); }, 2200);
 }
 
 function showDecComplete(){
   updateStreak(); confetti();
+  const score = window._decScore || 0;
+  const prevBest = parseInt(ls('decBest')) || null;
+  const scores = lsArr('decScores');
+  scores.push(score);
+  lsSaveArr('decScores', scores);
+  ls('decRounds', lsNum('decRounds')+1);
+  if(prevBest === null || score > prevBest) ls('decBest', score);
+  renderDecStats();
+  let extra = '';
+  if(prevBest !== null && score > prevBest) extra = ' New best!';
   document.getElementById('decContent').innerHTML=`
     <div class="complete">
-      <span class="complete-icon">ðŸ’¼</span>
-      <div class="complete-title">Round complete.</div>
-      <div class="complete-score">Good thinking all around.</div>
+      <span class="complete-icon">&#128188;</span>
+      <div class="complete-title">${score} / 5 correct</div>
+      <div class="complete-score">Good thinking all around.${extra}</div>
       <button class="btn btn-primary" onclick="initDecisions()">Play again</button>
-      <button class="btn btn-ghost" onclick="go('home')">â† Home</button>
-    </div>
-  `;
+      <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
+    </div>`;
 }
 
 // ================================================================
-// BACKUP â€” export localStorage stats as JSON
+// SEQUENCE MEMORY
 // ================================================================
-function backupStats() {
-  const stats = {
+const SEQ_COLORS = ['red','blue','green','yellow'];
+let seqSequence=[], seqPlayerIdx=0, seqPlaying=false, seqAccepting=false;
+
+function initSequence(){
+  seqSequence=[]; seqPlayerIdx=0; seqPlaying=false; seqAccepting=false;
+  document.getElementById('seqResult').classList.add('hidden');
+  document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=false);
+  renderSeqStats();
+  setTimeout(()=>seqNextRound(), 600);
+}
+
+function renderSeqStats(){
+  const best = ls('seqBest');
+  const last = ls('seqLast');
+  document.getElementById('seqLevel').textContent = seqSequence.length + 1;
+  document.getElementById('seqBestDisp').textContent = best || '&#8212;';
+  document.getElementById('seqLastDisp').textContent = last || '&#8212;';
+  document.getElementById('seqStreakBadge').textContent = lsNum('dbStreak');
+  if(best && last) setDelta('seqBestDelta', parseInt(best), parseInt(last), false);
+}
+
+function seqNextRound(){
+  seqAccepting=false;
+  seqSequence.push(SEQ_COLORS[Math.floor(Math.random()*4)]);
+  document.getElementById('seqLevel').textContent = seqSequence.length;
+  setSeqMsg('Watch the pattern&#8230;','watching');
+  document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=true);
+  seqPlayerIdx=0;
+  let delay=700;
+  seqSequence.forEach((color,i)=>{
+    setTimeout(()=>{
+      seqFlash(color);
+      if(i===seqSequence.length-1){
+        setTimeout(()=>{ seqAccepting=true; setSeqMsg('Your turn!','go'); document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=false); }, 500);
+      }
+    }, delay + i*900);
+  });
+}
+
+function seqFlash(color){
+  const btn=document.querySelector(`.seq-btn[data-c="${color}"]`);
+  if(!btn) return;
+  btn.classList.add('seq-flash');
+  setTimeout(()=>btn.classList.remove('seq-flash'), 350);
+}
+
+function onSeqTap(color){
+  if(!seqAccepting) return;
+  seqFlash(color);
+  if(color===seqSequence[seqPlayerIdx]){
+    seqPlayerIdx++;
+    if(seqPlayerIdx===seqSequence.length){
+      seqAccepting=false;
+      document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=true);
+      setSeqMsg('Nice! Keep going&#8230;','');
+      if(seqSequence.length > (lsNum('seqBest')||0)){
+        ls('seqBest', seqSequence.length);
+      }
+      setTimeout(()=>seqNextRound(), 1000);
+    }
+  } else {
+    seqAccepting=false;
+    document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=true);
+    setSeqMsg('Oops &#8212; that wasn\'t right','fail');
+    const reached = seqSequence.length;
+    ls('seqLast', reached);
+    const prevBest = lsNum('seqBest');
+    if(reached > prevBest) ls('seqBest', reached);
+    updateStreak();
+    setTimeout(()=>{
+      const best = lsNum('seqBest');
+      document.getElementById('seqResult').classList.remove('hidden');
+      document.getElementById('seqResultTitle').textContent = `Round ${reached}`;
+      let msg = `You made it to round ${reached}.`;
+      if(reached >= best) msg += ' New best!';
+      else msg += ` Best is ${best}.`;
+      document.getElementById('seqResultMsg').textContent = msg;
+      renderSeqStats();
+    }, 800);
+  }
+}
+
+function setSeqMsg(text, type){
+  const el=document.getElementById('seqMsg');
+  el.innerHTML=text;
+  el.className='seq-msg '+(type||'');
+}
+
+// ================================================================
+// SPOT THE DIFFERENCE
+// ================================================================
+/*
+  Future API integration:
+  POST https://moddes-backend.onrender.com/debbie
+  Body: { "type": "spot" }
+  Expected response:
+  {
+    data: [{
+      id: string,
+      title: string,
+      svgA: string,        // SVG markup for image A (original)
+      svgB: string,        // SVG markup for image B (with differences)
+      differences: [{
+        id: string,
+        xPct: number,      // center X as % of image width  (0-100)
+        yPct: number,      // center Y as % of image height (0-100)
+        radiusPct: number  // hitbox radius as % of image width
+      }]
+    }]
+  }
+  Until the backend supports this, SVG scenes below are used as fallback.
+*/
+
+const SPOT_SCENES = [
+  {
+    id:'park',
+    title:'Park Scene',
+    diffs: 4,
+    svgA: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="200" fill="#87CEEB"/>
+      <rect y="140" width="320" height="60" fill="#5D8A3C"/>
+      <rect y="130" width="320" height="20" fill="#6FA044"/>
+      <!-- sun -->
+      <circle cx="270" cy="38" r="22" fill="#FFD700"/>
+      <!-- cloud 1 -->
+      <ellipse cx="80" cy="50" rx="35" ry="18" fill="white"/>
+      <ellipse cx="60" cy="55" rx="20" ry="14" fill="white"/>
+      <ellipse cx="100" cy="55" rx="20" ry="14" fill="white"/>
+      <!-- cloud 2 -->
+      <ellipse cx="190" cy="35" rx="28" ry="14" fill="white"/>
+      <ellipse cx="175" cy="40" rx="16" ry="11" fill="white"/>
+      <ellipse cx="205" cy="40" rx="16" ry="11" fill="white"/>
+      <!-- tree 1 -->
+      <rect x="48" y="95" width="10" height="40" fill="#8B5E3C"/>
+      <ellipse cx="53" cy="88" rx="28" ry="32" fill="#2E7D32"/>
+      <!-- tree 2 -->
+      <rect x="238" y="100" width="10" height="38" fill="#8B5E3C"/>
+      <ellipse cx="243" cy="92" rx="24" ry="28" fill="#388E3C"/>
+      <!-- bench -->
+      <rect x="118" y="132" width="60" height="6" rx="2" fill="#8B5E3C"/>
+      <rect x="122" y="138" width="6" height="10" rx="1" fill="#8B5E3C"/>
+      <rect x="168" y="138" width="6" height="10" rx="1" fill="#8B5E3C"/>
+      <!-- path -->
+      <ellipse cx="160" cy="165" rx="40" ry="12" fill="#C4A35A" opacity="0.6"/>
+      <!-- bird 1 -->
+      <path d="M120 65 Q124 60 128 65" stroke="#333" stroke-width="1.5" fill="none"/>
+      <!-- bird 2 -->
+      <path d="M145 58 Q149 53 153 58" stroke="#333" stroke-width="1.5" fill="none"/>
+      <!-- flower 1 -->
+      <circle cx="90" cy="148" r="4" fill="#FF69B4"/>
+      <circle cx="90" cy="141" r="3" fill="#FF69B4"/>
+      <circle cx="83" cy="145" r="3" fill="#FF69B4"/>
+      <circle cx="97" cy="145" r="3" fill="#FF69B4"/>
+      <circle cx="90" cy="145" r="4" fill="#FFD700"/>
+    </svg>`,
+    svgB: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="200" fill="#87CEEB"/>
+      <rect y="140" width="320" height="60" fill="#5D8A3C"/>
+      <rect y="130" width="320" height="20" fill="#6FA044"/>
+      <!-- sun MOVED to left -->
+      <circle cx="50" cy="38" r="22" fill="#FFD700"/>
+      <!-- cloud 1 -->
+      <ellipse cx="80" cy="50" rx="35" ry="18" fill="white"/>
+      <ellipse cx="60" cy="55" rx="20" ry="14" fill="white"/>
+      <ellipse cx="100" cy="55" rx="20" ry="14" fill="white"/>
+      <!-- cloud 2 REMOVED (diff 2) -->
+      <!-- tree 1 -->
+      <rect x="48" y="95" width="10" height="40" fill="#8B5E3C"/>
+      <ellipse cx="53" cy="88" rx="28" ry="32" fill="#2E7D32"/>
+      <!-- tree 2 DARKER green (diff 3) -->
+      <rect x="238" y="100" width="10" height="38" fill="#8B5E3C"/>
+      <ellipse cx="243" cy="92" rx="24" ry="28" fill="#1B5E20"/>
+      <!-- bench -->
+      <rect x="118" y="132" width="60" height="6" rx="2" fill="#8B5E3C"/>
+      <rect x="122" y="138" width="6" height="10" rx="1" fill="#8B5E3C"/>
+      <rect x="168" y="138" width="6" height="10" rx="1" fill="#8B5E3C"/>
+      <!-- path -->
+      <ellipse cx="160" cy="165" rx="40" ry="12" fill="#C4A35A" opacity="0.6"/>
+      <!-- birds REMOVED (diff 4) -->
+      <!-- flower 1 color changed to purple -->
+      <circle cx="90" cy="148" r="4" fill="#9C27B0"/>
+      <circle cx="90" cy="141" r="3" fill="#9C27B0"/>
+      <circle cx="83" cy="145" r="3" fill="#9C27B0"/>
+      <circle cx="97" cy="145" r="3" fill="#9C27B0"/>
+      <circle cx="90" cy="145" r="4" fill="#FFD700"/>
+    </svg>`,
+    // hotspots on image B (xPct, yPct of viewBox 320x200, radiusPct of width)
+    hotspots:[
+      {id:'sun',    xPct:15.6, yPct:19,   rPct:9,  label:'Sun moved'},
+      {id:'cloud2', xPct:59.4, yPct:19,   rPct:10, label:'Cloud missing'},
+      {id:'tree2',  xPct:75.9, yPct:44,   rPct:9,  label:'Tree color changed'},
+      {id:'flower', xPct:28.1, yPct:72.5, rPct:6,  label:'Flower color changed'},
+    ]
+  },
+  {
+    id:'kitchen',
+    title:'Kitchen Counter',
+    diffs: 4,
+    svgA: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="200" fill="#F5F0E8"/>
+      <!-- counter -->
+      <rect x="0" y="130" width="320" height="70" fill="#D7C9A7"/>
+      <rect x="0" y="126" width="320" height="8" fill="#BFB08A"/>
+      <!-- wall tiles -->
+      <rect x="0" y="0" width="320" height="130" fill="#E8E0D0"/>
+      <line x1="0" y1="40" x2="320" y2="40" stroke="#CCC" stroke-width="1"/>
+      <line x1="0" y1="80" x2="320" y2="80" stroke="#CCC" stroke-width="1"/>
+      <line x1="0" y1="120" x2="320" y2="120" stroke="#CCC" stroke-width="1"/>
+      <line x1="60" y1="0" x2="60" y2="130" stroke="#CCC" stroke-width="1"/>
+      <line x1="120" y1="0" x2="120" y2="130" stroke="#CCC" stroke-width="1"/>
+      <line x1="180" y1="0" x2="180" y2="130" stroke="#CCC" stroke-width="1"/>
+      <line x1="240" y1="0" x2="240" y2="130" stroke="#CCC" stroke-width="1"/>
+      <line x1="300" y1="0" x2="300" y2="130" stroke="#CCC" stroke-width="1"/>
+      <!-- toaster -->
+      <rect x="20" y="100" width="56" height="34" rx="5" fill="#888"/>
+      <rect x="30" y="96" width="10" height="8" rx="2" fill="#555"/>
+      <rect x="52" y="96" width="10" height="8" rx="2" fill="#555"/>
+      <!-- red mug -->
+      <rect x="110" y="108" width="30" height="26" rx="4" fill="#E53935"/>
+      <path d="M140 116 Q152 116 152 122 Q152 128 140 128" stroke="#E53935" stroke-width="3" fill="none"/>
+      <!-- cookbook - blue -->
+      <rect x="165" y="80" width="28" height="50" rx="2" fill="#1565C0"/>
+      <rect x="167" y="82" width="24" height="46" fill="#1976D2"/>
+      <line x1="179" y1="82" x2="179" y2="128" stroke="#0D47A1" stroke-width="1"/>
+      <!-- fruit bowl -->
+      <ellipse cx="255" cy="134" rx="40" ry="8" fill="#C8A96E"/>
+      <circle cx="245" cy="126" r="10" fill="#F44336"/>
+      <circle cx="260" cy="123" r="9" fill="#FFA726"/>
+      <circle cx="270" cy="128" r="8" fill="#66BB6A"/>
+      <!-- window -->
+      <rect x="198" y="10" width="80" height="60" rx="3" fill="#AED6F1"/>
+      <line x1="238" y1="10" x2="238" y2="70" stroke="white" stroke-width="2"/>
+      <line x1="198" y1="40" x2="278" y2="40" stroke="white" stroke-width="2"/>
+    </svg>`,
+    svgB: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="200" fill="#F5F0E8"/>
+      <rect x="0" y="130" width="320" height="70" fill="#D7C9A7"/>
+      <rect x="0" y="126" width="320" height="8" fill="#BFB08A"/>
+      <rect x="0" y="0" width="320" height="130" fill="#E8E0D0"/>
+      <line x1="0" y1="40" x2="320" y2="40" stroke="#CCC" stroke-width="1"/>
+      <line x1="0" y1="80" x2="320" y2="80" stroke="#CCC" stroke-width="1"/>
+      <line x1="0" y1="120" x2="320" y2="120" stroke="#CCC" stroke-width="1"/>
+      <line x1="60" y1="0" x2="60" y2="130" stroke="#CCC" stroke-width="1"/>
+      <line x1="120" y1="0" x2="120" y2="130" stroke="#CCC" stroke-width="1"/>
+      <line x1="180" y1="0" x2="180" y2="130" stroke="#CCC" stroke-width="1"/>
+      <line x1="240" y1="0" x2="240" y2="130" stroke="#CCC" stroke-width="1"/>
+      <line x1="300" y1="0" x2="300" y2="130" stroke="#CCC" stroke-width="1"/>
+      <!-- toaster MISSING lever (diff 1) -->
+      <rect x="20" y="100" width="56" height="34" rx="5" fill="#888"/>
+      <!-- mug color changed to green (diff 2) -->
+      <rect x="110" y="108" width="30" height="26" rx="4" fill="#2E7D32"/>
+      <path d="M140 116 Q152 116 152 122 Q152 128 140 128" stroke="#2E7D32" stroke-width="3" fill="none"/>
+      <!-- cookbook color orange (diff 3) -->
+      <rect x="165" y="80" width="28" height="50" rx="2" fill="#E65100"/>
+      <rect x="167" y="82" width="24" height="46" fill="#EF6C00"/>
+      <line x1="179" y1="82" x2="179" y2="128" stroke="#BF360C" stroke-width="1"/>
+      <!-- fruit bowl - orange missing (diff 4) -->
+      <ellipse cx="255" cy="134" rx="40" ry="8" fill="#C8A96E"/>
+      <circle cx="245" cy="126" r="10" fill="#F44336"/>
+      <circle cx="270" cy="128" r="8" fill="#66BB6A"/>
+      <!-- window -->
+      <rect x="198" y="10" width="80" height="60" rx="3" fill="#AED6F1"/>
+      <line x1="238" y1="10" x2="238" y2="70" stroke="white" stroke-width="2"/>
+      <line x1="198" y1="40" x2="278" y2="40" stroke="white" stroke-width="2"/>
+    </svg>`,
+    hotspots:[
+      {id:'toaster', xPct:15,   yPct:57,   rPct:9,  label:'Toaster lever missing'},
+      {id:'mug',     xPct:39,   yPct:62,   rPct:7,  label:'Mug color changed'},
+      {id:'book',    xPct:56,   yPct:52,   rPct:6,  label:'Book color changed'},
+      {id:'orange',  xPct:81.3, yPct:61.5, rPct:6,  label:'Orange missing'},
+    ]
+  },
+  {
+    id:'living',
+    title:'Living Room',
+    diffs: 3,
+    svgA: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="200" fill="#F0EAE0"/>
+      <!-- floor -->
+      <rect x="0" y="150" width="320" height="50" fill="#C8A96E"/>
+      <!-- rug -->
+      <ellipse cx="160" cy="162" rx="100" ry="18" fill="#8B3A3A" opacity="0.7"/>
+      <!-- sofa -->
+      <rect x="40" y="110" width="180" height="50" rx="8" fill="#5C7A9E"/>
+      <rect x="40" y="103" width="180" height="18" rx="6" fill="#4A6480"/>
+      <rect x="40" y="110" width="30" height="50" rx="4" fill="#4A6480"/>
+      <rect x="190" y="110" width="30" height="50" rx="4" fill="#4A6480"/>
+      <!-- cushion 1 yellow -->
+      <rect x="80" y="116" width="46" height="34" rx="6" fill="#F9A825"/>
+      <!-- cushion 2 red -->
+      <rect x="136" y="116" width="46" height="34" rx="6" fill="#C62828"/>
+      <!-- lamp -->
+      <rect x="268" y="90" width="8" height="60" fill="#A0A0A0"/>
+      <polygon points="256,90 288,90 280,60 264,60" fill="#FFD54F"/>
+      <circle cx="272" cy="60" r="5" fill="#FFF9C4"/>
+      <!-- picture on wall - landscape -->
+      <rect x="100" y="20" width="80" height="55" rx="3" fill="white" stroke="#8B7355" stroke-width="3"/>
+      <rect x="103" y="23" width="74" height="49" fill="#87CEEB"/>
+      <rect x="103" y="52" width="74" height="20" fill="#5D8A3C"/>
+      <circle cx="130" cy="40" r="8" fill="#FFD700"/>
+      <!-- clock -->
+      <circle cx="50" cy="45" r="22" fill="white" stroke="#8B7355" stroke-width="3"/>
+      <line x1="50" y1="45" x2="50" y2="28" stroke="#333" stroke-width="2"/>
+      <line x1="50" y1="45" x2="62" y2="50" stroke="#333" stroke-width="1.5"/>
+      <!-- plant -->
+      <rect x="8" y="120" width="14" height="18" rx="2" fill="#795548"/>
+      <ellipse cx="15" cy="110" rx="16" ry="18" fill="#388E3C"/>
+      <ellipse cx="6" cy="115" rx="10" ry="12" fill="#2E7D32"/>
+      <ellipse cx="24" cy="115" rx="10" ry="12" fill="#2E7D32"/>
+    </svg>`,
+    svgB: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="320" height="200" fill="#F0EAE0"/>
+      <rect x="0" y="150" width="320" height="50" fill="#C8A96E"/>
+      <!-- rug color changed (diff 1) -->
+      <ellipse cx="160" cy="162" rx="100" ry="18" fill="#1A5276" opacity="0.7"/>
+      <!-- sofa -->
+      <rect x="40" y="110" width="180" height="50" rx="8" fill="#5C7A9E"/>
+      <rect x="40" y="103" width="180" height="18" rx="6" fill="#4A6480"/>
+      <rect x="40" y="110" width="30" height="50" rx="4" fill="#4A6480"/>
+      <rect x="190" y="110" width="30" height="50" rx="4" fill="#4A6480"/>
+      <!-- cushion 1 yellow (unchanged) -->
+      <rect x="80" y="116" width="46" height="34" rx="6" fill="#F9A825"/>
+      <!-- cushion 2 now green (diff 2) -->
+      <rect x="136" y="116" width="46" height="34" rx="6" fill="#2E7D32"/>
+      <!-- lamp (unchanged) -->
+      <rect x="268" y="90" width="8" height="60" fill="#A0A0A0"/>
+      <polygon points="256,90 288,90 280,60 264,60" fill="#FFD54F"/>
+      <circle cx="272" cy="60" r="5" fill="#FFF9C4"/>
+      <!-- picture frame - portrait now (diff 3) -->
+      <rect x="108" y="15" width="55" height="68" rx="3" fill="white" stroke="#8B7355" stroke-width="3"/>
+      <rect x="111" y="18" width="49" height="62" fill="#87CEEB"/>
+      <rect x="111" y="50" width="49" height="30" fill="#5D8A3C"/>
+      <circle cx="130" cy="35" r="8" fill="#FFD700"/>
+      <!-- clock (unchanged) -->
+      <circle cx="50" cy="45" r="22" fill="white" stroke="#8B7355" stroke-width="3"/>
+      <line x1="50" y1="45" x2="50" y2="28" stroke="#333" stroke-width="2"/>
+      <line x1="50" y1="45" x2="62" y2="50" stroke="#333" stroke-width="1.5"/>
+      <!-- plant -->
+      <rect x="8" y="120" width="14" height="18" rx="2" fill="#795548"/>
+      <ellipse cx="15" cy="110" rx="16" ry="18" fill="#388E3C"/>
+      <ellipse cx="6" cy="115" rx="10" ry="12" fill="#2E7D32"/>
+      <ellipse cx="24" cy="115" rx="10" ry="12" fill="#2E7D32"/>
+    </svg>`,
+    hotspots:[
+      {id:'rug',     xPct:50,   yPct:81,   rPct:10, label:'Rug color changed'},
+      {id:'cushion', xPct:50,   yPct:62,   rPct:8,  label:'Cushion color changed'},
+      {id:'picture', xPct:42,   yPct:25,   rPct:9,  label:'Picture frame shape changed'},
+    ]
+  }
+];
+
+let spotScene=null, spotFound=[], spotHints=0, spotStartTime=0;
+const MAX_HINTS=2;
+
+function initSpot(){
+  spotScene = SPOT_SCENES[Math.floor(Math.random()*SPOT_SCENES.length)];
+  spotFound=[]; spotHints=0; spotStartTime=Date.now();
+  renderSpotStats();
+  renderSpot();
+}
+
+function renderSpotStats(){
+  const rounds = lsNum('spotRounds');
+  const best = ls('spotBest');
+  const scores = lsArr('spotScores');
+  document.getElementById('spotRoundsDisp').textContent = rounds;
+  document.getElementById('spotBestDisp').textContent = best ? best+'s' : '&#8212;';
+  document.getElementById('spotStreakBadge').textContent = lsNum('dbStreak');
+  if(scores.length>1){
+    const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+    document.getElementById('spotAvgDisp').textContent = avg+'s';
+    setDelta('spotBestDelta', scores[scores.length-1], scores[scores.length-2], true);
+  } else {
+    document.getElementById('spotAvgDisp').textContent = '&#8212;';
+  }
+}
+
+function renderSpot(){
+  const s=spotScene;
+  const dotsHtml=s.hotspots.map((_,i)=>`<div class="spot-dot${i<spotFound.length?' found':''}" id="sdot${i}"></div>`).join('');
+  document.getElementById('spotContent').innerHTML=`
+    <div style="font-size:13px;font-weight:600;color:var(--text-soft);margin-bottom:10px;text-align:center;">${s.title} &mdash; find ${s.diffs} differences</div>
+    <div class="spot-progress" style="margin-bottom:10px;">
+      <div><div class="spot-found-count" id="spotFoundCount">${spotFound.length}/${s.diffs}</div><div class="spot-found-label">found</div></div>
+      <div class="spot-dots">${dotsHtml}</div>
+      <button class="spot-hint-btn" id="spotHintBtn" onclick="onSpotHint()" ${spotHints>=MAX_HINTS?'disabled':''}>Hint (${MAX_HINTS-spotHints})</button>
+    </div>
+    <div class="spot-label">Original</div>
+    <div class="spot-panel" id="spotPanelA">${s.svgA}</div>
+    <div style="height:10px;"></div>
+    <div class="spot-label">Spot the difference &#8594;</div>
+    <div class="spot-panel" id="spotPanelB" style="position:relative;">${s.svgB}</div>
+    <div id="spotResult"></div>
+  `;
+  placeHotspots();
+}
+
+function placeHotspots(){
+  const panel=document.getElementById('spotPanelB');
+  if(!panel) return;
+  const s=spotScene;
+  s.hotspots.forEach((hs,i)=>{
+    const el=document.createElement('div');
+    el.className='spot-hotspot'+(spotFound.includes(hs.id)?' found':'');
+    const w=panel.offsetWidth||320;
+    const svgAspect=200/320;
+    const h=w*svgAspect;
+    const px=hs.xPct/100*w;
+    const py=hs.yPct/100*h;
+    const r=hs.rPct/100*w;
+    el.style.left=(px-r)+'px';
+    el.style.top=(py-r)+'px';
+    el.style.width=(r*2)+'px';
+    el.style.height=(r*2)+'px';
+    el.dataset.id=hs.id;
+    el.dataset.idx=i;
+    el.addEventListener('click',()=>onSpotTap(hs.id, i));
+    panel.appendChild(el);
+  });
+}
+
+function onSpotTap(id, idx){
+  if(spotFound.includes(id)) return;
+  spotFound.push(id);
+  const el=document.querySelector(`.spot-hotspot[data-id="${id}"]`);
+  if(el) el.classList.add('found');
+  const dot=document.getElementById('sdot'+spotFound.length-1) || document.querySelectorAll('.spot-dot')[spotFound.length-1];
+  document.querySelectorAll('.spot-dot')[spotFound.length-1]?.classList.add('found');
+  document.getElementById('spotFoundCount').textContent=spotFound.length+'/'+spotScene.diffs;
+  if(spotFound.length===spotScene.diffs){
+    const elapsed=Math.round((Date.now()-spotStartTime)/1000);
+    finishSpot(elapsed);
+  }
+}
+
+function onSpotHint(){
+  if(spotHints>=MAX_HINTS) return;
+  spotHints++;
+  // reveal a random unfound hotspot briefly
+  const remaining=spotScene.hotspots.filter(h=>!spotFound.includes(h.id));
+  if(remaining.length===0) return;
+  const pick=remaining[Math.floor(Math.random()*remaining.length)];
+  const el=document.querySelector(`.spot-hotspot[data-id="${pick.id}"]`);
+  if(el){ el.style.borderColor='rgba(217,119,6,0.8)'; el.style.background='rgba(217,119,6,0.15)'; setTimeout(()=>{ if(!spotFound.includes(pick.id)){ el.style.borderColor=''; el.style.background=''; }},1800); }
+  const btn=document.getElementById('spotHintBtn');
+  if(btn){ if(spotHints>=MAX_HINTS) btn.disabled=true; else btn.textContent=`Hint (${MAX_HINTS-spotHints})`; }
+}
+
+function finishSpot(elapsed){
+  updateStreak(); confetti();
+  const prevBest=parseInt(ls('spotBest'))||null;
+  const scores=lsArr('spotScores');
+  scores.push(elapsed);
+  lsSaveArr('spotScores',scores);
+  ls('spotRounds',lsNum('spotRounds')+1);
+  if(!prevBest||elapsed<prevBest) ls('spotBest',elapsed);
+  renderSpotStats();
+  let extra='';
+  if(prevBest&&elapsed<prevBest) extra=' New best!';
+  document.getElementById('spotResult').innerHTML=`
+    <div class="win-panel" style="margin-top:12px;">
+      <span class="win-icon">&#128269;</span>
+      <div class="win-title">All found!</div>
+      <div class="win-msg">You spotted all ${spotScene.diffs} differences in ${elapsed}s.${extra}</div>
+      <button class="btn btn-primary" onclick="initSpot()">Next scene</button>
+      <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
+    </div>`;
+}
+
+// ================================================================
+// BRAIN TEASERS
+// ================================================================
+const brainBank = [
+  // Math
+  {type:'Math',q:'What is 17 &times; 4?',opts:['62','68','72','76'],a:1},
+  {type:'Math',q:'What is 144 &divide; 12?',opts:['10','11','12','13'],a:2},
+  {type:'Math',q:'What is 25% of 200?',opts:['25','40','50','75'],a:2},
+  {type:'Math',q:'What is 8&sup2; &minus; 8?',opts:['48','56','60','64'],a:1},
+  {type:'Math',q:'What comes next? 3, 6, 12, 24, ___',opts:['36','42','48','30'],a:2},
+  {type:'Math',q:'What is 7 &times; 9 &minus; 13?',opts:['48','50','50','50'],a:0,_fix:true},
+  {type:'Math',q:'If you have $45.00 and spend $17.50, how much is left?',opts:['$25.50','$27.50','$27.00','$28.50'],a:1},
+  {type:'Math',q:'What is 15% of 80?',opts:['10','11','12','15'],a:2},
+  {type:'Math',q:'What comes next? 2, 5, 10, 17, 26, ___',opts:['35','36','37','38'],a:2},
+  {type:'Math',q:'A dozen eggs plus half a dozen equals how many?',opts:['15','16','17','18'],a:3},
+  // Odd one out
+  {type:'Odd one out',q:'Which word does NOT belong?',sub:'Rose, Daisy, Tulip, Oak, Lily',opts:['Rose','Daisy','Oak','Lily'],a:2},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Piano, Guitar, Violin, Trumpet, Camera',opts:['Piano','Guitar','Trumpet','Camera'],a:3},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Mercury, Venus, Moon, Mars, Jupiter',opts:['Venus','Moon','Mars','Jupiter'],a:1},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Salmon, Trout, Shark, Cod, Eagle',opts:['Salmon','Shark','Cod','Eagle'],a:3},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Red, Green, Fast, Blue, Yellow',opts:['Red','Green','Fast','Yellow'],a:2},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'January, March, July, April, August',opts:['January','April','July','August'],a:1},
+  // Logic
+  {type:'Logic',q:'If all Bloops are Razzles, and all Razzles are Lazzles, are all Bloops definitely Lazzles?',opts:['Yes','No','Only some','Impossible to say'],a:0},
+  {type:'Logic',q:'A farmer has 17 sheep. All but 9 run away. How many are left?',opts:['8','9','17','None'],a:1},
+  {type:'Logic',q:'You have two coins that add up to 30 cents. One of them is not a nickel. What are the two coins?',opts:['Two dimes','A quarter and a nickel','Two nickels','A quarter and a quarter'],a:1},
+  {type:'Logic',q:'What number comes next? 1, 4, 9, 16, 25, ___',opts:['30','34','36','40'],a:2},
+  {type:'Logic',q:'A clock shows 3:15. What is the angle between the hour and minute hands?',opts:['0&deg;','7.5&deg;','15&deg;','22.5&deg;'],a:1},
+  {type:'Logic',q:'If today is Wednesday, what day will it be 100 days from now?',opts:['Monday','Tuesday','Wednesday','Friday'],a:3},
+  // Pattern
+  {type:'Pattern',q:'What letter comes next? A, C, E, G, ___',opts:['H','I','J','K'],a:1},
+  {type:'Pattern',q:'What number completes the pattern? 1, 1, 2, 3, 5, 8, ___',opts:['11','12','13','14'],a:2},
+  {type:'Pattern',q:'Which shape completes the pattern? Circle, Square, Triangle, Circle, Square, ___',opts:['Circle','Square','Triangle','Diamond'],a:2},
+  {type:'Pattern',q:'What comes next? Monday, Wednesday, Friday, ___',opts:['Saturday','Sunday','Tuesday','Thursday'],a:1},
+];
+
+let brainQs=[], brainIdx=0, brainScore=0, brainAnswered=false;
+const BRAIN_PER_ROUND=6;
+
+function renderBrainStats(){
+  const rounds=lsNum('brainRounds');
+  const best=ls('brainBest');
+  const scores=lsArr('brainScores');
+  document.getElementById('brainRoundsDisp').textContent=rounds;
+  document.getElementById('brainBestDisp').textContent=best?best+'%':'&#8212;';
+  document.getElementById('brainStreakBadge').textContent=lsNum('dbStreak');
+  if(scores.length>1){
+    const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+    document.getElementById('brainAvgDisp').textContent=avg+'%';
+    setDelta('brainBestDelta',scores[scores.length-1],scores[scores.length-2],false);
+  } else {
+    document.getElementById('brainAvgDisp').textContent='&#8212;';
+  }
+}
+
+function initBrain(){
+  brainQs=[...brainBank].sort(()=>Math.random()-0.5).slice(0,BRAIN_PER_ROUND);
+  brainIdx=0; brainScore=0; brainAnswered=false;
+  renderBrainStats();
+  renderBrain();
+}
+
+function renderBrain(){
+  if(brainIdx>=brainQs.length){ showBrainComplete(); return; }
+  brainAnswered=false;
+  const q=brainQs[brainIdx];
+  const prog=((brainIdx)/brainQs.length)*100;
+  const optsHtml=q.opts.map((o,i)=>`<button class="brain-opt" id="bopt${i}" onclick="onBrain(${i})">${o}</button>`).join('');
+  document.getElementById('brainContent').innerHTML=`
+    <div class="brain-q-card">
+      <div class="prog-row" style="margin-bottom:12px">
+        <div class="prog-track"><div class="prog-fill" style="width:${prog}%"></div></div>
+        <div class="prog-lbl">${brainIdx+1}/${brainQs.length}</div>
+      </div>
+      <div class="brain-type-tag">${q.type}</div>
+      <div class="brain-q-text">${q.q}</div>
+      ${q.sub?`<div class="brain-q-sub">${q.sub}</div>`:''}
+    </div>
+    <div class="brain-opts">${optsHtml}</div>
+    <div id="brainResult"></div>`;
+}
+
+function onBrain(choice){
+  if(brainAnswered) return; brainAnswered=true;
+  const q=brainQs[brainIdx];
+  const correct=(choice===q.a);
+  if(correct) brainScore++;
+  q.opts.forEach((_,i)=>{
+    const btn=document.getElementById('bopt'+i); btn.disabled=true;
+    if(i===q.a) btn.classList.add('correct');
+    else if(i===choice&&!correct) btn.classList.add('wrong');
+  });
+  document.getElementById('brainResult').innerHTML=`<div class="result-box ${correct?'correct':'wrong'}" style="margin-top:12px">${correct?'&#10003; Correct!':'The answer was: <strong>'+q.opts[q.a]+'</strong>'}</div>`;
+  setTimeout(()=>{ brainIdx++; renderBrain(); },1600);
+}
+
+function showBrainComplete(){
+  updateStreak(); confetti();
+  const pct=Math.round((brainScore/brainQs.length)*100);
+  const prevBest=parseInt(ls('brainBest'))||null;
+  const scores=lsArr('brainScores');
+  scores.push(pct); lsSaveArr('brainScores',scores);
+  ls('brainRounds',lsNum('brainRounds')+1);
+  if(!prevBest||pct>prevBest) ls('brainBest',pct);
+  renderBrainStats();
+  let extra=''; if(prevBest&&pct>prevBest) extra=' New best!';
+  document.getElementById('brainContent').innerHTML=`
+    <div class="complete">
+      <span class="complete-icon">${pct===100?'\uD83E\uDDE0':pct>=70?'\uD83C\uDFAF':'\uD83D\uDCA1'}</span>
+      <div class="complete-title">${brainScore} / ${brainQs.length}</div>
+      <div class="complete-score">${pct===100?'Flawless!':pct>=85?'Sharp mind.':pct>=60?'Good run.':'Keep at it &#8212; you\'ll get there.'}${extra}</div>
+      <button class="btn btn-primary" onclick="initBrain()">Play again</button>
+      <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
+    </div>`;
+}
+
+// ================================================================
+// BACKUP
+// ================================================================
+function backupStats(){
+  const stats={
     exported: new Date().toISOString(),
-    streak: localStorage.getItem('dbStreak') || '0',
-    lastPlayDate: localStorage.getItem('dbLastDate') || null,
-    memoryBest: localStorage.getItem('memBest') || null,
+    streak: ls('dbStreak')||'0',
+    lastPlayDate: ls('dbLastDate')||null,
+    memoryBest: ls('memBest')||null,
+    memoryLast: ls('memLast')||null,
+    wordBest: ls('wordBest')||null,
+    wordWins: lsArr('wordWins'),
+    triviaRounds: ls('triviaRounds')||'0',
+    triviaBest: ls('triviaBest')||null,
+    triviaScores: lsArr('triviaScores'),
+    decRounds: ls('decRounds')||'0',
+    decBest: ls('decBest')||null,
+    decScores: lsArr('decScores'),
+    seqBest: ls('seqBest')||null,
+    seqLast: ls('seqLast')||null,
+    spotRounds: ls('spotRounds')||'0',
+    spotBest: ls('spotBest')||null,
+    spotScores: lsArr('spotScores'),
+    brainRounds: ls('brainRounds')||'0',
+    brainBest: ls('brainBest')||null,
+    brainScores: lsArr('brainScores'),
   };
-  const blob = new Blob([JSON.stringify(stats, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'gmas-page-backup.json';
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 500);
+  const blob=new Blob([JSON.stringify(stats,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='gmas-page-backup.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); },500);
 }
 
 // ================================================================
 // STREAK + NAV + CONFETTI
 // ================================================================
 function updateStreak(){
-  let s=parseInt(localStorage.getItem('dbStreak')||'0');
-  const last=localStorage.getItem('dbLastDate'), today=new Date().toDateString();
-  if(last!==today){ s++; localStorage.setItem('dbStreak',s); localStorage.setItem('dbLastDate',today); }
+  let s=parseInt(ls('dbStreak')||'0');
+  const last=ls('dbLastDate'), today=new Date().toDateString();
+  if(last!==today){ s++; ls('dbStreak',s); ls('dbLastDate',today); }
   document.getElementById('streak').textContent=s;
 }
 
 function go(screen){
-  ['home','memory','word','trivia','decisions'].forEach(s=>{
+  ['home','memory','word','trivia','decisions','sequence','spot','brain'].forEach(s=>{
     document.getElementById('screen-'+s).classList.add('hidden');
   });
   document.getElementById('screen-'+screen).classList.remove('hidden');
@@ -1183,6 +1817,9 @@ function go(screen){
   if(screen==='word') initWord();
   if(screen==='trivia') initTrivia();
   if(screen==='decisions') initDecisions();
+  if(screen==='sequence') initSequence();
+  if(screen==='spot') initSpot();
+  if(screen==='brain') initBrain();
   if(screen==='home') updateStreak();
   window.scrollTo(0,0);
 }
@@ -1196,9 +1833,8 @@ function confetti(){
     el.addEventListener('animationend',()=>el.remove());
   }
 }
-
 const style=document.createElement('style');
-style.textContent=`@keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}`;
+style.textContent='@keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}';
 document.head.appendChild(style);
 
 // ================================================================
