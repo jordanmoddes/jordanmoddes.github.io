@@ -124,7 +124,7 @@ body {
   margin: 24px 0 12px;
 }
 
-/* ===== STAT BAR ===== */
+/* ===== STAT BARS ===== */
 .mem-bar {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 8px; margin-bottom: 20px;
@@ -176,7 +176,7 @@ body {
 .result-box.correct { background: var(--green-light); color: #14532D; border: 1px solid rgba(22,163,74,0.2); }
 .result-box.wrong { background: var(--amber-light); color: #78350F; border: 1px solid rgba(217,119,6,0.2); }
 
-/* ===== WIN PANEL ===== */
+/* ===== WIN / COMPLETE PANELS ===== */
 .win-panel {
   background: var(--surface); border-radius: var(--r);
   padding: 28px 24px; text-align: center;
@@ -186,6 +186,10 @@ body {
 .win-icon { font-size: 48px; margin-bottom: 12px; display: block; }
 .win-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
 .win-msg { font-size: 14px; color: var(--text-soft); font-weight: 500; margin-bottom: 24px; line-height: 1.6; }
+.complete { background: var(--surface); border-radius: var(--r); padding: 32px 24px; text-align: center; border: 1.5px solid var(--border); animation: fadeSlide 0.35s ease; }
+.complete-icon { font-size: 52px; display: block; margin-bottom: 14px; }
+.complete-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.complete-score { font-size: 15px; color: var(--text-soft); font-weight: 500; margin-bottom: 28px; line-height: 1.6; }
 
 /* ===== BUTTONS ===== */
 .btn {
@@ -199,7 +203,7 @@ body {
 .btn-primary { background: var(--accent); color: white; }
 .btn-ghost { background: var(--surface2); color: var(--text-soft); border: 1.5px solid var(--border); }
 
-/* ===== SCENARIO ===== */
+/* ===== SCENARIO / DECISIONS ===== */
 .scenario-wrap { display: flex; flex-direction: column; gap: 10px; }
 .scenario-header { background: var(--surface); border-radius: var(--r); padding: 20px; border: 1.5px solid var(--border); }
 .prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
@@ -232,14 +236,37 @@ body {
 .opt-btn.wrong .opt-letter { background: #FECDD3; color: #9F1239; }
 
 /* ===== WORD PUZZLE ===== */
+.word-category {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.word-cat-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.6px;
+  text-transform: uppercase; color: var(--accent);
+  background: var(--accent-light); border-radius: 6px;
+  padding: 4px 10px;
+}
+.word-hint-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: none; border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 5px 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 700; color: var(--text-soft);
+  cursor: pointer; transition: all 0.14s;
+}
+.word-hint-btn:hover:not(:disabled) { border-color: var(--amber); color: var(--amber); background: var(--amber-light); }
+.word-hint-btn:disabled { opacity: 0.35; cursor: default; }
+.word-hint-btn.used { opacity: 0.35; cursor: default; }
 .word-grid { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
 .word-row { display: flex; gap: 6px; justify-content: center; }
 .word-cell {
-  width: clamp(44px, 12vw, 56px); height: clamp(44px, 12vw, 56px);
+  width: clamp(36px, 11vw, 52px);
+  height: clamp(36px, 11vw, 52px);
   border-radius: 8px; border: 2px solid var(--border);
   background: var(--surface);
   display: flex; align-items: center; justify-content: center;
-  font-size: clamp(17px, 4vw, 20px); font-weight: 800;
+  font-size: clamp(14px, 3.5vw, 18px); font-weight: 800;
   text-transform: uppercase; transition: all 0.12s;
 }
 .word-cell.filled { border-color: var(--text-soft); }
@@ -247,6 +274,7 @@ body {
 .word-cell.present { background: var(--amber); border-color: var(--amber); color: white; }
 .word-cell.absent { background: #6B6560; border-color: #6B6560; color: white; }
 .word-cell.current-row { border-color: var(--accent); }
+.word-cell.hinted { background: var(--purple-light); border-color: var(--purple); color: var(--purple); }
 .word-cell.pop { animation: cellPop 0.12s ease; }
 @keyframes cellPop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
 .word-cell.shake { animation: cellShake 0.35s ease; }
@@ -280,12 +308,7 @@ body {
 .trivia-q { background: var(--surface); border-radius: var(--r); padding: 20px; border: 1.5px solid var(--border); margin-bottom: 10px; }
 .trivia-num { font-size: 11px; font-weight: 700; color: var(--text-xsoft); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; }
 .trivia-text { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.6; }
-.decade-tag {
-  display: inline-block; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.6px; text-transform: uppercase;
-  background: var(--purple-light); color: var(--purple);
-  border-radius: 5px; padding: 2px 7px; margin-bottom: 8px;
-}
+.decade-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; background: var(--purple-light); color: var(--purple); border-radius: 5px; padding: 2px 7px; margin-bottom: 8px; }
 .trivia-opts { display: flex; flex-direction: column; gap: 8px; }
 .trivia-opt {
   background: var(--surface); border: 1.5px solid var(--border);
@@ -308,12 +331,6 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 .trivia-loading-text { font-size: 14px; font-weight: 600; color: var(--text-soft); }
 
-/* ===== COMPLETE ===== */
-.complete { background: var(--surface); border-radius: var(--r); padding: 32px 24px; text-align: center; border: 1.5px solid var(--border); animation: fadeSlide 0.35s ease; }
-.complete-icon { font-size: 52px; display: block; margin-bottom: 14px; }
-.complete-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-.complete-score { font-size: 15px; color: var(--text-soft); font-weight: 500; margin-bottom: 28px; line-height: 1.6; }
-
 /* ===== SEQUENCE MEMORY ===== */
 .seq-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
@@ -321,8 +338,7 @@ body {
 }
 .seq-btn {
   height: 130px; border-radius: 18px; border: none;
-  cursor: pointer; transition: all 0.12s;
-  position: relative; overflow: hidden;
+  cursor: pointer; transition: all 0.12s; position: relative; overflow: hidden;
 }
 .seq-btn:active { transform: scale(0.96); }
 .seq-btn.seq-flash { filter: brightness(1.55) saturate(1.3); transform: scale(0.97); }
@@ -330,107 +346,45 @@ body {
 .seq-btn[data-c="blue"]   { background: #3B82F6; box-shadow: 0 4px 16px rgba(59,130,246,0.25); }
 .seq-btn[data-c="green"]  { background: #22C55E; box-shadow: 0 4px 16px rgba(34,197,94,0.25); }
 .seq-btn[data-c="yellow"] { background: #F59E0B; box-shadow: 0 4px 16px rgba(245,158,11,0.25); }
-.seq-status {
-  text-align: center; padding: 12px 16px;
-  background: var(--surface); border-radius: var(--r-sm);
-  border: 1.5px solid var(--border); margin-bottom: 14px;
-}
+.seq-status { text-align: center; padding: 12px 16px; background: var(--surface); border-radius: var(--r-sm); border: 1.5px solid var(--border); margin-bottom: 14px; }
 .seq-status-label { font-size: 12px; font-weight: 700; color: var(--text-xsoft); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
 .seq-status-val { font-size: 22px; font-weight: 800; color: var(--text); }
-.seq-msg {
-  text-align: center; font-size: 15px; font-weight: 700;
-  padding: 14px; border-radius: var(--r-sm);
-  background: var(--accent-light); color: var(--accent);
-  margin-bottom: 14px; animation: fadeSlide 0.2s ease;
-}
+.seq-msg { text-align: center; font-size: 15px; font-weight: 700; padding: 14px; border-radius: var(--r-sm); background: var(--accent-light); color: var(--accent); margin-bottom: 14px; animation: fadeSlide 0.2s ease; }
 .seq-msg.watching { background: var(--amber-light); color: var(--amber); }
 .seq-msg.go { background: var(--green-light); color: #14532D; }
 .seq-msg.fail { background: var(--rose-light); color: #9F1239; }
 
 /* ===== SPOT THE DIFFERENCE ===== */
-.spot-wrap {
-  display: flex; flex-direction: column; gap: 10px;
-  margin-bottom: 16px;
-}
-.spot-label {
-  font-size: 11px; font-weight: 700; color: var(--text-xsoft);
-  letter-spacing: 0.8px; text-transform: uppercase;
-  text-align: center; margin-bottom: 2px;
-}
-.spot-panel {
-  border-radius: var(--r); overflow: hidden;
-  border: 1.5px solid var(--border);
-  position: relative; background: var(--surface);
-  cursor: crosshair;
-}
+.spot-label { font-size: 11px; font-weight: 700; color: var(--text-xsoft); letter-spacing: 0.8px; text-transform: uppercase; text-align: center; margin-bottom: 2px; }
+.spot-panel { border-radius: var(--r); overflow: hidden; border: 1.5px solid var(--border); position: relative; background: var(--surface); cursor: crosshair; }
 .spot-panel svg { display: block; width: 100%; height: auto; }
-.spot-hotspot {
-  position: absolute; border-radius: 50%;
-  border: 2.5px dashed transparent;
-  pointer-events: all; cursor: pointer;
-  transition: all 0.16s;
-}
+.spot-hotspot { position: absolute; border-radius: 50%; border: 2.5px dashed transparent; pointer-events: all; cursor: pointer; transition: all 0.16s; }
 .spot-hotspot:hover { border-color: rgba(45,107,228,0.4); background: rgba(45,107,228,0.07); }
 .spot-hotspot.found { border-color: var(--green) !important; background: rgba(22,163,74,0.15) !important; animation: foundPop 0.3s ease; pointer-events: none; }
-.spot-hotspot.missed { border-color: var(--rose) !important; background: rgba(225,29,72,0.12) !important; animation: foundPop 0.3s ease; }
 @keyframes foundPop { 0%{transform:scale(0.8)} 60%{transform:scale(1.15)} 100%{transform:scale(1)} }
-.spot-progress {
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--surface); border-radius: var(--r-sm);
-  padding: 10px 14px; border: 1.5px solid var(--border);
-}
+.spot-progress { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border-radius: var(--r-sm); padding: 10px 14px; border: 1.5px solid var(--border); }
 .spot-found-count { font-size: 15px; font-weight: 800; color: var(--text); }
 .spot-found-label { font-size: 12px; font-weight: 600; color: var(--text-soft); }
 .spot-dots { display: flex; gap: 6px; }
 .spot-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--surface2); border: 1.5px solid var(--border); transition: all 0.2s; }
 .spot-dot.found { background: var(--green); border-color: var(--green); }
-.spot-hint-btn {
-  background: none; border: 1.5px solid var(--border);
-  border-radius: var(--r-sm); padding: 8px 14px;
-  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
-  color: var(--text-soft); cursor: pointer; transition: all 0.14s;
-}
+.spot-hint-btn { background: none; border: 1.5px solid var(--border); border-radius: var(--r-sm); padding: 8px 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-soft); cursor: pointer; transition: all 0.14s; }
 .spot-hint-btn:active { background: var(--surface2); }
 .spot-hint-btn:disabled { opacity: 0.4; cursor: default; }
 
 /* ===== BRAIN TEASERS ===== */
-.brain-q-card {
-  background: var(--surface); border-radius: var(--r);
-  padding: 22px 20px; border: 1.5px solid var(--border); margin-bottom: 10px;
-}
-.brain-type-tag {
-  display: inline-block; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.6px; text-transform: uppercase;
-  background: var(--teal-light); color: var(--teal);
-  border-radius: 5px; padding: 2px 7px; margin-bottom: 10px;
-}
+.brain-q-card { background: var(--surface); border-radius: var(--r); padding: 22px 20px; border: 1.5px solid var(--border); margin-bottom: 10px; }
+.brain-type-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; background: var(--teal-light); color: var(--teal); border-radius: 5px; padding: 2px 7px; margin-bottom: 10px; }
 .brain-q-text { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.6; }
 .brain-q-sub { font-size: 13px; color: var(--text-soft); font-weight: 500; margin-top: 6px; }
 .brain-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
-.brain-opt {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: var(--r-sm); padding: 14px 10px;
-  text-align: center; font-family: 'Outfit', sans-serif;
-  font-size: 16px; font-weight: 700; color: var(--text);
-  cursor: pointer; transition: all 0.14s;
-}
+.brain-opt { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r-sm); padding: 14px 10px; text-align: center; font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); cursor: pointer; transition: all 0.14s; }
 .brain-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
 .brain-opt:active:not(:disabled) { transform: scale(0.97); }
 .brain-opt:disabled { cursor: default; }
 .brain-opt.correct { background: var(--green-light); border-color: rgba(22,163,74,0.35); color: #14532D; }
 .brain-opt.wrong { background: var(--rose-light); border-color: rgba(225,29,72,0.2); color: #9F1239; opacity: 0.75; }
-.brain-opts-full { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
-.brain-timer-ring {
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 14px;
-}
-.brain-timer-ring svg { transform: rotate(-90deg); }
-.brain-timer-text {
-  position: absolute; font-size: 15px; font-weight: 800; color: var(--text);
-}
-.brain-timer-wrap { position: relative; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; }
 
-/* ===== HIDDEN ===== */
 .hidden { display: none !important; }
 </style>
 </head>
@@ -466,58 +420,37 @@ body {
     <div class="game-list">
       <button class="game-tile" onclick="go('memory')">
         <div class="game-tile-icon" style="background:#EBF1FD;">&#127183;</div>
-        <div class="game-tile-body">
-          <div class="game-tile-name">Memory Match</div>
-          <div class="game-tile-desc">Find the pairs. Beat your best.</div>
-        </div>
+        <div class="game-tile-body"><div class="game-tile-name">Memory Match</div><div class="game-tile-desc">Find the pairs. Beat your best.</div></div>
         <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('word')">
         <div class="game-tile-icon" style="background:#DCFCE7;">&#128292;</div>
-        <div class="game-tile-body">
-          <div class="game-tile-name">Word Puzzle</div>
-          <div class="game-tile-desc">Guess the 5-letter word in 6 tries.</div>
-        </div>
+        <div class="game-tile-body"><div class="game-tile-name">Word Puzzle</div><div class="game-tile-desc">4 to 7 letters. One hint. Guess the word.</div></div>
         <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('trivia')">
         <div class="game-tile-icon" style="background:#EDE9FE;">&#129513;</div>
-        <div class="game-tile-body">
-          <div class="game-tile-name">Trivia Mix</div>
-          <div class="game-tile-desc">History, science, nature &#8212; mix of everything good.</div>
-        </div>
+        <div class="game-tile-body"><div class="game-tile-name">Trivia Mix</div><div class="game-tile-desc">History, science, nature &#8212; mix of everything good.</div></div>
         <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('decisions')">
         <div class="game-tile-icon" style="background:#FEF3C7;">&#128188;</div>
-        <div class="game-tile-body">
-          <div class="game-tile-name">Decision Maker</div>
-          <div class="game-tile-desc">Classic business dilemmas. What&#8217;s the right call?</div>
-        </div>
+        <div class="game-tile-body"><div class="game-tile-name">Decision Maker</div><div class="game-tile-desc">Real-life dilemmas. What&#8217;s the right call?</div></div>
         <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('sequence')">
         <div class="game-tile-icon" style="background:#CCFBF1;">&#127918;</div>
-        <div class="game-tile-body">
-          <div class="game-tile-name">Sequence Memory</div>
-          <div class="game-tile-desc">Watch the pattern. Repeat it back. Go as long as you can.</div>
-        </div>
+        <div class="game-tile-body"><div class="game-tile-name">Sequence Memory</div><div class="game-tile-desc">Watch the pattern. Repeat it back. Go as long as you can.</div></div>
         <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('spot')">
         <div class="game-tile-icon" style="background:#FEE2E2;">&#128269;</div>
-        <div class="game-tile-body">
-          <div class="game-tile-name">Spot the Difference</div>
-          <div class="game-tile-desc">Two pictures. Something changed. Find it.</div>
-        </div>
+        <div class="game-tile-body"><div class="game-tile-name">Spot the Difference</div><div class="game-tile-desc">Two pictures. Something changed. Find it.</div></div>
         <div class="game-tile-arrow">&#8250;</div>
       </button>
       <button class="game-tile" onclick="go('brain')">
         <div class="game-tile-icon" style="background:#FEF9C3;">&#129504;</div>
-        <div class="game-tile-body">
-          <div class="game-tile-name">Brain Teasers</div>
-          <div class="game-tile-desc">Math, logic, odd-one-out. Quick and satisfying.</div>
-        </div>
+        <div class="game-tile-body"><div class="game-tile-name">Brain Teasers</div><div class="game-tile-desc">Math, logic, odd-one-out. Quick and satisfying.</div></div>
         <div class="game-tile-arrow">&#8250;</div>
       </button>
     </div>
@@ -533,8 +466,8 @@ body {
     <div class="mem-bar">
       <div class="mem-stat"><div class="mem-stat-val" id="memMoves">0</div><div class="mem-stat-lbl">Moves</div></div>
       <div class="mem-stat"><div class="mem-stat-val" id="memPairs">0/8</div><div class="mem-stat-lbl">Pairs</div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="memBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="memBestDelta"></div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="memLastDisp">&#8212;</div><div class="mem-stat-lbl">Last</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="memBestDisp">0</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="memBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="memLastDisp">0</div><div class="mem-stat-lbl">Last</div></div>
     </div>
     <div id="memGrid"></div>
     <div id="memWin" class="win-panel hidden">
@@ -555,8 +488,12 @@ body {
     </div>
     <div class="mem-bar-3" style="margin-bottom:12px;">
       <div class="mem-stat"><div class="mem-stat-val" id="wordWinsDisp">0</div><div class="mem-stat-lbl">Wins</div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="wordBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="wordBestDelta"></div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="wordAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="wordBestDisp">0</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="wordBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="wordAvgDisp">0</div><div class="mem-stat-lbl">Avg</div></div>
+    </div>
+    <div class="word-category">
+      <div class="word-cat-tag" id="wordCatTag">&#128270; Category</div>
+      <button class="word-hint-btn" id="wordHintBtn" onclick="useWordHint()">&#128161; Hint</button>
     </div>
     <div id="wordMsg" class="word-msg hidden"></div>
     <div class="word-grid" id="wordGrid"></div>
@@ -579,10 +516,10 @@ body {
       <div class="nav-title">Trivia Mix</div>
       <span class="streak-badge">&#128293; <span id="triviaStreakBadge">0</span></span>
     </div>
-    <div class="mem-bar-3" style="margin-bottom:12px;" id="triviaStats">
+    <div class="mem-bar-3" style="margin-bottom:12px;">
       <div class="mem-stat"><div class="mem-stat-val" id="triviaRoundsDisp">0</div><div class="mem-stat-lbl">Rounds</div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="triviaBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="triviaBestDelta"></div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="triviaAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg %</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="triviaBestDisp">0</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="triviaBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="triviaAvgDisp">0</div><div class="mem-stat-lbl">Avg %</div></div>
     </div>
     <div id="triviaContent"></div>
   </div>
@@ -596,8 +533,8 @@ body {
     </div>
     <div class="mem-bar-3" style="margin-bottom:12px;">
       <div class="mem-stat"><div class="mem-stat-val" id="decRoundsDisp">0</div><div class="mem-stat-lbl">Rounds</div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="decBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="decBestDelta"></div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="decAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="decBestDisp">0</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="decBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="decAvgDisp">0</div><div class="mem-stat-lbl">Avg</div></div>
     </div>
     <div id="decContent"></div>
   </div>
@@ -611,8 +548,8 @@ body {
     </div>
     <div class="mem-bar-3" style="margin-bottom:14px;">
       <div class="mem-stat"><div class="mem-stat-val" id="seqLevel">1</div><div class="mem-stat-lbl">Round</div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="seqBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="seqBestDelta"></div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="seqLastDisp">&#8212;</div><div class="mem-stat-lbl">Last</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="seqBestDisp">0</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="seqBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="seqLastDisp">0</div><div class="mem-stat-lbl">Last</div></div>
     </div>
     <div id="seqMsg" class="seq-msg watching">Watch the pattern&#8230;</div>
     <div class="seq-grid">
@@ -641,8 +578,8 @@ body {
     </div>
     <div class="mem-bar-3" style="margin-bottom:12px;">
       <div class="mem-stat"><div class="mem-stat-val" id="spotRoundsDisp">0</div><div class="mem-stat-lbl">Rounds</div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="spotBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="spotBestDelta"></div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="spotAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="spotBestDisp">0</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="spotBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="spotAvgDisp">0</div><div class="mem-stat-lbl">Avg</div></div>
     </div>
     <div id="spotContent"></div>
   </div>
@@ -656,8 +593,8 @@ body {
     </div>
     <div class="mem-bar-3" style="margin-bottom:12px;">
       <div class="mem-stat"><div class="mem-stat-val" id="brainRoundsDisp">0</div><div class="mem-stat-lbl">Rounds</div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="brainBestDisp">&#8212;</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="brainBestDelta"></div></div>
-      <div class="mem-stat"><div class="mem-stat-val" id="brainAvgDisp">&#8212;</div><div class="mem-stat-lbl">Avg %</div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="brainBestDisp">0</div><div class="mem-stat-lbl">Best</div><div class="mem-stat-delta same" id="brainBestDelta"></div></div>
+      <div class="mem-stat"><div class="mem-stat-val" id="brainAvgDisp">0</div><div class="mem-stat-lbl">Avg %</div></div>
     </div>
     <div id="brainContent"></div>
   </div>
@@ -668,44 +605,34 @@ body {
 // ================================================================
 // UTILS
 // ================================================================
-function ls(k, v) {
-  if (v === undefined) return localStorage.getItem(k);
-  localStorage.setItem(k, v);
-}
-function lsNum(k) { return parseFloat(ls(k)) || 0; }
-function lsArr(k) { try { return JSON.parse(ls(k)) || []; } catch(e) { return []; } }
-function lsSaveArr(k, arr) { ls(k, JSON.stringify(arr)); }
+function ls(k,v){ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }
+function lsNum(k){ return parseFloat(ls(k))||0; }
+function lsArr(k){ try{ return JSON.parse(ls(k))||[]; }catch(e){ return []; } }
+function lsSaveArr(k,arr){ ls(k,JSON.stringify(arr)); }
 
-function deltaLabel(cur, prev, lowerIsBetter) {
-  if (!prev && prev !== 0) return '';
-  if (cur === prev) return '=';
-  const improved = lowerIsBetter ? cur < prev : cur > prev;
-  const diff = Math.abs(cur - prev);
-  return (improved ? '&#9650; ' : '&#9660; ') + diff;
-}
-function setDelta(id, cur, prev, lowerIsBetter) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (!prev && prev !== 0) { el.innerHTML = ''; return; }
-  const improved = lowerIsBetter ? cur < prev : cur > prev;
-  const same = cur === prev;
-  el.innerHTML = deltaLabel(cur, prev, lowerIsBetter);
-  el.className = 'mem-stat-delta ' + (same ? 'same' : improved ? 'better' : 'worse');
+function setDelta(id,cur,prev,lowerIsBetter){
+  const el=document.getElementById(id); if(!el) return;
+  if(prev===null||prev===undefined){ el.textContent=''; return; }
+  const same=cur===prev;
+  const improved=lowerIsBetter?cur<prev:cur>prev;
+  const diff=Math.abs(cur-prev);
+  el.textContent=(same?'=':(improved?'+ ':' -')+diff);
+  el.className='mem-stat-delta '+(same?'same':improved?'better':'worse');
 }
 
 // ================================================================
 // MEMORY
 // ================================================================
-const EMOJIS = ['\u{1F98B}','\u{1F33F}','\u{2B50}','\u{1F3B5}','\u{1F30A}','\u{1F3D4}','\u{1F33A}','\u{1F34E}'];
-let mCards=[], mFlipped=[], mMatched=[], mMoves=0, mCount=0;
+const EMOJIS=['\u{1F98B}','\u{1F33F}','\u{2B50}','\u{1F3B5}','\u{1F30A}','\u{1F3D4}','\u{1F33A}','\u{1F34E}'];
+let mCards=[],mFlipped=[],mMatched=[],mMoves=0,mCount=0;
 
-function initMemory() {
-  const pairs = [...EMOJIS,...EMOJIS].sort(()=>Math.random()-0.5);
+function initMemory(){
+  const pairs=[...EMOJIS,...EMOJIS].sort(()=>Math.random()-0.5);
   mCards=pairs; mFlipped=[]; mMatched=[]; mMoves=0; mCount=0;
   document.getElementById('memWin').classList.add('hidden');
   document.getElementById('memGrid').classList.remove('hidden');
   renderMemStats();
-  const g = document.getElementById('memGrid'); g.innerHTML='';
+  const g=document.getElementById('memGrid'); g.innerHTML='';
   pairs.forEach((e,i)=>{
     const d=document.createElement('div');
     d.className='mc'; d.dataset.v=e; d.dataset.i=i;
@@ -714,7 +641,7 @@ function initMemory() {
   });
 }
 
-function onMemClick(ev) {
+function onMemClick(ev){
   const c=ev.currentTarget;
   if(mFlipped.length===2||c.classList.contains('flipped')||c.classList.contains('matched')) return;
   c.classList.add('flipped'); mFlipped.push(c);
@@ -725,17 +652,16 @@ function onMemClick(ev) {
       mMatched.push(...mFlipped); mCount++; mFlipped=[];
       renderMemStats();
       if(mCount===8){
-        const prev = lsNum('memBest') || null;
-        const best = prev ? Math.min(mMoves, prev) : mMoves;
-        ls('memLast', mMoves);
-        ls('memBest', best);
+        const prev=lsNum('memBest')||null;
+        const best=prev?Math.min(mMoves,prev):mMoves;
+        ls('memLast',mMoves); ls('memBest',best);
         renderMemStats(); updateStreak();
         setTimeout(()=>{
           document.getElementById('memGrid').classList.add('hidden');
-          document.getElementById('winTitle').textContent = mMoves<=14?'Flawless.':'All pairs found!';
-          let msg = mMoves<=14?`${mMoves} moves &#8212; exceptional.`:mMoves<=20?`${mMoves} moves. Sharp.`:`${mMoves} moves &#8212; got there!`;
-          if(prev && mMoves < prev) msg += ` New best! (was ${prev})`;
-          document.getElementById('winMsg').innerHTML = msg;
+          document.getElementById('winTitle').textContent=mMoves<=14?'Flawless.':'All pairs found!';
+          let msg=mMoves<=14?mMoves+' moves - exceptional.':mMoves<=20?mMoves+' moves. Sharp.':mMoves+' moves - got there!';
+          if(prev&&mMoves<prev) msg+=' New best! (was '+prev+')';
+          document.getElementById('winMsg').textContent=msg;
           document.getElementById('memWin').classList.remove('hidden');
           confetti();
         },400);
@@ -747,70 +673,109 @@ function onMemClick(ev) {
 }
 
 function renderMemStats(){
-  document.getElementById('memMoves').textContent = mMoves;
-  document.getElementById('memPairs').textContent = mCount+'/8';
-  const best = ls('memBest');
-  const last = ls('memLast');
-  document.getElementById('memBestDisp').textContent = best||'&#8212;';
-  document.getElementById('memLastDisp').textContent = last||'&#8212;';
-  document.getElementById('memStreakBadge').textContent = lsNum('dbStreak');
-  if(best && last) setDelta('memBestDelta', parseInt(best), parseInt(last), true);
+  document.getElementById('memMoves').textContent=mMoves;
+  document.getElementById('memPairs').textContent=mCount+'/8';
+  const best=lsNum('memBest');
+  const last=lsNum('memLast');
+  document.getElementById('memBestDisp').textContent=best||0;
+  document.getElementById('memLastDisp').textContent=last||0;
+  document.getElementById('memStreakBadge').textContent=lsNum('dbStreak');
+  if(best&&last) setDelta('memBestDelta',best,last,true);
 }
 
 // ================================================================
-// WORD PUZZLE
+// WORD PUZZLE â€” 4-7 letters with categories + hint
 // ================================================================
-const WORDS = [
-  'CRANE','PLANT','SHARP','BRISK','CHART','FLAME','BRAVE','CLAMP',
-  'DRAFT','FLINT','GRASP','HINGE','LATCH','MARCH','NOTCH','PIVOT',
-  'QUIRK','RIDGE','SCOUT','SWIFT','TORCH','TWIST','VAULT',
-  'WRIST','YIELD','BLOOM','CHEST','DRIVE','FETCH','GLARE','HATCH',
-  'JUDGE','KNACK','MEANT','NOBLE','OLIVE','PLUMB','QUILL',
-  'RIVET','SLOPE','TROUT','VISTA','WALTZ','YEAST',
-  'CABIN','DANCE','EAGLE','FABLE','GLOBE','HABIT','INFER','JOUST',
-  'KARMA','LEMON','MAPLE','NERVE','ORBIT','PROBE','QUEEN','REALM',
-  'STAGE','TIGER','UNITE','VIOLA','WAGER','YOUTH','ZEBRA','BLAZE',
-  'CRISP','DELTA','ELBOW','FINCH','GROVE','HOARD','INSET','JELLY',
-  'KNEEL','MERGE','ONSET','QUEST','ROUSE','SHAWL','USHER','VENOM','WHEAT','YEARN'
+const WORD_BANK = [
+  // 4-letter
+  {w:'BIRD',cat:'Nature'},{w:'DOVE',cat:'Nature'},{w:'FERN',cat:'Nature'},{w:'IRIS',cat:'Nature'},
+  {w:'LARK',cat:'Nature'},{w:'MIST',cat:'Nature'},{w:'REEF',cat:'Nature'},{w:'VALE',cat:'Nature'},
+  {w:'BAKE',cat:'Kitchen'},{w:'BOWL',cat:'Kitchen'},{w:'CHEF',cat:'Kitchen'},{w:'HERB',cat:'Kitchen'},
+  {w:'MILK',cat:'Kitchen'},{w:'OVEN',cat:'Kitchen'},{w:'SALT',cat:'Kitchen'},{w:'STIR',cat:'Kitchen'},
+  {w:'AUNT',cat:'People'},{w:'CARE',cat:'People'},{w:'GIFT',cat:'People'},{w:'HOPE',cat:'People'},
+  {w:'KIND',cat:'People'},{w:'LOVE',cat:'People'},{w:'WISE',cat:'People'},{w:'WARM',cat:'People'},
+  {w:'ARCH',cat:'Places'},{w:'BARN',cat:'Places'},{w:'CAPE',cat:'Places'},{w:'DOCK',cat:'Places'},
+  {w:'FARM',cat:'Places'},{w:'GLEN',cat:'Places'},{w:'LAKE',cat:'Places'},{w:'PARK',cat:'Places'},
+  // 5-letter
+  {w:'BLOOM',cat:'Nature'},{w:'BROOK',cat:'Nature'},{w:'CEDAR',cat:'Nature'},{w:'CORAL',cat:'Nature'},
+  {w:'CRANE',cat:'Nature'},{w:'DAISY',cat:'Nature'},{w:'FINCH',cat:'Nature'},{w:'FLORA',cat:'Nature'},
+  {w:'GROVE',cat:'Nature'},{w:'MAPLE',cat:'Nature'},{w:'OCEAN',cat:'Nature'},{w:'ROBIN',cat:'Nature'},
+  {w:'STONE',cat:'Nature'},{w:'SWAMP',cat:'Nature'},{w:'TIGER',cat:'Nature'},{w:'TULIP',cat:'Nature'},
+  {w:'BASTE',cat:'Kitchen'},{w:'BLEND',cat:'Kitchen'},{w:'BROTH',cat:'Kitchen'},{w:'CANDY',cat:'Kitchen'},
+  {w:'CREAM',cat:'Kitchen'},{w:'FEAST',cat:'Kitchen'},{w:'GLAZE',cat:'Kitchen'},{w:'GRIND',cat:'Kitchen'},
+  {w:'LADLE',cat:'Kitchen'},{w:'PASTA',cat:'Kitchen'},{w:'SAUCE',cat:'Kitchen'},{w:'SPICE',cat:'Kitchen'},
+  {w:'BRAVE',cat:'Words'},{w:'BRISK',cat:'Words'},{w:'CALM',cat:'Words'},{w:'CRISP',cat:'Words'},
+  {w:'EAGLE',cat:'Words'},{w:'FABLE',cat:'Words'},{w:'FLAME',cat:'Words'},{w:'GLOBE',cat:'Words'},
+  {w:'GRACE',cat:'Words'},{w:'NOBLE',cat:'Words'},{w:'PROUD',cat:'Words'},{w:'QUEST',cat:'Words'},
+  {w:'REALM',cat:'Words'},{w:'SHARP',cat:'Words'},{w:'SWIFT',cat:'Words'},{w:'VALOR',cat:'Words'},
+  {w:'ABBEY',cat:'Places'},{w:'BLUFF',cat:'Places'},{w:'CAMPO',cat:'Places'},{w:'FJORD',cat:'Places'},
+  {w:'PLAZA',cat:'Places'},{w:'RIDGE',cat:'Places'},{w:'SHORE',cat:'Places'},{w:'VILLA',cat:'Places'},
+  // 6-letter
+  {w:'AUTUMN',cat:'Nature'},{w:'BADGER',cat:'Nature'},{w:'BONSAI',cat:'Nature'},{w:'CANOPY',cat:'Nature'},
+  {w:'CANYON',cat:'Nature'},{w:'CICADA',cat:'Nature'},{w:'CLOVER',cat:'Nature'},{w:'CONDOR',cat:'Nature'},
+  {w:'FALCON',cat:'Nature'},{w:'FOREST',cat:'Nature'},{w:'GARDEN',cat:'Nature'},{w:'HARBOR',cat:'Nature'},
+  {w:'MEADOW',cat:'Nature'},{w:'PEBBLE',cat:'Nature'},{w:'SALMON',cat:'Nature'},{w:'SPROUT',cat:'Nature'},
+  {w:'BISQUE',cat:'Kitchen'},{w:'BRISKET',cat:'Kitchen'},{w:'BUTTER',cat:'Kitchen'},{w:'CARROT',cat:'Kitchen'},
+  {w:'COBBLER',cat:'Kitchen'},{w:'FENNEL',cat:'Kitchen'},{w:'FILLET',cat:'Kitchen'},{w:'GINGER',cat:'Kitchen'},
+  {w:'GRATER',cat:'Kitchen'},{w:'MORTAR',cat:'Kitchen'},{w:'MUFFIN',cat:'Kitchen'},{w:'SIMMER',cat:'Kitchen'},
+  {w:'BRIGHT',cat:'Words'},{w:'CRAFTY',cat:'Words'},{w:'GENTLE',cat:'Words'},{w:'HEARTY',cat:'Words'},
+  {w:'HONEST',cat:'Words'},{w:'JOYFUL',cat:'Words'},{w:'LIVELY',cat:'Words'},{w:'MIGHTY',cat:'Words'},
+  {w:'NIMBLE',cat:'Words'},{w:'PATENT',cat:'Words'},{w:'PLACID',cat:'Words'},{w:'SAVANT',cat:'Words'},
+  {w:'CASTLE',cat:'Places'},{w:'CAVERN',cat:'Places'},{w:'HAMLET',cat:'Places'},{w:'ISLAND',cat:'Places'},
+  {w:'LAGOON',cat:'Places'},{w:'MARKET',cat:'Places'},{w:'MOSQUE',cat:'Places'},{w:'SUMMIT',cat:'Places'},
+  // 7-letter
+  {w:'BLOSSOM',cat:'Nature'},{w:'CARIBOU',cat:'Nature'},{w:'DOLPHIN',cat:'Nature'},{w:'GLACIER',cat:'Nature'},
+  {w:'JASMINE',cat:'Nature'},{w:'LEOPARD',cat:'Nature'},{w:'LOBSTER',cat:'Nature'},{w:'MONARCH',cat:'Nature'},
+  {w:'MUSTARD',cat:'Kitchen'},{w:'NOODLES',cat:'Kitchen'},{w:'PAPRIKA',cat:'Kitchen'},{w:'ROASTED',cat:'Kitchen'},
+  {w:'SAFFRON',cat:'Kitchen'},{w:'SHERBET',cat:'Kitchen'},{w:'SPATULA',cat:'Kitchen'},{w:'VINEGAR',cat:'Kitchen'},
+  {w:'CAPTAIN',cat:'Words'},{w:'DASHING',cat:'Words'},{w:'DEVOTED',cat:'Words'},{w:'ELEGANT',cat:'Words'},
+  {w:'FEARLESS',cat:'Words'},{w:'GENUINE',cat:'Words'},{w:'PATIENT',cat:'Words'},{w:'VIBRANT',cat:'Words'},
+  {w:'BALCONY',cat:'Places'},{w:'CAPITAL',cat:'Places'},{w:'ESTUARY',cat:'Places'},{w:'ORCHARD',cat:'Places'},
+  {w:'PADDOCK',cat:'Places'},{w:'RIVIERA',cat:'Places'},{w:'SEASIDE',cat:'Places'},{w:'TERRACE',cat:'Places'},
 ];
-let wTarget='', wGuesses=[], wCurrent='', wDone=false;
-const ROWS=6, COLS=5;
 
-function initWord() {
-  wTarget = WORDS[Math.floor(Math.random()*WORDS.length)];
-  wGuesses=[]; wCurrent=''; wDone=false;
+// Filter to only valid-length words
+const VALID_WORDS = WORD_BANK.filter(e => e.w.length >= 4 && e.w.length <= 7);
+
+let wEntry=null, wGuesses=[], wCurrent='', wDone=false, wHintUsed=false, wHintCol=-1;
+const W_ROWS=6;
+
+function initWord(){
+  wEntry = VALID_WORDS[Math.floor(Math.random()*VALID_WORDS.length)];
+  wGuesses=[]; wCurrent=''; wDone=false; wHintUsed=false; wHintCol=-1;
   document.getElementById('wordResult').classList.add('hidden');
   document.getElementById('wordMsg').classList.add('hidden');
+  document.getElementById('wordCatTag').textContent = '\uD83D\uDD0D ' + wEntry.cat;
+  const hintBtn=document.getElementById('wordHintBtn');
+  hintBtn.disabled=true; hintBtn.className='word-hint-btn';
+  hintBtn.textContent='\uD83D\uDCA1 Hint';
   buildWordGrid(); buildKeyboard();
   renderWordStats();
 }
 
-function renderWordStats() {
-  const wins = lsArr('wordWins');
-  const best = ls('wordBest');
-  document.getElementById('wordWinsDisp').textContent = wins.length;
-  document.getElementById('wordBestDisp').textContent = best || '&#8212;';
-  document.getElementById('wordStreakBadge').textContent = lsNum('dbStreak');
-  if(wins.length > 1) {
-    const avg = (wins.reduce((a,b)=>a+b,0)/wins.length).toFixed(1);
-    document.getElementById('wordAvgDisp').textContent = avg;
+function renderWordStats(){
+  const wins=lsArr('wordWins');
+  const best=lsNum('wordBest');
+  document.getElementById('wordWinsDisp').textContent=wins.length||0;
+  document.getElementById('wordBestDisp').textContent=best||0;
+  document.getElementById('wordStreakBadge').textContent=lsNum('dbStreak');
+  if(wins.length>0){
+    const avg=(wins.reduce((a,b)=>a+b,0)/wins.length).toFixed(1);
+    document.getElementById('wordAvgDisp').textContent=avg;
   } else {
-    document.getElementById('wordAvgDisp').textContent = '&#8212;';
+    document.getElementById('wordAvgDisp').textContent=0;
   }
-  if(wins.length >= 2) {
-    const last = wins[wins.length-1];
-    const prev = wins[wins.length-2];
-    setDelta('wordBestDelta', last, prev, true);
-  }
+  if(wins.length>=2) setDelta('wordBestDelta',wins[wins.length-1],wins[wins.length-2],true);
 }
 
 function buildWordGrid(){
+  const cols=wEntry.w.length;
   const g=document.getElementById('wordGrid'); g.innerHTML='';
-  for(let r=0;r<ROWS;r++){
+  for(let r=0;r<W_ROWS;r++){
     const row=document.createElement('div'); row.className='word-row';
-    for(let c=0;c<COLS;c++){
+    for(let c=0;c<cols;c++){
       const cell=document.createElement('div');
-      cell.className='word-cell'; cell.id=`wc-${r}-${c}`;
+      cell.className='word-cell'; cell.id='wc-'+r+'-'+c;
       row.appendChild(cell);
     } g.appendChild(row);
   }
@@ -833,9 +798,13 @@ function buildKeyboard(){
 
 function onKey(k){
   if(wDone) return;
+  const cols=wEntry.w.length;
   if(k==='\u232B'){ wCurrent=wCurrent.slice(0,-1); updateCurrentRow(); return; }
-  if(k==='ENTER'){ if(wCurrent.length<COLS){ showWordMsg('Not enough letters','bad'); return; } submitGuess(); return; }
-  if(wCurrent.length<COLS) { wCurrent+=k; updateCurrentRow(); }
+  if(k==='ENTER'){
+    if(wCurrent.length<cols){ showWordMsg('Not enough letters','bad'); return; }
+    submitGuess(); return;
+  }
+  if(wCurrent.length<cols){ wCurrent+=k; updateCurrentRow(); }
 }
 
 document.addEventListener('keydown',e=>{
@@ -846,82 +815,118 @@ document.addEventListener('keydown',e=>{
 });
 
 function updateCurrentRow(){
+  const cols=wEntry.w.length;
   const r=wGuesses.length;
-  for(let c=0;c<COLS;c++){
-    const cell=document.getElementById(`wc-${r}-${c}`);
+  for(let c=0;c<cols;c++){
+    const cell=document.getElementById('wc-'+r+'-'+c);
     const ch=wCurrent[c]||'';
+    // preserve hint highlight
+    if(c===wHintCol&&wHintUsed&&!ch){
+      cell.className='word-cell hinted';
+      cell.textContent=wEntry.w[c];
+      continue;
+    }
     cell.textContent=ch;
-    cell.className='word-cell'+(ch?' filled current-row':'');
+    let cls='word-cell';
+    if(ch) cls+=' filled current-row';
+    if(c===wHintCol&&wHintUsed) cls+=' hinted';
+    cell.className=cls;
     if(ch){cell.classList.add('pop');setTimeout(()=>cell.classList.remove('pop'),120);}
   }
 }
 
+function useWordHint(){
+  if(wHintUsed||wDone||wGuesses.length===0) return;
+  const cols=wEntry.w.length;
+  // pick a random unrevealed position
+  const unrevealed=[];
+  for(let c=0;c<cols;c++){
+    if(!wCurrent[c]) unrevealed.push(c);
+  }
+  if(unrevealed.length===0) return;
+  wHintCol=unrevealed[Math.floor(Math.random()*unrevealed.length)];
+  wHintUsed=true;
+  const btn=document.getElementById('wordHintBtn');
+  btn.disabled=true; btn.className='word-hint-btn used';
+  btn.textContent='Hint used';
+  // show hint in grid
+  const cell=document.getElementById('wc-'+wGuesses.length+'-'+wHintCol);
+  if(cell){ cell.textContent=wEntry.w[wHintCol]; cell.className='word-cell hinted'; }
+}
+
 function submitGuess(){
   const guess=wCurrent;
-  const result=scoreGuess(guess,wTarget);
+  const target=wEntry.w;
+  const cols=target.length;
+  const result=scoreGuess(guess,target);
   const r=wGuesses.length;
   document.getElementById('wordMsg').classList.add('hidden');
   result.forEach((res,c)=>{
-    const cell=document.getElementById(`wc-${r}-${c}`);
+    const cell=document.getElementById('wc-'+r+'-'+c);
     cell.className='word-cell filled';
-    setTimeout(()=>{ cell.classList.add('flip'); setTimeout(()=>{ cell.classList.remove('flip'); cell.classList.add(res); },200); }, c*80);
+    setTimeout(()=>{ cell.classList.add('flip'); setTimeout(()=>{ cell.classList.remove('flip'); cell.classList.add(res); },200); },c*80);
   });
-  setTimeout(()=>updateKbColors(guess,result), COLS*80+250);
+  setTimeout(()=>updateKbColors(guess,result),cols*80+250);
   wGuesses.push(guess); wCurrent='';
-  if(guess===wTarget){
+  // enable hint after first guess
+  if(wGuesses.length===1&&!wHintUsed){
+    const btn=document.getElementById('wordHintBtn');
+    btn.disabled=false;
+  }
+  if(guess===target){
     wDone=true;
-    const prevBest = parseInt(ls('wordBest')) || null;
-    const wins = lsArr('wordWins');
-    wins.push(wGuesses.length);
-    lsSaveArr('wordWins', wins);
-    if(!prevBest || wGuesses.length < prevBest) ls('wordBest', wGuesses.length);
+    const prevBest=lsNum('wordBest')||null;
+    const wins=lsArr('wordWins');
+    wins.push(wGuesses.length); lsSaveArr('wordWins',wins);
+    if(!prevBest||wGuesses.length<prevBest) ls('wordBest',wGuesses.length);
     updateStreak(); confetti();
     setTimeout(()=>{
       const msgs=['Perfect!','Got it!','Nice work!','Sharp!','Correct!','You got it!'];
       document.getElementById('wordResultIcon').textContent='\uD83C\uDF89';
       document.getElementById('wordResultTitle').textContent=msgs[Math.min(wGuesses.length-1,5)];
-      let msg = `"${wTarget}" &#8212; solved in ${wGuesses.length} ${wGuesses.length===1?'try':'tries'}.`;
-      if(prevBest && wGuesses.length < prevBest) msg += ` New best!`;
-      document.getElementById('wordResultMsg').innerHTML = msg;
+      let msg='"'+target+'" solved in '+wGuesses.length+' '+(wGuesses.length===1?'try':'tries')+'.';
+      if(prevBest&&wGuesses.length<prevBest) msg+=' New best!';
+      document.getElementById('wordResultMsg').textContent=msg;
       document.getElementById('wordResult').classList.remove('hidden');
       renderWordStats();
-    }, COLS*80+600);
+    },cols*80+600);
     return;
   }
-  if(wGuesses.length===ROWS){
+  if(wGuesses.length===W_ROWS){
     wDone=true;
     setTimeout(()=>{
       document.getElementById('wordResultIcon').textContent='\uD83D\uDE05';
       document.getElementById('wordResultTitle').textContent='Almost!';
-      document.getElementById('wordResultMsg').innerHTML=`The word was "${wTarget}". Give it another go!`;
+      document.getElementById('wordResultMsg').textContent='The word was "'+target+'". Give it another go!';
       document.getElementById('wordResult').classList.remove('hidden');
-    }, COLS*80+500);
+    },cols*80+500);
     return;
   }
   updateCurrentRow();
 }
 
-function scoreGuess(guess, target){
-  const res=Array(COLS).fill('absent');
-  const tArr=[...target], used=Array(COLS).fill(false);
-  for(let i=0;i<COLS;i++) if(guess[i]===tArr[i]){res[i]='correct';used[i]=true;}
-  for(let i=0;i<COLS;i++){
+function scoreGuess(guess,target){
+  const cols=target.length;
+  const res=Array(cols).fill('absent');
+  const tArr=[...target],used=Array(cols).fill(false);
+  for(let i=0;i<cols;i++) if(guess[i]===tArr[i]){res[i]='correct';used[i]=true;}
+  for(let i=0;i<cols;i++){
     if(res[i]==='correct') continue;
-    for(let j=0;j<COLS;j++){
+    for(let j=0;j<cols;j++){
       if(!used[j]&&res[j]!=='correct'&&guess[i]===tArr[j]){res[i]='present';used[j]=true;break;}
     }
   }
   return res;
 }
 
-function updateKbColors(guess, result){
+function updateKbColors(guess,result){
   const priority={correct:3,present:2,absent:1};
   result.forEach((res,i)=>{
     const k=guess[i];
     document.querySelectorAll('.kb-key').forEach(btn=>{
       if(btn.dataset.k===k){
         const cur=btn.classList.contains('k-correct')?'correct':btn.classList.contains('k-present')?'present':btn.classList.contains('k-absent')?'absent':null;
-        if(!cur||priority[res]>priority[cur]) btn.className=`kb-key${k.length>1?' wide':''} k-${res}`;
+        if(!cur||priority[res]>priority[cur]) btn.className='kb-key'+(k.length>1?' wide':'')+' k-'+res;
       }
     });
   });
@@ -929,11 +934,12 @@ function updateKbColors(guess, result){
 
 function showWordMsg(msg,type){
   const el=document.getElementById('wordMsg');
-  el.textContent=msg; el.className=`word-msg ${type}`;
+  el.textContent=msg; el.className='word-msg '+type;
   el.classList.remove('hidden');
   setTimeout(()=>el.classList.add('hidden'),1600);
-  for(let c=0;c<COLS;c++){
-    const cell=document.getElementById(`wc-${wGuesses.length}-${c}`);
+  const cols=wEntry.w.length;
+  for(let c=0;c<cols;c++){
+    const cell=document.getElementById('wc-'+wGuesses.length+'-'+c);
     cell.classList.add('shake'); setTimeout(()=>cell.classList.remove('shake'),350);
   }
 }
@@ -941,7 +947,7 @@ function showWordMsg(msg,type){
 // ================================================================
 // TRIVIA
 // ================================================================
-const triviaFallback = [
+const triviaFallback=[
   {q:"Which band released the album 'Sgt. Pepper's Lonely Hearts Club Band' in 1967?",opts:["The Rolling Stones","The Beatles","The Who","The Kinks"],a:1,decade:"1960s"},
   {q:"In what year did Neil Armstrong first walk on the Moon?",opts:["1966","1967","1968","1969"],a:3,decade:"1960s"},
   {q:"Which U.S. President was assassinated in Dallas in 1963?",opts:["Lyndon B. Johnson","Richard Nixon","John F. Kennedy","Dwight Eisenhower"],a:2,decade:"1960s"},
@@ -954,7 +960,7 @@ const triviaFallback = [
   {q:"Which Michael Jackson album released in 1982 became the best-selling album of all time?",opts:["Off the Wall","Bad","Dangerous","Thriller"],a:3,decade:"1980s"},
   {q:"In what year did the Berlin Wall fall?",opts:["1987","1988","1989","1990"],a:2,decade:"1980s"},
   {q:"Which actress starred in the 1987 film 'Dirty Dancing'?",opts:["Molly Ringwald","Demi Moore","Jennifer Grey","Meg Ryan"],a:2,decade:"1980s"},
-  {q:"What TV show featured the Huxtable family and became a top-rated show of the 1980s?",opts:["Family Ties","Growing Pains","The Cosby Show","Cheers"],a:2,decade:"1980s"},
+  {q:"What TV show featured the Huxtable family and was a top-rated show of the 1980s?",opts:["Family Ties","Growing Pains","The Cosby Show","Cheers"],a:2,decade:"1980s"},
   {q:"Which popular sitcom about friends in New York City premiered in 1994?",opts:["Seinfeld","Frasier","Friends","Will & Grace"],a:2,decade:"1990s"},
   {q:"Which 1994 film starring Tom Hanks features the famous line about a box of chocolates?",opts:["Philadelphia","Cast Away","The Green Mile","Forrest Gump"],a:3,decade:"1990s"},
   {q:"Which pop group released 'Wannabe' in 1996 as their debut single?",opts:["TLC","Destiny's Child","Spice Girls","En Vogue"],a:2,decade:"1990s"},
@@ -974,7 +980,7 @@ const triviaFallback = [
   {q:"What is the largest organ of the human body?",opts:["Liver","Brain","Lung","Skin"],a:3},
 ];
 
-let tQuestions=[], tIdx=0, tScore=0, tAnswered=false;
+let tQuestions=[],tIdx=0,tScore=0,tAnswered=false;
 const T_PER_ROUND=7;
 const TRIVIA_API='https://moddes-backend.onrender.com/debbie';
 const TRIVIA_TIMEOUT_MS=20000;
@@ -994,33 +1000,29 @@ async function fetchTriviaQuestions(){
   }catch(e){ clearTimeout(tid); return null; }
 }
 
-function showTriviaSpinner(){
-  document.getElementById('triviaContent').innerHTML='<div class="trivia-loading"><div class="spinner"></div><div class="trivia-loading-text">Loading questions&#8230;</div></div>';
-}
-
 function renderTriviaStats(){
-  const rounds = lsNum('triviaRounds');
-  const best = ls('triviaBest');
-  const scores = lsArr('triviaScores');
-  document.getElementById('triviaRoundsDisp').textContent = rounds;
-  document.getElementById('triviaBestDisp').textContent = best ? best+'%' : '&#8212;';
-  document.getElementById('triviaStreakBadge').textContent = lsNum('dbStreak');
-  if(scores.length > 1){
-    const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
-    document.getElementById('triviaAvgDisp').textContent = avg+'%';
-    setDelta('triviaBestDelta', scores[scores.length-1], scores[scores.length-2], false);
+  const rounds=lsNum('triviaRounds');
+  const best=lsNum('triviaBest');
+  const scores=lsArr('triviaScores');
+  document.getElementById('triviaRoundsDisp').textContent=rounds||0;
+  document.getElementById('triviaBestDisp').textContent=best?best+'%':0;
+  document.getElementById('triviaStreakBadge').textContent=lsNum('dbStreak');
+  if(scores.length>0){
+    const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+    document.getElementById('triviaAvgDisp').textContent=avg+'%';
   } else {
-    document.getElementById('triviaAvgDisp').textContent = '&#8212;';
+    document.getElementById('triviaAvgDisp').textContent=0;
   }
+  if(scores.length>=2) setDelta('triviaBestDelta',scores[scores.length-1],scores[scores.length-2],false);
 }
 
 async function initTrivia(){
   tIdx=0; tScore=0; tAnswered=false;
   renderTriviaStats();
-  showTriviaSpinner();
-  const api = await fetchTriviaQuestions();
-  if(api && api.length>=T_PER_ROUND){ tQuestions=api.slice(0,T_PER_ROUND); }
-  else if(api && api.length>0){ const n=T_PER_ROUND-api.length; const ex=[...triviaFallback].sort(()=>Math.random()-0.5).slice(0,n); tQuestions=[...api,...ex.map(normaliseQ)]; }
+  document.getElementById('triviaContent').innerHTML='<div class="trivia-loading"><div class="spinner"></div><div class="trivia-loading-text">Loading questions...</div></div>';
+  const api=await fetchTriviaQuestions();
+  if(api&&api.length>=T_PER_ROUND){ tQuestions=api.slice(0,T_PER_ROUND); }
+  else if(api&&api.length>0){ const n=T_PER_ROUND-api.length; const ex=[...triviaFallback].sort(()=>Math.random()-0.5).slice(0,n); tQuestions=[...api,...ex.map(normaliseQ)]; }
   else { tQuestions=[...triviaFallback].sort(()=>Math.random()-0.5).slice(0,T_PER_ROUND); }
   renderTrivia();
 }
@@ -1030,7 +1032,7 @@ function renderTrivia(){
   tAnswered=false;
   const q=tQuestions[tIdx];
   const prog=((tIdx)/tQuestions.length)*100;
-  const decHtml=q.decade?`<div class="decade-tag">${q.decade}</div>`:'';
+  const decHtml=q.decade?'<div class="decade-tag">'+q.decade+'</div>':'';
   document.getElementById('triviaContent').innerHTML=`
     <div class="trivia-q">
       <div class="prog-row" style="margin-bottom:14px">
@@ -1042,7 +1044,7 @@ function renderTrivia(){
       <div class="trivia-text">${q.q}</div>
     </div>
     <div class="trivia-opts">
-      ${q.opts.map((o,i)=>`<button class="trivia-opt" id="topt${i}" onclick="onTrivia(${i})"><span class="trivia-dot"></span>${o}</button>`).join('')}
+      ${q.opts.map((o,i)=>'<button class="trivia-opt" id="topt'+i+'" onclick="onTrivia('+i+')"><span class="trivia-dot"></span>'+o+'</button>').join('')}
     </div>
     <div id="tResult"></div>`;
 }
@@ -1056,68 +1058,70 @@ function onTrivia(choice){
     else if(i===choice&&choice!==q.a) btn.classList.add('wrong');
   });
   if(choice===q.a) tScore++;
-  document.getElementById('tResult').innerHTML=`<div class="result-box ${choice===q.a?'correct':'wrong'}" style="margin-top:12px">${choice===q.a?'&#10003; Correct!':'That\'s a tough one &#8212; the answer was: <strong>'+q.opts[q.a]+'</strong>'}</div>`;
-  setTimeout(()=>{ tIdx++; renderTrivia(); }, 1800);
+  document.getElementById('tResult').innerHTML='<div class="result-box '+(choice===q.a?'correct':'wrong')+'" style="margin-top:12px">'+(choice===q.a?'Correct!':'Tough one - the answer was: <strong>'+q.opts[q.a]+'</strong>')+'</div>';
+  setTimeout(()=>{ tIdx++; renderTrivia(); },1800);
 }
 
 function showTriviaComplete(){
   updateStreak(); confetti();
   const pct=Math.round((tScore/tQuestions.length)*100);
-  const prevBest = parseInt(ls('triviaBest')) || null;
-  const scores = lsArr('triviaScores');
-  scores.push(pct);
-  lsSaveArr('triviaScores', scores);
-  ls('triviaRounds', lsNum('triviaRounds')+1);
-  if(!prevBest || pct > prevBest) ls('triviaBest', pct);
+  const prevBest=lsNum('triviaBest')||0;
+  const scores=lsArr('triviaScores');
+  scores.push(pct); lsSaveArr('triviaScores',scores);
+  ls('triviaRounds',lsNum('triviaRounds')+1);
+  if(pct>prevBest) ls('triviaBest',pct);
   renderTriviaStats();
-  let extra = '';
-  if(prevBest && pct > prevBest) extra = ` New best!`;
+  let extra=''; if(pct>prevBest&&prevBest>0) extra=' New best!';
   document.getElementById('triviaContent').innerHTML=`
     <div class="complete">
       <span class="complete-icon">${pct===100?'\uD83C\uDFC6':pct>=70?'\uD83C\uDFAF':'\uD83D\uDCA1'}</span>
       <div class="complete-title">${tScore} / ${tQuestions.length}</div>
-      <div class="complete-score">${pct===100?'Perfect round!':pct>=85?'Really sharp.':pct>=70?'Solid work.':'Good effort &#8212; try again?'}${extra}</div>
+      <div class="complete-score">${pct===100?'Perfect round!':pct>=85?'Really sharp.':pct>=70?'Solid work.':'Good effort - try again?'}${extra}</div>
       <button class="btn btn-primary" onclick="initTrivia()">Play again</button>
       <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
     </div>`;
 }
 
 // ================================================================
-// DECISIONS
+// DECISIONS â€” all-new scenarios
 // ================================================================
-const decisions = [
-  {tag:"Classic dilemma",q:"A long-time supplier offers you a 20% discount if you commit to an exclusive 3-year contract. A newer competitor offers 10% off with no lock-in. What do you do?",opts:["Take the exclusive deal &#8212; savings now, sort later","Decline both and keep full flexibility","Negotiate: ask the supplier for shorter term with same discount","Accept the newer competitor's deal"],a:2,fb:"Negotiating first is almost always the right first move. You might get the same savings with far less lock-in.",fbw:"Smart instinct, but there's usually a better angle before making the final call."},
-  {tag:"People problem",q:"Your best performer is clashing repeatedly with a newer team member who has real potential. Productivity is slipping for both. What's your move?",opts:["Separate them &#8212; put them on different projects indefinitely","Address it directly: meet with each, then together if needed","Wait it out &#8212; personalities usually sort themselves","Let the team manage it naturally"],a:1,fb:"Direct, honest conversation &#8212; separately then together &#8212; usually resolves this faster than any workaround.",fbw:"Avoidance and workarounds tend to let the problem grow. Direct is usually better here."},
-  {tag:"Budget crunch",q:"You're 15% over budget midway through the year. Leadership wants cuts. What do you cut first?",opts:["Across-the-board 15% trim on every line item","Identify the lowest-ROI spending first, cut those fully","Freeze all discretionary spending immediately","Ask for a budget extension instead"],a:1,fb:"Targeted cuts based on actual ROI protect the things that matter most and show strategic judgment.",fbw:"Across-the-board and blanket freezes are blunt instruments &#8212; they often cut things you'll regret losing."},
-  {tag:"Process question",q:"A new system would save the team 4 hours a week, but there's a steep learning curve and a 6-week disruption. Do you implement it?",opts:["Yes &#8212; the long-term math is clear","No &#8212; 6 weeks of disruption isn't worth it","Pilot it with one team member first, evaluate results","Wait until a quieter time of year"],a:2,fb:"Piloting lets you capture real data on the disruption and benefit before committing the whole team.",fbw:"The pilot approach usually de-risks the decision significantly &#8212; it's worth that extra step."},
-  {tag:"Communication",q:"You need to share difficult news with your team &#8212; a project they worked hard on has been cancelled. How do you handle it?",opts:["Send a group email explaining the situation clearly","Announce in the next regular team meeting","Tell them individually in brief 1-on-1s first","Delegate the announcement to someone else"],a:2,fb:"Individual conversations first show respect for the people involved and give each person space to react without an audience.",fbw:"Group announcements for hard news can make people feel like a number. Individual first is usually the more human approach."},
-  {tag:"Risk & reward",q:"A vendor offers an amazing deal but they're brand new with no track record. The savings are significant. Do you take it?",opts:["Yes &#8212; the numbers make sense","No &#8212; no track record means too much risk","Start with a small pilot contract, option to expand","Ask for references and third-party validation first"],a:3,fb:"Verification first &#8212; references, reviews, third-party validation &#8212; dramatically reduces blind risk without killing the opportunity.",fbw:"Good instinct around the risk. Getting third-party validation before committing is usually the smart middle path."},
+const decisions=[
+  {tag:"Home & money",q:"A contractor gives you a quote that's 40% below everyone else's. The work looks good on paper. What do you do?",opts:["Take it - a deal is a deal","Ask why it's so much lower and check their references","Get one more quote to be sure","Walk away - too risky"],a:1,fb:"Asking why is the move. A huge discount could mean corners cut, unlicensed work, or a bait-and-switch. References tell you what actually happens.",fbw:"The price gap is too big to ignore without asking. Finding out why costs nothing and could save you a lot."},
+  {tag:"Family",q:"A close family member asks to borrow a significant amount of money. You can afford it, but you're not sure they can pay it back. What do you do?",opts:["Lend it - family is family","Say no and explain why","Give it as a gift with no expectation of repayment","Ask them to lay out a repayment plan first"],a:2,fb:"If you're not confident you'll see it back, giving it as a gift protects the relationship. Money owed between family creates strain that outlasts the loan.",fbw:"Lending with repayment expectations when you doubt it's coming back tends to create resentment on both sides."},
+  {tag:"Negotiation",q:"You're selling your home and the first offer comes in 8% below asking, all cash, quick close. Do you take it?",opts:["Yes - cash and speed are worth it","Counter at asking price","Counter at 3-4% below asking","Wait for more offers"],a:2,fb:"A modest counter acknowledges the offer's strengths while capturing more value. All-cash quick-close buyers expect a small discount, not a full one.",fbw:"A strategic counter almost always beats accepting the first offer or holding out at full ask."},
+  {tag:"Workplace",q:"Your manager takes credit for your idea in front of leadership. It's not the first time. What do you do?",opts:["Let it go - pick your battles","Bring it up privately with your manager","Document your work and make your contributions more visible going forward","Escalate to HR immediately"],a:2,fb:"Visibility is the most sustainable fix. Start sending recap emails, presenting your own work, and building a paper trail. Confrontation is an option later if the pattern continues.",fbw:"Letting it go repeatedly enables the pattern. Building visibility is more strategic than immediate confrontation."},
+  {tag:"Big purchase",q:"You find your dream car but it's $4,000 over your budget. You could stretch to cover it. What's your move?",opts:["Buy it - you only live once","Walk away and stick to your budget","Negotiate hard and only buy it if you get to your number","Sleep on it for a week before deciding"],a:2,fb:"Negotiating to your number is the discipline move. If they meet you, great. If not, you have your answer and walk away without regret.",fbw:"Stretching the budget for an emotional purchase is how people end up house-poor or car-poor."},
+  {tag:"Health",q:"You've been putting off a medical checkup for two years. You feel fine but know you should go. Something comes up on your schedule the same week as an opening. What do you do?",opts:["Reschedule the checkup","Go to the checkup and handle the other thing separately","Skip both - too much going on","Ask someone else to handle what came up"],a:1,fb:"The appointment took two years to make. Things always come up. Protecting it is the right call.",fbw:"Two years is already a long wait. Whatever came up can likely be worked around."},
+  {tag:"Friendship",q:"A good friend vents to you regularly but never asks how you're doing. It's starting to feel one-sided. What do you do?",opts:["Say nothing - they probably have a lot going on","Gradually pull back from the friendship","Bring it up honestly but kindly","Stop answering when they vent"],a:2,fb:"Most people don't realize they've become one-sided. A kind, honest conversation usually fixes it - and a good friendship is worth that awkwardness.",fbw:"Pulling back without saying anything or going silent doesn't fix the dynamic - it just lets it decay."},
+  {tag:"Tech & privacy",q:"A free app you use every day is caught selling user data. You rely on it but there's a paid alternative with a privacy policy. What do you do?",opts:["Keep using the free one - everyone does it","Delete it immediately","Switch to the paid version","Look for a free alternative with better privacy"],a:3,fb:"A privacy-respecting free alternative is the best outcome if one exists. If not, the paid version is worth considering - your data has value.",fbw:"Staying with a known data seller when alternatives exist isn't great. But you don't need to pay before you look around."},
+  {tag:"Retirement",q:"You're offered an early retirement package at 62. The payout is solid but you still enjoy your work and your health is good. Do you take it?",opts:["Take it - you've earned it","Decline and keep working","Ask for more time to decide and get financial advice","Counter-propose a part-time arrangement"],a:2,fb:"This is a major life decision - getting financial advice before accepting or declining is just good sense. You can't un-retire.",fbw:"Accepting or declining without modeling the numbers first is how people end up with regret either way."},
+  {tag:"Parenting",q:"Your adult child makes a big financial decision you think is a mistake. They didn't ask for your opinion. What do you do?",opts:["Tell them exactly what you think","Say nothing - it's their life","Ask if they want your thoughts before sharing them","Offer to help them think it through if they'd like"],a:3,fb:"Offering without imposing keeps the relationship intact and the door open. Unsolicited opinions on adult children's finances often land as criticism.",fbw:"Leading with your concerns without being asked usually backfires - even when you're right."},
+  {tag:"Travel",q:"You've booked a big trip but a week before leaving, a significant work opportunity comes up on the same dates. What do you do?",opts:["Cancel the trip - the opportunity won't come again","Go on the trip - you need the break","Ask if the opportunity can flex on dates","Try to do both somehow"],a:2,fb:"Asking about flexibility costs nothing and often works. Opportunities that truly can't flex at all are rarer than they're presented.",fbw:"Canceling a planned trip for a work opportunity - before even asking if the timing is flexible - gives away leverage."},
+  {tag:"Community",q:"Your neighborhood association is pushing a change you think is a bad idea. Meetings are monthly and you've never gone. What do you do?",opts:["Show up to the next meeting and say your piece","Sign a petition if one comes around","Do nothing - it probably won't affect you much","Complain to neighbors but skip the meeting"],a:0,fb:"Showing up is the only move that actually counts. Associations run on whoever shows up consistently - which is often not many people.",fbw:"Petitions and neighbor conversations feel like action but don't change votes."},
 ];
 
-let dIdx=0, dDone=false;
+let dIdx=0,dDone=false;
 
 function renderDecStats(){
-  const rounds = lsNum('decRounds');
-  const scores = lsArr('decScores');
-  const best = ls('decBest');
-  document.getElementById('decRoundsDisp').textContent = rounds;
-  document.getElementById('decBestDisp').textContent = best !== null ? best+'/5' : '&#8212;';
-  document.getElementById('decStreakBadge').textContent = lsNum('dbStreak');
-  if(scores.length > 1){
-    const avg = (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1);
-    document.getElementById('decAvgDisp').textContent = avg;
-    setDelta('decBestDelta', scores[scores.length-1], scores[scores.length-2], false);
+  const rounds=lsNum('decRounds');
+  const scores=lsArr('decScores');
+  const best=lsNum('decBest');
+  document.getElementById('decRoundsDisp').textContent=rounds||0;
+  document.getElementById('decBestDisp').textContent=best?best+'/5':0;
+  document.getElementById('decStreakBadge').textContent=lsNum('dbStreak');
+  if(scores.length>0){
+    const avg=(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1);
+    document.getElementById('decAvgDisp').textContent=avg;
   } else {
-    document.getElementById('decAvgDisp').textContent = '&#8212;';
+    document.getElementById('decAvgDisp').textContent=0;
   }
+  if(scores.length>=2) setDelta('decBestDelta',scores[scores.length-1],scores[scores.length-2],false);
 }
 
 function initDecisions(){
-  window._decSet = [...decisions].sort(()=>Math.random()-0.5).slice(0,5);
-  window._decScore = 0;
-  dIdx=0; dDone=false;
-  renderDecStats();
-  renderDecision();
+  window._decSet=[...decisions].sort(()=>Math.random()-0.5).slice(0,5);
+  window._decScore=0; dIdx=0; dDone=false;
+  renderDecStats(); renderDecision();
 }
 
 function renderDecision(){
@@ -1135,7 +1139,7 @@ function renderDecision(){
       <div class="sc-q">${d.q}</div>
     </div>
     <div class="scenario-wrap" id="decOpts">
-      ${d.opts.map((o,i)=>`<button class="opt-btn" id="dopt${i}" onclick="onDecision(${i})"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></button>`).join('')}
+      ${d.opts.map((o,i)=>'<button class="opt-btn" id="dopt'+i+'" onclick="onDecision('+i+')"><span class="opt-letter">'+String.fromCharCode(65+i)+'</span><span>'+o+'</span></button>').join('')}
     </div>
     <div id="decResult"></div>`;
 }
@@ -1150,27 +1154,25 @@ function onDecision(choice){
   });
   if(choice===d.a) window._decScore++;
   const correct=(choice===d.a);
-  document.getElementById('decResult').innerHTML=`<div class="result-box ${correct?'correct':'wrong'}" style="margin-top:12px">${correct?'&#10003; '+d.fb:d.fbw+' <strong>Best call: '+d.opts[d.a]+'</strong>'}</div>`;
-  setTimeout(()=>{ dIdx++; renderDecision(); }, 2200);
+  document.getElementById('decResult').innerHTML='<div class="result-box '+(correct?'correct':'wrong')+'" style="margin-top:12px">'+(correct?'Correct. '+d.fb:d.fbw+' <strong>Best call: '+d.opts[d.a]+'</strong>')+'</div>';
+  setTimeout(()=>{ dIdx++; renderDecision(); },2400);
 }
 
 function showDecComplete(){
   updateStreak(); confetti();
-  const score = window._decScore || 0;
-  const prevBest = parseInt(ls('decBest')) || null;
-  const scores = lsArr('decScores');
-  scores.push(score);
-  lsSaveArr('decScores', scores);
-  ls('decRounds', lsNum('decRounds')+1);
-  if(prevBest === null || score > prevBest) ls('decBest', score);
+  const score=window._decScore||0;
+  const prevBest=lsNum('decBest')||0;
+  const scores=lsArr('decScores');
+  scores.push(score); lsSaveArr('decScores',scores);
+  ls('decRounds',lsNum('decRounds')+1);
+  if(score>prevBest) ls('decBest',score);
   renderDecStats();
-  let extra = '';
-  if(prevBest !== null && score > prevBest) extra = ' New best!';
+  let extra=''; if(score>prevBest&&prevBest>0) extra=' New best!';
   document.getElementById('decContent').innerHTML=`
     <div class="complete">
       <span class="complete-icon">&#128188;</span>
       <div class="complete-title">${score} / 5 correct</div>
-      <div class="complete-score">Good thinking all around.${extra}</div>
+      <div class="complete-score">${score===5?'Perfect judgment.':score>=4?'Really sharp.':score>=3?'Solid thinking.':'Tough round - give it another go.'}${extra}</div>
       <button class="btn btn-primary" onclick="initDecisions()">Play again</button>
       <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
     </div>`;
@@ -1179,32 +1181,32 @@ function showDecComplete(){
 // ================================================================
 // SEQUENCE MEMORY
 // ================================================================
-const SEQ_COLORS = ['red','blue','green','yellow'];
-let seqSequence=[], seqPlayerIdx=0, seqPlaying=false, seqAccepting=false;
+const SEQ_COLORS=['red','blue','green','yellow'];
+let seqSequence=[],seqPlayerIdx=0,seqPlaying=false,seqAccepting=false;
 
 function initSequence(){
   seqSequence=[]; seqPlayerIdx=0; seqPlaying=false; seqAccepting=false;
   document.getElementById('seqResult').classList.add('hidden');
   document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=false);
   renderSeqStats();
-  setTimeout(()=>seqNextRound(), 600);
+  setTimeout(()=>seqNextRound(),600);
 }
 
 function renderSeqStats(){
-  const best = ls('seqBest');
-  const last = ls('seqLast');
-  document.getElementById('seqLevel').textContent = seqSequence.length + 1;
-  document.getElementById('seqBestDisp').textContent = best || '&#8212;';
-  document.getElementById('seqLastDisp').textContent = last || '&#8212;';
-  document.getElementById('seqStreakBadge').textContent = lsNum('dbStreak');
-  if(best && last) setDelta('seqBestDelta', parseInt(best), parseInt(last), false);
+  const best=lsNum('seqBest');
+  const last=lsNum('seqLast');
+  document.getElementById('seqLevel').textContent=seqSequence.length+1;
+  document.getElementById('seqBestDisp').textContent=best||0;
+  document.getElementById('seqLastDisp').textContent=last||0;
+  document.getElementById('seqStreakBadge').textContent=lsNum('dbStreak');
+  if(best&&last) setDelta('seqBestDelta',best,last,false);
 }
 
 function seqNextRound(){
   seqAccepting=false;
   seqSequence.push(SEQ_COLORS[Math.floor(Math.random()*4)]);
-  document.getElementById('seqLevel').textContent = seqSequence.length;
-  setSeqMsg('Watch the pattern&#8230;','watching');
+  document.getElementById('seqLevel').textContent=seqSequence.length;
+  setSeqMsg('Watch the pattern...','watching');
   document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=true);
   seqPlayerIdx=0;
   let delay=700;
@@ -1212,17 +1214,17 @@ function seqNextRound(){
     setTimeout(()=>{
       seqFlash(color);
       if(i===seqSequence.length-1){
-        setTimeout(()=>{ seqAccepting=true; setSeqMsg('Your turn!','go'); document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=false); }, 500);
+        setTimeout(()=>{ seqAccepting=true; setSeqMsg('Your turn!','go'); document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=false); },500);
       }
-    }, delay + i*900);
+    },delay+i*900);
   });
 }
 
 function seqFlash(color){
-  const btn=document.querySelector(`.seq-btn[data-c="${color}"]`);
+  const btn=document.querySelector('.seq-btn[data-c="'+color+'"]');
   if(!btn) return;
   btn.classList.add('seq-flash');
-  setTimeout(()=>btn.classList.remove('seq-flash'), 350);
+  setTimeout(()=>btn.classList.remove('seq-flash'),350);
 }
 
 function onSeqTap(color){
@@ -1233,156 +1235,105 @@ function onSeqTap(color){
     if(seqPlayerIdx===seqSequence.length){
       seqAccepting=false;
       document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=true);
-      setSeqMsg('Nice! Keep going&#8230;','');
-      if(seqSequence.length > (lsNum('seqBest')||0)){
-        ls('seqBest', seqSequence.length);
-      }
-      setTimeout(()=>seqNextRound(), 1000);
+      setSeqMsg('Nice! Keep going...','');
+      if(seqSequence.length>lsNum('seqBest')) ls('seqBest',seqSequence.length);
+      setTimeout(()=>seqNextRound(),1000);
     }
   } else {
     seqAccepting=false;
     document.querySelectorAll('.seq-btn').forEach(b=>b.disabled=true);
-    setSeqMsg('Oops &#8212; that wasn\'t right','fail');
-    const reached = seqSequence.length;
-    ls('seqLast', reached);
-    const prevBest = lsNum('seqBest');
-    if(reached > prevBest) ls('seqBest', reached);
+    setSeqMsg('Oops - not quite!','fail');
+    const reached=seqSequence.length;
+    ls('seqLast',reached);
+    if(reached>lsNum('seqBest')) ls('seqBest',reached);
     updateStreak();
     setTimeout(()=>{
-      const best = lsNum('seqBest');
+      const best=lsNum('seqBest');
       document.getElementById('seqResult').classList.remove('hidden');
-      document.getElementById('seqResultTitle').textContent = `Round ${reached}`;
-      let msg = `You made it to round ${reached}.`;
-      if(reached >= best) msg += ' New best!';
-      else msg += ` Best is ${best}.`;
-      document.getElementById('seqResultMsg').textContent = msg;
+      document.getElementById('seqResultTitle').textContent='Round '+reached;
+      let msg='You made it to round '+reached+'.';
+      if(reached>=best) msg+=' New best!';
+      else msg+=' Best is '+best+'.';
+      document.getElementById('seqResultMsg').textContent=msg;
       renderSeqStats();
-    }, 800);
+    },800);
   }
 }
 
-function setSeqMsg(text, type){
+function setSeqMsg(text,type){
   const el=document.getElementById('seqMsg');
-  el.innerHTML=text;
+  el.textContent=text;
   el.className='seq-msg '+(type||'');
 }
 
 // ================================================================
 // SPOT THE DIFFERENCE
 // ================================================================
-/*
-  Future API integration:
-  POST https://moddes-backend.onrender.com/debbie
-  Body: { "type": "spot" }
-  Expected response:
+const SPOT_SCENES=[
   {
-    data: [{
-      id: string,
-      title: string,
-      svgA: string,        // SVG markup for image A (original)
-      svgB: string,        // SVG markup for image B (with differences)
-      differences: [{
-        id: string,
-        xPct: number,      // center X as % of image width  (0-100)
-        yPct: number,      // center Y as % of image height (0-100)
-        radiusPct: number  // hitbox radius as % of image width
-      }]
-    }]
-  }
-  Until the backend supports this, SVG scenes below are used as fallback.
-*/
-
-const SPOT_SCENES = [
-  {
-    id:'park',
-    title:'Park Scene',
-    diffs: 4,
-    svgA: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+    id:'park',title:'Park Scene',diffs:4,
+    svgA:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
       <rect width="320" height="200" fill="#87CEEB"/>
       <rect y="140" width="320" height="60" fill="#5D8A3C"/>
       <rect y="130" width="320" height="20" fill="#6FA044"/>
-      <!-- sun -->
       <circle cx="270" cy="38" r="22" fill="#FFD700"/>
-      <!-- cloud 1 -->
       <ellipse cx="80" cy="50" rx="35" ry="18" fill="white"/>
       <ellipse cx="60" cy="55" rx="20" ry="14" fill="white"/>
       <ellipse cx="100" cy="55" rx="20" ry="14" fill="white"/>
-      <!-- cloud 2 -->
       <ellipse cx="190" cy="35" rx="28" ry="14" fill="white"/>
       <ellipse cx="175" cy="40" rx="16" ry="11" fill="white"/>
       <ellipse cx="205" cy="40" rx="16" ry="11" fill="white"/>
-      <!-- tree 1 -->
       <rect x="48" y="95" width="10" height="40" fill="#8B5E3C"/>
       <ellipse cx="53" cy="88" rx="28" ry="32" fill="#2E7D32"/>
-      <!-- tree 2 -->
       <rect x="238" y="100" width="10" height="38" fill="#8B5E3C"/>
       <ellipse cx="243" cy="92" rx="24" ry="28" fill="#388E3C"/>
-      <!-- bench -->
       <rect x="118" y="132" width="60" height="6" rx="2" fill="#8B5E3C"/>
       <rect x="122" y="138" width="6" height="10" rx="1" fill="#8B5E3C"/>
       <rect x="168" y="138" width="6" height="10" rx="1" fill="#8B5E3C"/>
-      <!-- path -->
       <ellipse cx="160" cy="165" rx="40" ry="12" fill="#C4A35A" opacity="0.6"/>
-      <!-- bird 1 -->
       <path d="M120 65 Q124 60 128 65" stroke="#333" stroke-width="1.5" fill="none"/>
-      <!-- bird 2 -->
       <path d="M145 58 Q149 53 153 58" stroke="#333" stroke-width="1.5" fill="none"/>
-      <!-- flower 1 -->
       <circle cx="90" cy="148" r="4" fill="#FF69B4"/>
       <circle cx="90" cy="141" r="3" fill="#FF69B4"/>
       <circle cx="83" cy="145" r="3" fill="#FF69B4"/>
       <circle cx="97" cy="145" r="3" fill="#FF69B4"/>
       <circle cx="90" cy="145" r="4" fill="#FFD700"/>
     </svg>`,
-    svgB: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+    svgB:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
       <rect width="320" height="200" fill="#87CEEB"/>
       <rect y="140" width="320" height="60" fill="#5D8A3C"/>
       <rect y="130" width="320" height="20" fill="#6FA044"/>
-      <!-- sun MOVED to left -->
       <circle cx="50" cy="38" r="22" fill="#FFD700"/>
-      <!-- cloud 1 -->
       <ellipse cx="80" cy="50" rx="35" ry="18" fill="white"/>
       <ellipse cx="60" cy="55" rx="20" ry="14" fill="white"/>
       <ellipse cx="100" cy="55" rx="20" ry="14" fill="white"/>
-      <!-- cloud 2 REMOVED (diff 2) -->
-      <!-- tree 1 -->
       <rect x="48" y="95" width="10" height="40" fill="#8B5E3C"/>
       <ellipse cx="53" cy="88" rx="28" ry="32" fill="#2E7D32"/>
-      <!-- tree 2 DARKER green (diff 3) -->
       <rect x="238" y="100" width="10" height="38" fill="#8B5E3C"/>
       <ellipse cx="243" cy="92" rx="24" ry="28" fill="#1B5E20"/>
-      <!-- bench -->
       <rect x="118" y="132" width="60" height="6" rx="2" fill="#8B5E3C"/>
       <rect x="122" y="138" width="6" height="10" rx="1" fill="#8B5E3C"/>
       <rect x="168" y="138" width="6" height="10" rx="1" fill="#8B5E3C"/>
-      <!-- path -->
       <ellipse cx="160" cy="165" rx="40" ry="12" fill="#C4A35A" opacity="0.6"/>
-      <!-- birds REMOVED (diff 4) -->
-      <!-- flower 1 color changed to purple -->
       <circle cx="90" cy="148" r="4" fill="#9C27B0"/>
       <circle cx="90" cy="141" r="3" fill="#9C27B0"/>
       <circle cx="83" cy="145" r="3" fill="#9C27B0"/>
       <circle cx="97" cy="145" r="3" fill="#9C27B0"/>
       <circle cx="90" cy="145" r="4" fill="#FFD700"/>
     </svg>`,
-    // hotspots on image B (xPct, yPct of viewBox 320x200, radiusPct of width)
     hotspots:[
-      {id:'sun',    xPct:15.6, yPct:19,   rPct:9,  label:'Sun moved'},
-      {id:'cloud2', xPct:59.4, yPct:19,   rPct:10, label:'Cloud missing'},
-      {id:'tree2',  xPct:75.9, yPct:44,   rPct:9,  label:'Tree color changed'},
-      {id:'flower', xPct:28.1, yPct:72.5, rPct:6,  label:'Flower color changed'},
+      {id:'sun',xPct:15.6,yPct:19,rPct:9,label:'Sun moved'},
+      {id:'cloud2',xPct:59.4,yPct:19,rPct:10,label:'Cloud missing'},
+      {id:'tree2',xPct:75.9,yPct:44,rPct:9,label:'Tree color changed'},
+      {id:'flower',xPct:28.1,yPct:72.5,rPct:6,label:'Flower color changed'},
     ]
   },
   {
-    id:'kitchen',
-    title:'Kitchen Counter',
-    diffs: 4,
-    svgA: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+    id:'kitchen',title:'Kitchen Counter',diffs:4,
+    svgA:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
       <rect width="320" height="200" fill="#F5F0E8"/>
-      <!-- counter -->
       <rect x="0" y="130" width="320" height="70" fill="#D7C9A7"/>
       <rect x="0" y="126" width="320" height="8" fill="#BFB08A"/>
-      <!-- wall tiles -->
       <rect x="0" y="0" width="320" height="130" fill="#E8E0D0"/>
       <line x1="0" y1="40" x2="320" y2="40" stroke="#CCC" stroke-width="1"/>
       <line x1="0" y1="80" x2="320" y2="80" stroke="#CCC" stroke-width="1"/>
@@ -1391,29 +1342,23 @@ const SPOT_SCENES = [
       <line x1="120" y1="0" x2="120" y2="130" stroke="#CCC" stroke-width="1"/>
       <line x1="180" y1="0" x2="180" y2="130" stroke="#CCC" stroke-width="1"/>
       <line x1="240" y1="0" x2="240" y2="130" stroke="#CCC" stroke-width="1"/>
-      <line x1="300" y1="0" x2="300" y2="130" stroke="#CCC" stroke-width="1"/>
-      <!-- toaster -->
       <rect x="20" y="100" width="56" height="34" rx="5" fill="#888"/>
       <rect x="30" y="96" width="10" height="8" rx="2" fill="#555"/>
       <rect x="52" y="96" width="10" height="8" rx="2" fill="#555"/>
-      <!-- red mug -->
       <rect x="110" y="108" width="30" height="26" rx="4" fill="#E53935"/>
       <path d="M140 116 Q152 116 152 122 Q152 128 140 128" stroke="#E53935" stroke-width="3" fill="none"/>
-      <!-- cookbook - blue -->
       <rect x="165" y="80" width="28" height="50" rx="2" fill="#1565C0"/>
       <rect x="167" y="82" width="24" height="46" fill="#1976D2"/>
       <line x1="179" y1="82" x2="179" y2="128" stroke="#0D47A1" stroke-width="1"/>
-      <!-- fruit bowl -->
       <ellipse cx="255" cy="134" rx="40" ry="8" fill="#C8A96E"/>
       <circle cx="245" cy="126" r="10" fill="#F44336"/>
       <circle cx="260" cy="123" r="9" fill="#FFA726"/>
       <circle cx="270" cy="128" r="8" fill="#66BB6A"/>
-      <!-- window -->
       <rect x="198" y="10" width="80" height="60" rx="3" fill="#AED6F1"/>
       <line x1="238" y1="10" x2="238" y2="70" stroke="white" stroke-width="2"/>
       <line x1="198" y1="40" x2="278" y2="40" stroke="white" stroke-width="2"/>
     </svg>`,
-    svgB: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+    svgB:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
       <rect width="320" height="200" fill="#F5F0E8"/>
       <rect x="0" y="130" width="320" height="70" fill="#D7C9A7"/>
       <rect x="0" y="126" width="320" height="8" fill="#BFB08A"/>
@@ -1425,142 +1370,116 @@ const SPOT_SCENES = [
       <line x1="120" y1="0" x2="120" y2="130" stroke="#CCC" stroke-width="1"/>
       <line x1="180" y1="0" x2="180" y2="130" stroke="#CCC" stroke-width="1"/>
       <line x1="240" y1="0" x2="240" y2="130" stroke="#CCC" stroke-width="1"/>
-      <line x1="300" y1="0" x2="300" y2="130" stroke="#CCC" stroke-width="1"/>
-      <!-- toaster MISSING lever (diff 1) -->
       <rect x="20" y="100" width="56" height="34" rx="5" fill="#888"/>
-      <!-- mug color changed to green (diff 2) -->
       <rect x="110" y="108" width="30" height="26" rx="4" fill="#2E7D32"/>
       <path d="M140 116 Q152 116 152 122 Q152 128 140 128" stroke="#2E7D32" stroke-width="3" fill="none"/>
-      <!-- cookbook color orange (diff 3) -->
       <rect x="165" y="80" width="28" height="50" rx="2" fill="#E65100"/>
       <rect x="167" y="82" width="24" height="46" fill="#EF6C00"/>
       <line x1="179" y1="82" x2="179" y2="128" stroke="#BF360C" stroke-width="1"/>
-      <!-- fruit bowl - orange missing (diff 4) -->
       <ellipse cx="255" cy="134" rx="40" ry="8" fill="#C8A96E"/>
       <circle cx="245" cy="126" r="10" fill="#F44336"/>
       <circle cx="270" cy="128" r="8" fill="#66BB6A"/>
-      <!-- window -->
       <rect x="198" y="10" width="80" height="60" rx="3" fill="#AED6F1"/>
       <line x1="238" y1="10" x2="238" y2="70" stroke="white" stroke-width="2"/>
       <line x1="198" y1="40" x2="278" y2="40" stroke="white" stroke-width="2"/>
     </svg>`,
     hotspots:[
-      {id:'toaster', xPct:15,   yPct:57,   rPct:9,  label:'Toaster lever missing'},
-      {id:'mug',     xPct:39,   yPct:62,   rPct:7,  label:'Mug color changed'},
-      {id:'book',    xPct:56,   yPct:52,   rPct:6,  label:'Book color changed'},
-      {id:'orange',  xPct:81.3, yPct:61.5, rPct:6,  label:'Orange missing'},
+      {id:'toaster',xPct:15,yPct:57,rPct:9,label:'Toaster lever missing'},
+      {id:'mug',xPct:39,yPct:62,rPct:7,label:'Mug color changed'},
+      {id:'book',xPct:56,yPct:52,rPct:6,label:'Book color changed'},
+      {id:'orange',xPct:81.3,yPct:61.5,rPct:6,label:'Orange missing'},
     ]
   },
   {
-    id:'living',
-    title:'Living Room',
-    diffs: 3,
-    svgA: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+    id:'living',title:'Living Room',diffs:3,
+    svgA:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
       <rect width="320" height="200" fill="#F0EAE0"/>
-      <!-- floor -->
       <rect x="0" y="150" width="320" height="50" fill="#C8A96E"/>
-      <!-- rug -->
       <ellipse cx="160" cy="162" rx="100" ry="18" fill="#8B3A3A" opacity="0.7"/>
-      <!-- sofa -->
       <rect x="40" y="110" width="180" height="50" rx="8" fill="#5C7A9E"/>
       <rect x="40" y="103" width="180" height="18" rx="6" fill="#4A6480"/>
       <rect x="40" y="110" width="30" height="50" rx="4" fill="#4A6480"/>
       <rect x="190" y="110" width="30" height="50" rx="4" fill="#4A6480"/>
-      <!-- cushion 1 yellow -->
       <rect x="80" y="116" width="46" height="34" rx="6" fill="#F9A825"/>
-      <!-- cushion 2 red -->
       <rect x="136" y="116" width="46" height="34" rx="6" fill="#C62828"/>
-      <!-- lamp -->
       <rect x="268" y="90" width="8" height="60" fill="#A0A0A0"/>
       <polygon points="256,90 288,90 280,60 264,60" fill="#FFD54F"/>
       <circle cx="272" cy="60" r="5" fill="#FFF9C4"/>
-      <!-- picture on wall - landscape -->
       <rect x="100" y="20" width="80" height="55" rx="3" fill="white" stroke="#8B7355" stroke-width="3"/>
       <rect x="103" y="23" width="74" height="49" fill="#87CEEB"/>
       <rect x="103" y="52" width="74" height="20" fill="#5D8A3C"/>
       <circle cx="130" cy="40" r="8" fill="#FFD700"/>
-      <!-- clock -->
       <circle cx="50" cy="45" r="22" fill="white" stroke="#8B7355" stroke-width="3"/>
       <line x1="50" y1="45" x2="50" y2="28" stroke="#333" stroke-width="2"/>
       <line x1="50" y1="45" x2="62" y2="50" stroke="#333" stroke-width="1.5"/>
-      <!-- plant -->
       <rect x="8" y="120" width="14" height="18" rx="2" fill="#795548"/>
       <ellipse cx="15" cy="110" rx="16" ry="18" fill="#388E3C"/>
       <ellipse cx="6" cy="115" rx="10" ry="12" fill="#2E7D32"/>
       <ellipse cx="24" cy="115" rx="10" ry="12" fill="#2E7D32"/>
     </svg>`,
-    svgB: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+    svgB:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
       <rect width="320" height="200" fill="#F0EAE0"/>
       <rect x="0" y="150" width="320" height="50" fill="#C8A96E"/>
-      <!-- rug color changed (diff 1) -->
       <ellipse cx="160" cy="162" rx="100" ry="18" fill="#1A5276" opacity="0.7"/>
-      <!-- sofa -->
       <rect x="40" y="110" width="180" height="50" rx="8" fill="#5C7A9E"/>
       <rect x="40" y="103" width="180" height="18" rx="6" fill="#4A6480"/>
       <rect x="40" y="110" width="30" height="50" rx="4" fill="#4A6480"/>
       <rect x="190" y="110" width="30" height="50" rx="4" fill="#4A6480"/>
-      <!-- cushion 1 yellow (unchanged) -->
       <rect x="80" y="116" width="46" height="34" rx="6" fill="#F9A825"/>
-      <!-- cushion 2 now green (diff 2) -->
       <rect x="136" y="116" width="46" height="34" rx="6" fill="#2E7D32"/>
-      <!-- lamp (unchanged) -->
       <rect x="268" y="90" width="8" height="60" fill="#A0A0A0"/>
       <polygon points="256,90 288,90 280,60 264,60" fill="#FFD54F"/>
       <circle cx="272" cy="60" r="5" fill="#FFF9C4"/>
-      <!-- picture frame - portrait now (diff 3) -->
       <rect x="108" y="15" width="55" height="68" rx="3" fill="white" stroke="#8B7355" stroke-width="3"/>
       <rect x="111" y="18" width="49" height="62" fill="#87CEEB"/>
       <rect x="111" y="50" width="49" height="30" fill="#5D8A3C"/>
       <circle cx="130" cy="35" r="8" fill="#FFD700"/>
-      <!-- clock (unchanged) -->
       <circle cx="50" cy="45" r="22" fill="white" stroke="#8B7355" stroke-width="3"/>
       <line x1="50" y1="45" x2="50" y2="28" stroke="#333" stroke-width="2"/>
       <line x1="50" y1="45" x2="62" y2="50" stroke="#333" stroke-width="1.5"/>
-      <!-- plant -->
       <rect x="8" y="120" width="14" height="18" rx="2" fill="#795548"/>
       <ellipse cx="15" cy="110" rx="16" ry="18" fill="#388E3C"/>
       <ellipse cx="6" cy="115" rx="10" ry="12" fill="#2E7D32"/>
       <ellipse cx="24" cy="115" rx="10" ry="12" fill="#2E7D32"/>
     </svg>`,
     hotspots:[
-      {id:'rug',     xPct:50,   yPct:81,   rPct:10, label:'Rug color changed'},
-      {id:'cushion', xPct:50,   yPct:62,   rPct:8,  label:'Cushion color changed'},
-      {id:'picture', xPct:42,   yPct:25,   rPct:9,  label:'Picture frame shape changed'},
+      {id:'rug',xPct:50,yPct:81,rPct:10,label:'Rug color changed'},
+      {id:'cushion',xPct:50,yPct:62,rPct:8,label:'Cushion color changed'},
+      {id:'picture',xPct:42,yPct:25,rPct:9,label:'Picture frame changed'},
     ]
   }
 ];
 
-let spotScene=null, spotFound=[], spotHints=0, spotStartTime=0;
+let spotScene=null,spotFound=[],spotHints=0,spotStartTime=0;
 const MAX_HINTS=2;
 
 function initSpot(){
-  spotScene = SPOT_SCENES[Math.floor(Math.random()*SPOT_SCENES.length)];
+  spotScene=SPOT_SCENES[Math.floor(Math.random()*SPOT_SCENES.length)];
   spotFound=[]; spotHints=0; spotStartTime=Date.now();
-  renderSpotStats();
-  renderSpot();
+  renderSpotStats(); renderSpot();
 }
 
 function renderSpotStats(){
-  const rounds = lsNum('spotRounds');
-  const best = ls('spotBest');
-  const scores = lsArr('spotScores');
-  document.getElementById('spotRoundsDisp').textContent = rounds;
-  document.getElementById('spotBestDisp').textContent = best ? best+'s' : '&#8212;';
-  document.getElementById('spotStreakBadge').textContent = lsNum('dbStreak');
-  if(scores.length>1){
-    const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
-    document.getElementById('spotAvgDisp').textContent = avg+'s';
-    setDelta('spotBestDelta', scores[scores.length-1], scores[scores.length-2], true);
+  const rounds=lsNum('spotRounds');
+  const best=lsNum('spotBest');
+  const scores=lsArr('spotScores');
+  document.getElementById('spotRoundsDisp').textContent=rounds||0;
+  document.getElementById('spotBestDisp').textContent=best?best+'s':0;
+  document.getElementById('spotStreakBadge').textContent=lsNum('dbStreak');
+  if(scores.length>0){
+    const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+    document.getElementById('spotAvgDisp').textContent=avg+'s';
   } else {
-    document.getElementById('spotAvgDisp').textContent = '&#8212;';
+    document.getElementById('spotAvgDisp').textContent=0;
   }
+  if(scores.length>=2) setDelta('spotBestDelta',scores[scores.length-1],scores[scores.length-2],true);
 }
 
 function renderSpot(){
   const s=spotScene;
-  const dotsHtml=s.hotspots.map((_,i)=>`<div class="spot-dot${i<spotFound.length?' found':''}" id="sdot${i}"></div>`).join('');
+  const dotsHtml=s.hotspots.map((_,i)=>'<div class="spot-dot'+(i<spotFound.length?' found':'')+'" id="sdot'+i+'"></div>').join('');
   document.getElementById('spotContent').innerHTML=`
-    <div style="font-size:13px;font-weight:600;color:var(--text-soft);margin-bottom:10px;text-align:center;">${s.title} &mdash; find ${s.diffs} differences</div>
+    <div style="font-size:13px;font-weight:600;color:var(--text-soft);margin-bottom:10px;text-align:center;">${s.title} - find ${s.diffs} differences</div>
     <div class="spot-progress" style="margin-bottom:10px;">
       <div><div class="spot-found-count" id="spotFoundCount">${spotFound.length}/${s.diffs}</div><div class="spot-found-label">found</div></div>
       <div class="spot-dots">${dotsHtml}</div>
@@ -1569,10 +1488,9 @@ function renderSpot(){
     <div class="spot-label">Original</div>
     <div class="spot-panel" id="spotPanelA">${s.svgA}</div>
     <div style="height:10px;"></div>
-    <div class="spot-label">Spot the difference &#8594;</div>
+    <div class="spot-label">Spot the difference</div>
     <div class="spot-panel" id="spotPanelB" style="position:relative;">${s.svgB}</div>
-    <div id="spotResult"></div>
-  `;
+    <div id="spotResult"></div>`;
   placeHotspots();
 }
 
@@ -1580,33 +1498,29 @@ function placeHotspots(){
   const panel=document.getElementById('spotPanelB');
   if(!panel) return;
   const s=spotScene;
-  s.hotspots.forEach((hs,i)=>{
+  s.hotspots.forEach((hs)=>{
     const el=document.createElement('div');
     el.className='spot-hotspot'+(spotFound.includes(hs.id)?' found':'');
     const w=panel.offsetWidth||320;
-    const svgAspect=200/320;
-    const h=w*svgAspect;
+    const h=w*(200/320);
     const px=hs.xPct/100*w;
     const py=hs.yPct/100*h;
     const r=hs.rPct/100*w;
-    el.style.left=(px-r)+'px';
-    el.style.top=(py-r)+'px';
-    el.style.width=(r*2)+'px';
-    el.style.height=(r*2)+'px';
+    el.style.left=(px-r)+'px'; el.style.top=(py-r)+'px';
+    el.style.width=(r*2)+'px'; el.style.height=(r*2)+'px';
     el.dataset.id=hs.id;
-    el.dataset.idx=i;
-    el.addEventListener('click',()=>onSpotTap(hs.id, i));
+    el.addEventListener('click',()=>onSpotTap(hs.id));
     panel.appendChild(el);
   });
 }
 
-function onSpotTap(id, idx){
+function onSpotTap(id){
   if(spotFound.includes(id)) return;
   spotFound.push(id);
-  const el=document.querySelector(`.spot-hotspot[data-id="${id}"]`);
+  const el=document.querySelector('.spot-hotspot[data-id="'+id+'"]');
   if(el) el.classList.add('found');
-  const dot=document.getElementById('sdot'+spotFound.length-1) || document.querySelectorAll('.spot-dot')[spotFound.length-1];
-  document.querySelectorAll('.spot-dot')[spotFound.length-1]?.classList.add('found');
+  const dots=document.querySelectorAll('.spot-dot');
+  if(dots[spotFound.length-1]) dots[spotFound.length-1].classList.add('found');
   document.getElementById('spotFoundCount').textContent=spotFound.length+'/'+spotScene.diffs;
   if(spotFound.length===spotScene.diffs){
     const elapsed=Math.round((Date.now()-spotStartTime)/1000);
@@ -1617,27 +1531,24 @@ function onSpotTap(id, idx){
 function onSpotHint(){
   if(spotHints>=MAX_HINTS) return;
   spotHints++;
-  // reveal a random unfound hotspot briefly
   const remaining=spotScene.hotspots.filter(h=>!spotFound.includes(h.id));
   if(remaining.length===0) return;
   const pick=remaining[Math.floor(Math.random()*remaining.length)];
-  const el=document.querySelector(`.spot-hotspot[data-id="${pick.id}"]`);
+  const el=document.querySelector('.spot-hotspot[data-id="'+pick.id+'"]');
   if(el){ el.style.borderColor='rgba(217,119,6,0.8)'; el.style.background='rgba(217,119,6,0.15)'; setTimeout(()=>{ if(!spotFound.includes(pick.id)){ el.style.borderColor=''; el.style.background=''; }},1800); }
   const btn=document.getElementById('spotHintBtn');
-  if(btn){ if(spotHints>=MAX_HINTS) btn.disabled=true; else btn.textContent=`Hint (${MAX_HINTS-spotHints})`; }
+  if(btn){ if(spotHints>=MAX_HINTS) btn.disabled=true; else btn.textContent='Hint ('+(MAX_HINTS-spotHints)+')'; }
 }
 
 function finishSpot(elapsed){
   updateStreak(); confetti();
-  const prevBest=parseInt(ls('spotBest'))||null;
+  const prevBest=lsNum('spotBest')||0;
   const scores=lsArr('spotScores');
-  scores.push(elapsed);
-  lsSaveArr('spotScores',scores);
+  scores.push(elapsed); lsSaveArr('spotScores',scores);
   ls('spotRounds',lsNum('spotRounds')+1);
   if(!prevBest||elapsed<prevBest) ls('spotBest',elapsed);
   renderSpotStats();
-  let extra='';
-  if(prevBest&&elapsed<prevBest) extra=' New best!';
+  let extra=''; if(prevBest&&elapsed<prevBest) extra=' New best!';
   document.getElementById('spotResult').innerHTML=`
     <div class="win-panel" style="margin-top:12px;">
       <span class="win-icon">&#128269;</span>
@@ -1651,63 +1562,58 @@ function finishSpot(elapsed){
 // ================================================================
 // BRAIN TEASERS
 // ================================================================
-const brainBank = [
-  // Math
-  {type:'Math',q:'What is 17 &times; 4?',opts:['62','68','72','76'],a:1},
-  {type:'Math',q:'What is 144 &divide; 12?',opts:['10','11','12','13'],a:2},
+const brainBank=[
+  {type:'Math',q:'What is 17 x 4?',opts:['62','68','72','76'],a:1},
+  {type:'Math',q:'What is 144 divided by 12?',opts:['10','11','12','13'],a:2},
   {type:'Math',q:'What is 25% of 200?',opts:['25','40','50','75'],a:2},
-  {type:'Math',q:'What is 8&sup2; &minus; 8?',opts:['48','56','60','64'],a:1},
+  {type:'Math',q:'What is 8 squared minus 8?',opts:['48','56','60','64'],a:1},
   {type:'Math',q:'What comes next? 3, 6, 12, 24, ___',opts:['36','42','48','30'],a:2},
-  {type:'Math',q:'What is 7 &times; 9 &minus; 13?',opts:['48','50','50','50'],a:0,_fix:true},
   {type:'Math',q:'If you have $45.00 and spend $17.50, how much is left?',opts:['$25.50','$27.50','$27.00','$28.50'],a:1},
   {type:'Math',q:'What is 15% of 80?',opts:['10','11','12','15'],a:2},
   {type:'Math',q:'What comes next? 2, 5, 10, 17, 26, ___',opts:['35','36','37','38'],a:2},
   {type:'Math',q:'A dozen eggs plus half a dozen equals how many?',opts:['15','16','17','18'],a:3},
-  // Odd one out
+  {type:'Math',q:'What is 7 x 8?',opts:['48','54','56','64'],a:2},
   {type:'Odd one out',q:'Which word does NOT belong?',sub:'Rose, Daisy, Tulip, Oak, Lily',opts:['Rose','Daisy','Oak','Lily'],a:2},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'Piano, Guitar, Violin, Trumpet, Camera',opts:['Piano','Guitar','Trumpet','Camera'],a:3},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'Mercury, Venus, Moon, Mars, Jupiter',opts:['Venus','Moon','Mars','Jupiter'],a:1},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'Salmon, Trout, Shark, Cod, Eagle',opts:['Salmon','Shark','Cod','Eagle'],a:3},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'Red, Green, Fast, Blue, Yellow',opts:['Red','Green','Fast','Yellow'],a:2},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'January, March, July, April, August',opts:['January','April','July','August'],a:1},
-  // Logic
-  {type:'Logic',q:'If all Bloops are Razzles, and all Razzles are Lazzles, are all Bloops definitely Lazzles?',opts:['Yes','No','Only some','Impossible to say'],a:0},
   {type:'Logic',q:'A farmer has 17 sheep. All but 9 run away. How many are left?',opts:['8','9','17','None'],a:1},
-  {type:'Logic',q:'You have two coins that add up to 30 cents. One of them is not a nickel. What are the two coins?',opts:['Two dimes','A quarter and a nickel','Two nickels','A quarter and a quarter'],a:1},
+  {type:'Logic',q:'You have two coins totaling 30 cents. One is not a nickel. What are the two coins?',opts:['Two dimes','A quarter and a nickel','Two nickels','A dime and a quarter'],a:1},
   {type:'Logic',q:'What number comes next? 1, 4, 9, 16, 25, ___',opts:['30','34','36','40'],a:2},
-  {type:'Logic',q:'A clock shows 3:15. What is the angle between the hour and minute hands?',opts:['0&deg;','7.5&deg;','15&deg;','22.5&deg;'],a:1},
-  {type:'Logic',q:'If today is Wednesday, what day will it be 100 days from now?',opts:['Monday','Tuesday','Wednesday','Friday'],a:3},
-  // Pattern
+  {type:'Logic',q:'If today is Wednesday, what day is it 100 days from now?',opts:['Monday','Tuesday','Wednesday','Friday'],a:3},
+  {type:'Logic',q:'If all cats are mammals and all mammals are animals, are all cats animals?',opts:['Yes','No','Only some cats','Cannot be determined'],a:0},
+  {type:'Logic',q:'A bat and ball cost $1.10. The bat costs $1 more than the ball. How much is the ball?',opts:['10 cents','5 cents','15 cents','20 cents'],a:1},
   {type:'Pattern',q:'What letter comes next? A, C, E, G, ___',opts:['H','I','J','K'],a:1},
   {type:'Pattern',q:'What number completes the pattern? 1, 1, 2, 3, 5, 8, ___',opts:['11','12','13','14'],a:2},
-  {type:'Pattern',q:'Which shape completes the pattern? Circle, Square, Triangle, Circle, Square, ___',opts:['Circle','Square','Triangle','Diamond'],a:2},
   {type:'Pattern',q:'What comes next? Monday, Wednesday, Friday, ___',opts:['Saturday','Sunday','Tuesday','Thursday'],a:1},
+  {type:'Pattern',q:'What comes next? 100, 90, 81, 73, 66, ___',opts:['58','60','62','64'],a:1},
 ];
 
-let brainQs=[], brainIdx=0, brainScore=0, brainAnswered=false;
+let brainQs=[],brainIdx=0,brainScore=0,brainAnswered=false;
 const BRAIN_PER_ROUND=6;
 
 function renderBrainStats(){
   const rounds=lsNum('brainRounds');
-  const best=ls('brainBest');
+  const best=lsNum('brainBest');
   const scores=lsArr('brainScores');
-  document.getElementById('brainRoundsDisp').textContent=rounds;
-  document.getElementById('brainBestDisp').textContent=best?best+'%':'&#8212;';
+  document.getElementById('brainRoundsDisp').textContent=rounds||0;
+  document.getElementById('brainBestDisp').textContent=best?best+'%':0;
   document.getElementById('brainStreakBadge').textContent=lsNum('dbStreak');
-  if(scores.length>1){
+  if(scores.length>0){
     const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
     document.getElementById('brainAvgDisp').textContent=avg+'%';
-    setDelta('brainBestDelta',scores[scores.length-1],scores[scores.length-2],false);
   } else {
-    document.getElementById('brainAvgDisp').textContent='&#8212;';
+    document.getElementById('brainAvgDisp').textContent=0;
   }
+  if(scores.length>=2) setDelta('brainBestDelta',scores[scores.length-1],scores[scores.length-2],false);
 }
 
 function initBrain(){
   brainQs=[...brainBank].sort(()=>Math.random()-0.5).slice(0,BRAIN_PER_ROUND);
   brainIdx=0; brainScore=0; brainAnswered=false;
-  renderBrainStats();
-  renderBrain();
+  renderBrainStats(); renderBrain();
 }
 
 function renderBrain(){
@@ -1715,7 +1621,7 @@ function renderBrain(){
   brainAnswered=false;
   const q=brainQs[brainIdx];
   const prog=((brainIdx)/brainQs.length)*100;
-  const optsHtml=q.opts.map((o,i)=>`<button class="brain-opt" id="bopt${i}" onclick="onBrain(${i})">${o}</button>`).join('');
+  const optsHtml=q.opts.map((o,i)=>'<button class="brain-opt" id="bopt'+i+'" onclick="onBrain('+i+')">'+o+'</button>').join('');
   document.getElementById('brainContent').innerHTML=`
     <div class="brain-q-card">
       <div class="prog-row" style="margin-bottom:12px">
@@ -1724,7 +1630,7 @@ function renderBrain(){
       </div>
       <div class="brain-type-tag">${q.type}</div>
       <div class="brain-q-text">${q.q}</div>
-      ${q.sub?`<div class="brain-q-sub">${q.sub}</div>`:''}
+      ${q.sub?'<div class="brain-q-sub">'+q.sub+'</div>':''}
     </div>
     <div class="brain-opts">${optsHtml}</div>
     <div id="brainResult"></div>`;
@@ -1740,25 +1646,25 @@ function onBrain(choice){
     if(i===q.a) btn.classList.add('correct');
     else if(i===choice&&!correct) btn.classList.add('wrong');
   });
-  document.getElementById('brainResult').innerHTML=`<div class="result-box ${correct?'correct':'wrong'}" style="margin-top:12px">${correct?'&#10003; Correct!':'The answer was: <strong>'+q.opts[q.a]+'</strong>'}</div>`;
+  document.getElementById('brainResult').innerHTML='<div class="result-box '+(correct?'correct':'wrong')+'" style="margin-top:12px">'+(correct?'Correct!':'The answer was: <strong>'+q.opts[q.a]+'</strong>')+'</div>';
   setTimeout(()=>{ brainIdx++; renderBrain(); },1600);
 }
 
 function showBrainComplete(){
   updateStreak(); confetti();
   const pct=Math.round((brainScore/brainQs.length)*100);
-  const prevBest=parseInt(ls('brainBest'))||null;
+  const prevBest=lsNum('brainBest')||0;
   const scores=lsArr('brainScores');
   scores.push(pct); lsSaveArr('brainScores',scores);
   ls('brainRounds',lsNum('brainRounds')+1);
-  if(!prevBest||pct>prevBest) ls('brainBest',pct);
+  if(pct>prevBest) ls('brainBest',pct);
   renderBrainStats();
-  let extra=''; if(prevBest&&pct>prevBest) extra=' New best!';
+  let extra=''; if(pct>prevBest&&prevBest>0) extra=' New best!';
   document.getElementById('brainContent').innerHTML=`
     <div class="complete">
       <span class="complete-icon">${pct===100?'\uD83E\uDDE0':pct>=70?'\uD83C\uDFAF':'\uD83D\uDCA1'}</span>
       <div class="complete-title">${brainScore} / ${brainQs.length}</div>
-      <div class="complete-score">${pct===100?'Flawless!':pct>=85?'Sharp mind.':pct>=60?'Good run.':'Keep at it &#8212; you\'ll get there.'}${extra}</div>
+      <div class="complete-score">${pct===100?'Flawless!':pct>=85?'Sharp mind.':pct>=60?'Good run.':'Keep at it - you\'ll get there.'}${extra}</div>
       <button class="btn btn-primary" onclick="initBrain()">Play again</button>
       <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
     </div>`;
@@ -1769,27 +1675,27 @@ function showBrainComplete(){
 // ================================================================
 function backupStats(){
   const stats={
-    exported: new Date().toISOString(),
-    streak: ls('dbStreak')||'0',
-    lastPlayDate: ls('dbLastDate')||null,
-    memoryBest: ls('memBest')||null,
-    memoryLast: ls('memLast')||null,
-    wordBest: ls('wordBest')||null,
-    wordWins: lsArr('wordWins'),
-    triviaRounds: ls('triviaRounds')||'0',
-    triviaBest: ls('triviaBest')||null,
-    triviaScores: lsArr('triviaScores'),
-    decRounds: ls('decRounds')||'0',
-    decBest: ls('decBest')||null,
-    decScores: lsArr('decScores'),
-    seqBest: ls('seqBest')||null,
-    seqLast: ls('seqLast')||null,
-    spotRounds: ls('spotRounds')||'0',
-    spotBest: ls('spotBest')||null,
-    spotScores: lsArr('spotScores'),
-    brainRounds: ls('brainRounds')||'0',
-    brainBest: ls('brainBest')||null,
-    brainScores: lsArr('brainScores'),
+    exported:new Date().toISOString(),
+    streak:ls('dbStreak')||'0',
+    lastPlayDate:ls('dbLastDate')||null,
+    memoryBest:ls('memBest')||null,
+    memoryLast:ls('memLast')||null,
+    wordBest:ls('wordBest')||null,
+    wordWins:lsArr('wordWins'),
+    triviaRounds:ls('triviaRounds')||'0',
+    triviaBest:ls('triviaBest')||null,
+    triviaScores:lsArr('triviaScores'),
+    decRounds:ls('decRounds')||'0',
+    decBest:ls('decBest')||null,
+    decScores:lsArr('decScores'),
+    seqBest:ls('seqBest')||null,
+    seqLast:ls('seqLast')||null,
+    spotRounds:ls('spotRounds')||'0',
+    spotBest:ls('spotBest')||null,
+    spotScores:lsArr('spotScores'),
+    brainRounds:ls('brainRounds')||'0',
+    brainBest:ls('brainBest')||null,
+    brainScores:lsArr('brainScores'),
   };
   const blob=new Blob([JSON.stringify(stats,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
@@ -1803,7 +1709,7 @@ function backupStats(){
 // ================================================================
 function updateStreak(){
   let s=parseInt(ls('dbStreak')||'0');
-  const last=ls('dbLastDate'), today=new Date().toDateString();
+  const last=ls('dbLastDate'),today=new Date().toDateString();
   if(last!==today){ s++; ls('dbStreak',s); ls('dbLastDate',today); }
   document.getElementById('streak').textContent=s;
 }
@@ -1828,7 +1734,7 @@ function confetti(){
   const c=['#3B82F6','#16A34A','#D97706','#7C3AED','#E11D48','#14B8A6'];
   for(let i=0;i<30;i++){
     const el=document.createElement('div');
-    el.style.cssText=`position:fixed;left:${Math.random()*100}vw;top:-12px;width:${5+Math.random()*6}px;height:${5+Math.random()*6}px;border-radius:${Math.random()>.5?'50%':'2px'};background:${c[Math.floor(Math.random()*c.length)]};pointer-events:none;z-index:9999;animation:confettiFall ${1.2+Math.random()*1.8}s linear ${Math.random()*0.5}s forwards`;
+    el.style.cssText='position:fixed;left:'+Math.random()*100+'vw;top:-12px;width:'+(5+Math.random()*6)+'px;height:'+(5+Math.random()*6)+'px;border-radius:'+(Math.random()>.5?'50%':'2px')+';background:'+c[Math.floor(Math.random()*c.length)]+';pointer-events:none;z-index:9999;animation:confettiFall '+(1.2+Math.random()*1.8)+'s linear '+(Math.random()*0.5)+'s forwards';
     document.body.appendChild(el);
     el.addEventListener('animationend',()=>el.remove());
   }
