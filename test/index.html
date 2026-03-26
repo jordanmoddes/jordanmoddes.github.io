@@ -18,7 +18,7 @@
 <script type="text/javascript">function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE,autoDisplay:false},'google_translate_element');}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
 /* ═══════════════════════════════════════════
@@ -35,8 +35,8 @@
   --panel:    rgba(11,17,24,0.94);
   --line:     rgba(255,255,255,0.07);
   --line-2:   rgba(255,255,255,0.04);
-  --fd: 'Syne', sans-serif;
-  --fm: 'IBM Plex Mono', monospace;
+  --fd: 'Outfit', sans-serif;
+  --fm: 'JetBrains Mono', monospace;
   --fb: 'DM Sans', sans-serif;
 }
 
@@ -240,7 +240,7 @@ body.is-mobile #swipe-next { display: flex; }
 .display-xl {
   font-family: var(--fd); font-weight: 800;
   font-size: clamp(2.4rem, 6vw, 6.5rem);
-  line-height: .9; letter-spacing: -.044em; color: var(--text);
+  line-height: .9; letter-spacing: -.025em; color: var(--text);
   position: relative; display: inline-block;
 }
 .display-xl::before, .display-xl::after {
@@ -314,7 +314,7 @@ body.is-mobile #swipe-next { display: flex; }
   display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem;
 }
 .sec-label::before { content: ''; width: 18px; height: 1.5px; background: var(--accent); }
-.sec-title { font-family: var(--fd); font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 800; letter-spacing: -.032em; margin-bottom: .45rem; }
+.sec-title { font-family: var(--fd); font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 800; letter-spacing: -.02em; margin-bottom: .45rem; }
 .sec-sub { color: var(--muted); line-height: 1.65; font-size: .9rem; }
 
 /* ═══════════════════════════════════════════
@@ -335,7 +335,7 @@ body.is-mobile #swipe-next { display: flex; }
 }
 .metric-card:hover::after { transform: scaleX(1); }
 .m-label { font-family: var(--fm); font-size: .6rem; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
-.m-value { font-family: var(--fd); font-size: 1.7rem; font-weight: 800; letter-spacing: -.04em; margin-top: .45rem; }
+.m-value { font-family: var(--fd); font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; margin-top: .45rem; }
 .m-desc { margin-top: .38rem; color: var(--muted); font-size: .82rem; line-height: 1.52; }
 .metric-viz { margin-top: .85rem; }
 .ring-wrap { position: relative; width: 70px; height: 70px; }
@@ -536,8 +536,7 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
 <!-- CANVAS -->
 <canvas id="main-canvas"></canvas>
 
-<!-- DESKTOP SCROLL TRACK -->
-<div id="scroll-container"><div id="scroll-track"></div></div>
+<!-- wheel/touch driven — no scroll container needed -->
 
 <!-- MOBILE NAVIGATION -->
 <div id="scene-dots"></div>
@@ -593,56 +592,82 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
   <div class="panel-wide">
     <div class="panel-wide-inner">
       <div class="sec-label">Executive Impact</div>
-      <h2 class="sec-title">Five numbers. One career's worth of proof.</h2>
-      <p class="sec-sub">Each metric is a direct outcome — not a responsibility. A result.</p>
+      <h2 class="sec-title">Five numbers. The results that matter.</h2>
+      <p class="sec-sub">Impact first. Each metric is a direct outcome — not a responsibility.</p>
       <div class="metric-panel">
+
+        <!-- 600+ people: headcount rows -->
         <div class="metric-card">
           <div class="m-label">Leadership Scale</div>
           <div class="m-value" id="mc1">600+</div>
           <div class="metric-viz">
-            <div class="ring-wrap">
-              <svg width="70" height="70" viewBox="0 0 70 70">
-                <circle class="ring-track" cx="35" cy="35" r="29"/>
-                <circle class="ring-fill" id="ring1" cx="35" cy="35" r="29" stroke-dasharray="0 182"/>
-              </svg>
-              <div class="ring-label">86%</div>
-            </div>
+            <div id="headcount-viz" style="display:flex;flex-direction:column;gap:3px;margin-top:.2rem;"></div>
+            <div style="font-family:var(--fm);font-size:.6rem;color:var(--muted-2);margin-top:.4rem;">employees + 13 salaried leaders</div>
           </div>
-          <p class="m-desc">Employees led across facilities up to 3.25M sq ft with 13 salaried leaders.</p>
+          <p class="m-desc">Operations across facilities up to 3.25M sq ft.</p>
         </div>
+
+        <!-- $3.6M: investment vs return comparison bars -->
         <div class="metric-card">
           <div class="m-label">Program Value</div>
           <div class="m-value" id="mc2">$3.6M</div>
-          <div class="metric-viz">
-            <div style="font-family:var(--fm);font-size:.62rem;color:var(--muted-2);margin-bottom:.28rem;">vs $1.28M investment · 2.8× return</div>
-            <div class="bar-fill-wrap"><div class="bar-fill-inner" id="bar1"></div></div>
+          <div class="metric-viz" style="margin-top:.6rem;">
+            <div style="display:grid;gap:.4rem;">
+              <div>
+                <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-bottom:.2rem;">Investment in</div>
+                <div style="height:6px;background:rgba(47,120,255,.15);border-radius:3px;overflow:hidden;">
+                  <div id="bar-invest" style="height:100%;background:var(--blue);border-radius:3px;width:0;transition:width 1.5s cubic-bezier(.22,1,.36,1);"></div>
+                </div>
+                <div style="font-family:var(--fm);font-size:.58rem;color:var(--blue);margin-top:.15rem;">$1.28M</div>
+              </div>
+              <div>
+                <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-bottom:.2rem;">Value delivered</div>
+                <div style="height:6px;background:rgba(0,232,216,.12);border-radius:3px;overflow:hidden;">
+                  <div id="bar-return" style="height:100%;background:var(--accent);border-radius:3px;width:0;transition:width 1.8s .2s cubic-bezier(.22,1,.36,1);"></div>
+                </div>
+                <div style="font-family:var(--fm);font-size:.58rem;color:var(--accent);margin-top:.15rem;">$3.6M annual · 2.8× return</div>
+              </div>
+            </div>
           </div>
-          <p class="m-desc">Annual value through the Lane Dash logistics optimization program.</p>
+          <p class="m-desc">Lane Dash logistics optimization program, 5.5-month ROI.</p>
         </div>
+
+        <!-- 50%: before/after throughput bars -->
         <div class="metric-card">
           <div class="m-label">Turnaround Impact</div>
           <div class="m-value" id="mc3">50%</div>
-          <div class="metric-viz">
-            <div class="arc-wrap">
-              <svg width="90" height="45" viewBox="0 0 90 45">
-                <path d="M5 43 Q45 5 85 43" fill="none" stroke="rgba(167,139,250,0.15)" stroke-width="3" stroke-linecap="round"/>
-                <path id="arc1" d="M5 43 Q45 5 85 43" fill="none" stroke="#a78bfa" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 100"/>
-                <circle id="arc-dot" cx="5" cy="43" r="4" fill="#a78bfa"/>
-              </svg>
+          <div class="metric-viz" style="margin-top:.6rem;">
+            <div style="display:grid;gap:.4rem;">
+              <div>
+                <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-bottom:.2rem;">Before — 110 units/hr</div>
+                <div style="height:6px;background:rgba(167,139,250,.12);border-radius:3px;overflow:hidden;">
+                  <div id="bar-before" style="height:100%;background:rgba(167,139,250,.5);border-radius:3px;width:0;transition:width 1.2s cubic-bezier(.22,1,.36,1);"></div>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-bottom:.2rem;">After — 165 units/hr</div>
+                <div style="height:6px;background:rgba(167,139,250,.12);border-radius:3px;overflow:hidden;">
+                  <div id="bar-after" style="height:100%;background:#a78bfa;border-radius:3px;width:0;transition:width 1.5s .3s cubic-bezier(.22,1,.36,1);"></div>
+                </div>
+              </div>
             </div>
-            <div style="font-family:var(--fm);font-size:.62rem;color:var(--muted-2);">110 → 165 units/hr · 6 weeks</div>
+            <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-top:.4rem;">6 weeks · 3,600 → 210 defects</div>
           </div>
-          <p class="m-desc">Throughput improvement during a six-week RIT operational recovery.</p>
+          <p class="m-desc">RIT operational recovery assignment.</p>
         </div>
+
+        <!-- 90+ sites: dot grid -->
         <div class="metric-card">
           <div class="m-label">Systems Reach</div>
           <div class="m-value" id="mc4">90+ Sites</div>
           <div class="metric-viz">
             <div class="node-cluster" id="nodes1"></div>
-            <div style="font-family:var(--fm);font-size:.62rem;color:var(--muted-2);margin-top:.35rem;">reporting automation adopted</div>
+            <div style="font-family:var(--fm);font-size:.6rem;color:var(--muted-2);margin-top:.35rem;">reporting automation adopted</div>
           </div>
-          <p class="m-desc">VBA dashboards built for scale. 32-hour review cycle cut to under 45 min.</p>
+          <p class="m-desc">32-hour review cycle cut to under 45 minutes.</p>
         </div>
+
+        <!-- 14K SKUs: pulse rings -->
         <div class="metric-card">
           <div class="m-label">Supply Chain Systems</div>
           <div class="m-value" id="mc5">14K SKUs</div>
@@ -653,9 +678,11 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
               <div class="pulse-ring"></div>
               <div class="pulse-center"></div>
             </div>
+            <div style="font-family:var(--fm);font-size:.6rem;color:var(--muted-2);margin-top:.35rem;">across 64 global distribution centers</div>
           </div>
-          <p class="m-desc">Active SKUs inside a 300K+ portfolio across 64 global distribution centers.</p>
+          <p class="m-desc">Active SKUs inside a 300K+ product portfolio.</p>
         </div>
+
       </div>
     </div>
   </div>
@@ -1087,42 +1114,36 @@ function showScene(idx){
 }
 
 /* ══════════════════════════════════════════
-   DESKTOP: SCROLL ENGINE
+   DESKTOP: WHEEL-DRIVEN NAVIGATION
 ══════════════════════════════════════════ */
 if(!IS_MOBILE){
-  // Wheel-based navigation (primary — works regardless of scroll container focus)
   var wheelLock=false;
+  var wheelAccum=0;
+  var WHEEL_THRESHOLD=80;
+
   window.addEventListener('wheel',function(e){
-    if(wheelLock)return;
-    e.preventDefault();
-    wheelLock=true;
-    if(e.deltaY>0) showScene(currentScene+1);
-    else if(e.deltaY<0) showScene(currentScene-1);
-    setTimeout(function(){wheelLock=false;},700);
-  },{passive:false});
-
-  // Scroll container sync (fallback / keeps progress bar in sync)
-  var sc=document.getElementById('scroll-container');
-  if(sc){
-    sc.addEventListener('scroll',function(){
-      var max=sc.scrollHeight-sc.clientHeight;
-      if(!max)return;
-      var p=sc.scrollTop/max;
-      var idx=Math.round(p*(TOTAL_SCENES-1));
-      if(idx!==currentScene)showScene(idx);
-    },{passive:true});
-  }
-
-  // Keep scroll container position in sync when showScene is called
-  var _origShowScene=showScene;
-  showScene=function(idx){
-    _origShowScene(idx);
-    if(sc){
-      var max=sc.scrollHeight-sc.clientHeight;
-      var target=(idx/(TOTAL_SCENES-1))*max;
-      sc.scrollTo({top:target,behavior:'smooth'});
+    // Don't steal scroll from panel-wide if it still has content to scroll
+    var pw=e.target.closest('.panel-wide');
+    if(pw){
+      var atBottom=pw.scrollTop+pw.clientHeight>=pw.scrollHeight-4;
+      var atTop=pw.scrollTop<=0;
+      if(e.deltaY>0&&!atBottom)return; // let panel scroll
+      if(e.deltaY<0&&!atTop)return;
     }
-  };
+
+    e.preventDefault();
+    if(wheelLock)return;
+
+    wheelAccum+=Math.abs(e.deltaY);
+    if(wheelAccum<WHEEL_THRESHOLD)return;
+    wheelAccum=0;
+    wheelLock=true;
+
+    if(e.deltaY>0)showScene(currentScene+1);
+    else showScene(currentScene-1);
+
+    setTimeout(function(){wheelLock=false;},750);
+  },{passive:false});
 
   // Keyboard nav
   document.addEventListener('keydown',function(e){
@@ -1194,6 +1215,7 @@ if(IS_MOBILE){
 var metricsTriggered=false;
 function triggerMetrics(){
   if(metricsTriggered)return; metricsTriggered=true;
+
   function countUp(el,target,pre,suf,dec,dur){
     if(!el)return; var st=null;
     (function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/dur,1);var e=1-Math.pow(1-p,3);el.textContent=pre+(dec?(target*e).toFixed(1):Math.floor(target*e))+suf;if(p<1)requestAnimationFrame(step);else el.textContent=pre+target+suf;})();
@@ -1202,26 +1224,51 @@ function triggerMetrics(){
   countUp(document.getElementById('mc2'),3.6,'$','M',true,1400);
   countUp(document.getElementById('mc3'),50,'','%',false,1400);
 
+  // Headcount viz — 60 person-dots in rows of 10
+  var hv=document.getElementById('headcount-viz');
+  if(hv){
+    hv.innerHTML='';
+    for(var row=0;row<6;row++){
+      var rowEl=document.createElement('div');
+      rowEl.style.cssText='display:flex;gap:3px;';
+      for(var col=0;col<10;col++){
+        var d=document.createElement('div');
+        d.style.cssText='width:7px;height:7px;border-radius:50%;background:rgba(0,232,216,.15);transition:background .1s;';
+        rowEl.appendChild(d);
+      }
+      hv.appendChild(rowEl);
+    }
+    var allDots=hv.querySelectorAll('div > div');
+    var di=0;
+    var iv=setInterval(function(){
+      if(di<allDots.length){allDots[di].style.background='var(--accent)';di++;}
+      else clearInterval(iv);
+    },18);
+  }
+
+  // $3.6M: investment vs return bars — both fill to 100% width but investment is narrower container
   setTimeout(function(){
-    var r=document.getElementById('ring1');
-    if(r){var c=2*Math.PI*29;r.style.strokeDasharray=(c*.86)+' '+c;}
-  },200);
-  setTimeout(function(){
-    var b=document.getElementById('bar1');
-    if(b)b.style.width='72%';
+    var bi=document.getElementById('bar-invest');
+    var br=document.getElementById('bar-return');
+    if(bi)bi.style.width='36%'; // $1.28M of $3.6M scale = 35%
+    if(br)br.style.width='100%'; // $3.6M = full width
   },300);
+
+  // 50% before/after bars
   setTimeout(function(){
-    var a=document.getElementById('arc1');
-    if(a)a.style.strokeDasharray='100 0';
-    var d=document.getElementById('arc-dot');
-    if(d){d.setAttribute('cx','85');d.setAttribute('cy','43');}
+    var bb=document.getElementById('bar-before');
+    var ba=document.getElementById('bar-after');
+    if(bb)bb.style.width='67%'; // 110 of 165 = 67%
+    if(ba)ba.style.width='100%'; // 165 = full
   },400);
+
+  // Node cluster — 90 sites
   var nc=document.getElementById('nodes1');
   if(nc){
     nc.innerHTML='';
     for(var i=0;i<90;i++){var d=document.createElement('div');d.className='node-dot';nc.appendChild(d);}
     var dots=nc.querySelectorAll('.node-dot'),idx2=0;
-    var iv=setInterval(function(){if(idx2<dots.length){dots[idx2].classList.add('lit');idx2++;}else clearInterval(iv);},16);
+    var iv2=setInterval(function(){if(idx2<dots.length){dots[idx2].classList.add('lit');idx2++;}else clearInterval(iv2);},16);
   }
 }
 
