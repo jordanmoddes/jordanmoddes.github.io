@@ -9,6 +9,7 @@
 <meta name="color-scheme" content="dark" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <style>
 /* ===== TOKENS ===== */
@@ -213,23 +214,24 @@ html.light .pill{background:rgba(0,0,0,.03);color:var(--muted)}
 
 /* ===== CLOCK ===== */
 .clock-wrap{
-  display:flex;align-items:baseline;gap:6px;
-  padding:6px 0 2px;
+  display:flex;align-items:baseline;gap:5px;
+  padding:4px 0 1px;
 }
 .clock-time{
-  font-size:2.4rem;font-weight:700;font-family:var(--font-mono);
+  font-size:1.7rem;font-weight:700;font-family:var(--font-mono);
   color:var(--ink);letter-spacing:-.02em;line-height:1;
 }
-.clock-ampm{font-size:1rem;font-family:var(--font-mono);color:var(--muted);font-weight:500}
-.clock-tz{font-size:10px;font-family:var(--font-mono);color:var(--muted);margin-left:2px}
-.clock-date{font-size:11px;font-family:var(--font-mono);color:var(--muted);margin-top:3px}
+.clock-ampm{font-size:.85rem;font-family:var(--font-mono);color:var(--muted);font-weight:500}
+.clock-tz{font-size:9.5px;font-family:var(--font-mono);color:var(--muted);margin-left:2px}
+.clock-date{font-size:10.5px;font-family:var(--font-mono);color:var(--muted);margin-top:2px}
 
 /* ===== SUN ===== */
-.sunbox{display:flex;flex-direction:column;gap:6px}
+.sunbox{display:flex;flex-direction:column;gap:5px}
 .sun-leg{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .sun-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
 .sun-dot.f{background:var(--amber)}
 .sun-dot.h{border:2px solid var(--amber);background:transparent}
+#sunViz svg{max-height:160px;width:100%}
 
 /* ===== SYM TILES ===== */
 .symbols{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:7px}
@@ -266,10 +268,6 @@ html.light .pill{background:rgba(0,0,0,.03);color:var(--muted)}
 .tt-dot{width:7px;height:7px;border-radius:50%;background:var(--good);flex-shrink:0}
 .tt-dot.slow{background:var(--warn)}
 .tt-dot.bad{background:var(--bad)}
-
-/* ===== IFRAME ===== */
-iframe{width:100%;height:310px;border:0;border-radius:0 0 var(--r-card) var(--r-card);display:block}
-@media(max-width:580px){iframe{height:240px}}
 
 /* ===== TABLES ===== */
 .tbl{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--font-mono)}
@@ -569,14 +567,24 @@ html.light textarea{background:rgba(0,0,0,.02)}
 <div class="sec-heading section" id="traffic">Traffic</div>
 <div class="g2">
   <div class="card" data-cat="data">
-    <div class="hd"><div class="hd-label"><span class="hd-ico">&gt;</span> To Work</div></div>
-    <div id="tt1" class="travel-badge"><span class="mini">Loading travel time...</span></div>
-    <iframe id="map1" title="To Work"></iframe>
+    <div class="hd">
+      <div class="hd-label"><span class="hd-ico">&gt;</span> To Work</div>
+      <a id="map1link" href="https://www.google.com/maps/dir/30.3687560,-97.6260081/30.476286,-97.597969/411+W+Main+St,+Round+Rock,+TX+78664" target="_blank" rel="noopener" class="pill btn">Open in Maps</a>
+    </div>
+    <div id="tt1" class="travel-badge">
+      <span class="mini" id="tt1text">Calculating...</span>
+    </div>
+    <div id="map1" style="height:300px;border-radius:0 0 var(--r-card) var(--r-card);overflow:hidden"></div>
   </div>
   <div class="card" data-cat="data">
-    <div class="hd"><div class="hd-label"><span class="hd-ico">&lt;</span> To Home</div></div>
-    <div id="tt2" class="travel-badge"><span class="mini">Loading travel time...</span></div>
-    <iframe id="map2" title="To Home"></iframe>
+    <div class="hd">
+      <div class="hd-label"><span class="hd-ico">&lt;</span> To Home</div>
+      <a id="map2link" href="https://www.google.com/maps/dir/411+W+Main+St,+Round+Rock,+TX+78664/30.476286,-97.597969/30.3687560,-97.6260081" target="_blank" rel="noopener" class="pill btn">Open in Maps</a>
+    </div>
+    <div id="tt2" class="travel-badge">
+      <span class="mini" id="tt2text">Calculating...</span>
+    </div>
+    <div id="map2" style="height:300px;border-radius:0 0 var(--r-card) var(--r-card);overflow:hidden"></div>
   </div>
 </div>
 
@@ -973,39 +981,91 @@ async function loadTicker(){
   }
 }
 
-/* ===== TRAFFIC + TRAVEL TIME ===== */
-function updateTraffic(){
-  const base=`https://www.google.com/maps/embed/v1/directions?key=${MAPS_KEY}`;
-  // To Work: Home -> SH-45/I-35 interchange -> Work
-  // Forces the route to use SH-45 east from I-35 then TX-130
-  const wp_towork = enc("SH-45 E and I-35, Austin, TX 78753");
-  // To Home: Work -> SH-45/I-35 interchange -> TX-130 south -> Home
-  const wp_tohome = enc("SH-45 E and I-35, Austin, TX 78753");
-  $("#map1").src=`${base}&origin=${enc(HOME_COORDS)}&destination=${enc(WORK_ADDR)}&waypoints=${wp_towork}&mode=driving`;
-  $("#map2").src=`${base}&origin=${enc(WORK_ADDR)}&destination=${enc(HOME_COORDS)}&waypoints=${wp_tohome}&mode=driving`;
+/* ===== TRAFFIC â€” Leaflet + OSRM ===== */
+// Route coordinates
+const HOME_LL  = [30.3687560, -97.6260081];
+const WORK_LL  = [30.5077,    -97.6789];
+const WP_LL    = [30.476286,  -97.597969]; // SH-45 toll waypoint
+
+let map1inst = null, map2inst = null;
+
+function darkTiles(mapInst){
+  // OpenStreetMap with a dark-friendly tile layer
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    subdomains:'abcd', maxZoom:19
+  }).addTo(mapInst);
 }
 
-async function loadTravelTime(elId, origin, destination){
-  const el=document.getElementById(elId);
+function routeColor(){ return '#4da3ff'; }
+
+async function fetchOSRM(coords){
+  // coords = [[lat,lon],[lat,lon],...]
+  const pts = coords.map(c=>c[1]+','+c[0]).join(';');
+  const url = `https://router.project-osrm.org/route/v1/driving/${pts}?overview=full&geometries=geojson&steps=false`;
+  const r = await fetch(url);
+  if(!r.ok) throw new Error('OSRM failed');
+  return r.json();
+}
+
+function fmtDuration(secs){
+  const m = Math.round(secs/60);
+  if(m < 60) return `${m} min`;
+  return `${Math.floor(m/60)}h ${m%60}m`;
+}
+function fmtDist(meters){
+  const mi = (meters/1609.344).toFixed(1);
+  return `${mi} mi`;
+}
+
+async function initMap(divId, ttTextId, waypoints){
+  const el = document.getElementById(divId);
   if(!el) return;
+
+  // Destroy existing instance if reiniting
+  if(divId==='map1' && map1inst){ map1inst.remove(); map1inst=null; }
+  if(divId==='map2' && map2inst){ map2inst.remove(); map2inst=null; }
+
+  const center = [(waypoints[0][0]+waypoints[waypoints.length-1][0])/2,
+                  (waypoints[0][1]+waypoints[waypoints.length-1][1])/2];
+  const inst = L.map(divId,{zoomControl:true,attributionControl:true,scrollWheelZoom:false});
+  if(divId==='map1') map1inst=inst; else map2inst=inst;
+
+  darkTiles(inst);
+
+  // Markers
+  const iconOpts = (color) => L.divIcon({
+    className:'',
+    html:`<div style="width:12px;height:12px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.5)"></div>`,
+    iconSize:[12,12], iconAnchor:[6,6]
+  });
+  L.marker(waypoints[0], {icon:iconOpts('#17e5a1')}).addTo(inst).bindPopup('Start');
+  L.marker(waypoints[waypoints.length-1], {icon:iconOpts('#ff6b6b')}).addTo(inst).bindPopup('End');
+
+  // Fetch route from OSRM
+  const ttEl = document.getElementById(ttTextId);
   try{
-    // Distance Matrix via your existing Maps key
-    const url=`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${enc(origin)}&destinations=${enc(destination)}&mode=driving&departure_time=now&traffic_model=best_guess&key=${MAPS_KEY}`;
-    const r=await fetch(url);
-    if(!r.ok) throw 0;
-    const j=await r.json();
-    const row=j?.rows?.[0]?.elements?.[0];
-    if(!row||row.status!=="OK") throw 0;
-    const durText=row.duration_in_traffic?.text||row.duration?.text||"--";
-    const distText=row.distance?.text||"";
-    // Color-code: <20min=good, 20-35=warn, 35+=bad
-    const mins=parseInt(row.duration_in_traffic?.value||row.duration?.value||0)/60;
-    const dotClass=mins<20?"tt-dot":mins<35?"tt-dot slow":"tt-dot bad";
-    el.innerHTML=`<span class="${dotClass}"></span><span class="tt-val">${durText}</span><span class="tt-via">${distText} via Hwy 130/45</span>`;
+    const data = await fetchOSRM(waypoints);
+    const route = data.routes[0];
+    const dur = fmtDuration(route.duration);
+    const dist = fmtDist(route.distance);
+    if(ttEl) ttEl.innerHTML = `<span style="color:var(--ink);font-weight:700">${dur}</span> &nbsp;<span style="color:var(--muted)">${dist} &middot; via SH-45 / TX-130</span>`;
+
+    // Draw route
+    const coords = route.geometry.coordinates.map(c=>[c[1],c[0]]);
+    const poly = L.polyline(coords,{color:'#4da3ff',weight:4,opacity:.85}).addTo(inst);
+    inst.fitBounds(poly.getBounds(),{padding:[20,20]});
   }catch{
-    // CORS will block this client-side â€” show a note
-    el.innerHTML=`<span class="mini" style="color:var(--muted)">Travel time requires Distance Matrix enabled on your Maps key</span>`;
+    if(ttEl) ttEl.textContent = 'Route unavailable';
+    inst.setView(center, 11);
   }
+}
+
+function initTrafficMaps(){
+  // Only init when Leaflet is loaded
+  if(typeof L === 'undefined'){ setTimeout(initTrafficMaps, 200); return; }
+  initMap('map1','tt1text', [HOME_LL, WP_LL, WORK_LL]);
+  initMap('map2','tt2text', [WORK_LL, WP_LL, HOME_LL]);
 }
 
 /* ===== WEATHER ===== */
@@ -1301,10 +1361,7 @@ $("#themeToggle").addEventListener("click",()=>{
 
 /* ===== BOOT ===== */
 loadTicker();
-updateTraffic(); setInterval(updateTraffic,120000);
-loadTravelTime("tt1", HOME_COORDS, WORK_ADDR);
-loadTravelTime("tt2", WORK_ADDR, HOME_COORDS);
-setInterval(()=>{ loadTravelTime("tt1",HOME_COORDS,WORK_ADDR); loadTravelTime("tt2",WORK_ADDR,HOME_COORDS); }, 300000);
+initTrafficMaps();
 loadWeather();   setInterval(loadWeather,300000);
 loadWeatherAlerts(); setInterval(loadWeatherAlerts, 5*60*1000);
 loadSun();
@@ -1315,5 +1372,6 @@ loadCrypto();    setInterval(loadCrypto,60000);
 renderLinks();
 renderVendors();
 </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
