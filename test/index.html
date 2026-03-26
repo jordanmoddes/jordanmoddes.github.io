@@ -1090,22 +1090,44 @@ function showScene(idx){
    DESKTOP: SCROLL ENGINE
 ══════════════════════════════════════════ */
 if(!IS_MOBILE){
+  // Wheel-based navigation (primary — works regardless of scroll container focus)
+  var wheelLock=false;
+  window.addEventListener('wheel',function(e){
+    if(wheelLock)return;
+    e.preventDefault();
+    wheelLock=true;
+    if(e.deltaY>0) showScene(currentScene+1);
+    else if(e.deltaY<0) showScene(currentScene-1);
+    setTimeout(function(){wheelLock=false;},700);
+  },{passive:false});
+
+  // Scroll container sync (fallback / keeps progress bar in sync)
   var sc=document.getElementById('scroll-container');
   if(sc){
     sc.addEventListener('scroll',function(){
       var max=sc.scrollHeight-sc.clientHeight;
+      if(!max)return;
       var p=sc.scrollTop/max;
       var idx=Math.round(p*(TOTAL_SCENES-1));
-      showScene(idx);
+      if(idx!==currentScene)showScene(idx);
     },{passive:true});
   }
+
+  // Keep scroll container position in sync when showScene is called
+  var _origShowScene=showScene;
+  showScene=function(idx){
+    _origShowScene(idx);
+    if(sc){
+      var max=sc.scrollHeight-sc.clientHeight;
+      var target=(idx/(TOTAL_SCENES-1))*max;
+      sc.scrollTo({top:target,behavior:'smooth'});
+    }
+  };
+
+  // Keyboard nav
   document.addEventListener('keydown',function(e){
-    var sc2=document.getElementById('scroll-container');
-    if(!sc2)return;
-    var max=sc2.scrollHeight-sc2.clientHeight;
-    var step=max/(TOTAL_SCENES-1);
-    if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();sc2.scrollBy({top:step,behavior:'smooth'});}
-    if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();sc2.scrollBy({top:-step,behavior:'smooth'});}
+    if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();showScene(currentScene+1);}
+    if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();showScene(currentScene-1);}
   });
 }
 
