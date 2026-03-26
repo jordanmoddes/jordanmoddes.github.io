@@ -569,7 +569,7 @@ html.light textarea{background:rgba(0,0,0,.02)}
   <div class="card" data-cat="data">
     <div class="hd">
       <div class="hd-label"><span class="hd-ico">&gt;</span> To Work</div>
-      <a id="map1link" href="https://www.google.com/maps/dir/30.3687560,-97.6260081/30.476286,-97.597969/411+W+Main+St,+Round+Rock,+TX+78664" target="_blank" rel="noopener" class="pill btn">Open in Maps</a>
+      <a id="map1link" href="https://www.google.com/maps/dir/30.3687560,-97.6260081/30.3524,-97.5922/411+W+Main+St,+Round+Rock,+TX+78664" target="_blank" rel="noopener" class="pill btn">Open in Maps</a>
     </div>
     <div id="tt1" class="travel-badge">
       <span class="mini" id="tt1text">Calculating...</span>
@@ -985,7 +985,10 @@ async function loadTicker(){
 // Route coordinates
 const HOME_LL  = [30.3687560, -97.6260081];
 const WORK_LL  = [30.5077,    -97.6789];
-const WP_LL    = [30.476286,  -97.597969]; // SH-45 toll waypoint
+// To Work: get on TX-130 at E Parmer Lane, heading north
+const WP_TO_WORK = [30.3524, -97.5922];
+// To Home: exit via SH-45 (confirmed working pin)
+const WP_TO_HOME = [30.476286, -97.597969];
 
 let map1inst = null, map2inst = null;
 
@@ -1064,8 +1067,10 @@ async function initMap(divId, ttTextId, waypoints){
 function initTrafficMaps(){
   // Only init when Leaflet is loaded
   if(typeof L === 'undefined'){ setTimeout(initTrafficMaps, 200); return; }
-  initMap('map1','tt1text', [HOME_LL, WP_LL, WORK_LL]);
-  initMap('map2','tt2text', [WORK_LL, WP_LL, HOME_LL]);
+  // To Work: Home â†’ E Parmer/TX-130 entrance â†’ Work (TX-130 N â†’ SH-45 W â†’ I-35 N)
+  initMap('map1','tt1text', [HOME_LL, WP_TO_WORK, WORK_LL]);
+  // To Home: Work â†’ SH-45 E / TX-130 S waypoint â†’ Home
+  initMap('map2','tt2text', [WORK_LL, WP_TO_HOME, HOME_LL]);
 }
 
 /* ===== WEATHER ===== */
