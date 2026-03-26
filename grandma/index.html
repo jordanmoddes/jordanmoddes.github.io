@@ -385,6 +385,46 @@ body {
 .brain-opt.correct { background: var(--green-light); border-color: rgba(22,163,74,0.35); color: #14532D; }
 .brain-opt.wrong { background: var(--rose-light); border-color: rgba(225,29,72,0.2); color: #9F1239; opacity: 0.75; }
 
+/* ===== BRAIN REVIEW ===== */
+.brain-review-card {
+  background: var(--surface); border-radius: var(--r);
+  padding: 16px 18px; border: 1.5px solid var(--border);
+  margin-bottom: 10px; animation: fadeSlide 0.2s ease;
+}
+.brain-review-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.brain-review-badge {
+  font-size: 11px; font-weight: 700; padding: 3px 9px;
+  border-radius: 999px; letter-spacing: 0.5px;
+}
+.brain-review-badge.correct { background: var(--green-light); color: #14532D; }
+.brain-review-badge.wrong { background: var(--rose-light); color: #9F1239; }
+.brain-review-q {
+  font-size: 14px; font-weight: 700; color: var(--text);
+  line-height: 1.5; margin-bottom: 10px;
+}
+.brain-review-opts { display: flex; flex-direction: column; gap: 6px; }
+.brain-review-opt {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--text-soft);
+  padding: 8px 12px; border-radius: var(--r-sm);
+  background: var(--surface2); border: 1.5px solid transparent;
+}
+.brain-review-opt.correct {
+  background: var(--green-light); color: #14532D;
+  border-color: rgba(22,163,74,0.25);
+}
+.brain-review-opt.wrong {
+  background: var(--rose-light); color: #9F1239;
+  border-color: rgba(225,29,72,0.15); opacity: 0.8;
+}
+.brain-review-marker {
+  font-size: 13px; font-weight: 800; width: 16px;
+  flex-shrink: 0; text-align: center;
+}
+
 .hidden { display: none !important; }
 </style>
 </head>
@@ -1561,8 +1601,12 @@ function finishSpot(elapsed){
 
 // ================================================================
 // BRAIN TEASERS
+// API: POST https://moddes-backend.onrender.com/debbie { "type": "brain" }
+// Expected response: { data: [{ type, q, opts, a, sub? }] }
+// Falls back to brainBank if API fails or times out.
 // ================================================================
 const brainBank=[
+  // --- Math ---
   {type:'Math',q:'What is 17 x 4?',opts:['62','68','72','76'],a:1},
   {type:'Math',q:'What is 144 divided by 12?',opts:['10','11','12','13'],a:2},
   {type:'Math',q:'What is 25% of 200?',opts:['25','40','50','75'],a:2},
@@ -1573,26 +1617,109 @@ const brainBank=[
   {type:'Math',q:'What comes next? 2, 5, 10, 17, 26, ___',opts:['35','36','37','38'],a:2},
   {type:'Math',q:'A dozen eggs plus half a dozen equals how many?',opts:['15','16','17','18'],a:3},
   {type:'Math',q:'What is 7 x 8?',opts:['48','54','56','64'],a:2},
+  {type:'Math',q:'What is 9 x 9?',opts:['72','81','90','99'],a:1},
+  {type:'Math',q:'What is 30% of 90?',opts:['21','24','27','30'],a:2},
+  {type:'Math',q:'What comes next? 5, 10, 20, 40, ___',opts:['60','70','80','50'],a:2},
+  {type:'Math',q:'What is 200 divided by 8?',opts:['20','22','24','25'],a:3},
+  {type:'Math',q:'What is the square root of 81?',opts:['7','8','9','10'],a:2},
+  {type:'Math',q:'If a shirt costs $24 and is 25% off, what do you pay?',opts:['$16','$17','$18','$19'],a:2},
+  {type:'Math',q:'What is 111 + 222 + 333?',opts:['555','611','666','677'],a:2},
+  {type:'Math',q:'What comes next? 1, 3, 7, 15, 31, ___',opts:['47','55','63','57'],a:2},
+  {type:'Math',q:'What is 13 x 13?',opts:['156','165','169','172'],a:2},
+  {type:'Math',q:'A recipe calls for 3 cups of flour for 12 cookies. How many cups for 48 cookies?',opts:['9','10','11','12'],a:3},
+  {type:'Math',q:'What is 1000 minus 237?',opts:['733','753','763','773'],a:2},
+  {type:'Math',q:'What is 40% of 150?',opts:['50','55','60','65'],a:2},
+  // --- Odd one out ---
   {type:'Odd one out',q:'Which word does NOT belong?',sub:'Rose, Daisy, Tulip, Oak, Lily',opts:['Rose','Daisy','Oak','Lily'],a:2},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'Piano, Guitar, Violin, Trumpet, Camera',opts:['Piano','Guitar','Trumpet','Camera'],a:3},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'Mercury, Venus, Moon, Mars, Jupiter',opts:['Venus','Moon','Mars','Jupiter'],a:1},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'Salmon, Trout, Shark, Cod, Eagle',opts:['Salmon','Shark','Cod','Eagle'],a:3},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'Red, Green, Fast, Blue, Yellow',opts:['Red','Green','Fast','Yellow'],a:2},
   {type:'Odd one out',q:'Which does NOT belong?',sub:'January, March, July, April, August',opts:['January','April','July','August'],a:1},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Apple, Banana, Carrot, Grape, Mango',opts:['Apple','Banana','Carrot','Grape'],a:2},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Dog, Cat, Eagle, Hamster, Rabbit',opts:['Dog','Cat','Eagle','Hamster'],a:2},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Running, Swimming, Chess, Cycling, Tennis',opts:['Running','Swimming','Chess','Cycling'],a:2},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Paris, London, Tokyo, Amazon, Rome',opts:['Paris','London','Amazon','Rome'],a:2},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Hammer, Screwdriver, Wrench, Knife, Drill',opts:['Hammer','Screwdriver','Knife','Drill'],a:2},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Wool, Cotton, Silk, Denim, Granite',opts:['Wool','Cotton','Denim','Granite'],a:3},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Triangle, Circle, Square, Rectangle, Cube',opts:['Triangle','Circle','Square','Cube'],a:3},
+  {type:'Odd one out',q:'Which does NOT belong?',sub:'Whisper, Shout, Murmur, Mumble, Sprint',opts:['Whisper','Shout','Mumble','Sprint'],a:3},
+  // --- Logic ---
   {type:'Logic',q:'A farmer has 17 sheep. All but 9 run away. How many are left?',opts:['8','9','17','None'],a:1},
   {type:'Logic',q:'You have two coins totaling 30 cents. One is not a nickel. What are the two coins?',opts:['Two dimes','A quarter and a nickel','Two nickels','A dime and a quarter'],a:1},
   {type:'Logic',q:'What number comes next? 1, 4, 9, 16, 25, ___',opts:['30','34','36','40'],a:2},
   {type:'Logic',q:'If today is Wednesday, what day is it 100 days from now?',opts:['Monday','Tuesday','Wednesday','Friday'],a:3},
   {type:'Logic',q:'If all cats are mammals and all mammals are animals, are all cats animals?',opts:['Yes','No','Only some cats','Cannot be determined'],a:0},
   {type:'Logic',q:'A bat and ball cost $1.10. The bat costs $1 more than the ball. How much is the ball?',opts:['10 cents','5 cents','15 cents','20 cents'],a:1},
+  {type:'Logic',q:'You have 3 boxes: one has apples, one oranges, one both. All labels are wrong. You can pick one fruit from one box. Which box do you pick from to figure out all labels?',opts:['Apples box','Oranges box','Both box','Does not matter'],a:2},
+  {type:'Logic',q:'A clock shows 3:15. How many degrees is the angle between the hour and minute hands?',opts:['0','7.5','15','22.5'],a:1},
+  {type:'Logic',q:'If you have a 3-gallon jug and a 5-gallon jug, how do you measure exactly 4 gallons?',opts:['Fill the 3, pour into 5, refill 3, top off the 5','Fill the 5 and pour into the 3','Fill both jugs halfway','You cannot'],a:0},
+  {type:'Logic',q:'Mary is twice as old as Ann was when Mary was as old as Ann is now. Mary is 24. How old is Ann?',opts:['12','16','18','20'],a:1},
+  {type:'Logic',q:'A snail climbs 3 feet up a wall each day but slides back 2 feet each night. The wall is 10 feet. How many days to reach the top?',opts:['7','8','9','10'],a:1},
+  {type:'Logic',q:'How many months have 28 days?',opts:['1','2','6','12'],a:3},
+  {type:'Logic',q:'You are in a race and pass the person in 2nd place. What place are you now in?',opts:['1st','2nd','3rd','It depends'],a:1},
+  // --- Pattern ---
   {type:'Pattern',q:'What letter comes next? A, C, E, G, ___',opts:['H','I','J','K'],a:1},
   {type:'Pattern',q:'What number completes the pattern? 1, 1, 2, 3, 5, 8, ___',opts:['11','12','13','14'],a:2},
   {type:'Pattern',q:'What comes next? Monday, Wednesday, Friday, ___',opts:['Saturday','Sunday','Tuesday','Thursday'],a:1},
   {type:'Pattern',q:'What comes next? 100, 90, 81, 73, 66, ___',opts:['58','60','62','64'],a:1},
+  {type:'Pattern',q:'What letter comes next? Z, Y, X, W, ___',opts:['A','B','U','V'],a:3},
+  {type:'Pattern',q:'What comes next? 2, 6, 18, 54, ___',opts:['108','126','162','216'],a:2},
+  {type:'Pattern',q:'What comes next? Jan, Apr, Jul, ___',opts:['Aug','Sep','Oct','Nov'],a:2},
+  {type:'Pattern',q:'What number comes next? 3, 8, 15, 24, 35, ___',opts:['42','46','48','50'],a:2},
+  {type:'Pattern',q:'What letter comes next? B, D, F, H, ___',opts:['I','J','K','L'],a:1},
+  {type:'Pattern',q:'What comes next? 1, 2, 4, 8, 16, ___',opts:['24','28','32','36'],a:2},
+  {type:'Pattern',q:'What comes next? AZ, BY, CX, ___',opts:['DV','DW','EW','EX'],a:1},
+  {type:'Pattern',q:'What number comes next? 7, 14, 21, 28, ___',opts:['32','33','34','35'],a:3},
+  // --- Word play ---
+  {type:'Word play',q:'What 5-letter word becomes shorter when you add two letters to it?',opts:['Short','Fewer','Terse','Brief'],a:0},
+  {type:'Word play',q:'What word is spelled the same forwards and backwards?',opts:['Level','Repel','Relay','Lemon'],a:0},
+  {type:'Word play',q:'I have cities but no houses, mountains but no trees, water but no fish, and roads but no cars. What am I?',opts:['A dream','A painting','A map','A mirror'],a:2},
+  {type:'Word play',q:'The more you take, the more you leave behind. What am I?',opts:['Time','Footsteps','Memories','Breath'],a:1},
+  {type:'Word play',q:'What has hands but cannot clap?',opts:['A glove','A tree','A clock','A puppet'],a:2},
+  {type:'Word play',q:'What can you catch but not throw?',opts:['A ball','A cold','A train','A fish'],a:1},
+  {type:'Word play',q:'What gets wetter the more it dries?',opts:['A sponge','A towel','A window','Rain'],a:1},
+  {type:'Word play',q:'I speak without a mouth and hear without ears. I have no body but come alive with wind. What am I?',opts:['A ghost','An echo','A shadow','A cloud'],a:1},
 ];
 
-let brainQs=[],brainIdx=0,brainScore=0,brainAnswered=false;
+/*
+  Future API integration for Brain Teasers:
+  POST https://moddes-backend.onrender.com/debbie
+  Body: { "type": "brain" }
+  Expected response:
+  { data: [{ type: string, q: string, opts: string[], a: number, sub?: string }] }
+*/
+
+let brainQs=[],brainIdx=0,brainScore=0,brainAnswered=false,brainChoices=[];
 const BRAIN_PER_ROUND=6;
+const BRAIN_API='https://moddes-backend.onrender.com/debbie';
+const BRAIN_TIMEOUT_MS=15000;
+
+async function fetchBrainQuestions(){
+  const ctrl=new AbortController();
+  const tid=setTimeout(()=>ctrl.abort(),BRAIN_TIMEOUT_MS);
+  try{
+    const res=await fetch(BRAIN_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'brain'}),signal:ctrl.signal});
+    clearTimeout(tid);
+    if(!res.ok) throw new Error('non-2xx');
+    const json=await res.json();
+    if(!json.data||!Array.isArray(json.data)||json.data.length===0) throw new Error('empty');
+    return json.data.map(q=>({type:q.type||'Teaser',q:q.q,opts:q.opts,a:typeof q.a==='number'?q.a:parseInt(q.a),sub:q.sub||null}));
+  }catch(e){ clearTimeout(tid); return null; }
+}
+
+// Track which questions have been recently used to reduce repetition
+let brainUsedIds=new Set();
+
+function pickBrainQuestions(bank, n){
+  // Prefer questions not recently used
+  let pool=bank.filter((_,i)=>!brainUsedIds.has(i));
+  if(pool.length<n){ brainUsedIds.clear(); pool=bank; }
+  const shuffled=[...pool].sort(()=>Math.random()-0.5).slice(0,n);
+  // Mark them used
+  shuffled.forEach(q=>{ const idx=bank.indexOf(q); if(idx>=0) brainUsedIds.add(idx); });
+  return shuffled;
+}
 
 function renderBrainStats(){
   const rounds=lsNum('brainRounds');
@@ -1610,10 +1737,20 @@ function renderBrainStats(){
   if(scores.length>=2) setDelta('brainBestDelta',scores[scores.length-1],scores[scores.length-2],false);
 }
 
-function initBrain(){
-  brainQs=[...brainBank].sort(()=>Math.random()-0.5).slice(0,BRAIN_PER_ROUND);
-  brainIdx=0; brainScore=0; brainAnswered=false;
-  renderBrainStats(); renderBrain();
+async function initBrain(){
+  brainIdx=0; brainScore=0; brainAnswered=false; brainChoices=[];
+  renderBrainStats();
+  document.getElementById('brainContent').innerHTML='<div class="trivia-loading"><div class="spinner"></div><div class="trivia-loading-text">Loading questions...</div></div>';
+  const api=await fetchBrainQuestions();
+  if(api&&api.length>=BRAIN_PER_ROUND){
+    brainQs=api.slice(0,BRAIN_PER_ROUND);
+  } else if(api&&api.length>0){
+    const extra=pickBrainQuestions(brainBank,BRAIN_PER_ROUND-api.length);
+    brainQs=[...api,...extra];
+  } else {
+    brainQs=pickBrainQuestions(brainBank,BRAIN_PER_ROUND);
+  }
+  renderBrain();
 }
 
 function renderBrain(){
@@ -1641,6 +1778,7 @@ function onBrain(choice){
   const q=brainQs[brainIdx];
   const correct=(choice===q.a);
   if(correct) brainScore++;
+  brainChoices.push(choice);
   q.opts.forEach((_,i)=>{
     const btn=document.getElementById('bopt'+i); btn.disabled=true;
     if(i===q.a) btn.classList.add('correct');
@@ -1665,9 +1803,45 @@ function showBrainComplete(){
       <span class="complete-icon">${pct===100?'\uD83E\uDDE0':pct>=70?'\uD83C\uDFAF':'\uD83D\uDCA1'}</span>
       <div class="complete-title">${brainScore} / ${brainQs.length}</div>
       <div class="complete-score">${pct===100?'Flawless!':pct>=85?'Sharp mind.':pct>=60?'Good run.':'Keep at it - you\'ll get there.'}${extra}</div>
-      <button class="btn btn-primary" onclick="initBrain()">Play again</button>
+      <button class="btn btn-primary" style="margin-bottom:8px" onclick="showBrainReview()">Review answers</button>
+      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="initBrain()">Play again</button>
       <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>
     </div>`;
+}
+
+function showBrainReview(){
+  const reviewHtml=brainQs.map((q,i)=>{
+    const choice=brainChoices[i];
+    const correct=(choice===q.a);
+    const optsHtml=q.opts.map((o,oi)=>{
+      let cls='brain-review-opt';
+      if(oi===q.a) cls+=' correct';
+      else if(oi===choice&&!correct) cls+=' wrong';
+      return '<div class="'+cls+'">'+
+        '<span class="brain-review-marker">'+(oi===q.a?'&#10003;':(oi===choice?'&#10007;':''))+'</span>'+
+        '<span>'+o+'</span>'+
+      '</div>';
+    }).join('');
+    return `
+      <div class="brain-review-card">
+        <div class="brain-review-header">
+          <span class="brain-type-tag">${q.type}</span>
+          <span class="brain-review-badge ${correct?'correct':'wrong'}">${correct?'Correct':'Wrong'}</span>
+        </div>
+        <div class="brain-review-q">${q.q}</div>
+        ${q.sub?'<div class="brain-q-sub" style="margin-bottom:8px">'+q.sub+'</div>':''}
+        <div class="brain-review-opts">${optsHtml}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('brainContent').innerHTML=`
+    <div style="padding:4px 0 16px; display:flex; align-items:center; justify-content:space-between;">
+      <div style="font-size:15px;font-weight:800;color:var(--text);">Round review</div>
+      <div style="font-size:13px;font-weight:600;color:var(--text-soft);">${brainScore}/${brainQs.length} correct</div>
+    </div>
+    ${reviewHtml}
+    <button class="btn btn-primary" style="margin-top:8px" onclick="initBrain()">Play again</button>
+    <button class="btn btn-ghost" onclick="go('home')">&#8592; Home</button>`;
 }
 
 // ================================================================
