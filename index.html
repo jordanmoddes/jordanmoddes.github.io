@@ -48,59 +48,50 @@
 
   <!-- ============================================================
        SCHEMA / STRUCTURED DATA SECTION
-       This is machine-readable data that helps Google, ChatGPT,
+       This is machine-readable data that helps Google, ChatGPT, Anthroptic,
        Perplexity, and other AI tools understand who you are.
        Edit name, jobTitle, description, knowsAbout as needed.
        ============================================================ -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": "https://www.jordanmoddes.com/#website",
-        "url": "https://www.jordanmoddes.com/",
-        "name": "Jordan Moddes - Operations and Supply Chain Leader",
-        "inLanguage": "en-US"
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.jordanmoddes.com/#website",
+      "url": "https://www.jordanmoddes.com/",
+      "name": "Jordan Moddes - Operations and Supply Chain Leader",
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://www.jordanmoddes.com/#profilepage",
+      "url": "https://www.jordanmoddes.com/",
+      "mainEntity": { "@id": "https://www.jordanmoddes.com/#person" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.jordanmoddes.com/#person",
+      "name": "Jordan Moddes",
+      "jobTitle": "Operations and Supply Chain Leader",
+      "url": "https://www.jordanmoddes.com/",
+      "image": "https://www.jordanmoddes.com/assets/Signature_WhiteTP.png",
+      "description": "Senior operations and supply chain leader with 10+ years across Amazon fulfillment and global supply chain environments. Known for stabilizing underperforming operations, building scalable programs, and driving measurable business impact through labor planning, process redesign, automation, and multi-site execution.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Austin",
+        "addressRegion": "Texas",
+        "addressCountry": "US"
       },
-      {
-        "@type": ["Person", "ProfilePage"],
-        "@id": "https://www.jordanmoddes.com/#person",
-        "name": "Jordan Moddes",
-        "jobTitle": "Operations and Supply Chain Leader",
-        "url": "https://www.jordanmoddes.com/",
-        "image": "https://www.jordanmoddes.com/assets/Signature_WhiteTP.png",
-        "description": "Senior operations and supply chain leader with 10+ years across Amazon fulfillment and global supply chain environments. Known for stabilizing underperforming operations, building scalable programs, and driving measurable business impact through labor planning, process redesign, automation, and multi-site execution.",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Austin",
-          "addressRegion": "Texas",
-          "addressCountry": "US"
-        },
-        "alumniOf": [{ "@type": "EducationalOrganization", "name": "Bryant & Stratton College" }],
-        "knowsAbout": [
-          "Operations Management",
-          "Supply Chain Planning",
-          "Warehouse Management Systems",
-          "Fulfillment Operations",
-          "Labor Planning and Forecasting",
-          "Process Improvement",
-          "VBA Automation",
-          "ERP Systems",
-          "SAP",
-          "Lean Operations",
-          "Turnaround Leadership",
-          "Multi-Site Execution",
-          "Continuous Improvement",
-          "Program Management"
-        ],
-        "email": "mailto:jmodwork@gmail.com",
-        "telephone": "+1-262-705-0853",
-        "sameAs": ["https://www.linkedin.com/in/jordanmoddes/"]
-      }
-    ]
-  }
-  </script>
+      "alumniOf": [{ "@type": "EducationalOrganization", "name": "Bryant & Stratton College" }],
+      "knowsAbout": ["Operations Management", "Supply Chain Planning", "..."],
+      "email": "mailto:jmodwork@gmail.com",
+      "telephone": "+1-262-705-0853",
+      "sameAs": ["https://www.linkedin.com/in/jordanmoddes/"]
+    }
+  ]
+}
+</script>
 
   <!-- ============================================================
        ANALYTICS AND UTILITIES
