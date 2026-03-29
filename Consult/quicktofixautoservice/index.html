@@ -3,1231 +3,402 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quick to Fix Auto Service | Fast. Honest. Done Right.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Quick to Fix Auto Service</title>
 <style>
-  :root {
-    --black: #0d0d0d;
-    --charcoal: #1a1a1a;
-    --steel: #2a2a2a;
-    --teal: #00b5a4;
-    --teal-dark: #008a7c;
-    --teal-glow: rgba(0,181,164,0.15);
-    --white: #f5f5f0;
-    --muted: #8a8a8a;
-    --border: rgba(255,255,255,0.07);
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Barlow', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* \u2500\u2500 NAV \u2500\u2500 */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    height: 60px;
-    background: rgba(13,13,13,0.92);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 1.1rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-    line-height: 1.1;
-  }
-
-  .nav-logo span { color: var(--teal); }
-
-  .nav-links {
-    display: none;
-    gap: 28px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--teal); }
-
-  .nav-cta {
-    background: var(--teal);
-    color: var(--black);
-    text-decoration: none;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 9px 20px;
-    border-radius: 2px;
-    transition: background 0.2s;
-  }
-
-  .nav-cta:hover { background: #00cfc0; }
-
-  /* \u2500\u2500 HERO \u2500\u2500 */
-  #hero {
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 20px 48px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to bottom, rgba(13,13,13,0.3) 0%, rgba(13,13,13,0.7) 60%, var(--black) 100%),
-      repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 40px,
-        rgba(0,181,164,0.03) 40px,
-        rgba(0,181,164,0.03) 41px
-      );
-    z-index: 0;
-  }
-
-  /* Animated teal accent bar */
-  .hero-bg::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--teal), transparent);
-    animation: scanline 3s ease-in-out infinite;
-  }
-
-  @keyframes scanline {
-    0%, 100% { opacity: 0; transform: scaleX(0.3); }
-    50% { opacity: 1; transform: scaleX(1); }
-  }
-
-  /* Geometric accent shapes */
-  .hero-shape {
-    position: absolute;
-    top: 15%;
-    right: -60px;
-    width: 280px;
-    height: 280px;
-    border: 1px solid rgba(0,181,164,0.12);
-    transform: rotate(15deg);
-    z-index: 0;
-  }
-
-  .hero-shape::before {
-    content: '';
-    position: absolute;
-    inset: 20px;
-    border: 1px solid rgba(0,181,164,0.07);
-  }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--teal-glow);
-    border: 1px solid rgba(0,181,164,0.3);
-    border-radius: 2px;
-    padding: 6px 14px;
-    margin-bottom: 20px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--teal);
-    position: relative;
-    z-index: 1;
-    width: fit-content;
-  }
-
-  .hero-badge::before {
-    content: '\u2605';
-    font-size: 0.7rem;
-  }
-
-  .hero-headline {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: clamp(3rem, 14vw, 5.5rem);
-    line-height: 0.92;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 18px;
-  }
-
-  .hero-headline em {
-    font-style: normal;
-    color: var(--teal);
-    display: block;
-  }
-
-  .hero-sub {
-    font-size: 1rem;
-    color: rgba(245,245,240,0.7);
-    max-width: 360px;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 32px;
-    line-height: 1.5;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .btn-primary {
-    display: block;
-    background: var(--teal);
-    color: var(--black);
-    text-align: center;
-    text-decoration: none;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 1.1rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 16px 28px;
-    border-radius: 2px;
-    transition: background 0.2s, transform 0.15s;
-  }
-
-  .btn-primary:active { transform: scale(0.98); }
-  .btn-primary:hover { background: #00cfc0; }
-
-  .btn-secondary {
-    display: block;
-    background: transparent;
-    color: var(--white);
-    text-align: center;
-    text-decoration: none;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 14px 28px;
-    border-radius: 2px;
-    border: 1px solid rgba(255,255,255,0.2);
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
-
-  .hero-stats {
-    display: flex;
-    gap: 0;
-    margin-top: 40px;
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid var(--border);
-    padding-top: 24px;
-  }
-
-  .stat {
-    flex: 1;
-    text-align: center;
-    padding: 0 10px;
-    border-right: 1px solid var(--border);
-  }
-
-  .stat:last-child { border-right: none; }
-
-  .stat-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 2rem;
-    color: var(--teal);
-    line-height: 1;
-    display: block;
-  }
-
-  .stat-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 4px;
-    display: block;
-  }
-
-  /* \u2500\u2500 SECTION BASE \u2500\u2500 */
-  section { padding: 72px 20px; }
-
-  .section-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-eyebrow::after {
-    content: '';
-    flex: 1;
-    max-width: 40px;
-    height: 1px;
-    background: var(--teal);
-  }
-
-  .section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: clamp(2.2rem, 8vw, 3.5rem);
-    text-transform: uppercase;
-    line-height: 0.95;
-    letter-spacing: -0.01em;
-    margin-bottom: 20px;
-  }
-
-  /* \u2500\u2500 TRUST BAR \u2500\u2500 */
-  #trust {
-    background: var(--charcoal);
-    padding: 20px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-  }
-
-  .trust-scroll {
-    display: flex;
-    gap: 40px;
-    animation: marquee 18s linear infinite;
-    width: max-content;
-  }
-
-  .trust-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .trust-item span { color: var(--teal); font-size: 1rem; }
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  /* \u2500\u2500 ABOUT \u2500\u2500 */
-  #about { background: var(--charcoal); }
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .about-visual {
-    position: relative;
-    background: var(--steel);
-    border-radius: 3px;
-    padding: 40px 28px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-  }
-
-  .about-visual::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 160px; height: 160px;
-    background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
-  }
-
-  .about-icon-row {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-  }
-
-  .about-pill {
-    background: var(--teal-glow);
-    border: 1px solid rgba(0,181,164,0.25);
-    border-radius: 2px;
-    padding: 8px 14px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--teal);
-  }
-
-  .about-big-text {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 4rem;
-    color: rgba(255,255,255,0.04);
-    line-height: 1;
-    position: absolute;
-    bottom: 12px;
-    right: 16px;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    pointer-events: none;
-  }
-
-  .hours-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 16px;
-    margin-top: 20px;
-  }
-
-  .hours-row {
-    display: contents;
-  }
-
-  .hours-day {
-    font-size: 0.8rem;
-    color: var(--muted);
-    padding: 5px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .hours-time {
-    font-size: 0.8rem;
-    color: var(--white);
-    padding: 5px 0;
-    border-bottom: 1px solid var(--border);
-    font-weight: 600;
-  }
-
-  .about-body p {
-    color: rgba(245,245,240,0.7);
-    margin-bottom: 18px;
-    font-size: 1rem;
-    line-height: 1.65;
-  }
-
-  .about-body strong { color: var(--teal); }
-
-  /* \u2500\u2500 SERVICES \u2500\u2500 */
-  #services { background: var(--black); }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 40px;
-  }
-
-  .service-card {
-    background: var(--charcoal);
-    padding: 24px 20px;
-    transition: background 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .service-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 0;
-    background: var(--teal);
-    transition: height 0.3s;
-  }
-
-  .service-card:hover::before { height: 100%; }
-  .service-card:hover { background: var(--steel); }
-
-  .service-icon {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .service-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--white);
-    line-height: 1.2;
-  }
-
-  .service-desc {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 6px;
-    line-height: 1.4;
-  }
-
-  /* featured service */
-  .service-card.featured {
-    grid-column: span 2;
-    background: linear-gradient(135deg, rgba(0,181,164,0.12) 0%, var(--charcoal) 100%);
-    border-bottom: 1px solid rgba(0,181,164,0.2);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .service-card.featured .service-name {
-    font-size: 1.2rem;
-    color: var(--teal);
-  }
-
-  /* \u2500\u2500 REVIEWS \u2500\u2500 */
-  #reviews {
-    background: var(--charcoal);
-    border-top: 1px solid var(--border);
-  }
-
-  .rating-hero {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 36px;
-    padding: 24px;
-    background: var(--steel);
-    border-radius: 3px;
-    border: 1px solid var(--border);
-  }
-
-  .rating-big {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 4rem;
-    color: var(--teal);
-    line-height: 1;
-  }
-
-  .rating-stars { font-size: 1.1rem; color: #f5c518; letter-spacing: 2px; }
-
-  .rating-info {
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  .reviews-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .review-card {
-    background: var(--steel);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 22px 20px;
-    position: relative;
-  }
-
-  .review-card::before {
-    content: '"';
-    position: absolute;
-    top: 10px; right: 16px;
-    font-size: 4rem;
-    color: rgba(0,181,164,0.1);
-    font-family: Georgia, serif;
-    line-height: 1;
-  }
-
-  .review-stars { color: #f5c518; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 10px; }
-
-  .review-text {
-    font-size: 0.9rem;
-    color: rgba(245,245,240,0.8);
-    line-height: 1.6;
-    margin-bottom: 14px;
-  }
-
-  .review-author {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--teal);
-  }
-
-  .review-source {
-    font-size: 0.7rem;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  /* \u2500\u2500 CONTACT \u2500\u2500 */
-  #contact { background: var(--black); }
-
-  .contact-wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .contact-block {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    padding: 18px;
-    background: var(--charcoal);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-  }
-
-  .contact-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--teal-glow);
-    border: 1px solid rgba(0,181,164,0.25);
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-  }
-
-  .contact-block-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-
-  .contact-block-value {
-    font-size: 0.95rem;
-    color: var(--white);
-    font-weight: 500;
-  }
-
-  .contact-block-value a {
-    color: var(--teal);
-    text-decoration: none;
-  }
-
-  /* Form */
-  .contact-form {
-    background: var(--charcoal);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 28px 24px;
-  }
-
-  .form-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-
-  .form-group {
-    margin-bottom: 16px;
-  }
-
-  .form-group label {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    background: var(--steel);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 2px;
-    color: var(--white);
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.95rem;
-    padding: 12px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--teal);
-  }
-
-  .form-group select { cursor: pointer; }
-
-  .form-group textarea { resize: vertical; min-height: 100px; }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .form-submit {
-    width: 100%;
-    background: var(--teal);
-    color: var(--black);
-    border: none;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 1.1rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 16px;
-    border-radius: 2px;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: background 0.2s;
-  }
-
-  .form-submit:hover { background: #00cfc0; }
-
-  /* \u2500\u2500 FOOTER \u2500\u2500 */
-  footer {
-    background: var(--charcoal);
-    border-top: 1px solid var(--border);
-    padding: 40px 20px 28px;
-  }
-
-  .footer-top {
-    margin-bottom: 28px;
-  }
-
-  .footer-logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 8px;
-  }
-
-  .footer-logo span { color: var(--teal); }
-
-  .footer-tagline {
-    font-size: 0.8rem;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .footer-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 20px;
-    margin: 24px 0;
-    list-style: none;
-  }
-
-  .footer-nav a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .footer-nav a:hover { color: var(--teal); }
-
-  .footer-bottom {
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .footer-legal {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.2);
-  }
-
-  .footer-jmod {
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.15);
-    letter-spacing: 0.06em;
-  }
-
-  /* \u2500\u2500 SCROLL ANIMATIONS \u2500\u2500 */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* \u2500\u2500 TABLET / DESKTOP \u2500\u2500 */
-  @media (min-width: 600px) {
-    .hero-actions {
-      flex-direction: row;
-    }
-
-    .btn-primary, .btn-secondary { width: auto; }
-  }
-
-  @media (min-width: 768px) {
-    nav { padding: 0 40px; }
-    .nav-links { display: flex; }
-
-    section { padding: 96px 40px; }
-    #hero { padding: 0 40px 64px; }
-
-    .about-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
-    .contact-wrapper { grid-template-columns: 1fr 1fr; }
-    .hero-shape { width: 360px; height: 360px; }
-  }
-
-  @media (min-width: 1100px) {
-    nav { padding: 0 60px; }
-    section { padding: 112px 60px; }
-    #hero { padding: 0 60px 80px; }
-
-    .services-grid { grid-template-columns: repeat(3, 1fr); }
-    .service-card.featured { grid-column: span 3; }
-    .reviews-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  }
-
-  /* \u2500\u2500 MOBILE NAV TOGGLE \u2500\u2500 */
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    cursor: pointer;
-    padding: 6px;
-  }
-
-  .hamburger span {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: var(--white);
-    transition: all 0.3s;
-  }
-
-  @media (min-width: 768px) { .hamburger { display: none; } }
-
-  /* mobile menu overlay */
-  #mobile-menu {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 99;
-    background: rgba(13,13,13,0.97);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-  }
-
-  #mobile-menu.open { display: flex; }
-
-  #mobile-menu a {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 2rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  #mobile-menu a:hover { color: var(--teal); }
-
-  #mobile-menu .close-btn {
-    position: absolute;
-    top: 18px; right: 20px;
-    font-size: 2rem;
-    color: var(--muted);
-    cursor: pointer;
-    background: none;
-    border: none;
-    line-height: 1;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: #0d0d0d;
+  color: #f0f0ec;
+  font-family: 'Barlow', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 58px; background: rgba(13,13,13,0.95);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+}
+.nav-brand {
+  font-family: 'Barlow Condensed', Impact, sans-serif;
+  font-weight: 900; font-size: 1rem; text-transform: uppercase;
+  letter-spacing: 0.04em; color: #f0f0ec; text-decoration: none; line-height: 1.15;
+}
+.nav-brand b { color: #00b5a4; }
+.nav-links { display: none; gap: 24px; list-style: none; }
+.nav-links a { color: #888; text-decoration: none; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.nav-links a:hover { color: #00b5a4; }
+.nav-btn { background: #00b5a4; color: #0d0d0d; text-decoration: none; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 9px 18px; border-radius: 2px; }
+.ham { cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 4px; }
+.ham span { display: block; width: 22px; height: 2px; background: #f0f0ec; }
+
+#mob { display: none; position: fixed; inset: 0; z-index: 300; background: #0d0d0d; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
+#mob.on { display: flex; }
+#mob a { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 900; font-size: 2.2rem; text-transform: uppercase; color: #f0f0ec; text-decoration: none; }
+#mob a:hover { color: #00b5a4; }
+#mob .x { position: absolute; top: 16px; right: 22px; background: none; border: none; color: #888; font-size: 2rem; cursor: pointer; line-height: 1; }
+
+#hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 80px 20px 52px;
+  position: relative; overflow: hidden;
+  background: linear-gradient(160deg, #0f1a19 0%, #0d0d0d 60%);
+}
+.h-grid { position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(rgba(0,181,164,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,181,164,0.04) 1px, transparent 1px); background-size: 48px 48px; }
+.h-glow { position: absolute; top: -80px; right: -80px; z-index: 0; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(0,181,164,0.12) 0%, transparent 70%); }
+.h-content { position: relative; z-index: 1; }
+.badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,181,164,0.12); border: 1px solid rgba(0,181,164,0.35); border-radius: 2px; padding: 6px 14px; margin-bottom: 22px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #00b5a4; }
+h1 { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 900; font-size: clamp(3.2rem, 16vw, 6rem); line-height: 0.9; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 20px; }
+h1 em { font-style: normal; color: #00b5a4; display: block; }
+.sub { font-size: 1rem; color: rgba(240,240,236,0.65); max-width: 380px; margin-bottom: 32px; line-height: 1.55; }
+.btns { display: flex; flex-direction: column; gap: 12px; }
+.btn-p { background: #00b5a4; color: #0d0d0d; text-decoration: none; text-align: center; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 16px 28px; border-radius: 2px; }
+.btn-s { background: transparent; color: #f0f0ec; text-decoration: none; text-align: center; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 14px 28px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.2); }
+.stats { display: flex; margin-top: 44px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px; }
+.stat { flex: 1; text-align: center; border-right: 1px solid rgba(255,255,255,0.08); padding: 0 6px; }
+.stat:last-child { border-right: none; }
+.sn { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 900; font-size: 1.7rem; color: #00b5a4; display: block; line-height: 1; }
+.sl { font-size: 0.6rem; color: #777; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 4px; display: block; }
+
+#ticker { background: #161616; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 14px 0; overflow: hidden; }
+.ticker-inner { display: flex; gap: 48px; animation: tick 20s linear infinite; width: max-content; }
+.ti { display: flex; align-items: center; gap: 10px; white-space: nowrap; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; color: #666; }
+.ti b { color: #00b5a4; }
+@keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+section { padding: 72px 20px; }
+.ey { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: #00b5a4; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.ey::after { content: ''; width: 36px; height: 1px; background: #00b5a4; }
+h2 { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 900; font-size: clamp(2.2rem, 9vw, 3.8rem); text-transform: uppercase; line-height: 0.93; letter-spacing: -0.01em; margin-bottom: 20px; }
+
+#about { background: #141414; }
+.about-g { display: grid; grid-template-columns: 1fr; gap: 44px; }
+.about-text p { color: rgba(240,240,236,0.68); margin-bottom: 16px; font-size: 0.97rem; line-height: 1.65; }
+.about-text strong { color: #00b5a4; }
+.about-card { background: #1c1c1c; border: 1px solid rgba(255,255,255,0.07); border-radius: 3px; padding: 32px 24px; position: relative; overflow: hidden; }
+.about-card::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(0,181,164,0.1) 0%, transparent 70%); }
+.pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+.pill { background: rgba(0,181,164,0.1); border: 1px solid rgba(0,181,164,0.28); border-radius: 2px; padding: 7px 14px; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: #00b5a4; }
+.hours-t { display: grid; grid-template-columns: 1fr 1fr; }
+.hd, .ht { padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.82rem; }
+.hd { color: #777; }
+.ht { color: #f0f0ec; font-weight: 600; }
+
+#services { background: #0d0d0d; }
+.srv-g { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-top: 40px; }
+.sc { background: #141414; padding: 22px 18px; position: relative; overflow: hidden; transition: background 0.2s; }
+.sc:hover { background: #1c1c1c; }
+.sc::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: #00b5a4; transition: height 0.3s; }
+.sc:hover::before { height: 100%; }
+.sc-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+.sc-name { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.03em; color: #f0f0ec; line-height: 1.2; margin-bottom: 5px; }
+.sc-desc { font-size: 0.73rem; color: #777; line-height: 1.4; }
+.sc.feat { grid-column: span 2; background: linear-gradient(135deg, rgba(0,181,164,0.1), #141414); display: flex; align-items: center; gap: 18px; }
+.sc.feat .sc-name { font-size: 1.15rem; color: #00b5a4; }
+
+#reviews { background: #141414; border-top: 1px solid rgba(255,255,255,0.06); }
+.rating-box { display: flex; align-items: center; gap: 18px; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.08); border-radius: 3px; padding: 22px; margin-bottom: 32px; }
+.rbig { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 900; font-size: 4rem; color: #00b5a4; line-height: 1; }
+.rstars { color: #f5c518; font-size: 1rem; letter-spacing: 2px; }
+.rinfo { font-size: 0.78rem; color: #777; margin-top: 4px; }
+.rv-g { display: flex; flex-direction: column; gap: 14px; }
+.rv { background: #1c1c1c; border: 1px solid rgba(255,255,255,0.07); border-radius: 3px; padding: 22px 20px; position: relative; }
+.rv::before { content: '"'; position: absolute; top: 8px; right: 14px; font-size: 4rem; color: rgba(0,181,164,0.08); font-family: Georgia, serif; line-height: 1; }
+.rv-stars { color: #f5c518; font-size: 0.78rem; letter-spacing: 2px; margin-bottom: 10px; }
+.rv-text { font-size: 0.9rem; color: rgba(240,240,236,0.78); line-height: 1.6; margin-bottom: 12px; }
+.rv-name { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: #00b5a4; }
+.rv-src { font-size: 0.68rem; color: #555; margin-top: 2px; }
+
+#contact { background: #0d0d0d; }
+.contact-g { display: grid; grid-template-columns: 1fr; gap: 40px; margin-top: 40px; }
+.cb { display: flex; gap: 14px; align-items: flex-start; background: #141414; border: 1px solid rgba(255,255,255,0.07); border-radius: 3px; padding: 18px; margin-bottom: 14px; }
+.ci { width: 40px; height: 40px; flex-shrink: 0; background: rgba(0,181,164,0.1); border: 1px solid rgba(0,181,164,0.25); border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+.cl { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #777; margin-bottom: 4px; }
+.cv { font-size: 0.92rem; color: #f0f0ec; font-weight: 500; }
+.cv a { color: #00b5a4; text-decoration: none; }
+.no-appt { background: rgba(0,181,164,0.08); border: 1px solid rgba(0,181,164,0.22); border-radius: 3px; padding: 20px; }
+.no-appt strong { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 1.05rem; text-transform: uppercase; color: #00b5a4; display: block; margin-bottom: 6px; }
+.no-appt p { font-size: 0.83rem; color: rgba(240,240,236,0.65); line-height: 1.5; }
+.cf { background: #141414; border: 1px solid rgba(255,255,255,0.07); border-radius: 3px; padding: 28px 22px; }
+.cf h3 { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 22px; }
+.fg { margin-bottom: 15px; }
+.fg label { display: block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #777; margin-bottom: 6px; }
+.fg input, .fg select, .fg textarea { width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 2px; color: #f0f0ec; font-family: 'Barlow', Arial, sans-serif; font-size: 0.93rem; padding: 12px 13px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: #00b5a4; }
+.fg textarea { resize: vertical; min-height: 90px; }
+.fr { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fsub { width: 100%; background: #00b5a4; color: #0d0d0d; border: none; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 16px; border-radius: 2px; cursor: pointer; margin-top: 6px; transition: background 0.2s; }
+.fsub:hover { background: #00cfc0; }
+
+footer { background: #141414; border-top: 1px solid rgba(255,255,255,0.07); padding: 40px 20px 28px; }
+.flogo { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 900; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 6px; }
+.flogo b { color: #00b5a4; }
+.ftag { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.08em; }
+.fnav { display: flex; flex-wrap: wrap; gap: 8px 20px; list-style: none; margin: 22px 0; }
+.fnav a { color: #666; text-decoration: none; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.fnav a:hover { color: #00b5a4; }
+.fbot { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 18px; }
+.fcopy { font-size: 0.7rem; color: rgba(255,255,255,0.22); margin-bottom: 4px; }
+.fjmod { font-size: 0.62rem; color: rgba(255,255,255,0.14); letter-spacing: 0.06em; }
+
+@media (min-width: 600px) { .btns { flex-direction: row; } }
+@media (min-width: 768px) {
+  nav { padding: 0 40px; }
+  .nav-links { display: flex; }
+  .ham { display: none; }
+  section { padding: 96px 40px; }
+  #hero { padding: 80px 40px 64px; }
+  .about-g { grid-template-columns: 1fr 1fr; }
+  .contact-g { grid-template-columns: 1fr 1fr; }
+  .rv-g { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+}
+@media (min-width: 1080px) {
+  nav { padding: 0 60px; }
+  section { padding: 112px 60px; }
+  #hero { padding: 80px 60px 80px; }
+  .srv-g { grid-template-columns: repeat(3, 1fr); }
+  .sc.feat { grid-column: span 3; }
+}
 </style>
 </head>
 <body>
 
-<!-- MOBILE MENU OVERLAY -->
-<div id="mobile-menu">
-  <button class="close-btn" onclick="closeMenu()">\u2715</button>
-  <a href="#about" onclick="closeMenu()">About</a>
-  <a href="#services" onclick="closeMenu()">Services</a>
-  <a href="#reviews" onclick="closeMenu()">Reviews</a>
-  <a href="#contact" onclick="closeMenu()">Contact</a>
+<div id="mob">
+  <button class="x" onclick="document.getElementById('mob').classList.remove('on');document.body.style.overflow=''">&#x2715;</button>
+  <a href="#about" onclick="document.getElementById('mob').classList.remove('on');document.body.style.overflow=''">About</a>
+  <a href="#services" onclick="document.getElementById('mob').classList.remove('on');document.body.style.overflow=''">Services</a>
+  <a href="#reviews" onclick="document.getElementById('mob').classList.remove('on');document.body.style.overflow=''">Reviews</a>
+  <a href="#contact" onclick="document.getElementById('mob').classList.remove('on');document.body.style.overflow=''">Contact</a>
 </div>
 
-<!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo">Quick to <span>Fix</span><br>Auto Service</a>
+  <a href="#hero" class="nav-brand">Quick to <b>Fix</b><br>Auto Service</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#reviews">Reviews</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-cta" style="display:none" id="desktop-cta">Book Service</a>
-  <div class="hamburger" onclick="openMenu()" id="hamburger">
+  <a href="#contact" class="nav-btn" id="nb" style="display:none">Book Service</a>
+  <div class="ham" id="hm" onclick="document.getElementById('mob').classList.add('on');document.body.style.overflow='hidden'">
     <span></span><span></span><span></span>
   </div>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-shape"></div>
-
-  <div class="hero-badge">4.7 Stars \u00b7 Google Verified \u00b7 Affordable Prices</div>
-
-  <h1 class="hero-headline">
-    Your Car<br>Fixed <em>Fast.</em>
-  </h1>
-
-  <p class="hero-sub">
-    Real mechanics. Honest prices. Weekend and off-hours availability when you need us most.
-  </p>
-
-  <div class="hero-actions">
-    <a href="#contact" class="btn-primary">Book a Service</a>
-    <a href="tel:+1" class="btn-secondary">Call Us Now</a>
-  </div>
-
-  <div class="hero-stats">
-    <div class="stat">
-      <span class="stat-num">4.7</span>
-      <span class="stat-label">Google Rating</span>
+  <div class="h-grid"></div>
+  <div class="h-glow"></div>
+  <div class="h-content">
+    <div class="badge">&#9733; 4.7 Stars on Google &nbsp;&middot;&nbsp; Honest Prices &nbsp;&middot;&nbsp; Off-Hours Available</div>
+    <h1>Your Car<br>Fixed <em>Fast.</em></h1>
+    <p class="sub">Real mechanics. Honest prices. Weekend and off-hours availability &mdash; when you need us most.</p>
+    <div class="btns">
+      <a href="#contact" class="btn-p">Book a Service</a>
+      <a href="#services" class="btn-s">See All Services</a>
     </div>
-    <div class="stat">
-      <span class="stat-num">15+</span>
-      <span class="stat-label">Reviews</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">6 Days</span>
-      <span class="stat-label">A Week</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">Off-Hrs</span>
-      <span class="stat-label">Available</span>
+    <div class="stats">
+      <div class="stat"><span class="sn">4.7</span><span class="sl">Google Rating</span></div>
+      <div class="stat"><span class="sn">15+</span><span class="sl">Reviews</span></div>
+      <div class="stat"><span class="sn">6 Days</span><span class="sl">A Week</span></div>
+      <div class="stat"><span class="sn">Off-Hrs</span><span class="sl">Available</span></div>
     </div>
   </div>
 </section>
 
-<!-- TRUST BAR -->
-<div id="trust">
-  <div class="trust-scroll">
-    <div class="trust-item"><span>\u2713</span> Oil Changes</div>
-    <div class="trust-item"><span>\u2713</span> Brakes & Rotors</div>
-    <div class="trust-item"><span>\u2713</span> Engine Diagnostics</div>
-    <div class="trust-item"><span>\u2713</span> A/C Service</div>
-    <div class="trust-item"><span>\u2713</span> Transmission</div>
-    <div class="trust-item"><span>\u2713</span> Electrical Repairs</div>
-    <div class="trust-item"><span>\u2713</span> Weekend Hours</div>
-    <div class="trust-item"><span>\u2713</span> Affordable Pricing</div>
-    <!-- duplicate for seamless loop -->
-    <div class="trust-item"><span>\u2713</span> Oil Changes</div>
-    <div class="trust-item"><span>\u2713</span> Brakes & Rotors</div>
-    <div class="trust-item"><span>\u2713</span> Engine Diagnostics</div>
-    <div class="trust-item"><span>\u2713</span> A/C Service</div>
-    <div class="trust-item"><span>\u2713</span> Transmission</div>
-    <div class="trust-item"><span>\u2713</span> Electrical Repairs</div>
-    <div class="trust-item"><span>\u2713</span> Weekend Hours</div>
-    <div class="trust-item"><span>\u2713</span> Affordable Pricing</div>
+<div id="ticker">
+  <div class="ticker-inner">
+    <div class="ti"><b>&#10003;</b>&nbsp;Oil Changes</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Brakes &amp; Rotors</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Engine Diagnostics</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;A/C Service</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Transmission</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Electrical Repairs</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Weekend Hours</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Affordable Pricing</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;All Makes &amp; Models</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Oil Changes</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Brakes &amp; Rotors</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Engine Diagnostics</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;A/C Service</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Transmission</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Electrical Repairs</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Weekend Hours</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;Affordable Pricing</div>
+    <div class="ti"><b>&#10003;</b>&nbsp;All Makes &amp; Models</div>
   </div>
 </div>
 
-<!-- ABOUT -->
 <section id="about">
-  <div class="about-grid">
-    <div class="about-body fade-up">
-      <div class="section-eyebrow">Who We Are</div>
-      <h2 class="section-title">Local Mechanics.<br>No Runaround.</h2>
-      <p>At Quick to Fix Auto Service, we built the shop we always wished existed \u2014 one where you get a straight answer, a fair price, and your car back the same day more often than not.</p>
-      <p>We work on everything from routine oil changes to full transmission jobs. When your check engine light comes on at 6 PM on a Friday, <strong>we're still here</strong>. No appointment needed for most services \u2014 just pull in.</p>
-      <p>Serving our community with quality auto repair at prices that don't make you wince. That's the only way we know how to do it.</p>
-      <a href="#contact" class="btn-primary" style="margin-top:8px; display:inline-block; width:auto; padding:14px 28px;">Get a Quote</a>
+  <div class="about-g">
+    <div class="about-text">
+      <div class="ey">Who We Are</div>
+      <h2>Local Mechanics.<br>No Runaround.</h2>
+      <p>At Quick to Fix Auto Service, we built the shop we always wished existed &mdash; one where you get a straight answer, a fair price, and your car back the same day more often than not.</p>
+      <p>We work on everything from routine oil changes to full transmission jobs. When your check engine light comes on at 6 PM on a Friday, <strong>we&rsquo;re still here</strong>. No appointment needed for most services.</p>
+      <p>Serving our community with quality auto repair at prices that don&rsquo;t make you wince. That&rsquo;s the only way we know how to do it.</p>
+      <a href="#contact" class="btn-p" style="display:inline-block;margin-top:10px;width:auto;padding:14px 26px;">Get a Quote</a>
     </div>
-
-    <div class="about-visual fade-up">
-      <div class="about-icon-row">
-        <span class="about-pill">Mon\u2013Sat Open</span>
-        <span class="about-pill">Off-Hours Available</span>
-        <span class="about-pill">All Makes & Models</span>
+    <div class="about-card">
+      <div class="pills">
+        <span class="pill">Mon&ndash;Sat Open</span>
+        <span class="pill">Off-Hours Available</span>
+        <span class="pill">All Makes &amp; Models</span>
       </div>
-
-      <div class="section-eyebrow" style="margin-top:8px;">Hours of Operation</div>
-      <div class="hours-grid">
-        <span class="hours-day">Monday</span>
-        <span class="hours-time">8:00 AM \u2013 7:00 PM</span>
-        <span class="hours-day">Tuesday</span>
-        <span class="hours-time">8:00 AM \u2013 7:00 PM</span>
-        <span class="hours-day">Wednesday</span>
-        <span class="hours-time">8:00 AM \u2013 7:00 PM</span>
-        <span class="hours-day">Thursday</span>
-        <span class="hours-time">8:00 AM \u2013 7:00 PM</span>
-        <span class="hours-day">Friday</span>
-        <span class="hours-time">8:00 AM \u2013 7:00 PM</span>
-        <span class="hours-day">Saturday</span>
-        <span class="hours-time">8:00 AM \u2013 7:00 PM</span>
-        <span class="hours-day">Sunday</span>
-        <span class="hours-time" style="color:var(--muted)">Closed</span>
+      <div class="ey">Hours of Operation</div>
+      <div class="hours-t">
+        <span class="hd">Monday</span><span class="ht">8:00 AM &ndash; 7:00 PM</span>
+        <span class="hd">Tuesday</span><span class="ht">8:00 AM &ndash; 7:00 PM</span>
+        <span class="hd">Wednesday</span><span class="ht">8:00 AM &ndash; 7:00 PM</span>
+        <span class="hd">Thursday</span><span class="ht">8:00 AM &ndash; 7:00 PM</span>
+        <span class="hd">Friday</span><span class="ht">8:00 AM &ndash; 7:00 PM</span>
+        <span class="hd">Saturday</span><span class="ht">8:00 AM &ndash; 7:00 PM</span>
+        <span class="hd">Sunday</span><span class="ht" style="color:#555">Closed</span>
       </div>
-
-      <div class="about-big-text">AUTO</div>
     </div>
   </div>
 </section>
 
-<!-- SERVICES -->
 <section id="services">
-  <div class="section-eyebrow fade-up">What We Do</div>
-  <h2 class="section-title fade-up">Full-Service<br>Auto Repair</h2>
-  <p class="fade-up" style="color:rgba(245,245,240,0.6); max-width:480px; margin-bottom:0;">From a quick oil change to a full engine diagnostic \u2014 we handle it all under one roof, with honest turnaround times and no surprise charges.</p>
-
-  <div class="services-grid fade-up">
-    <div class="service-card featured">
-      <span class="service-icon">\ud83d\udd27</span>
+  <div class="ey">What We Do</div>
+  <h2>Full-Service<br>Auto Repair</h2>
+  <p style="color:rgba(240,240,236,0.6);max-width:460px;font-size:0.97rem;">From a quick oil change to a full engine rebuild &mdash; all under one roof, with honest turnaround times and no surprise charges.</p>
+  <div class="srv-g">
+    <div class="sc feat">
+      <span class="sc-icon">&#128295;</span>
       <div>
-        <div class="service-name">Engine Diagnostics & Repair</div>
-        <div class="service-desc">Check engine light? We scan, diagnose, and explain exactly what's wrong before we touch anything. No guesswork.</div>
+        <div class="sc-name">Engine Diagnostics &amp; Repair</div>
+        <div class="sc-desc">Check engine light? We scan, diagnose, and explain exactly what&rsquo;s wrong before we touch anything. No guesswork, ever.</div>
       </div>
     </div>
-
-    <div class="service-card">
-      <span class="service-icon">\ud83d\udede</span>
-      <div class="service-name">Brakes & Suspension</div>
-      <div class="service-desc">Pads, rotors, calipers, shocks & struts. If it steers or stops, we fix it.</div>
-    </div>
-
-    <div class="service-card">
-      <span class="service-icon">\ud83d\udee2\ufe0f</span>
-      <div class="service-name">Oil Changes</div>
-      <div class="service-desc">Conventional or synthetic \u2014 in and out fast, with a multi-point inspection included.</div>
-    </div>
-
-    <div class="service-card">
-      <span class="service-icon">\u2744\ufe0f</span>
-      <div class="service-name">A/C Service</div>
-      <div class="service-desc">Recharge, leak detection, compressor repair. Stay cool no matter the season.</div>
-    </div>
-
-    <div class="service-card">
-      <span class="service-icon">\u26a1</span>
-      <div class="service-name">Electrical Repairs</div>
-      <div class="service-desc">Starters, alternators, batteries, wiring issues \u2014 we track down the gremlin.</div>
-    </div>
-
-    <div class="service-card">
-      <span class="service-icon">\u2699\ufe0f</span>
-      <div class="service-name">Transmission Services</div>
-      <div class="service-desc">Fluid flushes, filter replacements, full rebuilds. Auto or manual.</div>
-    </div>
-
-    <div class="service-card">
-      <span class="service-icon">\ud83d\udca8</span>
-      <div class="service-name">Exhaust & Emissions</div>
-      <div class="service-desc">Muffler, catalytic converter, exhaust manifold \u2014 we keep you quiet and compliant.</div>
-    </div>
-
-    <div class="service-card">
-      <span class="service-icon">\ud83d\udd29</span>
-      <div class="service-name">Air & Cabin Filters</div>
-      <div class="service-desc">Quick swap, big difference in performance and air quality inside your cabin.</div>
-    </div>
-
-    <div class="service-card">
-      <span class="service-icon">\ud83d\udd0b</span>
-      <div class="service-name">Battery & Starting</div>
-      <div class="service-desc">Test, replace, or charge. Don't get stranded \u2014 we stock major battery brands in-house.</div>
-    </div>
+    <div class="sc"><span class="sc-icon">&#128760;</span><div class="sc-name">Brakes &amp; Suspension</div><div class="sc-desc">Pads, rotors, calipers, shocks &amp; struts. If it steers or stops, we service it.</div></div>
+    <div class="sc"><span class="sc-icon">&#128706;</span><div class="sc-name">Oil Changes</div><div class="sc-desc">Conventional or synthetic &mdash; in and out fast, with a multi-point inspection every time.</div></div>
+    <div class="sc"><span class="sc-icon">&#10052;</span><div class="sc-name">A/C Service</div><div class="sc-desc">Recharge, leak detection, compressor repair. Stay cool no matter the season.</div></div>
+    <div class="sc"><span class="sc-icon">&#9889;</span><div class="sc-name">Electrical Repairs</div><div class="sc-desc">Starters, alternators, batteries, wiring &mdash; we track down the issue and fix it right.</div></div>
+    <div class="sc"><span class="sc-icon">&#9881;</span><div class="sc-name">Transmission</div><div class="sc-desc">Fluid flushes, filter replacements, full rebuilds. Automatic or manual.</div></div>
+    <div class="sc"><span class="sc-icon">&#128168;</span><div class="sc-name">Exhaust &amp; Emissions</div><div class="sc-desc">Muffler, catalytic converter, manifold repair &mdash; quiet and compliant.</div></div>
+    <div class="sc"><span class="sc-icon">&#128295;</span><div class="sc-name">Air &amp; Cabin Filters</div><div class="sc-desc">Quick swap, big difference in engine performance and cabin air quality.</div></div>
+    <div class="sc"><span class="sc-icon">&#128267;</span><div class="sc-name">Battery &amp; Starting</div><div class="sc-desc">Test, replace, or charge. We stock major battery brands in-house.</div></div>
   </div>
 </section>
 
-<!-- REVIEWS -->
 <section id="reviews">
-  <div class="section-eyebrow fade-up">What Customers Say</div>
-  <h2 class="section-title fade-up">Real Reviews.<br>Real Results.</h2>
-
-  <div class="rating-hero fade-up">
-    <div class="rating-big">4.7</div>
+  <div class="ey">What Customers Say</div>
+  <h2>Real Reviews.<br>Real Results.</h2>
+  <div class="rating-box">
+    <div class="rbig">4.7</div>
     <div>
-      <div class="rating-stars">\u2605\u2605\u2605\u2605\u2605</div>
-      <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; text-transform:uppercase; margin-top:4px;">Google Rating</div>
-      <div class="rating-info">Based on 15+ verified reviews</div>
+      <div class="rstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div style="font-family:'Barlow Condensed',Impact,sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;margin-top:4px;">Google Rating</div>
+      <div class="rinfo">Based on 15+ verified Google reviews</div>
     </div>
   </div>
-
-  <div class="reviews-stack">
-    <div class="review-card fade-up">
-      <div class="review-stars">\u2605\u2605\u2605\u2605\u2605</div>
-      <p class="review-text">Was able to quickly fix my issue even though it was off hours. Didn't expect anyone to even pick up \u2014 they came through and had me back on the road the same evening.</p>
-      <div class="review-author">Google Reviewer</div>
-      <div class="review-source">via Google Maps</div>
+  <div class="rv-g">
+    <div class="rv">
+      <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="rv-text">Was able to quickly fix my issue even though it was off hours. Didn&rsquo;t expect anyone to pick up &mdash; they came through and had me back on the road the same evening.</p>
+      <div class="rv-name">Google Reviewer</div><div class="rv-src">via Google Maps</div>
     </div>
-
-    <div class="review-card fade-up">
-      <div class="review-stars">\u2605\u2605\u2605\u2605\u2605</div>
-      <p class="review-text">Prices are fair and they don't try to upsell you on stuff you don't need. Took my car in for a brake job and they were honest about what actually needed replacing.</p>
-      <div class="review-author">Google Reviewer</div>
-      <div class="review-source">via Google Maps</div>
+    <div class="rv">
+      <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="rv-text">Prices are fair and they don&rsquo;t try to upsell you. Took my car in for brakes and they were completely honest about what actually needed replacing.</p>
+      <div class="rv-name">Returning Customer</div><div class="rv-src">via Google Maps</div>
     </div>
-
-    <div class="review-card fade-up">
-      <div class="review-stars">\u2605\u2605\u2605\u2605\u2605</div>
-      <p class="review-text">Quick, reliable, and the mechanic actually explained what was wrong in plain English. I've been going here for two years and I've never felt ripped off.</p>
-      <div class="review-author">Returning Customer</div>
-      <div class="review-source">via Google Maps</div>
+    <div class="rv">
+      <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="rv-text">Quick, reliable, and knowledgeable. The mechanic actually explained what was wrong in plain English. Two years and I&rsquo;ve never felt ripped off.</p>
+      <div class="rv-name">Loyal Customer</div><div class="rv-src">via Google Maps</div>
     </div>
-
-    <div class="review-card fade-up">
-      <div class="review-stars">\u2605\u2605\u2605\u2605\u2606</div>
-      <p class="review-text">Solid shop. Brought in my truck with a mysterious electrical issue nobody else could figure out. They diagnosed it in under an hour and fixed it the same day.</p>
-      <div class="review-author">Google Reviewer</div>
-      <div class="review-source">via Google Maps</div>
+    <div class="rv">
+      <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p class="rv-text">Solid shop. Brought in my truck with an electrical issue nobody else could figure out. Diagnosed in under an hour, fixed same day.</p>
+      <div class="rv-name">Google Reviewer</div><div class="rv-src">via Google Maps</div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact">
-  <div class="section-eyebrow fade-up">Get In Touch</div>
-  <h2 class="section-title fade-up">Book Your<br>Service Today</h2>
-
-  <div class="contact-wrapper" style="margin-top:40px;">
-    <div class="contact-info fade-up">
-      <div class="contact-block">
-        <div class="contact-icon">\ud83d\udccd</div>
-        <div>
-          <div class="contact-block-label">Location</div>
-          <div class="contact-block-value">
-            <a href="https://maps.google.com/?q=Quick+to+Fix+Auto+Service" target="_blank">Find Us on Google Maps \u2192</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="contact-block">
-        <div class="contact-icon">\ud83d\udd57</div>
-        <div>
-          <div class="contact-block-label">Hours</div>
-          <div class="contact-block-value">Mon \u2013 Sat: 8:00 AM \u2013 7:00 PM<br><span style="color:var(--teal); font-size:0.85rem;">Off-hours service available</span></div>
-        </div>
-      </div>
-
-      <div class="contact-block">
-        <div class="contact-icon">\ud83d\udcde</div>
-        <div>
-          <div class="contact-block-label">Phone</div>
-          <div class="contact-block-value"><a href="tel:+1">Call Us Directly</a></div>
-        </div>
-      </div>
-
-      <div class="contact-block">
-        <div class="contact-icon">\ud83c\udf10</div>
-        <div>
-          <div class="contact-block-label">Website</div>
-          <div class="contact-block-value"><a href="https://quicktofixautoservice.com" target="_blank">quicktofixautoservice.com</a></div>
-        </div>
-      </div>
-
-      <div style="background:var(--teal-glow); border:1px solid rgba(0,181,164,0.25); border-radius:3px; padding:20px;">
-        <div style="font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.1rem; text-transform:uppercase; color:var(--teal); margin-bottom:8px;">No Appointment Needed</div>
-        <p style="font-size:0.85rem; color:rgba(245,245,240,0.7); line-height:1.5;">Walk-ins welcome for most services. Call ahead for major repairs and we'll have your spot ready.</p>
+  <div class="ey">Get In Touch</div>
+  <h2>Book Your<br>Service Today</h2>
+  <div class="contact-g">
+    <div>
+      <div class="cb"><div class="ci">&#128205;</div><div><div class="cl">Location</div><div class="cv"><a href="https://maps.google.com/?q=Quick+to+Fix+Auto+Service" target="_blank">Find Us on Google Maps &#8594;</a></div></div></div>
+      <div class="cb"><div class="ci">&#128343;</div><div><div class="cl">Hours</div><div class="cv">Mon &ndash; Sat: 8:00 AM &ndash; 7:00 PM<br><span style="color:#00b5a4;font-size:0.83rem;">Off-hours service available</span></div></div></div>
+      <div class="cb"><div class="ci">&#128222;</div><div><div class="cl">Phone</div><div class="cv"><a href="tel:+1">Call Us Directly</a></div></div></div>
+      <div class="cb"><div class="ci">&#127760;</div><div><div class="cl">Website</div><div class="cv"><a href="https://quicktofixautoservice.com" target="_blank">quicktofixautoservice.com</a></div></div></div>
+      <div class="no-appt">
+        <strong>No Appointment Needed</strong>
+        <p>Walk-ins welcome for most services. Call ahead for major repairs and we&rsquo;ll have a bay ready for you.</p>
       </div>
     </div>
-
-    <div class="contact-form fade-up">
-      <div class="form-title">Request Service</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" placeholder="John">
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="Smith">
-        </div>
+    <div class="cf">
+      <h3>Request Service</h3>
+      <div class="fr">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="John"></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith"></div>
       </div>
-      <div class="form-group">
-        <label>Phone Number</label>
-        <input type="tel" placeholder="(555) 000-0000">
-      </div>
-      <div class="form-group">
-        <label>Vehicle (Year / Make / Model)</label>
-        <input type="text" placeholder="e.g. 2018 Honda Accord">
-      </div>
-      <div class="form-group">
+      <div class="fg"><label>Phone Number</label><input type="tel" placeholder="(555) 000-0000"></div>
+      <div class="fg"><label>Vehicle (Year / Make / Model)</label><input type="text" placeholder="e.g. 2019 Toyota Camry"></div>
+      <div class="fg">
         <label>Service Needed</label>
         <select>
           <option value="" disabled selected>Select a service...</option>
-          <option>Oil
+          <option>Oil Change</option>
+          <option>Brake Service</option>
+          <option>Engine Diagnostic</option>
+          <option>A/C Service</option>
+          <option>Electrical Repair</option>
+          <option>Transmission Service</option>
+          <option>Exhaust / Emissions</option>
+          <option>Battery / Starting System</option>
+          <option>Steering &amp; Suspension</option>
+          <option>Air / Cabin Filter</option>
+          <option>Other / Not Sure</option>
+        </select>
+      </div>
+      <div class="fg"><label>Additional Details</label><textarea placeholder="Describe what's going on with your vehicle..."></textarea></div>
+      <button class="fsub" id="fsub" onclick="submitForm()">Submit Request &#8594;</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="flogo">Quick to <b>Fix</b> Auto Service</div>
+  <div class="ftag">Fast. Honest. Done Right.</div>
+  <ul class="fnav">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://maps.google.com/?q=Quick+to+Fix+Auto+Service" target="_blank">Directions</a></li>
+  </ul>
+  <div class="fbot">
+    <div class="fcopy">&copy; 2025 Quick to Fix Auto Service. All rights reserved.</div>
+    <div class="fjmod">Site Admined by Jmod Co.</div>
+  </div>
+</footer>
+
+<script>
+function checkW() {
+  var nb = document.getElementById('nb');
+  var hm = document.getElementById('hm');
+  if (window.innerWidth >= 768) { nb.style.display = 'inline-block'; hm.style.display = 'none'; }
+  else { nb.style.display = 'none'; hm.style.display = 'flex'; }
+}
+checkW();
+window.addEventListener('resize', checkW);
+
+function submitForm() {
+  var btn = document.getElementById('fsub');
+  btn.textContent = 'Request Sent!';
+  btn.style.background = '#00786e';
+  setTimeout(function() { btn.textContent = 'Submit Request \u2192'; btn.style.background = ''; }, 3000);
+}
+</script>
+</body>
+</html>
