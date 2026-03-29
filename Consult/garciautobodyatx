@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Garcia Auto Repair | Troy, TX | (254) 938-4004</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red:    #c0200f;
+      --red2:   #e02515;
+      --dark:   #111111;
+      --dark2:  #1a1a1a;
+      --dark3:  #222222;
+      --gray:   #888;
+      --light:  #f4f4f4;
+      --white:  #ffffff;
+      --border: rgba(255,255,255,0.08);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── UTILITY BAR ── */
+    .util-bar {
+      background: var(--red);
+      padding: 9px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .util-left {
+      display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+    }
+    .util-item {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+    }
+    .util-item a { color: inherit; text-decoration: none; }
+    .util-item span { opacity: 0.6; margin-right: 6px; }
+    .util-demo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--dark);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 200;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; padding: 16px 0;
+    }
+    .nav-logo-icon {
+      width: 44px; height: 44px;
+      background: var(--red);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .nav-logo-text { line-height: 1.15; }
+    .nav-logo-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .nav-logo-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+    .nav-links {
+      display: flex; list-style: none;
+    }
+    .nav-links a {
+      display: block;
+      padding: 22px 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -3px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); border-bottom-color: var(--red); }
+    .nav-cta {
+      background: var(--red);
+      color: var(--white) !important;
+      padding: 12px 22px !important;
+      margin-left: 16px;
+      border-bottom: none !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.1em !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--red2) !important; border-bottom: none !important; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--dark);
+    }
+    /* Dark gradient bg simulating a shop photo */
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(105deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0.4) 100%),
+        /* Simulated dark shop texture */
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px,
+          transparent 1px, transparent 80px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px,
+          transparent 1px, transparent 80px
+        ),
+        radial-gradient(ellipse 120% 100% at 70% 50%, #2a1a1a 0%, #111 60%, #0a0a0a 100%);
+    }
+    /* Red accent line left edge */
+    .hero-accent {
+      position: absolute;
+      top: 0; left: 0;
+      width: 6px; height: 100%;
+      background: var(--red);
+    }
+    /* Diagonal red slash behind content */
+    .hero-slash {
+      position: absolute;
+      right: -80px; top: -10%;
+      width: 55%; height: 120%;
+      background: linear-gradient(135deg, transparent 48%, rgba(192,32,15,0.06) 48%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 80px 80px 80px 80px;
+      max-width: 720px;
+      animation: heroIn 0.8s ease both;
+    }
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--red);
+      padding: 6px 16px;
+      margin-bottom: 28px;
+    }
+    .hero-tag-dot { width: 6px; height: 6px; background: var(--white); border-radius: 50%; }
+    .hero-tag-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .hero-h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(3.2rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+    .hero-h1 .red { color: var(--red); }
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 52px;
+    }
+    .btn-hero-primary {
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-hero-primary:hover { background: var(--red2); transform: translateY(-2px); }
+    .btn-hero-sec {
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 34px;
+      text-decoration: none;
+      display: inline-block;
+      border: 2px solid rgba(255,255,255,0.35);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-hero-sec:hover { border-color: var(--white); background: rgba(255,255,255,0.06); }
+
+    /* Trust row */
+    .hero-trust {
+      display: flex; gap: 28px; flex-wrap: wrap; align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 28px;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .trust-icon { font-size: 1.3rem; }
+    .trust-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .trust-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--white);
+    }
+
+    /* ── PHONE BAND ── */
+    .phone-band {
+      background: var(--red);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .phone-band-left {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+    }
+    .phone-band-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .phone-band-num:hover { text-decoration: underline; }
+    .phone-band-right {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 88px 40px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--dark);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .section-title.white { color: var(--white); }
+    .section-body {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #555;
+      line-height: 1.75;
+      max-width: 540px;
+    }
+    .section-body.white { color: rgba(255,255,255,0.65); }
+    .title-bar {
+      width: 48px; height: 4px;
+      background: var(--red);
+      margin-bottom: 32px;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--white); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 40px;
+    }
+    .about-stat {
+      background: var(--light);
+      padding: 24px 20px;
+      border-left: 4px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .about-stat:hover { border-left-color: var(--red); }
+    .about-stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--red);
+      line-height: 1;
+    }
+    .about-stat-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+    /* Right panel: Info card */
+    .info-card {
+      background: var(--dark);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .info-card-top {
+      background: var(--red);
+      padding: 28px 32px;
+    }
+    .info-card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--white);
+    }
+    .info-card-sub {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      margin-top: 4px;
+      letter-spacing: 0.06em;
+    }
+    .info-card-body { padding: 32px; }
+    .info-row {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-icon { font-size: 1.1rem; margin-top: 2px; flex-shrink: 0; }
+    .info-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 3px;
+    }
+    .info-value {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.55;
+    }
+    .info-value a { color: var(--white); text-decoration: none; }
+    .info-value a:hover { color: var(--red); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--dark); padding-bottom: 88px; }
+    .services-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: end;
+      margin-bottom: 56px;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .svc-card {
+      background: var(--dark2);
+      padding: 32px 24px;
+      border-bottom: 3px solid transparent;
+      transition: background 0.2s, border-color 0.25s, transform 0.2s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+    .svc-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: var(--red);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s ease;
+      z-index: 0;
+    }
+    .svc-card:hover::before { transform: scaleY(1); }
+    .svc-card:hover .svc-icon,
+    .svc-card:hover .svc-name,
+    .svc-card:hover .svc-desc { color: var(--white); position: relative; z-index: 1; }
+    .svc-card > * { position: relative; z-index: 1; }
+    .svc-icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      display: block;
+      transition: color 0.2s;
+    }
+    .svc-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+    .svc-desc {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.6;
+      transition: color 0.2s;
+    }
+    .svc-card.featured {
+      background: var(--red);
+    }
+    .svc-card.featured::before { display: none; }
+    .svc-card.featured .svc-desc { color: rgba(255,255,255,0.75); }
+
+    /* ── WHY ── */
+    #why { background: var(--light); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 52px;
+    }
+    .why-card {
+      background: var(--white);
+      padding: 36px 28px;
+      border-top: 4px solid transparent;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .why-card:hover { border-top-color: var(--red); transform: translateY(-4px); }
+    .why-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--red);
+      opacity: 0.12;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .why-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .why-text {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* ── REVIEWS ── */
+    #reviews { background: var(--dark); }
+    .reviews-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .google-badge {
+      background: var(--dark2);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 20px 28px;
+      text-align: center;
+      min-width: 180px;
+    }
+    .google-score {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 3.8rem;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+    }
+    .google-stars { color: #f5a623; font-size: 1.1rem; letter-spacing: 2px; margin: 4px 0; }
+    .google-count {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .review-card {
+      background: var(--dark2);
+      padding: 32px 28px;
+      border-top: 3px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .review-card:hover { border-top-color: var(--red); }
+    .review-stars { color: #f5a623; font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 16px; }
+    .review-text {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.75;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .review-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+    .reviews-cta {
+      text-align: center;
+      margin-top: 44px;
+    }
+    .btn-outline-white {
+      display: inline-block;
+      border: 2px solid rgba(255,255,255,0.25);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.5); }
+
+    /* ── SNAP FINANCE BAND ── */
+    .finance-band {
+      background: var(--red);
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .finance-left {}
+    .finance-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 6px;
+    }
+    .finance-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: var(--white);
+      letter-spacing: 0.03em;
+    }
+    .finance-body {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.75);
+      margin-top: 6px;
+    }
+    .btn-white {
+      display: inline-block;
+      background: var(--white);
+      color: var(--red);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      text-decoration: none;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-white:hover { background: #f0f0f0; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--light); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .hours-block { margin-top: 32px; }
+    .hours-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+    .hours-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      font-size: 0.92rem;
+    }
+    .hours-day { font-weight: 600; color: var(--dark); }
+    .hours-time { color: #555; }
+    .hours-closed { color: var(--red) !important; font-weight: 600; }
+    .contact-details { margin-top: 28px; }
+    .contact-item {
+      display: flex; gap: 14px; align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .contact-icon-box {
+      width: 40px; height: 40px;
+      background: var(--red);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0; color: white;
+    }
+    .contact-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 3px;
+    }
+    .contact-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .contact-value a { color: var(--red); text-decoration: none; }
+    .contact-value a:hover { text-decoration: underline; }
+
+    /* Form */
+    .contact-form-wrap {
+      background: var(--white);
+      padding: 40px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+    }
+    .form-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .form-sub {
+      font-size: 0.88rem;
+      color: var(--gray);
+      margin-bottom: 28px;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .form-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #777;
+    }
+    .form-input, .form-select, .form-textarea {
+      background: var(--light);
+      border: 2px solid transparent;
+      padding: 12px 14px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.92rem;
+      color: var(--dark);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--red);
+      background: var(--white);
+    }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-submit {
+      width: 100%;
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      padding: 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 6px;
+    }
+    .form-submit:hover { background: var(--red2); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      border-top: 4px solid var(--red);
+    }
+    .footer-top {
+      padding: 56px 40px 40px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 48px;
+    }
+    .footer-brand-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .footer-brand-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+    .footer-desc {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.7;
+    }
+    .footer-col-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 18px;
+    }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-contact-item {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    .footer-contact-item a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-contact-item a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-copy {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.25);
+      font-weight: 400;
+    }
+    .footer-fb {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-fb:hover { color: var(--white); }
+
+    /* FLOAT CALL (mobile) */
+    .float-call {
+      display: none;
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 14px 24px;
+      text-decoration: none;
+      z-index: 300;
+      box-shadow: 0 4px 20px rgba(192,32,15,0.5);
+    }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .about-grid, .contact-grid, .services-intro, .footer-top { grid-template-columns: 1fr; gap: 40px; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      section { padding: 64px 24px; }
+      nav { padding: 0 20px; }
+      .hero-content { padding: 60px 24px; }
+      .phone-band { padding: 20px 24px; flex-direction: column; align-items: flex-start; }
+      .footer-top { padding: 40px 24px; }
+      .footer-bottom { padding: 18px 24px; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .float-call { display: block; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .util-bar { padding: 8px 16px; }
+      .util-left { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- UTILITY BAR -->
+<div class="util-bar">
+  <div class="util-left">
+    <div class="util-item"><span>📍</span>1006 N. Central Ave, Troy, TX 76579</div>
+    <div class="util-item"><span>🕒</span>Mon–Fri: 8AM–5PM</div>
+    <div class="util-item"><span>📞</span><a href="tel:2549384004">(254) 938-4004</a></div>
+  </div>
+  <div class="util-demo">⚙ Demo — jordanmoddes.com/Consult/GarciaAutoRepair</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🔧</div>
+    <div class="nav-logo-text">
+      <div class="nav-logo-name">Garcia Auto Repair</div>
+      <div class="nav-logo-sub">Troy, Texas · Est. 2009</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="tel:2549384004" class="nav-cta">☎ Call Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <div class="hero-bg"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-slash"></div>
+  <div class="hero-content">
+    <div class="hero-tag">
+      <div class="hero-tag-dot"></div>
+      <div class="hero-tag-text">Troy, Texas · Serving Bell County Since 2009</div>
+    </div>
+    <h1 class="hero-h1">
+      Your Trusted<br>
+      <span class="red">Auto Repair</span><br>
+      Shop in Troy
+    </h1>
+    <p class="hero-sub">Family-owned and operated. Honest work at fair prices — from oil changes to full engine overhauls and 18-wheeler service.</p>
+    <div class="hero-actions">
+      <a href="tel:2549384004" class="btn-hero-primary">☎ Call (254) 938-4004</a>
+      <a href="#services" class="btn-hero-sec">View Services</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item">
+        <div class="trust-icon">⭐</div>
+        <div>
+          <div class="trust-val">4.7 Stars</div>
+          <div class="trust-label">59 Google Reviews</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">📅</div>
+        <div>
+          <div class="trust-val">Est. 2009</div>
+          <div class="trust-label">15+ Years Serving Troy</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🚛</div>
+        <div>
+          <div class="trust-val">All Vehicles</div>
+          <div class="trust-label">Cars, Trucks & 18-Wheelers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHONE BAND -->
+<div class="phone-band">
+  <div class="phone-band-left">Need Service? Call Us Now</div>
+  <a href="tel:2549384004" class="phone-band-num">(254) 938-4004</a>
+  <div class="phone-band-right">Monday – Friday &nbsp;|&nbsp; 8:00 AM – 5:00 PM</div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid reveal">
+      <div>
+        <p class="section-eyebrow">About Garcia Auto Repair</p>
+        <h2 class="section-title">Family Owned.<br>Locally Trusted.</h2>
+        <div class="title-bar"></div>
+        <p class="section-body">Garcia Auto Repair has been a cornerstone of the Troy community since 2009. We're a family-owned mechanic and tire shop that treats every customer like a neighbor — because you probably are one.</p>
+        <br>
+        <p class="section-body">From a quick oil change to full engine overhauls, we handle it all with honesty and skill. We're one of the only shops in Bell County fully equipped to service 18-wheelers alongside everyday cars and trucks.</p>
+        <div class="about-stats">
+          <div class="about-stat"><div class="about-stat-num">15+</div><div class="about-stat-label">Years in Business</div></div>
+          <div class="about-stat"><div class="about-stat-num">4.7★</div><div class="about-stat-label">Google Rating</div></div>
+          <div class="about-stat"><div class="about-stat-num">59</div><div class="about-stat-label">Reviews</div></div>
+          <div class="about-stat"><div class="about-stat-num">18W</div><div class="about-stat-label">Big Rig Service</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="info-card">
+          <div class="info-card-top">
+            <div class="info-card-title">Garcia Auto Repair</div>
+            <div class="info-card-sub">1006 N. Central Ave · Troy, Texas 76579</div>
+          </div>
+          <div class="info-card-body">
+            <div class="info-row">
+              <div class="info-icon">📞</div>
+              <div>
+                <div class="info-label">Phone</div>
+                <div class="info-value"><a href="tel:2549384004">(254) 938-4004</a></div>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">✉️</div>
+              <div>
+                <div class="info-label">Email</div>
+                <div class="info-value"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">🕒</div>
+              <div>
+                <div class="info-label">Hours</div>
+                <div class="info-value">Mon–Fri: 8:00 AM – 5:00 PM<br>Saturday & Sunday: Closed</div>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">💳</div>
+              <div>
+                <div class="info-label">Financing</div>
+                <div class="info-value">Snap Finance Available — No Credit? No Problem.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="services-intro reveal">
+      <div>
+        <p class="section-eyebrow">What We Do</p>
+        <h2 class="section-title white">Full-Service<br>Auto Shop</h2>
+        <div class="title-bar"></div>
+      </div>
+      <p class="section-body white">We service all makes and models — from daily drivers to heavy-duty 18-wheelers. No job too big or too small.</p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="svc-card featured">
+        <span class="svc-icon">🔧</span>
+        <div class="svc-name">Engine Repair</div>
+        <div class="svc-desc">Diagnostics, rebuilds & full replacements for all makes.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">🛞</span>
+        <div class="svc-name">Tires</div>
+        <div class="svc-desc">New tires, rotation, balancing & flat repair.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">❄️</span>
+        <div class="svc-name">A/C Repair</div>
+        <div class="svc-desc">Installation, recharge & full system repair.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">🛑</span>
+        <div class="svc-name">Brakes</div>
+        <div class="svc-desc">Pads, rotors, calipers — complete brake service.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">⚡</span>
+        <div class="svc-name">Electrical</div>
+        <div class="svc-desc">Battery, alternator & wiring diagnosis.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">🛢️</span>
+        <div class="svc-name">Oil Change</div>
+        <div class="svc-desc">Conventional & synthetic, filter replacement.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">🔩</span>
+        <div class="svc-name">Transmission</div>
+        <div class="svc-desc">Fluid service, repairs & full rebuilds.</div>
+      </div>
+      <div class="svc-card featured">
+        <span class="svc-icon">🚛</span>
+        <div class="svc-name">18-Wheeler Service</div>
+        <div class="svc-desc">Full mechanical service for semi-trucks & big rigs.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">🔍</span>
+        <div class="svc-name">Auto Diagnostics</div>
+        <div class="svc-desc">Check engine light, computer scan & fault codes.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">🎨</span>
+        <div class="svc-name">Painting</div>
+        <div class="svc-desc">Touch-up and body painting services.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">🌀</span>
+        <div class="svc-name">Steering & Suspension</div>
+        <div class="svc-desc">Alignment, shocks, struts & full steering repair.</div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-icon">🔋</span>
+        <div class="svc-name">Battery & Filters</div>
+        <div class="svc-desc">Testing, replacement & air/cabin filters.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="container">
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto 0;">
+      <p class="section-eyebrow">Why Choose Us</p>
+      <h2 class="section-title">The Garcia Difference</h2>
+      <div class="title-bar" style="margin:0 auto 0;"></div>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="why-number">01</div>
+        <div class="why-title">Family Owned & Operated</div>
+        <div class="why-text">We're your neighbors. Our reputation in Troy means everything to us — every customer is treated like family.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-number">02</div>
+        <div class="why-title">Honest, Fair Pricing</div>
+        <div class="why-text">We quote before we touch your vehicle and stick to it. No surprise bills. No upselling.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-number">03</div>
+        <div class="why-title">All Vehicles Welcome</div>
+        <div class="why-text">Cars, trucks, SUVs, and 18-wheelers. One of the most versatile shops in Bell County.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-number">04</div>
+        <div class="why-title">Snap Finance Available</div>
+        <div class="why-text">Need help covering a repair? No credit? We say yes. Financing through Snap Finance with 100-day cash payoff.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-number">05</div>
+        <div class="why-title">4.7 Stars on Google</div>
+        <div class="why-text">59 reviews and counting. Our customers consistently rave about our service, honesty, and fair prices.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-number">06</div>
+        <div class="why-title">Rooted in Troy</div>
+        <div class="why-text">Serving Troy and Bell County since 2009. We know this community and we're here to stay.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="container">
+    <div class="reviews-header reveal">
+      <div>
+        <p class="section-eyebrow">Customer Reviews</p>
+        <h2 class="section-title white">What Troy Says<br>About Us</h2>
+        <div class="title-bar"></div>
+      </div>
+      <div class="google-badge">
+        <div class="google-score">4.7</div>
+        <div class="google-stars">★★★★★</div>
+        <div class="google-count">59 Google Reviews</div>
+      </div>
+    </div>
+    <div class="reviews-grid reveal">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"The service was great, the cost was fair and the people are really nice."</div>
+        <div class="review-name">— Google Reviewer</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"They worked on my BMW for a GREAT price. Very professional and honest shop."</div>
+        <div class="review-name">— Google Reviewer</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Reliable and honest work. Fair pricing. Will definitely be back for all my car needs."</div>
+        <div class="review-name">— Google Reviewer</div>
+      </div>
+    </div>
+    <div class="reviews-cta reveal">
+      <a href="https://www.google.com/maps/place/Garcia+Auto+Repair" target="_blank" class="btn-outline-white">Read All 59 Reviews on Google ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- SNAP FINANCE BAND -->
+<div class="finance-band">
+  <div class="finance-left">
+    <div class="finance-tag">Financing Available</div>
+    <div class="finance-title">No Credit? We Say YES.</div>
+    <div class="finance-body">100-Day Cash Payoff · 12-Month Payment Plans available through Snap Finance</div>
+  </div>
+  <a href="#contact" class="btn-white">Get Financing Info</a>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="section-eyebrow">Get In Touch</p>
+        <h2 class="section-title">Contact &<br>Location</h2>
+        <div class="title-bar"></div>
+        <p class="section-body">Stop by the shop, give us a call, or send us a message. We're happy to answer any questions.</p>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-icon-box">📍</div>
+            <div>
+              <div class="contact-label">Address</div>
+              <div class="contact-value">1006 N. Central Ave<br>Troy, TX 76579</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-box">📞</div>
+            <div>
+              <div class="contact-label">Phone</div>
+              <div class="contact-value"><a href="tel:2549384004">(254) 938-4004</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-box">✉️</div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="hours-block">
+          <div class="hours-title">Business Hours</div>
+          <div class="hours-row"><span class="hours-day">Monday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
+          <div class="hours-row"><span class="hours-day">Tuesday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
+          <div class="hours-row"><span class="hours-day">Wednesday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
+          <div class="hours-row"><span class="hours-day">Thursday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
+          <div class="hours-row"><span class="hours-day">Friday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
+          <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-closed hours-time">Closed</span></div>
+          <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-closed hours-time">Closed</span></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="contact-form-wrap">
+          <div class="form-title">Send Us a Message</div>
+          <div class="form-sub">We'll get back to you during business hours.</div>
+          <form onsubmit="handleForm(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input class="form-input" type="text" placeholder="John" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input class="form-input" type="text" placeholder="Smith"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input class="form-input" type="tel" placeholder="(254) 000-0000"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Service Needed</label>
+              <select class="form-select">
+                <option value="">— Select a Service —</option>
+                <option>Engine Repair</option>
+                <option>Tires</option>
+                <option>A/C Repair</option>
+                <option>Brakes</option>
+                <option>Electrical</option>
+                <option>Oil Change</option>
+                <option>Transmission</option>
+                <option>18-Wheeler Service</option>
+                <option>Auto Diagnostics</option>
+                <option>Steering & Suspension</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tell Us More</label>
+              <textarea class="form-textarea" placeholder="Describe your vehicle issue or what you need..."></textarea>
+            </div>
+            <button type="submit" class="form-submit">Send Message →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Garcia Auto Repair</div>
+      <div class="footer-brand-tag">Troy, Texas · Est. 2009</div>
+      <p class="footer-desc">A family-owned mechanic and tire shop serving Troy and the greater Bell County area since 2009. Honest work. Fair prices. All vehicles welcome.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#services">Our Services</a></li>
+        <li><a href="#why">Why Choose Us</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact & Hours</a></li>
+        <li><a href="https://www.facebook.com/10006640300" target="_blank">Facebook</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-contact-item"><a href="tel:2549384004">(254) 938-4004</a></div>
+      <div class="footer-contact-item"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
+      <div class="footer-contact-item">1006 N. Central Ave<br>Troy, TX 76579</div>
+      <div class="footer-contact-item" style="margin-top:16px; color:rgba(255,255,255,0.3);">Mon–Fri: 8AM – 5PM<br>Sat–Sun: Closed</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Garcia Auto Repair · Troy, Texas · All rights reserved.</div>
+    <a href="https://www.facebook.com/10006640300" target="_blank" class="footer-fb">📘 Follow on Facebook</a>
+  </div>
+</footer>
+
+<a href="tel:2549384004" class="float-call">☎ Call Now</a>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Form
+  function handleForm(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '✓ Message Sent!';
+    btn.style.background = '#1e7d34';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      btn.disabled = false;
+      e.target.reset();
+    }, 3500);
+  }
+</script>
+</body>
+</html>
