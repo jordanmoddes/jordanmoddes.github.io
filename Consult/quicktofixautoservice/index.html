@@ -72,7 +72,7 @@ h1 em { font-style: normal; color: #00b5a4; display: block; }
 .ti b { color: #00b5a4; }
 @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-section { padding: 72px 20px; }
+section { padding: 56px 20px; }
 .ey { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: #00b5a4; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
 .ey::after { content: ''; width: 36px; height: 1px; background: #00b5a4; }
 h2 { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 900; font-size: clamp(2.2rem, 9vw, 3.8rem); text-transform: uppercase; line-height: 0.93; letter-spacing: -0.01em; margin-bottom: 20px; }
@@ -152,7 +152,7 @@ footer { background: #141414; border-top: 1px solid rgba(255,255,255,0.07); padd
   nav { padding: 0 40px; }
   .nav-links { display: flex; }
   .ham { display: none; }
-  section { padding: 96px 40px; }
+  section { padding: 72px 40px; }
   #hero { padding: 100px 40px 64px; }
   .about-g { grid-template-columns: 1fr 1fr; }
   .contact-g { grid-template-columns: 1fr 1fr; }
@@ -160,7 +160,7 @@ footer { background: #141414; border-top: 1px solid rgba(255,255,255,0.07); padd
 }
 @media (min-width: 1080px) {
   nav { padding: 0 60px; }
-  section { padding: 112px 60px; }
+  section { padding: 88px 60px; }
   #hero { padding: 100px 60px 80px; }
   .srv-g { grid-template-columns: repeat(3, 1fr); }
   .sc.feat { grid-column: span 3; }
@@ -399,6 +399,29 @@ function submitForm() {
   btn.style.background = '#00786e';
   setTimeout(function() { btn.textContent = 'Submit Request \u2192'; btn.style.background = ''; }, 3000);
 }
+
+// Safe fade: only animate sections that start fully below the viewport
+document.addEventListener('DOMContentLoaded', function() {
+  var targets = document.querySelectorAll('#about, #services, #reviews, #contact, footer');
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'none';
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.04 });
+  targets.forEach(function(el) {
+    var rect = el.getBoundingClientRect();
+    if (rect.top >= window.innerHeight) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      io.observe(el);
+    }
+  });
+});
 </script>
 </body>
 </html>
