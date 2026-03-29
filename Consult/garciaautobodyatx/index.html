@@ -1,1313 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Garcia Auto Repair | Troy, TX | (254) 938-4004</title>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --white:   #ffffff;
-      --off:     #f7f7f7;
-      --light:   #eeeeee;
-      --mid:     #cccccc;
-      --text:    #1a1a1a;
-      --text2:   #555555;
-      --text3:   #888888;
-      --black:   #111111;
-      --red:     #c0200f;
-      --red2:    #e02515;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Barlow', sans-serif;
-      background: var(--white);
-      color: var(--text);
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lopez Tire Shop | Austin, TX</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#0e0e0e;color:#f2efe8;font-family:'Barlow',sans-serif;overflow-x:hidden}
 
-    /* ── DEMO BAR ── */
-    .demo-bar {
-      background: var(--black);
-      color: rgba(255,255,255,0.45);
-      text-align: center;
-      padding: 7px 16px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;background:rgba(14,14,14,0.95);border-bottom:3px solid #f5c400}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:#f5c400;text-decoration:none;letter-spacing:.04em}
+.logo span{color:#c8102e}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;color:#f2efe8;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:#f5c400}
+.nav-cta{background:#c8102e!important;color:#fff!important;padding:8px 20px}
+.nav-cta:hover{background:#a00!important;color:#fff!important}
 
-    /* ── UTIL BAR ── */
-    .util-bar {
-      background: var(--off);
-      border-bottom: 1px solid var(--light);
-      padding: 10px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .util-left { display: flex; gap: 28px; flex-wrap: wrap; }
-    .util-item {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text2);
-    }
-    .util-item a { color: var(--text2); text-decoration: none; }
-    .util-item a:hover { color: var(--red); }
-    .util-item .dot { color: var(--mid); margin-right: 6px; }
-    .util-hours {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text3);
-    }
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;position:relative;overflow:hidden;background:#0e0e0e}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 75% 50%,rgba(245,196,0,.09),transparent 65%),radial-gradient(ellipse 40% 40% at 15% 85%,rgba(200,16,46,.11),transparent 60%)}
+.hero-lines{position:absolute;inset:0;background-image:repeating-linear-gradient(-55deg,transparent,transparent 38px,rgba(245,196,0,.015) 38px,rgba(245,196,0,.015) 39px)}
+.hero-ring{position:absolute;border-radius:50%;border:12px solid rgba(245,196,0,.06);pointer-events:none}
+.ring1{width:580px;height:580px;right:-60px;top:50%;transform:translateY(-50%)}
+.ring2{width:380px;height:380px;right:90px;top:50%;transform:translateY(-50%);border-color:rgba(200,16,46,.08)}
+.ring3{width:180px;height:180px;right:190px;top:50%;transform:translateY(-50%);border-color:rgba(245,196,0,.14)}
+.hero-inner{position:relative;z-index:2;max-width:700px}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#c8102e;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;padding:6px 16px;margin-bottom:24px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%)}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,8.5rem);line-height:.9;letter-spacing:.02em;color:#f2efe8;margin-bottom:22px}
+h1 .yellow{color:#f5c400;display:block}
+.hero-sub{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;letter-spacing:.05em;color:rgba(242,239,232,.68);margin-bottom:36px;line-height:1.55;max-width:520px}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+.btn-yellow{display:inline-block;background:#f5c400;color:#0e0e0e;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:14px 34px;box-shadow:4px 4px 0 #c8102e;transition:transform .15s,box-shadow .15s}
+.btn-yellow:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #c8102e}
+.btn-outline{display:inline-block;border:2px solid #f2efe8;color:#f2efe8;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.95rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:14px 34px;transition:border-color .2s,color .2s}
+.btn-outline:hover{border-color:#f5c400;color:#f5c400}
+.hero-stats{display:flex;gap:48px;margin-top:52px;padding-top:28px;border-top:1px solid rgba(242,239,232,.1);flex-wrap:wrap}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#f5c400;line-height:1}
+.stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:#888;margin-top:3px}
 
-    /* ── NAV ── */
-    nav {
-      background: var(--white);
-      border-bottom: 2px solid var(--light);
-      padding: 0 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky; top: 0; z-index: 200;
-      box-shadow: 0 1px 12px rgba(0,0,0,0.06);
-    }
-    .nav-logo {
-      display: flex; align-items: center; gap: 14px;
-      text-decoration: none; padding: 16px 0;
-    }
-    .nav-logo-bar {
-      width: 5px; height: 38px;
-      background: var(--red);
-      flex-shrink: 0;
-    }
-    .nav-logo-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--black);
-      line-height: 1.15;
-    }
-    .nav-logo-sub {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text3);
-    }
-    .nav-links { display: flex; list-style: none; }
-    .nav-links a {
-      display: block;
-      padding: 22px 16px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text2);
-      text-decoration: none;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .nav-links a:hover { color: var(--black); border-bottom-color: var(--red); }
-    .nav-cta {
-      background: var(--red) !important;
-      color: var(--white) !important;
-      padding: 12px 24px !important;
-      margin-left: 16px;
-      border-bottom: none !important;
-      border-radius: 2px;
-      transition: background 0.2s !important;
-    }
-    .nav-cta:hover { background: var(--red2) !important; border-bottom: none !important; }
+/* TICKER */
+.ticker{background:#f5c400;overflow:hidden;padding:11px 0;white-space:nowrap}
+.ticker-track{display:inline-block;animation:tick 24s linear infinite}
+.ticker-track span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;color:#0e0e0e;padding:0 28px}
+.ticker-track span::before{content:'#';margin-right:8px;color:#c8102e}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* ── HERO ── */
-    .hero {
-      background: var(--white);
-      border-bottom: 1px solid var(--light);
-      display: flex;
-      align-items: stretch;
-      min-height: 82vh;
-    }
-    /* Left content panel */
-    .hero-left {
-      flex: 1;
-      padding: 80px 64px 80px 80px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      animation: heroIn 0.8s ease both;
-    }
-    @keyframes heroIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    /* Right dark panel */
-    .hero-right {
-      width: 340px;
-      flex-shrink: 0;
-      background: var(--black);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 60px 40px;
-    }
+/* ABOUT */
+#about{display:grid;grid-template-columns:1fr 1fr}
+.about-left{background:#f5c400;position:relative;overflow:hidden;min-height:480px;display:flex;flex-direction:column;justify-content:flex-end;padding:60px}
+.about-ghost{position:absolute;top:-10px;right:-20px;font-family:'Bebas Neue',sans-serif;font-size:22rem;color:rgba(14,14,14,.07);line-height:1;user-select:none;pointer-events:none}
+.about-tag{display:inline-block;background:#c8102e;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;padding:5px 12px;margin-bottom:16px;position:relative;z-index:1}
+.about-heading{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:#0e0e0e;line-height:1;letter-spacing:.03em;position:relative;z-index:1}
+.about-right{background:#1a1a1a;padding:80px 64px;display:flex;flex-direction:column;justify-content:center}
+.sec-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#f5c400;margin-bottom:14px}
+h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4vw,3.2rem);letter-spacing:.03em;color:#f2efe8;line-height:1.05;margin-bottom:22px}
+h2 .y{color:#f5c400}
+.body-p{font-size:1rem;line-height:1.78;color:rgba(242,239,232,.68);margin-bottom:14px}
+.bilingual{display:flex;align-items:flex-start;gap:14px;margin-top:24px;padding:16px 20px;border-left:3px solid #f5c400;background:rgba(245,196,0,.05)}
+.bilingual p{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;letter-spacing:.03em;color:#f2efe8;line-height:1.45}
+.bilingual p em{color:#f5c400;font-style:normal}
 
-    .hero-eyebrow {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 24px;
-    }
-    .hero-eyebrow-line {
-      width: 32px; height: 3px; background: var(--red);
-    }
-    .hero-eyebrow-text {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--text3);
-    }
-    .hero-h1 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(3rem, 6vw, 5.5rem);
-      font-weight: 900;
-      line-height: 0.93;
-      letter-spacing: 0.01em;
-      text-transform: uppercase;
-      color: var(--black);
-      margin-bottom: 24px;
-    }
-    .hero-h1 .red { color: var(--red); }
-    .hero-desc {
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--text2);
-      line-height: 1.75;
-      max-width: 420px;
-      margin-bottom: 40px;
-    }
-    .hero-btns {
-      display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px;
-    }
-    .btn-primary {
-      background: var(--red);
-      color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 14px 32px;
-      text-decoration: none;
-      display: inline-block;
-      border: 2px solid var(--red);
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-primary:hover { background: var(--red2); border-color: var(--red2); }
-    .btn-secondary {
-      background: transparent;
-      color: var(--black);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 14px 32px;
-      text-decoration: none;
-      display: inline-block;
-      border: 2px solid var(--light);
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .btn-secondary:hover { border-color: var(--black); background: var(--off); }
+/* SERVICES */
+#services{background:#0e0e0e;padding:96px 48px}
+.sec-header{text-align:center;margin-bottom:60px}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-width:1160px;margin:0 auto}
+.svc-card{background:#1a1a1a;padding:42px 34px;position:relative;overflow:hidden;transition:background .2s}
+.svc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#f5c400;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.svc-card:hover{background:#202020}
+.svc-card:hover::after{transform:scaleX(1)}
+.svc-icon{font-size:2rem;margin-bottom:18px;display:block}
+.svc-card h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:.08em;text-transform:uppercase;color:#f2efe8;margin-bottom:10px}
+.svc-card p{font-size:.92rem;line-height:1.68;color:rgba(242,239,232,.58)}
+.svc-note{display:inline-block;margin-top:16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:#f5c400}
 
-    /* Hero trust pills */
-    .hero-trust {
-      display: flex; gap: 24px; flex-wrap: wrap;
-      border-top: 1px solid var(--light);
-      padding-top: 28px;
-    }
-    .trust-pill {
-      display: flex; align-items: center; gap: 8px;
-    }
-    .trust-pill-icon { font-size: 1.1rem; }
-    .trust-pill-val {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--black);
-    }
-    .trust-pill-label {
-      font-size: 0.78rem;
-      color: var(--text3);
-      font-weight: 500;
-    }
+/* WHY BAND */
+.why{background:#c8102e;padding:60px 48px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.why-item{text-align:center}
+.why-num{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:#f5c400;line-height:1}
+.why-lbl{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-top:5px}
 
-    /* Hero right panel */
-    .hero-panel-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 20px;
-    }
-    .hero-panel-phone {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--white);
-      text-decoration: none;
-      display: block;
-      margin-bottom: 8px;
-      transition: color 0.2s;
-    }
-    .hero-panel-phone:hover { color: var(--red); }
-    .hero-panel-divider {
-      width: 100%; height: 1px;
-      background: rgba(255,255,255,0.1);
-      margin: 24px 0;
-    }
-    .panel-info-row {
-      margin-bottom: 18px;
-    }
-    .panel-info-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 4px;
-    }
-    .panel-info-val {
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: rgba(255,255,255,0.8);
-      line-height: 1.55;
-    }
-    .panel-info-val a { color: rgba(255,255,255,0.8); text-decoration: none; }
-    .panel-info-val a:hover { color: var(--red); }
-    .panel-cta {
-      display: block;
-      background: var(--red);
-      color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 14px;
-      text-decoration: none;
-      margin-top: 28px;
-      transition: background 0.2s;
-    }
-    .panel-cta:hover { background: var(--red2); }
+/* REVIEWS */
+#reviews{background:#1a1a1a;padding:96px 48px}
+.reviews-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:1080px;margin:0 auto}
+.rev-card{background:#0e0e0e;padding:34px 30px;border-top:3px solid #f5c400}
+.stars{color:#f5c400;font-size:.95rem;letter-spacing:2px;margin-bottom:14px}
+.rev-text{font-size:.97rem;line-height:1.72;color:rgba(242,239,232,.75);font-style:italic;margin-bottom:18px}
+.rev-author{display:flex;align-items:center;gap:12px}
+.rev-av{width:38px;height:38px;border-radius:50%;background:#f5c400;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:#0e0e0e;flex-shrink:0}
+.rev-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;color:#f2efe8}
+.rev-src{font-size:.78rem;color:#888;margin-top:2px}
+.grating{display:flex;align-items:center;justify-content:center;gap:20px;margin:52px auto 0;padding:26px 32px;border:1px solid rgba(245,196,0,.2);max-width:420px}
+.grating .big{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:#f5c400;line-height:1}
+.grating .meta .gs{color:#f5c400;font-size:1.1rem}
+.grating .meta .gc{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;color:#888;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
 
-    /* ── STATS STRIP ── */
-    .stats-strip {
-      background: var(--off);
-      border-top: 1px solid var(--light);
-      border-bottom: 1px solid var(--light);
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .stat {
-      padding: 28px 52px;
-      text-align: center;
-      border-right: 1px solid var(--light);
-    }
-    .stat:last-child { border-right: none; }
-    .stat-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 900;
-      color: var(--red);
-      line-height: 1;
-    }
-    .stat-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin-top: 5px;
-    }
+/* HOURS */
+#hours{background:#f5c400;padding:72px 48px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+#hours .h-left{}
+#hours .h-left .sec-label{color:#c8102e}
+#hours h2{color:#0e0e0e;margin-bottom:12px}
+.h-addr{font-family:'Barlow',sans-serif;font-size:.9rem;color:rgba(14,14,14,.6);line-height:1.6;margin-bottom:4px}
+.h-phone{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8102e;letter-spacing:.04em;text-decoration:none;display:inline-block;margin-top:10px}
+.h-cash{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,14,14,.45);margin-top:8px}
+.htable{width:100%;border-collapse:collapse}
+.htable tr{border-bottom:1px solid rgba(14,14,14,.12)}
+.htable td{font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.03em;color:#0e0e0e;padding:10px 0}
+.htable td:last-child{text-align:right;font-weight:700}
 
-    /* ── SECTIONS ── */
-    section { padding: 88px 40px; }
-    .container { max-width: 1080px; margin: 0 auto; }
-    .eyebrow {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 10px;
-    }
-    .sec-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      color: var(--black);
-      line-height: 1;
-      margin-bottom: 14px;
-    }
-    .title-rule {
-      width: 40px; height: 3px;
-      background: var(--red);
-      margin-bottom: 28px;
-    }
-    .body-text {
-      font-size: 0.97rem;
-      color: var(--text2);
-      line-height: 1.8;
-    }
+/* CONTACT */
+#contact{background:#0e0e0e;padding:96px 48px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;max-width:1100px;margin:0 auto;align-items:start}
+.c-info h2{margin-bottom:22px}
+.c-info .body-p{margin-bottom:32px}
+.c-rows{display:flex;flex-direction:column;gap:16px}
+.c-row{display:flex;align-items:flex-start;gap:14px}
+.c-icon{width:40px;height:40px;background:#f5c400;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#0e0e0e}
+.c-text small{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#888;margin-bottom:2px}
+.c-text{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;letter-spacing:.03em;color:#f2efe8;line-height:1.5}
+.c-text a{color:#f5c400;text-decoration:none}
+.c-form{background:#1a1a1a;padding:44px 38px}
+.form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.12em;text-transform:uppercase;color:#f5c400;margin-bottom:26px}
+.frow{margin-bottom:18px}
+.frow-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#888;margin-bottom:7px}
+input,select,textarea{width:100%;background:#0e0e0e;border:1px solid #3a3a3a;padding:11px 14px;font-family:'Barlow',sans-serif;font-size:.93rem;color:#f2efe8;outline:none;border-radius:0;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:#f5c400}
+textarea{resize:vertical;min-height:90px}
+select option{background:#0e0e0e}
+.btn-submit{width:100%;background:#f5c400;border:none;color:#0e0e0e;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.16em;text-transform:uppercase;padding:15px;cursor:pointer;transition:background .2s,transform .15s;margin-top:6px}
+.btn-submit:hover{background:#e6b800;transform:translateY(-1px)}
 
-    /* ── ABOUT ── */
-    #about { background: var(--white); }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .about-body { margin-bottom: 20px; }
+/* FOOTER */
+footer{background:#1a1a1a;border-top:3px solid #f5c400;padding:52px 48px 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:56px;max-width:1100px;margin:0 auto 44px}
+.f-brand .logo{display:inline-block;margin-bottom:14px;font-size:1.8rem}
+.f-tagline{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:.04em;color:rgba(242,239,232,.45);font-style:italic;margin-bottom:12px}
+.f-addr{font-size:.83rem;color:rgba(242,239,232,.3);line-height:1.65}
+.f-col h4{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:#f5c400;margin-bottom:14px}
+.f-col ul{list-style:none}
+.f-col li{margin-bottom:9px}
+.f-col a{font-size:.88rem;color:rgba(242,239,232,.45);text-decoration:none;transition:color .2s}
+.f-col a:hover{color:#f5c400}
+.footer-bot{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding-top:22px;border-top:1px solid rgba(242,239,232,.07);flex-wrap:wrap;gap:10px}
+.f-copy{font-size:.8rem;color:rgba(242,239,232,.28)}
+.f-jmod{font-size:.72rem;color:rgba(242,239,232,.2);letter-spacing:.05em}
+.f-jmod a{color:rgba(242,239,232,.28);text-decoration:none;transition:color .2s}
+.f-jmod a:hover{color:#f5c400}
 
-    /* Info block right side */
-    .info-block {
-      background: var(--off);
-      border: 1px solid var(--light);
-    }
-    .info-block-header {
-      background: var(--black);
-      padding: 22px 28px;
-      border-left: 5px solid var(--red);
-    }
-    .info-block-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--white);
-    }
-    .info-block-addr {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.5);
-      margin-top: 3px;
-    }
-    .info-block-body { padding: 8px 0; }
-    .info-line {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 16px 28px;
-      border-bottom: 1px solid var(--light);
-    }
-    .info-line:last-child { border-bottom: none; }
-    .info-line-icon { font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
-    .info-line-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 3px;
-    }
-    .info-line-val {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text);
-      line-height: 1.55;
-    }
-    .info-line-val a { color: var(--text); text-decoration: none; }
-    .info-line-val a:hover { color: var(--red); }
+/* FADE-IN ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero-inner > *{animation:fadeUp .65s ease both}
+.badge{animation-delay:.1s}.hero-inner h1{animation-delay:.22s}.hero-sub{animation-delay:.34s}.hero-btns{animation-delay:.46s}.hero-stats{animation-delay:.58s}
 
-    /* About stat row */
-    .about-stats {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
-      margin-top: 36px;
-    }
-    .astat {
-      background: var(--off);
-      border: 1px solid var(--light);
-      padding: 22px 20px;
-      border-left: 4px solid var(--light);
-      transition: border-left-color 0.2s;
-    }
-    .astat:hover { border-left-color: var(--red); }
-    .astat-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: var(--red);
-      line-height: 1;
-    }
-    .astat-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 4px;
-    }
-
-    /* ── SERVICES ── */
-    #services { background: var(--off); border-top: 1px solid var(--light); border-bottom: 1px solid var(--light); }
-    .services-header {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 40px; align-items: end; margin-bottom: 48px;
-    }
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
-    }
-    .svc {
-      background: var(--white);
-      border: 1px solid var(--light);
-      padding: 28px 22px;
-      cursor: default;
-      position: relative;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      border-top: 3px solid transparent;
-    }
-    .svc:hover {
-      border-top-color: var(--red);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-    }
-    .svc-icon { font-size: 1.6rem; margin-bottom: 14px; display: block; }
-    .svc-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.92rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--black);
-      margin-bottom: 7px;
-    }
-    .svc-desc { font-size: 0.8rem; color: var(--text3); line-height: 1.6; }
-    /* Featured = red top border always on */
-    .svc.featured { border-top-color: var(--red); }
-    .svc.featured .svc-name { color: var(--red); }
-
-    /* ── WHY ── */
-    #why { background: var(--white); }
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      margin-top: 48px;
-    }
-    .why-card {
-      background: var(--off);
-      border: 1px solid var(--light);
-      padding: 32px 28px;
-      transition: box-shadow 0.2s;
-    }
-    .why-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
-    .why-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.2em;
-      color: var(--red);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .why-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--black);
-      margin-bottom: 10px;
-    }
-    .why-text { font-size: 0.88rem; color: var(--text2); line-height: 1.72; }
-
-    /* ── SNAP FINANCE ── */
-    .snap-band {
-      background: var(--black);
-      padding: 48px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-    .snap-left {}
-    .snap-tag {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 8px;
-    }
-    .snap-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      color: var(--white);
-      letter-spacing: 0.02em;
-      line-height: 1;
-      margin-bottom: 10px;
-    }
-    .snap-body { font-size: 0.92rem; color: rgba(255,255,255,0.5); max-width: 460px; line-height: 1.7; }
-    .snap-steps {
-      display: flex; gap: 2px; margin-top: 24px; flex-wrap: wrap;
-    }
-    .snap-step {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 14px 18px;
-      display: flex; align-items: center; gap: 10px;
-      flex: 1; min-width: 140px;
-    }
-    .snap-step-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 900;
-      color: var(--red);
-      flex-shrink: 0;
-    }
-    .snap-step-text {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.4;
-    }
-    .snap-btn {
-      display: inline-block;
-      background: var(--red);
-      color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 16px 36px;
-      text-decoration: none;
-      white-space: nowrap;
-      align-self: flex-start;
-      transition: background 0.2s;
-    }
-    .snap-btn:hover { background: var(--red2); }
-
-    /* ── REVIEWS ── */
-    #reviews { background: var(--off); border-top: 1px solid var(--light); border-bottom: 1px solid var(--light); }
-    .reviews-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-      margin-bottom: 44px;
-    }
-    .google-box {
-      background: var(--white);
-      border: 1px solid var(--light);
-      border-top: 3px solid var(--red);
-      padding: 20px 28px;
-      text-align: center;
-      min-width: 160px;
-    }
-    .google-score {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 900;
-      color: var(--black);
-      line-height: 1;
-    }
-    .google-stars { color: var(--red); font-size: 1rem; letter-spacing: 2px; margin: 4px 0; }
-    .google-count {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text3);
-    }
-    .reviews-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-    .review {
-      background: var(--white);
-      border: 1px solid var(--light);
-      padding: 32px 28px;
-      border-top: 3px solid transparent;
-      transition: border-top-color 0.2s, box-shadow 0.2s;
-    }
-    .review:hover { border-top-color: var(--red); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-    .review-stars { color: var(--red); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 16px; }
-    .review-text {
-      font-size: 0.95rem;
-      color: var(--text2);
-      line-height: 1.75;
-      font-style: italic;
-      margin-bottom: 20px;
-    }
-    .review-author {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text3);
-      border-top: 1px solid var(--light);
-      padding-top: 14px;
-    }
-    .reviews-cta { text-align: center; margin-top: 40px; }
-    .btn-outline-dark {
-      display: inline-block;
-      border: 2px solid var(--black);
-      color: var(--black);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 13px 30px;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-outline-dark:hover { background: var(--black); color: var(--white); }
-
-    /* ── CONTACT ── */
-    #contact { background: var(--white); }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 72px;
-      align-items: start;
-    }
-    .contact-item {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--light);
-    }
-    .contact-item:last-of-type { border-bottom: none; }
-    .c-icon-box {
-      width: 36px; height: 36px;
-      background: var(--off);
-      border: 1px solid var(--light);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.95rem;
-      flex-shrink: 0;
-    }
-    .c-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 3px;
-    }
-    .c-val {
-      font-size: 0.92rem;
-      font-weight: 500;
-      color: var(--text);
-      line-height: 1.55;
-    }
-    .c-val a { color: var(--text); text-decoration: none; }
-    .c-val a:hover { color: var(--red); }
-
-    .hours-wrap { margin-top: 32px; }
-    .hours-head {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--text3);
-      margin-bottom: 12px;
-    }
-    .hours-row {
-      display: flex; justify-content: space-between;
-      padding: 9px 0;
-      border-bottom: 1px solid var(--light);
-      font-size: 0.88rem;
-    }
-    .hours-day { font-weight: 600; color: var(--black); }
-    .hours-time { color: var(--text2); }
-    .closed-txt { color: var(--red) !important; font-weight: 600; }
-
-    /* Contact Form */
-    .form-box {
-      background: var(--off);
-      border: 1px solid var(--light);
-      padding: 40px;
-    }
-    .form-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      color: var(--black);
-      margin-bottom: 4px;
-    }
-    .form-sub { font-size: 0.85rem; color: var(--text3); margin-bottom: 28px; }
-    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-    .flabel {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text3);
-    }
-    .finput, .fselect, .ftextarea {
-      background: var(--white);
-      border: 1px solid var(--light);
-      padding: 11px 14px;
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.92rem;
-      color: var(--text);
-      outline: none;
-      border-radius: 0;
-      -webkit-appearance: none;
-      transition: border-color 0.2s;
-    }
-    .finput:focus, .fselect:focus, .ftextarea:focus { border-color: var(--red); }
-    .ftextarea { resize: vertical; min-height: 100px; }
-    .fsubmit {
-      width: 100%;
-      background: var(--red);
-      color: var(--white);
-      border: none;
-      padding: 15px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem;
-      font-weight: 800;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 4px;
-    }
-    .fsubmit:hover { background: var(--red2); }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--black);
-    }
-    .footer-main {
-      padding: 56px 40px 40px;
-      display: grid;
-      grid-template-columns: 1.6fr 1fr 1fr;
-      gap: 48px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .foot-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      color: var(--white);
-      letter-spacing: 0.04em;
-      margin-bottom: 2px;
-    }
-    .foot-sub {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 16px;
-    }
-    .foot-desc { font-size: 0.86rem; color: rgba(255,255,255,0.4); line-height: 1.7; }
-    .foot-col-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 16px;
-    }
-    .foot-links { list-style: none; }
-    .foot-links li { margin-bottom: 9px; }
-    .foot-links a {
-      font-size: 0.86rem;
-      color: rgba(255,255,255,0.45);
-      text-decoration: none;
-      transition: color 0.2s;
-      font-weight: 500;
-    }
-    .foot-links a:hover { color: var(--white); }
-    .foot-contact-line {
-      font-size: 0.86rem;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 9px;
-      font-weight: 500;
-    }
-    .foot-contact-line a { color: rgba(255,255,255,0.45); text-decoration: none; }
-    .foot-contact-line a:hover { color: var(--white); }
-    .footer-bottom {
-      padding: 18px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .foot-copy { font-size: 0.76rem; color: rgba(255,255,255,0.2); }
-    .foot-fb {
-      font-size: 0.76rem;
-      color: rgba(255,255,255,0.25);
-      text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-    .foot-fb:hover { color: var(--white); }
-
-    /* FLOAT CALL */
-    .float-call {
-      display: none;
-      position: fixed; bottom: 18px; right: 18px;
-      background: var(--red);
-      color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem; font-weight: 800;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 14px 24px;
-      text-decoration: none;
-      z-index: 300;
-      box-shadow: 0 4px 20px rgba(192,32,15,0.4);
-    }
-
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 960px) {
-      .hero { flex-direction: column; min-height: auto; }
-      .hero-left { padding: 60px 32px; }
-      .hero-right { width: 100%; padding: 40px 32px; }
-      .about-grid, .contact-grid, .services-header, .footer-main { grid-template-columns: 1fr; gap: 40px; }
-      .services-grid { grid-template-columns: repeat(2, 1fr); }
-      .why-grid { grid-template-columns: repeat(2, 1fr); }
-      .reviews-grid { grid-template-columns: 1fr; }
-      section { padding: 64px 24px; }
-      nav { padding: 0 20px; }
-      .util-bar { padding: 10px 20px; }
-      .snap-band { padding: 40px 24px; }
-      .footer-main { padding: 40px 24px; }
-      .footer-bottom { padding: 16px 24px; }
-    }
-    @media (max-width: 600px) {
-      .nav-links { display: none; }
-      .float-call { display: block; }
-      .services-grid { grid-template-columns: 1fr 1fr; }
-      .why-grid { grid-template-columns: 1fr; }
-      .frow { grid-template-columns: 1fr; }
-      .about-stats { grid-template-columns: 1fr 1fr; }
-      .stat { padding: 22px 28px; }
-      .snap-steps { flex-direction: column; }
-    }
-  </style>
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:12px 20px}
+  .nav-links{display:none}
+  #hero{padding:100px 22px 60px}
+  .hero-ring{display:none}
+  #about{grid-template-columns:1fr}
+  .about-right{padding:56px 24px}
+  .about-left{min-height:280px;padding:36px 24px}
+  .about-ghost{font-size:14rem}
+  #services{padding:72px 22px}
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .why{grid-template-columns:repeat(2,1fr);padding:44px 22px}
+  #reviews{padding:72px 22px}
+  .reviews-grid{grid-template-columns:1fr}
+  #hours{grid-template-columns:1fr;padding:52px 22px;gap:36px}
+  #contact{padding:72px 22px}
+  .contact-grid{grid-template-columns:1fr;gap:44px}
+  footer{padding:44px 22px 24px}
+  .footer-grid{grid-template-columns:1fr;gap:32px}
+  .footer-bot{flex-direction:column;align-items:flex-start}
+  .frow-2{grid-template-columns:1fr}
+}
+@media(max-width:580px){
+  .svc-grid{grid-template-columns:1fr}
+  .why{grid-template-columns:1fr 1fr}
+}
+</style>
 </head>
 <body>
 
-<div class="demo-bar">⚙ Demo — jordanmoddes.com/Consult/GarciaAutoRepair</div>
-
-<!-- UTIL BAR -->
-<div class="util-bar">
-  <div class="util-left">
-    <div class="util-item"><span class="dot">📍</span>1006 N. Central Ave, Troy, TX 76579</div>
-    <div class="util-item"><span class="dot">📞</span><a href="tel:2549384004">(254) 938-4004</a></div>
-    <div class="util-item"><span class="dot">✉</span><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
-  </div>
-  <div class="util-hours">Mon – Fri &nbsp;·&nbsp; 8:00 AM – 5:00 PM</div>
-</div>
-
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-bar"></div>
-    <div>
-      <div class="nav-logo-name">Garcia Auto Repair</div>
-      <div class="nav-logo-sub">Troy, Texas · Est. 2009</div>
-    </div>
-  </a>
+  <a class="logo" href="#">LOPEZ <span>TIRE</span> SHOP</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
-    <li><a href="#why">Why Us</a></li>
     <li><a href="#reviews">Reviews</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="tel:2549384004" class="nav-cta">☎ Call Now</a></li>
+    <li><a href="#hours">Hours</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-eyebrow">
-      <div class="hero-eyebrow-line"></div>
-      <div class="hero-eyebrow-text">Troy, Texas · Family Owned Since 2009</div>
-    </div>
-    <h1 class="hero-h1">
-      Your Local<br>
-      <span class="red">Auto Repair</span><br>
-      Experts
-    </h1>
-    <p class="hero-desc">Honest work. Fair prices. From oil changes to full engine overhauls — and one of the only shops in Bell County that services 18-wheelers.</p>
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-ring ring1"></div>
+  <div class="hero-ring ring2"></div>
+  <div class="hero-ring ring3"></div>
+  <div class="hero-inner">
+    <div class="badge">&#9733; 4.5 Stars &bull; 65 Google Reviews &bull; Austin, TX</div>
+    <h1>Austin's <span class="yellow">Tire Pros.</span></h1>
+    <p class="hero-sub">New tires. Used tires. Fast, honest service on North I-35. Most jobs done in 15 minutes or less &mdash; no appointment needed.</p>
     <div class="hero-btns">
-      <a href="tel:2549384004" class="btn-primary">☎ Call (254) 938-4004</a>
-      <a href="#services" class="btn-secondary">View All Services</a>
+      <a href="tel:5126586921" class="btn-yellow">&#128222; Call: (512) 658-6921</a>
+      <a href="#services" class="btn-outline">See Our Services</a>
     </div>
-    <div class="hero-trust">
-      <div class="trust-pill">
-        <div class="trust-pill-icon">⭐</div>
-        <div>
-          <div class="trust-pill-val">4.7 Stars</div>
-          <div class="trust-pill-label">59 Google Reviews</div>
-        </div>
-      </div>
-      <div class="trust-pill">
-        <div class="trust-pill-icon">🏠</div>
-        <div>
-          <div class="trust-pill-val">Family Owned</div>
-          <div class="trust-pill-label">Est. 2009</div>
-        </div>
-      </div>
-      <div class="trust-pill">
-        <div class="trust-pill-icon">🚛</div>
-        <div>
-          <div class="trust-pill-val">All Vehicles</div>
-          <div class="trust-pill-label">Cars to 18-Wheelers</div>
-        </div>
-      </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">4.5&#9733;</div><div class="stat-lbl">Google Rating</div></div>
+      <div><div class="stat-num">15 min</div><div class="stat-lbl">Avg. Service Time</div></div>
+      <div><div class="stat-num">7:30</div><div class="stat-lbl">Open Mon&ndash;Sat</div></div>
+      <div><div class="stat-num">Cash</div><div class="stat-lbl">No Cards Needed</div></div>
     </div>
   </div>
-  <div class="hero-right">
-    <div class="hero-panel-label">Call Us Today</div>
-    <a href="tel:2549384004" class="hero-panel-phone">(254) 938-4004</a>
-    <div class="hero-panel-divider"></div>
-    <div class="panel-info-row">
-      <div class="panel-info-label">Address</div>
-      <div class="panel-info-val">1006 N. Central Ave<br>Troy, TX 76579</div>
-    </div>
-    <div class="panel-info-row">
-      <div class="panel-info-label">Hours</div>
-      <div class="panel-info-val">Mon–Fri: 8:00 AM – 5:00 PM<br>Sat–Sun: Closed</div>
-    </div>
-    <div class="panel-info-row">
-      <div class="panel-info-label">Email</div>
-      <div class="panel-info-val"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
-    </div>
-    <a href="#contact" class="panel-cta">Send Us a Message →</a>
-  </div>
-</div>
+</section>
 
-<!-- STATS STRIP -->
-<div class="stats-strip">
-  <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Years in Troy</div></div>
-  <div class="stat"><div class="stat-num">4.7★</div><div class="stat-label">Google Rating</div></div>
-  <div class="stat"><div class="stat-num">59</div><div class="stat-label">Google Reviews</div></div>
-  <div class="stat"><div class="stat-num">18W</div><div class="stat-label">Big Rig Service</div></div>
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>New Tires</span><span>Used Tires</span><span>Tire Balancing</span><span>Flat Repair</span><span>Tire Rotation</span><span>All Makes &amp; Models</span><span>Walk-Ins Welcome</span><span>Open 7 Days</span><span>Cash Only</span><span>Fast Install</span>
+    <span>New Tires</span><span>Used Tires</span><span>Tire Balancing</span><span>Flat Repair</span><span>Tire Rotation</span><span>All Makes &amp; Models</span><span>Walk-Ins Welcome</span><span>Open 7 Days</span><span>Cash Only</span><span>Fast Install</span>
+  </div>
 </div>
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="container">
-    <div class="about-grid reveal">
-      <div>
-        <p class="eyebrow">About Us</p>
-        <h2 class="sec-title">Family Owned.<br>Locally Trusted.</h2>
-        <div class="title-rule"></div>
-        <p class="body-text about-body">Garcia Auto Repair has been a cornerstone of the Troy community since 2009. We're a family-owned mechanic and tire shop that treats every customer like a neighbor — because you probably are one.</p>
-        <p class="body-text">From a quick oil change to full engine overhauls, we handle it all with honesty and skill. We're one of the only shops in Bell County fully equipped to service 18-wheelers alongside everyday cars and trucks. No runaround, no upselling — just fair work at a fair price.</p>
-        <div class="about-stats">
-          <div class="astat"><div class="astat-num">15+</div><div class="astat-label">Years Serving Troy</div></div>
-          <div class="astat"><div class="astat-num">4.7★</div><div class="astat-label">Google Rating</div></div>
-          <div class="astat"><div class="astat-num">59</div><div class="astat-label">Customer Reviews</div></div>
-          <div class="astat"><div class="astat-num">18W</div><div class="astat-label">Big Rig Service</div></div>
-        </div>
-      </div>
-      <div>
-        <div class="info-block">
-          <div class="info-block-header">
-            <div class="info-block-name">Garcia Auto Repair</div>
-            <div class="info-block-addr">1006 N. Central Ave · Troy, Texas 76579</div>
-          </div>
-          <div class="info-block-body">
-            <div class="info-line">
-              <div class="info-line-icon">📞</div>
-              <div><div class="info-line-label">Phone</div><div class="info-line-val"><a href="tel:2549384004">(254) 938-4004</a></div></div>
-            </div>
-            <div class="info-line">
-              <div class="info-line-icon">✉️</div>
-              <div><div class="info-line-label">Email</div><div class="info-line-val"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div></div>
-            </div>
-            <div class="info-line">
-              <div class="info-line-icon">🕒</div>
-              <div><div class="info-line-label">Hours</div><div class="info-line-val">Mon–Fri: 8:00 AM – 5:00 PM<br>Saturday & Sunday: Closed</div></div>
-            </div>
-            <div class="info-line">
-              <div class="info-line-icon">💳</div>
-              <div><div class="info-line-label">Financing</div><div class="info-line-val">Snap Finance Available — No Credit? No Problem.</div></div>
-            </div>
-            <div class="info-line">
-              <div class="info-line-icon">📘</div>
-              <div><div class="info-line-label">Facebook</div><div class="info-line-val"><a href="https://www.facebook.com/garcia-auto-repair-100539368826578" target="_blank">facebook.com/garcia-auto-repair</a></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="about-left">
+    <div class="about-ghost">L</div>
+    <div class="about-tag">Est. Austin, TX</div>
+    <div class="about-heading">FAMILY<br>OWNED &<br>OPERATED</div>
+  </div>
+  <div class="about-right">
+    <div class="sec-label">Our Story</div>
+    <h2>Built on Hard Work<br><span class="y">and Honest Prices.</span></h2>
+    <p class="body-p">Lopez Tire Shop has been serving North Austin drivers from our location right on I-35 for years. We're not a chain. We're your neighbors &mdash; real people who know what it means to need a tire fixed fast without getting taken for a ride on price.</p>
+    <p class="body-p">We carry a wide selection of new and used tires for cars, trucks, and SUVs. Whether you blew one on the highway or you're setting up all four, we'll get you rolling the same day &mdash; usually the same hour.</p>
+    <div class="bilingual">
+      <p><em>Se habla espa&ntilde;ol.</em> Llantas nuevas y usadas a muy buen precio &mdash; servicio r&aacute;pido y amistoso para toda la comunidad.</p>
     </div>
   </div>
 </section>
 
 <!-- SERVICES -->
 <section id="services">
-  <div class="container">
-    <div class="services-header reveal">
-      <div>
-        <p class="eyebrow">What We Do</p>
-        <h2 class="sec-title">Full-Service<br>Auto Shop</h2>
-        <div class="title-rule"></div>
-      </div>
-      <p class="body-text">We service all makes and models — from daily drivers to heavy-duty 18-wheelers. Hover any service to learn more.</p>
+  <div class="sec-header">
+    <div class="sec-label" style="color:#f5c400">What We Do</div>
+    <h2>Full-Service <span class="y">Tire Shop</span></h2>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <span class="svc-icon">&#128295;</span>
+      <h3>New Tires</h3>
+      <p>We carry a solid selection of new tires across major brands and sizes for cars, trucks, vans, and SUVs. Ask us what's in stock &mdash; we keep inventory moving so you always get a fair deal.</p>
+      <span class="svc-note">&#8594; Ask for today's pricing</span>
     </div>
-    <div class="services-grid reveal">
-      <div class="svc featured"><span class="svc-icon">🔧</span><div class="svc-name">Engine Repair</div><div class="svc-desc">Diagnostics, rebuilds & full replacements for all makes.</div></div>
-      <div class="svc"><span class="svc-icon">🛞</span><div class="svc-name">Tires</div><div class="svc-desc">New tires, rotation, balancing & flat repair.</div></div>
-      <div class="svc"><span class="svc-icon">❄️</span><div class="svc-name">A/C Repair</div><div class="svc-desc">Installation, recharge & full system repair.</div></div>
-      <div class="svc"><span class="svc-icon">🛑</span><div class="svc-name">Brakes</div><div class="svc-desc">Pads, rotors, calipers — complete brake service.</div></div>
-      <div class="svc"><span class="svc-icon">⚡</span><div class="svc-name">Electrical</div><div class="svc-desc">Battery, alternator & wiring diagnosis.</div></div>
-      <div class="svc"><span class="svc-icon">🛢️</span><div class="svc-name">Oil Change</div><div class="svc-desc">Conventional & synthetic, filter replacement.</div></div>
-      <div class="svc"><span class="svc-icon">🔩</span><div class="svc-name">Transmission</div><div class="svc-desc">Fluid service, repairs & full rebuilds.</div></div>
-      <div class="svc featured"><span class="svc-icon">🚛</span><div class="svc-name">18-Wheeler Service</div><div class="svc-desc">Full mechanical service for semi-trucks & big rigs.</div></div>
-      <div class="svc"><span class="svc-icon">🔍</span><div class="svc-name">Auto Diagnostics</div><div class="svc-desc">Check engine light, scanning & fault codes.</div></div>
-      <div class="svc"><span class="svc-icon">🎨</span><div class="svc-name">Painting</div><div class="svc-desc">Touch-up and body painting services.</div></div>
-      <div class="svc"><span class="svc-icon">🌀</span><div class="svc-name">Steering & Suspension</div><div class="svc-desc">Alignment, shocks, struts & steering repair.</div></div>
-      <div class="svc"><span class="svc-icon">🔋</span><div class="svc-name">Battery & Filters</div><div class="svc-desc">Testing, replacement & air/cabin filters.</div></div>
+    <div class="svc-card">
+      <span class="svc-icon">&#9851;</span>
+      <h3>Quality Used Tires</h3>
+      <p>Need to keep it budget-friendly? Our used tires are hand-inspected for safety and tread. A great option when you need reliable rubber without the new-tire price tag. Venta de llantas usadas.</p>
+      <span class="svc-note">&#8594; Starting at great prices</span>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">&#9878;</span>
+      <h3>Tire Balancing</h3>
+      <p>Vibration at speed, uneven wear, or that shimmy you've been ignoring &mdash; our balancing service gets your wheels running smooth and extends the life of every tire. Balanceo disponible.</p>
+      <span class="svc-note">&#8594; Same-day service</span>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">&#128295;</span>
+      <h3>Flat Tire Repair</h3>
+      <p>Nail in the tread? Slow leak you can't find? We patch and plug flats fast. Pull in and we'll have you assessed within minutes. No appointment, no hassle.</p>
+      <span class="svc-note">&#8594; Walk-ins welcome</span>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">&#128260;</span>
+      <h3>Tire Rotation</h3>
+      <p>Rotating your tires regularly is the single best way to extend their life. We'll move them in the correct pattern for your vehicle and flag anything that looks off while we're at it.</p>
+      <span class="svc-note">&#8594; Quick turnaround</span>
+    </div>
+    <div class="svc-card">
+      <span class="svc-icon">&#128664;</span>
+      <h3>All Makes &amp; Models</h3>
+      <p>Sedans, pickups, work vans, full-size SUVs &mdash; we've seen and serviced them all. Bring whatever you drive. If we have your size, we mount and balance it on the spot. Cash only, thanks.</p>
+      <span class="svc-note">&#8594; Efectivo &bull; Cash only</span>
     </div>
   </div>
 </section>
 
-<!-- WHY -->
-<section id="why">
-  <div class="container">
-    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto;">
-      <p class="eyebrow">Why Choose Us</p>
-      <h2 class="sec-title">The Garcia Difference</h2>
-      <div class="title-rule" style="margin:0 auto 0;"></div>
-    </div>
-    <div class="why-grid reveal">
-      <div class="why-card"><div class="why-num">01</div><div class="why-title">Family Owned & Operated</div><div class="why-text">We're your neighbors. Every customer matters personally — our reputation in Troy means everything to us.</div></div>
-      <div class="why-card"><div class="why-num">02</div><div class="why-title">Honest, Fair Pricing</div><div class="why-text">We quote before we touch your vehicle and stick to it. No surprise bills. No upselling. Period.</div></div>
-      <div class="why-card"><div class="why-num">03</div><div class="why-title">All Vehicles Welcome</div><div class="why-text">Cars, trucks, SUVs, and 18-wheelers. One of the most versatile shops in all of Bell County.</div></div>
-      <div class="why-card"><div class="why-num">04</div><div class="why-title">Financing Available</div><div class="why-text">No credit? No problem. We offer Snap Finance with 100-day cash payoff options.</div></div>
-      <div class="why-card"><div class="why-num">05</div><div class="why-title">4.7 Stars on Google</div><div class="why-text">59 reviews and counting. Customers consistently praise our honesty, quality, and fair prices.</div></div>
-      <div class="why-card"><div class="why-num">06</div><div class="why-title">Rooted in Troy</div><div class="why-text">Serving Troy and Bell County since 2009. We know this community and we're not going anywhere.</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- SNAP FINANCE -->
-<div class="snap-band">
-  <div class="snap-left">
-    <div class="snap-tag">Financing Available</div>
-    <div class="snap-title">No Credit?<br>We Say YES.</div>
-    <div class="snap-body">Garcia Auto Repair partners with Snap Finance — an unsecured installment loan that lets you get the repairs you need and pay over time. Good credit, bad credit, or no credit — all are welcome to apply.</div>
-    <div class="snap-steps">
-      <div class="snap-step"><div class="snap-step-num">1</div><div class="snap-step-text">Apply Online in Minutes</div></div>
-      <div class="snap-step"><div class="snap-step-num">2</div><div class="snap-step-text">Bring Approval to Shop</div></div>
-      <div class="snap-step"><div class="snap-step-num">3</div><div class="snap-step-text">Get Your Repairs Done</div></div>
-    </div>
-  </div>
-  <a href="https://snapfinance.com" target="_blank" class="snap-btn">Apply for Financing ↗</a>
+<!-- WHY BAND -->
+<div class="why">
+  <div class="why-item"><div class="why-num">15 min</div><div class="why-lbl">Average Service Time</div></div>
+  <div class="why-item"><div class="why-num">7 days</div><div class="why-lbl">Open Every Day</div></div>
+  <div class="why-item"><div class="why-num">65+</div><div class="why-lbl">Google Reviews</div></div>
+  <div class="why-item"><div class="why-num">I-35</div><div class="why-lbl">Easy North Austin Access</div></div>
 </div>
 
 <!-- REVIEWS -->
 <section id="reviews">
-  <div class="container">
-    <div class="reviews-header reveal">
-      <div>
-        <p class="eyebrow">Customer Reviews</p>
-        <h2 class="sec-title">What Troy Says<br>About Us</h2>
-        <div class="title-rule"></div>
-      </div>
-      <div class="google-box">
-        <div class="google-score">4.7</div>
-        <div class="google-stars">★★★★★</div>
-        <div class="google-count">59 Google Reviews</div>
-      </div>
+  <div class="sec-header" style="max-width:800px;margin:0 auto 52px">
+    <div class="sec-label" style="color:#f5c400;text-align:center">What Customers Say</div>
+    <h2 style="text-align:center">Real Drivers, <span class="y">Real Results.</span></h2>
+  </div>
+  <div class="reviews-grid">
+    <div class="rev-card">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="rev-text">"Came in with a flat on my lunch break and they had me back on the road in under 20 minutes. Price was totally fair. This is my tire shop from now on &mdash; no question."</p>
+      <div class="rev-author"><div class="rev-av">M</div><div><div class="rev-name">Marcus T.</div><div class="rev-src">Google Review &#10003;</div></div></div>
     </div>
-    <div class="reviews-grid reveal">
-      <div class="review"><div class="review-stars">★★★★★</div><div class="review-text">"The service was great, the cost was fair and the people are really nice."</div><div class="review-author">— Google Reviewer</div></div>
-      <div class="review"><div class="review-stars">★★★★★</div><div class="review-text">"They worked on my BMW for a GREAT price. Very professional and honest shop."</div><div class="review-author">— Google Reviewer</div></div>
-      <div class="review"><div class="review-stars">★★★★★</div><div class="review-text">"Reliable and honest work. Fair pricing. Will definitely be back for all my car needs."</div><div class="review-author">— Google Reviewer</div></div>
+    <div class="rev-card">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="rev-text">"Good tires for a great price! The guys here are fast and don't try to upsell you on stuff you don't need. I've sent my whole family here. Highly recommend for anyone in North Austin."</p>
+      <div class="rev-author"><div class="rev-av">S</div><div><div class="rev-name">Sandra R.</div><div class="rev-src">Google Review &#10003;</div></div></div>
     </div>
-    <div class="reviews-cta reveal">
-      <a href="https://www.google.com/maps/place/Garcia+Auto+Repair" target="_blank" class="btn-outline-dark">Read All 59 Reviews on Google ↗</a>
+    <div class="rev-card">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="rev-text">"Llantas nuevas y usadas a muy buen precio. El servicio es r&aacute;pido y amistoso. Los muchachos siempre est&aacute;n dispuestos a ayudar. Ya los visit&eacute; tres veces este a&ntilde;o."</p>
+      <div class="rev-author"><div class="rev-av">C</div><div><div class="rev-name">Carlos V.</div><div class="rev-src">Google Review &#10003;</div></div></div>
+    </div>
+    <div class="rev-card">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p class="rev-text">"They were backed up but still got me done in 30 minutes. Charged me less than I expected for two used tires and a balance. Solid, no-nonsense shop. Zero complaints."</p>
+      <div class="rev-author"><div class="rev-av">D</div><div><div class="rev-name">Derek W.</div><div class="rev-src">Google Review &#10003;</div></div></div>
+    </div>
+  </div>
+  <div class="grating">
+    <div class="big">4.5</div>
+    <div class="meta">
+      <div class="gs">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <div class="gc">65 Google Reviews</div>
+      <div class="gc" style="color:#4c9f70;margin-top:4px">&#10003; Verified Business</div>
     </div>
   </div>
 </section>
 
+<!-- HOURS -->
+<section id="hours">
+  <div class="h-left">
+    <div class="sec-label" style="color:#c8102e">Find Us</div>
+    <h2 style="color:#0e0e0e">Hours &amp;<br>Location</h2>
+    <p class="h-addr">9725 N Interstate Hwy 35<br>Austin, TX 78753</p>
+    <a href="tel:5126586921" class="h-phone">(512) 658-6921</a>
+    <p class="h-cash">Cash only &bull; Solo efectivo</p>
+  </div>
+  <table class="htable">
+    <tr><td>Monday</td><td>7:30 AM &ndash; 7:30 PM</td></tr>
+    <tr><td>Tuesday</td><td>7:30 AM &ndash; 7:30 PM</td></tr>
+    <tr><td>Wednesday</td><td>7:30 AM &ndash; 7:30 PM</td></tr>
+    <tr><td>Thursday</td><td>7:30 AM &ndash; 7:30 PM</td></tr>
+    <tr><td>Friday</td><td>7:30 AM &ndash; 7:30 PM</td></tr>
+    <tr><td>Saturday</td><td>7:30 AM &ndash; 6:00 PM</td></tr>
+    <tr><td>Sunday</td><td>8:25 AM &ndash; 5:00 PM</td></tr>
+  </table>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
-  <div class="container">
-    <div class="contact-grid">
-      <div class="reveal">
-        <p class="eyebrow">Get In Touch</p>
-        <h2 class="sec-title">Contact &<br>Location</h2>
-        <div class="title-rule"></div>
-        <p class="body-text" style="margin-bottom:8px;">Stop by, give us a call, or send a message. We'll get back to you during business hours.</p>
-        <div class="contact-item">
-          <div class="c-icon-box">📍</div>
-          <div><div class="c-label">Address</div><div class="c-val">1006 N. Central Ave<br>Troy, TX 76579</div></div>
+  <div class="contact-grid">
+    <div class="c-info">
+      <div class="sec-label">Get In Touch</div>
+      <h2>Ready to Roll?<br><span class="y">Let's Talk.</span></h2>
+      <p class="body-p">Drop us a message and we'll get back to you quickly. Or skip the form and call us directly &mdash; we love seeing you in person. Walk-ins always welcome.</p>
+      <div class="c-rows">
+        <div class="c-row">
+          <div class="c-icon">&#128205;</div>
+          <div class="c-text"><small>Address</small>9725 N Interstate Hwy 35, Austin, TX 78753</div>
         </div>
-        <div class="contact-item">
-          <div class="c-icon-box">📞</div>
-          <div><div class="c-label">Phone</div><div class="c-val"><a href="tel:2549384004">(254) 938-4004</a></div></div>
+        <div class="c-row">
+          <div class="c-icon">&#128222;</div>
+          <div class="c-text"><small>Phone</small><a href="tel:5126586921">(512) 658-6921</a></div>
         </div>
-        <div class="contact-item">
-          <div class="c-icon-box">✉️</div>
-          <div><div class="c-label">Email</div><div class="c-val"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div></div>
+        <div class="c-row">
+          <div class="c-icon">&#128336;</div>
+          <div class="c-text"><small>Hours</small>Mon&ndash;Fri 7:30 AM &ndash; 7:30 PM<br>Sat 7:30 AM &ndash; 6:00 PM &bull; Sun 8:25 AM &ndash; 5:00 PM</div>
         </div>
-        <div class="hours-wrap">
-          <div class="hours-head">Business Hours</div>
-          <div class="hours-row"><span class="hours-day">Monday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
-          <div class="hours-row"><span class="hours-day">Tuesday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
-          <div class="hours-row"><span class="hours-day">Wednesday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
-          <div class="hours-row"><span class="hours-day">Thursday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
-          <div class="hours-row"><span class="hours-day">Friday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
-          <div class="hours-row"><span class="hours-day">Saturday</span><span class="closed-txt">Closed</span></div>
-          <div class="hours-row"><span class="hours-day">Sunday</span><span class="closed-txt">Closed</span></div>
+        <div class="c-row">
+          <div class="c-icon">&#128181;</div>
+          <div class="c-text"><small>Payment</small>Cash Only &bull; Solo Efectivo</div>
         </div>
       </div>
-      <div class="reveal">
-        <div class="form-box">
-          <div class="form-title">Send a Message</div>
-          <div class="form-sub">We'll reply during business hours, Mon–Fri.</div>
-          <form onsubmit="handleForm(event)">
-            <div class="frow">
-              <div class="fg"><label class="flabel">First Name</label><input class="finput" type="text" placeholder="John" required/></div>
-              <div class="fg"><label class="flabel">Last Name</label><input class="finput" type="text" placeholder="Smith"/></div>
-            </div>
-            <div class="fg"><label class="flabel">Phone</label><input class="finput" type="tel" placeholder="(254) 000-0000"/></div>
-            <div class="fg">
-              <label class="flabel">Service Needed</label>
-              <select class="fselect">
-                <option value="">— Select a Service —</option>
-                <option>Engine Repair</option>
-                <option>Tires</option>
-                <option>A/C Repair</option>
-                <option>Brakes</option>
-                <option>Electrical</option>
-                <option>Oil Change</option>
-                <option>Transmission</option>
-                <option>18-Wheeler Service</option>
-                <option>Auto Diagnostics</option>
-                <option>Steering & Suspension</option>
-                <option>Painting</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="fg"><label class="flabel">Tell Us More</label><textarea class="ftextarea" placeholder="Describe your vehicle issue or what you need..."></textarea></div>
-            <button type="submit" class="fsubmit">Send Message →</button>
-          </form>
-        </div>
+    </div>
+    <div class="c-form">
+      <div class="form-title">Send Us a Message</div>
+      <div class="frow-2">
+        <div><label>First Name</label><input type="text" placeholder="Carlos"></div>
+        <div><label>Last Name</label><input type="text" placeholder="Lopez"></div>
       </div>
+      <div class="frow"><label>Phone Number</label><input type="tel" placeholder="(512) 555-0000"></div>
+      <div class="frow">
+        <label>Service Needed</label>
+        <select>
+          <option value="">Select a service...</option>
+          <option>New Tire(s)</option>
+          <option>Used Tire(s)</option>
+          <option>Flat Repair</option>
+          <option>Tire Balancing</option>
+          <option>Tire Rotation</option>
+          <option>Not Sure &mdash; Have a Question</option>
+        </select>
+      </div>
+      <div class="frow"><label>Vehicle (Year / Make / Model)</label><input type="text" placeholder="e.g. 2018 Toyota Tacoma"></div>
+      <div class="frow"><label>Message</label><textarea placeholder="Tell us what you need &mdash; tire size, how many, any other details..."></textarea></div>
+      <button class="btn-submit">Send Message &#8594;</button>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-main">
-    <div>
-      <div class="foot-name">Garcia Auto Repair</div>
-      <div class="foot-sub">Troy, Texas · Est. 2009</div>
-      <p class="foot-desc">A family-owned mechanic and tire shop serving Troy and Bell County since 2009. Honest work, fair prices, all vehicles welcome.</p>
+  <div class="footer-grid">
+    <div class="f-brand">
+      <a class="logo" href="#">LOPEZ <span>TIRE</span> SHOP</a>
+      <p class="f-tagline">"Fast service. Honest prices. Back on the road."</p>
+      <p class="f-addr">9725 N Interstate Hwy 35, Austin, TX 78753<br>(512) 658-6921 &bull; Cash Only</p>
     </div>
-    <div>
-      <div class="foot-col-title">Quick Links</div>
-      <ul class="foot-links">
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#services">Our Services</a></li>
-        <li><a href="#why">Why Choose Us</a></li>
-        <li><a href="#reviews">Reviews</a></li>
-        <li><a href="#contact">Contact & Hours</a></li>
-        <li><a href="https://www.facebook.com/garcia-auto-repair-100539368826578" target="_blank">Facebook</a></li>
+    <div class="f-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">New Tires</a></li>
+        <li><a href="#services">Used Tires</a></li>
+        <li><a href="#services">Balancing</a></li>
+        <li><a href="#services">Flat Repair</a></li>
+        <li><a href="#services">Rotation</a></li>
       </ul>
     </div>
-    <div>
-      <div class="foot-col-title">Contact</div>
-      <div class="foot-contact-line"><a href="tel:2549384004">(254) 938-4004</a></div>
-      <div class="foot-contact-line"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
-      <div class="foot-contact-line">1006 N. Central Ave<br>Troy, TX 76579</div>
-      <div class="foot-contact-line" style="margin-top:14px; color:rgba(255,255,255,0.2);">Mon–Fri: 8AM – 5PM<br>Sat–Sun: Closed</div>
+    <div class="f-col">
+      <h4>Visit Us</h4>
+      <ul>
+        <li><a href="#hours">Hours</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="https://maps.google.com/?q=9725+N+Interstate+Hwy+35+Austin+TX" target="_blank">Get Directions &#8599;</a></li>
+      </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <div class="foot-copy">© 2025 Garcia Auto Repair · All rights reserved.</div>
-    <a href="https://www.facebook.com/garcia-auto-repair-100539368826578" target="_blank" class="foot-fb">📘 Follow on Facebook</a>
+  <div class="footer-bot">
+    <span class="f-copy">&copy; 2025 Lopez Tire Shop &bull; Austin, TX &bull; All Rights Reserved</span>
+    <span class="f-jmod">Site Admined by <a href="https://jordanmoddes.com" target="_blank">Jmod Co.</a></span>
   </div>
 </footer>
 
-<a href="tel:2549384004" class="float-call">☎ Call Now</a>
-
-<script>
-  const obs = new IntersectionObserver(
-    e => e.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); }),
-    { threshold: 0.08 }
-  );
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  function handleForm(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.fsubmit');
-    btn.textContent = '✓ Message Sent!';
-    btn.style.background = '#2d7a3a';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = 'Send Message →';
-      btn.style.background = '';
-      btn.disabled = false;
-      e.target.reset();
-    }, 3500);
-  }
-</script>
 </body>
 </html>
