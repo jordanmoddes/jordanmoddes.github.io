@@ -8,338 +8,381 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --red:    #c0200f;
-      --red2:   #e02515;
-      --dark:   #111111;
-      --dark2:  #1a1a1a;
-      --dark3:  #222222;
-      --gray:   #888;
-      --light:  #f4f4f4;
-      --white:  #ffffff;
-      --border: rgba(255,255,255,0.08);
+      --white:   #ffffff;
+      --off:     #f7f7f7;
+      --light:   #eeeeee;
+      --mid:     #cccccc;
+      --text:    #1a1a1a;
+      --text2:   #555555;
+      --text3:   #888888;
+      --black:   #111111;
+      --red:     #c0200f;
+      --red2:    #e02515;
     }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Barlow', sans-serif;
       background: var(--white);
-      color: var(--dark);
+      color: var(--text);
       overflow-x: hidden;
     }
 
-    /* ── UTILITY BAR ── */
+    /* ── DEMO BAR ── */
+    .demo-bar {
+      background: var(--black);
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      padding: 7px 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ── UTIL BAR ── */
     .util-bar {
-      background: var(--red);
-      padding: 9px 32px;
+      background: var(--off);
+      border-bottom: 1px solid var(--light);
+      padding: 10px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
     }
-    .util-left {
-      display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
-    }
+    .util-left { display: flex; gap: 28px; flex-wrap: wrap; }
     .util-item {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.92);
+      color: var(--text2);
     }
-    .util-item a { color: inherit; text-decoration: none; }
-    .util-item span { opacity: 0.6; margin-right: 6px; }
-    .util-demo {
+    .util-item a { color: var(--text2); text-decoration: none; }
+    .util-item a:hover { color: var(--red); }
+    .util-item .dot { color: var(--mid); margin-right: 6px; }
+    .util-hours {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      color: rgba(255,255,255,0.55);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+      color: var(--text3);
     }
 
     /* ── NAV ── */
     nav {
-      background: var(--dark);
+      background: var(--white);
+      border-bottom: 2px solid var(--light);
       padding: 0 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky; top: 0; z-index: 200;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 1px 12px rgba(0,0,0,0.06);
     }
     .nav-logo {
       display: flex; align-items: center; gap: 14px;
       text-decoration: none; padding: 16px 0;
     }
-    .nav-logo-icon {
-      width: 44px; height: 44px;
+    .nav-logo-bar {
+      width: 5px; height: 38px;
       background: var(--red);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
       flex-shrink: 0;
     }
-    .nav-logo-text { line-height: 1.15; }
     .nav-logo-name {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 800;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: var(--white);
+      color: var(--black);
+      line-height: 1.15;
     }
     .nav-logo-sub {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--red);
+      color: var(--text3);
     }
-    .nav-links {
-      display: flex; list-style: none;
-    }
+    .nav-links { display: flex; list-style: none; }
     .nav-links a {
       display: block;
       padding: 22px 16px;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.82rem;
+      font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
+      color: var(--text2);
       text-decoration: none;
       border-bottom: 3px solid transparent;
-      margin-bottom: -3px;
+      margin-bottom: -2px;
       transition: color 0.2s, border-color 0.2s;
     }
-    .nav-links a:hover { color: var(--white); border-bottom-color: var(--red); }
+    .nav-links a:hover { color: var(--black); border-bottom-color: var(--red); }
     .nav-cta {
-      background: var(--red);
+      background: var(--red) !important;
       color: var(--white) !important;
-      padding: 12px 22px !important;
+      padding: 12px 24px !important;
       margin-left: 16px;
       border-bottom: none !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.1em !important;
+      border-radius: 2px;
       transition: background 0.2s !important;
     }
     .nav-cta:hover { background: var(--red2) !important; border-bottom: none !important; }
 
     /* ── HERO ── */
     .hero {
-      position: relative;
-      min-height: 88vh;
+      background: var(--white);
+      border-bottom: 1px solid var(--light);
       display: flex;
-      align-items: center;
-      overflow: hidden;
-      background: var(--dark);
+      align-items: stretch;
+      min-height: 82vh;
     }
-    /* Dark gradient bg simulating a shop photo */
-    .hero-bg {
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(105deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0.4) 100%),
-        /* Simulated dark shop texture */
-        repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px,
-          transparent 1px, transparent 80px
-        ),
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px,
-          transparent 1px, transparent 80px
-        ),
-        radial-gradient(ellipse 120% 100% at 70% 50%, #2a1a1a 0%, #111 60%, #0a0a0a 100%);
-    }
-    /* Red accent line left edge */
-    .hero-accent {
-      position: absolute;
-      top: 0; left: 0;
-      width: 6px; height: 100%;
-      background: var(--red);
-    }
-    /* Diagonal red slash behind content */
-    .hero-slash {
-      position: absolute;
-      right: -80px; top: -10%;
-      width: 55%; height: 120%;
-      background: linear-gradient(135deg, transparent 48%, rgba(192,32,15,0.06) 48%);
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative; z-index: 2;
-      padding: 80px 80px 80px 80px;
-      max-width: 720px;
+    /* Left content panel */
+    .hero-left {
+      flex: 1;
+      padding: 80px 64px 80px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       animation: heroIn 0.8s ease both;
     }
     @keyframes heroIn {
-      from { opacity: 0; transform: translateY(28px); }
+      from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: var(--red);
-      padding: 6px 16px;
-      margin-bottom: 28px;
+    /* Right dark panel */
+    .hero-right {
+      width: 340px;
+      flex-shrink: 0;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 40px;
     }
-    .hero-tag-dot { width: 6px; height: 6px; background: var(--white); border-radius: 50%; }
-    .hero-tag-text {
+
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow-line {
+      width: 32px; height: 3px; background: var(--red);
+    }
+    .hero-eyebrow-text {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--white);
+      color: var(--text3);
     }
     .hero-h1 {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(3.2rem, 7vw, 6rem);
+      font-size: clamp(3rem, 6vw, 5.5rem);
       font-weight: 900;
-      line-height: 0.92;
+      line-height: 0.93;
       letter-spacing: 0.01em;
       text-transform: uppercase;
-      color: var(--white);
+      color: var(--black);
       margin-bottom: 24px;
     }
     .hero-h1 .red { color: var(--red); }
-    .hero-sub {
-      font-size: 1.05rem;
-      font-weight: 300;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.7;
-      max-width: 480px;
+    .hero-desc {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text2);
+      line-height: 1.75;
+      max-width: 420px;
       margin-bottom: 40px;
     }
-    .hero-actions {
-      display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 52px;
+    .hero-btns {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px;
     }
-    .btn-hero-primary {
+    .btn-primary {
       background: var(--red);
       color: var(--white);
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      padding: 16px 36px;
+      padding: 14px 32px;
       text-decoration: none;
       display: inline-block;
-      transition: background 0.2s, transform 0.15s;
+      border: 2px solid var(--red);
+      transition: background 0.2s, color 0.2s;
     }
-    .btn-hero-primary:hover { background: var(--red2); transform: translateY(-2px); }
-    .btn-hero-sec {
-      color: var(--white);
+    .btn-primary:hover { background: var(--red2); border-color: var(--red2); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--black);
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      padding: 14px 34px;
+      padding: 14px 32px;
       text-decoration: none;
       display: inline-block;
-      border: 2px solid rgba(255,255,255,0.35);
+      border: 2px solid var(--light);
       transition: border-color 0.2s, background 0.2s;
     }
-    .btn-hero-sec:hover { border-color: var(--white); background: rgba(255,255,255,0.06); }
+    .btn-secondary:hover { border-color: var(--black); background: var(--off); }
 
-    /* Trust row */
+    /* Hero trust pills */
     .hero-trust {
-      display: flex; gap: 28px; flex-wrap: wrap; align-items: center;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex; gap: 24px; flex-wrap: wrap;
+      border-top: 1px solid var(--light);
       padding-top: 28px;
     }
-    .trust-item {
-      display: flex; align-items: center; gap: 10px;
+    .trust-pill {
+      display: flex; align-items: center; gap: 8px;
     }
-    .trust-icon { font-size: 1.3rem; }
-    .trust-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-    }
-    .trust-val {
+    .trust-pill-icon { font-size: 1.1rem; }
+    .trust-pill-val {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 1rem;
       font-weight: 800;
-      color: var(--white);
+      color: var(--black);
+    }
+    .trust-pill-label {
+      font-size: 0.78rem;
+      color: var(--text3);
+      font-weight: 500;
     }
 
-    /* ── PHONE BAND ── */
-    .phone-band {
-      background: var(--red);
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .phone-band-left {
+    /* Hero right panel */
+    .hero-panel-label {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.8);
+      color: var(--red);
+      margin-bottom: 20px;
     }
-    .phone-band-num {
+    .hero-panel-phone {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 900;
-      letter-spacing: 0.04em;
       color: var(--white);
       text-decoration: none;
+      display: block;
+      margin-bottom: 8px;
+      transition: color 0.2s;
     }
-    .phone-band-num:hover { text-decoration: underline; }
-    .phone-band-right {
+    .hero-panel-phone:hover { color: var(--red); }
+    .hero-panel-divider {
+      width: 100%; height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin: 24px 0;
+    }
+    .panel-info-row {
+      margin-bottom: 18px;
+    }
+    .panel-info-label {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 4px;
+    }
+    .panel-info-val {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.55;
+    }
+    .panel-info-val a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    .panel-info-val a:hover { color: var(--red); }
+    .panel-cta {
+      display: block;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 14px;
+      text-decoration: none;
+      margin-top: 28px;
+      transition: background 0.2s;
+    }
+    .panel-cta:hover { background: var(--red2); }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      background: var(--off);
+      border-top: 1px solid var(--light);
+      border-bottom: 1px solid var(--light);
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .stat {
+      padding: 28px 52px;
+      text-align: center;
+      border-right: 1px solid var(--light);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--red);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-top: 5px;
     }
 
     /* ── SECTIONS ── */
     section { padding: 88px 40px; }
-    .container { max-width: 1100px; margin: 0 auto; }
-    .section-eyebrow {
+    .container { max-width: 1080px; margin: 0 auto; }
+    .eyebrow {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--red);
       margin-bottom: 10px;
     }
-    .section-title {
+    .sec-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.02em;
-      color: var(--dark);
+      color: var(--black);
       line-height: 1;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
-    .section-title.white { color: var(--white); }
-    .section-body {
-      font-size: 1rem;
-      font-weight: 400;
-      color: #555;
-      line-height: 1.75;
-      max-width: 540px;
-    }
-    .section-body.white { color: rgba(255,255,255,0.65); }
-    .title-bar {
-      width: 48px; height: 4px;
+    .title-rule {
+      width: 40px; height: 3px;
       background: var(--red);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
+    }
+    .body-text {
+      font-size: 0.97rem;
+      color: var(--text2);
+      line-height: 1.8;
     }
 
     /* ── ABOUT ── */
@@ -347,313 +390,224 @@
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 72px;
-      align-items: center;
+      gap: 80px;
+      align-items: start;
     }
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      margin-top: 40px;
+    .about-body { margin-bottom: 20px; }
+
+    /* Info block right side */
+    .info-block {
+      background: var(--off);
+      border: 1px solid var(--light);
     }
-    .about-stat {
-      background: var(--light);
-      padding: 24px 20px;
-      border-left: 4px solid transparent;
-      transition: border-color 0.2s;
+    .info-block-header {
+      background: var(--black);
+      padding: 22px 28px;
+      border-left: 5px solid var(--red);
     }
-    .about-stat:hover { border-left-color: var(--red); }
-    .about-stat-num {
+    .info-block-name {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 900;
-      color: var(--red);
-      line-height: 1;
-    }
-    .about-stat-label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #777;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 4px;
-    }
-    /* Right panel: Info card */
-    .info-card {
-      background: var(--dark);
-      padding: 0;
-      position: relative;
-      overflow: hidden;
-    }
-    .info-card-top {
-      background: var(--red);
-      padding: 28px 32px;
-    }
-    .info-card-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       color: var(--white);
     }
-    .info-card-sub {
+    .info-block-addr {
       font-size: 0.82rem;
-      font-weight: 500;
-      color: rgba(255,255,255,0.75);
-      margin-top: 4px;
-      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.5);
+      margin-top: 3px;
     }
-    .info-card-body { padding: 32px; }
-    .info-row {
-      display: flex; gap: 16px; align-items: flex-start;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+    .info-block-body { padding: 8px 0; }
+    .info-line {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--light);
     }
-    .info-row:last-child { border-bottom: none; }
-    .info-icon { font-size: 1.1rem; margin-top: 2px; flex-shrink: 0; }
-    .info-label {
+    .info-line:last-child { border-bottom: none; }
+    .info-line-icon { font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+    .info-line-label {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 700;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--red);
       margin-bottom: 3px;
     }
-    .info-value {
-      font-size: 0.92rem;
+    .info-line-val {
+      font-size: 0.9rem;
       font-weight: 500;
-      color: rgba(255,255,255,0.85);
+      color: var(--text);
       line-height: 1.55;
     }
-    .info-value a { color: var(--white); text-decoration: none; }
-    .info-value a:hover { color: var(--red); }
+    .info-line-val a { color: var(--text); text-decoration: none; }
+    .info-line-val a:hover { color: var(--red); }
+
+    /* About stat row */
+    .about-stats {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+      margin-top: 36px;
+    }
+    .astat {
+      background: var(--off);
+      border: 1px solid var(--light);
+      padding: 22px 20px;
+      border-left: 4px solid var(--light);
+      transition: border-left-color 0.2s;
+    }
+    .astat:hover { border-left-color: var(--red); }
+    .astat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--red);
+      line-height: 1;
+    }
+    .astat-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
 
     /* ── SERVICES ── */
-    #services { background: var(--dark); padding-bottom: 88px; }
-    .services-intro {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: end;
-      margin-bottom: 56px;
+    #services { background: var(--off); border-top: 1px solid var(--light); border-bottom: 1px solid var(--light); }
+    .services-header {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: end; margin-bottom: 48px;
     }
     .services-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 2px;
     }
-    .svc-card {
-      background: var(--dark2);
-      padding: 32px 24px;
-      border-bottom: 3px solid transparent;
-      transition: background 0.2s, border-color 0.25s, transform 0.2s;
+    .svc {
+      background: var(--white);
+      border: 1px solid var(--light);
+      padding: 28px 22px;
       cursor: default;
       position: relative;
-      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      border-top: 3px solid transparent;
     }
-    .svc-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: var(--red);
-      transform: scaleY(0);
-      transform-origin: bottom;
-      transition: transform 0.3s ease;
-      z-index: 0;
+    .svc:hover {
+      border-top-color: var(--red);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
     }
-    .svc-card:hover::before { transform: scaleY(1); }
-    .svc-card:hover .svc-icon,
-    .svc-card:hover .svc-name,
-    .svc-card:hover .svc-desc { color: var(--white); position: relative; z-index: 1; }
-    .svc-card > * { position: relative; z-index: 1; }
-    .svc-icon {
-      font-size: 1.8rem;
-      margin-bottom: 16px;
-      display: block;
-      transition: color 0.2s;
-    }
+    .svc-icon { font-size: 1.6rem; margin-bottom: 14px; display: block; }
     .svc-name {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 0.92rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--white);
-      margin-bottom: 8px;
-      transition: color 0.2s;
+      color: var(--black);
+      margin-bottom: 7px;
     }
-    .svc-desc {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.6;
-      transition: color 0.2s;
-    }
-    .svc-card.featured {
-      background: var(--red);
-    }
-    .svc-card.featured::before { display: none; }
-    .svc-card.featured .svc-desc { color: rgba(255,255,255,0.75); }
+    .svc-desc { font-size: 0.8rem; color: var(--text3); line-height: 1.6; }
+    /* Featured = red top border always on */
+    .svc.featured { border-top-color: var(--red); }
+    .svc.featured .svc-name { color: var(--red); }
 
     /* ── WHY ── */
-    #why { background: var(--light); }
+    #why { background: var(--white); }
     .why-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2px;
-      margin-top: 52px;
+      margin-top: 48px;
     }
     .why-card {
-      background: var(--white);
-      padding: 36px 28px;
-      border-top: 4px solid transparent;
-      transition: border-color 0.2s, transform 0.2s;
+      background: var(--off);
+      border: 1px solid var(--light);
+      padding: 32px 28px;
+      transition: box-shadow 0.2s;
     }
-    .why-card:hover { border-top-color: var(--red); transform: translateY(-4px); }
-    .why-number {
+    .why-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+    .why-num {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 900;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
       color: var(--red);
-      opacity: 0.12;
-      line-height: 1;
-      margin-bottom: 12px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
     .why-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--dark);
+      letter-spacing: 0.05em;
+      color: var(--black);
       margin-bottom: 10px;
     }
-    .why-text {
-      font-size: 0.9rem;
-      color: #666;
-      line-height: 1.7;
-    }
+    .why-text { font-size: 0.88rem; color: var(--text2); line-height: 1.72; }
 
-    /* ── REVIEWS ── */
-    #reviews { background: var(--dark); }
-    .reviews-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 48px;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-    .google-badge {
-      background: var(--dark2);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 20px 28px;
-      text-align: center;
-      min-width: 180px;
-    }
-    .google-score {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 3.8rem;
-      font-weight: 900;
-      color: var(--white);
-      line-height: 1;
-    }
-    .google-stars { color: #f5a623; font-size: 1.1rem; letter-spacing: 2px; margin: 4px 0; }
-    .google-count {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gray);
-    }
-    .reviews-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-    .review-card {
-      background: var(--dark2);
-      padding: 32px 28px;
-      border-top: 3px solid transparent;
-      transition: border-color 0.2s;
-    }
-    .review-card:hover { border-top-color: var(--red); }
-    .review-stars { color: #f5a623; font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 16px; }
-    .review-text {
-      font-size: 0.95rem;
-      font-weight: 400;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.75;
-      font-style: italic;
-      margin-bottom: 20px;
-    }
-    .review-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--red);
-    }
-    .reviews-cta {
-      text-align: center;
-      margin-top: 44px;
-    }
-    .btn-outline-white {
-      display: inline-block;
-      border: 2px solid rgba(255,255,255,0.25);
-      color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 14px 32px;
-      text-decoration: none;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .btn-outline-white:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.5); }
-
-    /* ── SNAP FINANCE BAND ── */
-    .finance-band {
-      background: var(--red);
-      padding: 36px 40px;
+    /* ── SNAP FINANCE ── */
+    .snap-band {
+      background: var(--black);
+      padding: 48px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 24px;
     }
-    .finance-left {}
-    .finance-tag {
+    .snap-left {}
+    .snap-tag {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.65);
-      margin-bottom: 6px;
+      color: var(--red);
+      margin-bottom: 8px;
     }
-    .finance-title {
+    .snap-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 900;
       text-transform: uppercase;
       color: var(--white);
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      margin-bottom: 10px;
     }
-    .finance-body {
-      font-size: 0.92rem;
-      color: rgba(255,255,255,0.75);
-      margin-top: 6px;
+    .snap-body { font-size: 0.92rem; color: rgba(255,255,255,0.5); max-width: 460px; line-height: 1.7; }
+    .snap-steps {
+      display: flex; gap: 2px; margin-top: 24px; flex-wrap: wrap;
     }
-    .btn-white {
-      display: inline-block;
-      background: var(--white);
+    .snap-step {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 18px;
+      display: flex; align-items: center; gap: 10px;
+      flex: 1; min-width: 140px;
+    }
+    .snap-step-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 900;
       color: var(--red);
+      flex-shrink: 0;
+    }
+    .snap-step-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.4;
+    }
+    .snap-btn {
+      display: inline-block;
+      background: var(--red);
+      color: var(--white);
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 1rem;
       font-weight: 800;
@@ -661,119 +615,199 @@
       text-transform: uppercase;
       padding: 16px 36px;
       text-decoration: none;
-      transition: background 0.2s;
       white-space: nowrap;
+      align-self: flex-start;
+      transition: background 0.2s;
     }
-    .btn-white:hover { background: #f0f0f0; }
+    .snap-btn:hover { background: var(--red2); }
 
-    /* ── CONTACT ── */
-    #contact { background: var(--light); }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 60px;
-      align-items: start;
+    /* ── REVIEWS ── */
+    #reviews { background: var(--off); border-top: 1px solid var(--light); border-bottom: 1px solid var(--light); }
+    .reviews-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 44px;
     }
-    .hours-block { margin-top: 32px; }
-    .hours-title {
+    .google-box {
+      background: var(--white);
+      border: 1px solid var(--light);
+      border-top: 3px solid var(--red);
+      padding: 20px 28px;
+      text-align: center;
+      min-width: 160px;
+    }
+    .google-score {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--black);
+      line-height: 1;
+    }
+    .google-stars { color: var(--red); font-size: 1rem; letter-spacing: 2px; margin: 4px 0; }
+    .google-count {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .review {
+      background: var(--white);
+      border: 1px solid var(--light);
+      padding: 32px 28px;
+      border-top: 3px solid transparent;
+      transition: border-top-color 0.2s, box-shadow 0.2s;
+    }
+    .review:hover { border-top-color: var(--red); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .review-stars { color: var(--red); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 16px; }
+    .review-text {
+      font-size: 0.95rem;
+      color: var(--text2);
+      line-height: 1.75;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .review-author {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text3);
+      border-top: 1px solid var(--light);
+      padding-top: 14px;
+    }
+    .reviews-cta { text-align: center; margin-top: 40px; }
+    .btn-outline-dark {
+      display: inline-block;
+      border: 2px solid var(--black);
+      color: var(--black);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 13px 30px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline-dark:hover { background: var(--black); color: var(--white); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--white); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 72px;
+      align-items: start;
+    }
+    .contact-item {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--light);
+    }
+    .contact-item:last-of-type { border-bottom: none; }
+    .c-icon-box {
+      width: 36px; height: 36px;
+      background: var(--off);
+      border: 1px solid var(--light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+    .c-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--red);
+      margin-bottom: 3px;
+    }
+    .c-val {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .c-val a { color: var(--text); text-decoration: none; }
+    .c-val a:hover { color: var(--red); }
+
+    .hours-wrap { margin-top: 32px; }
+    .hours-head {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text3);
       margin-bottom: 12px;
     }
     .hours-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-      font-size: 0.92rem;
+      display: flex; justify-content: space-between;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--light);
+      font-size: 0.88rem;
     }
-    .hours-day { font-weight: 600; color: var(--dark); }
-    .hours-time { color: #555; }
-    .hours-closed { color: var(--red) !important; font-weight: 600; }
-    .contact-details { margin-top: 28px; }
-    .contact-item {
-      display: flex; gap: 14px; align-items: flex-start;
-      margin-bottom: 20px;
-    }
-    .contact-icon-box {
-      width: 40px; height: 40px;
-      background: var(--red);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; flex-shrink: 0; color: white;
-    }
-    .contact-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray);
-      margin-bottom: 3px;
-    }
-    .contact-value {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--dark);
-    }
-    .contact-value a { color: var(--red); text-decoration: none; }
-    .contact-value a:hover { text-decoration: underline; }
+    .hours-day { font-weight: 600; color: var(--black); }
+    .hours-time { color: var(--text2); }
+    .closed-txt { color: var(--red) !important; font-weight: 600; }
 
-    /* Form */
-    .contact-form-wrap {
-      background: var(--white);
+    /* Contact Form */
+    .form-box {
+      background: var(--off);
+      border: 1px solid var(--light);
       padding: 40px;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.07);
     }
     .form-title {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 1.5rem;
-      font-weight: 800;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--dark);
-      margin-bottom: 6px;
+      letter-spacing: 0.03em;
+      color: var(--black);
+      margin-bottom: 4px;
     }
-    .form-sub {
-      font-size: 0.88rem;
-      color: var(--gray);
-      margin-bottom: 28px;
-    }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-    .form-label {
+    .form-sub { font-size: 0.85rem; color: var(--text3); margin-bottom: 28px; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .flabel {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #777;
+      color: var(--text3);
     }
-    .form-input, .form-select, .form-textarea {
-      background: var(--light);
-      border: 2px solid transparent;
-      padding: 12px 14px;
+    .finput, .fselect, .ftextarea {
+      background: var(--white);
+      border: 1px solid var(--light);
+      padding: 11px 14px;
       font-family: 'Barlow', sans-serif;
       font-size: 0.92rem;
-      color: var(--dark);
+      color: var(--text);
       outline: none;
-      transition: border-color 0.2s, background 0.2s;
       border-radius: 0;
       -webkit-appearance: none;
+      transition: border-color 0.2s;
     }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--red);
-      background: var(--white);
-    }
-    .form-textarea { resize: vertical; min-height: 100px; }
-    .form-submit {
+    .finput:focus, .fselect:focus, .ftextarea:focus { border-color: var(--red); }
+    .ftextarea { resize: vertical; min-height: 100px; }
+    .fsubmit {
       width: 100%;
       background: var(--red);
       color: var(--white);
       border: none;
-      padding: 16px;
+      padding: 15px;
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 1rem;
       font-weight: 800;
@@ -781,102 +815,91 @@
       text-transform: uppercase;
       cursor: pointer;
       transition: background 0.2s;
-      margin-top: 6px;
+      margin-top: 4px;
     }
-    .form-submit:hover { background: var(--red2); }
+    .fsubmit:hover { background: var(--red2); }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--dark);
-      border-top: 4px solid var(--red);
+      background: var(--black);
     }
-    .footer-top {
+    .footer-main {
       padding: 56px 40px 40px;
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-columns: 1.6fr 1fr 1fr;
       gap: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .footer-brand-name {
+    .foot-name {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
       color: var(--white);
-      margin-bottom: 4px;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
     }
-    .footer-brand-tag {
+    .foot-sub {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--red);
       margin-bottom: 16px;
     }
-    .footer-desc {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.7;
-    }
-    .footer-col-title {
+    .foot-desc { font-size: 0.86rem; color: rgba(255,255,255,0.4); line-height: 1.7; }
+    .foot-col-title {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--red);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
-    .footer-links { list-style: none; }
-    .footer-links li { margin-bottom: 10px; }
-    .footer-links a {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.5);
+    .foot-links { list-style: none; }
+    .foot-links li { margin-bottom: 9px; }
+    .foot-links a {
+      font-size: 0.86rem;
+      color: rgba(255,255,255,0.45);
       text-decoration: none;
       transition: color 0.2s;
       font-weight: 500;
     }
-    .footer-links a:hover { color: var(--white); }
-    .footer-contact-item {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 10px;
+    .foot-links a:hover { color: var(--white); }
+    .foot-contact-line {
+      font-size: 0.86rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 9px;
       font-weight: 500;
     }
-    .footer-contact-item a { color: rgba(255,255,255,0.5); text-decoration: none; }
-    .footer-contact-item a:hover { color: var(--white); }
+    .foot-contact-line a { color: rgba(255,255,255,0.45); text-decoration: none; }
+    .foot-contact-line a:hover { color: var(--white); }
     .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding: 20px 40px;
+      padding: 18px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
-    .footer-copy {
-      font-size: 0.78rem;
+    .foot-copy { font-size: 0.76rem; color: rgba(255,255,255,0.2); }
+    .foot-fb {
+      font-size: 0.76rem;
       color: rgba(255,255,255,0.25);
-      font-weight: 400;
-    }
-    .footer-fb {
-      display: flex; align-items: center; gap: 8px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
       text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       transition: color 0.2s;
     }
-    .footer-fb:hover { color: var(--white); }
+    .foot-fb:hover { color: var(--white); }
 
-    /* FLOAT CALL (mobile) */
+    /* FLOAT CALL */
     .float-call {
       display: none;
-      position: fixed; bottom: 20px; right: 20px;
+      position: fixed; bottom: 18px; right: 18px;
       background: var(--red);
       color: var(--white);
       font-family: 'Barlow Condensed', sans-serif;
@@ -885,55 +908,60 @@
       padding: 14px 24px;
       text-decoration: none;
       z-index: 300;
-      box-shadow: 0 4px 20px rgba(192,32,15,0.5);
+      box-shadow: 0 4px 20px rgba(192,32,15,0.4);
     }
 
-    /* Reveal */
-    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: none; }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .about-grid, .contact-grid, .services-intro, .footer-top { grid-template-columns: 1fr; gap: 40px; }
+    @media (max-width: 960px) {
+      .hero { flex-direction: column; min-height: auto; }
+      .hero-left { padding: 60px 32px; }
+      .hero-right { width: 100%; padding: 40px 32px; }
+      .about-grid, .contact-grid, .services-header, .footer-main { grid-template-columns: 1fr; gap: 40px; }
       .services-grid { grid-template-columns: repeat(2, 1fr); }
-      .why-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: repeat(2, 1fr); }
       .reviews-grid { grid-template-columns: 1fr; }
       section { padding: 64px 24px; }
       nav { padding: 0 20px; }
-      .hero-content { padding: 60px 24px; }
-      .phone-band { padding: 20px 24px; flex-direction: column; align-items: flex-start; }
-      .footer-top { padding: 40px 24px; }
-      .footer-bottom { padding: 18px 24px; }
+      .util-bar { padding: 10px 20px; }
+      .snap-band { padding: 40px 24px; }
+      .footer-main { padding: 40px 24px; }
+      .footer-bottom { padding: 16px 24px; }
     }
     @media (max-width: 600px) {
       .nav-links { display: none; }
       .float-call { display: block; }
       .services-grid { grid-template-columns: 1fr 1fr; }
       .why-grid { grid-template-columns: 1fr; }
-      .form-grid { grid-template-columns: 1fr; }
+      .frow { grid-template-columns: 1fr; }
       .about-stats { grid-template-columns: 1fr 1fr; }
-      .util-bar { padding: 8px 16px; }
-      .util-left { gap: 12px; }
+      .stat { padding: 22px 28px; }
+      .snap-steps { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-<!-- UTILITY BAR -->
+<div class="demo-bar">⚙ Demo — jordanmoddes.com/Consult/GarciaAutoRepair</div>
+
+<!-- UTIL BAR -->
 <div class="util-bar">
   <div class="util-left">
-    <div class="util-item"><span>📍</span>1006 N. Central Ave, Troy, TX 76579</div>
-    <div class="util-item"><span>🕒</span>Mon–Fri: 8AM–5PM</div>
-    <div class="util-item"><span>📞</span><a href="tel:2549384004">(254) 938-4004</a></div>
+    <div class="util-item"><span class="dot">📍</span>1006 N. Central Ave, Troy, TX 76579</div>
+    <div class="util-item"><span class="dot">📞</span><a href="tel:2549384004">(254) 938-4004</a></div>
+    <div class="util-item"><span class="dot">✉</span><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
   </div>
-  <div class="util-demo">⚙ Demo — jordanmoddes.com/Consult/GarciaAutoRepair</div>
+  <div class="util-hours">Mon – Fri &nbsp;·&nbsp; 8:00 AM – 5:00 PM</div>
 </div>
 
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <div class="nav-logo-icon">🔧</div>
-    <div class="nav-logo-text">
+    <div class="nav-logo-bar"></div>
+    <div>
       <div class="nav-logo-name">Garcia Auto Repair</div>
       <div class="nav-logo-sub">Troy, Texas · Est. 2009</div>
     </div>
@@ -949,56 +977,72 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero" style="padding:0;">
-  <div class="hero-bg"></div>
-  <div class="hero-accent"></div>
-  <div class="hero-slash"></div>
-  <div class="hero-content">
-    <div class="hero-tag">
-      <div class="hero-tag-dot"></div>
-      <div class="hero-tag-text">Troy, Texas · Serving Bell County Since 2009</div>
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <div class="hero-eyebrow-text">Troy, Texas · Family Owned Since 2009</div>
     </div>
     <h1 class="hero-h1">
-      Your Trusted<br>
+      Your Local<br>
       <span class="red">Auto Repair</span><br>
-      Shop in Troy
+      Experts
     </h1>
-    <p class="hero-sub">Family-owned and operated. Honest work at fair prices — from oil changes to full engine overhauls and 18-wheeler service.</p>
-    <div class="hero-actions">
-      <a href="tel:2549384004" class="btn-hero-primary">☎ Call (254) 938-4004</a>
-      <a href="#services" class="btn-hero-sec">View Services</a>
+    <p class="hero-desc">Honest work. Fair prices. From oil changes to full engine overhauls — and one of the only shops in Bell County that services 18-wheelers.</p>
+    <div class="hero-btns">
+      <a href="tel:2549384004" class="btn-primary">☎ Call (254) 938-4004</a>
+      <a href="#services" class="btn-secondary">View All Services</a>
     </div>
     <div class="hero-trust">
-      <div class="trust-item">
-        <div class="trust-icon">⭐</div>
+      <div class="trust-pill">
+        <div class="trust-pill-icon">⭐</div>
         <div>
-          <div class="trust-val">4.7 Stars</div>
-          <div class="trust-label">59 Google Reviews</div>
+          <div class="trust-pill-val">4.7 Stars</div>
+          <div class="trust-pill-label">59 Google Reviews</div>
         </div>
       </div>
-      <div class="trust-item">
-        <div class="trust-icon">📅</div>
+      <div class="trust-pill">
+        <div class="trust-pill-icon">🏠</div>
         <div>
-          <div class="trust-val">Est. 2009</div>
-          <div class="trust-label">15+ Years Serving Troy</div>
+          <div class="trust-pill-val">Family Owned</div>
+          <div class="trust-pill-label">Est. 2009</div>
         </div>
       </div>
-      <div class="trust-item">
-        <div class="trust-icon">🚛</div>
+      <div class="trust-pill">
+        <div class="trust-pill-icon">🚛</div>
         <div>
-          <div class="trust-val">All Vehicles</div>
-          <div class="trust-label">Cars, Trucks & 18-Wheelers</div>
+          <div class="trust-pill-val">All Vehicles</div>
+          <div class="trust-pill-label">Cars to 18-Wheelers</div>
         </div>
       </div>
     </div>
   </div>
-</section>
+  <div class="hero-right">
+    <div class="hero-panel-label">Call Us Today</div>
+    <a href="tel:2549384004" class="hero-panel-phone">(254) 938-4004</a>
+    <div class="hero-panel-divider"></div>
+    <div class="panel-info-row">
+      <div class="panel-info-label">Address</div>
+      <div class="panel-info-val">1006 N. Central Ave<br>Troy, TX 76579</div>
+    </div>
+    <div class="panel-info-row">
+      <div class="panel-info-label">Hours</div>
+      <div class="panel-info-val">Mon–Fri: 8:00 AM – 5:00 PM<br>Sat–Sun: Closed</div>
+    </div>
+    <div class="panel-info-row">
+      <div class="panel-info-label">Email</div>
+      <div class="panel-info-val"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
+    </div>
+    <a href="#contact" class="panel-cta">Send Us a Message →</a>
+  </div>
+</div>
 
-<!-- PHONE BAND -->
-<div class="phone-band">
-  <div class="phone-band-left">Need Service? Call Us Now</div>
-  <a href="tel:2549384004" class="phone-band-num">(254) 938-4004</a>
-  <div class="phone-band-right">Monday – Friday &nbsp;|&nbsp; 8:00 AM – 5:00 PM</div>
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Years in Troy</div></div>
+  <div class="stat"><div class="stat-num">4.7★</div><div class="stat-label">Google Rating</div></div>
+  <div class="stat"><div class="stat-num">59</div><div class="stat-label">Google Reviews</div></div>
+  <div class="stat"><div class="stat-num">18W</div><div class="stat-label">Big Rig Service</div></div>
 </div>
 
 <!-- ABOUT -->
@@ -1006,53 +1050,44 @@
   <div class="container">
     <div class="about-grid reveal">
       <div>
-        <p class="section-eyebrow">About Garcia Auto Repair</p>
-        <h2 class="section-title">Family Owned.<br>Locally Trusted.</h2>
-        <div class="title-bar"></div>
-        <p class="section-body">Garcia Auto Repair has been a cornerstone of the Troy community since 2009. We're a family-owned mechanic and tire shop that treats every customer like a neighbor — because you probably are one.</p>
-        <br>
-        <p class="section-body">From a quick oil change to full engine overhauls, we handle it all with honesty and skill. We're one of the only shops in Bell County fully equipped to service 18-wheelers alongside everyday cars and trucks.</p>
+        <p class="eyebrow">About Us</p>
+        <h2 class="sec-title">Family Owned.<br>Locally Trusted.</h2>
+        <div class="title-rule"></div>
+        <p class="body-text about-body">Garcia Auto Repair has been a cornerstone of the Troy community since 2009. We're a family-owned mechanic and tire shop that treats every customer like a neighbor — because you probably are one.</p>
+        <p class="body-text">From a quick oil change to full engine overhauls, we handle it all with honesty and skill. We're one of the only shops in Bell County fully equipped to service 18-wheelers alongside everyday cars and trucks. No runaround, no upselling — just fair work at a fair price.</p>
         <div class="about-stats">
-          <div class="about-stat"><div class="about-stat-num">15+</div><div class="about-stat-label">Years in Business</div></div>
-          <div class="about-stat"><div class="about-stat-num">4.7★</div><div class="about-stat-label">Google Rating</div></div>
-          <div class="about-stat"><div class="about-stat-num">59</div><div class="about-stat-label">Reviews</div></div>
-          <div class="about-stat"><div class="about-stat-num">18W</div><div class="about-stat-label">Big Rig Service</div></div>
+          <div class="astat"><div class="astat-num">15+</div><div class="astat-label">Years Serving Troy</div></div>
+          <div class="astat"><div class="astat-num">4.7★</div><div class="astat-label">Google Rating</div></div>
+          <div class="astat"><div class="astat-num">59</div><div class="astat-label">Customer Reviews</div></div>
+          <div class="astat"><div class="astat-num">18W</div><div class="astat-label">Big Rig Service</div></div>
         </div>
       </div>
       <div>
-        <div class="info-card">
-          <div class="info-card-top">
-            <div class="info-card-title">Garcia Auto Repair</div>
-            <div class="info-card-sub">1006 N. Central Ave · Troy, Texas 76579</div>
+        <div class="info-block">
+          <div class="info-block-header">
+            <div class="info-block-name">Garcia Auto Repair</div>
+            <div class="info-block-addr">1006 N. Central Ave · Troy, Texas 76579</div>
           </div>
-          <div class="info-card-body">
-            <div class="info-row">
-              <div class="info-icon">📞</div>
-              <div>
-                <div class="info-label">Phone</div>
-                <div class="info-value"><a href="tel:2549384004">(254) 938-4004</a></div>
-              </div>
+          <div class="info-block-body">
+            <div class="info-line">
+              <div class="info-line-icon">📞</div>
+              <div><div class="info-line-label">Phone</div><div class="info-line-val"><a href="tel:2549384004">(254) 938-4004</a></div></div>
             </div>
-            <div class="info-row">
-              <div class="info-icon">✉️</div>
-              <div>
-                <div class="info-label">Email</div>
-                <div class="info-value"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
-              </div>
+            <div class="info-line">
+              <div class="info-line-icon">✉️</div>
+              <div><div class="info-line-label">Email</div><div class="info-line-val"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div></div>
             </div>
-            <div class="info-row">
-              <div class="info-icon">🕒</div>
-              <div>
-                <div class="info-label">Hours</div>
-                <div class="info-value">Mon–Fri: 8:00 AM – 5:00 PM<br>Saturday & Sunday: Closed</div>
-              </div>
+            <div class="info-line">
+              <div class="info-line-icon">🕒</div>
+              <div><div class="info-line-label">Hours</div><div class="info-line-val">Mon–Fri: 8:00 AM – 5:00 PM<br>Saturday & Sunday: Closed</div></div>
             </div>
-            <div class="info-row">
-              <div class="info-icon">💳</div>
-              <div>
-                <div class="info-label">Financing</div>
-                <div class="info-value">Snap Finance Available — No Credit? No Problem.</div>
-              </div>
+            <div class="info-line">
+              <div class="info-line-icon">💳</div>
+              <div><div class="info-line-label">Financing</div><div class="info-line-val">Snap Finance Available — No Credit? No Problem.</div></div>
+            </div>
+            <div class="info-line">
+              <div class="info-line-icon">📘</div>
+              <div><div class="info-line-label">Facebook</div><div class="info-line-val"><a href="https://www.facebook.com/garcia-auto-repair-100539368826578" target="_blank">facebook.com/garcia-auto-repair</a></div></div>
             </div>
           </div>
         </div>
@@ -1064,235 +1099,136 @@
 <!-- SERVICES -->
 <section id="services">
   <div class="container">
-    <div class="services-intro reveal">
+    <div class="services-header reveal">
       <div>
-        <p class="section-eyebrow">What We Do</p>
-        <h2 class="section-title white">Full-Service<br>Auto Shop</h2>
-        <div class="title-bar"></div>
+        <p class="eyebrow">What We Do</p>
+        <h2 class="sec-title">Full-Service<br>Auto Shop</h2>
+        <div class="title-rule"></div>
       </div>
-      <p class="section-body white">We service all makes and models — from daily drivers to heavy-duty 18-wheelers. No job too big or too small.</p>
+      <p class="body-text">We service all makes and models — from daily drivers to heavy-duty 18-wheelers. Hover any service to learn more.</p>
     </div>
     <div class="services-grid reveal">
-      <div class="svc-card featured">
-        <span class="svc-icon">🔧</span>
-        <div class="svc-name">Engine Repair</div>
-        <div class="svc-desc">Diagnostics, rebuilds & full replacements for all makes.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">🛞</span>
-        <div class="svc-name">Tires</div>
-        <div class="svc-desc">New tires, rotation, balancing & flat repair.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">❄️</span>
-        <div class="svc-name">A/C Repair</div>
-        <div class="svc-desc">Installation, recharge & full system repair.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">🛑</span>
-        <div class="svc-name">Brakes</div>
-        <div class="svc-desc">Pads, rotors, calipers — complete brake service.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">⚡</span>
-        <div class="svc-name">Electrical</div>
-        <div class="svc-desc">Battery, alternator & wiring diagnosis.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">🛢️</span>
-        <div class="svc-name">Oil Change</div>
-        <div class="svc-desc">Conventional & synthetic, filter replacement.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">🔩</span>
-        <div class="svc-name">Transmission</div>
-        <div class="svc-desc">Fluid service, repairs & full rebuilds.</div>
-      </div>
-      <div class="svc-card featured">
-        <span class="svc-icon">🚛</span>
-        <div class="svc-name">18-Wheeler Service</div>
-        <div class="svc-desc">Full mechanical service for semi-trucks & big rigs.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">🔍</span>
-        <div class="svc-name">Auto Diagnostics</div>
-        <div class="svc-desc">Check engine light, computer scan & fault codes.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">🎨</span>
-        <div class="svc-name">Painting</div>
-        <div class="svc-desc">Touch-up and body painting services.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">🌀</span>
-        <div class="svc-name">Steering & Suspension</div>
-        <div class="svc-desc">Alignment, shocks, struts & full steering repair.</div>
-      </div>
-      <div class="svc-card">
-        <span class="svc-icon">🔋</span>
-        <div class="svc-name">Battery & Filters</div>
-        <div class="svc-desc">Testing, replacement & air/cabin filters.</div>
-      </div>
+      <div class="svc featured"><span class="svc-icon">🔧</span><div class="svc-name">Engine Repair</div><div class="svc-desc">Diagnostics, rebuilds & full replacements for all makes.</div></div>
+      <div class="svc"><span class="svc-icon">🛞</span><div class="svc-name">Tires</div><div class="svc-desc">New tires, rotation, balancing & flat repair.</div></div>
+      <div class="svc"><span class="svc-icon">❄️</span><div class="svc-name">A/C Repair</div><div class="svc-desc">Installation, recharge & full system repair.</div></div>
+      <div class="svc"><span class="svc-icon">🛑</span><div class="svc-name">Brakes</div><div class="svc-desc">Pads, rotors, calipers — complete brake service.</div></div>
+      <div class="svc"><span class="svc-icon">⚡</span><div class="svc-name">Electrical</div><div class="svc-desc">Battery, alternator & wiring diagnosis.</div></div>
+      <div class="svc"><span class="svc-icon">🛢️</span><div class="svc-name">Oil Change</div><div class="svc-desc">Conventional & synthetic, filter replacement.</div></div>
+      <div class="svc"><span class="svc-icon">🔩</span><div class="svc-name">Transmission</div><div class="svc-desc">Fluid service, repairs & full rebuilds.</div></div>
+      <div class="svc featured"><span class="svc-icon">🚛</span><div class="svc-name">18-Wheeler Service</div><div class="svc-desc">Full mechanical service for semi-trucks & big rigs.</div></div>
+      <div class="svc"><span class="svc-icon">🔍</span><div class="svc-name">Auto Diagnostics</div><div class="svc-desc">Check engine light, scanning & fault codes.</div></div>
+      <div class="svc"><span class="svc-icon">🎨</span><div class="svc-name">Painting</div><div class="svc-desc">Touch-up and body painting services.</div></div>
+      <div class="svc"><span class="svc-icon">🌀</span><div class="svc-name">Steering & Suspension</div><div class="svc-desc">Alignment, shocks, struts & steering repair.</div></div>
+      <div class="svc"><span class="svc-icon">🔋</span><div class="svc-name">Battery & Filters</div><div class="svc-desc">Testing, replacement & air/cabin filters.</div></div>
     </div>
   </div>
 </section>
 
-<!-- WHY US -->
+<!-- WHY -->
 <section id="why">
   <div class="container">
-    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto 0;">
-      <p class="section-eyebrow">Why Choose Us</p>
-      <h2 class="section-title">The Garcia Difference</h2>
-      <div class="title-bar" style="margin:0 auto 0;"></div>
+    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto;">
+      <p class="eyebrow">Why Choose Us</p>
+      <h2 class="sec-title">The Garcia Difference</h2>
+      <div class="title-rule" style="margin:0 auto 0;"></div>
     </div>
     <div class="why-grid reveal">
-      <div class="why-card">
-        <div class="why-number">01</div>
-        <div class="why-title">Family Owned & Operated</div>
-        <div class="why-text">We're your neighbors. Our reputation in Troy means everything to us — every customer is treated like family.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-number">02</div>
-        <div class="why-title">Honest, Fair Pricing</div>
-        <div class="why-text">We quote before we touch your vehicle and stick to it. No surprise bills. No upselling.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-number">03</div>
-        <div class="why-title">All Vehicles Welcome</div>
-        <div class="why-text">Cars, trucks, SUVs, and 18-wheelers. One of the most versatile shops in Bell County.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-number">04</div>
-        <div class="why-title">Snap Finance Available</div>
-        <div class="why-text">Need help covering a repair? No credit? We say yes. Financing through Snap Finance with 100-day cash payoff.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-number">05</div>
-        <div class="why-title">4.7 Stars on Google</div>
-        <div class="why-text">59 reviews and counting. Our customers consistently rave about our service, honesty, and fair prices.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-number">06</div>
-        <div class="why-title">Rooted in Troy</div>
-        <div class="why-text">Serving Troy and Bell County since 2009. We know this community and we're here to stay.</div>
-      </div>
+      <div class="why-card"><div class="why-num">01</div><div class="why-title">Family Owned & Operated</div><div class="why-text">We're your neighbors. Every customer matters personally — our reputation in Troy means everything to us.</div></div>
+      <div class="why-card"><div class="why-num">02</div><div class="why-title">Honest, Fair Pricing</div><div class="why-text">We quote before we touch your vehicle and stick to it. No surprise bills. No upselling. Period.</div></div>
+      <div class="why-card"><div class="why-num">03</div><div class="why-title">All Vehicles Welcome</div><div class="why-text">Cars, trucks, SUVs, and 18-wheelers. One of the most versatile shops in all of Bell County.</div></div>
+      <div class="why-card"><div class="why-num">04</div><div class="why-title">Financing Available</div><div class="why-text">No credit? No problem. We offer Snap Finance with 100-day cash payoff options.</div></div>
+      <div class="why-card"><div class="why-num">05</div><div class="why-title">4.7 Stars on Google</div><div class="why-text">59 reviews and counting. Customers consistently praise our honesty, quality, and fair prices.</div></div>
+      <div class="why-card"><div class="why-num">06</div><div class="why-title">Rooted in Troy</div><div class="why-text">Serving Troy and Bell County since 2009. We know this community and we're not going anywhere.</div></div>
     </div>
   </div>
 </section>
+
+<!-- SNAP FINANCE -->
+<div class="snap-band">
+  <div class="snap-left">
+    <div class="snap-tag">Financing Available</div>
+    <div class="snap-title">No Credit?<br>We Say YES.</div>
+    <div class="snap-body">Garcia Auto Repair partners with Snap Finance — an unsecured installment loan that lets you get the repairs you need and pay over time. Good credit, bad credit, or no credit — all are welcome to apply.</div>
+    <div class="snap-steps">
+      <div class="snap-step"><div class="snap-step-num">1</div><div class="snap-step-text">Apply Online in Minutes</div></div>
+      <div class="snap-step"><div class="snap-step-num">2</div><div class="snap-step-text">Bring Approval to Shop</div></div>
+      <div class="snap-step"><div class="snap-step-num">3</div><div class="snap-step-text">Get Your Repairs Done</div></div>
+    </div>
+  </div>
+  <a href="https://snapfinance.com" target="_blank" class="snap-btn">Apply for Financing ↗</a>
+</div>
 
 <!-- REVIEWS -->
 <section id="reviews">
   <div class="container">
     <div class="reviews-header reveal">
       <div>
-        <p class="section-eyebrow">Customer Reviews</p>
-        <h2 class="section-title white">What Troy Says<br>About Us</h2>
-        <div class="title-bar"></div>
+        <p class="eyebrow">Customer Reviews</p>
+        <h2 class="sec-title">What Troy Says<br>About Us</h2>
+        <div class="title-rule"></div>
       </div>
-      <div class="google-badge">
+      <div class="google-box">
         <div class="google-score">4.7</div>
         <div class="google-stars">★★★★★</div>
         <div class="google-count">59 Google Reviews</div>
       </div>
     </div>
     <div class="reviews-grid reveal">
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">"The service was great, the cost was fair and the people are really nice."</div>
-        <div class="review-name">— Google Reviewer</div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">"They worked on my BMW for a GREAT price. Very professional and honest shop."</div>
-        <div class="review-name">— Google Reviewer</div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">"Reliable and honest work. Fair pricing. Will definitely be back for all my car needs."</div>
-        <div class="review-name">— Google Reviewer</div>
-      </div>
+      <div class="review"><div class="review-stars">★★★★★</div><div class="review-text">"The service was great, the cost was fair and the people are really nice."</div><div class="review-author">— Google Reviewer</div></div>
+      <div class="review"><div class="review-stars">★★★★★</div><div class="review-text">"They worked on my BMW for a GREAT price. Very professional and honest shop."</div><div class="review-author">— Google Reviewer</div></div>
+      <div class="review"><div class="review-stars">★★★★★</div><div class="review-text">"Reliable and honest work. Fair pricing. Will definitely be back for all my car needs."</div><div class="review-author">— Google Reviewer</div></div>
     </div>
     <div class="reviews-cta reveal">
-      <a href="https://www.google.com/maps/place/Garcia+Auto+Repair" target="_blank" class="btn-outline-white">Read All 59 Reviews on Google ↗</a>
+      <a href="https://www.google.com/maps/place/Garcia+Auto+Repair" target="_blank" class="btn-outline-dark">Read All 59 Reviews on Google ↗</a>
     </div>
   </div>
 </section>
-
-<!-- SNAP FINANCE BAND -->
-<div class="finance-band">
-  <div class="finance-left">
-    <div class="finance-tag">Financing Available</div>
-    <div class="finance-title">No Credit? We Say YES.</div>
-    <div class="finance-body">100-Day Cash Payoff · 12-Month Payment Plans available through Snap Finance</div>
-  </div>
-  <a href="#contact" class="btn-white">Get Financing Info</a>
-</div>
 
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
     <div class="contact-grid">
       <div class="reveal">
-        <p class="section-eyebrow">Get In Touch</p>
-        <h2 class="section-title">Contact &<br>Location</h2>
-        <div class="title-bar"></div>
-        <p class="section-body">Stop by the shop, give us a call, or send us a message. We're happy to answer any questions.</p>
-        <div class="contact-details">
-          <div class="contact-item">
-            <div class="contact-icon-box">📍</div>
-            <div>
-              <div class="contact-label">Address</div>
-              <div class="contact-value">1006 N. Central Ave<br>Troy, TX 76579</div>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon-box">📞</div>
-            <div>
-              <div class="contact-label">Phone</div>
-              <div class="contact-value"><a href="tel:2549384004">(254) 938-4004</a></div>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon-box">✉️</div>
-            <div>
-              <div class="contact-label">Email</div>
-              <div class="contact-value"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
-            </div>
-          </div>
+        <p class="eyebrow">Get In Touch</p>
+        <h2 class="sec-title">Contact &<br>Location</h2>
+        <div class="title-rule"></div>
+        <p class="body-text" style="margin-bottom:8px;">Stop by, give us a call, or send a message. We'll get back to you during business hours.</p>
+        <div class="contact-item">
+          <div class="c-icon-box">📍</div>
+          <div><div class="c-label">Address</div><div class="c-val">1006 N. Central Ave<br>Troy, TX 76579</div></div>
         </div>
-        <div class="hours-block">
-          <div class="hours-title">Business Hours</div>
+        <div class="contact-item">
+          <div class="c-icon-box">📞</div>
+          <div><div class="c-label">Phone</div><div class="c-val"><a href="tel:2549384004">(254) 938-4004</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="c-icon-box">✉️</div>
+          <div><div class="c-label">Email</div><div class="c-val"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div></div>
+        </div>
+        <div class="hours-wrap">
+          <div class="hours-head">Business Hours</div>
           <div class="hours-row"><span class="hours-day">Monday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
           <div class="hours-row"><span class="hours-day">Tuesday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
           <div class="hours-row"><span class="hours-day">Wednesday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
           <div class="hours-row"><span class="hours-day">Thursday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
           <div class="hours-row"><span class="hours-day">Friday</span><span class="hours-time">8:00 AM – 5:00 PM</span></div>
-          <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-closed hours-time">Closed</span></div>
-          <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-closed hours-time">Closed</span></div>
+          <div class="hours-row"><span class="hours-day">Saturday</span><span class="closed-txt">Closed</span></div>
+          <div class="hours-row"><span class="hours-day">Sunday</span><span class="closed-txt">Closed</span></div>
         </div>
       </div>
       <div class="reveal">
-        <div class="contact-form-wrap">
-          <div class="form-title">Send Us a Message</div>
-          <div class="form-sub">We'll get back to you during business hours.</div>
+        <div class="form-box">
+          <div class="form-title">Send a Message</div>
+          <div class="form-sub">We'll reply during business hours, Mon–Fri.</div>
           <form onsubmit="handleForm(event)">
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">First Name</label>
-                <input class="form-input" type="text" placeholder="John" required/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Last Name</label>
-                <input class="form-input" type="text" placeholder="Smith"/>
-              </div>
+            <div class="frow">
+              <div class="fg"><label class="flabel">First Name</label><input class="finput" type="text" placeholder="John" required/></div>
+              <div class="fg"><label class="flabel">Last Name</label><input class="finput" type="text" placeholder="Smith"/></div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Phone Number</label>
-              <input class="form-input" type="tel" placeholder="(254) 000-0000"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Service Needed</label>
-              <select class="form-select">
+            <div class="fg"><label class="flabel">Phone</label><input class="finput" type="tel" placeholder="(254) 000-0000"/></div>
+            <div class="fg">
+              <label class="flabel">Service Needed</label>
+              <select class="fselect">
                 <option value="">— Select a Service —</option>
                 <option>Engine Repair</option>
                 <option>Tires</option>
@@ -1304,14 +1240,12 @@
                 <option>18-Wheeler Service</option>
                 <option>Auto Diagnostics</option>
                 <option>Steering & Suspension</option>
+                <option>Painting</option>
                 <option>Other</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="form-label">Tell Us More</label>
-              <textarea class="form-textarea" placeholder="Describe your vehicle issue or what you need..."></textarea>
-            </div>
-            <button type="submit" class="form-submit">Send Message →</button>
+            <div class="fg"><label class="flabel">Tell Us More</label><textarea class="ftextarea" placeholder="Describe your vehicle issue or what you need..."></textarea></div>
+            <button type="submit" class="fsubmit">Send Message →</button>
           </form>
         </div>
       </div>
@@ -1321,53 +1255,51 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-top">
+  <div class="footer-main">
     <div>
-      <div class="footer-brand-name">Garcia Auto Repair</div>
-      <div class="footer-brand-tag">Troy, Texas · Est. 2009</div>
-      <p class="footer-desc">A family-owned mechanic and tire shop serving Troy and the greater Bell County area since 2009. Honest work. Fair prices. All vehicles welcome.</p>
+      <div class="foot-name">Garcia Auto Repair</div>
+      <div class="foot-sub">Troy, Texas · Est. 2009</div>
+      <p class="foot-desc">A family-owned mechanic and tire shop serving Troy and Bell County since 2009. Honest work, fair prices, all vehicles welcome.</p>
     </div>
     <div>
-      <div class="footer-col-title">Quick Links</div>
-      <ul class="footer-links">
+      <div class="foot-col-title">Quick Links</div>
+      <ul class="foot-links">
         <li><a href="#about">About Us</a></li>
         <li><a href="#services">Our Services</a></li>
         <li><a href="#why">Why Choose Us</a></li>
         <li><a href="#reviews">Reviews</a></li>
         <li><a href="#contact">Contact & Hours</a></li>
-        <li><a href="https://www.facebook.com/10006640300" target="_blank">Facebook</a></li>
+        <li><a href="https://www.facebook.com/garcia-auto-repair-100539368826578" target="_blank">Facebook</a></li>
       </ul>
     </div>
     <div>
-      <div class="footer-col-title">Contact</div>
-      <div class="footer-contact-item"><a href="tel:2549384004">(254) 938-4004</a></div>
-      <div class="footer-contact-item"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
-      <div class="footer-contact-item">1006 N. Central Ave<br>Troy, TX 76579</div>
-      <div class="footer-contact-item" style="margin-top:16px; color:rgba(255,255,255,0.3);">Mon–Fri: 8AM – 5PM<br>Sat–Sun: Closed</div>
+      <div class="foot-col-title">Contact</div>
+      <div class="foot-contact-line"><a href="tel:2549384004">(254) 938-4004</a></div>
+      <div class="foot-contact-line"><a href="mailto:garciaautorepair2009@gmail.com">garciaautorepair2009@gmail.com</a></div>
+      <div class="foot-contact-line">1006 N. Central Ave<br>Troy, TX 76579</div>
+      <div class="foot-contact-line" style="margin-top:14px; color:rgba(255,255,255,0.2);">Mon–Fri: 8AM – 5PM<br>Sat–Sun: Closed</div>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2025 Garcia Auto Repair · Troy, Texas · All rights reserved.</div>
-    <a href="https://www.facebook.com/10006640300" target="_blank" class="footer-fb">📘 Follow on Facebook</a>
+    <div class="foot-copy">© 2025 Garcia Auto Repair · All rights reserved.</div>
+    <a href="https://www.facebook.com/garcia-auto-repair-100539368826578" target="_blank" class="foot-fb">📘 Follow on Facebook</a>
   </div>
 </footer>
 
 <a href="tel:2549384004" class="float-call">☎ Call Now</a>
 
 <script>
-  // Scroll reveal
   const obs = new IntersectionObserver(
-    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    e => e.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); }),
     { threshold: 0.08 }
   );
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  // Form
   function handleForm(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('.form-submit');
+    const btn = e.target.querySelector('.fsubmit');
     btn.textContent = '✓ Message Sent!';
-    btn.style.background = '#1e7d34';
+    btn.style.background = '#2d7a3a';
     btn.disabled = true;
     setTimeout(() => {
       btn.textContent = 'Send Message →';
