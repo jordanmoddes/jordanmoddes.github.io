@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 
 <style>
 /* ═══════════════════════════════════════════
@@ -52,11 +53,35 @@ body {
 }
 
 /* ═══════════════════════════════════════════
-   CANVAS
+   SPLINE BACKGROUND
 ═══════════════════════════════════════════ */
-#main-canvas {
-  position: fixed; inset: 0;
-  width: 100%; height: 100%; z-index: 0;
+#spline-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#spline-bg spline-viewer {
+  width: 100%;
+  height: 100%;
+  --background-color: #03060a;
+}
+
+/* Dark overlay to keep text readable over the Spline scene */
+#spline-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    135deg,
+    rgba(3,6,10,0.72) 0%,
+    rgba(3,6,10,0.45) 50%,
+    rgba(3,6,10,0.68) 100%
+  );
+  pointer-events: none;
 }
 
 /* ═══════════════════════════════════════════
@@ -130,19 +155,6 @@ body.is-desktop #cur-ring { display: block; }
 ═══════════════════════════════════════════ */
 #prog-bar { position: fixed; top: 54px; left: 0; right: 0; height: 2px; z-index: 499; background: rgba(255,255,255,0.03); }
 #prog-fill { height: 100%; background: linear-gradient(90deg,var(--accent),var(--blue)); width: 0; transition: width .3s ease; }
-
-/* ═══════════════════════════════════════════
-   DESKTOP: tall scroll track
-═══════════════════════════════════════════ */
-#scroll-container {
-  position: fixed; inset: 0;
-  overflow-y: scroll; overflow-x: hidden;
-  z-index: 1; scrollbar-width: none;
-  display: none;
-}
-#scroll-container::-webkit-scrollbar { display: none; }
-body.is-desktop #scroll-container { display: block; }
-#scroll-track { height: 600vh; pointer-events: none; }
 
 /* ═══════════════════════════════════════════
    SCENE PANELS
@@ -514,6 +526,14 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
 
+<!-- ═══════════════════════════════════════════
+     SPLINE BACKGROUND (replaces Three.js)
+═══════════════════════════════════════════ -->
+<div id="spline-bg">
+  <spline-viewer url="https://prod.spline.design/ms6vQL3XNKPLnDuJKljV0Lat/scene.splinecode" loading="lazy"></spline-viewer>
+</div>
+<div id="spline-overlay"></div>
+
 <!-- NAV -->
 <header class="topbar">
   <div class="topbar-inner">
@@ -532,11 +552,6 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
   </div>
 </header>
 <div id="prog-bar"><div id="prog-fill"></div></div>
-
-<!-- CANVAS -->
-<canvas id="main-canvas"></canvas>
-
-<!-- wheel/touch driven — no scroll container needed -->
 
 <!-- MOBILE NAVIGATION -->
 <div id="scene-dots"></div>
@@ -596,7 +611,6 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
       <p class="sec-sub">Impact first. Each metric is a direct outcome — not a responsibility.</p>
       <div class="metric-panel">
 
-        <!-- 600+ people: headcount rows -->
         <div class="metric-card">
           <div class="m-label">Leadership Scale</div>
           <div class="m-value" id="mc1">600+</div>
@@ -607,7 +621,6 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
           <p class="m-desc">Operations across facilities up to 3.25M sq ft.</p>
         </div>
 
-        <!-- $3.6M: investment vs return comparison bars -->
         <div class="metric-card">
           <div class="m-label">Program Value</div>
           <div class="m-value" id="mc2">$3.6M</div>
@@ -632,7 +645,6 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
           <p class="m-desc">Lane Dash logistics optimization program, 5.5-month ROI.</p>
         </div>
 
-        <!-- 50%: before/after throughput bars -->
         <div class="metric-card">
           <div class="m-label">Turnaround Impact</div>
           <div class="m-value" id="mc3">50%</div>
@@ -656,7 +668,6 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
           <p class="m-desc">RIT operational recovery assignment.</p>
         </div>
 
-        <!-- 90+ sites: dot grid -->
         <div class="metric-card">
           <div class="m-label">Systems Reach</div>
           <div class="m-value" id="mc4">90+ Sites</div>
@@ -667,7 +678,6 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
           <p class="m-desc">32-hour review cycle cut to under 45 minutes.</p>
         </div>
 
-        <!-- 14K SKUs: pulse rings -->
         <div class="metric-card">
           <div class="m-label">Supply Chain Systems</div>
           <div class="m-value" id="mc5">14K SKUs</div>
@@ -925,7 +935,6 @@ body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
 /* ══════════════════════════════════════════
@@ -954,131 +963,7 @@ if (!IS_MOBILE) {
 }
 
 /* ══════════════════════════════════════════
-   THREE.JS NETWORK
-══════════════════════════════════════════ */
-(function(){
-  if(typeof THREE==='undefined')return;
-  var canvas=document.getElementById('main-canvas');
-  var W=window.innerWidth, H=window.innerHeight;
-
-  var scene=new THREE.Scene();
-  scene.fog=new THREE.FogExp2(0x03060a, IS_MOBILE ? 0.025 : 0.020);
-
-  var cam=new THREE.PerspectiveCamera(55,W/H,.5,500);
-  cam.position.set(0,0,0);
-
-  var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:!IS_MOBILE});
-  renderer.setPixelRatio(Math.min(devicePixelRatio, IS_MOBILE ? 1.5 : 2));
-  renderer.setSize(W,H);
-  renderer.setClearColor(0x03060a,1);
-
-  scene.add(new THREE.AmbientLight(0x0a1520,1));
-  var aLight=new THREE.PointLight(0x00e8d8,2.5,40);
-  aLight.position.set(0,3,-5); scene.add(aLight);
-  var bLight=new THREE.PointLight(0x2f78ff,1.8,40);
-  bLight.position.set(10,0,-20); scene.add(bLight);
-
-  var SCENE_COUNT=6;
-  var ZONE_DEPTH=28;
-  var nodeGroups=[];
-  var rng=function(a,b){return a+Math.random()*(b-a);};
-
-  function makeNode(x,y,z,col,size){
-    var g=new THREE.SphereGeometry(size||.18,IS_MOBILE?8:12,IS_MOBILE?6:8);
-    var m=new THREE.MeshPhongMaterial({color:col,emissive:col,emissiveIntensity:.4,transparent:true,opacity:.85});
-    var mesh=new THREE.Mesh(g,m); mesh.position.set(x,y,z); return mesh;
-  }
-
-  var cols=[0x00e8d8,0x2f78ff,0x6366f1,0x00e8d8];
-  for(var s=0;s<SCENE_COUNT;s++){
-    var grp=new THREE.Group();
-    var zBase=-s*ZONE_DEPTH;
-    var nc=IS_MOBILE?8:14;
-    for(var n=0;n<nc;n++){
-      var col=cols[Math.floor(Math.random()*cols.length)];
-      var nd=makeNode(rng(-10,10),rng(-5,5),zBase+rng(-5,5),col,rng(.1,.26));
-      grp.add(nd);
-      if(n>0&&Math.random()>.4){
-        var prev=grp.children[Math.floor(Math.random()*(grp.children.length-1))];
-        var pts=[nd.position.clone(),prev.position.clone()];
-        var lg=new THREE.BufferGeometry().setFromPoints(pts);
-        var lm=new THREE.LineBasicMaterial({color:col,transparent:true,opacity:.16});
-        grp.add(new THREE.Line(lg,lm));
-      }
-    }
-    var hub=makeNode(rng(-2,2),rng(-1,1),zBase,0x00e8d8,.42);
-    hub.material.emissiveIntensity=.8; grp.add(hub);
-    var rg=new THREE.TorusGeometry(.65,.028,8,36);
-    var rm=new THREE.Mesh(rg,new THREE.MeshBasicMaterial({color:0x00e8d8,transparent:true,opacity:.28}));
-    rm.position.copy(hub.position); rm.rotation.x=Math.PI/2; grp.add(rm);
-    scene.add(grp); nodeGroups.push(grp);
-  }
-
-  // Particles
-  var pN=IS_MOBILE?1200:2400;
-  var pP=new Float32Array(pN*3);
-  for(var i=0;i<pN*3;i+=3){pP[i]=rng(-40,40);pP[i+1]=rng(-25,25);pP[i+2]=rng(-170,5);}
-  var pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(pP,3));
-  scene.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0x00e8d8,size:.05,transparent:true,opacity:.32})));
-
-  // Tunnel rings
-  var ringCount=IS_MOBILE?30:55;
-  for(var r=0;r<ringCount;r++){
-    var trg=new THREE.TorusGeometry(11+rng(-1,1),.035,6,50);
-    var trm=new THREE.Mesh(trg,new THREE.MeshBasicMaterial({color:r%3===0?0x2f78ff:0x00e8d8,transparent:true,opacity:.035+Math.random()*.035}));
-    trm.position.z=rng(-170,0); trm.rotation.x=Math.PI/2; scene.add(trm);
-  }
-
-  var totalDepth=ZONE_DEPTH*(SCENE_COUNT-1);
-  var scrollProgress=0;
-  var mouse={x:0,y:0};
-  if(!IS_MOBILE){
-    document.addEventListener('mousemove',function(e){
-      mouse.x=(e.clientX/W-.5)*2; mouse.y=-(e.clientY/H-.5)*2;
-    },{passive:true});
-  }
-
-  var clock=new THREE.Clock();
-  var camZ=0,camX=0,camY=0;
-
-  function animate(){
-    requestAnimationFrame(animate);
-    var t=clock.getElapsedTime();
-    var targetZ=-scrollProgress*totalDepth;
-    var targetX=mouse.x*(IS_MOBILE?.4:1.1);
-    var targetY=mouse.y*(IS_MOBILE?.3:.75);
-    camZ+=(targetZ-camZ)*.04;
-    camX+=(targetX-camX)*.06;
-    camY+=(targetY-camY)*.06;
-    cam.position.set(camX,camY,camZ);
-    cam.lookAt(camX+mouse.x*.25,camY+mouse.y*.15,camZ-8);
-    nodeGroups.forEach(function(g,gi){
-      g.children.forEach(function(child,ci){
-        if(child.isMesh&&child.geometry.parameters&&child.geometry.parameters.radius!==undefined){
-          child.material.emissiveIntensity=.28+Math.sin(t*1.4+gi*2+ci)*.2;
-          var sc=1+Math.sin(t*1.2+gi+ci*.5)*.04;
-          child.scale.set(sc,sc,sc);
-        }
-        if(child.isMesh&&child.geometry.parameters&&child.geometry.parameters.tube!==undefined){
-          child.rotation.z=t*.45+gi;
-        }
-      });
-    });
-    aLight.position.z=camZ-5; bLight.position.z=camZ-15;
-    renderer.render(scene,cam);
-  }
-  animate();
-
-  window.addEventListener('resize',function(){
-    W=window.innerWidth; H=window.innerHeight;
-    cam.aspect=W/H; cam.updateProjectionMatrix(); renderer.setSize(W,H);
-  });
-
-  window._setScrollProgress=function(p){scrollProgress=Math.max(0,Math.min(1,p));};
-})();
-
-/* ══════════════════════════════════════════
-   SCENE ENGINE (shared by desktop + mobile)
+   SCENE ENGINE
 ══════════════════════════════════════════ */
 var TOTAL_SCENES=6;
 var currentScene=0;
@@ -1092,19 +977,15 @@ function showScene(idx){
   currentScene=idx;
 
   var progress=idx/(TOTAL_SCENES-1);
-  if(window._setScrollProgress)window._setScrollProgress(progress);
   var pf=document.getElementById('prog-fill');
   if(pf)pf.style.width=(progress*100)+'%';
 
-  // Update dots
   document.querySelectorAll('.scene-dot').forEach(function(d,i){
     d.classList.toggle('active',i===idx);
   });
 
-  // Trigger metric animations on scene 1
   if(idx===1)triggerMetrics();
 
-  // Hide hints after first move
   if(idx>0){
     var sh=document.getElementById('scroll-hint');
     var swh=document.getElementById('swipe-hint');
@@ -1114,7 +995,7 @@ function showScene(idx){
 }
 
 /* ══════════════════════════════════════════
-   DESKTOP: WHEEL-DRIVEN NAVIGATION
+   DESKTOP: WHEEL NAVIGATION
 ══════════════════════════════════════════ */
 if(!IS_MOBILE){
   var wheelLock=false;
@@ -1122,30 +1003,24 @@ if(!IS_MOBILE){
   var WHEEL_THRESHOLD=80;
 
   window.addEventListener('wheel',function(e){
-    // Don't steal scroll from panel-wide if it still has content to scroll
     var pw=e.target.closest('.panel-wide');
     if(pw){
       var atBottom=pw.scrollTop+pw.clientHeight>=pw.scrollHeight-4;
       var atTop=pw.scrollTop<=0;
-      if(e.deltaY>0&&!atBottom)return; // let panel scroll
+      if(e.deltaY>0&&!atBottom)return;
       if(e.deltaY<0&&!atTop)return;
     }
-
     e.preventDefault();
     if(wheelLock)return;
-
     wheelAccum+=Math.abs(e.deltaY);
     if(wheelAccum<WHEEL_THRESHOLD)return;
     wheelAccum=0;
     wheelLock=true;
-
     if(e.deltaY>0)showScene(currentScene+1);
     else showScene(currentScene-1);
-
     setTimeout(function(){wheelLock=false;},750);
   },{passive:false});
 
-  // Keyboard nav
   document.addEventListener('keydown',function(e){
     if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();showScene(currentScene+1);}
     if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();showScene(currentScene-1);}
@@ -1153,10 +1028,9 @@ if(!IS_MOBILE){
 }
 
 /* ══════════════════════════════════════════
-   MOBILE: TOUCH SWIPE ENGINE
+   MOBILE: TOUCH SWIPE
 ══════════════════════════════════════════ */
 if(IS_MOBILE){
-  // Build dots
   var dotsEl=document.getElementById('scene-dots');
   for(var di=0;di<TOTAL_SCENES;di++){
     var dot=document.createElement('div');
@@ -1165,23 +1039,19 @@ if(IS_MOBILE){
     dotsEl.appendChild(dot);
   }
 
-  // Prev/Next buttons
   var prevBtn=document.getElementById('swipe-prev');
   var nextBtn=document.getElementById('swipe-next');
   if(prevBtn)prevBtn.addEventListener('click',function(){showScene(currentScene-1);});
   if(nextBtn)nextBtn.addEventListener('click',function(){showScene(currentScene+1);});
 
-  // Touch swipe
   var touchStartY=0, touchStartX=0;
   var MIN_SWIPE=50;
 
   document.addEventListener('touchstart',function(e){
-    // Don't capture if touching a scrollable panel-wide
     var pw=e.target.closest('.panel-wide');
     if(pw){
       var atTop=pw.scrollTop<=0;
       var atBottom=pw.scrollTop+pw.clientHeight>=pw.scrollHeight-2;
-      // Only capture if at boundary
       if(!atTop&&!atBottom)return;
     }
     touchStartY=e.touches[0].clientY;
@@ -1193,13 +1063,10 @@ if(IS_MOBILE){
     var pw=e.target.closest('.panel-wide');
     var dy=touchStartY-e.changedTouches[0].clientY;
     var dx=touchStartX-e.changedTouches[0].clientX;
-
-    // Only advance scene if vertical swipe is dominant and large enough
     if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>MIN_SWIPE){
-      // If inside a scrollable panel, only advance at boundaries
       if(pw){
-        if(dy>0&&pw.scrollTop+pw.clientHeight<pw.scrollHeight-5)return; // still content below
-        if(dy<0&&pw.scrollTop>5)return; // still content above
+        if(dy>0&&pw.scrollTop+pw.clientHeight<pw.scrollHeight-5)return;
+        if(dy<0&&pw.scrollTop>5)return;
       }
       transitioning=true;
       if(dy>0)showScene(currentScene+1);
@@ -1224,7 +1091,6 @@ function triggerMetrics(){
   countUp(document.getElementById('mc2'),3.6,'$','M',true,1400);
   countUp(document.getElementById('mc3'),50,'','%',false,1400);
 
-  // Headcount viz — 60 person-dots in rows of 10
   var hv=document.getElementById('headcount-viz');
   if(hv){
     hv.innerHTML='';
@@ -1239,41 +1105,38 @@ function triggerMetrics(){
       hv.appendChild(rowEl);
     }
     var allDots=hv.querySelectorAll('div > div');
-    var di=0;
+    var di2=0;
     var iv=setInterval(function(){
-      if(di<allDots.length){allDots[di].style.background='var(--accent)';di++;}
+      if(di2<allDots.length){allDots[di2].style.background='var(--accent)';di2++;}
       else clearInterval(iv);
     },18);
   }
 
-  // $3.6M: investment vs return bars — both fill to 100% width but investment is narrower container
   setTimeout(function(){
     var bi=document.getElementById('bar-invest');
     var br=document.getElementById('bar-return');
-    if(bi)bi.style.width='36%'; // $1.28M of $3.6M scale = 35%
-    if(br)br.style.width='100%'; // $3.6M = full width
+    if(bi)bi.style.width='36%';
+    if(br)br.style.width='100%';
   },300);
 
-  // 50% before/after bars
   setTimeout(function(){
     var bb=document.getElementById('bar-before');
     var ba=document.getElementById('bar-after');
-    if(bb)bb.style.width='67%'; // 110 of 165 = 67%
-    if(ba)ba.style.width='100%'; // 165 = full
+    if(bb)bb.style.width='67%';
+    if(ba)ba.style.width='100%';
   },400);
 
-  // Node cluster — 90 sites
   var nc=document.getElementById('nodes1');
   if(nc){
     nc.innerHTML='';
-    for(var i=0;i<90;i++){var d=document.createElement('div');d.className='node-dot';nc.appendChild(d);}
+    for(var i=0;i<90;i++){var d2=document.createElement('div');d2.className='node-dot';nc.appendChild(d2);}
     var dots=nc.querySelectorAll('.node-dot'),idx2=0;
     var iv2=setInterval(function(){if(idx2<dots.length){dots[idx2].classList.add('lit');idx2++;}else clearInterval(iv2);},16);
   }
 }
 
 /* ══════════════════════════════════════════
-   INLINE AI (backend)
+   INLINE AI
 ══════════════════════════════════════════ */
 (function(){
   var BACKEND='https://jmod-ai-backend.jordanmoddes.com/chat';
