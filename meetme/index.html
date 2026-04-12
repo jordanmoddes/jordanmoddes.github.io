@@ -31,6 +31,61 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ── TOP BAR ── */
+.top-bar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 48px;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 100;
+  background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+}
+
+.top-ig {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none;
+  color: rgba(232,232,232,0.5);
+  transition: color 0.2s;
+}
+.top-ig:active { color: var(--lime); }
+
+.top-ig svg {
+  width: 18px; height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.top-ig-handle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+
+.top-refresh {
+  background: transparent;
+  border: none;
+  color: rgba(232,232,232,0.4);
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.2s, transform 0.3s;
+  display: flex; align-items: center;
+}
+.top-refresh:active { color: var(--lime); transform: rotate(180deg); }
+
+.top-refresh svg {
+  width: 16px; height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* grain */
 body::after {
   content:'';
@@ -709,6 +764,24 @@ body::after {
 </head>
 <body>
 
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a class="top-ig" href="https://www.instagram.com/jmoddes" target="_blank">
+    <svg viewBox="0 0 24 24">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <circle cx="12" cy="12" r="4.5"/>
+      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+    </svg>
+    <span class="top-ig-handle">jmoddes</span>
+  </a>
+  <button class="top-refresh" onclick="restart()" title="Restart">
+    <svg viewBox="0 0 24 24">
+      <polyline points="23 4 23 10 17 10"/>
+      <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+    </svg>
+  </button>
+</div>
+
 <!-- LANDING -->
 <div class="screen active" id="landing">
   <div class="landing-eyebrow">Meet Jordan or No?</div>
@@ -1023,7 +1096,7 @@ function handleAnswer(side, event) {
         isAnimating = false;
       }
     }, 200);
-  }, 1100);
+  }, 300);
 }
 
 // ── RESULTS ──
