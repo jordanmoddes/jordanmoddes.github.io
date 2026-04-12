@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Let's Talk! But first...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #080808;
+  --surface: #111111;
+  --surface2: #181818;
+  --border: rgba(255,255,255,0.07);
+  --text: #e8e8e8;
+  --muted: rgba(232,232,232,0.35);
+  --lime: #aaff00;
+  --lime-dim: rgba(170,255,0,0.12);
+  --lime-border: rgba(170,255,0,0.6);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+html, body {
+  height: 100%; width: 100%;
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* grain */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:0.5;
+}
+
+/* ── SCREENS ── */
+.screen {
+  position:fixed; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding: 0;
+  opacity:0; pointer-events:none;
+  transition: opacity 0.25s ease;
+}
+.screen.active { opacity:1; pointer-events:all; }
+
+/* ── LANDING ── */
+#landing {
+  padding: 48px 28px 36px;
+  justify-content: space-between;
+}
+
+.landing-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--lime);
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.2s forwards;
+}
+
+.landing-center {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; gap: 0;
+}
+
+.landing-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(88px, 28vw, 140px);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.35s forwards;
+}
+
+.landing-title span {
+  color: var(--lime);
+}
+
+.typing-line {
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px; font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-top: 20px;
+  min-height: 20px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.9s forwards;
+}
+
+.cursor {
+  display: inline-block;
+  width: 1px; height: 13px;
+  background: var(--lime);
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 0.8s step-end infinite;
+}
+@keyframes blink { 50% { opacity:0; } }
+
+.split-row {
+  width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 1.1s forwards;
+}
+
+.split-btn {
+  padding: 22px 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s, background 0.2s;
+  -webkit-user-select: none;
+}
+.split-btn:active { background: var(--surface2); }
+.split-btn.man:active { border-color: var(--lime-border); }
+.split-btn.woman:active { border-color: var(--lime-border); }
+
+.split-glyph {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--lime);
+  text-transform: uppercase;
+}
+
+.split-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px; font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.split-sub {
+  font-size: 10px; font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-align: center;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* ── CONFIRM SCREEN (Go / Nah) ── */
+#confirm {
+  padding: 48px 28px 48px;
+  gap: 0;
+  justify-content: space-between;
+}
+
+.confirm-top {
+  flex:1; display:flex; flex-direction:column;
+  align-items:flex-start; justify-content:center;
+  gap: 16px;
+}
+
+.confirm-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+.confirm-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 10vw, 52px);
+  line-height: 1.0;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+.confirm-sub {
+  font-size: 13px; font-weight: 300;
+  color: var(--muted);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  max-width: 280px;
+}
+
+.confirm-actions {
+  width: 100%;
+  display: flex; flex-direction: column;
+  gap: 10px;
+}
+
+.btn-go {
+  width: 100%; padding: 18px;
+  background: var(--lime);
+  color: var(--black);
+  border: none; border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.btn-go:active { transform: scale(0.98); opacity: 0.9; }
+
+.btn-nah {
+  width: 100%; padding: 16px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px; font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-nah:active { border-color: rgba(255,255,255,0.2); color: var(--text); }
+
+/* ── EXIT SCREEN ── */
+#exit {
+  padding: 48px 28px;
+  text-align: center;
+  gap: 16px;
+}
+
+.exit-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(28px, 8vw, 42px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.exit-sub {
+  font-size: 13px; font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.exit-reconsider {
+  margin-top: 32px;
+  padding: 14px 24px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.exit-reconsider:active { border-color: var(--lime-border); color: var(--lime); }
+
+/* ── QUESTION SCREEN ── */
+#question-screen {
+  justify-content: space-between;
+  padding: 0;
+}
+
+.q-header {
+  width: 100%;
+  padding: 52px 28px 0;
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+
+.q-meta {
+  display: flex; align-items: center;
+  justify-content: space-between;
+}
+
+.q-path {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+.q-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 300;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+.progress-track {
+  width: 100%; height: 1px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute; left:0; top:0; bottom:0;
+  background: var(--lime);
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+.q-body {
+  flex:1; display:flex;
+  align-items:center; justify-content:center;
+  padding: 28px 28px;
+}
+
+.question-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(32px, 9vw, 48px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--text);
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.question-text.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.tap-zone {
+  width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+
+.tap-btn {
+  padding: 28px 20px 32px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.15s;
+  border: 2px solid transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.tap-btn.left {
+  border-right: 1px solid var(--border);
+}
+
+.tap-btn.selected {
+  border-color: var(--lime);
+  background: var(--lime-dim);
+}
+
+.tap-btn.selected .tap-label {
+  color: var(--lime);
+}
+
+.tap-btn.selected .tap-dir {
+  color: var(--lime);
+}
+
+.tap-btn.dimmed {
+  opacity: 0.25;
+}
+
+.tap-dir {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.tap-label {
+  font-size: 13px; font-weight: 400;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+
+/* ── RESULT SCREEN ── */
+#result-screen {
+  padding: 0;
+  justify-content: space-between;
+}
+
+.result-top {
+  flex:1; display:flex; flex-direction:column;
+  align-items:flex-start; justify-content:center;
+  padding: 52px 28px 28px;
+  gap: 12px;
+}
+
+.result-tier-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--lime);
+  border: 1px solid var(--lime-border);
+  padding: 4px 12px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.result-score-wrap {
+  display: flex; align-items: baseline;
+  gap: 4px;
+}
+
+.result-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(96px, 28vw, 140px);
+  font-weight: 700;
+  line-height: 0.85;
+  color: var(--lime);
+  letter-spacing: -0.02em;
+}
+
+.result-score-unit {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px; font-weight: 300;
+  color: var(--muted);
+}
+
+.result-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(28px, 8vw, 40px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  color: var(--text);
+}
+
+.result-copy {
+  font-size: 13px; font-weight: 300;
+  color: var(--muted);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  max-width: 300px;
+}
+
+/* membership stamp */
+.stamp-wrap {
+  display: none;
+  align-items: center; justify-content: center;
+  margin-top: 8px;
+}
+.stamp-wrap.show { display: flex; }
+
+.stamp {
+  border: 2px solid var(--lime);
+  border-radius: 4px;
+  padding: 8px 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px; font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lime);
+  transform: rotate(-3deg);
+  opacity: 0;
+  animation: stampDrop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes stampDrop {
+  from { transform: rotate(-3deg) scale(1.4); opacity: 0; }
+  to { transform: rotate(-3deg) scale(1); opacity: 1; }
+}
+
+.result-bottom {
+  width: 100%;
+  padding: 0 28px 36px;
+  display: flex; flex-direction: column;
+  gap: 10px;
+}
+
+.btn-primary {
+  width: 100%; padding: 18px;
+  background: var(--lime);
+  color: var(--black);
+  border: none; border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px; font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+
+.btn-secondary {
+  width: 100%; padding: 14px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* ── CHAT SCREEN ── */
+#chat-screen {
+  padding: 0;
+  justify-content: space-between;
+}
+
+.chat-header {
+  width: 100%;
+  padding: 52px 28px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-header-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 4px;
+}
+
+.chat-header-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.chat-header-sub {
+  font-size: 11px; font-weight: 300;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+.chat-messages {
+  flex:1; width:100%;
+  overflow-y: auto;
+  padding: 20px 28px;
+  display: flex; flex-direction: column;
+  gap: 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 3px;
+  font-size: 13px; font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+.chat-bubble.them {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  align-self: flex-start;
+}
+
+.chat-bubble.me {
+  background: var(--lime-dim);
+  border: 1px solid var(--lime-border);
+  color: var(--text);
+  align-self: flex-end;
+}
+
+.chat-typing {
+  display: flex; gap: 4px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  align-self: flex-start;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.chat-typing.visible { opacity: 1; }
+
+.dot {
+  width: 5px; height: 5px;
+  background: var(--muted);
+  border-radius: 50%;
+  animation: dotPulse 1.2s ease infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+.chat-input-wrap {
+  width: 100%;
+  padding: 12px 28px 32px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 10px;
+  align-items: flex-end;
+}
+
+.chat-input {
+  flex:1; padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px; font-weight: 300;
+  letter-spacing: 0.02em;
+  resize: none; outline: none;
+  min-height: 44px;
+  max-height: 100px;
+  transition: border-color 0.2s;
+}
+.chat-input:focus { border-color: var(--lime-border); }
+.chat-input::placeholder { color: var(--muted); }
+
+.chat-send {
+  padding: 12px 16px;
+  background: var(--lime);
+  color: var(--black);
+  border: none; border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+  height: 44px;
+}
+.chat-send:active { opacity: 0.85; }
+
+.chat-text-cta {
+  width: 100%;
+  padding: 0 28px 12px;
+  display: none;
+}
+.chat-text-cta.show { display: block; }
+
+.btn-text-open {
+  width: 100%; padding: 16px;
+  background: transparent;
+  color: var(--lime);
+  border: 1px solid var(--lime-border);
+  border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px; font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-text-open:active { background: var(--lime-dim); }
+
+/* ── HIGH MATCH PULSE ── */
+.lime-pulse {
+  animation: limePulse 0.6s ease forwards;
+}
+@keyframes limePulse {
+  0% { background: var(--black); }
+  40% { background: rgba(170,255,0,0.08); }
+  100% { background: var(--black); }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(12px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+.snap-in {
+  animation: snapIn 0.2s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes snapIn {
+  from { opacity:0; transform: translateX(16px); }
+  to { opacity:1; transform: translateX(0); }
+}
+
+/* scrollbar */
+.chat-messages::-webkit-scrollbar { width: 3px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div class="screen active" id="landing">
+  <div class="landing-eyebrow">Meet Jordan or No?</div>
+  <div class="landing-center">
+    <div class="landing-title">LET'S<br><span>TALK!</span><br>BUT FIRST...</div>
+    <div class="typing-line" id="typing-line"><span class="cursor"></span></div>
+  </div>
+  <div class="split-row">
+    <div class="split-btn man" onclick="selectPath('man')">
+      <div class="split-glyph">— Man</div>
+      <div class="split-label">Bro</div>
+      <div class="split-sub">Circle of<br>Trust</div>
+    </div>
+    <div class="split-btn woman" onclick="selectPath('woman')">
+      <div class="split-glyph">— Woman</div>
+      <div class="split-label">Ma'am</div>
+      <div class="split-sub">Compatibility<br>Check</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="screen" id="confirm">
+  <div class="confirm-top">
+    <div class="confirm-tag" id="confirm-tag"></div>
+    <div class="confirm-headline" id="confirm-headline"></div>
+    <div class="confirm-sub" id="confirm-sub"></div>
+  </div>
+  <div class="confirm-actions">
+    <button class="btn-go" id="btn-go" onclick="startQuiz()"></button>
+    <button class="btn-nah" id="btn-nah" onclick="exitFilter()"></button>
+  </div>
+</div>
+
+<!-- EXIT -->
+<div class="screen" id="exit">
+  <div class="exit-headline" id="exit-headline"></div>
+  <div class="exit-sub" id="exit-sub"></div>
+  <button class="exit-reconsider" onclick="goBackToConfirm()">Actually, let's do this</button>
+</div>
+
+<!-- QUESTION -->
+<div class="screen" id="question-screen">
+  <div class="q-header">
+    <div class="q-meta">
+      <div class="q-path" id="q-path"></div>
+      <div class="q-num" id="q-num"></div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="question-text" id="question-text"></div>
+  </div>
+  <div class="tap-zone">
+    <div class="tap-btn left" id="tap-left" onclick="handleAnswer('left', event)">
+      <div class="tap-dir">← Left</div>
+      <div class="tap-label" id="left-label"></div>
+    </div>
+    <div class="tap-btn right" id="tap-right" onclick="handleAnswer('right', event)">
+      <div class="tap-dir">Right →</div>
+      <div class="tap-label" id="right-label"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="result-screen">
+  <div class="result-top">
+    <div class="result-tier-label" id="result-tier"></div>
+    <div class="result-score-wrap">
+      <div class="result-score" id="result-score">0</div>
+      <div class="result-score-unit">pts</div>
+    </div>
+    <div class="stamp-wrap" id="stamp-wrap">
+      <div class="stamp">Membership Granted</div>
+    </div>
+    <div class="result-headline" id="result-headline"></div>
+    <div class="result-copy" id="result-copy"></div>
+  </div>
+  <div class="result-bottom">
+    <button class="btn-primary" id="result-cta"></button>
+    <button class="btn-secondary" onclick="restart()">Start over</button>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div class="screen" id="chat-screen">
+  <div class="chat-header">
+    <div class="chat-header-tag">High Match</div>
+    <div class="chat-header-title">Ask Me Anything</div>
+    <div class="chat-header-sub">You're talking to Jordan's filter. He takes it from here.</div>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-bubble them" id="chat-intro"></div>
+    <div class="chat-typing" id="chat-typing">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="chat-text-cta" id="chat-text-cta">
+    <button class="btn-text-open" onclick="openText()">Text Him Now</button>
+  </div>
+  <div class="chat-input-wrap">
+    <textarea class="chat-input" id="chat-input" placeholder="Ask something..." rows="1" onkeydown="handleChatKey(event)"></textarea>
+    <button class="chat-send" onclick="sendChat()">Send</button>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+const PATHS = {
+  man: {
+    confirmTag: 'Circle of Trust',
+    confirmHeadline: 'We bros?\nSpeed round.\n10 questions.',
+    confirmSub: 'No wrong answer. Takes less than a minute.',
+    goLabel: 'Go',
+    nahLabel: "Nah, I'm good",
+    exitHeadline: 'Wish you the best of luck.',
+    exitSub: '',
+    pathLabel: 'CIRCLE OF TRUST',
+    questions: [
+      { q:"Your team loses a close one. You:", left:"Trash talk and move on", right:"Don't really follow sports", lScore:10, rScore:0, lWeight:10, rWeight:0 },
+      { q:"Default weekend with no obligations:", left:"Usually finding something — game, drive, plans", right:"Recharge solo, low energy mode", lScore:5, rScore:0, lWeight:5, rWeight:0 },
+      { q:"You meet someone new in a group. You:", left:"Jump in, hold your own", right:"Hang back, warm up slowly", lScore:5, rScore:0, lWeight:5, rWeight:0 },
+      { q:"Friend is chronically late. You:", left:"Eventually just stop waiting, go without them", right:"Always wait, don't want the conflict", lScore:15, rScore:0, lWeight:15, rWeight:0 },
+      { q:"Your go-to is:", left:"Console, PC, or both", right:"Not really a gamer", lScore:10, rScore:0, lWeight:10, rWeight:0 },
+      { q:"You're into cars or bikes:", left:"Yeah, genuinely", right:"They're just transportation", lScore:15, rScore:0, lWeight:15, rWeight:0 },
+      { q:"Friend needs help moving. You:", left:"Show up, no question", right:"Depends what I have going on", lScore:15, rScore:0, lWeight:15, rWeight:0 },
+      { q:"Someone makes a bad decision. You:", left:"Honest with them, that's real support", right:"Focus on making them feel better first", lScore:10, rScore:0, lWeight:10, rWeight:0 },
+      { q:"You said you'd do something. You:", left:"Do it, period", right:"If nothing better comes up", lScore:15, rScore:0, lWeight:15, rWeight:0 },
+      { q:"Your idea of a good time:", left:"Risk, competition, something on the line", right:"Comfort, no stakes, just vibes", lScore:5, rScore:0, lWeight:5, rWeight:0 }
+    ],
+    tiers: [
+      { min:80, max:100, tier:"HELL YEAH BROTHER", headline:"Let's Kick It", copy:"You passed every check. That's rarer than you think. Come say what's up.", cta:"Come Say What's Up", stamp:true },
+      { min:50, max:79, tier:"COULD VIBE", headline:"I Bet We Get Along", copy:"Solid overlap. Conversation would confirm it. Ball's in your court.", cta:"Fair Enough", stamp:false },
+      { min:20, max:49, tier:"SITUATIONAL", headline:"We Share a Few Things", copy:"Some overlap, not riding to the same places. Respect it though.", cta:"Makes Sense", stamp:false },
+      { min:0, max:19, tier:"PROLLY NOT", headline:"Built Different", copy:"We're just not the same frequency. No hard feelings.", cta:"Fair Enough", stamp:false }
+    ]
+  },
+  woman: {
+    confirmTag: 'Compatibility Check',
+    confirmHeadline: 'Would you be\ninterested in me?',
+    confirmSub: 'Find out in under 30 seconds.',
+    goLabel: 'Go',
+    nahLabel: 'Not Interested',
+    exitHeadline: "Guess you'll never know\nhow good it could've been.",
+    exitSub: '',
+    pathLabel: 'COMPATIBILITY',
+    questions: [
+      { q:"Sunday in the fall means:", left:"Football is probably on", right:"Just another Sunday", lScore:5, rScore:0, penalty:false },
+      { q:"Your idea of self care is:", left:"Stay active, feel good, look good", right:"Rest, recharge, comfort first", lScore:10, rScore:0, penalty:false },
+      { q:"Your ideal relationship is:", left:"Two people, fully committed, period", right:"Fluid, evolves with both people", lScore:15, rScore:0, penalty:true, penaltyVal:-20 },
+      { q:"A strong partner who leads:", left:"Attractive, I can work with that", right:"Depends, I need equal footing", lScore:5, rScore:0, penalty:false },
+      { q:"Future goals include kids:", left:"Yeah, that's the plan", right:"Undecided honestly", lScore:15, rScore:0, penalty:false },
+      { q:"When something bothers you, you:", left:"Bring it up when ready", right:"Hope they pick up on it", lScore:10, rScore:0, penalty:false },
+      { q:"You need consistent reassurance:", left:"No, security comes from within", right:"Yes, it helps me feel connected", lScore:10, rScore:0, penalty:false },
+      { q:"Money habits look like:", left:"Intentional, saving, building", right:"Live for now, figure it out later", lScore:10, rScore:0, penalty:false },
+      { q:"Building something long term means:", left:"Shared goals, shared money moves", right:"Love is enough, rest follows", lScore:10, rScore:0, penalty:false },
+      { q:"Your person texts someone flirtatiously:", left:"Done. Non negotiable.", right:"Depends on the context", lScore:15, rScore:0, penalty:true, penaltyVal:-20 }
+    ],
+    tiers: [
+      { min:80, max:100, tier:"HIGH MATCH", headline:"You'd Have My Attention", copy:"Rare combination. Come say hi — he takes it from there.", cta:"Say Hi", chat:true },
+      { min:50, max:79, tier:"INTERESTING", headline:"Conversation Would Tell Us More", copy:"There's something here worth exploring. Ball's in your court.", cta:"Noted", chat:false },
+      { min:20, max:49, tier:"PROBABLY NOT", headline:"Probably Not the Right Fit", copy:"But I'll still make you cum and shake.", cta:"Fair Enough", chat:false },
+      { min:0, max:19, tier:"DIFFERENT LANES", headline:"We Want Different Things", copy:"Nothing personal. Best of luck though.", cta:"Understood", chat:false }
+    ]
+  }
+};
+
+// ── STATE ──
+let currentPath = null;
+let currentQ = 0;
+let score = 0;
+let answers = [];
+let isAnimating = false;
+let chatHistory = [];
+
+// ── TYPING ANIMATION ──
+const typingPhrases = ["No apps. No swiping. Just real.", "10 questions. That's it.", "Scan. Answer. Find out."];
+let phraseIdx = 0;
+let charIdx = 0;
+let typingDir = 1;
+let typingTimeout;
+
+function typeText() {
+  const el = document.getElementById('typing-line');
+  const phrase = typingPhrases[phraseIdx];
+  if (typingDir === 1) {
+    charIdx++;
+    el.innerHTML = phrase.slice(0, charIdx) + '<span class="cursor"></span>';
+    if (charIdx >= phrase.length) {
+      typingDir = -1;
+      typingTimeout = setTimeout(typeText, 1800);
+      return;
+    }
+  } else {
+    charIdx--;
+    el.innerHTML = phrase.slice(0, charIdx) + '<span class="cursor"></span>';
+    if (charIdx <= 0) {
+      typingDir = 1;
+      phraseIdx = (phraseIdx + 1) % typingPhrases.length;
+      typingTimeout = setTimeout(typeText, 300);
+      return;
+    }
+  }
+  typingTimeout = setTimeout(typeText, typingDir === 1 ? 45 : 28);
+}
+setTimeout(typeText, 1400);
+
+// ── SCREENS ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  el.classList.add('snap-in');
+  setTimeout(() => el.classList.remove('snap-in'), 300);
+}
+
+// ── PATH SELECTION ──
+function selectPath(path) {
+  currentPath = path;
+  const cfg = PATHS[path];
+  document.getElementById('confirm-tag').textContent = cfg.confirmTag;
+  document.getElementById('confirm-headline').textContent = cfg.confirmHeadline;
+  document.getElementById('confirm-sub').textContent = cfg.confirmSub;
+  document.getElementById('btn-go').textContent = cfg.goLabel;
+  document.getElementById('btn-nah').textContent = cfg.nahLabel;
+  showScreen('confirm');
+}
+
+function startQuiz() {
+  currentQ = 0; score = 0; answers = [];
+  const cfg = PATHS[currentPath];
+  document.getElementById('q-path').textContent = cfg.pathLabel;
+  showScreen('question-screen');
+  renderQuestion();
+}
+
+function exitFilter() {
+  const cfg = PATHS[currentPath];
+  document.getElementById('exit-headline').textContent = cfg.exitHeadline;
+  document.getElementById('exit-sub').textContent = cfg.exitSub;
+  showScreen('exit');
+}
+
+function goBackToConfirm() {
+  showScreen('confirm');
+}
+
+function restart() {
+  currentPath = null; currentQ = 0; score = 0; answers = [];
+  showScreen('landing');
+}
+
+// ── QUESTIONS ──
+function renderQuestion() {
+  const cfg = PATHS[currentPath];
+  const q = cfg.questions[currentQ];
+  const total = cfg.questions.length;
+
+  document.getElementById('q-num').textContent = `${currentQ + 1} / ${total}`;
+  document.getElementById('progress-fill').style.width = `${(currentQ / total) * 100}%`;
+
+  const qEl = document.getElementById('question-text');
+  qEl.classList.remove('visible');
+  qEl.textContent = q.q;
+
+  document.getElementById('left-label').textContent = q.left;
+  document.getElementById('right-label').textContent = q.right;
+
+  const leftBtn = document.getElementById('tap-left');
+  const rightBtn = document.getElementById('tap-right');
+  leftBtn.classList.remove('selected', 'dimmed');
+  rightBtn.classList.remove('selected', 'dimmed');
+
+  setTimeout(() => qEl.classList.add('visible'), 60);
+}
+
+function handleAnswer(side, event) {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  const cfg = PATHS[currentPath];
+  const q = cfg.questions[currentQ];
+
+  const leftBtn = document.getElementById('tap-left');
+  const rightBtn = document.getElementById('tap-right');
+
+  const chosen = side === 'left' ? leftBtn : rightBtn;
+  const other = side === 'left' ? rightBtn : leftBtn;
+
+  chosen.classList.add('selected');
+  other.classList.add('dimmed');
+
+  // Score
+  let pts = side === 'left' ? q.lScore : q.rScore;
+  if (q.penalty && side === 'right') pts += q.penaltyVal;
+  score = Math.max(0, score + pts);
+  answers.push({ q: currentQ, side, pts });
+
+  setTimeout(() => {
+    const qEl = document.getElementById('question-text');
+    qEl.classList.remove('visible');
+
+    setTimeout(() => {
+      currentQ++;
+      if (currentQ >= cfg.questions.length) {
+        showResults();
+      } else {
+        renderQuestion();
+        isAnimating = false;
+      }
+    }, 200);
+  }, 1100);
+}
+
+// ── RESULTS ──
+function showResults() {
+  const cfg = PATHS[currentPath];
+  const finalScore = Math.min(score, 100);
+
+  let tier = cfg.tiers[cfg.tiers.length - 1];
+  for (const t of cfg.tiers) {
+    if (finalScore >= t.min && finalScore <= t.max) { tier = t; break; }
+  }
+
+  document.getElementById('result-tier').textContent = tier.tier;
+  document.getElementById('result-headline').textContent = tier.headline;
+  document.getElementById('result-copy').textContent = tier.copy;
+  document.getElementById('result-cta').textContent = tier.cta;
+  document.getElementById('result-score').textContent = '0';
+
+  const stampWrap = document.getElementById('stamp-wrap');
+  stampWrap.classList.remove('show');
+
+  showScreen('result-screen');
+
+  // Count up
+  const scoreEl = document.getElementById('result-score');
+  let current = 0;
+  const step = Math.ceil(finalScore / 40);
+  const interval = setInterval(() => {
+    current = Math.min(current + step, finalScore);
+    scoreEl.textContent = current;
+    if (current >= finalScore) {
+      clearInterval(interval);
+      // High match actions
+      if (finalScore >= 80) {
+        document.getElementById('result-screen').classList.add('lime-pulse');
+        setTimeout(() => document.getElementById('result-screen').classList.remove('lime-pulse'), 700);
+        if (tier.stamp) {
+          setTimeout(() => stampWrap.classList.add('show'), 400);
+        }
+        if (tier.chat) {
+          document.getElementById('result-cta').onclick = openChat;
+        }
+      }
+      isAnimating = false;
+    }
+  }, 35);
+
+  // Progress to 100
+  document.getElementById('progress-fill').style.width = '100%';
+}
+
+// ── CHAT ──
+function openChat() {
+  chatHistory = [];
+  document.getElementById('chat-intro').textContent = "Hey. You scored high — that means something. What do you want to know?";
+  document.getElementById('chat-typing').classList.remove('visible');
+  document.getElementById('chat-text-cta').classList.remove('show');
+  showScreen('chat-screen');
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendChat();
+  }
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  input.value = '';
+  addBubble(msg, 'me');
+  chatHistory.push({ role: 'user', content: msg });
+
+  const typing = document.getElementById('chat-typing');
+  typing.classList.add('visible');
+  scrollChat();
+
+  // Placeholder — API wires in here
+  setTimeout(() => {
+    typing.classList.remove('visible');
+    const reply = "That's a conversation worth having in person.";
+    addBubble(reply, 'them');
+    chatHistory.push({ role: 'assistant', content: reply });
+
+    // Show text CTA after 2 exchanges
+    if (chatHistory.filter(m => m.role === 'user').length >= 2) {
+      document.getElementById('chat-text-cta').classList.add('show');
+    }
+    scrollChat();
+  }, 1200);
+}
+
+function addBubble(text, who) {
+  const msgs = document.getElementById('chat-messages');
+  const typing = document.getElementById('chat-typing');
+  const bubble = document.createElement('div');
+  bubble.classList.add('chat-bubble', who);
+  bubble.textContent = text;
+  msgs.insertBefore(bubble, typing);
+}
+
+function scrollChat() {
+  const msgs = document.getElementById('chat-messages');
+  setTimeout(() => msgs.scrollTop = msgs.scrollHeight, 100);
+}
+
+function openText() {
+  const msg = encodeURIComponent("Hey, I took your filter. Apparently I passed — figured I'd let you decide if that's true.");
+  window.open(`sms:?body=${msg}`, '_blank');
+}
+</script>
+</body>
+</html>
