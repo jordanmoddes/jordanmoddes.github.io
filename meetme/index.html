@@ -712,10 +712,9 @@ body::after {
 
 .chat-text-cta {
   width: 100%;
-  padding: 0 28px 12px;
-  display: none;
+  padding: 0 28px 10px;
+  display: block;
 }
-.chat-text-cta.show { display: block; }
 
 .btn-text-open {
   width: 100%; padding: 16px;
@@ -1184,10 +1183,8 @@ async function sendChat() {
     addBubble(reply, 'them');
     chatHistory.push({ role: 'assistant', content: reply });
 
-    // Show text CTA after 2 exchanges
-    if (chatHistory.filter(m => m.role === 'user').length >= 2) {
-      document.getElementById('chat-text-cta').classList.add('show');
-    }
+    // Show text CTA always on chat screen
+    document.getElementById('chat-text-cta').style.display = 'block';
     scrollChat();
   }, 1200);
 }
