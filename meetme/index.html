@@ -406,31 +406,31 @@ body::after {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: background 0.15s;
-  border: 2px solid rgba(255,255,255,0.35);
+  background: #ffffff;
+  border: none;
+  transition: background 0.2s;
   -webkit-user-select: none;
   user-select: none;
 }
 
 .tap-btn.left {
-  border-right: 1px solid rgba(255,255,255,0.2);
+  border-right: 1px solid rgba(0,0,0,0.1);
 }
 
 .tap-btn.selected {
-  border-color: var(--lime);
-  background: var(--lime-dim);
+  background: var(--lime);
 }
 
 .tap-btn.selected .tap-label {
-  color: var(--lime);
+  color: #080808;
 }
 
 .tap-btn.selected .tap-dir {
-  color: var(--lime);
+  color: rgba(0,0,0,0.5);
 }
 
 .tap-btn.dimmed {
-  opacity: 0.25;
+  opacity: 0.3;
 }
 
 .tap-dir {
@@ -438,16 +438,16 @@ body::after {
   font-size: 11px; font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(0,0,0,0.35);
   transition: color 0.2s;
 }
 
 .tap-label {
-  font-size: 13px; font-weight: 400;
-  color: var(--text);
+  font-size: 15px; font-weight: 700;
+  color: #080808;
   text-align: center;
   line-height: 1.4;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   transition: color 0.2s;
 }
 
