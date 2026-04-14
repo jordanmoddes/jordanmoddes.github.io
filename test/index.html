@@ -1,1316 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Jordan Moddes | Operations and Supply Chain Leader</title>
-<meta name="description" content="Operations and supply chain leader with 10+ years across fulfillment, logistics, and supply chain planning. Led 600+ employees, delivered $3.6M annual operational value."/>
-<meta name="author" content="Jordan Moddes"/>
-<meta name="robots" content="index,follow"/>
-<link rel="canonical" href="https://www.jordanmoddes.com/"/>
-<link rel="icon" type="image/png" href="/assets/Signature_WhiteTP.png"/>
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="Jordan Moddes | Operations and Supply Chain Leader"/>
-<meta property="og:url" content="https://www.jordanmoddes.com/"/>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MPJ69EQK7P"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MPJ69EQK7P');</script>
-<script>if(location.hostname==='jordanmoddes.com'){location.href='https://www.jordanmoddes.com'+location.pathname;}</script>
-<script type="text/javascript">function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE,autoDisplay:false},'google_translate_element');}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DocTrack Terminal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 
-<style>
-/* ═══════════════════════════════════════════
-   TOKENS
-═══════════════════════════════════════════ */
-:root {
-  --accent:   #00e8d8;
-  --accent-b: rgba(0,232,216,0.20);
-  --accent-d: rgba(0,232,216,0.07);
-  --blue:     #2f78ff;
-  --text:     #dde4ec;
-  --muted:    rgba(221,228,236,0.60);
-  --muted-2:  rgba(221,228,236,0.35);
-  --panel:    rgba(11,17,24,0.94);
-  --line:     rgba(255,255,255,0.07);
-  --line-2:   rgba(255,255,255,0.04);
-  --fd: 'Outfit', sans-serif;
-  --fm: 'JetBrains Mono', monospace;
-  --fb: 'DM Sans', sans-serif;
-}
+  <!--
+  ============================================================
+    IP OF JORDAN MODDES
+    DocTrack Terminal v2.0
+    Designed & Built by Jordan Moddes | jordanmoddes.com
+    For: Cerilliant / MilliporeSigma — Internal Use Only
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
-body {
-  font-family: var(--fb);
-  color: var(--text);
-  background: #03060a;
-  -webkit-font-smoothing: antialiased;
-  touch-action: none;
-  overscroll-behavior: none;
-}
+    SCANNER-ONLY INTERFACE — no mouse required
+    Scan flow: Badge → Folder ID → WIP/DROP → Department
 
-/* ═══════════════════════════════════════════
-   SPLINE BACKGROUND
-═══════════════════════════════════════════ */
-#spline-bg {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
+    TO SWITCH TO LIVE BACKEND:
+    1. Set DEMO_MODE = false
+    2. Set API_BASE_URL to your internal server IP
+    That's it.
+  ============================================================
+  -->
 
-#spline-bg spline-viewer {
-  width: 100%;
-  height: 100%;
-  --background-color: #03060a;
-}
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Dark overlay to keep text readable over the Spline scene */
-#spline-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    135deg,
-    rgba(3,6,10,0.72) 0%,
-    rgba(3,6,10,0.45) 50%,
-    rgba(3,6,10,0.68) 100%
-  );
-  pointer-events: none;
-}
+    body {
+      background: #0a0e13;
+      color: #d0e4f0;
+      font-family: 'Share Tech Mono', monospace;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
 
-/* ═══════════════════════════════════════════
-   NOISE
-═══════════════════════════════════════════ */
-body::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.022; pointer-events: none; z-index: 9990;
-}
+    /* Step counter — small text above prompt */
+    #step-label {
+      font-size: 1rem;
+      color: #4a6070;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
 
-/* ═══════════════════════════════════════════
-   CURSOR (desktop only)
-═══════════════════════════════════════════ */
-#cur-dot {
-  width: 5px; height: 5px; background: var(--accent); border-radius: 50%;
-  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%); display: none;
-}
-#cur-ring {
-  width: 30px; height: 30px; border: 1px solid var(--accent-b); border-radius: 50%;
-  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
-  transform: translate(-50%,-50%); transition: width .2s,height .2s,border-color .2s; display: none;
-}
-body.is-desktop #cur-dot,
-body.is-desktop #cur-ring { display: block; }
+    /* Big instruction text — tells operator what to scan */
+    #prompt {
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: #00c8ff;
+      text-align: center;
+      margin-bottom: 32px;
+      line-height: 1.2;
+    }
 
-/* ═══════════════════════════════════════════
-   NAV
-═══════════════════════════════════════════ */
-.topbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  background: rgba(3,6,10,0.85); border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-.topbar-inner {
-  max-width: 1380px; margin: 0 auto; padding: 0 1.25rem;
-  height: 54px; display: flex; align-items: center; justify-content: space-between;
-}
-.brand {
-  display: flex; align-items: center; gap: .6rem;
-  font-family: var(--fd); font-weight: 800; font-size: .88rem;
-  letter-spacing: .02em; color: var(--text); text-decoration: none;
-}
-.brand img { width: 24px; height: 24px; border-radius: 5px; }
-.top-actions { display: flex; align-items: center; gap: .35rem; position: relative; }
-.nav-btn {
-  border-radius: 7px; border: 1px solid var(--line);
-  background: rgba(255,255,255,0.03); color: var(--muted);
-  font-family: var(--fm); font-size: .64rem; font-weight: 500; letter-spacing: .07em;
-  padding: .42rem .7rem; cursor: pointer; transition: all .18s; white-space: nowrap;
-}
-.nav-btn:hover { border-color: var(--accent-b); color: var(--accent); background: var(--accent-d); }
-.translate-wrap { position: relative; }
-#google_translate_element {
-  display: none; position: absolute; top: calc(100% + .5rem); right: 0;
-  padding: .65rem; background: #0b1118; border: 1px solid var(--line);
-  border-radius: 11px; min-width: 185px; z-index: 600;
-}
-.goog-te-banner-frame { display: none !important; }
-.goog-te-gadget { font-size: 0 !important; }
-.goog-te-gadget .goog-te-combo {
-  font-size: .88rem !important; color: var(--text) !important;
-  background: #090e14 !important; border: 1px solid var(--line) !important;
-  border-radius: 7px; padding: .38rem .48rem; width: 100%;
-}
+    /* Shows what was just scanned */
+    #scanned-value {
+      font-size: 1.5rem;
+      color: #00ff9d;
+      min-height: 2rem;
+      text-align: center;
+      margin-bottom: 48px;
+      letter-spacing: 2px;
+    }
 
-/* ═══════════════════════════════════════════
-   SCROLL PROGRESS
-═══════════════════════════════════════════ */
-#prog-bar { position: fixed; top: 54px; left: 0; right: 0; height: 2px; z-index: 499; background: rgba(255,255,255,0.03); }
-#prog-fill { height: 100%; background: linear-gradient(90deg,var(--accent),var(--blue)); width: 0; transition: width .3s ease; }
+    /* Four progress dots — one per step */
+    #progress {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #1e2d3d;
+      border: 2px solid #1e2d3d;
+      transition: all 0.2s;
+    }
+    .dot.done   { background: #00ff9d; border-color: #00ff9d; }
+    .dot.active { background: #00c8ff; border-color: #00c8ff; }
 
-/* ═══════════════════════════════════════════
-   SCENE PANELS
-═══════════════════════════════════════════ */
-.scene-panel {
-  position: fixed; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 100; pointer-events: none;
-  opacity: 0; transition: opacity .55s cubic-bezier(.22,1,.36,1);
-}
-.scene-panel.active { opacity: 1; pointer-events: auto; }
+    /* Result message after submit */
+    #status {
+      font-size: 1.1rem;
+      text-align: center;
+      min-height: 2rem;
+      letter-spacing: 1px;
+    }
+    #status.success { color: #00ff9d; }
+    #status.error   { color: #ff6b35; }
 
-.panel-left {
-  position: absolute; left: 5%; top: 50%; transform: translateY(-50%);
-  max-width: 560px; padding: 0 1.5rem;
-}
-.panel-wide {
-  position: absolute; inset: 54px 0 0 0;
-  overflow-y: auto; padding: 1.8rem 1.25rem 5rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin; scrollbar-color: var(--line) transparent;
-  pointer-events: none;
-}
-.scene-panel.active .panel-wide { pointer-events: auto; }
-.panel-wide-inner { max-width: 1200px; width: 100%; margin: 0 auto; }
+    /* Hidden input — always focused, receives scanner input */
+    #scanner-input {
+      position: fixed;
+      top: -999px;
+      left: -999px;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+    }
 
-/* ═══════════════════════════════════════════
-   MOBILE SWIPE INDICATOR
-═══════════════════════════════════════════ */
-#swipe-hint {
-  position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%);
-  z-index: 200; text-align: center;
-  font-family: var(--fm); font-size: .62rem; color: var(--muted-2);
-  letter-spacing: .1em; text-transform: uppercase;
-  transition: opacity .5s; pointer-events: none;
-  display: none;
-}
-body.is-mobile #swipe-hint { display: block; }
-#swipe-hint svg { display: block; margin: .4rem auto 0; animation: swipeBounce 2s ease-in-out infinite; }
-@keyframes swipeBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-
-#scroll-hint {
-  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-  z-index: 200; text-align: center;
-  font-family: var(--fm); font-size: .62rem; color: var(--muted-2);
-  letter-spacing: .1em; text-transform: uppercase;
-  animation: bounce 2s ease-in-out infinite; transition: opacity .5s;
-  display: none;
-}
-body.is-desktop #scroll-hint { display: block; }
-@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
-
-/* ═══════════════════════════════════════════
-   MOBILE SCENE NAV DOTS
-═══════════════════════════════════════════ */
-#scene-dots {
-  position: fixed; right: .85rem; top: 50%; transform: translateY(-50%);
-  z-index: 300; display: none; flex-direction: column; gap: .45rem;
-}
-body.is-mobile #scene-dots { display: flex; }
-.scene-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  border: 1px solid var(--accent-b); background: transparent;
-  transition: all .25s; cursor: pointer;
-}
-.scene-dot.active { background: var(--accent); border-color: var(--accent); }
-
-/* ═══════════════════════════════════════════
-   MOBILE SWIPE ARROWS
-═══════════════════════════════════════════ */
-#swipe-prev, #swipe-next {
-  position: fixed; left: 50%; transform: translateX(-50%);
-  z-index: 300; display: none;
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid var(--accent-b); background: rgba(11,17,24,0.7);
-  color: var(--accent); font-size: 1.1rem; align-items: center; justify-content: center;
-  cursor: pointer; transition: all .2s; backdrop-filter: blur(8px);
-}
-body.is-mobile #swipe-prev,
-body.is-mobile #swipe-next { display: flex; }
-#swipe-prev { bottom: 4.8rem; }
-#swipe-next { bottom: 1rem; }
-#swipe-prev:active, #swipe-next:active { background: var(--accent-d); border-color: var(--accent); }
-
-/* ═══════════════════════════════════════════
-   TYPOGRAPHY
-═══════════════════════════════════════════ */
-.mono-tag {
-  font-family: var(--fm); font-size: .68rem; font-weight: 600;
-  color: var(--accent); letter-spacing: .14em; text-transform: uppercase;
-  display: flex; align-items: center; gap: .5rem; margin-bottom: .85rem;
-}
-.mono-tag::before { content: ''; width: 20px; height: 1.5px; background: var(--accent); }
-
-.display-xl {
-  font-family: var(--fd); font-weight: 800;
-  font-size: clamp(2.4rem, 6vw, 6.5rem);
-  line-height: .9; letter-spacing: -.025em; color: var(--text);
-  position: relative; display: inline-block;
-}
-.display-xl::before, .display-xl::after {
-  content: attr(data-text); position: absolute; top: 0; left: 0;
-  width: 100%; pointer-events: none;
-}
-.display-xl::before { color: var(--accent); clip-path: polygon(0 10%,100% 10%,100% 30%,0 30%); transform: translateX(-2px); opacity: 0; animation: glitch-a 5s infinite; }
-.display-xl::after  { color: var(--blue);   clip-path: polygon(0 60%,100% 60%,100% 78%,0 78%); transform: translateX(2px);  opacity: 0; animation: glitch-b 4.2s .9s infinite; }
-@keyframes glitch-a { 0%,88%,100%{opacity:0} 90%{opacity:.8;transform:translateX(-3px)} 92%{opacity:.8;transform:translateX(2px)} 94%{opacity:0} }
-@keyframes glitch-b { 0%,86%,100%{opacity:0} 88%{opacity:.6;transform:translateX(3px)}  90%{opacity:.6;transform:translateX(-2px)} 92%{opacity:0} }
-
-.kicker {
-  font-family: var(--fm); font-size: .76rem; font-weight: 500;
-  color: var(--accent); letter-spacing: .12em; text-transform: uppercase;
-  display: flex; align-items: center; gap: .5rem; margin-top: 1rem;
-}
-.kicker::before { content: ''; width: 22px; height: 1.5px; background: var(--accent); }
-
-.hero-desc { margin-top: 1rem; font-size: .97rem; line-height: 1.7; color: var(--muted); }
-.hero-summary {
-  margin-top: .85rem; font-size: .88rem; line-height: 1.68; color: var(--muted);
-  padding: .78rem 1rem; border-left: 2px solid var(--accent-b);
-  background: rgba(0,232,216,0.04); border-radius: 0 8px 8px 0;
-}
-
-/* CTA */
-.cta-row { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.3rem; }
-.btn {
-  display: inline-flex; align-items: center; padding: .75rem 1.2rem; border-radius: 8px;
-  font-family: var(--fm); font-size: .7rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
-  border: none; cursor: pointer; transition: all .2s; background: var(--accent); color: #021210;
-  text-decoration: none;
-}
-.btn:hover { filter: brightness(1.06); transform: translateY(-2px); }
-.btn:active { transform: translateY(0); filter: brightness(.96); }
-.btn-ghost {
-  display: inline-flex; align-items: center; padding: .75rem 1.2rem; border-radius: 8px;
-  font-family: var(--fm); font-size: .7rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
-  border: 1px solid var(--line); cursor: pointer; transition: all .2s;
-  background: rgba(255,255,255,.03); color: var(--text); text-decoration: none;
-}
-.btn-ghost:hover { border-color: var(--accent-b); color: var(--accent); }
-.contact-wrap { position: relative; z-index: 300; }
-.contact-btn {
-  display: inline-flex; align-items: center; padding: .75rem 1.2rem; border-radius: 8px;
-  font-family: var(--fm); font-size: .7rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
-  border: 1px solid var(--line); cursor: pointer; transition: all .2s;
-  background: rgba(255,255,255,.03); color: var(--text);
-}
-.contact-menu {
-  display: none; position: absolute; top: calc(100% + .5rem); left: 0;
-  min-width: 180px; padding: .42rem;
-  background: #0b1118; border: 1px solid rgba(255,255,255,.1);
-  border-radius: 11px; flex-direction: column; gap: .3rem; z-index: 400;
-}
-.contact-wrap.open .contact-menu { display: flex; }
-.contact-menu a {
-  padding: .65rem .8rem; border: 1px solid rgba(255,255,255,.04);
-  border-radius: 7px; background: #090e14;
-  font-family: var(--fm); font-weight: 500; font-size: .76rem;
-  color: #dde4ec; display: block; cursor: pointer; transition: all .14s; letter-spacing: .04em;
-}
-.contact-menu a:hover, .contact-menu a:active { border-color: rgba(0,232,216,.32); color: #00e8d8; background: #0c1917; }
-
-/* ═══════════════════════════════════════════
-   SECTION LABELS
-═══════════════════════════════════════════ */
-.sec-label {
-  font-family: var(--fm); font-size: .65rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .14em; color: var(--accent);
-  display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem;
-}
-.sec-label::before { content: ''; width: 18px; height: 1.5px; background: var(--accent); }
-.sec-title { font-family: var(--fd); font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 800; letter-spacing: -.02em; margin-bottom: .45rem; }
-.sec-sub { color: var(--muted); line-height: 1.65; font-size: .9rem; }
-
-/* ═══════════════════════════════════════════
-   METRIC CARDS
-═══════════════════════════════════════════ */
-.metric-panel {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
-  gap: 1px; background: var(--line); border: 1px solid var(--line);
-  border-radius: 12px; overflow: hidden; margin-top: 1.4rem;
-}
-.metric-card {
-  background: rgba(11,17,24,0.97); padding: 1.1rem;
-  position: relative; overflow: hidden;
-}
-.metric-card::after {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-  background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s;
-}
-.metric-card:hover::after { transform: scaleX(1); }
-.m-label { font-family: var(--fm); font-size: .6rem; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
-.m-value { font-family: var(--fd); font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; margin-top: .45rem; }
-.m-desc { margin-top: .38rem; color: var(--muted); font-size: .82rem; line-height: 1.52; }
-.metric-viz { margin-top: .85rem; }
-.ring-wrap { position: relative; width: 70px; height: 70px; }
-.ring-wrap svg { transform: rotate(-90deg); }
-.ring-track { fill: none; stroke: rgba(0,232,216,.1); stroke-width: 6; }
-.ring-fill { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; transition: stroke-dasharray 1.5s cubic-bezier(.22,1,.36,1); }
-.ring-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--fm); font-size: .65rem; font-weight: 600; color: var(--accent); }
-.bar-fill-wrap { height: 5px; background: rgba(47,120,255,.15); border-radius: 3px; overflow: hidden; margin-top: .45rem; }
-.bar-fill-inner { height: 100%; background: var(--blue); border-radius: 3px; width: 0; transition: width 1.5s cubic-bezier(.22,1,.36,1); }
-.node-cluster { display: flex; gap: 3px; flex-wrap: wrap; width: 100px; margin-top: .45rem; }
-.node-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(0,232,216,.2); transition: background .1s; }
-.node-dot.lit { background: var(--accent); }
-.arc-wrap { position: relative; width: 90px; height: 45px; overflow: hidden; margin-top: .45rem; }
-.arc-wrap svg { position: absolute; top: 0; left: 0; }
-.pulse-wrap { position: relative; width: 50px; height: 50px; margin-top: .45rem; }
-.pulse-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid var(--accent); opacity: 0; animation: pulse-out 2.4s ease-out infinite; }
-.pulse-ring:nth-child(2) { animation-delay: .8s; }
-.pulse-ring:nth-child(3) { animation-delay: 1.6s; }
-.pulse-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
-@keyframes pulse-out { 0%{transform:scale(.2);opacity:.8} 100%{transform:scale(1.8);opacity:0} }
-
-/* ═══════════════════════════════════════════
-   FEATURED WORK
-═══════════════════════════════════════════ */
-.fw-grid { display: grid; gap: .85rem; margin-top: 1.4rem; }
-.fw-card {
-  background: rgba(11,17,24,0.97); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1.2rem; transition: border-color .2s;
-}
-.fw-card:hover { border-color: var(--accent-b); }
-.fw-eyebrow {
-  display: inline-flex; padding: .32rem .58rem; border-radius: 5px;
-  border: 1px solid var(--accent-b); background: var(--accent-d);
-  color: var(--accent); font-family: var(--fm); font-size: .6rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .1em;
-}
-.fw-card h3 { font-family: var(--fd); margin: .55rem 0 .38rem; font-size: 1.1rem; font-weight: 800; letter-spacing: -.03em; }
-.fw-card p { color: var(--muted); line-height: 1.66; font-size: .88rem; }
-.fw-card ul { margin: .65rem 0 0; padding-left: .95rem; }
-.fw-card li { line-height: 1.62; color: var(--text); font-size: .86rem; margin-bottom: .1rem; }
-.fw-metrics { display: grid; grid-template-columns: repeat(2,1fr); gap: .5rem; margin-top: .85rem; }
-.fw-metric { padding: .72rem; border-radius: 8px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.05); }
-.fw-metric .val { font-family: var(--fm); font-size: .95rem; font-weight: 600; }
-.fw-metric span { display: block; color: var(--muted); margin-top: .18rem; font-size: .74rem; line-height: 1.38; }
-
-/* ═══════════════════════════════════════════
-   ROLES
-═══════════════════════════════════════════ */
-.roles-grid { display: grid; gap: .8rem; margin-top: 1.4rem; }
-@media(min-width:700px){ .roles-grid { grid-template-columns: repeat(2,1fr); } }
-.role-card {
-  background: rgba(11,17,24,0.97); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1.1rem; transition: border-color .2s;
-}
-.role-card:hover { border-color: var(--accent-b); }
-.role-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: .4rem; }
-.role-head h3 { font-family: var(--fd); font-size: .97rem; font-weight: 700; margin: 0; }
-.role-period { font-family: var(--fm); color: var(--accent); font-size: .67rem; font-weight: 500; white-space: nowrap; }
-.role-note { font-size: .78rem; color: var(--muted-2); margin-top: .14rem; }
-.role-card > p { margin: .55rem 0 0; color: var(--muted); line-height: 1.6; font-size: .86rem; }
-.role-groups { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: .5rem; margin-top: .78rem; }
-.role-group { padding: .65rem; border: 1px solid rgba(255,255,255,.04); border-radius: 7px; background: rgba(255,255,255,.02); }
-.role-group h4 { font-family: var(--fm); font-size: .58rem; text-transform: uppercase; letter-spacing: .11em; color: var(--accent); font-weight: 600; margin: 0 0 .38rem; }
-.role-group ul { margin: 0; padding-left: .85rem; }
-.role-group li { line-height: 1.56; color: var(--muted); font-size: .82rem; }
-
-/* ═══════════════════════════════════════════
-   AI SECTION
-═══════════════════════════════════════════ */
-.ai-layout { display: grid; gap: 1.4rem; margin-top: 1.4rem; }
-@media(min-width:700px){ .ai-layout { grid-template-columns: 1fr 1fr; } }
-.ai-caps { display: grid; gap: .45rem; margin-top: 1rem; }
-.ai-cap {
-  display: flex; align-items: flex-start; gap: .6rem;
-  padding: .65rem .75rem; border-radius: 8px;
-  border: 1px solid var(--line); background: rgba(255,255,255,.02);
-  font-size: .84rem; color: var(--muted); line-height: 1.5;
-}
-.ai-cap-n {
-  width: 18px; height: 18px; flex-shrink: 0; border-radius: 3px;
-  background: var(--accent-d); border: 1px solid var(--accent-b);
-  display: grid; place-items: center;
-  font-family: var(--fm); font-size: .58rem; color: var(--accent); font-weight: 700;
-}
-.ai-chat-box { background: rgba(11,17,24,0.98); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.ai-chat-top { padding: .8rem .9rem; border-bottom: 1px solid rgba(255,255,255,.04); display: flex; align-items: center; justify-content: space-between; }
-.ai-chat-top-l { display: flex; align-items: center; gap: .5rem; }
-.ai-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pdot 2s ease-in-out infinite; }
-@keyframes pdot { 0%,100%{box-shadow:0 0 4px rgba(0,232,216,.4)} 50%{box-shadow:0 0 12px rgba(0,232,216,.7)} }
-.ai-chat-name { font-family: var(--fd); font-weight: 700; font-size: .86rem; }
-.ai-chat-sub { font-family: var(--fm); font-size: .64rem; color: var(--muted); }
-.ai-badge { font-family: var(--fm); font-size: .56rem; font-weight: 600; padding: .22rem .48rem; border-radius: 4px; background: var(--accent-d); border: 1px solid var(--accent-b); color: var(--accent); letter-spacing: .08em; text-transform: uppercase; }
-.ai-thread { min-height: 160px; max-height: 260px; overflow-y: auto; padding: .85rem; display: flex; flex-direction: column; gap: .5rem; -webkit-overflow-scrolling: touch; }
-.ai-thread::-webkit-scrollbar { width: 3px; }
-.ai-thread::-webkit-scrollbar-thumb { background: var(--line); }
-.ai-msg-u { padding: .65rem .8rem; border-radius: 8px; background: rgba(0,232,216,.07); border: 1px solid var(--accent-b); align-self: flex-end; font-size: .84rem; line-height: 1.56; max-width: 90%; word-break: break-word; white-space: pre-wrap; }
-.ai-msg-b { padding: .65rem .8rem; border-radius: 8px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.05); align-self: flex-start; font-size: .84rem; line-height: 1.56; max-width: 94%; word-break: break-word; white-space: pre-wrap; }
-.ai-empty { color: var(--muted-2); font-size: .82rem; text-align: center; padding: 1.5rem; font-family: var(--fm); }
-.ai-thinking { font-family: var(--fm); font-size: .76rem; color: var(--muted-2); animation: think 1.2s infinite; }
-@keyframes think { 0%,100%{opacity:.4} 50%{opacity:1} }
-.ai-foot { padding: .68rem .85rem; border-top: 1px solid rgba(255,255,255,.04); }
-.ai-input-row { display: flex; gap: .42rem; }
-.ai-input { flex: 1; background: rgba(255,255,255,.03); color: var(--text); border: 1px solid var(--line); border-radius: 7px; padding: .65rem .82rem; outline: none; font-size: .84rem; font-family: var(--fb); transition: border-color .2s; }
-.ai-input:focus { border-color: var(--accent-b); }
-.ai-send-btn { border: none; border-radius: 7px; padding: .65rem .95rem; font-family: var(--fm); font-weight: 600; font-size: .68rem; letter-spacing: .06em; background: var(--accent); color: #021210; cursor: pointer; }
-.ai-send-btn:disabled { opacity: .45; }
-.ai-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
-.ai-chip { font-family: var(--fm); font-size: .6rem; padding: .26rem .52rem; border-radius: 5px; border: 1px solid var(--line); background: rgba(255,255,255,.02); color: var(--muted-2); cursor: pointer; transition: all .14s; }
-.ai-chip:hover, .ai-chip:active { border-color: var(--accent-b); color: var(--accent); background: var(--accent-d); }
-.ai-meta { margin-top: .48rem; display: flex; justify-content: space-between; font-family: var(--fm); font-size: .62rem; color: var(--muted-2); }
-.ai-meta a { color: var(--accent); font-weight: 600; }
-
-/* ═══════════════════════════════════════════
-   TOOLS & CREDS
-═══════════════════════════════════════════ */
-.two-col { display: grid; gap: .8rem; }
-@media(min-width:600px){ .two-col { grid-template-columns: repeat(2,1fr); } }
-.soft-card { background: rgba(11,17,24,0.97); border: 1px solid var(--line); border-radius: 11px; padding: 1.1rem; }
-.soft-card h5 { font-family: var(--fm); font-size: .64rem; text-transform: uppercase; letter-spacing: .09em; color: var(--accent); font-weight: 600; margin: 0 0 .4rem; }
-.soft-card p { margin: 0; color: var(--muted); line-height: 1.6; font-size: .86rem; }
-.soft-card ul { margin: 0; padding-left: .88rem; }
-.soft-card li { line-height: 1.6; font-size: .86rem; }
-.mini-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: .6rem; margin-top: .6rem; }
-
-/* ═══════════════════════════════════════════
-   FLOATING CONTROLS
-═══════════════════════════════════════════ */
-.floating-controls { position: fixed; right: 1rem; bottom: 1rem; z-index: 600; display: flex; align-items: center; gap: .45rem; }
-.theme-bulb { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: rgba(11,17,24,.9); cursor: pointer; display: grid; place-items: center; padding: 0; transition: border-color .2s; }
-.theme-bulb:hover { border-color: var(--accent-b); }
-.theme-bulb svg { width: 16px; height: 16px; stroke: var(--accent); fill: transparent; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.jmod-bubble { border: 1px solid var(--accent-b); background: rgba(11,17,24,.95); color: var(--text); border-radius: 999px; padding: .55rem .78rem; display: inline-flex; align-items: center; gap: .42rem; box-shadow: 0 12px 36px rgba(0,0,0,.55); cursor: pointer; font-family: var(--fm); font-weight: 600; font-size: .68rem; letter-spacing: .05em; }
-.jmod-bubble img { width: 16px; height: 16px; }
-
-/* ═══════════════════════════════════════════
-   JMOD PANEL
-═══════════════════════════════════════════ */
-.jmod-panel { position: fixed; right: 1rem; bottom: 4.2rem; z-index: 600; width: min(400px,calc(100% - 1.5rem)); background: rgba(11,17,24,.98); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,.7); display: none; overflow: hidden; }
-.jmod-panel.open { display: block; }
-.jmod-ph { padding: .75rem .88rem; border-bottom: 1px solid rgba(255,255,255,.04); display: flex; align-items: center; justify-content: space-between; }
-.jmod-pt { display: flex; align-items: center; gap: .55rem; }
-.jmod-pt img { width: 22px; height: 22px; }
-.jmod-pt strong { font-size: .86rem; font-family: var(--fd); }
-.jmod-pt span { font-size: .7rem; color: var(--muted); display: block; }
-.jmod-close { border: none; background: transparent; color: var(--muted); cursor: pointer; font-size: .88rem; padding: .1rem; }
-.jmod-body { padding: .85rem; }
-.jmod-welcome { margin: 0 0 .65rem; color: var(--muted); line-height: 1.5; font-size: .84rem; }
-.jmod-thread { max-height: 230px; overflow-y: auto; display: flex; flex-direction: column; gap: .48rem; -webkit-overflow-scrolling: touch; }
-.jmod-msg { padding: .62rem .78rem; border-radius: 8px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; font-size: .82rem; }
-.jmod-msg.user { background: rgba(0,232,216,.07); border: 1px solid var(--accent-b); }
-.jmod-msg.bot { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.05); }
-.jmod-alert { margin-top: .58rem; padding: .58rem .78rem; border-radius: 8px; background: rgba(122,31,31,.13); color: #ffbcbc; border: 1px solid rgba(255,140,140,.2); font-size: .8rem; }
-.jmod-jd { display: none; width: 100%; min-height: 70px; resize: vertical; margin-bottom: .62rem; background: rgba(255,255,255,.03); color: var(--text); border: 1px solid var(--line); border-radius: 7px; padding: .62rem; font: inherit; }
-.jmod-jd.show { display: block; }
-.jmod-foot { padding: .72rem .85rem; border-top: 1px solid rgba(255,255,255,.04); }
-.jmod-row { display: flex; gap: .42rem; }
-.jmod-input { flex: 1; background: rgba(255,255,255,.03); color: var(--text); border: 1px solid var(--line); border-radius: 7px; padding: .65rem .82rem; outline: none; font: inherit; font-size: .84rem; }
-.jmod-send { border: none; border-radius: 7px; padding: .65rem .9rem; font-family: var(--fm); font-weight: 600; font-size: .68rem; background: var(--accent); color: #021210; cursor: pointer; }
-.jmod-send:disabled { opacity: .45; }
-.jmod-mini { margin-top: .48rem; display: flex; justify-content: space-between; font-family: var(--fm); font-size: .62rem; color: var(--muted-2); }
-.jmod-mini a { color: var(--accent); font-weight: 600; }
-
-/* ═══════════════════════════════════════════
-   MOBILE SPECIFIC OVERRIDES
-═══════════════════════════════════════════ */
-body.is-mobile .floating-controls { right: .85rem; bottom: 5.8rem; }
-
-/* ═══════════════════════════════════════════
-   ACCESSIBILITY
-═══════════════════════════════════════════ */
-.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-</style>
+    footer {
+      position: fixed;
+      bottom: 12px;
+      font-size: 0.65rem;
+      color: #1e2d3d;
+      letter-spacing: 1px;
+    }
+  </style>
 </head>
 <body>
 
-<div id="cur-dot"></div>
-<div id="cur-ring"></div>
+<!--
+  IP OF JORDAN MODDES — jordanmoddes.com
+  DocTrack Terminal — scanner-only, no mouse required
+-->
 
-<!-- ═══════════════════════════════════════════
-     SPLINE BACKGROUND (replaces Three.js)
-═══════════════════════════════════════════ -->
-<div id="spline-bg">
-  <spline-viewer url="https://prod.spline.design/ms6vQL3XNKPLnDuJKljV0Lat/scene.splinecode" loading="lazy"></spline-viewer>
-</div>
-<div id="spline-overlay"></div>
+<!-- This invisible input captures every barcode scan -->
+<input id="scanner-input" type="text" autocomplete="off" autofocus />
 
-<!-- NAV -->
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="#" aria-label="Top">
-      <img src="/assets/Signature_WhiteTP.png" alt="JM" id="brandLogo">
-      <span>Jordan Moddes</span>
-    </a>
-    <div class="top-actions">
-      <button class="nav-btn" id="shareBtn" type="button">Share</button>
-      <div class="translate-wrap">
-        <button class="nav-btn" id="translateBtn" type="button">Translate</button>
-        <div id="google_translate_element"></div>
-      </div>
-      <button class="nav-btn" id="themeBtn" type="button">Light</button>
-    </div>
-  </div>
-</header>
-<div id="prog-bar"><div id="prog-fill"></div></div>
+<div id="step-label">Step 1 of 4</div>
+<div id="prompt">SCAN BADGE</div>
+<div id="scanned-value">&nbsp;</div>
 
-<!-- MOBILE NAVIGATION -->
-<div id="scene-dots"></div>
-<button id="swipe-prev" aria-label="Previous scene">↑</button>
-<button id="swipe-next" aria-label="Next scene">↓</button>
-
-<!-- SCROLL / SWIPE HINTS -->
-<div id="scroll-hint">
-  Scroll to navigate
-  <svg width="12" height="16" viewBox="0 0 12 16" fill="none">
-    <rect x="3" y="0" width="6" height="10" rx="3" stroke="rgba(221,228,236,0.35)" stroke-width="1.4"/>
-    <circle cx="6" cy="3.5" r="1.4" fill="rgba(0,232,216,0.7)"/>
-    <path d="M3 13l3 3 3-3" stroke="rgba(0,232,216,0.5)" stroke-width="1.4" stroke-linecap="round"/>
-  </svg>
-</div>
-<div id="swipe-hint">
-  Swipe to navigate
-  <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-    <path d="M8 2 L8 10 M5 7 L8 10 L11 7" stroke="rgba(0,232,216,0.6)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
+<div id="progress">
+  <div class="dot active" id="dot-1"></div>
+  <div class="dot"        id="dot-2"></div>
+  <div class="dot"        id="dot-3"></div>
+  <div class="dot"        id="dot-4"></div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCENE 0: HERO
-══════════════════════════════════════════ -->
-<div class="scene-panel active" id="scene-0">
-  <div class="panel-left">
-    <div class="mono-tag">Operations &amp; Supply Chain</div>
-    <h1 class="display-xl" data-text="Jordan Moddes">Jordan Moddes</h1>
-    <p class="kicker">Operations &amp; Supply Chain Leader</p>
-    <p class="hero-desc">10+ years across Amazon fulfillment and global supply chain. Known for stabilizing underperforming operations and driving measurable business impact.</p>
-    <p class="hero-summary">Led 600+ employees &nbsp;·&nbsp; $3.6M program value &nbsp;·&nbsp; 90+ sites impacted &nbsp;·&nbsp; Austin, TX</p>
-    <div class="cta-row">
-      <a class="btn" href="/Resume-Jordan-Moddes.pdf" target="_blank" rel="noopener">Resume</a>
-      <a class="btn-ghost" href="https://www.linkedin.com/in/jordanmoddes/" target="_blank" rel="noopener">LinkedIn</a>
-      <div class="contact-wrap" id="contactWrap">
-        <button class="contact-btn" id="contactBtn" type="button">Contact</button>
-        <div class="contact-menu" id="contactMenu">
-          <a href="tel:+12627050853">Call</a>
-          <a href="sms:+12627050853">Text</a>
-          <a href="mailto:jmodwork@gmail.com">Email</a>
-          <a href="/vCard.vcf" download="Jordan_Moddes.vcf">Save Contact</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div id="status">&nbsp;</div>
 
-<!-- ══════════════════════════════════════════
-     SCENE 1: METRICS
-══════════════════════════════════════════ -->
-<div class="scene-panel" id="scene-1">
-  <div class="panel-wide">
-    <div class="panel-wide-inner">
-      <div class="sec-label">Executive Impact</div>
-      <h2 class="sec-title">Five numbers. The results that matter.</h2>
-      <p class="sec-sub">Impact first. Each metric is a direct outcome — not a responsibility.</p>
-      <div class="metric-panel">
+<footer>IP OF JORDAN MODDES &nbsp;|&nbsp; jordanmoddes.com &nbsp;|&nbsp; INTERNAL USE ONLY</footer>
 
-        <div class="metric-card">
-          <div class="m-label">Leadership Scale</div>
-          <div class="m-value" id="mc1">600+</div>
-          <div class="metric-viz">
-            <div id="headcount-viz" style="display:flex;flex-direction:column;gap:3px;margin-top:.2rem;"></div>
-            <div style="font-family:var(--fm);font-size:.6rem;color:var(--muted-2);margin-top:.4rem;">employees + 13 salaried leaders</div>
-          </div>
-          <p class="m-desc">Operations across facilities up to 3.25M sq ft.</p>
-        </div>
-
-        <div class="metric-card">
-          <div class="m-label">Program Value</div>
-          <div class="m-value" id="mc2">$3.6M</div>
-          <div class="metric-viz" style="margin-top:.6rem;">
-            <div style="display:grid;gap:.4rem;">
-              <div>
-                <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-bottom:.2rem;">Investment in</div>
-                <div style="height:6px;background:rgba(47,120,255,.15);border-radius:3px;overflow:hidden;">
-                  <div id="bar-invest" style="height:100%;background:var(--blue);border-radius:3px;width:0;transition:width 1.5s cubic-bezier(.22,1,.36,1);"></div>
-                </div>
-                <div style="font-family:var(--fm);font-size:.58rem;color:var(--blue);margin-top:.15rem;">$1.28M</div>
-              </div>
-              <div>
-                <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-bottom:.2rem;">Value delivered</div>
-                <div style="height:6px;background:rgba(0,232,216,.12);border-radius:3px;overflow:hidden;">
-                  <div id="bar-return" style="height:100%;background:var(--accent);border-radius:3px;width:0;transition:width 1.8s .2s cubic-bezier(.22,1,.36,1);"></div>
-                </div>
-                <div style="font-family:var(--fm);font-size:.58rem;color:var(--accent);margin-top:.15rem;">$3.6M annual · 2.8× return</div>
-              </div>
-            </div>
-          </div>
-          <p class="m-desc">Lane Dash logistics optimization program, 5.5-month ROI.</p>
-        </div>
-
-        <div class="metric-card">
-          <div class="m-label">Turnaround Impact</div>
-          <div class="m-value" id="mc3">50%</div>
-          <div class="metric-viz" style="margin-top:.6rem;">
-            <div style="display:grid;gap:.4rem;">
-              <div>
-                <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-bottom:.2rem;">Before — 110 units/hr</div>
-                <div style="height:6px;background:rgba(167,139,250,.12);border-radius:3px;overflow:hidden;">
-                  <div id="bar-before" style="height:100%;background:rgba(167,139,250,.5);border-radius:3px;width:0;transition:width 1.2s cubic-bezier(.22,1,.36,1);"></div>
-                </div>
-              </div>
-              <div>
-                <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-bottom:.2rem;">After — 165 units/hr</div>
-                <div style="height:6px;background:rgba(167,139,250,.12);border-radius:3px;overflow:hidden;">
-                  <div id="bar-after" style="height:100%;background:#a78bfa;border-radius:3px;width:0;transition:width 1.5s .3s cubic-bezier(.22,1,.36,1);"></div>
-                </div>
-              </div>
-            </div>
-            <div style="font-family:var(--fm);font-size:.58rem;color:var(--muted-2);margin-top:.4rem;">6 weeks · 3,600 → 210 defects</div>
-          </div>
-          <p class="m-desc">RIT operational recovery assignment.</p>
-        </div>
-
-        <div class="metric-card">
-          <div class="m-label">Systems Reach</div>
-          <div class="m-value" id="mc4">90+ Sites</div>
-          <div class="metric-viz">
-            <div class="node-cluster" id="nodes1"></div>
-            <div style="font-family:var(--fm);font-size:.6rem;color:var(--muted-2);margin-top:.35rem;">reporting automation adopted</div>
-          </div>
-          <p class="m-desc">32-hour review cycle cut to under 45 minutes.</p>
-        </div>
-
-        <div class="metric-card">
-          <div class="m-label">Supply Chain Systems</div>
-          <div class="m-value" id="mc5">14K SKUs</div>
-          <div class="metric-viz">
-            <div class="pulse-wrap">
-              <div class="pulse-ring"></div>
-              <div class="pulse-ring"></div>
-              <div class="pulse-ring"></div>
-              <div class="pulse-center"></div>
-            </div>
-            <div style="font-family:var(--fm);font-size:.6rem;color:var(--muted-2);margin-top:.35rem;">across 64 global distribution centers</div>
-          </div>
-          <p class="m-desc">Active SKUs inside a 300K+ product portfolio.</p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCENE 2: FEATURED WORK
-══════════════════════════════════════════ -->
-<div class="scene-panel" id="scene-2">
-  <div class="panel-wide">
-    <div class="panel-wide-inner">
-      <div class="sec-label">Featured Work</div>
-      <h2 class="sec-title">Three programs that define the pattern.</h2>
-      <div class="fw-grid">
-        <div class="fw-card">
-          <div class="fw-eyebrow">Program Ownership</div>
-          <h3>Lane Dash logistics optimization</h3>
-          <p>Designed and led the Lane Dash routing and dock-flow program across North American fulfillment. Secured $1.28M in approved investment and delivered $3.6M annual operational value within 5.5 months.</p>
-          <ul>
-            <li>Redesigned routing logic and lane assignment.</li>
-            <li>Rebuilt workflow sequencing and execution standards.</li>
-            <li>Implemented performance reporting to track impact.</li>
-            <li>Created a scalable framework for broader deployment.</li>
-          </ul>
-          <div class="fw-metrics">
-            <div class="fw-metric"><div class="val">$1.28M</div><span>Investment approved</span></div>
-            <div class="fw-metric"><div class="val">5.5 mo</div><span>ROI period</span></div>
-            <div class="fw-metric"><div class="val">$3.6M</div><span>Annual value</span></div>
-            <div class="fw-metric"><div class="val">Network</div><span>North American scope</span></div>
-          </div>
-        </div>
-        <div class="fw-card">
-          <div class="fw-eyebrow">Turnaround Leadership</div>
-          <h3>Rapid Improvement Team recovery</h3>
-          <p>Led a RIT intervention at an underperforming fulfillment site. Increased throughput from 110 to 165 units/hr — 50% in six weeks — while cutting quality defects from 3,600 DPMO to 210.</p>
-          <ul>
-            <li>Standardized workstations using 5S principles.</li>
-            <li>Rebuilt labor planning and indirect staffing logic.</li>
-            <li>Implemented center-work checklists and weekly reviews.</li>
-            <li>Used 5-Why analysis to isolate root failure points.</li>
-          </ul>
-          <div class="fw-metrics">
-            <div class="fw-metric"><div class="val">31%</div><span>Benchmark starting point</span></div>
-            <div class="fw-metric"><div class="val">110→165</div><span>Throughput in 6 weeks</span></div>
-            <div class="fw-metric"><div class="val">3600→210</div><span>Defect reduction</span></div>
-            <div class="fw-metric"><div class="val">0</div><span>Safety incidents final 2 weeks</span></div>
-          </div>
-        </div>
-        <div class="fw-card">
-          <div class="fw-eyebrow">Stretch Leadership</div>
-          <h3>Acting Senior Operations Manager</h3>
-          <p>Served twice as acting senior ops leader during military leave coverage, including during peak season. ~6 months total. Demonstrates readiness clearly beyond formal title history.</p>
-          <ul>
-            <li>Full labor planning and staffing strategy.</li>
-            <li>A3 project oversight and weekly business reviews.</li>
-            <li>Safety, finance, and escalation management.</li>
-          </ul>
-          <div class="fw-metrics">
-            <div class="fw-metric"><div class="val">~6 mo</div><span>Total coverage</span></div>
-            <div class="fw-metric"><div class="val">Peak</div><span>Highest-volume season</span></div>
-            <div class="fw-metric"><div class="val">Regional</div><span>Senior leadership cadence</span></div>
-            <div class="fw-metric"><div class="val">2 issues</div><span>Required exec deep dive</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCENE 3: ASK THE RESUME
-══════════════════════════════════════════ -->
-<div class="scene-panel" id="scene-3">
-  <div class="panel-wide">
-    <div class="panel-wide-inner">
-      <div class="sec-label">Jmod AI</div>
-      <h2 class="sec-title">Ask the resume directly.</h2>
-      <div class="ai-layout">
-        <div>
-          <p class="sec-sub">An AI trained on Jordan's verified experience. It only speaks to what's documented. Ask anything a hiring leader would want to know.</p>
-          <div class="ai-caps">
-            <div class="ai-cap"><div class="ai-cap-n">01</div>Ask about leadership scope, team size, or span of control.</div>
-            <div class="ai-cap"><div class="ai-cap-n">02</div>Paste a job description — get a relevance analysis.</div>
-            <div class="ai-cap"><div class="ai-cap-n">03</div>Ask for specific metrics, programs, or turnaround results.</div>
-            <div class="ai-cap"><div class="ai-cap-n">04</div>Compare this background to a role you're hiring for.</div>
-          </div>
-        </div>
-        <div class="ai-chat-box">
-          <div class="ai-chat-top">
-            <div class="ai-chat-top-l">
-              <div class="ai-live-dot"></div>
-              <div><div class="ai-chat-name">Jmod AI</div><div class="ai-chat-sub">Verified experience only.</div></div>
-            </div>
-            <div class="ai-badge">Live</div>
-          </div>
-          <div class="ai-thread" id="aiThread">
-            <div class="ai-empty" id="aiEmpty">Ask anything about Jordan's background, scope, or results.</div>
-          </div>
-          <div class="ai-foot">
-            <div class="ai-input-row">
-              <input class="ai-input" id="aiInput" placeholder="e.g. What's the largest team Jordan led?" autocomplete="off"/>
-              <button class="ai-send-btn" id="aiSend" type="button">Ask</button>
-            </div>
-            <div class="ai-chips">
-              <button class="ai-chip" type="button">Leadership scope</button>
-              <button class="ai-chip" type="button">$3.6M program</button>
-              <button class="ai-chip" type="button">Turnaround results</button>
-              <button class="ai-chip" type="button">Why hire Jordan?</button>
-            </div>
-            <div class="ai-meta"><span id="aiStatus">Ready</span><a href="/resume-ai.html?resumeai=1" target="_blank" rel="noopener">Full page →</a></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCENE 4: EXPERIENCE
-══════════════════════════════════════════ -->
-<div class="scene-panel" id="scene-4">
-  <div class="panel-wide">
-    <div class="panel-wide-inner">
-      <div class="sec-label">Leadership Experience</div>
-      <h2 class="sec-title">The full record.</h2>
-      <div class="roles-grid">
-        <div class="role-card">
-          <div class="role-head"><div><h3>Amazon — Operations Leadership</h3><div class="role-note">Area Manager: Oct 2016 – Jun 2021 | Operations Manager: Jun 2021 – Mar 2025</div></div><div class="role-period">Jul 2015 – Mar 2025</div></div>
-          <p>Led large-scale fulfillment operations across a 3.25M sq ft environment supporting 600+ employees and 13 salaried leaders.</p>
-          <div class="role-groups">
-            <div class="role-group"><h4>Operational Scope</h4><ul><li>600+ employees, 13 salaried leaders.</li><li>21-day labor forecasting, weekly planning.</li><li>Throughput, safety, quality ownership.</li></ul></div>
-            <div class="role-group"><h4>Leadership Impact</h4><ul><li>30+ internal promotions from frontline to leadership.</li><li>Coached managers, process assistants, ambassadors.</li></ul></div>
-            <div class="role-group"><h4>Programs &amp; Scale</h4><ul><li>Lane Dash: $1.28M investment, $3.6M annual value.</li><li>Eliminated 6-month inventory backlog in 6.5 weeks.</li><li>VBA dashboards across 90+ sites.</li></ul></div>
-          </div>
-        </div>
-        <div class="role-card">
-          <div class="role-head"><div><h3>Network Operations Development</h3><div class="role-note">Cross-site operational execution</div></div></div>
-          <p>Worked across 25 Amazon facilities — robotics sites, launch sites, sort centers, same-day, and delivery stations — on 1–6 week deployments.</p>
-          <div class="role-groups">
-            <div class="role-group"><h4>Facility Exposure</h4><ul><li>Robotics fulfillment sites.</li><li>Launch facilities and next-gen operations.</li><li>Sort centers, same-day, delivery sites.</li></ul></div>
-            <div class="role-group"><h4>Output</h4><ul><li>Internal wiki from field learning.</li><li>Site lessons into center-work standards.</li></ul></div>
-          </div>
-        </div>
-        <div class="role-card">
-          <div class="role-head"><div><h3>MilliporeSigma — Inventory Specialist / Material Scheduler</h3><div class="role-note">Supply chain planning and systems optimization</div></div><div class="role-period">Sep 2025 – Present</div></div>
-          <p>Strengthening the upstream operating model: ERP data integrity, production-status visibility, and global distribution support.</p>
-          <div class="role-groups">
-            <div class="role-group"><h4>Planning</h4><ul><li>~14,000 active SKUs, 300K+ portfolio.</li><li>64 global distribution centers.</li></ul></div>
-            <div class="role-group"><h4>Contribution</h4><ul><li>Backorders: EUR 3.7M → EUR 2.675M in ~2 months.</li><li>VBA automation: 32 hours → under 1 hour.</li><li>AI-assisted Smartsheet API scripting for reconciliation.</li></ul></div>
-          </div>
-        </div>
-        <div class="role-card">
-          <div class="role-head"><div><h3>Earlier Roles</h3><div class="role-note">Operational foundation</div></div></div>
-          <p>Built the performance base through frontline execution, process redesign, and transportation and retail management.</p>
-          <div class="role-groups">
-            <div class="role-group"><h4>Performance</h4><ul><li>240 → 310 units/hr in 3 months.</li><li>Defect rate: 2100 → 400 in one month.</li><li>+19% team, +11% site, +4% regional.</li></ul></div>
-            <div class="role-group"><h4>Earlier Career</h4><ul><li>SC Johnson (2014–2015): Transportation coordination.</li><li>Menards / Reebok Retail (2011–2014): $3M department, 95–98% inventory accuracy.</li></ul></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCENE 5: TOOLS + CREDENTIALS
-══════════════════════════════════════════ -->
-<div class="scene-panel" id="scene-5">
-  <div class="panel-wide">
-    <div class="panel-wide-inner">
-      <div class="sec-label">Tools &amp; Credentials</div>
-      <h2 class="sec-title">Systems, certifications, education.</h2>
-      <div class="two-col" style="margin-top:1.4rem;">
-        <div>
-          <div class="mini-grid">
-            <div class="soft-card"><h5>ERP</h5><ul><li>SAP PRD/100</li><li>SAP PRE/100</li><li>SAP PRP/100</li><li>Macola ERP</li></ul></div>
-            <div class="soft-card"><h5>Automation</h5><ul><li>Excel Advanced</li><li>VBA Automation</li><li>Dashboard creation</li><li>Reporting redesign</li></ul></div>
-            <div class="soft-card"><h5>Operations</h5><ul><li>WMS platforms</li><li>Fulfillment systems</li><li>Inventory reporting</li><li>Labor planning</li></ul></div>
-            <div class="soft-card"><h5>Collaboration</h5><ul><li>Power BI</li><li>SharePoint</li><li>Google Workspace</li><li>Slack &amp; Asana</li></ul></div>
-          </div>
-        </div>
-        <div>
-          <div class="soft-card" style="margin-bottom:.7rem;">
-            <h5>Certifications</h5>
-            <ul>
-              <li>Operations Management Professional Certificate — Jack Welch Management Institute</li>
-              <li>Succeeding as a Senior Manager — LinkedIn Learning</li>
-              <li>Program Management (3 courses) — LinkedIn Learning</li>
-              <li>Six Sigma Black/Green/Yellow Belt Foundations</li>
-              <li>AI &amp; Prompt Engineering — LinkedIn Learning</li>
-            </ul>
-          </div>
-          <div class="soft-card">
-            <h5>Education</h5>
-            <p>Bachelor of Business Administration<br>Bryant &amp; Stratton College · April 2013</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<section class="visually-hidden" aria-hidden="true">
-  <h2>Frequently Asked Questions about Jordan Moddes</h2>
-  <article><h3>Who is Jordan Moddes?</h3><p>Jordan Moddes is a senior operations and supply chain leader with over 10 years across Amazon fulfillment and global supply chain environments. Based in Austin, Texas.</p></article>
-  <article><h3>What measurable business impact has Jordan Moddes delivered?</h3><p>$3.6M annual operational value through Lane Dash; 50% throughput improvement in six weeks; automation across 90+ sites; backorder reduction from EUR 3.7M to EUR 2.675M at MilliporeSigma.</p></article>
-</section>
-
-<!-- FLOATING CONTROLS -->
-<div class="floating-controls">
-  <button class="jmod-bubble" id="jmodBubble" type="button" aria-label="Open Jmod AI">
-    <img src="/assets/Signature_WhiteTP.png" alt="" id="jmodBubbleLogo">
-    <span>Jmod AI</span>
-  </button>
-  <button class="theme-bulb" id="themeBulb" type="button" aria-label="Toggle theme">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12c.6.5 1 1.2 1.2 2h5.6c.2-.8.6-1.5 1.2-2A7 7 0 0 0 12 2z"/></svg>
-  </button>
-</div>
-
-<!-- JMOD AI PANEL -->
-<div class="jmod-panel" id="jmodPanel" role="dialog" aria-label="Jmod AI" aria-modal="true">
-  <div class="jmod-ph">
-    <div class="jmod-pt"><img src="/assets/Signature_WhiteTP.png" alt="" id="jmodLogo"><div><strong>Jmod AI</strong><span>Verified experience only.</span></div></div>
-    <button class="jmod-close" id="jmodClose" type="button">&#x2715;</button>
-  </div>
-  <div class="jmod-body">
-    <p class="jmod-welcome" id="jmodWelcome">Ask about leadership scope, results, or paste a job link. First response may take ~60s.</p>
-    <div class="jmod-thread" id="jmodThread"></div>
-    <div class="jmod-alert" id="jmodAlert" style="display:none;"></div>
-  </div>
-  <div class="jmod-foot">
-    <textarea class="jmod-jd" id="jmodJobText" placeholder="Paste job description if a URL is blocked"></textarea>
-    <div class="jmod-row">
-      <input class="jmod-input" id="jmodInput" placeholder="Type a question..."/>
-      <button class="jmod-send" id="jmodSend" type="button">Send</button>
-    </div>
-    <div class="jmod-mini"><span id="jmodStatus">Ready.</span><a href="/resume-ai.html?resumeai=1" target="_blank" rel="noopener">Open full page</a></div>
-  </div>
-</div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
-/* ══════════════════════════════════════════
-   DEVICE DETECTION
-══════════════════════════════════════════ */
-var IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
-document.body.classList.add(IS_MOBILE ? 'is-mobile' : 'is-desktop');
+  // ============================================================
+  //  CONFIG
+  //  DEMO_MODE = true  → logs to console only, no network calls
+  //  DEMO_MODE = false → calls real backend at API_BASE_URL
+  // ============================================================
+  const DEMO_MODE    = true;
+  const API_BASE_URL = 'https://moddes-backend.onrender.com';
+  //  ↑ Change this to internal server IP when IT is ready ↑
 
-/* ══════════════════════════════════════════
-   CURSOR (desktop only)
-══════════════════════════════════════════ */
-if (!IS_MOBILE) {
-  (function(){
-    var dot=document.getElementById('cur-dot');
-    var ring=document.getElementById('cur-ring');
-    if(!dot||!ring)return;
-    var rx=0,ry=0,mx=0,my=0;
-    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
-    (function tick(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(tick);})();
-    document.querySelectorAll('a,button,input,textarea').forEach(function(el){
-      el.addEventListener('mouseenter',function(){ring.style.width='46px';ring.style.height='46px';ring.style.borderColor='var(--accent)';});
-      el.addEventListener('mouseleave',function(){ring.style.width='30px';ring.style.height='30px';ring.style.borderColor='var(--accent-b)';});
-    });
-    document.body.style.cursor='none';
-  })();
-}
 
-/* ══════════════════════════════════════════
-   SCENE ENGINE
-══════════════════════════════════════════ */
-var TOTAL_SCENES=6;
-var currentScene=0;
-var transitioning=false;
+  // ============================================================
+  //  SCAN STEPS
+  //  Order: badge → docID → eventType → department
+  // ============================================================
+  const STEPS = [
+    { label: 'Step 1 of 4', prompt: 'SCAN BADGE',      field: 'badge'      },
+    { label: 'Step 2 of 4', prompt: 'SCAN FOLDER ID',  field: 'docID'      },
+    { label: 'Step 3 of 4', prompt: 'SCAN WIP / DROP', field: 'eventType'  },
+    { label: 'Step 4 of 4', prompt: 'SCAN DEPARTMENT', field: 'department' },
+  ];
 
-function showScene(idx){
-  idx=Math.max(0,Math.min(TOTAL_SCENES-1,idx));
-  if(idx===currentScene&&document.getElementById('scene-'+idx).classList.contains('active'))return;
-  document.querySelectorAll('.scene-panel').forEach(function(p){p.classList.remove('active');});
-  document.getElementById('scene-'+idx).classList.add('active');
-  currentScene=idx;
 
-  var progress=idx/(TOTAL_SCENES-1);
-  var pf=document.getElementById('prog-fill');
-  if(pf)pf.style.width=(progress*100)+'%';
+  // ============================================================
+  //  BARCODE MAPS
+  //  These are the barcodes printed on the physical WIP/DROP
+  //  labels and department terminal labels.
+  //  Add or change values here when real barcodes are assigned.
+  // ============================================================
 
-  document.querySelectorAll('.scene-dot').forEach(function(d,i){
-    d.classList.toggle('active',i===idx);
-  });
-
-  if(idx===1)triggerMetrics();
-
-  if(idx>0){
-    var sh=document.getElementById('scroll-hint');
-    var swh=document.getElementById('swipe-hint');
-    if(sh)sh.style.opacity='0';
-    if(swh)swh.style.opacity='0';
-  }
-}
-
-/* ══════════════════════════════════════════
-   DESKTOP: WHEEL NAVIGATION
-══════════════════════════════════════════ */
-if(!IS_MOBILE){
-  var wheelLock=false;
-  var wheelAccum=0;
-  var WHEEL_THRESHOLD=80;
-
-  window.addEventListener('wheel',function(e){
-    var pw=e.target.closest('.panel-wide');
-    if(pw){
-      var atBottom=pw.scrollTop+pw.clientHeight>=pw.scrollHeight-4;
-      var atTop=pw.scrollTop<=0;
-      if(e.deltaY>0&&!atBottom)return;
-      if(e.deltaY<0&&!atTop)return;
-    }
-    e.preventDefault();
-    if(wheelLock)return;
-    wheelAccum+=Math.abs(e.deltaY);
-    if(wheelAccum<WHEEL_THRESHOLD)return;
-    wheelAccum=0;
-    wheelLock=true;
-    if(e.deltaY>0)showScene(currentScene+1);
-    else showScene(currentScene-1);
-    setTimeout(function(){wheelLock=false;},750);
-  },{passive:false});
-
-  document.addEventListener('keydown',function(e){
-    if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();showScene(currentScene+1);}
-    if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();showScene(currentScene-1);}
-  });
-}
-
-/* ══════════════════════════════════════════
-   MOBILE: TOUCH SWIPE
-══════════════════════════════════════════ */
-if(IS_MOBILE){
-  var dotsEl=document.getElementById('scene-dots');
-  for(var di=0;di<TOTAL_SCENES;di++){
-    var dot=document.createElement('div');
-    dot.className='scene-dot'+(di===0?' active':'');
-    (function(idx){dot.addEventListener('click',function(){showScene(idx);});})(di);
-    dotsEl.appendChild(dot);
-  }
-
-  var prevBtn=document.getElementById('swipe-prev');
-  var nextBtn=document.getElementById('swipe-next');
-  if(prevBtn)prevBtn.addEventListener('click',function(){showScene(currentScene-1);});
-  if(nextBtn)nextBtn.addEventListener('click',function(){showScene(currentScene+1);});
-
-  var touchStartY=0, touchStartX=0;
-  var MIN_SWIPE=50;
-
-  document.addEventListener('touchstart',function(e){
-    var pw=e.target.closest('.panel-wide');
-    if(pw){
-      var atTop=pw.scrollTop<=0;
-      var atBottom=pw.scrollTop+pw.clientHeight>=pw.scrollHeight-2;
-      if(!atTop&&!atBottom)return;
-    }
-    touchStartY=e.touches[0].clientY;
-    touchStartX=e.touches[0].clientX;
-  },{passive:true});
-
-  document.addEventListener('touchend',function(e){
-    if(transitioning)return;
-    var pw=e.target.closest('.panel-wide');
-    var dy=touchStartY-e.changedTouches[0].clientY;
-    var dx=touchStartX-e.changedTouches[0].clientX;
-    if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>MIN_SWIPE){
-      if(pw){
-        if(dy>0&&pw.scrollTop+pw.clientHeight<pw.scrollHeight-5)return;
-        if(dy<0&&pw.scrollTop>5)return;
-      }
-      transitioning=true;
-      if(dy>0)showScene(currentScene+1);
-      else showScene(currentScene-1);
-      setTimeout(function(){transitioning=false;},600);
-    }
-  },{passive:true});
-}
-
-/* ══════════════════════════════════════════
-   METRIC ANIMATIONS
-══════════════════════════════════════════ */
-var metricsTriggered=false;
-function triggerMetrics(){
-  if(metricsTriggered)return; metricsTriggered=true;
-
-  function countUp(el,target,pre,suf,dec,dur){
-    if(!el)return; var st=null;
-    (function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/dur,1);var e=1-Math.pow(1-p,3);el.textContent=pre+(dec?(target*e).toFixed(1):Math.floor(target*e))+suf;if(p<1)requestAnimationFrame(step);else el.textContent=pre+target+suf;})();
-  }
-  countUp(document.getElementById('mc1'),600,'','+',false,1400);
-  countUp(document.getElementById('mc2'),3.6,'$','M',true,1400);
-  countUp(document.getElementById('mc3'),50,'','%',false,1400);
-
-  var hv=document.getElementById('headcount-viz');
-  if(hv){
-    hv.innerHTML='';
-    for(var row=0;row<6;row++){
-      var rowEl=document.createElement('div');
-      rowEl.style.cssText='display:flex;gap:3px;';
-      for(var col=0;col<10;col++){
-        var d=document.createElement('div');
-        d.style.cssText='width:7px;height:7px;border-radius:50%;background:rgba(0,232,216,.15);transition:background .1s;';
-        rowEl.appendChild(d);
-      }
-      hv.appendChild(rowEl);
-    }
-    var allDots=hv.querySelectorAll('div > div');
-    var di2=0;
-    var iv=setInterval(function(){
-      if(di2<allDots.length){allDots[di2].style.background='var(--accent)';di2++;}
-      else clearInterval(iv);
-    },18);
-  }
-
-  setTimeout(function(){
-    var bi=document.getElementById('bar-invest');
-    var br=document.getElementById('bar-return');
-    if(bi)bi.style.width='36%';
-    if(br)br.style.width='100%';
-  },300);
-
-  setTimeout(function(){
-    var bb=document.getElementById('bar-before');
-    var ba=document.getElementById('bar-after');
-    if(bb)bb.style.width='67%';
-    if(ba)ba.style.width='100%';
-  },400);
-
-  var nc=document.getElementById('nodes1');
-  if(nc){
-    nc.innerHTML='';
-    for(var i=0;i<90;i++){var d2=document.createElement('div');d2.className='node-dot';nc.appendChild(d2);}
-    var dots=nc.querySelectorAll('.node-dot'),idx2=0;
-    var iv2=setInterval(function(){if(idx2<dots.length){dots[idx2].classList.add('lit');idx2++;}else clearInterval(iv2);},16);
-  }
-}
-
-/* ══════════════════════════════════════════
-   INLINE AI
-══════════════════════════════════════════ */
-(function(){
-  var BACKEND='https://jmod-ai-backend.jordanmoddes.com/chat';
-  var threadEl=document.getElementById('aiThread');
-  var emptyEl=document.getElementById('aiEmpty');
-  var inputEl=document.getElementById('aiInput');
-  var sendBtn=document.getElementById('aiSend');
-  var statusEl=document.getElementById('aiStatus');
-  var chips=document.querySelectorAll('.ai-chip');
-  var thread=[];
-  if(!threadEl||!inputEl||!sendBtn)return;
-  function addMsg(role,text){
-    if(emptyEl)emptyEl.style.display='none';
-    var d=document.createElement('div');d.className=role==='user'?'ai-msg-u':'ai-msg-b';d.textContent=text;
-    threadEl.appendChild(d);threadEl.scrollTop=threadEl.scrollHeight;return d;
-  }
-  function addThinking(){
-    if(emptyEl)emptyEl.style.display='none';
-    var d=document.createElement('div');d.className='ai-msg-b ai-thinking';d.textContent='Thinking...';
-    threadEl.appendChild(d);threadEl.scrollTop=threadEl.scrollHeight;return d;
-  }
-  async function send(text){
-    text=text.trim();if(!text)return;
-    addMsg('user',text);thread.push({role:'user',content:text});
-    if(inputEl)inputEl.value='';sendBtn.disabled=true;
-    if(statusEl)statusEl.textContent='Thinking...';
-    var thinking=addThinking();
-    try{
-      var res=await fetch(BACKEND,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,thread:thread.slice(-10)})});
-      if(!res.ok)throw new Error('HTTP '+res.status);
-      var data=await res.json();
-      var reply=data&&data.reply?data.reply:'No response received.';
-      thinking.remove();addMsg('assistant',reply);thread.push({role:'assistant',content:reply});
-      if(statusEl)statusEl.textContent='Ready';
-    }catch(err){
-      thinking.remove();addMsg('assistant','Connection issue — try the Jmod AI button at the bottom right.');
-      if(statusEl)statusEl.textContent='Error';
-    }finally{sendBtn.disabled=false;}
-  }
-  sendBtn.addEventListener('click',function(){send(inputEl.value);});
-  inputEl.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send(inputEl.value);}});
-  chips.forEach(function(c){c.addEventListener('click',function(){send(c.textContent);});});
-})();
-
-/* ══════════════════════════════════════════
-   NAV, THEME, JMOD BUBBLE
-══════════════════════════════════════════ */
-function toggleTheme(){
-  var html=document.documentElement;
-  var next=html.getAttribute('data-theme')==='dark'?'light':'dark';
-  html.setAttribute('data-theme',next);localStorage.setItem('theme',next);
-  if(typeof paintThemeLabel==='function')paintThemeLabel();
-  setLogos();
-}
-function toggleTranslate(){
-  var w=document.getElementById('google_translate_element');
-  if(w)w.style.display=w.style.display==='block'?'none':'block';
-}
-function setLogos(){
-  var t=document.documentElement.getAttribute('data-theme')||'dark';
-  var src=t==='dark'?'/assets/Signature_WhiteTP.png':'/assets/Signature_BlackTP.png';
-  var icon=document.querySelector('link[rel="icon"]');
-  ['brandLogo','jmodLogo','jmodBubbleLogo'].forEach(function(id){var el=document.getElementById(id);if(el)el.src=src;});
-  if(icon)icon.href=src;
-}
-
-document.addEventListener('DOMContentLoaded',function(){
-  function safe(fn){try{fn();}catch(e){console.error(e);}}
-
-  var VK='jmod_visitor_id_v1';
-  function getVID(){var id=localStorage.getItem(VK);if(!id){id=(crypto&&crypto.randomUUID)?crypto.randomUUID():('v-'+Date.now());localStorage.setItem(VK,id);}return id;}
-  var VID=getVID();
-  var TK='jmod_ai_thread_v1::'+VID;
-
-  safe(function(){
-    var t=localStorage.getItem('theme');
-    document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
-    setLogos();
-  });
-
-  var themeBtn=document.getElementById('themeBtn');
-  var themeBulb=document.getElementById('themeBulb');
-  var translateBtn=document.getElementById('translateBtn');
-  var contactWrap=document.getElementById('contactWrap');
-  var contactBtn=document.getElementById('contactBtn');
-
-  window.paintThemeLabel=function(){
-    var t=document.documentElement.getAttribute('data-theme')||'dark';
-    if(themeBtn)themeBtn.textContent=t==='dark'?'Light':'Dark';
+  // WIP and DROP-OFF labels — two barcodes printed, one posted at each terminal
+  const EVENT_BARCODES = {
+    'EVT-WIP':  'WIP',
+    'EVT-DROP': 'DROP-OFF',
   };
-  safe(function(){paintThemeLabel();});
 
-  safe(function(){
-    if(themeBtn)themeBtn.addEventListener('click',function(e){e.stopPropagation();toggleTheme();paintThemeLabel();});
-    if(themeBulb)themeBulb.addEventListener('click',function(e){e.stopPropagation();toggleTheme();paintThemeLabel();});
-    if(translateBtn)translateBtn.addEventListener('click',function(e){e.stopPropagation();toggleTranslate();});
-    if(contactBtn)contactBtn.addEventListener('click',function(e){e.stopPropagation();contactWrap&&contactWrap.classList.toggle('open');});
-    document.addEventListener('click',function(e){
-      if(contactWrap&&!contactWrap.contains(e.target))contactWrap.classList.remove('open');
-      var tw=document.querySelector('.translate-wrap');
-      var gt=document.getElementById('google_translate_element');
-      if(gt&&tw&&!tw.contains(e.target))gt.style.display='none';
-    });
-  });
+  // Department terminal barcodes — one per physical location
+  const DEPT_BARCODES = {
+    'DEPT-PLAN': 'Planning',
+    'DEPT-QC':   'QC Review',
+    'DEPT-LAB':  'Lab',
+    'DEPT-WH':   'Warehouse',
+    'DEPT-STOR': 'Storage',
+    'DEPT-SHIP': 'Shipping / Receiving',
+  };
 
-  safe(function(){
-    var shareBtn=document.getElementById('shareBtn');
-    if(shareBtn)shareBtn.addEventListener('click',async function(){
-      try{
-        if(navigator.share)await navigator.share({title:document.title,url:window.location.href});
-        else{await navigator.clipboard.writeText(window.location.href);shareBtn.textContent='Copied';setTimeout(function(){shareBtn.textContent='Share';},1400);}
-      }catch(e){}
-    });
-  });
 
-  window.addEventListener('storage',function(e){
-    if(e&&e.key==='theme'){var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');paintThemeLabel();setLogos();}
-  });
+  // ============================================================
+  //  STATE — tracks current step and collected scan values
+  // ============================================================
+  let currentStep = 0;
+  let scan = {};   // { badge, docID, eventType, department }
 
-  /* Jmod bubble */
-  safe(function(){
-    var BACKEND='https://jmod-ai-backend.jordanmoddes.com/chat';
-    var panel=document.getElementById('jmodPanel');
-    var bubble=document.getElementById('jmodBubble');
-    var closeBtn=document.getElementById('jmodClose');
-    var input=document.getElementById('jmodInput');
-    var sendBtn=document.getElementById('jmodSend');
-    var thread=document.getElementById('jmodThread');
-    var alertEl=document.getElementById('jmodAlert');
-    var statusEl=document.getElementById('jmodStatus');
-    var welcomeEl=document.getElementById('jmodWelcome');
-    var jdEl=document.getElementById('jmodJobText');
-    if(!panel||!bubble)return;
-    var ts=[];
-    function loadTs(){try{return JSON.parse(localStorage.getItem(TK)||'[]');}catch(e){return[];}}
-    function saveTs(t){try{localStorage.setItem(TK,JSON.stringify(t));}catch(e){}}
-    ts=loadTs();
-    function renderTs(){
-      if(!thread)return;thread.innerHTML='';
-      if(ts.length&&welcomeEl)welcomeEl.style.display='none';
-      ts.forEach(function(m){var d=document.createElement('div');d.className='jmod-msg '+(m.role==='user'?'user':'bot');d.textContent=m.content;thread.appendChild(d);});
-      thread.scrollTop=thread.scrollHeight;
+
+  // ============================================================
+  //  UI — update screen for given step index
+  // ============================================================
+  function setPrompt(stepIndex) {
+    document.getElementById('step-label').textContent  = STEPS[stepIndex].label;
+    document.getElementById('prompt').textContent      = STEPS[stepIndex].prompt;
+    document.getElementById('scanned-value').innerHTML = '&nbsp;';
+    document.getElementById('status').innerHTML        = '&nbsp;';
+    document.getElementById('status').className        = '';
+
+    for (let i = 0; i < 4; i++) {
+      const dot = document.getElementById(`dot-${i + 1}`);
+      if (i < stepIndex)      dot.className = 'dot done';
+      else if (i === stepIndex) dot.className = 'dot active';
+      else                    dot.className = 'dot';
     }
-    renderTs();
-    function appendMsg(role,text){var d=document.createElement('div');d.className='jmod-msg '+(role==='user'?'user':'bot');d.textContent=text;thread.appendChild(d);thread.scrollTop=thread.scrollHeight;}
-    bubble.addEventListener('click',function(){panel.classList.toggle('open');if(panel.classList.contains('open')&&input)input.focus();});
-    if(closeBtn)closeBtn.addEventListener('click',function(){panel.classList.remove('open');});
-    async function sendMsg(){
-      var text=input?input.value.trim():'';if(!text)return;
-      if(welcomeEl)welcomeEl.style.display='none';if(alertEl)alertEl.style.display='none';
-      appendMsg('user',text);ts.push({role:'user',content:text});saveTs(ts);
-      if(input)input.value='';if(sendBtn)sendBtn.disabled=true;if(statusEl)statusEl.textContent='Thinking...';
-      var jdText=jdEl&&jdEl.classList.contains('show')?jdEl.value.trim():'';
-      var payload={message:text,thread:ts.slice(-10)};
-      if(jdText)payload.job_description=jdText;if(VID)payload.visitor_id=VID;
-      try{
-        var res=await fetch(BACKEND,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-        if(!res.ok)throw new Error('HTTP '+res.status);
-        var data=await res.json();
-        var reply=data&&data.reply?data.reply:'No response.';
-        appendMsg('bot',reply);ts.push({role:'assistant',content:reply});saveTs(ts);
-        if(statusEl)statusEl.textContent='Ready.';
-        if(/https?:\/\//i.test(text)&&jdEl&&!jdEl.classList.contains('show'))jdEl.classList.add('show');
-      }catch(err){
-        if(alertEl){alertEl.style.display='block';alertEl.textContent='Connection error. Please try again.';}
-        if(statusEl)statusEl.textContent='Error.';
-      }finally{if(sendBtn)sendBtn.disabled=false;if(input)input.focus();}
+  }
+
+  function showStatus(msg, type) {
+    const el = document.getElementById('status');
+    el.textContent = msg;
+    el.className = type;
+  }
+
+  function flashValue(val) {
+    document.getElementById('scanned-value').textContent = val;
+  }
+
+
+  // ============================================================
+  //  RESET — clears state and returns to step 1
+  //  Waits 2 seconds so operator can read the result first
+  // ============================================================
+  function reset() {
+    setTimeout(() => {
+      scan = {};
+      currentStep = 0;
+      setPrompt(0);
+    }, 2000);
+  }
+
+
+  // ============================================================
+  //  SUBMIT — sends completed scan event to backend
+  // ============================================================
+  async function submitEvent() {
+    const payload = {
+      timestamp:  new Date().toISOString(),
+      badge:      scan.badge,
+      docID:      scan.docID,
+      eventType:  scan.eventType,
+      department: scan.department,
+    };
+
+    if (DEMO_MODE) {
+      // Demo mode — print to console, show success, reset
+      console.log('SCAN EVENT LOGGED:', payload);
+      showStatus(`✓ LOGGED — ${scan.eventType} | ${scan.docID} | ${scan.department}`, 'success');
+      reset();
+      return;
     }
-    if(sendBtn)sendBtn.addEventListener('click',sendMsg);
-    if(input)input.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+
+    /*
+    ============================================================
+      LIVE BACKEND — uncomment when IT server is ready
+      Change API_BASE_URL at the top of this file to point
+      to the internal server IP address.
+    ============================================================
+    try {
+      await fetch(`${API_BASE_URL}/scan-log`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+      showStatus(`✓ LOGGED — ${scan.eventType} | ${scan.docID} | ${scan.department}`, 'success');
+    } catch (err) {
+      showStatus('⚠ NETWORK ERROR — TRY AGAIN', 'error');
+    }
+    reset();
+    */
+  }
+
+
+  // ============================================================
+  //  PROCESS SCAN — called each time scanner fires
+  // ============================================================
+  function processScan(raw) {
+    const value = raw.trim();
+    if (!value) return;
+
+    const field = STEPS[currentStep].field;
+
+    // STEP 1: Badge — accept any value, no validation needed
+    if (field === 'badge') {
+      scan.badge = value;
+      flashValue(value);
+      currentStep++;
+      setPrompt(currentStep);
+      return;
+    }
+
+    // STEP 2: Folder ID — accept any value
+    if (field === 'docID') {
+      scan.docID = value;
+      flashValue(value);
+      currentStep++;
+      setPrompt(currentStep);
+      return;
+    }
+
+    // STEP 3: WIP or DROP — must match a known event barcode
+    if (field === 'eventType') {
+      const mapped = EVENT_BARCODES[value];
+      if (!mapped) {
+        showStatus('⚠ UNKNOWN — SCAN WIP OR DROP LABEL', 'error');
+        return;
+      }
+      scan.eventType = mapped;
+      flashValue(mapped);
+      currentStep++;
+      setPrompt(currentStep);
+      return;
+    }
+
+    // STEP 4: Department — must match a known department barcode, then auto-submit
+    if (field === 'department') {
+      const mapped = DEPT_BARCODES[value];
+      if (!mapped) {
+        showStatus('⚠ UNKNOWN — SCAN DEPARTMENT LABEL', 'error');
+        return;
+      }
+      scan.department = mapped;
+      flashValue(mapped);
+
+      // Mark all dots complete
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`dot-${i + 1}`).className = 'dot done';
+      }
+      document.getElementById('prompt').textContent = 'SUBMITTING...';
+
+      submitEvent();
+      return;
+    }
+  }
+
+
+  // ============================================================
+  //  SCANNER INPUT HANDLER
+  //  USB scanners act like keyboards — they type characters
+  //  then send an Enter keystroke when the scan is complete.
+  //  We buffer the characters and fire processScan on Enter.
+  // ============================================================
+  const input = document.getElementById('scanner-input');
+  let buffer = '';
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      processScan(buffer);
+      buffer = '';
+      input.value = '';
+    } else if (e.key.length === 1) {
+      // Only add printable characters to buffer
+      buffer += e.key;
+    }
   });
 
-  showScene(0);
-});
+  // Keep the hidden input focused at all times
+  // Scanner won't work if focus drifts away
+  document.addEventListener('click',    () => input.focus());
+  document.addEventListener('focusout', () => setTimeout(() => input.focus(), 50));
+  window.addEventListener('load',       () => input.focus());
+
+
+  // ============================================================
+  //  INIT
+  // ============================================================
+  setPrompt(0);
 </script>
+
 </body>
 </html>
