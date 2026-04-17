@@ -4,50 +4,66 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DocTrack Terminal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet"/>
 
   <!--
   ============================================================
     IP OF JORDAN MODDES
-    DocTrack Terminal v3.1 — Batch Submission Build
+    DocTrack Terminal v4.0 — Touchscreen Build
     jordanmoddes.com | Cerilliant / MilliporeSigma — Internal Use Only
 
-    Scan flow: Badge → Folder(s) → DONE → WIP/DROP → [Department]
-
-    v3.1 changes:
-      • Batch submission — ONE /scan-batch request for all folders
-      • No more N parallel requests hammering the backend
-      • 30+ folders submits in 2-3 seconds cleanly
+    v4.0 changes:
+      • Text input boxes for every step (tap/click to type)
+      • Web-based on-screen keyboard (QWERTY + numeric)
+      • Numeric pad for badge step, full QWERTY for others
+      • NEXT button always visible for pure-touch users
+      • Enter key also advances
+      • Scanner input still works (types into focused box)
+      • B-key removed (text boxes replace manual entry)
+      • Roboto font throughout (closest free match to M Sans)
       • RESET button always visible top-left
-      • 30-second timeout with reset-on-activity
+      • DONE / WIP / DROP remain tappable buttons
   ============================================================
   -->
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg:        #0a0e13;
+      --surface:   #111820;
+      --border:    #1e2d3d;
+      --accent:    #00c8ff;
+      --accent2:   #00ff9d;
+      --warn:      #ff6b35;
+      --yellow:    #ffc857;
+      --text:      #d0e4f0;
+      --muted:     #4a6070;
+    }
+
     body {
-      background: #0a0e13;
-      color: #d0e4f0;
-      font-family: 'Share Tech Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 24px;
+      padding: 60px 24px 340px 24px;  /* bottom padding leaves room for keyboard */
     }
 
-    /* Top-left RESET button (always visible) */
+    /* ==========================================================
+       Top controls — RESET button and terminal badge
+    ========================================================== */
     #reset-btn {
       position: fixed;
       top: 12px;
       left: 12px;
-      background: #1e2d3d;
-      border: 2px solid #ff6b35;
-      color: #ff6b35;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
+      background: var(--surface);
+      border: 2px solid var(--warn);
+      color: var(--warn);
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.9rem;
       font-weight: 700;
       letter-spacing: 2px;
       padding: 10px 18px;
@@ -57,144 +73,207 @@
       text-transform: uppercase;
       z-index: 50;
     }
-    #reset-btn:hover { background: #ff6b35; color: #0a0e13; }
+    #reset-btn:hover { background: var(--warn); color: var(--bg); }
 
-    /* Top-right terminal ID */
     #terminal-badge {
       position: fixed;
       top: 12px;
       right: 12px;
-      font-size: 0.7rem;
-      color: #4a6070;
+      font-size: 0.75rem;
+      color: var(--muted);
       letter-spacing: 2px;
-      border: 1px solid #1e2d3d;
-      padding: 4px 10px;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
       border-radius: 3px;
     }
 
+    /* ==========================================================
+       Main display
+    ========================================================== */
     #step-label {
-      font-size: 1rem;
-      color: #4a6070;
+      font-size: 0.95rem;
+      color: var(--muted);
       letter-spacing: 3px;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      font-weight: 500;
     }
 
     #prompt {
-      font-size: 2.6rem;
-      font-weight: bold;
-      color: #00c8ff;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--accent);
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       line-height: 1.2;
+      letter-spacing: 1px;
     }
 
-    #scanned-value {
-      font-size: 1.4rem;
-      color: #00ff9d;
-      min-height: 1.8rem;
-      text-align: center;
-      margin-bottom: 20px;
-      letter-spacing: 2px;
-    }
-
+    /* Progress dots */
     #progress {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       margin-bottom: 24px;
     }
     .dot {
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: #1e2d3d;
-      border: 2px solid #1e2d3d;
+      background: var(--border);
+      border: 2px solid var(--border);
       transition: all 0.2s;
     }
-    .dot.done   { background: #00ff9d; border-color: #00ff9d; }
-    .dot.active { background: #00c8ff; border-color: #00c8ff; }
+    .dot.done   { background: var(--accent2); border-color: var(--accent2); }
+    .dot.active { background: var(--accent);  border-color: var(--accent);  }
 
-    /* Folder list panel */
+    /* ==========================================================
+       Input row — text box + NEXT button side by side
+    ========================================================== */
+    #input-row {
+      display: flex;
+      gap: 10px;
+      width: 90%;
+      max-width: 620px;
+      margin-bottom: 20px;
+    }
+
+    #text-input {
+      flex: 1;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'Roboto', monospace;
+      font-size: 1.5rem;
+      font-weight: 500;
+      padding: 16px 20px;
+      letter-spacing: 2px;
+      outline: none;
+      transition: border-color 0.15s;
+      text-align: center;
+    }
+    #text-input:focus, #text-input.focused {
+      border-color: var(--accent);
+    }
+    #text-input::placeholder {
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    #next-btn {
+      background: var(--accent);
+      border: none;
+      color: #000;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 16px 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+    #next-btn:hover { background: #33d6ff; transform: translateY(-1px); }
+    #next-btn:disabled {
+      background: var(--border);
+      color: var(--muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ==========================================================
+       Folder list panel
+    ========================================================== */
     #folder-list-wrap {
       display: none;
       width: 90%;
-      max-width: 520px;
-      background: #111820;
-      border: 1px solid #1e2d3d;
+      max-width: 620px;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 6px;
       padding: 14px 18px;
-      margin-bottom: 20px;
-      max-height: 200px;
+      margin-bottom: 18px;
+      max-height: 180px;
       overflow-y: auto;
     }
     #folder-list-wrap.active { display: block; }
     #folder-list-header {
       font-size: 0.75rem;
-      color: #4a6070;
+      color: var(--muted);
       letter-spacing: 2px;
       text-transform: uppercase;
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-weight: 500;
     }
     #folder-count {
-      color: #00ff9d;
+      color: var(--accent2);
       font-weight: 700;
     }
     .folder-item {
-      color: #d0e4f0;
-      font-size: 1rem;
+      color: var(--text);
+      font-size: 0.95rem;
       padding: 4px 0;
-      border-bottom: 1px solid #1e2d3d;
+      border-bottom: 1px solid var(--border);
       letter-spacing: 1px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
     .folder-item:last-child { border-bottom: none; }
     .folder-num {
-      color: #4a6070;
-      font-size: 0.85rem;
+      color: var(--muted);
+      font-size: 0.8rem;
       min-width: 30px;
+      display: inline-block;
     }
 
+    /* ==========================================================
+       Status messages
+    ========================================================== */
     #status {
       font-size: 1.05rem;
       text-align: center;
       min-height: 1.8rem;
       letter-spacing: 1px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      font-weight: 500;
     }
-    #status.success { color: #00ff9d; }
-    #status.error   { color: #ff6b35; }
-    #status.warn    { color: #ffc857; }
-    #status.info    { color: #00c8ff; }
+    #status.success { color: var(--accent2); }
+    #status.error   { color: var(--warn); }
+    #status.warn    { color: var(--yellow); }
+    #status.info    { color: var(--accent); }
 
     #substatus {
       font-size: 0.78rem;
-      color: #4a6070;
+      color: var(--muted);
       text-align: center;
       min-height: 1rem;
       letter-spacing: 1px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
+    /* ==========================================================
+       Timeout bar
+    ========================================================== */
     #timeout-bar-wrap {
       width: 300px;
       height: 3px;
-      background: #1e2d3d;
+      background: var(--border);
       border-radius: 2px;
       overflow: hidden;
       margin-bottom: 14px;
     }
     #timeout-bar {
       height: 100%;
-      background: #ff6b35;
+      background: var(--warn);
       width: 100%;
       transition: width 1s linear;
     }
 
+    /* ==========================================================
+       Action buttons (DONE, WIP/DROP choices, test buttons)
+    ========================================================== */
     #action-buttons {
       display: flex;
       flex-wrap: wrap;
@@ -203,129 +282,117 @@
       margin-bottom: 16px;
     }
     .action-btn {
-      background: #1e2d3d;
-      border: 2px solid #ffc857;
-      color: #ffc857;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.95rem;
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Roboto', sans-serif;
+      font-size: 1rem;
       font-weight: 700;
       letter-spacing: 2px;
-      padding: 12px 24px;
-      border-radius: 4px;
+      padding: 14px 26px;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.15s;
       text-transform: uppercase;
     }
-    .action-btn:hover { background: #ffc857; color: #0a0e13; }
+    .action-btn:hover { background: var(--accent); color: var(--bg); }
+    .action-btn.yellow {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+    .action-btn.yellow:hover { background: var(--yellow); color: var(--bg); }
     .action-btn.done-btn {
-      background: #00ff9d;
-      border-color: #00ff9d;
-      color: #0a0e13;
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: var(--bg);
       font-size: 1.1rem;
-      padding: 14px 36px;
+      padding: 16px 40px;
     }
-    .action-btn.done-btn:hover { background: #33ffb5; border-color: #33ffb5; }
+    .action-btn.done-btn:hover { background: #33ffb5; }
 
-    #hint {
-      font-size: 0.72rem;
-      color: #4a6070;
-      letter-spacing: 2px;
-      text-align: center;
-      margin-top: 8px;
-    }
-    #hint .key {
-      display: inline-block;
-      border: 1px solid #4a6070;
-      border-radius: 3px;
-      padding: 1px 6px;
-      margin: 0 3px;
-      color: #d0e4f0;
-    }
-
-    #scanner-input {
-      position: fixed;
-      top: -999px;
-      left: -999px;
-      opacity: 0;
-      width: 1px;
-      height: 1px;
-    }
-
-    #manual-overlay {
+    /* ==========================================================
+       ON-SCREEN KEYBOARD (bottom center)
+    ========================================================== */
+    #keyboard {
       display: none;
       position: fixed;
-      inset: 0;
-      background: rgba(10, 14, 19, 0.97);
-      z-index: 100;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+      z-index: 40;
+      max-width: 95vw;
     }
-    #manual-overlay.active { display: flex; }
+    #keyboard.active { display: block; }
 
-    #manual-title {
-      font-size: 1rem;
-      color: #ffc857;
-      letter-spacing: 3px;
-      margin-bottom: 12px;
-      text-transform: uppercase;
+    .kb-row {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 5px;
     }
-    #manual-prompt {
-      font-size: 1.8rem;
-      color: #ffc857;
-      margin-bottom: 24px;
-      text-align: center;
+    .kb-row:last-child { margin-bottom: 0; }
+
+    .kb-key {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      min-width: 40px;
+      height: 50px;
+      padding: 0 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.08s;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
     }
-    #manual-field {
-      width: 90%;
-      max-width: 500px;
-      background: #0a0e13;
-      border: 2px solid #ffc857;
-      border-radius: 4px;
-      color: #ffc857;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1.6rem;
-      padding: 14px 20px;
-      text-align: center;
-      letter-spacing: 2px;
-      outline: none;
+    .kb-key:hover { background: var(--border); }
+    .kb-key:active { background: var(--accent); color: var(--bg); }
+
+    .kb-key.wide   { min-width: 80px; }
+    .kb-key.wider  { min-width: 110px; }
+    .kb-key.space  { min-width: 260px; }
+    .kb-key.enter  {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
     }
-    #manual-instructions {
-      margin-top: 20px;
-      color: #4a6070;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-    }
-    #manual-instructions .key {
-      display: inline-block;
-      border: 1px solid #4a6070;
-      border-radius: 3px;
-      padding: 1px 6px;
-      margin: 0 3px;
-      color: #d0e4f0;
+    .kb-key.enter:hover { background: #33d6ff; }
+    .kb-key.shift.active { background: var(--yellow); color: var(--bg); }
+
+    /* Numeric keypad style (badge step only) */
+    #keyboard.numeric .kb-key {
+      min-width: 60px;
+      font-size: 1.3rem;
     }
 
     footer {
       position: fixed;
-      bottom: 12px;
-      font-size: 0.62rem;
-      color: #1e2d3d;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6rem;
+      color: var(--border);
       letter-spacing: 1px;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
 <button id="reset-btn" onclick="hardReset(); setPrompt(0);">⟲ RESET</button>
-
 <div id="terminal-badge">TERM-DEMO</div>
 
-<input id="scanner-input" type="text" autocomplete="off" autofocus />
-
 <div id="step-label">Step 1 of 4</div>
-<div id="prompt">SCAN BADGE</div>
-<div id="scanned-value">&nbsp;</div>
+<div id="prompt">SCAN OR TYPE BADGE</div>
 
 <div id="progress">
   <div class="dot active" id="dot-1"></div>
@@ -334,6 +401,14 @@
   <div class="dot"        id="dot-4"></div>
 </div>
 
+<!-- Main text input + NEXT button -->
+<div id="input-row">
+  <input id="text-input" type="text" autocomplete="off" autofocus
+         placeholder="Scan or tap to type..." />
+  <button id="next-btn" onclick="submitTextInput()">NEXT →</button>
+</div>
+
+<!-- Folder list -->
 <div id="folder-list-wrap">
   <div id="folder-list-header">
     <span>Folders Scanned</span>
@@ -342,25 +417,22 @@
   <div id="folder-list"></div>
 </div>
 
+<!-- Status -->
 <div id="status">&nbsp;</div>
 <div id="substatus">&nbsp;</div>
 
+<!-- Timeout -->
 <div id="timeout-bar-wrap" style="visibility:hidden;">
   <div id="timeout-bar"></div>
 </div>
 
+<!-- Action buttons (DONE, WIP, DROP, test buttons) -->
 <div id="action-buttons"></div>
 
-<div id="hint">SCANNER NOT WORKING? PRESS <span class="key">B</span> FOR MANUAL ENTRY</div>
-
-<div id="manual-overlay">
-  <div id="manual-title">⚠ Manual Entry Mode</div>
-  <div id="manual-prompt">Type value for current step</div>
-  <input id="manual-field" type="text" autocomplete="off" />
-  <div id="manual-instructions">
-    <span class="key">ENTER</span> SUBMIT &nbsp;&nbsp; <span class="key">ESC</span> CANCEL
-  </div>
-</div>
+<!-- ==========================================================
+  ON-SCREEN KEYBOARD
+========================================================== -->
+<div id="keyboard"></div>
 
 <footer>IP OF JORDAN MODDES &nbsp;|&nbsp; jordanmoddes.com &nbsp;|&nbsp; INTERNAL USE ONLY</footer>
 
@@ -379,10 +451,10 @@
   //  SCAN STEPS
   // ============================================================
   const STEPS = [
-    { label: 'Step 1 of 4', prompt: 'SCAN BADGE',        field: 'badge'      },
-    { label: 'Step 2 of 4', prompt: 'SCAN FOLDER(S)',    field: 'folders'    },
-    { label: 'Step 3 of 4', prompt: 'SCAN WIP / DROP',   field: 'eventType'  },
-    { label: 'Step 4 of 4', prompt: 'SCAN DEPARTMENT',   field: 'department' },
+    { label: 'Step 1 of 4', prompt: 'SCAN OR TYPE BADGE',      field: 'badge',      placeholder: 'Badge number...' },
+    { label: 'Step 2 of 4', prompt: 'SCAN OR TYPE FOLDER(S)',  field: 'folders',    placeholder: 'Folder ID...' },
+    { label: 'Step 3 of 4', prompt: 'CHOOSE WIP OR DROP',      field: 'eventType',  placeholder: 'WIP or DROP...' },
+    { label: 'Step 4 of 4', prompt: 'SCAN OR TYPE DEPARTMENT', field: 'department', placeholder: 'Department...' },
   ];
 
 
@@ -414,9 +486,9 @@
   let currentStep   = 0;
   let scan          = { folders: [] };
   let entryMethod   = 'SCAN';
-  let manualMode    = false;
   let timeoutHandle = null;
   let batchUUID     = null;
+  let kbShiftOn     = false;
 
 
   // ============================================================
@@ -430,16 +502,159 @@
 
 
   // ============================================================
+  //  ON-SCREEN KEYBOARD
+  //  Two modes: numeric (badge step) or full QWERTY (others)
+  // ============================================================
+  const QWERTY_ROWS = [
+    ['1','2','3','4','5','6','7','8','9','0','-'],
+    ['q','w','e','r','t','y','u','i','o','p'],
+    ['a','s','d','f','g','h','j','k','l'],
+    ['SHIFT','z','x','c','v','b','n','m','BACK'],
+    ['CLEAR','SPACE','ENTER'],
+  ];
+
+  const NUMERIC_ROWS = [
+    ['1','2','3'],
+    ['4','5','6'],
+    ['7','8','9'],
+    ['CLEAR','0','BACK'],
+    ['ENTER'],
+  ];
+
+  function buildKeyboard(mode) {
+    const kb = document.getElementById('keyboard');
+    kb.innerHTML = '';
+    kb.className = '';   // reset classes
+    kb.classList.add('active');
+    if (mode === 'numeric') kb.classList.add('numeric');
+
+    const rows = mode === 'numeric' ? NUMERIC_ROWS : QWERTY_ROWS;
+
+    rows.forEach(row => {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'kb-row';
+      row.forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'kb-key';
+        btn.textContent = displayKey(key);
+        btn.dataset.key = key;
+
+        if (key === 'SPACE')               btn.classList.add('space');
+        else if (key === 'ENTER')          btn.classList.add('wider', 'enter');
+        else if (key === 'SHIFT' || key === 'BACK' || key === 'CLEAR') btn.classList.add('wide');
+
+        // Prevent default prevents focus loss from text-input
+        btn.addEventListener('mousedown', e => e.preventDefault());
+        btn.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+        btn.addEventListener('click', () => onKeyPress(key));
+
+        rowEl.appendChild(btn);
+      });
+      kb.appendChild(rowEl);
+    });
+
+    // Mark shift state visually
+    updateShiftDisplay();
+  }
+
+  function displayKey(key) {
+    if (key === 'BACK')  return '⌫';
+    if (key === 'CLEAR') return 'CLR';
+    if (key === 'SPACE') return ' ';
+    if (key === 'ENTER') return '⏎ ENTER';
+    if (key === 'SHIFT') return '⇧';
+    // Apply shift to letters
+    if (kbShiftOn && /^[a-z]$/.test(key)) return key.toUpperCase();
+    return key;
+  }
+
+  function updateShiftDisplay() {
+    document.querySelectorAll('.kb-key').forEach(btn => {
+      const key = btn.dataset.key;
+      if (key === 'SHIFT') {
+        btn.classList.toggle('active', kbShiftOn);
+      } else if (/^[a-z]$/.test(key)) {
+        btn.textContent = kbShiftOn ? key.toUpperCase() : key;
+      }
+    });
+  }
+
+  function onKeyPress(key) {
+    const input = document.getElementById('text-input');
+
+    if (key === 'ENTER') {
+      submitTextInput();
+      return;
+    }
+    if (key === 'BACK') {
+      input.value = input.value.slice(0, -1);
+      return;
+    }
+    if (key === 'CLEAR') {
+      input.value = '';
+      return;
+    }
+    if (key === 'SHIFT') {
+      kbShiftOn = !kbShiftOn;
+      updateShiftDisplay();
+      return;
+    }
+    if (key === 'SPACE') {
+      input.value += ' ';
+      return;
+    }
+
+    // Regular character — apply shift if active
+    let ch = key;
+    if (kbShiftOn && /^[a-z]$/.test(ch)) ch = ch.toUpperCase();
+    input.value += ch;
+
+    // Auto-unshift after one letter (like mobile keyboards)
+    if (kbShiftOn) {
+      kbShiftOn = false;
+      updateShiftDisplay();
+    }
+
+    // User is interacting — reset timeout
+    startTimeout();
+  }
+
+  function hideKeyboard() {
+    document.getElementById('keyboard').classList.remove('active');
+  }
+
+  function showKeyboardForStep(stepIndex) {
+    const field = STEPS[stepIndex].field;
+    // Badge step = numeric, others = QWERTY
+    if (field === 'badge') {
+      buildKeyboard('numeric');
+    } else if (field === 'eventType') {
+      hideKeyboard();  // Event step uses buttons only
+    } else {
+      buildKeyboard('qwerty');
+    }
+  }
+
+
+  // ============================================================
   //  UI HELPERS
   // ============================================================
   function setPrompt(stepIndex) {
     document.getElementById('step-label').textContent  = STEPS[stepIndex].label;
     document.getElementById('prompt').textContent      = STEPS[stepIndex].prompt;
-    document.getElementById('scanned-value').innerHTML = '&nbsp;';
     document.getElementById('status').innerHTML        = '&nbsp;';
     document.getElementById('substatus').innerHTML     = '&nbsp;';
     document.getElementById('status').className        = '';
 
+    const input = document.getElementById('text-input');
+    input.value = '';
+    input.placeholder = STEPS[stepIndex].placeholder;
+
+    // Hide input+NEXT row on event type step (buttons only)
+    const inputRow = document.getElementById('input-row');
+    inputRow.style.display = STEPS[stepIndex].field === 'eventType' ? 'none' : 'flex';
+
+    // Progress dots
     for (let i = 0; i < 4; i++) {
       const dot = document.getElementById(`dot-${i + 1}`);
       if (i < stepIndex)        dot.className = 'dot done';
@@ -447,6 +662,7 @@
       else                      dot.className = 'dot';
     }
 
+    // Folder list visibility
     const folderWrap = document.getElementById('folder-list-wrap');
     if (STEPS[stepIndex].field === 'folders') {
       folderWrap.classList.add('active');
@@ -456,6 +672,10 @@
     }
 
     renderActionButtons(stepIndex);
+    showKeyboardForStep(stepIndex);
+
+    // Always refocus the text input
+    setTimeout(() => input.focus(), 50);
   }
 
   function showStatus(msg, type) {
@@ -468,10 +688,6 @@
     document.getElementById('substatus').textContent = msg || '';
   }
 
-  function flashValue(val) {
-    document.getElementById('scanned-value').textContent = val;
-  }
-
   function renderFolderList() {
     const folders = scan.folders || [];
     document.getElementById('folder-count').textContent = folders.length;
@@ -480,16 +696,14 @@
     list.innerHTML = '';
 
     if (folders.length === 0) {
-      list.innerHTML = '<div class="folder-item"><span style="color:#4a6070">No folders scanned yet</span></div>';
+      list.innerHTML = '<div class="folder-item" style="color:var(--muted)">No folders scanned yet</div>';
       return;
     }
 
     folders.forEach((f, i) => {
       const item = document.createElement('div');
       item.className = 'folder-item';
-      item.innerHTML = `
-        <span><span class="folder-num">#${i + 1}</span> ${escapeHtml(f)}</span>
-      `;
+      item.innerHTML = `<span class="folder-num">#${i + 1}</span> ${escapeHtml(f)}`;
       list.appendChild(item);
     });
   }
@@ -506,15 +720,15 @@
 
     if (field === 'badge') {
       const btn = document.createElement('button');
-      btn.className = 'action-btn';
-      btn.textContent = 'PREFILL BADGE 257001';
+      btn.className = 'action-btn yellow';
+      btn.textContent = 'TEST: 257001';
       btn.onclick = () => processValue('257001', false);
       wrap.appendChild(btn);
     }
     else if (field === 'folders') {
       const testBtn = document.createElement('button');
-      testBtn.className = 'action-btn';
-      testBtn.textContent = `TEST ADD FOLDER`;
+      testBtn.className = 'action-btn yellow';
+      testBtn.textContent = 'TEST: Add Folder';
       testBtn.onclick = () => {
         const n = (scan.folders || []).length + 1;
         processValue(`test-folder-${n}`, false);
@@ -530,22 +744,27 @@
       }
     }
     else if (field === 'eventType') {
+      // Big WIP and DROP buttons — no text input on this step
       const wipBtn = document.createElement('button');
       wipBtn.className = 'action-btn';
       wipBtn.textContent = 'WIP';
+      wipBtn.style.fontSize = '1.4rem';
+      wipBtn.style.padding = '20px 50px';
       wipBtn.onclick = () => processValue('EVT-WIP', false);
       wrap.appendChild(wipBtn);
 
       const dropBtn = document.createElement('button');
       dropBtn.className = 'action-btn';
       dropBtn.textContent = 'DROP';
+      dropBtn.style.fontSize = '1.4rem';
+      dropBtn.style.padding = '20px 50px';
       dropBtn.onclick = () => processValue('EVT-DROP', false);
       wrap.appendChild(dropBtn);
     }
     else if (field === 'department') {
       const btn = document.createElement('button');
-      btn.className = 'action-btn';
-      btn.textContent = 'TEST DEPT';
+      btn.className = 'action-btn yellow';
+      btn.textContent = 'TEST: Test Dept';
       btn.onclick = () => processValue('DEPT-TEST', false);
       wrap.appendChild(btn);
     }
@@ -558,7 +777,7 @@
   function startTimeout() {
     clearTimeout(timeoutHandle);
 
-    if (currentStep === 0) {
+    if (currentStep === 0 && !scan.badge) {
       document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
       return;
     }
@@ -602,82 +821,96 @@
     currentStep = 0;
     entryMethod = 'SCAN';
     batchUUID = null;
+    kbShiftOn = false;
     stopTimeout();
+    document.getElementById('text-input').value = '';
   }
 
 
   // ============================================================
-  //  BATCH SUBMIT — v3.1
-  //  Sends ONE /scan-batch POST with all folders in a single
-  //  request. Backend writes all rows to Smartsheet in ONE API
-  //  call. Way faster and no Render resource exhaustion.
+  //  BATCH SUBMIT
   // ============================================================
-    async function submitBatch() {
-        stopTimeout();
-        document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
-    
-        document.getElementById('status').innerHTML = ' ';
-        document.getElementById('status').className = '';
-    
-        if (!batchUUID) batchUUID = generateUUID();
-        const folders = scan.folders || [];
-        const total = folders.length;
-    
-        document.getElementById('step-label').textContent = 'BATCH SUBMIT';
-        document.getElementById('prompt').textContent = SENDING ${total} FOLDER${total !== 1 ? 'S' : ''}...;
-        document.getElementById('action-buttons').innerHTML = '';
-        document.getElementById('scanned-value').innerHTML = ' ';
-    
-        for (let i = 0; i < 4; i++) {
-          document.getElementById(dot-${i + 1}).className = 'dot done';
-        }
-    
-        const events = folders.map((folderID, i) => ({
-          timestamp:    new Date().toISOString(),
-          badge:        scan.badge,
-          docID:        folderID,
-          eventType:    scan.eventType,
-          department:   scan.department || 'N/A (WIP)',
-          entry_method: entryMethod,
-          event_uuid:   ${batchUUID}-${i + 1},
-          terminal_id:  TERMINAL_ID,
-        }));
-    
-        if (DEMO_MODE) {
-          console.log('BATCH (demo):', events);
-          showStatus(✓ THANK YOU — ${total} FOLDER${total !== 1 ? 'S' : ''} LOGGED, 'success');
-          softReset();
-          return;
-        }
-    
-        try {
-          const response = await fetch(${API_BASE_URL}/scan-batch, {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ events }),
-          });
-          const result = await response.json();
-          console.log('Batch response:', result);
-    
-          const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
-    
-          // Simple "thank you" message — no buffer/mode noise for the user
-          if (result.ok) {
-            showStatus(✓ THANK YOU — ${result.accepted} FOLDER${result.accepted !== 1 ? 'S' : ''} LOGGED${methodTag}, 'success');
-          } else {
-            showStatus(⚠ ERROR: ${result.error || 'Unknown'}, 'error');
-          }
-        } catch (err) {
-          console.error('Network error on batch:', err);
-          showStatus('⚠ NETWORK ERROR — TRY AGAIN', 'error');
-        }
-    
-        softReset();
+  async function submitBatch() {
+    stopTimeout();
+    document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
+    hideKeyboard();
+
+    document.getElementById('status').innerHTML = '&nbsp;';
+    document.getElementById('status').className = '';
+
+    if (!batchUUID) batchUUID = generateUUID();
+    const folders = scan.folders || [];
+    const total = folders.length;
+
+    document.getElementById('step-label').textContent = 'BATCH SUBMIT';
+    document.getElementById('prompt').textContent = `SENDING ${total} FOLDER${total !== 1 ? 'S' : ''}...`;
+    document.getElementById('action-buttons').innerHTML = '';
+    document.getElementById('input-row').style.display = 'none';
+
+    for (let i = 0; i < 4; i++) {
+      document.getElementById(`dot-${i + 1}`).className = 'dot done';
+    }
+
+    const events = folders.map((folderID, i) => ({
+      timestamp:    new Date().toISOString(),
+      badge:        scan.badge,
+      docID:        folderID,
+      eventType:    scan.eventType,
+      department:   scan.department || 'N/A (WIP)',
+      entry_method: entryMethod,
+      event_uuid:   `${batchUUID}-${i + 1}`,
+      terminal_id:  TERMINAL_ID,
+    }));
+
+    if (DEMO_MODE) {
+      console.log('BATCH (demo):', events);
+      showStatus(`✓ THANK YOU — ${total} FOLDER${total !== 1 ? 'S' : ''} LOGGED`, 'success');
+      softReset();
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/scan-batch`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ events }),
+      });
+      const result = await response.json();
+      console.log('Batch response:', result);
+
+      const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
+      if (result.ok) {
+        showStatus(`✓ THANK YOU — ${result.accepted} FOLDER${result.accepted !== 1 ? 'S' : ''} LOGGED${methodTag}`, 'success');
+      } else {
+        showStatus(`⚠ ERROR: ${result.error || 'Unknown'}`, 'error');
       }
+    } catch (err) {
+      console.error('Network error on batch:', err);
+      showStatus('⚠ NETWORK ERROR — TRY AGAIN', 'error');
+    }
+
+    softReset();
+  }
 
 
   // ============================================================
-  //  PROCESS VALUE — handles each scan or button click
+  //  SUBMIT TEXT INPUT — called by NEXT button and Enter key
+  // ============================================================
+  function submitTextInput() {
+    const input = document.getElementById('text-input');
+    const val = input.value.trim();
+    if (!val) {
+      showStatus('⚠ ENTER A VALUE FIRST', 'error');
+      return;
+    }
+    // Typed values = MANUAL entry method
+    processValue(val, true);
+    input.value = '';
+  }
+
+
+  // ============================================================
+  //  PROCESS VALUE
   // ============================================================
   function processValue(value, isManual) {
     value = (value || '').trim();
@@ -699,7 +932,6 @@
     if (field === 'badge') {
       scan.badge = value;
       scan.folders = [];
-      flashValue(value + (isManual ? ' (manual)' : ''));
       currentStep++;
       setPrompt(currentStep);
       startTimeout();
@@ -708,9 +940,9 @@
 
     // STEP 2: Folders (loop until DONE)
     if (field === 'folders') {
-      if (value.toUpperCase() === DONE_BARCODE) {
+      if (value.toUpperCase() === DONE_BARCODE || value.toUpperCase() === 'DONE') {
         if ((scan.folders || []).length === 0) {
-          showStatus('⚠ SCAN AT LEAST ONE FOLDER FIRST', 'error');
+          showStatus('⚠ ADD AT LEAST ONE FOLDER FIRST', 'error');
           return;
         }
         currentStep++;
@@ -720,11 +952,12 @@
       }
 
       scan.folders = scan.folders || [];
-      scan.folders.push(value + (isManual ? ' (manual)' : ''));
-      flashValue(`+ ${value}`);
-      showSubstatus(`${scan.folders.length} folder${scan.folders.length !== 1 ? 's' : ''} scanned — scan DONE or press finish`);
+      scan.folders.push(value);
+      showSubstatus(`${scan.folders.length} folder${scan.folders.length !== 1 ? 's' : ''} added — scan/type next or press DONE`);
       renderFolderList();
       renderActionButtons(currentStep);
+      // Keep keyboard up for next folder
+      showKeyboardForStep(currentStep);
       startTimeout();
       return;
     }
@@ -738,14 +971,12 @@
         else if (upper === 'DROP' || upper === 'DROP-OFF') mapped = 'DROP-OFF';
       }
       if (!mapped) {
-        showStatus('⚠ UNKNOWN — SCAN WIP OR DROP LABEL', 'error');
+        showStatus('⚠ CHOOSE WIP OR DROP', 'error');
         return;
       }
 
       scan.eventType = mapped;
-      flashValue(mapped + (isManual ? ' (manual)' : ''));
 
-      // WIP submits right away
       if (mapped === 'WIP') {
         scan.department = 'N/A (WIP)';
         currentStep = 3;
@@ -753,7 +984,6 @@
         return;
       }
 
-      // DROP advances to department
       currentStep++;
       setPrompt(currentStep);
       startTimeout();
@@ -772,12 +1002,11 @@
         }
       }
       if (!mapped) {
-        showStatus('⚠ UNKNOWN — SCAN DEPARTMENT LABEL', 'error');
+        showStatus('⚠ UNKNOWN DEPARTMENT', 'error');
         return;
       }
 
       scan.department = mapped;
-      flashValue(mapped + (isManual ? ' (manual)' : ''));
       submitBatch();
       return;
     }
@@ -785,101 +1014,40 @@
 
 
   // ============================================================
-  //  MANUAL ENTRY
+  //  HARDWARE SCANNER / KEYBOARD INPUT
+  //  Scanner types into the text input and hits Enter.
+  //  Since our input already handles that naturally, we just
+  //  need to catch Enter at the document level.
   // ============================================================
-  function openManualEntry() {
-    manualMode = true;
-    const overlay = document.getElementById('manual-overlay');
-    const field   = document.getElementById('manual-field');
-    const prompt  = document.getElementById('manual-prompt');
-
-    const stepPrompts = {
-      0: 'Enter badge number',
-      1: 'Enter folder ID (or DONE to finish)',
-      2: 'Enter WIP or DROP',
-      3: 'Enter department',
-    };
-    prompt.textContent = stepPrompts[currentStep];
-
-    overlay.classList.add('active');
-    field.value = '';
-    field.focus();
+  document.addEventListener('keydown', (e) => {
     startTimeout();
-  }
 
-  function closeManualEntry() {
-    manualMode = false;
-    document.getElementById('manual-overlay').classList.remove('active');
-    document.getElementById('scanner-input').focus();
-  }
-
-  const manualField = document.getElementById('manual-field');
-  manualField.addEventListener('keydown', (e) => {
+    // Enter submits whatever is in the input
     if (e.key === 'Enter') {
       e.preventDefault();
-      let val = manualField.value;
-      if (val.trim().toUpperCase() === 'DONE') val = DONE_BARCODE;
-      closeManualEntry();
-      processValue(val, true);
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      closeManualEntry();
-      startTimeout();
-    }
-    startTimeout();
-  });
-
-
-  // ============================================================
-  //  SCANNER INPUT HANDLER
-  // ============================================================
-  const input = document.getElementById('scanner-input');
-  let buffer = '';
-
-  input.addEventListener('keydown', (e) => {
-    if (manualMode) return;
-    startTimeout();
-
-    if (e.key === 'Enter') {
-      processValue(buffer, false);
-      buffer = '';
-      input.value = '';
+      submitTextInput();
       return;
-    }
-
-    if ((e.key === 'b' || e.key === 'B') && buffer === '') {
-      e.preventDefault();
-      openManualEntry();
-      return;
-    }
-
-    if (e.key.length === 1) {
-      buffer += e.key;
     }
   });
 
-
-  // ============================================================
-  //  FOCUS MANAGEMENT
-  // ============================================================
-  function refocus() {
-    if (manualMode) {
-      document.getElementById('manual-field').focus();
-    } else {
-      input.focus();
-    }
-  }
-
+  // Keep focus on the text input unless user is interacting
+  // with buttons or keyboard keys
   document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('action-btn') ||
-        e.target.id === 'reset-btn' ||
-        e.target.closest('#reset-btn')) {
-      return;
+    const isInteractive =
+      e.target.closest('.action-btn') ||
+      e.target.closest('#reset-btn') ||
+      e.target.closest('#next-btn') ||
+      e.target.closest('.kb-key') ||
+      e.target.id === 'text-input';
+    if (!isInteractive) {
+      document.getElementById('text-input').focus();
     }
-    refocus();
   });
-  document.addEventListener('focusout', () => setTimeout(refocus, 50));
-  window.addEventListener('load',       refocus);
+
+  // Tapping the text input reveals/refocuses the keyboard
+  document.getElementById('text-input').addEventListener('focus', () => {
+    showKeyboardForStep(currentStep);
+  });
 
 
   // ============================================================
