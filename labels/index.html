@@ -9,25 +9,22 @@
   <!--
   ============================================================
     IP OF JORDAN MODDES
-    DocTrack Label Generator v2.0
+    DocTrack Label Generator v3.0
     Designed & Built by Jordan Moddes | jordanmoddes.com
     For: Cerilliant / MilliporeSigma — Internal Use Only
 
     Hamburger-cut barcode labels for Avery 5163 / 5963.
+    4"×2" label → split vertically → two 2"×2" halves.
 
-    Each full 4"x2" label is split VERTICALLY into two 2"x2" halves.
-    Each half:
-      - Part number runs vertically along the OUTSIDE (rounded) edge
-      - Barcode sits next to the CUT edge, readable horizontally
-    Left half:  part text reads bottom-to-top (rotated 90° CCW)
-    Right half: part text reads top-to-bottom (rotated 90° CW)
+    Each half is a "portrait" layout:
+      - Part number on top
+      - Barcode below
+    Then the ENTIRE half is rotated:
+      - Left half:  rotated -90° (reads bottom-to-top)
+      - Right half: rotated +90° (reads top-to-bottom)
 
-    Slot numbering (matches physical sheet, read row-by-row L-to-R):
-      1   2  |  3   4      ← row 1 (left label=1,2, right label=3,4)
-      5   6  |  7   8      ← row 2
-      9  10  | 11  12      ← row 3
-     13  14  | 15  16      ← row 4
-     17  18  | 19  20      ← row 5
+    This keeps part number + barcode in correct orientation
+    relative to each other regardless of how the label is held.
   ============================================================
   -->
 
@@ -94,14 +91,10 @@
     }
     textarea:focus { border-color: #00c8ff; }
 
-    /* ============================================================
-       SLOT PICKER — matches physical sheet layout
-       5 rows × 2 label-groups per row, each group has 2 halves
-       Total 20 slots. Gap between label groups to match real sheet.
-    ============================================================ */
+    /* Slot picker matches physical sheet layout */
     .sheet-picker {
       display: grid;
-      grid-template-columns: 1fr 1fr 20px 1fr 1fr;  /* 2 halves | gap | 2 halves */
+      grid-template-columns: 1fr 1fr 20px 1fr 1fr;
       grid-template-rows: repeat(5, 50px);
       gap: 6px 4px;
       margin-bottom: 12px;
@@ -122,11 +115,7 @@
       user-select: none;
       transition: all 0.1s;
     }
-    .slot-cell.gap {
-      background: transparent;
-      border: none;
-      cursor: default;
-    }
+    .slot-cell.gap { background: transparent; border: none; cursor: default; }
     .slot-cell:not(.gap):hover { border-color: #4a6070; color: #d0e4f0; }
     .slot-cell.selected {
       background: #00c8ff;
@@ -188,8 +177,7 @@
     }
 
     /* ============================================================
-       PRINT SHEET — this is what prints on the Avery paper
-       All measurements in inches for exact physical alignment
+       PRINT SHEET — exact physical dimensions for Avery 5163/5963
     ============================================================ */
     .print-sheet {
       display: none;
@@ -200,7 +188,6 @@
       padding-left:   0.15625in;
       padding-right:  0.15625in;
       background: white;
-      position: relative;
     }
 
     .print-grid {
@@ -211,7 +198,6 @@
       height: 100%;
     }
 
-    /* Each physical Avery label = 4" × 2", split vertically */
     .label {
       width: 4in;
       height: 2in;
@@ -220,78 +206,85 @@
       position: relative;
     }
 
-    /* Half = 2" × 2" */
-    .half {
-      width: 2in;
-      height: 2in;
-      display: grid;
-      grid-template-columns: 0.3in 1.7in;  /* narrow text column, wide barcode column */
-      align-items: center;
-      padding: 0.1in 0.08in;
-      overflow: hidden;
-    }
-
-    /* Right half reverses the columns so barcode is on the LEFT (cut side)
-       and text is on the RIGHT (rounded corner side) */
-    .half.right {
-      grid-template-columns: 1.7in 0.3in;
-    }
-
-    /* Vertical cut line down the middle of each label */
+    /* Vertical cut line between the two halves */
     .label.filled::after {
       content: '';
       position: absolute;
-      top: 0.1in;
-      bottom: 0.1in;
+      top: 0.08in;
+      bottom: 0.08in;
       left: 2in;
       width: 0;
       border-left: 1px dashed #888;
     }
 
     /* ============================================================
-       PART NUMBER TEXT — vertical orientation
-       Left half: rotated 90° counter-clockwise (reads bottom-to-top)
-       Right half: rotated 90° clockwise (reads top-to-bottom)
+       HALF-SLOT — container at 2"×2"
+       We rotate the INNER content as a unit so part number and
+       barcode both stay in proper relationship to each other.
     ============================================================ */
+    .half {
+      width: 2in;
+      height: 2in;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Inner content: natural 2" wide × 2" tall layout
+       (part number on top, barcode below).
+       We rotate this whole block 90° in either direction. */
+    .half-content {
+      position: absolute;
+      /* Before rotation, treat the content as 2" wide × 2" tall
+         placed at center; after rotation, it fills the 2×2 box. */
+      width: 2in;
+      height: 2in;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.1in;
+    }
+
+    /* LEFT half: rotate -90° (counter-clockwise)
+       → content reads bottom-to-top
+       → barcode, after rotation, becomes vertical bars */
+    .half.left .half-content {
+      transform: rotate(-90deg);
+      transform-origin: center center;
+    }
+
+    /* RIGHT half: rotate +90° (clockwise)
+       → content reads top-to-bottom */
+    .half.right .half-content {
+      transform: rotate(90deg);
+      transform-origin: center center;
+    }
+
     .part-text {
       font-family: 'Courier New', monospace;
       font-size: 11pt;
       font-weight: bold;
       color: #000;
-      white-space: nowrap;
       text-align: center;
+      margin-bottom: 0.08in;
+      white-space: nowrap;
+      max-width: 1.9in;
       overflow: hidden;
-    }
-    .half.left .part-text {
-      transform: rotate(-90deg);
-      transform-origin: center;
-      width: 1.7in;      /* after rotation, this becomes the height */
-      margin-left: -0.7in; /* center it in the narrow column */
-    }
-    .half.right .part-text {
-      transform: rotate(90deg);
-      transform-origin: center;
-      width: 1.7in;
-      margin-left: -0.7in;
-      grid-column: 2;     /* put text in right column */
+      text-overflow: ellipsis;
     }
 
     .barcode-wrap {
-      width: 100%;
+      width: 1.8in;
       display: flex;
       justify-content: center;
-      align-items: center;
     }
-    .half.left  .barcode-wrap { grid-column: 2; }
-    .half.right .barcode-wrap { grid-column: 1; }
     .barcode-wrap svg {
-      max-width: 1.6in;
-      height: 1.5in;
+      width: 1.8in;
+      height: 1in;
     }
 
-    /* ============================================================
-       PRINT MEDIA QUERY
-    ============================================================ */
     @media print {
       @page { size: letter; margin: 0; }
       body { background: white; padding: 0; margin: 0; }
@@ -350,7 +343,6 @@
   </footer>
 </div>
 
-<!-- Print sheet -->
 <div class="print-sheet" id="print-sheet">
   <div class="print-grid" id="print-grid"></div>
 </div>
@@ -364,27 +356,19 @@
   let selectedSlot = 1;
 
   // ============================================================
-  //  SLOT PICKER — matches physical sheet
-  //  5 rows × 4 slots per row, with a visual gap between left
-  //  label (slots 1-2) and right label (slots 3-4) each row.
-  //
-  //  Grid columns: | half | half | GAP | half | half |
-  //  Row 1: slots 1, 2, (gap), 3, 4
-  //  Row 2: slots 5, 6, (gap), 7, 8
-  //  Row 3: slots 9, 10, (gap), 11, 12
-  //  Row 4: slots 13, 14, (gap), 15, 16
-  //  Row 5: slots 17, 18, (gap), 19, 20
+  //  BUILD SLOT PICKER — matches physical sheet
+  //  5 rows × 4 slots per row with a visual gap mid-row
   // ============================================================
   function buildSlotGrid() {
     const grid = document.getElementById('slot-grid');
     grid.innerHTML = '';
 
     for (let row = 0; row < 5; row++) {
-      const baseLeft = row * 4 + 1;   // left-label slots per row: 1, 5, 9, 13, 17
+      const baseLeft = row * 4 + 1;
       const slots = [
         baseLeft,      // left-half of left label
         baseLeft + 1,  // right-half of left label
-        'gap',         // visual gap
+        'gap',
         baseLeft + 2,  // left-half of right label
         baseLeft + 3,  // right-half of right label
       ];
@@ -429,24 +413,6 @@
   });
 
   // ============================================================
-  //  SLOT → POSITION
-  //  Given slot 1-20, determine row (0-4), which label (left/right
-  //  on the Avery sheet), and which half (left/right within label)
-  //
-  //  Slots 1,2   = row 0, left label   (1=leftHalf, 2=rightHalf)
-  //  Slots 3,4   = row 0, right label
-  //  Slots 5,6   = row 1, left label
-  //  ...and so on
-  // ============================================================
-  function slotToPosition(slot) {
-    const row = Math.floor((slot - 1) / 4);           // 0-4
-    const withinRow = ((slot - 1) % 4) + 1;           // 1-4
-    const isLeftLabel = withinRow <= 2;
-    const isLeftHalf  = (withinRow % 2) === 1;        // odd slots = left half
-    return { row, isLeftLabel, isLeftHalf };
-  }
-
-  // ============================================================
   //  GENERATE LABELS
   // ============================================================
   function generateLabels() {
@@ -457,7 +423,6 @@
       return;
     }
 
-    // Map each part to a slot starting from selectedSlot
     const filledSlots = {};
     for (let i = 0; i < parts.length; i++) {
       const slot = selectedSlot + i;
@@ -476,18 +441,16 @@
       c.classList.toggle('filled', !!filledSlots[slot]);
     });
 
-    // Build the print grid — 5 rows × 3 cols (leftLabel | gap | rightLabel)
+    // Build print grid
     const grid = document.getElementById('print-grid');
     grid.innerHTML = '';
 
     for (let row = 0; row < 5; row++) {
       const baseSlot = row * 4 + 1;
 
-      // LEFT label on the sheet = slots baseSlot, baseSlot+1
-      const leftLabel = buildLabel(filledSlots[baseSlot], filledSlots[baseSlot + 1]);
-      grid.appendChild(leftLabel);
+      // LEFT label on sheet = slots baseSlot, baseSlot+1
+      grid.appendChild(buildLabel(filledSlots[baseSlot], filledSlots[baseSlot + 1]));
 
-      // GAP (added once, spans all rows)
       if (row === 0) {
         const gap = document.createElement('div');
         gap.style.gridColumn = '2';
@@ -495,19 +458,18 @@
         grid.appendChild(gap);
       }
 
-      // RIGHT label on the sheet = slots baseSlot+2, baseSlot+3
-      const rightLabel = buildLabel(filledSlots[baseSlot + 2], filledSlots[baseSlot + 3]);
-      grid.appendChild(rightLabel);
+      // RIGHT label on sheet = slots baseSlot+2, baseSlot+3
+      grid.appendChild(buildLabel(filledSlots[baseSlot + 2], filledSlots[baseSlot + 3]));
     }
 
-    // Render all barcodes
+    // Render all barcodes (JsBarcode handles Code 128 correctly)
     document.querySelectorAll('.barcode-wrap svg').forEach(svg => {
       const partNum = svg.dataset.part;
       try {
         JsBarcode(svg, partNum, {
           format:       'CODE128',
           width:        1.6,
-          height:       80,
+          height:       60,
           displayValue: false,
           margin:       0,
         });
@@ -516,7 +478,6 @@
       }
     });
 
-    // Enable print
     const printBtn = document.getElementById('print-btn');
     printBtn.disabled = false;
     printBtn.style.opacity = '1';
@@ -526,33 +487,39 @@
   }
 
   // ============================================================
-  //  BUILD ONE PHYSICAL LABEL (2 halves side-by-side)
-  //  leftPart = slot for LEFT half (part text rotated -90°)
-  //  rightPart = slot for RIGHT half (part text rotated +90°)
+  //  BUILD ONE LABEL (2 halves side by side)
+  //  The content inside each half is a simple stacked layout:
+  //    part text on top, barcode below
+  //  Then the whole half is rotated -90° (left) or +90° (right)
+  //  so everything flows in the same direction after cutting.
   // ============================================================
   function buildLabel(leftPart, rightPart) {
     const label = document.createElement('div');
     label.className = 'label';
     if (leftPart || rightPart) label.classList.add('filled');
 
-    // LEFT half: part text on outside (left), barcode on cut side (right)
+    // Left half
     const left = document.createElement('div');
     left.className = 'half left';
     if (leftPart) {
       left.innerHTML = `
-        <div class="part-text">${escapeHtml(leftPart)}</div>
-        <div class="barcode-wrap"><svg data-part="${escapeHtml(leftPart)}"></svg></div>
+        <div class="half-content">
+          <div class="part-text">${escapeHtml(leftPart)}</div>
+          <div class="barcode-wrap"><svg data-part="${escapeHtml(leftPart)}"></svg></div>
+        </div>
       `;
     }
     label.appendChild(left);
 
-    // RIGHT half: barcode on cut side (left), part text on outside (right)
+    // Right half
     const right = document.createElement('div');
     right.className = 'half right';
     if (rightPart) {
       right.innerHTML = `
-        <div class="barcode-wrap"><svg data-part="${escapeHtml(rightPart)}"></svg></div>
-        <div class="part-text">${escapeHtml(rightPart)}</div>
+        <div class="half-content">
+          <div class="part-text">${escapeHtml(rightPart)}</div>
+          <div class="barcode-wrap"><svg data-part="${escapeHtml(rightPart)}"></svg></div>
+        </div>
       `;
     }
     label.appendChild(right);
@@ -569,9 +536,6 @@
       .replace(/'/g, '&#39;');
   }
 
-  // ============================================================
-  //  CLEAR
-  // ============================================================
   function clearAll() {
     document.getElementById('parts-input').value = '';
     document.getElementById('parts-count').textContent = '0 part numbers entered';
@@ -583,9 +547,6 @@
     document.getElementById('generate-info').textContent = 'Enter part numbers and click Generate.';
   }
 
-  // ============================================================
-  //  INIT
-  // ============================================================
   buildSlotGrid();
 </script>
 
