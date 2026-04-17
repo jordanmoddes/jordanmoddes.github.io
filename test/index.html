@@ -9,17 +9,17 @@
   <!--
   ============================================================
     IP OF JORDAN MODDES
-    DocTrack Terminal v3.0 — Multi-Folder Build
+    DocTrack Terminal v3.1 — Batch Submission Build
     jordanmoddes.com | Cerilliant / MilliporeSigma — Internal Use Only
 
-    New in v3.0:
-      • Multi-folder batch scanning
-      • New flow: Badge → Folder(s) → DONE → WIP/DROP → [Department]
-      • Each folder submits as its own Smartsheet row
+    Scan flow: Badge → Folder(s) → DONE → WIP/DROP → [Department]
+
+    v3.1 changes:
+      • Batch submission — ONE /scan-batch request for all folders
+      • No more N parallel requests hammering the backend
+      • 30+ folders submits in 2-3 seconds cleanly
       • RESET button always visible top-left
-      • EVT-DONE barcode + on-screen DONE button
-      • 30-second timeout (was 15)
-      • Touch-friendly buttons for any touchscreen setup
+      • 30-second timeout with reset-on-activity
   ============================================================
   -->
 
@@ -38,7 +38,7 @@
       padding: 24px;
     }
 
-    /* ---- Top-left RESET button (always visible) ---- */
+    /* Top-left RESET button (always visible) */
     #reset-btn {
       position: fixed;
       top: 12px;
@@ -57,12 +57,9 @@
       text-transform: uppercase;
       z-index: 50;
     }
-    #reset-btn:hover {
-      background: #ff6b35;
-      color: #0a0e13;
-    }
+    #reset-btn:hover { background: #ff6b35; color: #0a0e13; }
 
-    /* ---- Top-right terminal badge ---- */
+    /* Top-right terminal ID */
     #terminal-badge {
       position: fixed;
       top: 12px;
@@ -75,7 +72,6 @@
       border-radius: 3px;
     }
 
-    /* ---- Main display ---- */
     #step-label {
       font-size: 1rem;
       color: #4a6070;
@@ -102,7 +98,6 @@
       letter-spacing: 2px;
     }
 
-    /* ---- Progress dots ---- */
     #progress {
       display: flex;
       gap: 16px;
@@ -119,7 +114,7 @@
     .dot.done   { background: #00ff9d; border-color: #00ff9d; }
     .dot.active { background: #00c8ff; border-color: #00c8ff; }
 
-    /* ---- Folder list (shown during multi-scan) ---- */
+    /* Folder list panel */
     #folder-list-wrap {
       display: none;
       width: 90%;
@@ -164,7 +159,6 @@
       min-width: 30px;
     }
 
-    /* ---- Status + substatus ---- */
     #status {
       font-size: 1.05rem;
       text-align: center;
@@ -186,7 +180,6 @@
       margin-bottom: 12px;
     }
 
-    /* ---- Timeout bar ---- */
     #timeout-bar-wrap {
       width: 300px;
       height: 3px;
@@ -202,7 +195,6 @@
       transition: width 1s linear;
     }
 
-    /* ---- Action buttons (DONE, test buttons) ---- */
     #action-buttons {
       display: flex;
       flex-wrap: wrap;
@@ -225,8 +217,6 @@
       text-transform: uppercase;
     }
     .action-btn:hover { background: #ffc857; color: #0a0e13; }
-
-    /* Big DONE button gets its own style */
     .action-btn.done-btn {
       background: #00ff9d;
       border-color: #00ff9d;
@@ -236,7 +226,6 @@
     }
     .action-btn.done-btn:hover { background: #33ffb5; border-color: #33ffb5; }
 
-    /* ---- Hint at bottom ---- */
     #hint {
       font-size: 0.72rem;
       color: #4a6070;
@@ -253,7 +242,6 @@
       color: #d0e4f0;
     }
 
-    /* ---- Hidden scanner input ---- */
     #scanner-input {
       position: fixed;
       top: -999px;
@@ -263,7 +251,6 @@
       height: 1px;
     }
 
-    /* ---- Manual entry overlay ---- */
     #manual-overlay {
       display: none;
       position: fixed;
@@ -330,21 +317,16 @@
 </head>
 <body>
 
-<!-- RESET button (top-left, always visible) -->
 <button id="reset-btn" onclick="hardReset(); setPrompt(0);">⟲ RESET</button>
 
-<!-- Terminal ID badge (top-right) -->
 <div id="terminal-badge">TERM-DEMO</div>
 
-<!-- Hidden scanner input -->
 <input id="scanner-input" type="text" autocomplete="off" autofocus />
 
-<!-- Main content -->
 <div id="step-label">Step 1 of 4</div>
 <div id="prompt">SCAN BADGE</div>
 <div id="scanned-value">&nbsp;</div>
 
-<!-- Progress dots -->
 <div id="progress">
   <div class="dot active" id="dot-1"></div>
   <div class="dot"        id="dot-2"></div>
@@ -352,7 +334,6 @@
   <div class="dot"        id="dot-4"></div>
 </div>
 
-<!-- Folder list (only shown during folder-scan step) -->
 <div id="folder-list-wrap">
   <div id="folder-list-header">
     <span>Folders Scanned</span>
@@ -361,21 +342,17 @@
   <div id="folder-list"></div>
 </div>
 
-<!-- Status messages -->
 <div id="status">&nbsp;</div>
 <div id="substatus">&nbsp;</div>
 
-<!-- Timeout bar -->
 <div id="timeout-bar-wrap" style="visibility:hidden;">
   <div id="timeout-bar"></div>
 </div>
 
-<!-- Action buttons (DONE, test buttons) -->
 <div id="action-buttons"></div>
 
 <div id="hint">SCANNER NOT WORKING? PRESS <span class="key">B</span> FOR MANUAL ENTRY</div>
 
-<!-- Manual entry overlay -->
 <div id="manual-overlay">
   <div id="manual-title">⚠ Manual Entry Mode</div>
   <div id="manual-prompt">Type value for current step</div>
@@ -390,20 +367,16 @@
 
 <script>
   // ============================================================
-  //  CONFIG — change per deployment
+  //  CONFIG
   // ============================================================
   const DEMO_MODE     = false;
   const API_BASE_URL  = 'https://doctrack-backend-qga8.onrender.com';
   const TERMINAL_ID   = 'TERM-DEMO';
-  const TIMEOUT_SECS  = 30;                // 30 seconds of inactivity before reset
+  const TIMEOUT_SECS  = 30;
 
 
   // ============================================================
-  //  SCAN FLOW STEPS
-  //  Step 0: Badge scan
-  //  Step 1: Folder(s) scan — LOOP until DONE
-  //  Step 2: WIP or DROP scan
-  //  Step 3: Department scan (only if DROP)
+  //  SCAN STEPS
   // ============================================================
   const STEPS = [
     { label: 'Step 1 of 4', prompt: 'SCAN BADGE',        field: 'badge'      },
@@ -421,7 +394,6 @@
     'EVT-DROP': 'DROP-OFF',
   };
 
-  // Special barcodes
   const DONE_BARCODE  = 'EVT-DONE';
   const RESET_BARCODE = 'EVT-RESET';
 
@@ -440,16 +412,15 @@
   //  STATE
   // ============================================================
   let currentStep   = 0;
-  let scan          = {};      // { badge, folders: [], eventType, department }
-  let entryMethod   = 'SCAN';  // 'SCAN' or 'MANUAL'
+  let scan          = { folders: [] };
+  let entryMethod   = 'SCAN';
   let manualMode    = false;
   let timeoutHandle = null;
-  let batchUUID     = null;    // Base UUID for the batch; individual folders get a suffix
+  let batchUUID     = null;
 
 
   // ============================================================
   //  UUID GENERATOR
-  //  Returns a base UUID; per-folder UUIDs append an index.
   // ============================================================
   function generateUUID() {
     const time = Date.now();
@@ -469,7 +440,6 @@
     document.getElementById('substatus').innerHTML     = '&nbsp;';
     document.getElementById('status').className        = '';
 
-    // Progress dots
     for (let i = 0; i < 4; i++) {
       const dot = document.getElementById(`dot-${i + 1}`);
       if (i < stepIndex)        dot.className = 'dot done';
@@ -477,7 +447,6 @@
       else                      dot.className = 'dot';
     }
 
-    // Show folder list only on the folder step
     const folderWrap = document.getElementById('folder-list-wrap');
     if (STEPS[stepIndex].field === 'folders') {
       folderWrap.classList.add('active');
@@ -503,7 +472,6 @@
     document.getElementById('scanned-value').textContent = val;
   }
 
-  // ---- Folder list rendering ----
   function renderFolderList() {
     const folders = scan.folders || [];
     document.getElementById('folder-count').textContent = folders.length;
@@ -528,7 +496,7 @@
 
 
   // ============================================================
-  //  ACTION BUTTONS — contextual per step
+  //  ACTION BUTTONS
   // ============================================================
   function renderActionButtons(stepIndex) {
     const wrap = document.getElementById('action-buttons');
@@ -536,7 +504,6 @@
 
     const field = STEPS[stepIndex].field;
 
-    // STEP 1: Badge — prefill test badge button
     if (field === 'badge') {
       const btn = document.createElement('button');
       btn.className = 'action-btn';
@@ -544,8 +511,6 @@
       btn.onclick = () => processValue('257001', false);
       wrap.appendChild(btn);
     }
-
-    // STEP 2: Folder(s) — test add-folder button AND big DONE button
     else if (field === 'folders') {
       const testBtn = document.createElement('button');
       testBtn.className = 'action-btn';
@@ -556,7 +521,6 @@
       };
       wrap.appendChild(testBtn);
 
-      // DONE button only appears when at least 1 folder scanned
       if ((scan.folders || []).length > 0) {
         const doneBtn = document.createElement('button');
         doneBtn.className = 'action-btn done-btn';
@@ -565,8 +529,6 @@
         wrap.appendChild(doneBtn);
       }
     }
-
-    // STEP 3: WIP or DROP buttons
     else if (field === 'eventType') {
       const wipBtn = document.createElement('button');
       wipBtn.className = 'action-btn';
@@ -580,8 +542,6 @@
       dropBtn.onclick = () => processValue('EVT-DROP', false);
       wrap.appendChild(dropBtn);
     }
-
-    // STEP 4: Department — test department button
     else if (field === 'department') {
       const btn = document.createElement('button');
       btn.className = 'action-btn';
@@ -598,7 +558,6 @@
   function startTimeout() {
     clearTimeout(timeoutHandle);
 
-    // No timeout on the very first step
     if (currentStep === 0) {
       document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
       return;
@@ -648,17 +607,15 @@
 
 
   // ============================================================
-  //  SUBMIT — one event per folder in the batch
-  //  All folders share: badge, eventType, department
-  //  Each folder gets its own Smartsheet row
+  //  BATCH SUBMIT — v3.1
+  //  Sends ONE /scan-batch POST with all folders in a single
+  //  request. Backend writes all rows to Smartsheet in ONE API
+  //  call. Way faster and no Render resource exhaustion.
   // ============================================================
   async function submitBatch() {
-    // Fully stop and HIDE the timeout bar — it must not keep draining
-    // during submission (was confusing operators on WIP path)
     stopTimeout();
     document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
 
-    // Clear any stale status messages from the previous step
     document.getElementById('status').innerHTML = '&nbsp;';
     document.getElementById('status').className = '';
 
@@ -666,105 +623,74 @@
     const folders = scan.folders || [];
     const total = folders.length;
 
-    // Clear step label, show big "SUBMITTING..." in prompt, clear action buttons
     document.getElementById('step-label').textContent = 'BATCH SUBMIT';
-    document.getElementById('prompt').textContent = `SUBMITTING ${total} FOLDER${total !== 1 ? 'S' : ''}...`;
+    document.getElementById('prompt').textContent = `SENDING ${total} FOLDER${total !== 1 ? 'S' : ''}...`;
     document.getElementById('action-buttons').innerHTML = '';
     document.getElementById('scanned-value').innerHTML = '&nbsp;';
 
-    // All dots done — visual confirmation the scan flow is complete
     for (let i = 0; i < 4; i++) {
       document.getElementById(`dot-${i + 1}`).className = 'dot done';
     }
 
-    // Live progress tracker — updates as each fetch completes
-    let completed = 0;
-    showSubstatus(`0 of ${total} submitted...`);
+    // Build the events array — one entry per folder
+    const events = folders.map((folderID, i) => ({
+      timestamp:    new Date().toISOString(),
+      badge:        scan.badge,
+      docID:        folderID,
+      eventType:    scan.eventType,
+      department:   scan.department || 'N/A (WIP)',
+      entry_method: entryMethod,
+      event_uuid:   `${batchUUID}-${i + 1}`,
+      terminal_id:  TERMINAL_ID,
+    }));
 
-    // ============================================================
-    //  PARALLEL SUBMISSION
-    //  Fire all folder requests simultaneously instead of one at
-    //  a time. 20 folders now takes ~2-4 seconds instead of 60+.
-    //  Each request's promise resolves to { status, folderID }.
-    // ============================================================
-    const submitOne = async (folderID, index) => {
-      const payload = {
-        timestamp:     new Date().toISOString(),
-        badge:         scan.badge,
-        docID:         folderID,
-        eventType:     scan.eventType,
-        department:    scan.department || 'N/A (WIP)',
-        entry_method:  entryMethod,
-        event_uuid:    `${batchUUID}-${index + 1}`,
-        terminal_id:   TERMINAL_ID,
-      };
-
-      if (DEMO_MODE) {
-        console.log('SCAN EVENT (demo):', payload);
-        completed++;
-        showSubstatus(`${completed} of ${total} submitted...`);
-        return { status: 'succeeded', folderID };
-      }
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/scan-log`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload),
-        });
-        const result = await response.json();
-
-        completed++;
-        showSubstatus(`${completed} of ${total} submitted...`);
-
-        if (result.duplicate) return { status: 'succeeded', folderID };
-        if (result.ok) {
-          if (result.smartsheet && result.smartsheet.ok) {
-            return { status: 'succeeded', folderID };
-          }
-          return { status: 'queued', folderID };
-        }
-        return { status: 'failed', folderID, error: result.error };
-      } catch (err) {
-        completed++;
-        showSubstatus(`${completed} of ${total} submitted...`);
-        console.error('Network error on folder', folderID, err);
-        return { status: 'failed', folderID, error: err.message };
-      }
-    };
-
-    // Fire them all at once; Promise.all waits for them to all settle
-    const results = await Promise.all(folders.map((f, i) => submitOne(f, i)));
-
-    // Tally the results
-    const succeeded = results.filter(r => r.status === 'succeeded').length;
-    const queued    = results.filter(r => r.status === 'queued').length;
-    const failed    = results.filter(r => r.status === 'failed').length;
-
-    const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
-
-    if (failed === 0 && queued === 0) {
-      showStatus(`✓ ${total} FOLDER${total !== 1 ? 'S' : ''} LOGGED${methodTag} ✓ SMARTSHEET`, 'success');
-    } else if (failed === 0 && queued > 0) {
-      showStatus(`✓ ${succeeded} LOGGED, ${queued} QUEUED FOR RETRY`, 'warn');
-    } else {
-      showStatus(`⚠ ${succeeded} OK, ${queued} QUEUED, ${failed} FAILED`, 'error');
+    if (DEMO_MODE) {
+      console.log('BATCH (demo):', events);
+      showStatus(`✓ ${total} FOLDER${total !== 1 ? 'S' : ''} LOGGED (demo)`, 'success');
+      softReset();
+      return;
     }
 
-    showSubstatus(`batch ${batchUUID} — ${scan.eventType} → ${scan.department || 'N/A (WIP)'}`);
+    try {
+      const response = await fetch(`${API_BASE_URL}/scan-batch`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ events }),
+      });
+      const result = await response.json();
+      console.log('Batch response:', result);
+
+      const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
+      const ssOk = result.smartsheet && result.smartsheet.ok;
+      const written = result.smartsheet ? (result.smartsheet.rows_written || 0) : 0;
+      const dupes = result.duplicates || 0;
+
+      if (ssOk && written === result.accepted) {
+        showStatus(`✓ ${written} FOLDER${written !== 1 ? 'S' : ''} LOGGED${methodTag} ✓ SMARTSHEET`, 'success');
+      } else if (!ssOk) {
+        showStatus(`⚠ ${result.accepted} QUEUED FOR RETRY — BACKEND SAVED`, 'warn');
+      } else {
+        showStatus(`✓ ${written} LOGGED, ${dupes} DUPLICATES`, 'success');
+      }
+
+      showSubstatus(`batch ${batchUUID} — ${scan.eventType} → ${scan.department || 'N/A (WIP)'}`);
+    } catch (err) {
+      console.error('Network error on batch:', err);
+      showStatus('⚠ NETWORK ERROR — TRY AGAIN', 'error');
+    }
 
     softReset();
   }
 
 
   // ============================================================
-  //  PROCESS VALUE — called every time a scan or button click happens
+  //  PROCESS VALUE — handles each scan or button click
   // ============================================================
   function processValue(value, isManual) {
     value = (value || '').trim();
     if (!value) return;
 
-    // Global reset barcode works from anywhere
+    // Global reset barcode
     if (value.toUpperCase() === RESET_BARCODE) {
       hardReset();
       setPrompt(0);
@@ -776,7 +702,7 @@
 
     const field = STEPS[currentStep].field;
 
-    // ---- STEP 1: BADGE ----
+    // STEP 1: Badge
     if (field === 'badge') {
       scan.badge = value;
       scan.folders = [];
@@ -787,9 +713,8 @@
       return;
     }
 
-    // ---- STEP 2: FOLDERS (loop) ----
+    // STEP 2: Folders (loop until DONE)
     if (field === 'folders') {
-      // DONE barcode ends the folder loop
       if (value.toUpperCase() === DONE_BARCODE) {
         if ((scan.folders || []).length === 0) {
           showStatus('⚠ SCAN AT LEAST ONE FOLDER FIRST', 'error');
@@ -801,18 +726,17 @@
         return;
       }
 
-      // Otherwise add to the folder list
       scan.folders = scan.folders || [];
       scan.folders.push(value + (isManual ? ' (manual)' : ''));
       flashValue(`+ ${value}`);
       showSubstatus(`${scan.folders.length} folder${scan.folders.length !== 1 ? 's' : ''} scanned — scan DONE or press finish`);
       renderFolderList();
-      renderActionButtons(currentStep);  // re-render to show DONE button
+      renderActionButtons(currentStep);
       startTimeout();
       return;
     }
 
-    // ---- STEP 3: WIP or DROP ----
+    // STEP 3: WIP or DROP
     if (field === 'eventType') {
       let mapped = EVENT_BARCODES[value.toUpperCase()];
       if (!mapped) {
@@ -828,10 +752,9 @@
       scan.eventType = mapped;
       flashValue(mapped + (isManual ? ' (manual)' : ''));
 
-      // WIP submits immediately (no department needed)
+      // WIP submits right away
       if (mapped === 'WIP') {
         scan.department = 'N/A (WIP)';
-        // Mark step 4 done visually since we're skipping it
         currentStep = 3;
         submitBatch();
         return;
@@ -844,7 +767,7 @@
       return;
     }
 
-    // ---- STEP 4: DEPARTMENT ----
+    // STEP 4: Department
     if (field === 'department') {
       let mapped = DEPT_BARCODES[value.toUpperCase()];
       if (!mapped) {
@@ -902,7 +825,6 @@
     if (e.key === 'Enter') {
       e.preventDefault();
       let val = manualField.value;
-      // Allow typing "DONE" in manual mode to finish folder scanning
       if (val.trim().toUpperCase() === 'DONE') val = DONE_BARCODE;
       closeManualEntry();
       processValue(val, true);
@@ -946,7 +868,6 @@
 
   // ============================================================
   //  FOCUS MANAGEMENT
-  //  Keep the hidden input focused except when clicking buttons
   // ============================================================
   function refocus() {
     if (manualMode) {
@@ -957,7 +878,6 @@
   }
 
   document.addEventListener('click', (e) => {
-    // Don't yank focus when clicking action buttons or reset
     if (e.target.classList.contains('action-btn') ||
         e.target.id === 'reset-btn' ||
         e.target.closest('#reset-btn')) {
