@@ -3,40 +3,31 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DocTrack Labels — Avery 5163</title>
+  <title>DocTrack Labels — Avery 5163 / 5963</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet"/>
 
   <!--
   ============================================================
     IP OF JORDAN MODDES
-    DocTrack Label Generator v1.0
+    DocTrack Label Generator v2.0
     Designed & Built by Jordan Moddes | jordanmoddes.com
     For: Cerilliant / MilliporeSigma — Internal Use Only
 
-    Generates Code 128 barcode labels on Avery 5163 sheets.
-    10 physical labels per sheet, each split into 2 halves
-    (top half upright, bottom half flipped 180° per user spec)
-    = 20 slots per sheet.
+    Hamburger-cut barcode labels for Avery 5163 / 5963.
 
-    Slot numbering:
-      1  / 2   ← top label, left column  (1=top half, 2=bottom half)
-      3  / 4   ← row 2, left column
-      5  / 6   ← row 3, left column
-      7  / 8   ← row 4, left column
-      9  / 10  ← row 5, left column
-      11 / 12  ← top label, right column
-      13 / 14  ← row 2, right column
-      15 / 16  ← row 3, right column
-      17 / 18  ← row 4, right column
-      19 / 20  ← row 5, right column
+    Each full 4"x2" label is split VERTICALLY into two 2"x2" halves.
+    Each half:
+      - Part number runs vertically along the OUTSIDE (rounded) edge
+      - Barcode sits next to the CUT edge, readable horizontally
+    Left half:  part text reads bottom-to-top (rotated 90° CCW)
+    Right half: part text reads top-to-bottom (rotated 90° CW)
 
-    Avery 5163 dimensions:
-      - 2 columns x 5 rows = 10 labels
-      - Each label: 4" x 2"
-      - Top/bottom margin: 0.5"
-      - Left/right margin: 0.15625"
-      - Column gap: 0.1875"
-      - No row gap (labels touch vertically)
+    Slot numbering (matches physical sheet, read row-by-row L-to-R):
+      1   2  |  3   4      ← row 1 (left label=1,2, right label=3,4)
+      5   6  |  7   8      ← row 2
+      9  10  | 11  12      ← row 3
+     13  14  | 15  16      ← row 4
+     17  18  | 19  20      ← row 5
   ============================================================
   -->
 
@@ -68,10 +59,7 @@
       text-transform: uppercase;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .container { max-width: 900px; margin: 0 auto; }
 
     .card {
       background: #111820;
@@ -106,15 +94,21 @@
     }
     textarea:focus { border-color: #00c8ff; }
 
-    /* Slot grid */
-    .slot-grid {
+    /* ============================================================
+       SLOT PICKER — matches physical sheet layout
+       5 rows × 2 label-groups per row, each group has 2 halves
+       Total 20 slots. Gap between label groups to match real sheet.
+    ============================================================ */
+    .sheet-picker {
       display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 4px;
-      margin-bottom: 8px;
+      grid-template-columns: 1fr 1fr 20px 1fr 1fr;  /* 2 halves | gap | 2 halves */
+      grid-template-rows: repeat(5, 50px);
+      gap: 6px 4px;
+      margin-bottom: 12px;
+      max-width: 500px;
     }
+
     .slot-cell {
-      aspect-ratio: 1;
       background: #0a0e13;
       border: 1px solid #1e2d3d;
       border-radius: 3px;
@@ -122,13 +116,18 @@
       align-items: center;
       justify-content: center;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.95rem;
       color: #4a6070;
       cursor: pointer;
       user-select: none;
       transition: all 0.1s;
     }
-    .slot-cell:hover { border-color: #4a6070; color: #d0e4f0; }
+    .slot-cell.gap {
+      background: transparent;
+      border: none;
+      cursor: default;
+    }
+    .slot-cell:not(.gap):hover { border-color: #4a6070; color: #d0e4f0; }
     .slot-cell.selected {
       background: #00c8ff;
       color: #0a0e13;
@@ -150,15 +149,12 @@
       font-size: 0.75rem;
       color: #4a6070;
       font-family: 'Share Tech Mono', monospace;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       letter-spacing: 1px;
     }
 
-    .btn-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
     button {
       background: #00c8ff;
       border: none;
@@ -180,9 +176,7 @@
       color: #4a6070;
     }
     button.secondary:hover { border-color: #00c8ff; color: #00c8ff; }
-    button.print {
-      background: #00ff9d;
-    }
+    button.print { background: #00ff9d; }
     button.print:hover { background: #33ffb5; }
 
     .info {
@@ -194,12 +188,12 @@
     }
 
     /* ============================================================
-       PRINT LAYOUT — this is what gets printed on the Avery sheet
-       Everything here is in inches, carefully calibrated
+       PRINT SHEET — this is what prints on the Avery paper
+       All measurements in inches for exact physical alignment
     ============================================================ */
     .print-sheet {
-      display: none;   /* hidden on screen, only shown when printing */
-      width:  8.5in;
+      display: none;
+      width: 8.5in;
       height: 11in;
       padding-top:    0.5in;
       padding-bottom: 0.5in;
@@ -211,67 +205,75 @@
 
     .print-grid {
       display: grid;
-      grid-template-columns: 4in 0.1875in 4in;  /* left col, gap, right col */
-      grid-template-rows:    repeat(5, 2in);     /* 5 rows of 2in each */
-      width:  100%;
+      grid-template-columns: 4in 0.1875in 4in;
+      grid-template-rows: repeat(5, 2in);
+      width: 100%;
       height: 100%;
     }
 
-    /* Each physical Avery label contains 2 halves */
+    /* Each physical Avery label = 4" × 2", split vertically */
     .label {
       width: 4in;
       height: 2in;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* The spacer column between left/right */
-    .gap-col { grid-row: 1 / -1; }
-
-    .half {
-      width: 4in;
-      height: 1in;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0.1in;
-      overflow: hidden;
-    }
-
-    /* Bottom half is flipped 180° per user spec */
-    .half.bottom {
-      transform: rotate(180deg);
-    }
-
-    /* Cut line between the two halves */
-    .cut-line {
-      width: 100%;
-      border-top: 1px dashed #999;
+      display: grid;
+      grid-template-columns: 2in 2in;
       position: relative;
     }
-    .cut-line::before {
-      content: "✂";
-      position: absolute;
-      left: 0.1in;
-      top: -0.08in;
-      font-size: 7pt;
-      color: #999;
-      background: white;
-      padding: 0 3px;
+
+    /* Half = 2" × 2" */
+    .half {
+      width: 2in;
+      height: 2in;
+      display: grid;
+      grid-template-columns: 0.3in 1.7in;  /* narrow text column, wide barcode column */
+      align-items: center;
+      padding: 0.1in 0.08in;
+      overflow: hidden;
     }
 
+    /* Right half reverses the columns so barcode is on the LEFT (cut side)
+       and text is on the RIGHT (rounded corner side) */
+    .half.right {
+      grid-template-columns: 1.7in 0.3in;
+    }
+
+    /* Vertical cut line down the middle of each label */
+    .label.filled::after {
+      content: '';
+      position: absolute;
+      top: 0.1in;
+      bottom: 0.1in;
+      left: 2in;
+      width: 0;
+      border-left: 1px dashed #888;
+    }
+
+    /* ============================================================
+       PART NUMBER TEXT — vertical orientation
+       Left half: rotated 90° counter-clockwise (reads bottom-to-top)
+       Right half: rotated 90° clockwise (reads top-to-bottom)
+    ============================================================ */
     .part-text {
       font-family: 'Courier New', monospace;
-      font-size: 10pt;
+      font-size: 11pt;
       font-weight: bold;
       color: #000;
-      margin-bottom: 0.05in;
-      text-align: center;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
+      text-align: center;
+      overflow: hidden;
+    }
+    .half.left .part-text {
+      transform: rotate(-90deg);
+      transform-origin: center;
+      width: 1.7in;      /* after rotation, this becomes the height */
+      margin-left: -0.7in; /* center it in the narrow column */
+    }
+    .half.right .part-text {
+      transform: rotate(90deg);
+      transform-origin: center;
+      width: 1.7in;
+      margin-left: -0.7in;
+      grid-column: 2;     /* put text in right column */
     }
 
     .barcode-wrap {
@@ -280,25 +282,19 @@
       justify-content: center;
       align-items: center;
     }
+    .half.left  .barcode-wrap { grid-column: 2; }
+    .half.right .barcode-wrap { grid-column: 1; }
     .barcode-wrap svg {
-      max-width: 3.8in;
-      height: 0.65in;
+      max-width: 1.6in;
+      height: 1.5in;
     }
 
     /* ============================================================
-       PRINT MEDIA QUERY — when user clicks print, hide screen UI
-       and show the label sheet at exact physical size
+       PRINT MEDIA QUERY
     ============================================================ */
     @media print {
-      @page {
-        size: letter;
-        margin: 0;
-      }
-      body {
-        background: white;
-        padding: 0;
-        margin: 0;
-      }
+      @page { size: letter; margin: 0; }
+      body { background: white; padding: 0; margin: 0; }
       .no-print { display: none !important; }
       .print-sheet {
         display: block !important;
@@ -322,26 +318,23 @@
 <div class="no-print">
   <div class="container">
     <h1>DOCTRACK LABELS</h1>
-    <div class="subtitle">Avery 5163 — 20 Barcodes Per Sheet</div>
+    <div class="subtitle">Avery 5163 / 5963 — Hamburger Cut — 20 Per Sheet</div>
 
-    <!-- Step 1: enter part numbers -->
     <div class="card">
       <label for="parts-input">Part Numbers — One Per Line</label>
       <textarea id="parts-input" placeholder="PHR2363-3X75MG&#10;CRM46916&#10;PHR1208-1.2ML&#10;..."></textarea>
       <div class="info" id="parts-count">0 part numbers entered</div>
     </div>
 
-    <!-- Step 2: choose starting slot -->
     <div class="card">
       <label>Starting Slot — Click Where Printing Should Begin</label>
       <div class="slot-hint">
-        Slots 1-10 = LEFT COLUMN (top to bottom) &nbsp;|&nbsp; Slots 11-20 = RIGHT COLUMN (top to bottom)
+        Layout matches your physical sheet. Numbers read left-to-right across each row.
       </div>
-      <div class="slot-grid" id="slot-grid"></div>
+      <div class="sheet-picker" id="slot-grid"></div>
       <div class="info" id="slot-info">Selected: slot 1 (default)</div>
     </div>
 
-    <!-- Step 3: generate + print -->
     <div class="card">
       <div class="btn-row">
         <button onclick="generateLabels()">Generate Preview</button>
@@ -357,62 +350,78 @@
   </footer>
 </div>
 
-<!-- ============================================================
-  PRINT SHEET — this is what actually prints
-  Populated by generateLabels() below
-============================================================ -->
+<!-- Print sheet -->
 <div class="print-sheet" id="print-sheet">
-  <div class="print-grid" id="print-grid">
-    <!-- Labels will be injected here by JS -->
-  </div>
+  <div class="print-grid" id="print-grid"></div>
 </div>
 
-<!-- JsBarcode — proper Code 128 with start/stop/checksum -->
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 
 <script>
   // ============================================================
   //  STATE
   // ============================================================
-  let selectedSlot = 1;  // 1-20
+  let selectedSlot = 1;
 
   // ============================================================
-  //  BUILD THE SLOT PICKER GRID (20 cells)
+  //  SLOT PICKER — matches physical sheet
+  //  5 rows × 4 slots per row, with a visual gap between left
+  //  label (slots 1-2) and right label (slots 3-4) each row.
+  //
+  //  Grid columns: | half | half | GAP | half | half |
+  //  Row 1: slots 1, 2, (gap), 3, 4
+  //  Row 2: slots 5, 6, (gap), 7, 8
+  //  Row 3: slots 9, 10, (gap), 11, 12
+  //  Row 4: slots 13, 14, (gap), 15, 16
+  //  Row 5: slots 17, 18, (gap), 19, 20
   // ============================================================
   function buildSlotGrid() {
     const grid = document.getElementById('slot-grid');
     grid.innerHTML = '';
-    for (let i = 1; i <= 20; i++) {
-      const cell = document.createElement('div');
-      cell.className = 'slot-cell';
-      cell.textContent = i;
-      cell.dataset.slot = i;
-      if (i === selectedSlot) cell.classList.add('selected');
-      cell.onclick = () => selectSlot(i);
-      grid.appendChild(cell);
+
+    for (let row = 0; row < 5; row++) {
+      const baseLeft = row * 4 + 1;   // left-label slots per row: 1, 5, 9, 13, 17
+      const slots = [
+        baseLeft,      // left-half of left label
+        baseLeft + 1,  // right-half of left label
+        'gap',         // visual gap
+        baseLeft + 2,  // left-half of right label
+        baseLeft + 3,  // right-half of right label
+      ];
+
+      slots.forEach(s => {
+        const cell = document.createElement('div');
+        if (s === 'gap') {
+          cell.className = 'slot-cell gap';
+        } else {
+          cell.className = 'slot-cell';
+          cell.textContent = s;
+          cell.dataset.slot = s;
+          if (s === selectedSlot) cell.classList.add('selected');
+          cell.onclick = () => selectSlot(s);
+        }
+        grid.appendChild(cell);
+      });
     }
   }
 
   function selectSlot(n) {
     selectedSlot = n;
     document.querySelectorAll('.slot-cell').forEach(c => {
+      if (c.classList.contains('gap')) return;
       c.classList.toggle('selected', parseInt(c.dataset.slot) === n);
     });
     document.getElementById('slot-info').textContent = `Selected: slot ${n}`;
   }
 
   // ============================================================
-  //  PARSE PART NUMBERS FROM TEXTAREA
-  //  Splits on newlines, trims, removes empties
+  //  PARSE PART NUMBERS
   // ============================================================
   function getPartNumbers() {
     const raw = document.getElementById('parts-input').value;
-    return raw.split('\n')
-              .map(p => p.trim())
-              .filter(p => p.length > 0);
+    return raw.split('\n').map(p => p.trim()).filter(p => p.length > 0);
   }
 
-  // Update the live count as user types
   document.getElementById('parts-input').addEventListener('input', () => {
     const count = getPartNumbers().length;
     document.getElementById('parts-count').textContent =
@@ -420,23 +429,25 @@
   });
 
   // ============================================================
-  //  SLOT → PHYSICAL POSITION
-  //  Map slot number (1-20) to grid position and half (top/bottom)
+  //  SLOT → POSITION
+  //  Given slot 1-20, determine row (0-4), which label (left/right
+  //  on the Avery sheet), and which half (left/right within label)
   //
-  //  Left column: slots 1,2 = row 1 / 3,4 = row 2 / ...
-  //  Right column: slots 11,12 = row 1 / 13,14 = row 2 / ...
-  //  Odd slots = top half, Even slots = bottom half
+  //  Slots 1,2   = row 0, left label   (1=leftHalf, 2=rightHalf)
+  //  Slots 3,4   = row 0, right label
+  //  Slots 5,6   = row 1, left label
+  //  ...and so on
   // ============================================================
   function slotToPosition(slot) {
-    const isLeft = slot <= 10;
-    const localSlot = isLeft ? slot : slot - 10;  // 1-10 within the column
-    const row = Math.ceil(localSlot / 2);          // 1-5
-    const isTop = (localSlot % 2) === 1;           // odd = top
-    return { column: isLeft ? 'left' : 'right', row, isTop };
+    const row = Math.floor((slot - 1) / 4);           // 0-4
+    const withinRow = ((slot - 1) % 4) + 1;           // 1-4
+    const isLeftLabel = withinRow <= 2;
+    const isLeftHalf  = (withinRow % 2) === 1;        // odd slots = left half
+    return { row, isLeftLabel, isLeftHalf };
   }
 
   // ============================================================
-  //  GENERATE THE PRINT SHEET
+  //  GENERATE LABELS
   // ============================================================
   function generateLabels() {
     const parts = getPartNumbers();
@@ -446,64 +457,58 @@
       return;
     }
 
-    // Figure out which slots will be filled
-    // Start at selectedSlot and fill in order
-    const filledSlots = {};  // { slotNumber: partNumber }
+    // Map each part to a slot starting from selectedSlot
+    const filledSlots = {};
     for (let i = 0; i < parts.length; i++) {
       const slot = selectedSlot + i;
       if (slot > 20) {
         document.getElementById('generate-info').textContent =
-          `⚠ Only ${20 - selectedSlot + 1} slots available starting at slot ${selectedSlot}. Trim your list or start at a lower slot.`;
+          `⚠ Only ${20 - selectedSlot + 1} slots available starting at slot ${selectedSlot}.`;
         return;
       }
       filledSlots[slot] = parts[i];
     }
 
-    // Visually mark filled slots on the picker
+    // Mark picker visually
     document.querySelectorAll('.slot-cell').forEach(c => {
+      if (c.classList.contains('gap')) return;
       const slot = parseInt(c.dataset.slot);
       c.classList.toggle('filled', !!filledSlots[slot]);
     });
 
-    // Build the print grid
-    // 5 rows, 3 columns (left label, gap, right label)
+    // Build the print grid — 5 rows × 3 cols (leftLabel | gap | rightLabel)
     const grid = document.getElementById('print-grid');
     grid.innerHTML = '';
 
-    // We need to build a 5-row layout with 3 grid columns:
-    // col 1 = left labels, col 2 = gap, col 3 = right labels
-    // Each label has 2 halves (top / bottom)
+    for (let row = 0; row < 5; row++) {
+      const baseSlot = row * 4 + 1;
 
-    for (let row = 1; row <= 5; row++) {
-      // LEFT column label
-      const leftSlotTop = (row - 1) * 2 + 1;     // 1, 3, 5, 7, 9
-      const leftSlotBot = leftSlotTop + 1;        // 2, 4, 6, 8, 10
-      grid.appendChild(buildLabel(filledSlots[leftSlotTop], filledSlots[leftSlotBot]));
+      // LEFT label on the sheet = slots baseSlot, baseSlot+1
+      const leftLabel = buildLabel(filledSlots[baseSlot], filledSlots[baseSlot + 1]);
+      grid.appendChild(leftLabel);
 
-      // GAP column (only needs to be added once, spans all rows)
-      if (row === 1) {
+      // GAP (added once, spans all rows)
+      if (row === 0) {
         const gap = document.createElement('div');
-        gap.className = 'gap-col';
         gap.style.gridColumn = '2';
         gap.style.gridRow = '1 / -1';
         grid.appendChild(gap);
       }
 
-      // RIGHT column label
-      const rightSlotTop = 10 + (row - 1) * 2 + 1;  // 11, 13, 15, 17, 19
-      const rightSlotBot = rightSlotTop + 1;         // 12, 14, 16, 18, 20
-      grid.appendChild(buildLabel(filledSlots[rightSlotTop], filledSlots[rightSlotBot]));
+      // RIGHT label on the sheet = slots baseSlot+2, baseSlot+3
+      const rightLabel = buildLabel(filledSlots[baseSlot + 2], filledSlots[baseSlot + 3]);
+      grid.appendChild(rightLabel);
     }
 
-    // Now render all the barcodes
+    // Render all barcodes
     document.querySelectorAll('.barcode-wrap svg').forEach(svg => {
       const partNum = svg.dataset.part;
       try {
         JsBarcode(svg, partNum, {
           format:       'CODE128',
-          width:        1.8,
-          height:       50,
-          displayValue: false,  // we show the text above separately
+          width:        1.6,
+          height:       80,
+          displayValue: false,
           margin:       0,
         });
       } catch (err) {
@@ -511,7 +516,7 @@
       }
     });
 
-    // Enable the print button
+    // Enable print
     const printBtn = document.getElementById('print-btn');
     printBtn.disabled = false;
     printBtn.style.opacity = '1';
@@ -521,46 +526,40 @@
   }
 
   // ============================================================
-  //  BUILD ONE PHYSICAL LABEL (2 halves)
-  //  topPart and bottomPart can be undefined = blank half
+  //  BUILD ONE PHYSICAL LABEL (2 halves side-by-side)
+  //  leftPart = slot for LEFT half (part text rotated -90°)
+  //  rightPart = slot for RIGHT half (part text rotated +90°)
   // ============================================================
-  function buildLabel(topPart, bottomPart) {
+  function buildLabel(leftPart, rightPart) {
     const label = document.createElement('div');
     label.className = 'label';
+    if (leftPart || rightPart) label.classList.add('filled');
 
-    // TOP HALF
-    const top = document.createElement('div');
-    top.className = 'half top';
-    if (topPart) {
-      top.innerHTML = `
-        <div class="part-text">${escapeHtml(topPart)}</div>
-        <div class="barcode-wrap"><svg data-part="${escapeHtml(topPart)}"></svg></div>
+    // LEFT half: part text on outside (left), barcode on cut side (right)
+    const left = document.createElement('div');
+    left.className = 'half left';
+    if (leftPart) {
+      left.innerHTML = `
+        <div class="part-text">${escapeHtml(leftPart)}</div>
+        <div class="barcode-wrap"><svg data-part="${escapeHtml(leftPart)}"></svg></div>
       `;
     }
-    label.appendChild(top);
+    label.appendChild(left);
 
-    // CUT LINE — only show if at least one half is filled
-    if (topPart || bottomPart) {
-      const cut = document.createElement('div');
-      cut.className = 'cut-line';
-      label.appendChild(cut);
-    }
-
-    // BOTTOM HALF (rotated 180°)
-    const bot = document.createElement('div');
-    bot.className = 'half bottom';
-    if (bottomPart) {
-      bot.innerHTML = `
-        <div class="part-text">${escapeHtml(bottomPart)}</div>
-        <div class="barcode-wrap"><svg data-part="${escapeHtml(bottomPart)}"></svg></div>
+    // RIGHT half: barcode on cut side (left), part text on outside (right)
+    const right = document.createElement('div');
+    right.className = 'half right';
+    if (rightPart) {
+      right.innerHTML = `
+        <div class="barcode-wrap"><svg data-part="${escapeHtml(rightPart)}"></svg></div>
+        <div class="part-text">${escapeHtml(rightPart)}</div>
       `;
     }
-    label.appendChild(bot);
+    label.appendChild(right);
 
     return label;
   }
 
-  // Basic XSS-safe text escape for the innerHTML injection
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, '&amp;')
@@ -571,7 +570,7 @@
   }
 
   // ============================================================
-  //  CLEAR EVERYTHING
+  //  CLEAR
   // ============================================================
   function clearAll() {
     document.getElementById('parts-input').value = '';
