@@ -9,14 +9,17 @@
   <!--
   ============================================================
     IP OF JORDAN MODDES
-    DocTrack Terminal v2.3
+    DocTrack Terminal v3.0 — Multi-Folder Build
     jordanmoddes.com | Cerilliant / MilliporeSigma — Internal Use Only
 
-    Changes in v2.3:
-      - Per-terminal TERMINAL_ID constant (set per deployment)
-      - UUID generated per scan for duplicate detection
-      - Shows retry queue flush result when backend responds
-      - Shows duplicate detection warning if backend rejects as dupe
+    New in v3.0:
+      • Multi-folder batch scanning
+      • New flow: Badge → Folder(s) → DONE → WIP/DROP → [Department]
+      • Each folder submits as its own Smartsheet row
+      • RESET button always visible top-left
+      • EVT-DONE barcode + on-screen DONE button
+      • 30-second timeout (was 15)
+      • Touch-friendly buttons for any touchscreen setup
   ============================================================
   -->
 
@@ -35,126 +38,31 @@
       padding: 24px;
     }
 
-    #step-label {
-      font-size: 1rem;
-      color: #4a6070;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    #prompt {
-      font-size: 2.8rem;
-      font-weight: bold;
-      color: #00c8ff;
-      text-align: center;
-      margin-bottom: 32px;
-      line-height: 1.2;
-    }
-
-    #scanned-value {
-      font-size: 1.5rem;
-      color: #00ff9d;
-      min-height: 2rem;
-      text-align: center;
-      margin-bottom: 32px;
-      letter-spacing: 2px;
-    }
-
-    #progress {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
+    /* ---- Top-left RESET button (always visible) ---- */
+    #reset-btn {
+      position: fixed;
+      top: 12px;
+      left: 12px;
       background: #1e2d3d;
-      border: 2px solid #1e2d3d;
-      transition: all 0.2s;
-    }
-    .dot.done   { background: #00ff9d; border-color: #00ff9d; }
-    .dot.active { background: #00c8ff; border-color: #00c8ff; }
-
-    #status {
-      font-size: 1.1rem;
-      text-align: center;
-      min-height: 2rem;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
-    #status.success { color: #00ff9d; }
-    #status.error   { color: #ff6b35; }
-    #status.warn    { color: #ffc857; }
-    #status.info    { color: #00c8ff; }
-
-    #substatus {
-      font-size: 0.8rem;
-      color: #4a6070;
-      text-align: center;
-      min-height: 1rem;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
-
-    #test-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .test-btn {
-      background: #1e2d3d;
-      border: 2px solid #ffc857;
-      color: #ffc857;
+      border: 2px solid #ff6b35;
+      color: #ff6b35;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 700;
       letter-spacing: 2px;
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.15s;
       text-transform: uppercase;
+      z-index: 50;
     }
-    .test-btn:hover {
-      background: #ffc857;
+    #reset-btn:hover {
+      background: #ff6b35;
       color: #0a0e13;
     }
 
-    #timeout-bar-wrap {
-      width: 300px;
-      height: 3px;
-      background: #1e2d3d;
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-    #timeout-bar {
-      height: 100%;
-      background: #ff6b35;
-      width: 100%;
-      transition: width 1s linear;
-    }
-
-    #hint {
-      font-size: 0.75rem;
-      color: #4a6070;
-      letter-spacing: 2px;
-      text-align: center;
-      margin-top: 10px;
-    }
-    #hint .key {
-      display: inline-block;
-      border: 1px solid #4a6070;
-      border-radius: 3px;
-      padding: 1px 6px;
-      margin: 0 3px;
-      color: #d0e4f0;
-    }
-
+    /* ---- Top-right terminal badge ---- */
     #terminal-badge {
       position: fixed;
       top: 12px;
@@ -167,6 +75,185 @@
       border-radius: 3px;
     }
 
+    /* ---- Main display ---- */
+    #step-label {
+      font-size: 1rem;
+      color: #4a6070;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    #prompt {
+      font-size: 2.6rem;
+      font-weight: bold;
+      color: #00c8ff;
+      text-align: center;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    #scanned-value {
+      font-size: 1.4rem;
+      color: #00ff9d;
+      min-height: 1.8rem;
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    /* ---- Progress dots ---- */
+    #progress {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #1e2d3d;
+      border: 2px solid #1e2d3d;
+      transition: all 0.2s;
+    }
+    .dot.done   { background: #00ff9d; border-color: #00ff9d; }
+    .dot.active { background: #00c8ff; border-color: #00c8ff; }
+
+    /* ---- Folder list (shown during multi-scan) ---- */
+    #folder-list-wrap {
+      display: none;
+      width: 90%;
+      max-width: 520px;
+      background: #111820;
+      border: 1px solid #1e2d3d;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    #folder-list-wrap.active { display: block; }
+    #folder-list-header {
+      font-size: 0.75rem;
+      color: #4a6070;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #folder-count {
+      color: #00ff9d;
+      font-weight: 700;
+    }
+    .folder-item {
+      color: #d0e4f0;
+      font-size: 1rem;
+      padding: 4px 0;
+      border-bottom: 1px solid #1e2d3d;
+      letter-spacing: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .folder-item:last-child { border-bottom: none; }
+    .folder-num {
+      color: #4a6070;
+      font-size: 0.85rem;
+      min-width: 30px;
+    }
+
+    /* ---- Status + substatus ---- */
+    #status {
+      font-size: 1.05rem;
+      text-align: center;
+      min-height: 1.8rem;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    #status.success { color: #00ff9d; }
+    #status.error   { color: #ff6b35; }
+    #status.warn    { color: #ffc857; }
+    #status.info    { color: #00c8ff; }
+
+    #substatus {
+      font-size: 0.78rem;
+      color: #4a6070;
+      text-align: center;
+      min-height: 1rem;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    /* ---- Timeout bar ---- */
+    #timeout-bar-wrap {
+      width: 300px;
+      height: 3px;
+      background: #1e2d3d;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    #timeout-bar {
+      height: 100%;
+      background: #ff6b35;
+      width: 100%;
+      transition: width 1s linear;
+    }
+
+    /* ---- Action buttons (DONE, test buttons) ---- */
+    #action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .action-btn {
+      background: #1e2d3d;
+      border: 2px solid #ffc857;
+      color: #ffc857;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+    .action-btn:hover { background: #ffc857; color: #0a0e13; }
+
+    /* Big DONE button gets its own style */
+    .action-btn.done-btn {
+      background: #00ff9d;
+      border-color: #00ff9d;
+      color: #0a0e13;
+      font-size: 1.1rem;
+      padding: 14px 36px;
+    }
+    .action-btn.done-btn:hover { background: #33ffb5; border-color: #33ffb5; }
+
+    /* ---- Hint at bottom ---- */
+    #hint {
+      font-size: 0.72rem;
+      color: #4a6070;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-top: 8px;
+    }
+    #hint .key {
+      display: inline-block;
+      border: 1px solid #4a6070;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin: 0 3px;
+      color: #d0e4f0;
+    }
+
+    /* ---- Hidden scanner input ---- */
     #scanner-input {
       position: fixed;
       top: -999px;
@@ -176,6 +263,7 @@
       height: 1px;
     }
 
+    /* ---- Manual entry overlay ---- */
     #manual-overlay {
       display: none;
       position: fixed;
@@ -197,9 +285,9 @@
       text-transform: uppercase;
     }
     #manual-prompt {
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: #ffc857;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       text-align: center;
     }
     #manual-field {
@@ -210,8 +298,8 @@
       border-radius: 4px;
       color: #ffc857;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 1.8rem;
-      padding: 16px 20px;
+      font-size: 1.6rem;
+      padding: 14px 20px;
       text-align: center;
       letter-spacing: 2px;
       outline: none;
@@ -219,7 +307,7 @@
     #manual-instructions {
       margin-top: 20px;
       color: #4a6070;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       letter-spacing: 2px;
     }
     #manual-instructions .key {
@@ -234,7 +322,7 @@
     footer {
       position: fixed;
       bottom: 12px;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: #1e2d3d;
       letter-spacing: 1px;
     }
@@ -242,13 +330,21 @@
 </head>
 <body>
 
+<!-- RESET button (top-left, always visible) -->
+<button id="reset-btn" onclick="hardReset(); setPrompt(0);">⟲ RESET</button>
+
+<!-- Terminal ID badge (top-right) -->
 <div id="terminal-badge">TERM-DEMO</div>
+
+<!-- Hidden scanner input -->
 <input id="scanner-input" type="text" autocomplete="off" autofocus />
 
+<!-- Main content -->
 <div id="step-label">Step 1 of 4</div>
 <div id="prompt">SCAN BADGE</div>
 <div id="scanned-value">&nbsp;</div>
 
+<!-- Progress dots -->
 <div id="progress">
   <div class="dot active" id="dot-1"></div>
   <div class="dot"        id="dot-2"></div>
@@ -256,17 +352,30 @@
   <div class="dot"        id="dot-4"></div>
 </div>
 
+<!-- Folder list (only shown during folder-scan step) -->
+<div id="folder-list-wrap">
+  <div id="folder-list-header">
+    <span>Folders Scanned</span>
+    <span id="folder-count">0</span>
+  </div>
+  <div id="folder-list"></div>
+</div>
+
+<!-- Status messages -->
 <div id="status">&nbsp;</div>
 <div id="substatus">&nbsp;</div>
 
+<!-- Timeout bar -->
 <div id="timeout-bar-wrap" style="visibility:hidden;">
   <div id="timeout-bar"></div>
 </div>
 
-<div id="test-buttons"></div>
+<!-- Action buttons (DONE, test buttons) -->
+<div id="action-buttons"></div>
 
 <div id="hint">SCANNER NOT WORKING? PRESS <span class="key">B</span> FOR MANUAL ENTRY</div>
 
+<!-- Manual entry overlay -->
 <div id="manual-overlay">
   <div id="manual-title">⚠ Manual Entry Mode</div>
   <div id="manual-prompt">Type value for current step</div>
@@ -285,18 +394,22 @@
   // ============================================================
   const DEMO_MODE     = false;
   const API_BASE_URL  = 'https://doctrack-backend-qga8.onrender.com';
-  const TERMINAL_ID   = 'TERM-DEMO';      // ← change this per physical terminal
-  const TIMEOUT_SECS  = 15;
+  const TERMINAL_ID   = 'TERM-DEMO';
+  const TIMEOUT_SECS  = 30;                // 30 seconds of inactivity before reset
 
 
   // ============================================================
-  //  STEPS
+  //  SCAN FLOW STEPS
+  //  Step 0: Badge scan
+  //  Step 1: Folder(s) scan — LOOP until DONE
+  //  Step 2: WIP or DROP scan
+  //  Step 3: Department scan (only if DROP)
   // ============================================================
   const STEPS = [
-    { label: 'Step 1 of 4', prompt: 'SCAN BADGE',      field: 'badge'      },
-    { label: 'Step 2 of 4', prompt: 'SCAN FOLDER ID',  field: 'docID'      },
-    { label: 'Step 3 of 4', prompt: 'SCAN WIP / DROP', field: 'eventType'  },
-    { label: 'Step 4 of 4', prompt: 'SCAN DEPARTMENT', field: 'department' },
+    { label: 'Step 1 of 4', prompt: 'SCAN BADGE',        field: 'badge'      },
+    { label: 'Step 2 of 4', prompt: 'SCAN FOLDER(S)',    field: 'folders'    },
+    { label: 'Step 3 of 4', prompt: 'SCAN WIP / DROP',   field: 'eventType'  },
+    { label: 'Step 4 of 4', prompt: 'SCAN DEPARTMENT',   field: 'department' },
   ];
 
 
@@ -307,6 +420,10 @@
     'EVT-WIP':  'WIP',
     'EVT-DROP': 'DROP-OFF',
   };
+
+  // Special barcodes
+  const DONE_BARCODE  = 'EVT-DONE';
+  const RESET_BARCODE = 'EVT-RESET';
 
   const DEPT_BARCODES = {
     'DEPT-PLAN': 'Planning',
@@ -320,28 +437,25 @@
 
 
   // ============================================================
+  //  STATE
+  // ============================================================
+  let currentStep   = 0;
+  let scan          = {};      // { badge, folders: [], eventType, department }
+  let entryMethod   = 'SCAN';  // 'SCAN' or 'MANUAL'
+  let manualMode    = false;
+  let timeoutHandle = null;
+  let batchUUID     = null;    // Base UUID for the batch; individual folders get a suffix
+
+
+  // ============================================================
   //  UUID GENERATOR
-  //  Builds a unique ID for each scan event so the backend can
-  //  reject duplicate submissions of the same scan.
+  //  Returns a base UUID; per-folder UUIDs append an index.
   // ============================================================
   function generateUUID() {
-    // Simple enough UUID-ish string for our needs:
-    // e.g. "scan-1729123456789-a7f3b2"
     const time = Date.now();
     const rand = Math.random().toString(16).slice(2, 8);
     return `scan-${time}-${rand}`;
   }
-
-
-  // ============================================================
-  //  STATE
-  // ============================================================
-  let currentStep   = 0;
-  let scan          = {};
-  let entryMethod   = 'SCAN';
-  let manualMode    = false;
-  let timeoutHandle = null;
-  let currentUUID   = null;   // UUID for this particular scan in progress
 
 
   // ============================================================
@@ -355,6 +469,7 @@
     document.getElementById('substatus').innerHTML     = '&nbsp;';
     document.getElementById('status').className        = '';
 
+    // Progress dots
     for (let i = 0; i < 4; i++) {
       const dot = document.getElementById(`dot-${i + 1}`);
       if (i < stepIndex)        dot.className = 'dot done';
@@ -362,7 +477,16 @@
       else                      dot.className = 'dot';
     }
 
-    renderTestButtons(stepIndex);
+    // Show folder list only on the folder step
+    const folderWrap = document.getElementById('folder-list-wrap');
+    if (STEPS[stepIndex].field === 'folders') {
+      folderWrap.classList.add('active');
+      renderFolderList();
+    } else {
+      folderWrap.classList.remove('active');
+    }
+
+    renderActionButtons(stepIndex);
   }
 
   function showStatus(msg, type) {
@@ -379,45 +503,89 @@
     document.getElementById('scanned-value').textContent = val;
   }
 
+  // ---- Folder list rendering ----
+  function renderFolderList() {
+    const folders = scan.folders || [];
+    document.getElementById('folder-count').textContent = folders.length;
+
+    const list = document.getElementById('folder-list');
+    list.innerHTML = '';
+
+    if (folders.length === 0) {
+      list.innerHTML = '<div class="folder-item"><span style="color:#4a6070">No folders scanned yet</span></div>';
+      return;
+    }
+
+    folders.forEach((f, i) => {
+      const item = document.createElement('div');
+      item.className = 'folder-item';
+      item.innerHTML = `
+        <span><span class="folder-num">#${i + 1}</span> ${escapeHtml(f)}</span>
+      `;
+      list.appendChild(item);
+    });
+  }
+
 
   // ============================================================
-  //  TEST BUTTONS (per step)
+  //  ACTION BUTTONS — contextual per step
   // ============================================================
-  function renderTestButtons(stepIndex) {
-    const wrap = document.getElementById('test-buttons');
+  function renderActionButtons(stepIndex) {
+    const wrap = document.getElementById('action-buttons');
     wrap.innerHTML = '';
 
-    if (stepIndex === 0) {
+    const field = STEPS[stepIndex].field;
+
+    // STEP 1: Badge — prefill test badge button
+    if (field === 'badge') {
       const btn = document.createElement('button');
-      btn.className = 'test-btn';
+      btn.className = 'action-btn';
       btn.textContent = 'PREFILL BADGE 257001';
       btn.onclick = () => processValue('257001', false);
       wrap.appendChild(btn);
     }
-    else if (stepIndex === 1) {
-      const btn = document.createElement('button');
-      btn.className = 'test-btn';
-      btn.textContent = 'TEST';
-      btn.onclick = () => processValue('test folder', false);
-      wrap.appendChild(btn);
+
+    // STEP 2: Folder(s) — test add-folder button AND big DONE button
+    else if (field === 'folders') {
+      const testBtn = document.createElement('button');
+      testBtn.className = 'action-btn';
+      testBtn.textContent = `TEST ADD FOLDER`;
+      testBtn.onclick = () => {
+        const n = (scan.folders || []).length + 1;
+        processValue(`test-folder-${n}`, false);
+      };
+      wrap.appendChild(testBtn);
+
+      // DONE button only appears when at least 1 folder scanned
+      if ((scan.folders || []).length > 0) {
+        const doneBtn = document.createElement('button');
+        doneBtn.className = 'action-btn done-btn';
+        doneBtn.textContent = '✓ DONE';
+        doneBtn.onclick = () => processValue(DONE_BARCODE, false);
+        wrap.appendChild(doneBtn);
+      }
     }
-    else if (stepIndex === 2) {
+
+    // STEP 3: WIP or DROP buttons
+    else if (field === 'eventType') {
       const wipBtn = document.createElement('button');
-      wipBtn.className = 'test-btn';
+      wipBtn.className = 'action-btn';
       wipBtn.textContent = 'WIP';
       wipBtn.onclick = () => processValue('EVT-WIP', false);
       wrap.appendChild(wipBtn);
 
       const dropBtn = document.createElement('button');
-      dropBtn.className = 'test-btn';
+      dropBtn.className = 'action-btn';
       dropBtn.textContent = 'DROP';
       dropBtn.onclick = () => processValue('EVT-DROP', false);
       wrap.appendChild(dropBtn);
     }
-    else if (stepIndex === 3) {
+
+    // STEP 4: Department — test department button
+    else if (field === 'department') {
       const btn = document.createElement('button');
-      btn.className = 'test-btn';
-      btn.textContent = 'TEST';
+      btn.className = 'action-btn';
+      btn.textContent = 'TEST DEPT';
       btn.onclick = () => processValue('DEPT-TEST', false);
       wrap.appendChild(btn);
     }
@@ -430,6 +598,7 @@
   function startTimeout() {
     clearTimeout(timeoutHandle);
 
+    // No timeout on the very first step
     if (currentStep === 0) {
       document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
       return;
@@ -466,103 +635,126 @@
     setTimeout(() => {
       hardReset();
       setPrompt(0);
-    }, 2500);
+    }, 3000);
   }
 
   function hardReset() {
-    scan = {};
+    scan = { folders: [] };
     currentStep = 0;
     entryMethod = 'SCAN';
-    currentUUID = null;
+    batchUUID = null;
     stopTimeout();
   }
 
 
   // ============================================================
-  //  SUBMIT
+  //  SUBMIT — one event per folder in the batch
+  //  All folders share: badge, eventType, department
+  //  Each folder gets its own Smartsheet row
   // ============================================================
-  async function submitEvent() {
+  async function submitBatch() {
     stopTimeout();
 
-    // Generate UUID for this scan (first time it's sent)
-    if (!currentUUID) currentUUID = generateUUID();
+    if (!batchUUID) batchUUID = generateUUID();
+    const folders = scan.folders || [];
 
-    const payload = {
-      timestamp:     new Date().toISOString(),
-      badge:         scan.badge,
-      docID:         scan.docID,
-      eventType:     scan.eventType,
-      department:    scan.department,
-      entry_method:  entryMethod,
-      event_uuid:    currentUUID,
-      terminal_id:   TERMINAL_ID,
-    };
+    document.getElementById('prompt').textContent = `SUBMITTING ${folders.length} FOLDER${folders.length !== 1 ? 'S' : ''}...`;
+    document.getElementById('action-buttons').innerHTML = '';
 
-    if (DEMO_MODE) {
-      console.log('SCAN EVENT LOGGED (demo):', payload);
-      const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
-      showStatus(`✓ LOGGED${methodTag} — ${scan.eventType} | ${scan.docID} | ${scan.department}`, 'success');
-      softReset();
-      return;
+    for (let i = 0; i < 4; i++) {
+      document.getElementById(`dot-${i + 1}`).className = 'dot done';
     }
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/scan-log`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload),
-      });
+    let succeeded = 0;
+    let failed    = 0;
+    let queued    = 0;
 
-      const result = await response.json();
-      console.log('Backend response:', result);
+    for (let i = 0; i < folders.length; i++) {
+      const folderID = folders[i];
+      const payload = {
+        timestamp:     new Date().toISOString(),
+        badge:         scan.badge,
+        docID:         folderID,
+        eventType:     scan.eventType,
+        department:    scan.department || 'N/A (WIP)',
+        entry_method:  entryMethod,
+        event_uuid:    `${batchUUID}-${i + 1}`,  // unique per folder
+        terminal_id:   TERMINAL_ID,
+      };
 
-      // Duplicate detection
-      if (result.duplicate) {
-        showStatus('⚠ DUPLICATE — ALREADY LOGGED', 'warn');
-        softReset();
-        return;
+      if (DEMO_MODE) {
+        console.log('SCAN EVENT (demo):', payload);
+        succeeded++;
+        continue;
       }
 
-      if (result.ok) {
-        const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
-        const ssOk = result.smartsheet && result.smartsheet.ok;
-        const ssStatus = ssOk ? ' ✓ SMARTSHEET' : ' ⚠ QUEUED FOR RETRY';
-        showStatus(`✓ LOGGED${methodTag}${ssStatus}`, ssOk ? 'success' : 'warn');
+      try {
+        const response = await fetch(`${API_BASE_URL}/scan-log`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload),
+        });
+        const result = await response.json();
 
-        // Show retry queue flush info if anything happened
-        const rf = result.retry_flushed;
-        if (rf && rf.attempted > 0) {
-          showSubstatus(`retry flush: ${rf.succeeded} sent, ${rf.failed} still queued`);
+        if (result.duplicate) {
+          // Treat duplicate as succeeded — nothing to do
+          succeeded++;
+        } else if (result.ok) {
+          if (result.smartsheet && result.smartsheet.ok) {
+            succeeded++;
+          } else {
+            queued++;
+          }
+        } else {
+          failed++;
         }
-
-        if (!ssOk && result.smartsheet) {
-          console.error('Smartsheet error:', result.smartsheet.error);
-        }
-      } else {
-        showStatus(`⚠ ERROR: ${result.error || 'Unknown'}`, 'error');
+      } catch (err) {
+        console.error('Network error on folder', folderID, err);
+        failed++;
       }
-    } catch (err) {
-      console.error('Network error:', err);
-      showStatus('⚠ NETWORK ERROR — TRY AGAIN', 'error');
     }
+
+    // Show final result
+    const total = folders.length;
+    const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
+
+    if (failed === 0 && queued === 0) {
+      showStatus(`✓ ${total} FOLDER${total !== 1 ? 'S' : ''} LOGGED${methodTag} ✓ SMARTSHEET`, 'success');
+    } else if (failed === 0 && queued > 0) {
+      showStatus(`✓ ${succeeded} LOGGED, ${queued} QUEUED FOR RETRY`, 'warn');
+    } else {
+      showStatus(`⚠ ${succeeded} OK, ${queued} QUEUED, ${failed} FAILED`, 'error');
+    }
+
+    showSubstatus(`batch ${batchUUID} — ${scan.eventType} → ${scan.department || 'N/A (WIP)'}`);
 
     softReset();
   }
 
 
   // ============================================================
-  //  PROCESS VALUE
+  //  PROCESS VALUE — called every time a scan or button click happens
   // ============================================================
   function processValue(value, isManual) {
     value = (value || '').trim();
     if (!value) return;
 
+    // Global reset barcode works from anywhere
+    if (value.toUpperCase() === RESET_BARCODE) {
+      hardReset();
+      setPrompt(0);
+      showStatus('⟲ RESET — start over', 'info');
+      return;
+    }
+
     if (isManual) entryMethod = 'MANUAL';
 
     const field = STEPS[currentStep].field;
 
+    // ---- STEP 1: BADGE ----
     if (field === 'badge') {
       scan.badge = value;
+      scan.folders = [];
       flashValue(value + (isManual ? ' (manual)' : ''));
       currentStep++;
       setPrompt(currentStep);
@@ -570,15 +762,32 @@
       return;
     }
 
-    if (field === 'docID') {
-      scan.docID = value;
-      flashValue(value + (isManual ? ' (manual)' : ''));
-      currentStep++;
-      setPrompt(currentStep);
+    // ---- STEP 2: FOLDERS (loop) ----
+    if (field === 'folders') {
+      // DONE barcode ends the folder loop
+      if (value.toUpperCase() === DONE_BARCODE) {
+        if ((scan.folders || []).length === 0) {
+          showStatus('⚠ SCAN AT LEAST ONE FOLDER FIRST', 'error');
+          return;
+        }
+        currentStep++;
+        setPrompt(currentStep);
+        startTimeout();
+        return;
+      }
+
+      // Otherwise add to the folder list
+      scan.folders = scan.folders || [];
+      scan.folders.push(value + (isManual ? ' (manual)' : ''));
+      flashValue(`+ ${value}`);
+      showSubstatus(`${scan.folders.length} folder${scan.folders.length !== 1 ? 's' : ''} scanned — scan DONE or press finish`);
+      renderFolderList();
+      renderActionButtons(currentStep);  // re-render to show DONE button
       startTimeout();
       return;
     }
 
+    // ---- STEP 3: WIP or DROP ----
     if (field === 'eventType') {
       let mapped = EVENT_BARCODES[value.toUpperCase()];
       if (!mapped) {
@@ -594,23 +803,21 @@
       scan.eventType = mapped;
       flashValue(mapped + (isManual ? ' (manual)' : ''));
 
+      // WIP submits immediately (no department needed)
       if (mapped === 'WIP') {
         scan.department = 'N/A (WIP)';
-        for (let i = 0; i < 4; i++) {
-          document.getElementById(`dot-${i + 1}`).className = 'dot done';
-        }
-        document.getElementById('prompt').textContent = 'SUBMITTING...';
-        document.getElementById('test-buttons').innerHTML = '';
-        submitEvent();
+        submitBatch();
         return;
       }
 
+      // DROP advances to department
       currentStep++;
       setPrompt(currentStep);
       startTimeout();
       return;
     }
 
+    // ---- STEP 4: DEPARTMENT ----
     if (field === 'department') {
       let mapped = DEPT_BARCODES[value.toUpperCase()];
       if (!mapped) {
@@ -628,13 +835,7 @@
 
       scan.department = mapped;
       flashValue(mapped + (isManual ? ' (manual)' : ''));
-
-      for (let i = 0; i < 4; i++) {
-        document.getElementById(`dot-${i + 1}`).className = 'dot done';
-      }
-      document.getElementById('prompt').textContent = 'SUBMITTING...';
-      document.getElementById('test-buttons').innerHTML = '';
-      submitEvent();
+      submitBatch();
       return;
     }
   }
@@ -651,16 +852,15 @@
 
     const stepPrompts = {
       0: 'Enter badge number',
-      1: 'Enter folder ID',
+      1: 'Enter folder ID (or DONE to finish)',
       2: 'Enter WIP or DROP',
-      3: 'Enter department (e.g. Lab, QC Review)',
+      3: 'Enter department',
     };
     prompt.textContent = stepPrompts[currentStep];
 
     overlay.classList.add('active');
     field.value = '';
     field.focus();
-
     startTimeout();
   }
 
@@ -674,7 +874,9 @@
   manualField.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      const val = manualField.value;
+      let val = manualField.value;
+      // Allow typing "DONE" in manual mode to finish folder scanning
+      if (val.trim().toUpperCase() === 'DONE') val = DONE_BARCODE;
       closeManualEntry();
       processValue(val, true);
     } else if (e.key === 'Escape') {
@@ -717,6 +919,7 @@
 
   // ============================================================
   //  FOCUS MANAGEMENT
+  //  Keep the hidden input focused except when clicking buttons
   // ============================================================
   function refocus() {
     if (manualMode) {
@@ -727,20 +930,36 @@
   }
 
   document.addEventListener('click', (e) => {
-    if (!e.target.classList.contains('test-btn')) {
-      refocus();
+    // Don't yank focus when clicking action buttons or reset
+    if (e.target.classList.contains('action-btn') ||
+        e.target.id === 'reset-btn' ||
+        e.target.closest('#reset-btn')) {
+      return;
     }
+    refocus();
   });
   document.addEventListener('focusout', () => setTimeout(refocus, 50));
   window.addEventListener('load',       refocus);
 
 
   // ============================================================
+  //  HELPERS
+  // ============================================================
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+
+  // ============================================================
   //  INIT
   // ============================================================
+  hardReset();
   setPrompt(0);
-
-  // Update the terminal badge display
   document.getElementById('terminal-badge').textContent = TERMINAL_ID;
 </script>
 
