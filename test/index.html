@@ -657,20 +657,26 @@
 
     if (!batchUUID) batchUUID = generateUUID();
     const folders = scan.folders || [];
+    const total = folders.length;
 
-    document.getElementById('prompt').textContent = `SUBMITTING ${folders.length} FOLDER${folders.length !== 1 ? 'S' : ''}...`;
+    document.getElementById('prompt').textContent = `SUBMITTING ${total} FOLDER${total !== 1 ? 'S' : ''}...`;
     document.getElementById('action-buttons').innerHTML = '';
 
     for (let i = 0; i < 4; i++) {
       document.getElementById(`dot-${i + 1}`).className = 'dot done';
     }
 
-    let succeeded = 0;
-    let failed    = 0;
-    let queued    = 0;
+    // Live progress tracker — updates as each fetch completes
+    let completed = 0;
+    showSubstatus(`0 of ${total} submitted...`);
 
-    for (let i = 0; i < folders.length; i++) {
-      const folderID = folders[i];
+    // ============================================================
+    //  PARALLEL SUBMISSION
+    //  Fire all folder requests simultaneously instead of one at
+    //  a time. 20 folders now takes ~2-4 seconds instead of 60+.
+    //  Each request's promise resolves to { status, folderID }.
+    // ============================================================
+    const submitOne = async (folderID, index) => {
       const payload = {
         timestamp:     new Date().toISOString(),
         badge:         scan.badge,
@@ -678,14 +684,15 @@
         eventType:     scan.eventType,
         department:    scan.department || 'N/A (WIP)',
         entry_method:  entryMethod,
-        event_uuid:    `${batchUUID}-${i + 1}`,  // unique per folder
+        event_uuid:    `${batchUUID}-${index + 1}`,
         terminal_id:   TERMINAL_ID,
       };
 
       if (DEMO_MODE) {
         console.log('SCAN EVENT (demo):', payload);
-        succeeded++;
-        continue;
+        completed++;
+        showSubstatus(`${completed} of ${total} submitted...`);
+        return { status: 'succeeded', folderID };
       }
 
       try {
@@ -696,26 +703,33 @@
         });
         const result = await response.json();
 
-        if (result.duplicate) {
-          // Treat duplicate as succeeded — nothing to do
-          succeeded++;
-        } else if (result.ok) {
-          if (result.smartsheet && result.smartsheet.ok) {
-            succeeded++;
-          } else {
-            queued++;
-          }
-        } else {
-          failed++;
-        }
-      } catch (err) {
-        console.error('Network error on folder', folderID, err);
-        failed++;
-      }
-    }
+        completed++;
+        showSubstatus(`${completed} of ${total} submitted...`);
 
-    // Show final result
-    const total = folders.length;
+        if (result.duplicate) return { status: 'succeeded', folderID };
+        if (result.ok) {
+          if (result.smartsheet && result.smartsheet.ok) {
+            return { status: 'succeeded', folderID };
+          }
+          return { status: 'queued', folderID };
+        }
+        return { status: 'failed', folderID, error: result.error };
+      } catch (err) {
+        completed++;
+        showSubstatus(`${completed} of ${total} submitted...`);
+        console.error('Network error on folder', folderID, err);
+        return { status: 'failed', folderID, error: err.message };
+      }
+    };
+
+    // Fire them all at once; Promise.all waits for them to all settle
+    const results = await Promise.all(folders.map((f, i) => submitOne(f, i)));
+
+    // Tally the results
+    const succeeded = results.filter(r => r.status === 'succeeded').length;
+    const queued    = results.filter(r => r.status === 'queued').length;
+    const failed    = results.filter(r => r.status === 'failed').length;
+
     const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
 
     if (failed === 0 && queued === 0) {
