@@ -653,15 +653,26 @@
   //  Each folder gets its own Smartsheet row
   // ============================================================
   async function submitBatch() {
+    // Fully stop and HIDE the timeout bar — it must not keep draining
+    // during submission (was confusing operators on WIP path)
     stopTimeout();
+    document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
+
+    // Clear any stale status messages from the previous step
+    document.getElementById('status').innerHTML = '&nbsp;';
+    document.getElementById('status').className = '';
 
     if (!batchUUID) batchUUID = generateUUID();
     const folders = scan.folders || [];
     const total = folders.length;
 
+    // Clear step label, show big "SUBMITTING..." in prompt, clear action buttons
+    document.getElementById('step-label').textContent = 'BATCH SUBMIT';
     document.getElementById('prompt').textContent = `SUBMITTING ${total} FOLDER${total !== 1 ? 'S' : ''}...`;
     document.getElementById('action-buttons').innerHTML = '';
+    document.getElementById('scanned-value').innerHTML = '&nbsp;';
 
+    // All dots done — visual confirmation the scan flow is complete
     for (let i = 0; i < 4; i++) {
       document.getElementById(`dot-${i + 1}`).className = 'dot done';
     }
@@ -820,6 +831,8 @@
       // WIP submits immediately (no department needed)
       if (mapped === 'WIP') {
         scan.department = 'N/A (WIP)';
+        // Mark step 4 done visually since we're skipping it
+        currentStep = 3;
         submitBatch();
         return;
       }
