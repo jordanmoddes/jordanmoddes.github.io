@@ -612,75 +612,68 @@
   //  request. Backend writes all rows to Smartsheet in ONE API
   //  call. Way faster and no Render resource exhaustion.
   // ============================================================
-  async function submitBatch() {
-    stopTimeout();
-    document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
-
-    document.getElementById('status').innerHTML = '&nbsp;';
-    document.getElementById('status').className = '';
-
-    if (!batchUUID) batchUUID = generateUUID();
-    const folders = scan.folders || [];
-    const total = folders.length;
-
-    document.getElementById('step-label').textContent = 'BATCH SUBMIT';
-    document.getElementById('prompt').textContent = `SENDING ${total} FOLDER${total !== 1 ? 'S' : ''}...`;
-    document.getElementById('action-buttons').innerHTML = '';
-    document.getElementById('scanned-value').innerHTML = '&nbsp;';
-
-    for (let i = 0; i < 4; i++) {
-      document.getElementById(`dot-${i + 1}`).className = 'dot done';
-    }
-
-    // Build the events array — one entry per folder
-    const events = folders.map((folderID, i) => ({
-      timestamp:    new Date().toISOString(),
-      badge:        scan.badge,
-      docID:        folderID,
-      eventType:    scan.eventType,
-      department:   scan.department || 'N/A (WIP)',
-      entry_method: entryMethod,
-      event_uuid:   `${batchUUID}-${i + 1}`,
-      terminal_id:  TERMINAL_ID,
-    }));
-
-    if (DEMO_MODE) {
-      console.log('BATCH (demo):', events);
-      showStatus(`✓ ${total} FOLDER${total !== 1 ? 'S' : ''} LOGGED (demo)`, 'success');
-      softReset();
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/scan-batch`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ events }),
-      });
-      const result = await response.json();
-      console.log('Batch response:', result);
-
-      const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
-      const ssOk = result.smartsheet && result.smartsheet.ok;
-      const written = result.smartsheet ? (result.smartsheet.rows_written || 0) : 0;
-      const dupes = result.duplicates || 0;
-
-      if (ssOk && written === result.accepted) {
-        showStatus(`✓ ${written} FOLDER${written !== 1 ? 'S' : ''} LOGGED${methodTag} ✓ SMARTSHEET`, 'success');
-      } else if (!ssOk) {
-        showStatus(`⚠ ${result.accepted} QUEUED FOR RETRY — BACKEND SAVED`, 'warn');
-      } else {
-        showStatus(`✓ ${written} LOGGED, ${dupes} DUPLICATES`, 'success');
+    async function submitBatch() {
+        stopTimeout();
+        document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
+    
+        document.getElementById('status').innerHTML = ' ';
+        document.getElementById('status').className = '';
+    
+        if (!batchUUID) batchUUID = generateUUID();
+        const folders = scan.folders || [];
+        const total = folders.length;
+    
+        document.getElementById('step-label').textContent = 'BATCH SUBMIT';
+        document.getElementById('prompt').textContent = SENDING ${total} FOLDER${total !== 1 ? 'S' : ''}...;
+        document.getElementById('action-buttons').innerHTML = '';
+        document.getElementById('scanned-value').innerHTML = ' ';
+    
+        for (let i = 0; i < 4; i++) {
+          document.getElementById(dot-${i + 1}).className = 'dot done';
+        }
+    
+        const events = folders.map((folderID, i) => ({
+          timestamp:    new Date().toISOString(),
+          badge:        scan.badge,
+          docID:        folderID,
+          eventType:    scan.eventType,
+          department:   scan.department || 'N/A (WIP)',
+          entry_method: entryMethod,
+          event_uuid:   ${batchUUID}-${i + 1},
+          terminal_id:  TERMINAL_ID,
+        }));
+    
+        if (DEMO_MODE) {
+          console.log('BATCH (demo):', events);
+          showStatus(✓ THANK YOU — ${total} FOLDER${total !== 1 ? 'S' : ''} LOGGED, 'success');
+          softReset();
+          return;
+        }
+    
+        try {
+          const response = await fetch(${API_BASE_URL}/scan-batch, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ events }),
+          });
+          const result = await response.json();
+          console.log('Batch response:', result);
+    
+          const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
+    
+          // Simple "thank you" message — no buffer/mode noise for the user
+          if (result.ok) {
+            showStatus(✓ THANK YOU — ${result.accepted} FOLDER${result.accepted !== 1 ? 'S' : ''} LOGGED${methodTag}, 'success');
+          } else {
+            showStatus(⚠ ERROR: ${result.error || 'Unknown'}, 'error');
+          }
+        } catch (err) {
+          console.error('Network error on batch:', err);
+          showStatus('⚠ NETWORK ERROR — TRY AGAIN', 'error');
+        }
+    
+        softReset();
       }
-
-      showSubstatus(`batch ${batchUUID} — ${scan.eventType} → ${scan.department || 'N/A (WIP)'}`);
-    } catch (err) {
-      console.error('Network error on batch:', err);
-      showStatus('⚠ NETWORK ERROR — TRY AGAIN', 'error');
-    }
-
-    softReset();
-  }
 
 
   // ============================================================
