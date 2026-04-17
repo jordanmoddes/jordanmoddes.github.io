@@ -1,1 +1,594 @@
-a
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DocTrack Labels — Avery 5163</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <!--
+  ============================================================
+    IP OF JORDAN MODDES
+    DocTrack Label Generator v1.0
+    Designed & Built by Jordan Moddes | jordanmoddes.com
+    For: Cerilliant / MilliporeSigma — Internal Use Only
+
+    Generates Code 128 barcode labels on Avery 5163 sheets.
+    10 physical labels per sheet, each split into 2 halves
+    (top half upright, bottom half flipped 180° per user spec)
+    = 20 slots per sheet.
+
+    Slot numbering:
+      1  / 2   ← top label, left column  (1=top half, 2=bottom half)
+      3  / 4   ← row 2, left column
+      5  / 6   ← row 3, left column
+      7  / 8   ← row 4, left column
+      9  / 10  ← row 5, left column
+      11 / 12  ← top label, right column
+      13 / 14  ← row 2, right column
+      15 / 16  ← row 3, right column
+      17 / 18  ← row 4, right column
+      19 / 20  ← row 5, right column
+
+    Avery 5163 dimensions:
+      - 2 columns x 5 rows = 10 labels
+      - Each label: 4" x 2"
+      - Top/bottom margin: 0.5"
+      - Left/right margin: 0.15625"
+      - Column gap: 0.1875"
+      - No row gap (labels touch vertically)
+  ============================================================
+  -->
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0e13;
+      color: #d0e4f0;
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 2rem;
+      color: #00c8ff;
+      letter-spacing: 3px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #4a6070;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #111820;
+      border: 1px solid #1e2d3d;
+      border-radius: 8px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: #4a6070;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      background: #0a0e13;
+      border: 1px solid #1e2d3d;
+      border-radius: 4px;
+      color: #d0e4f0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      padding: 12px 14px;
+      min-height: 200px;
+      resize: vertical;
+      outline: none;
+    }
+    textarea:focus { border-color: #00c8ff; }
+
+    /* Slot grid */
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .slot-cell {
+      aspect-ratio: 1;
+      background: #0a0e13;
+      border: 1px solid #1e2d3d;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: #4a6070;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.1s;
+    }
+    .slot-cell:hover { border-color: #4a6070; color: #d0e4f0; }
+    .slot-cell.selected {
+      background: #00c8ff;
+      color: #0a0e13;
+      border-color: #00c8ff;
+      font-weight: 700;
+    }
+    .slot-cell.filled {
+      background: #1e2d3d;
+      border-color: #00ff9d;
+      color: #00ff9d;
+    }
+    .slot-cell.filled.selected {
+      background: #00c8ff;
+      color: #0a0e13;
+      border-color: #00c8ff;
+    }
+
+    .slot-hint {
+      font-size: 0.75rem;
+      color: #4a6070;
+      font-family: 'Share Tech Mono', monospace;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    button {
+      background: #00c8ff;
+      border: none;
+      color: #000;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 13px 26px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    button:hover { background: #33d6ff; transform: translateY(-1px); }
+    button.secondary {
+      background: transparent;
+      border: 1px solid #1e2d3d;
+      color: #4a6070;
+    }
+    button.secondary:hover { border-color: #00c8ff; color: #00c8ff; }
+    button.print {
+      background: #00ff9d;
+    }
+    button.print:hover { background: #33ffb5; }
+
+    .info {
+      font-size: 0.85rem;
+      color: #4a6070;
+      font-family: 'Share Tech Mono', monospace;
+      margin-top: 12px;
+      letter-spacing: 1px;
+    }
+
+    /* ============================================================
+       PRINT LAYOUT — this is what gets printed on the Avery sheet
+       Everything here is in inches, carefully calibrated
+    ============================================================ */
+    .print-sheet {
+      display: none;   /* hidden on screen, only shown when printing */
+      width:  8.5in;
+      height: 11in;
+      padding-top:    0.5in;
+      padding-bottom: 0.5in;
+      padding-left:   0.15625in;
+      padding-right:  0.15625in;
+      background: white;
+      position: relative;
+    }
+
+    .print-grid {
+      display: grid;
+      grid-template-columns: 4in 0.1875in 4in;  /* left col, gap, right col */
+      grid-template-rows:    repeat(5, 2in);     /* 5 rows of 2in each */
+      width:  100%;
+      height: 100%;
+    }
+
+    /* Each physical Avery label contains 2 halves */
+    .label {
+      width: 4in;
+      height: 2in;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* The spacer column between left/right */
+    .gap-col { grid-row: 1 / -1; }
+
+    .half {
+      width: 4in;
+      height: 1in;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.1in;
+      overflow: hidden;
+    }
+
+    /* Bottom half is flipped 180° per user spec */
+    .half.bottom {
+      transform: rotate(180deg);
+    }
+
+    /* Cut line between the two halves */
+    .cut-line {
+      width: 100%;
+      border-top: 1px dashed #999;
+      position: relative;
+    }
+    .cut-line::before {
+      content: "✂";
+      position: absolute;
+      left: 0.1in;
+      top: -0.08in;
+      font-size: 7pt;
+      color: #999;
+      background: white;
+      padding: 0 3px;
+    }
+
+    .part-text {
+      font-family: 'Courier New', monospace;
+      font-size: 10pt;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 0.05in;
+      text-align: center;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .barcode-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .barcode-wrap svg {
+      max-width: 3.8in;
+      height: 0.65in;
+    }
+
+    /* ============================================================
+       PRINT MEDIA QUERY — when user clicks print, hide screen UI
+       and show the label sheet at exact physical size
+    ============================================================ */
+    @media print {
+      @page {
+        size: letter;
+        margin: 0;
+      }
+      body {
+        background: white;
+        padding: 0;
+        margin: 0;
+      }
+      .no-print { display: none !important; }
+      .print-sheet {
+        display: block !important;
+        page-break-after: always;
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.7rem;
+      color: #1e2d3d;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1px;
+    }
+    footer a { color: #00c8ff; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="no-print">
+  <div class="container">
+    <h1>DOCTRACK LABELS</h1>
+    <div class="subtitle">Avery 5163 — 20 Barcodes Per Sheet</div>
+
+    <!-- Step 1: enter part numbers -->
+    <div class="card">
+      <label for="parts-input">Part Numbers — One Per Line</label>
+      <textarea id="parts-input" placeholder="PHR2363-3X75MG&#10;CRM46916&#10;PHR1208-1.2ML&#10;..."></textarea>
+      <div class="info" id="parts-count">0 part numbers entered</div>
+    </div>
+
+    <!-- Step 2: choose starting slot -->
+    <div class="card">
+      <label>Starting Slot — Click Where Printing Should Begin</label>
+      <div class="slot-hint">
+        Slots 1-10 = LEFT COLUMN (top to bottom) &nbsp;|&nbsp; Slots 11-20 = RIGHT COLUMN (top to bottom)
+      </div>
+      <div class="slot-grid" id="slot-grid"></div>
+      <div class="info" id="slot-info">Selected: slot 1 (default)</div>
+    </div>
+
+    <!-- Step 3: generate + print -->
+    <div class="card">
+      <div class="btn-row">
+        <button onclick="generateLabels()">Generate Preview</button>
+        <button class="print" onclick="window.print()" id="print-btn" disabled style="opacity:0.4;">Print Labels</button>
+        <button class="secondary" onclick="clearAll()">Clear</button>
+      </div>
+      <div class="info" id="generate-info">Enter part numbers and click Generate.</div>
+    </div>
+  </div>
+
+  <footer>
+    IP OF JORDAN MODDES &nbsp;|&nbsp; <a href="https://jordanmoddes.com">jordanmoddes.com</a> &nbsp;|&nbsp; INTERNAL USE ONLY
+  </footer>
+</div>
+
+<!-- ============================================================
+  PRINT SHEET — this is what actually prints
+  Populated by generateLabels() below
+============================================================ -->
+<div class="print-sheet" id="print-sheet">
+  <div class="print-grid" id="print-grid">
+    <!-- Labels will be injected here by JS -->
+  </div>
+</div>
+
+<!-- JsBarcode — proper Code 128 with start/stop/checksum -->
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+<script>
+  // ============================================================
+  //  STATE
+  // ============================================================
+  let selectedSlot = 1;  // 1-20
+
+  // ============================================================
+  //  BUILD THE SLOT PICKER GRID (20 cells)
+  // ============================================================
+  function buildSlotGrid() {
+    const grid = document.getElementById('slot-grid');
+    grid.innerHTML = '';
+    for (let i = 1; i <= 20; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'slot-cell';
+      cell.textContent = i;
+      cell.dataset.slot = i;
+      if (i === selectedSlot) cell.classList.add('selected');
+      cell.onclick = () => selectSlot(i);
+      grid.appendChild(cell);
+    }
+  }
+
+  function selectSlot(n) {
+    selectedSlot = n;
+    document.querySelectorAll('.slot-cell').forEach(c => {
+      c.classList.toggle('selected', parseInt(c.dataset.slot) === n);
+    });
+    document.getElementById('slot-info').textContent = `Selected: slot ${n}`;
+  }
+
+  // ============================================================
+  //  PARSE PART NUMBERS FROM TEXTAREA
+  //  Splits on newlines, trims, removes empties
+  // ============================================================
+  function getPartNumbers() {
+    const raw = document.getElementById('parts-input').value;
+    return raw.split('\n')
+              .map(p => p.trim())
+              .filter(p => p.length > 0);
+  }
+
+  // Update the live count as user types
+  document.getElementById('parts-input').addEventListener('input', () => {
+    const count = getPartNumbers().length;
+    document.getElementById('parts-count').textContent =
+      `${count} part number${count !== 1 ? 's' : ''} entered`;
+  });
+
+  // ============================================================
+  //  SLOT → PHYSICAL POSITION
+  //  Map slot number (1-20) to grid position and half (top/bottom)
+  //
+  //  Left column: slots 1,2 = row 1 / 3,4 = row 2 / ...
+  //  Right column: slots 11,12 = row 1 / 13,14 = row 2 / ...
+  //  Odd slots = top half, Even slots = bottom half
+  // ============================================================
+  function slotToPosition(slot) {
+    const isLeft = slot <= 10;
+    const localSlot = isLeft ? slot : slot - 10;  // 1-10 within the column
+    const row = Math.ceil(localSlot / 2);          // 1-5
+    const isTop = (localSlot % 2) === 1;           // odd = top
+    return { column: isLeft ? 'left' : 'right', row, isTop };
+  }
+
+  // ============================================================
+  //  GENERATE THE PRINT SHEET
+  // ============================================================
+  function generateLabels() {
+    const parts = getPartNumbers();
+
+    if (parts.length === 0) {
+      document.getElementById('generate-info').textContent = '⚠ Enter at least one part number.';
+      return;
+    }
+
+    // Figure out which slots will be filled
+    // Start at selectedSlot and fill in order
+    const filledSlots = {};  // { slotNumber: partNumber }
+    for (let i = 0; i < parts.length; i++) {
+      const slot = selectedSlot + i;
+      if (slot > 20) {
+        document.getElementById('generate-info').textContent =
+          `⚠ Only ${20 - selectedSlot + 1} slots available starting at slot ${selectedSlot}. Trim your list or start at a lower slot.`;
+        return;
+      }
+      filledSlots[slot] = parts[i];
+    }
+
+    // Visually mark filled slots on the picker
+    document.querySelectorAll('.slot-cell').forEach(c => {
+      const slot = parseInt(c.dataset.slot);
+      c.classList.toggle('filled', !!filledSlots[slot]);
+    });
+
+    // Build the print grid
+    // 5 rows, 3 columns (left label, gap, right label)
+    const grid = document.getElementById('print-grid');
+    grid.innerHTML = '';
+
+    // We need to build a 5-row layout with 3 grid columns:
+    // col 1 = left labels, col 2 = gap, col 3 = right labels
+    // Each label has 2 halves (top / bottom)
+
+    for (let row = 1; row <= 5; row++) {
+      // LEFT column label
+      const leftSlotTop = (row - 1) * 2 + 1;     // 1, 3, 5, 7, 9
+      const leftSlotBot = leftSlotTop + 1;        // 2, 4, 6, 8, 10
+      grid.appendChild(buildLabel(filledSlots[leftSlotTop], filledSlots[leftSlotBot]));
+
+      // GAP column (only needs to be added once, spans all rows)
+      if (row === 1) {
+        const gap = document.createElement('div');
+        gap.className = 'gap-col';
+        gap.style.gridColumn = '2';
+        gap.style.gridRow = '1 / -1';
+        grid.appendChild(gap);
+      }
+
+      // RIGHT column label
+      const rightSlotTop = 10 + (row - 1) * 2 + 1;  // 11, 13, 15, 17, 19
+      const rightSlotBot = rightSlotTop + 1;         // 12, 14, 16, 18, 20
+      grid.appendChild(buildLabel(filledSlots[rightSlotTop], filledSlots[rightSlotBot]));
+    }
+
+    // Now render all the barcodes
+    document.querySelectorAll('.barcode-wrap svg').forEach(svg => {
+      const partNum = svg.dataset.part;
+      try {
+        JsBarcode(svg, partNum, {
+          format:       'CODE128',
+          width:        1.8,
+          height:       50,
+          displayValue: false,  // we show the text above separately
+          margin:       0,
+        });
+      } catch (err) {
+        console.error('Barcode error for', partNum, err);
+      }
+    });
+
+    // Enable the print button
+    const printBtn = document.getElementById('print-btn');
+    printBtn.disabled = false;
+    printBtn.style.opacity = '1';
+
+    document.getElementById('generate-info').textContent =
+      `✓ ${parts.length} label${parts.length !== 1 ? 's' : ''} generated in slots ${selectedSlot}-${selectedSlot + parts.length - 1}. Click Print.`;
+  }
+
+  // ============================================================
+  //  BUILD ONE PHYSICAL LABEL (2 halves)
+  //  topPart and bottomPart can be undefined = blank half
+  // ============================================================
+  function buildLabel(topPart, bottomPart) {
+    const label = document.createElement('div');
+    label.className = 'label';
+
+    // TOP HALF
+    const top = document.createElement('div');
+    top.className = 'half top';
+    if (topPart) {
+      top.innerHTML = `
+        <div class="part-text">${escapeHtml(topPart)}</div>
+        <div class="barcode-wrap"><svg data-part="${escapeHtml(topPart)}"></svg></div>
+      `;
+    }
+    label.appendChild(top);
+
+    // CUT LINE — only show if at least one half is filled
+    if (topPart || bottomPart) {
+      const cut = document.createElement('div');
+      cut.className = 'cut-line';
+      label.appendChild(cut);
+    }
+
+    // BOTTOM HALF (rotated 180°)
+    const bot = document.createElement('div');
+    bot.className = 'half bottom';
+    if (bottomPart) {
+      bot.innerHTML = `
+        <div class="part-text">${escapeHtml(bottomPart)}</div>
+        <div class="barcode-wrap"><svg data-part="${escapeHtml(bottomPart)}"></svg></div>
+      `;
+    }
+    label.appendChild(bot);
+
+    return label;
+  }
+
+  // Basic XSS-safe text escape for the innerHTML injection
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // ============================================================
+  //  CLEAR EVERYTHING
+  // ============================================================
+  function clearAll() {
+    document.getElementById('parts-input').value = '';
+    document.getElementById('parts-count').textContent = '0 part numbers entered';
+    document.getElementById('print-grid').innerHTML = '';
+    document.querySelectorAll('.slot-cell').forEach(c => c.classList.remove('filled'));
+    selectSlot(1);
+    document.getElementById('print-btn').disabled = true;
+    document.getElementById('print-btn').style.opacity = '0.4';
+    document.getElementById('generate-info').textContent = 'Enter part numbers and click Generate.';
+  }
+
+  // ============================================================
+  //  INIT
+  // ============================================================
+  buildSlotGrid();
+</script>
+
+</body>
+</html>
