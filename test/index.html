@@ -9,22 +9,19 @@
   <!--
   ============================================================
     IP OF JORDAN MODDES
-    DocTrack Terminal v2.1
+    DocTrack Terminal v2.2 — Test Build
     Designed & Built by Jordan Moddes | jordanmoddes.com
     For: Cerilliant / MilliporeSigma — Internal Use Only
 
-    SCANNER-ONLY INTERFACE — no mouse required
-    Scan flow: Badge → Folder ID → WIP/DROP → Department
+    TEST MODE BUTTONS added for debugging without a scanner:
+      • Step 1: prefill button → 257001
+      • Step 2: TEST button → "test folder"
+      • Step 3: normal WIP/DROP scan flow (WIP auto-submits)
+      • Step 4: TEST button → "test department"
 
-    Failsafes:
-      • Press B at any step  → opens manual entry text box
-      • 15 seconds of no input → resets to Step 1, discards progress
-
-    Manual entries are flagged in the log as entry_method: 'MANUAL'
-
-    TO SWITCH TO LIVE BACKEND:
-    1. Set DEMO_MODE = false
-    2. Set API_BASE_URL to your internal server IP
+    Failsafes still active:
+      • Press B at any step → manual entry text box
+      • 15 seconds of no input → auto-reset
   ============================================================
   -->
 
@@ -35,7 +32,7 @@
       background: #0a0e13;
       color: #d0e4f0;
       font-family: 'Share Tech Mono', monospace;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -43,7 +40,6 @@
       padding: 24px;
     }
 
-    /* Step label above prompt */
     #step-label {
       font-size: 1rem;
       color: #4a6070;
@@ -52,7 +48,6 @@
       margin-bottom: 16px;
     }
 
-    /* Big instruction text */
     #prompt {
       font-size: 2.8rem;
       font-weight: bold;
@@ -62,7 +57,6 @@
       line-height: 1.2;
     }
 
-    /* Shows what was just scanned */
     #scanned-value {
       font-size: 1.5rem;
       color: #00ff9d;
@@ -72,7 +66,6 @@
       letter-spacing: 2px;
     }
 
-    /* Four progress dots */
     #progress {
       display: flex;
       gap: 16px;
@@ -89,19 +82,45 @@
     .dot.done   { background: #00ff9d; border-color: #00ff9d; }
     .dot.active { background: #00c8ff; border-color: #00c8ff; }
 
-    /* Result message */
     #status {
       font-size: 1.1rem;
       text-align: center;
       min-height: 2rem;
       letter-spacing: 1px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
     #status.success { color: #00ff9d; }
     #status.error   { color: #ff6b35; }
     #status.warn    { color: #ffc857; }
 
-    /* Timeout countdown indicator */
+    /* Test button area */
+    #test-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .test-btn {
+      background: #1e2d3d;
+      border: 2px solid #ffc857;
+      color: #ffc857;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+    .test-btn:hover {
+      background: #ffc857;
+      color: #0a0e13;
+    }
+
+    /* Timeout bar */
     #timeout-bar-wrap {
       width: 300px;
       height: 3px;
@@ -117,12 +136,12 @@
       transition: width 1s linear;
     }
 
-    /* Help hint at the bottom */
     #hint {
       font-size: 0.75rem;
       color: #4a6070;
       letter-spacing: 2px;
       text-align: center;
+      margin-top: 10px;
     }
     #hint .key {
       display: inline-block;
@@ -133,7 +152,7 @@
       color: #d0e4f0;
     }
 
-    /* Hidden input — always focused */
+    /* Hidden scanner input */
     #scanner-input {
       position: fixed;
       top: -999px;
@@ -143,7 +162,7 @@
       height: 1px;
     }
 
-    /* Manual entry modal — full screen overlay */
+    /* Manual entry overlay */
     #manual-overlay {
       display: none;
       position: fixed;
@@ -212,13 +231,12 @@
 
 <!--
   IP OF JORDAN MODDES — jordanmoddes.com
-  DocTrack Terminal — scanner-first with manual fallback
+  DocTrack Terminal — test build with quick-fire buttons
 -->
 
-<!-- Hidden input captures scanner or keyboard input -->
+<!-- Hidden input captures real scanner input -->
 <input id="scanner-input" type="text" autocomplete="off" autofocus />
 
-<!-- Main scanner screen -->
 <div id="step-label">Step 1 of 4</div>
 <div id="prompt">SCAN BADGE</div>
 <div id="scanned-value">&nbsp;</div>
@@ -236,9 +254,12 @@
   <div id="timeout-bar"></div>
 </div>
 
+<!-- Test buttons — visible per step -->
+<div id="test-buttons"></div>
+
 <div id="hint">SCANNER NOT WORKING? PRESS <span class="key">B</span> FOR MANUAL ENTRY</div>
 
-<!-- Manual entry overlay — shows when B is pressed -->
+<!-- Manual entry overlay -->
 <div id="manual-overlay">
   <div id="manual-title">⚠ Manual Entry Mode</div>
   <div id="manual-prompt">Type value for current step</div>
@@ -255,13 +276,13 @@
   // ============================================================
   //  CONFIG
   // ============================================================
-  const DEMO_MODE     = false;
-  const API_BASE_URL = 'https://doctrack-backend-qga8.onrender.com';
-  const TIMEOUT_SECS  = 15;     // seconds of no activity before reset
+  const DEMO_MODE     = false;                                      // false = real backend
+  const API_BASE_URL  = 'https://doctrack-backend-qga8.onrender.com';
+  const TIMEOUT_SECS  = 15;
 
 
   // ============================================================
-  //  SCAN STEPS
+  //  STEPS
   // ============================================================
   const STEPS = [
     { label: 'Step 1 of 4', prompt: 'SCAN BADGE',      field: 'badge'      },
@@ -272,13 +293,14 @@
 
 
   // ============================================================
-  //  BARCODE MAPS — update these when real barcodes are printed
+  //  BARCODE MAPS
   // ============================================================
   const EVENT_BARCODES = {
     'EVT-WIP':  'WIP',
     'EVT-DROP': 'DROP-OFF',
   };
 
+  // NOTE: 'Test Department' is added here so test button works
   const DEPT_BARCODES = {
     'DEPT-PLAN': 'Planning',
     'DEPT-QC':   'QC Review',
@@ -286,6 +308,7 @@
     'DEPT-WH':   'Warehouse',
     'DEPT-STOR': 'Storage',
     'DEPT-SHIP': 'Shipping / Receiving',
+    'DEPT-TEST': 'Test Department',
   };
 
 
@@ -293,11 +316,10 @@
   //  STATE
   // ============================================================
   let currentStep   = 0;
-  let scan          = {};        // { badge, docID, eventType, department }
-  let entryMethod   = 'SCAN';    // 'SCAN' or 'MANUAL' — tracks how each event was entered
-  let manualMode    = false;     // true when manual entry overlay is open
-  let timeoutHandle = null;      // timer for 15-sec auto-reset
-  let countdownHandle = null;    // timer for visual countdown bar
+  let scan          = {};
+  let entryMethod   = 'SCAN';
+  let manualMode    = false;
+  let timeoutHandle = null;
 
 
   // ============================================================
@@ -316,6 +338,8 @@
       else if (i === stepIndex) dot.className = 'dot active';
       else                      dot.className = 'dot';
     }
+
+    renderTestButtons(stepIndex);
   }
 
   function showStatus(msg, type) {
@@ -330,34 +354,75 @@
 
 
   // ============================================================
-  //  TIMEOUT — resets to Step 1 if no input for 15 seconds
-  //  Does NOT run on Step 1 (nothing to lose yet)
-  //  Does NOT run during a submit
+  //  TEST BUTTONS — render different buttons per step
+  // ============================================================
+  function renderTestButtons(stepIndex) {
+    const wrap = document.getElementById('test-buttons');
+    wrap.innerHTML = '';
+
+    if (stepIndex === 0) {
+      // Step 1: badge 257001
+      const btn = document.createElement('button');
+      btn.className = 'test-btn';
+      btn.textContent = 'PREFILL BADGE 257001';
+      btn.onclick = () => processValue('257001', false);
+      wrap.appendChild(btn);
+    }
+    else if (stepIndex === 1) {
+      // Step 2: test folder
+      const btn = document.createElement('button');
+      btn.className = 'test-btn';
+      btn.textContent = 'TEST';
+      btn.onclick = () => processValue('test folder', false);
+      wrap.appendChild(btn);
+    }
+    else if (stepIndex === 2) {
+      // Step 3: WIP or DROP buttons
+      const wipBtn = document.createElement('button');
+      wipBtn.className = 'test-btn';
+      wipBtn.textContent = 'WIP';
+      wipBtn.onclick = () => processValue('EVT-WIP', false);
+      wrap.appendChild(wipBtn);
+
+      const dropBtn = document.createElement('button');
+      dropBtn.className = 'test-btn';
+      dropBtn.textContent = 'DROP';
+      dropBtn.onclick = () => processValue('EVT-DROP', false);
+      wrap.appendChild(dropBtn);
+    }
+    else if (stepIndex === 3) {
+      // Step 4: test department
+      const btn = document.createElement('button');
+      btn.className = 'test-btn';
+      btn.textContent = 'TEST';
+      btn.onclick = () => processValue('DEPT-TEST', false);
+      wrap.appendChild(btn);
+    }
+  }
+
+
+  // ============================================================
+  //  TIMEOUT
   // ============================================================
   function startTimeout() {
     clearTimeout(timeoutHandle);
-    clearInterval(countdownHandle);
 
-    // Only run timeout if we're past step 1 (data is actually at risk)
     if (currentStep === 0) {
       document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
       return;
     }
 
-    // Show the countdown bar
     const bar = document.getElementById('timeout-bar');
     const wrap = document.getElementById('timeout-bar-wrap');
     wrap.style.visibility = 'visible';
     bar.style.transition = 'none';
     bar.style.width = '100%';
 
-    // Reset transition after a tick so it animates down
     setTimeout(() => {
       bar.style.transition = `width ${TIMEOUT_SECS}s linear`;
       bar.style.width = '0%';
     }, 10);
 
-    // The actual timeout — resets after TIMEOUT_SECS
     timeoutHandle = setTimeout(() => {
       showStatus('⏱ TIMED OUT — ENTRY DISCARDED', 'warn');
       hardReset();
@@ -367,15 +432,12 @@
 
   function stopTimeout() {
     clearTimeout(timeoutHandle);
-    clearInterval(countdownHandle);
     document.getElementById('timeout-bar-wrap').style.visibility = 'hidden';
   }
 
 
   // ============================================================
-  //  RESET FUNCTIONS
-  //  softReset — clears data and returns to step 1 after a delay
-  //  hardReset — clears data immediately, no delay
+  //  RESET
   // ============================================================
   function softReset() {
     setTimeout(() => {
@@ -393,7 +455,7 @@
 
 
   // ============================================================
-  //  SUBMIT — sends completed scan event to backend
+  //  SUBMIT — sends event to backend
   // ============================================================
   async function submitEvent() {
     stopTimeout();
@@ -404,46 +466,56 @@
       docID:         scan.docID,
       eventType:     scan.eventType,
       department:    scan.department,
-      entry_method:  entryMethod,   // 'SCAN' or 'MANUAL' — audit trail
+      entry_method:  entryMethod,
     };
 
     if (DEMO_MODE) {
-      console.log('SCAN EVENT LOGGED:', payload);
+      console.log('SCAN EVENT LOGGED (demo):', payload);
       const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
       showStatus(`✓ LOGGED${methodTag} — ${scan.eventType} | ${scan.docID} | ${scan.department}`, 'success');
       softReset();
       return;
     }
 
-    /*
-    ============================================================
-      LIVE BACKEND — uncomment when IT server is ready
-    ============================================================
+    // Live backend call
     try {
-      await fetch(`${API_BASE_URL}/scan-log`, {
+      const response = await fetch(`${API_BASE_URL}/scan-log`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(payload),
       });
-      const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
-      showStatus(`✓ LOGGED${methodTag} — ${scan.eventType} | ${scan.docID} | ${scan.department}`, 'success');
+
+      const result = await response.json();
+      console.log('Backend response:', result);
+
+      if (result.ok) {
+        const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
+        const ssOk = result.smartsheet && result.smartsheet.ok;
+        const ssStatus = ssOk ? ' ✓ SMARTSHEET' : ' ⚠ BACKUP ONLY';
+        showStatus(`✓ LOGGED${methodTag}${ssStatus}`, ssOk ? 'success' : 'warn');
+
+        if (!ssOk && result.smartsheet) {
+          console.error('Smartsheet error:', result.smartsheet.error);
+        }
+      } else {
+        showStatus(`⚠ ERROR: ${result.error || 'Unknown'}`, 'error');
+      }
     } catch (err) {
+      console.error('Network error:', err);
       showStatus('⚠ NETWORK ERROR — TRY AGAIN', 'error');
     }
+
     softReset();
-    */
   }
 
 
   // ============================================================
-  //  PROCESS VALUE — shared logic for both scanner and manual
-  //  isManual: true if came from manual entry overlay
+  //  PROCESS VALUE — advances through the 4 steps
   // ============================================================
   function processValue(value, isManual) {
     value = (value || '').trim();
     if (!value) return;
 
-    // Flag this whole transaction as manual if ANY step used manual
     if (isManual) entryMethod = 'MANUAL';
 
     const field = STEPS[currentStep].field;
@@ -470,32 +542,46 @@
 
     // STEP 3: WIP or DROP
     if (field === 'eventType') {
-      // Accept both barcode values (EVT-WIP) and plain values (WIP, DROP, DROP-OFF)
-      // This lets manual entry work even if they just type WIP
       let mapped = EVENT_BARCODES[value.toUpperCase()];
       if (!mapped) {
         const upper = value.toUpperCase();
-        if (upper === 'WIP')                      mapped = 'WIP';
+        if (upper === 'WIP')                              mapped = 'WIP';
         else if (upper === 'DROP' || upper === 'DROP-OFF') mapped = 'DROP-OFF';
       }
       if (!mapped) {
         showStatus('⚠ UNKNOWN — SCAN WIP OR DROP LABEL', 'error');
         return;
       }
+
       scan.eventType = mapped;
       flashValue(mapped + (isManual ? ' (manual)' : ''));
+
+      // WIP = auto-submit without department (per your spec)
+      if (mapped === 'WIP') {
+        scan.department = 'N/A (WIP)';
+
+        // mark all dots done
+        for (let i = 0; i < 4; i++) {
+          document.getElementById(`dot-${i + 1}`).className = 'dot done';
+        }
+        document.getElementById('prompt').textContent = 'SUBMITTING...';
+        document.getElementById('test-buttons').innerHTML = '';
+
+        submitEvent();
+        return;
+      }
+
+      // DROP = advance to department step
       currentStep++;
       setPrompt(currentStep);
       startTimeout();
       return;
     }
 
-    // STEP 4: Department — auto-submit after this
+    // STEP 4: Department
     if (field === 'department') {
-      // Accept both barcode values (DEPT-QC) and plain department names
       let mapped = DEPT_BARCODES[value.toUpperCase()];
       if (!mapped) {
-        // Check if they typed the plain department name
         for (const [code, name] of Object.entries(DEPT_BARCODES)) {
           if (name.toUpperCase() === value.toUpperCase()) {
             mapped = name;
@@ -507,14 +593,15 @@
         showStatus('⚠ UNKNOWN — SCAN DEPARTMENT LABEL', 'error');
         return;
       }
+
       scan.department = mapped;
       flashValue(mapped + (isManual ? ' (manual)' : ''));
 
-      // Mark all dots done
       for (let i = 0; i < 4; i++) {
         document.getElementById(`dot-${i + 1}`).className = 'dot done';
       }
       document.getElementById('prompt').textContent = 'SUBMITTING...';
+      document.getElementById('test-buttons').innerHTML = '';
 
       submitEvent();
       return;
@@ -523,8 +610,7 @@
 
 
   // ============================================================
-  //  MANUAL ENTRY OVERLAY
-  //  Opens when B is pressed. Shows text field for current step.
+  //  MANUAL ENTRY
   // ============================================================
   function openManualEntry() {
     manualMode = true;
@@ -532,7 +618,6 @@
     const field   = document.getElementById('manual-field');
     const prompt  = document.getElementById('manual-prompt');
 
-    // Match prompt to current step
     const stepPrompts = {
       0: 'Enter badge number',
       1: 'Enter folder ID',
@@ -545,7 +630,6 @@
     field.value = '';
     field.focus();
 
-    // Restart timeout — user interaction
     startTimeout();
   }
 
@@ -555,9 +639,7 @@
     document.getElementById('scanner-input').focus();
   }
 
-  // Manual field listeners
   const manualField = document.getElementById('manual-field');
-
   manualField.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -569,24 +651,18 @@
       closeManualEntry();
       startTimeout();
     }
-    // Any keystroke restarts the timeout
     startTimeout();
   });
 
 
   // ============================================================
   //  SCANNER INPUT HANDLER
-  //  USB scanners type chars then hit Enter.
-  //  Also handles the B key to open manual entry.
   // ============================================================
   const input = document.getElementById('scanner-input');
   let buffer = '';
 
   input.addEventListener('keydown', (e) => {
-    // Don't run scanner logic when manual overlay is open
     if (manualMode) return;
-
-    // Restart the timeout on any key activity
     startTimeout();
 
     if (e.key === 'Enter') {
@@ -596,15 +672,12 @@
       return;
     }
 
-    // B key (when buffer is empty) opens manual entry
-    // The "empty buffer" check prevents B mid-scan from triggering manual
     if ((e.key === 'b' || e.key === 'B') && buffer === '') {
       e.preventDefault();
       openManualEntry();
       return;
     }
 
-    // Build buffer from printable keys
     if (e.key.length === 1) {
       buffer += e.key;
     }
@@ -613,7 +686,6 @@
 
   // ============================================================
   //  FOCUS MANAGEMENT
-  //  Keep the appropriate input focused at all times
   // ============================================================
   function refocus() {
     if (manualMode) {
@@ -623,7 +695,12 @@
     }
   }
 
-  document.addEventListener('click',    refocus);
+  // Don't refocus when clicking test buttons — let them work
+  document.addEventListener('click', (e) => {
+    if (!e.target.classList.contains('test-btn')) {
+      refocus();
+    }
+  });
   document.addEventListener('focusout', () => setTimeout(refocus, 50));
   window.addEventListener('load',       refocus);
 
