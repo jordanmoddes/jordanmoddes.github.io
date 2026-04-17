@@ -9,19 +9,14 @@
   <!--
   ============================================================
     IP OF JORDAN MODDES
-    DocTrack Terminal v2.2 — Test Build
-    Designed & Built by Jordan Moddes | jordanmoddes.com
-    For: Cerilliant / MilliporeSigma — Internal Use Only
+    DocTrack Terminal v2.3
+    jordanmoddes.com | Cerilliant / MilliporeSigma — Internal Use Only
 
-    TEST MODE BUTTONS added for debugging without a scanner:
-      • Step 1: prefill button → 257001
-      • Step 2: TEST button → "test folder"
-      • Step 3: normal WIP/DROP scan flow (WIP auto-submits)
-      • Step 4: TEST button → "test department"
-
-    Failsafes still active:
-      • Press B at any step → manual entry text box
-      • 15 seconds of no input → auto-reset
+    Changes in v2.3:
+      - Per-terminal TERMINAL_ID constant (set per deployment)
+      - UUID generated per scan for duplicate detection
+      - Shows retry queue flush result when backend responds
+      - Shows duplicate detection warning if backend rejects as dupe
   ============================================================
   -->
 
@@ -87,13 +82,22 @@
       text-align: center;
       min-height: 2rem;
       letter-spacing: 1px;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
     #status.success { color: #00ff9d; }
     #status.error   { color: #ff6b35; }
     #status.warn    { color: #ffc857; }
+    #status.info    { color: #00c8ff; }
 
-    /* Test button area */
+    #substatus {
+      font-size: 0.8rem;
+      color: #4a6070;
+      text-align: center;
+      min-height: 1rem;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
     #test-buttons {
       display: flex;
       flex-wrap: wrap;
@@ -120,7 +124,6 @@
       color: #0a0e13;
     }
 
-    /* Timeout bar */
     #timeout-bar-wrap {
       width: 300px;
       height: 3px;
@@ -152,7 +155,18 @@
       color: #d0e4f0;
     }
 
-    /* Hidden scanner input */
+    #terminal-badge {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      font-size: 0.7rem;
+      color: #4a6070;
+      letter-spacing: 2px;
+      border: 1px solid #1e2d3d;
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+
     #scanner-input {
       position: fixed;
       top: -999px;
@@ -162,7 +176,6 @@
       height: 1px;
     }
 
-    /* Manual entry overlay */
     #manual-overlay {
       display: none;
       position: fixed;
@@ -229,12 +242,7 @@
 </head>
 <body>
 
-<!--
-  IP OF JORDAN MODDES — jordanmoddes.com
-  DocTrack Terminal — test build with quick-fire buttons
--->
-
-<!-- Hidden input captures real scanner input -->
+<div id="terminal-badge">TERM-DEMO</div>
 <input id="scanner-input" type="text" autocomplete="off" autofocus />
 
 <div id="step-label">Step 1 of 4</div>
@@ -249,17 +257,16 @@
 </div>
 
 <div id="status">&nbsp;</div>
+<div id="substatus">&nbsp;</div>
 
 <div id="timeout-bar-wrap" style="visibility:hidden;">
   <div id="timeout-bar"></div>
 </div>
 
-<!-- Test buttons — visible per step -->
 <div id="test-buttons"></div>
 
 <div id="hint">SCANNER NOT WORKING? PRESS <span class="key">B</span> FOR MANUAL ENTRY</div>
 
-<!-- Manual entry overlay -->
 <div id="manual-overlay">
   <div id="manual-title">⚠ Manual Entry Mode</div>
   <div id="manual-prompt">Type value for current step</div>
@@ -274,10 +281,11 @@
 
 <script>
   // ============================================================
-  //  CONFIG
+  //  CONFIG — change per deployment
   // ============================================================
-  const DEMO_MODE     = false;                                      // false = real backend
+  const DEMO_MODE     = false;
   const API_BASE_URL  = 'https://doctrack-backend-qga8.onrender.com';
+  const TERMINAL_ID   = 'TERM-DEMO';      // ← change this per physical terminal
   const TIMEOUT_SECS  = 15;
 
 
@@ -300,7 +308,6 @@
     'EVT-DROP': 'DROP-OFF',
   };
 
-  // NOTE: 'Test Department' is added here so test button works
   const DEPT_BARCODES = {
     'DEPT-PLAN': 'Planning',
     'DEPT-QC':   'QC Review',
@@ -313,6 +320,20 @@
 
 
   // ============================================================
+  //  UUID GENERATOR
+  //  Builds a unique ID for each scan event so the backend can
+  //  reject duplicate submissions of the same scan.
+  // ============================================================
+  function generateUUID() {
+    // Simple enough UUID-ish string for our needs:
+    // e.g. "scan-1729123456789-a7f3b2"
+    const time = Date.now();
+    const rand = Math.random().toString(16).slice(2, 8);
+    return `scan-${time}-${rand}`;
+  }
+
+
+  // ============================================================
   //  STATE
   // ============================================================
   let currentStep   = 0;
@@ -320,6 +341,7 @@
   let entryMethod   = 'SCAN';
   let manualMode    = false;
   let timeoutHandle = null;
+  let currentUUID   = null;   // UUID for this particular scan in progress
 
 
   // ============================================================
@@ -330,6 +352,7 @@
     document.getElementById('prompt').textContent      = STEPS[stepIndex].prompt;
     document.getElementById('scanned-value').innerHTML = '&nbsp;';
     document.getElementById('status').innerHTML        = '&nbsp;';
+    document.getElementById('substatus').innerHTML     = '&nbsp;';
     document.getElementById('status').className        = '';
 
     for (let i = 0; i < 4; i++) {
@@ -348,20 +371,23 @@
     el.className = type || '';
   }
 
+  function showSubstatus(msg) {
+    document.getElementById('substatus').textContent = msg || '';
+  }
+
   function flashValue(val) {
     document.getElementById('scanned-value').textContent = val;
   }
 
 
   // ============================================================
-  //  TEST BUTTONS — render different buttons per step
+  //  TEST BUTTONS (per step)
   // ============================================================
   function renderTestButtons(stepIndex) {
     const wrap = document.getElementById('test-buttons');
     wrap.innerHTML = '';
 
     if (stepIndex === 0) {
-      // Step 1: badge 257001
       const btn = document.createElement('button');
       btn.className = 'test-btn';
       btn.textContent = 'PREFILL BADGE 257001';
@@ -369,7 +395,6 @@
       wrap.appendChild(btn);
     }
     else if (stepIndex === 1) {
-      // Step 2: test folder
       const btn = document.createElement('button');
       btn.className = 'test-btn';
       btn.textContent = 'TEST';
@@ -377,7 +402,6 @@
       wrap.appendChild(btn);
     }
     else if (stepIndex === 2) {
-      // Step 3: WIP or DROP buttons
       const wipBtn = document.createElement('button');
       wipBtn.className = 'test-btn';
       wipBtn.textContent = 'WIP';
@@ -391,7 +415,6 @@
       wrap.appendChild(dropBtn);
     }
     else if (stepIndex === 3) {
-      // Step 4: test department
       const btn = document.createElement('button');
       btn.className = 'test-btn';
       btn.textContent = 'TEST';
@@ -443,22 +466,26 @@
     setTimeout(() => {
       hardReset();
       setPrompt(0);
-    }, 2000);
+    }, 2500);
   }
 
   function hardReset() {
     scan = {};
     currentStep = 0;
     entryMethod = 'SCAN';
+    currentUUID = null;
     stopTimeout();
   }
 
 
   // ============================================================
-  //  SUBMIT — sends event to backend
+  //  SUBMIT
   // ============================================================
   async function submitEvent() {
     stopTimeout();
+
+    // Generate UUID for this scan (first time it's sent)
+    if (!currentUUID) currentUUID = generateUUID();
 
     const payload = {
       timestamp:     new Date().toISOString(),
@@ -467,6 +494,8 @@
       eventType:     scan.eventType,
       department:    scan.department,
       entry_method:  entryMethod,
+      event_uuid:    currentUUID,
+      terminal_id:   TERMINAL_ID,
     };
 
     if (DEMO_MODE) {
@@ -477,7 +506,6 @@
       return;
     }
 
-    // Live backend call
     try {
       const response = await fetch(`${API_BASE_URL}/scan-log`, {
         method:  'POST',
@@ -488,11 +516,24 @@
       const result = await response.json();
       console.log('Backend response:', result);
 
+      // Duplicate detection
+      if (result.duplicate) {
+        showStatus('⚠ DUPLICATE — ALREADY LOGGED', 'warn');
+        softReset();
+        return;
+      }
+
       if (result.ok) {
         const methodTag = entryMethod === 'MANUAL' ? ' [MANUAL]' : '';
         const ssOk = result.smartsheet && result.smartsheet.ok;
-        const ssStatus = ssOk ? ' ✓ SMARTSHEET' : ' ⚠ BACKUP ONLY';
+        const ssStatus = ssOk ? ' ✓ SMARTSHEET' : ' ⚠ QUEUED FOR RETRY';
         showStatus(`✓ LOGGED${methodTag}${ssStatus}`, ssOk ? 'success' : 'warn');
+
+        // Show retry queue flush info if anything happened
+        const rf = result.retry_flushed;
+        if (rf && rf.attempted > 0) {
+          showSubstatus(`retry flush: ${rf.succeeded} sent, ${rf.failed} still queued`);
+        }
 
         if (!ssOk && result.smartsheet) {
           console.error('Smartsheet error:', result.smartsheet.error);
@@ -510,7 +551,7 @@
 
 
   // ============================================================
-  //  PROCESS VALUE — advances through the 4 steps
+  //  PROCESS VALUE
   // ============================================================
   function processValue(value, isManual) {
     value = (value || '').trim();
@@ -520,7 +561,6 @@
 
     const field = STEPS[currentStep].field;
 
-    // STEP 1: Badge
     if (field === 'badge') {
       scan.badge = value;
       flashValue(value + (isManual ? ' (manual)' : ''));
@@ -530,7 +570,6 @@
       return;
     }
 
-    // STEP 2: Folder ID
     if (field === 'docID') {
       scan.docID = value;
       flashValue(value + (isManual ? ' (manual)' : ''));
@@ -540,7 +579,6 @@
       return;
     }
 
-    // STEP 3: WIP or DROP
     if (field === 'eventType') {
       let mapped = EVENT_BARCODES[value.toUpperCase()];
       if (!mapped) {
@@ -556,29 +594,23 @@
       scan.eventType = mapped;
       flashValue(mapped + (isManual ? ' (manual)' : ''));
 
-      // WIP = auto-submit without department (per your spec)
       if (mapped === 'WIP') {
         scan.department = 'N/A (WIP)';
-
-        // mark all dots done
         for (let i = 0; i < 4; i++) {
           document.getElementById(`dot-${i + 1}`).className = 'dot done';
         }
         document.getElementById('prompt').textContent = 'SUBMITTING...';
         document.getElementById('test-buttons').innerHTML = '';
-
         submitEvent();
         return;
       }
 
-      // DROP = advance to department step
       currentStep++;
       setPrompt(currentStep);
       startTimeout();
       return;
     }
 
-    // STEP 4: Department
     if (field === 'department') {
       let mapped = DEPT_BARCODES[value.toUpperCase()];
       if (!mapped) {
@@ -602,7 +634,6 @@
       }
       document.getElementById('prompt').textContent = 'SUBMITTING...';
       document.getElementById('test-buttons').innerHTML = '';
-
       submitEvent();
       return;
     }
@@ -695,7 +726,6 @@
     }
   }
 
-  // Don't refocus when clicking test buttons — let them work
   document.addEventListener('click', (e) => {
     if (!e.target.classList.contains('test-btn')) {
       refocus();
@@ -709,6 +739,9 @@
   //  INIT
   // ============================================================
   setPrompt(0);
+
+  // Update the terminal badge display
+  document.getElementById('terminal-badge').textContent = TERMINAL_ID;
 </script>
 
 </body>
