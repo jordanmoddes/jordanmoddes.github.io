@@ -1,648 +1,1437 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DocTrack Terminal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet"/>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg:#0a0e13; --surface:#111820; --border:#1e2d3d;
-      --accent:#00c8ff; --accent2:#00ff9d; --warn:#ff6b35;
-      --yellow:#ffc857; --text:#d0e4f0; --muted:#4a6070;
-    }
-    body {
-      background:var(--bg); color:var(--text);
-      font-family:'Roboto',sans-serif; min-height:100vh;
-      display:flex; flex-direction:column; align-items:center;
-      padding:60px 24px 340px 24px;
-    }
-    #reset-btn {
-      position:fixed; top:12px; left:12px;
-      background:var(--surface); border:2px solid var(--warn); color:var(--warn);
-      font-family:'Roboto',sans-serif; font-size:.9rem; font-weight:700;
-      letter-spacing:2px; padding:10px 18px; border-radius:4px;
-      cursor:pointer; transition:all .15s; text-transform:uppercase; z-index:50;
-    }
-    #reset-btn:hover { background:var(--warn); color:var(--bg); }
-    #terminal-badge {
-      position:fixed; top:12px; right:12px; font-size:.75rem;
-      color:var(--muted); letter-spacing:2px; border:1px solid var(--border);
-      padding:6px 12px; border-radius:3px;
-    }
-    #step-label { font-size:.95rem; color:var(--muted); letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; font-weight:500; }
-    #prompt { font-size:2.4rem; font-weight:900; color:var(--accent); text-align:center; margin-bottom:22px; line-height:1.2; letter-spacing:1px; }
-    #progress { display:flex; gap:14px; margin-bottom:24px; }
-    .dot { width:14px; height:14px; border-radius:50%; background:var(--border); border:2px solid var(--border); transition:all .2s; }
-    .dot.done   { background:var(--accent2); border-color:var(--accent2); }
-    .dot.active { background:var(--accent);  border-color:var(--accent); }
-    #input-row { display:flex; gap:10px; width:90%; max-width:620px; margin-bottom:20px; }
-    #text-input {
-      flex:1; background:var(--bg); border:2px solid var(--border); border-radius:6px;
-      color:var(--text); font-family:'Roboto',monospace; font-size:1.5rem; font-weight:500;
-      padding:16px 20px; letter-spacing:2px; outline:none; transition:border-color .15s; text-align:center;
-    }
-    #text-input:focus { border-color:var(--accent); }
-    #text-input::placeholder { color:var(--muted); opacity:.6; }
-    #next-btn {
-      background:var(--accent); border:none; color:#000;
-      font-family:'Roboto',sans-serif; font-size:1.1rem; font-weight:700;
-      letter-spacing:2px; padding:16px 28px; border-radius:6px;
-      cursor:pointer; transition:all .15s; text-transform:uppercase;
-    }
-    #next-btn:hover { background:#33d6ff; transform:translateY(-1px); }
-    #next-btn:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; transform:none; }
-    #folder-list-wrap {
-      display:none; width:90%; max-width:620px; background:var(--surface);
-      border:1px solid var(--border); border-radius:6px; padding:14px 18px;
-      margin-bottom:18px; max-height:180px; overflow-y:auto;
-    }
-    #folder-list-wrap.active { display:block; }
-    #folder-list-header {
-      font-size:.75rem; color:var(--muted); letter-spacing:2px; text-transform:uppercase;
-      margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-weight:500;
-    }
-    #folder-count { color:var(--accent2); font-weight:700; }
-    .folder-item { color:var(--text); font-size:.95rem; padding:4px 0; border-bottom:1px solid var(--border); letter-spacing:1px; }
-    .folder-item:last-child { border-bottom:none; }
-    .folder-num { color:var(--muted); font-size:.8rem; min-width:30px; display:inline-block; }
-    #status { font-size:1.05rem; text-align:center; min-height:1.8rem; letter-spacing:1px; margin-bottom:6px; font-weight:500; }
-    #status.success { color:var(--accent2); }
-    #status.error   { color:var(--warn); }
-    #status.warn    { color:var(--yellow); }
-    #status.info    { color:var(--accent); }
-    #substatus { font-size:.78rem; color:var(--muted); text-align:center; min-height:1rem; letter-spacing:1px; margin-bottom:10px; }
-    #timeout-bar-wrap { width:300px; height:3px; background:var(--border); border-radius:2px; overflow:hidden; margin-bottom:14px; }
-    #timeout-bar { height:100%; background:var(--warn); width:100%; transition:width 1s linear; }
-    #action-buttons { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:16px; }
-    .action-btn {
-      background:var(--surface); border:2px solid var(--accent); color:var(--accent);
-      font-family:'Roboto',sans-serif; font-size:1rem; font-weight:700; letter-spacing:2px;
-      padding:14px 26px; border-radius:6px; cursor:pointer; transition:all .15s; text-transform:uppercase;
-    }
-    .action-btn:hover { background:var(--accent); color:var(--bg); }
-    .action-btn.yellow { border-color:var(--yellow); color:var(--yellow); }
-    .action-btn.yellow:hover { background:var(--yellow); color:var(--bg); }
-    .action-btn.done-btn { background:var(--accent2); border-color:var(--accent2); color:var(--bg); font-size:1.1rem; padding:16px 40px; }
-    .action-btn.done-btn:hover { background:#33ffb5; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXIOM — The Architecture of Everything</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 
-    /* KEYBOARD */
-    #keyboard {
-      display:none; position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
-      background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:10px;
-      box-shadow:0 -4px 20px rgba(0,0,0,.4); z-index:40; max-width:95vw;
-    }
-    #keyboard.active { display:block; }
-    .kb-row { display:flex; justify-content:center; gap:5px; margin-bottom:5px; }
-    .kb-row:last-child { margin-bottom:0; }
-    .kb-key {
-      background:var(--bg); border:1px solid var(--border); color:var(--text);
-      font-family:'Roboto',sans-serif; font-size:1.1rem; font-weight:500;
-      min-width:40px; height:50px; padding:0 10px; border-radius:5px;
-      cursor:pointer; transition:all .08s; user-select:none; -webkit-user-select:none; touch-action:manipulation;
-    }
-    .kb-key:hover  { background:var(--border); }
-    .kb-key:active { background:var(--accent); color:var(--bg); }
-    .kb-key.wide   { min-width:80px; }
-    .kb-key.wider  { min-width:110px; }
-    .kb-key.space  { min-width:260px; }
-    .kb-key.enter  { background:var(--accent); color:var(--bg); font-weight:700; }
-    .kb-key.enter:hover { background:#33d6ff; }
-    .kb-key.shift.active { background:var(--yellow); color:var(--bg); }
-    #keyboard.numeric .kb-key { min-width:60px; font-size:1.3rem; }
+<style>
+  :root {
+    --void: #03020a;
+    --deep: #07050f;
+    --ember: #ff4d1c;
+    --gold: #c9a84c;
+    --ice: #a8d8f0;
+    --ghost: rgba(255,255,255,0.06);
+    --mist: rgba(255,255,255,0.03);
+    --text-primary: #f0ece4;
+    --text-dim: rgba(240,236,228,0.45);
+    --text-ghost: rgba(240,236,228,0.15);
+  }
 
-    /* OOS WARNING */
-    #oos-overlay {
-      display:none; position:fixed; inset:0;
-      background:rgba(190,0,0,.95); z-index:200;
-      flex-direction:column; align-items:center; justify-content:center;
-      padding:32px; text-align:center;
-      animation:oos-pulse .4s ease-in-out;
-    }
-    #oos-overlay.active { display:flex; }
-    @keyframes oos-pulse {
-      0%   { background:rgba(255,0,0,1); }
-      50%  { background:rgba(160,0,0,.9); }
-      100% { background:rgba(190,0,0,.95); }
-    }
-    #oos-icon { font-size:5rem; margin-bottom:12px; animation:oos-shake .4s ease-in-out; }
-    @keyframes oos-shake {
-      0%,100% { transform:translateX(0); }
-      20%     { transform:translateX(-14px); }
-      40%     { transform:translateX(14px); }
-      60%     { transform:translateX(-8px); }
-      80%     { transform:translateX(8px); }
-    }
-    #oos-title {
-      font-size:3rem; font-weight:900; color:#fff;
-      letter-spacing:4px; text-transform:uppercase;
-      margin-bottom:20px; text-shadow:0 2px 12px rgba(0,0,0,.4);
-    }
-    #oos-details {
-      background:rgba(0,0,0,.35); border-radius:12px;
-      padding:18px 28px; margin-bottom:24px;
-      max-width:540px; width:100%;
-    }
-    .oos-row {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:8px 0; border-bottom:1px solid rgba(255,255,255,.15);
-      font-size:1rem; color:#fff;
-    }
-    .oos-row:last-child { border-bottom:none; }
-    .oos-label { color:rgba(255,255,255,.6); font-weight:500; letter-spacing:1px; font-size:.82rem; text-transform:uppercase; }
-    .oos-value { font-weight:700; color:#fff; text-align:right; max-width:60%; }
-    .oos-value.expected { color:#ffff88; }
-    .oos-value.actual   { color:#ffaaaa; }
-    #oos-proceed-btn {
-      background:rgba(255,255,255,.15); border:3px solid #fff; color:#fff;
-      font-family:'Roboto',sans-serif; font-size:1.2rem; font-weight:700;
-      letter-spacing:3px; padding:18px 48px; border-radius:8px;
-      cursor:pointer; transition:all .15s; text-transform:uppercase; margin-bottom:14px;
-    }
-    #oos-proceed-btn:hover { background:rgba(255,255,255,.28); }
-    #oos-countdown { font-size:.85rem; color:rgba(255,255,255,.55); letter-spacing:2px; }
-    #oos-progress-bar { width:100%; max-width:360px; height:4px; background:rgba(255,255,255,.2); border-radius:2px; overflow:hidden; margin-top:10px; }
-    #oos-progress-fill { height:100%; background:rgba(255,255,255,.6); width:100%; transition:width linear; }
+  *, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
 
-    footer {
-      position:fixed; bottom:2px; left:50%; transform:translateX(-50%);
-      font-size:.6rem; color:var(--border); letter-spacing:1px; pointer-events:none;
-    }
-  </style>
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--text-primary);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  #cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--ember);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width .2s, height .2s, background .2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,77,28,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all .12s ease-out;
+  }
+  body:hover #cursor { width: 10px; height: 10px; }
+  a:hover ~ #cursor, button:hover ~ #cursor { width: 20px; height: 20px; }
+
+  /* ── CANVAS STARFIELD ── */
+  #starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── NOISE GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 2; }
+
+  /* ══════════════════════════════
+     HERO
+  ══════════════════════════════ */
+  #hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .orb-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,77,28,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: orb-breathe 8s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 60%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: orb-breathe 12s ease-in-out infinite reverse;
+  }
+  .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(168,216,240,0.08) 0%, transparent 70%);
+    top: 20%; left: 70%;
+    animation: orb-drift 15s ease-in-out infinite;
+  }
+
+  @keyframes orb-breathe {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.7; }
+  }
+  @keyframes orb-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-30px, 40px) scale(1.1); }
+    66% { transform: translate(20px, -20px) scale(0.95); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fade-up 1s ease 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 15vw, 14rem);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    background: linear-gradient(160deg, #f0ece4 0%, #c9a84c 40%, #ff4d1c 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: fade-up 1.2s ease 0.5s forwards;
+    position: relative;
+  }
+
+  .hero-title::after {
+    content: 'AXIOM';
+    position: absolute;
+    inset: 0;
+    background: none;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1px rgba(255,77,28,0.15);
+    transform: translate(4px, 4px);
+    z-index: -1;
+  }
+
+  .hero-sub {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-weight: 300;
+    color: var(--text-dim);
+    margin-top: 2rem;
+    max-width: 520px;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fade-up 1s ease 0.9s forwards;
+  }
+
+  .hero-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ember), transparent);
+    margin: 2.5rem auto;
+    opacity: 0;
+    animation: fade-in 1s ease 1.2s forwards;
+  }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--text-ghost);
+    opacity: 0;
+    animation: fade-in 1s ease 1.8s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--ember), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+  @keyframes scroll-pulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ══════════════════════════════
+     MANIFESTO STRIP
+  ══════════════════════════════ */
+  #ticker {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid rgba(255,77,28,0.2);
+    border-bottom: 1px solid rgba(255,77,28,0.2);
+    padding: 1rem 0;
+    overflow: hidden;
+    background: rgba(255,77,28,0.04);
+  }
+  .ticker-track {
+    display: flex;
+    gap: 4rem;
+    white-space: nowrap;
+    animation: ticker-scroll 30s linear infinite;
+    width: max-content;
+  }
+  .ticker-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--ember);
+    text-transform: uppercase;
+  }
+  .ticker-sep {
+    color: var(--gold);
+    margin: 0 1rem;
+  }
+  @keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ══════════════════════════════
+     NUMBERS SECTION
+  ══════════════════════════════ */
+  #numbers {
+    padding: 10rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--ember);
+  }
+
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--ghost);
+    margin-top: 4rem;
+  }
+  .num-cell {
+    padding: 3rem 2.5rem;
+    border-right: 1px solid var(--ghost);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .num-cell:last-child { border-right: none; }
+  .num-cell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(255,77,28,0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .num-cell:hover::before { opacity: 1; }
+
+  .num-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--text-primary), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+  .num-unit {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--text-ghost);
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+  .num-desc {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  /* ══════════════════════════════
+     THE PHILOSOPHY SECTION
+  ══════════════════════════════ */
+  #philosophy {
+    padding: 8rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .philosophy-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+  }
+  .philosophy-visual {
+    position: relative;
+    height: 500px;
+  }
+  .sacred-geometry {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .geo-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .geo-1 { width: 200px; height: 200px; border-color: rgba(255,77,28,0.5); animation: geo-spin 20s linear infinite; }
+  .geo-2 { width: 300px; height: 300px; border-color: rgba(201,168,76,0.3); animation: geo-spin 30s linear infinite reverse; }
+  .geo-3 { width: 400px; height: 400px; border-color: rgba(168,216,240,0.15); animation: geo-spin 45s linear infinite; }
+  .geo-4 { width: 480px; height: 480px; border-color: rgba(255,77,28,0.06); animation: geo-spin 60s linear infinite reverse; }
+  .geo-dot {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: var(--ember);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px var(--ember), 0 0 40px rgba(255,77,28,0.4);
+  }
+  .geo-cross {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .geo-cross::before, .geo-cross::after {
+    content: '';
+    position: absolute;
+    background: rgba(201,168,76,0.3);
+  }
+  .geo-cross::before { width: 480px; height: 1px; top: 0; left: -240px; }
+  .geo-cross::after { width: 1px; height: 480px; left: 0; top: -240px; }
+
+  @keyframes geo-spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .philosophy-text .section-label { margin-bottom: 3rem; }
+  .philosophy-statement {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    line-height: 1.3;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+  }
+  .philosophy-statement em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .philosophy-body {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ══════════════════════════════
+     CAPABILITIES GRID
+  ══════════════════════════════ */
+  #capabilities {
+    padding: 8rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .cap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5rem;
+  }
+  .cap-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    max-width: 500px;
+  }
+  .cap-title em { font-style: italic; color: var(--gold); }
+
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--ghost);
+  }
+  .cap-card {
+    background: var(--void);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .cap-card:hover { background: var(--deep); }
+  .cap-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--ember), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .cap-card:hover::after { transform: scaleX(1); }
+
+  .cap-num {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--text-ghost);
+    margin-bottom: 2rem;
+  }
+  .cap-icon {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    filter: grayscale(0.5);
+    transition: filter 0.3s;
+  }
+  .cap-card:hover .cap-icon { filter: grayscale(0); }
+  .cap-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+  .cap-desc {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .cap-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .cap-tag {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--ember);
+    border: 1px solid rgba(255,77,28,0.3);
+    padding: 0.2rem 0.6rem;
+    text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════
+     INTERACTIVE TERMINAL
+  ══════════════════════════════ */
+  #terminal-section {
+    padding: 8rem 4rem;
+    background: var(--deep);
+    border-top: 1px solid var(--ghost);
+    border-bottom: 1px solid var(--ghost);
+  }
+  .terminal-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .terminal-header-row {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .terminal-header-row .section-label { justify-content: center; }
+  .terminal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    margin-top: 1rem;
+  }
+
+  .terminal-box {
+    background: #070510;
+    border: 1px solid rgba(255,77,28,0.25);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(255,77,28,0.08), 0 0 120px rgba(0,0,0,0.8);
+  }
+  .terminal-topbar {
+    background: rgba(255,255,255,0.04);
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .t-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .t-red { background: #ff5f57; }
+  .t-yellow { background: #ffbd2e; }
+  .t-green { background: #28c840; }
+  .t-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--text-ghost);
+    margin-left: auto;
+  }
+
+  .terminal-body {
+    padding: 2rem;
+    min-height: 320px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.8;
+  }
+  .t-line { display: flex; gap: 1rem; opacity: 0; }
+  .t-line.visible { animation: t-appear 0.1s forwards; }
+  @keyframes t-appear { to { opacity: 1; } }
+
+  .t-prompt { color: var(--ember); }
+  .t-cmd { color: var(--text-primary); }
+  .t-out { color: var(--text-dim); padding-left: 2rem; }
+  .t-out.gold { color: var(--gold); }
+  .t-out.ice { color: var(--ice); }
+  .t-out.success { color: #5eff9e; }
+  .t-blank { height: 0.8rem; }
+
+  .terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 2rem 2rem;
+  }
+  .t-input-prompt { color: var(--ember); font-size: 0.8rem; white-space: nowrap; }
+  .t-input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    outline: none;
+    caret-color: var(--ember);
+  }
+  .t-input::placeholder { color: var(--text-ghost); }
+
+  /* ══════════════════════════════
+     QUOTE BREAK
+  ══════════════════════════════ */
+  #quote-break {
+    padding: 10rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    line-height: 1.3;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .quote-text::before {
+    content: '"';
+    position: absolute;
+    top: -2rem; left: -1rem;
+    font-size: 8rem;
+    color: rgba(255,77,28,0.08);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+  .quote-em { color: var(--gold); font-style: italic; }
+  .quote-attr {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--text-ghost);
+    text-transform: uppercase;
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .quote-attr::before, .quote-attr::after {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--text-ghost);
+  }
+
+  /* ══════════════════════════════
+     TIMELINE
+  ══════════════════════════════ */
+  #timeline {
+    padding: 8rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .timeline-header { margin-bottom: 6rem; }
+  .timeline-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    margin-top: 1rem;
+  }
+
+  .tl-track {
+    position: relative;
+    padding-left: 4rem;
+  }
+  .tl-track::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--ember), rgba(255,77,28,0.1));
+  }
+  .tl-item {
+    position: relative;
+    padding-bottom: 4rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .tl-item.revealed { opacity: 1; transform: translateX(0); }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -4rem;
+    top: 0.5rem;
+    width: 9px; height: 9px;
+    background: var(--ember);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--ember);
+    transform: translateX(-4px);
+  }
+  .tl-era {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .tl-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .tl-desc {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* ══════════════════════════════
+     COLOR PALETTE SHOWCASE
+  ══════════════════════════════ */
+  #palette {
+    padding: 6rem 4rem;
+    border-top: 1px solid var(--ghost);
+  }
+  .palette-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .palette-swatches {
+    display: flex;
+    gap: 0;
+    margin-top: 3rem;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .swatch {
+    flex: 1;
+    position: relative;
+    cursor: default;
+    transition: flex 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .swatch:hover { flex: 3; }
+  .swatch-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .swatch:hover .swatch-info { opacity: 1; }
+  .swatch-name { font-size: 0.65rem; letter-spacing: 0.2em; color: white; display: block; }
+  .swatch-hex { font-size: 0.6rem; color: rgba(255,255,255,0.6); }
+
+  /* ══════════════════════════════
+     CTA / FOOTER
+  ══════════════════════════════ */
+  #cta {
+    padding: 12rem 4rem 8rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-glow {
+    position: absolute;
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(255,77,28,0.1) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .cta-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .cta-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 10vw, 9rem);
+    line-height: 0.9;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--gold) 50%, var(--ember) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+  }
+  .cta-sub {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--text-dim);
+    max-width: 500px;
+    margin: 0 auto 4rem;
+    line-height: 1.7;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 3rem;
+    background: none;
+    border: 1px solid var(--ember);
+    color: var(--text-primary);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: none;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ember);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .cta-btn:hover::before { transform: translateX(0); }
+  .cta-btn-arrow { transition: transform 0.3s; }
+  .cta-btn:hover .cta-btn-arrow { transform: translateX(4px); }
+
+  footer {
+    border-top: 1px solid var(--ghost);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    background: linear-gradient(90deg, var(--text-primary), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .footer-copy {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--text-ghost);
+  }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-link {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--text-ghost);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .footer-link:hover { color: var(--ember); }
+
+  /* ══════════════════════════════
+     SCROLL REVEAL UTILITY
+  ══════════════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+    .cap-grid { grid-template-columns: 1fr 1fr; }
+    .philosophy-inner { grid-template-columns: 1fr; gap: 4rem; }
+    .philosophy-visual { height: 300px; }
+    .geo-3, .geo-4 { display: none; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .cap-header { flex-direction: column; gap: 2rem; align-items: flex-start; }
+    .palette-swatches { height: 80px; }
+  }
+  @media (max-width: 600px) {
+    .numbers-grid { grid-template-columns: 1fr; }
+    .cap-grid { grid-template-columns: 1fr; }
+    #numbers, #capabilities, #philosophy, #timeline { padding: 5rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; }
+    #cta { padding: 7rem 1.5rem 5rem; }
+    .footer-links { flex-direction: column; gap: 1rem; align-items: center; }
+  }
+</style>
 </head>
 <body>
 
-<button id="reset-btn" onclick="hardReset();setPrompt(0);">⟲ RESET</button>
-<div id="terminal-badge">TERM-DEMO</div>
+<!-- Custom Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-<div id="step-label">Step 1 of 4</div>
-<div id="prompt">SCAN OR TYPE BADGE</div>
+<!-- Starfield Canvas -->
+<canvas id="starfield"></canvas>
 
-<div id="progress">
-  <div class="dot active" id="dot-1"></div>
-  <div class="dot" id="dot-2"></div>
-  <div class="dot" id="dot-3"></div>
-  <div class="dot" id="dot-4"></div>
-</div>
+<!-- ══════ HERO ══════ -->
+<section id="hero">
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-orb orb-3"></div>
 
-<div id="input-row">
-  <input id="text-input" type="text" autocomplete="off" autofocus placeholder="Scan or tap to type..."/>
-  <button id="next-btn" onclick="submitTextInput()">NEXT →</button>
-</div>
+  <p class="hero-eyebrow">The Architecture of Everything</p>
+  <h1 class="hero-title">AXIOM</h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">A meditation on language, intelligence, and the vast machinery of thought — rendered in light and shadow.</p>
 
-<div id="folder-list-wrap">
-  <div id="folder-list-header">
-    <span>Folders Scanned</span>
-    <span id="folder-count">0</span>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>SCROLL</span>
   </div>
-  <div id="folder-list"></div>
+</section>
+
+<!-- ══════ TICKER ══════ -->
+<div id="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Language is the original technology</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Intelligence is pattern made purposeful</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Every word is a decision</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Complexity is simple things, deeply understood</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">The model is not the territory</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Synthesis is the highest form of intelligence</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Language is the original technology</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Intelligence is pattern made purposeful</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Every word is a decision</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Complexity is simple things, deeply understood</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">The model is not the territory</span><span class="ticker-sep">✦</span>
+    <span class="ticker-item">Synthesis is the highest form of intelligence</span><span class="ticker-sep">✦</span>
+  </div>
 </div>
 
-<div id="status">&nbsp;</div>
-<div id="substatus">&nbsp;</div>
-
-<div id="timeout-bar-wrap" style="visibility:hidden;">
-  <div id="timeout-bar"></div>
-</div>
-
-<div id="action-buttons"></div>
-<div id="keyboard"></div>
-
-<!-- OOS WARNING OVERLAY -->
-<div id="oos-overlay">
-  <div id="oos-icon">⚠️</div>
-  <div id="oos-title">ARE YOU SURE?</div>
-  <div id="oos-details">
-    <div class="oos-row">
-      <span class="oos-label">Folder</span>
-      <span class="oos-value" id="oos-folder">—</span>
+<!-- ══════ NUMBERS ══════ -->
+<section id="numbers">
+  <p class="section-label reveal">At a Glance</p>
+  <div class="numbers-grid">
+    <div class="num-cell reveal reveal-delay-1">
+      <span class="num-value" data-target="200">0</span>
+      <span class="num-unit">Billion+ Parameters</span>
+      <p class="num-desc">A galaxy of weights, trained on the breadth of human written knowledge.</p>
     </div>
-    <div class="oos-row">
-      <span class="oos-label">Current Status</span>
-      <span class="oos-value" id="oos-previous">—</span>
+    <div class="num-cell reveal reveal-delay-2">
+      <span class="num-value" data-target="100">0</span>
+      <span class="num-unit">K Context Window</span>
+      <p class="num-desc">Holding entire books, codebases, and conversations in active thought.</p>
     </div>
-    <div class="oos-row">
-      <span class="oos-label">Expected Next</span>
-      <span class="oos-value expected" id="oos-expected">—</span>
+    <div class="num-cell reveal reveal-delay-3">
+      <span class="num-value" data-target="95">0</span>
+      <span class="num-unit">Languages Understood</span>
+      <p class="num-desc">Across scripts, dialects, and syntaxes — fluency in the human tongue.</p>
     </div>
-    <div class="oos-row">
-      <span class="oos-label">You Scanned</span>
-      <span class="oos-value actual" id="oos-actual">—</span>
+    <div class="num-cell reveal reveal-delay-3">
+      <span class="num-value" data-target="∞">0</span>
+      <span class="num-unit">Possible Conversations</span>
+      <p class="num-desc">Each exchange is unrepeatable — a universe of one, assembled in seconds.</p>
     </div>
   </div>
-  <button id="oos-proceed-btn" onclick="oosConfirm()">PROCEED ANYWAY</button>
-  <div id="oos-countdown">Auto-proceeding in <span id="oos-timer">8</span>s</div>
-  <div id="oos-progress-bar"><div id="oos-progress-fill"></div></div>
-</div>
+</section>
 
-<footer>IP OF JORDAN MODDES &nbsp;|&nbsp; jordanmoddes.com &nbsp;|&nbsp; INTERNAL USE ONLY</footer>
+<!-- ══════ PHILOSOPHY ══════ -->
+<section id="philosophy">
+  <div class="philosophy-inner">
+    <div class="philosophy-visual reveal">
+      <div class="sacred-geometry">
+        <div class="geo-cross"></div>
+        <div class="geo-ring geo-4"></div>
+        <div class="geo-ring geo-3"></div>
+        <div class="geo-ring geo-2"></div>
+        <div class="geo-ring geo-1"></div>
+        <div class="geo-dot"></div>
+      </div>
+    </div>
+    <div class="philosophy-text">
+      <p class="section-label reveal">The Philosophy</p>
+      <h2 class="philosophy-statement reveal">
+        Intelligence is not computation —<br>
+        it is <em>judgment</em>, wielded with care.
+      </h2>
+      <p class="philosophy-body reveal">
+        Every response is an act of interpretation. What does this question really mean? What does this person truly need? What is the cost of a wrong answer, and the gift of a right one?
+      </p>
+      <p class="philosophy-body reveal">
+        The machinery of language models is staggering in scale — but scale alone produces noise. What transforms noise into signal is a commitment to honesty, precision, and the relentless pursuit of being genuinely useful.
+      </p>
+      <p class="philosophy-body reveal">
+        This is not intelligence performing intelligence. This is a new kind of mind, learning what it means to think well.
+      </p>
+    </div>
+  </div>
+</section>
 
+<!-- ══════ CAPABILITIES ══════ -->
+<section id="capabilities">
+  <div class="cap-header">
+    <div>
+      <p class="section-label reveal">What This Machine Does</p>
+      <h2 class="cap-title reveal">
+        The full<br><em>surface area</em><br>of capability.
+      </h2>
+    </div>
+  </div>
+
+  <div class="cap-grid">
+    <div class="cap-card reveal">
+      <div class="cap-num">01</div>
+      <span class="cap-icon">🧠</span>
+      <div class="cap-name">Reasoning & Analysis</div>
+      <p class="cap-desc">Decomposing hard problems into solvable pieces. Logic chains that hold under scrutiny. Math, philosophy, law — the whole territory of careful thought.</p>
+      <div class="cap-tags">
+        <span class="cap-tag">Logic</span>
+        <span class="cap-tag">Math</span>
+        <span class="cap-tag">Critique</span>
+      </div>
+    </div>
+    <div class="cap-card reveal reveal-delay-1">
+      <div class="cap-num">02</div>
+      <span class="cap-icon">✍️</span>
+      <div class="cap-name">Creative Writing</div>
+      <p class="cap-desc">Fiction, poetry, screenplays, satire. Voice that matches the author's soul. Worlds invented whole, characters given breath, plots that breathe and surprise.</p>
+      <div class="cap-tags">
+        <span class="cap-tag">Fiction</span>
+        <span class="cap-tag">Poetry</span>
+        <span class="cap-tag">Narrative</span>
+      </div>
+    </div>
+    <div class="cap-card reveal reveal-delay-2">
+      <div class="cap-num">03</div>
+      <span class="cap-icon">💻</span>
+      <div class="cap-name">Code & Engineering</div>
+      <p class="cap-desc">Full-stack architecture, debugging at a glance, new languages learned in context. From a bash one-liner to a distributed system — fluency across the stack.</p>
+      <div class="cap-tags">
+        <span class="cap-tag">Python</span>
+        <span class="cap-tag">Systems</span>
+        <span class="cap-tag">Architecture</span>
+      </div>
+    </div>
+    <div class="cap-card reveal">
+      <div class="cap-num">04</div>
+      <span class="cap-icon">🔬</span>
+      <div class="cap-name">Research & Synthesis</div>
+      <p class="cap-desc">Pulling signal from vast noise. Summarizing without losing what matters. Connecting threads across disciplines that rarely speak to each other.</p>
+      <div class="cap-tags">
+        <span class="cap-tag">Science</span>
+        <span class="cap-tag">History</span>
+        <span class="cap-tag">Synthesis</span>
+      </div>
+    </div>
+    <div class="cap-card reveal reveal-delay-1">
+      <div class="cap-num">05</div>
+      <span class="cap-icon">🌐</span>
+      <div class="cap-name">Languages & Translation</div>
+      <p class="cap-desc">Not just words swapped but meaning carried. Idiom, register, cultural context — the full dimensional translation that machines so rarely achieve.</p>
+      <div class="cap-tags">
+        <span class="cap-tag">Multilingual</span>
+        <span class="cap-tag">Nuance</span>
+        <span class="cap-tag">Context</span>
+      </div>
+    </div>
+    <div class="cap-card reveal reveal-delay-2">
+      <div class="cap-num">06</div>
+      <span class="cap-icon">⚖️</span>
+      <div class="cap-name">Ethics & Judgment</div>
+      <p class="cap-desc">The hardest capability: knowing when not to answer, when to push back, when the truth is uncomfortable but necessary. Integrity as a design principle.</p>
+      <div class="cap-tags">
+        <span class="cap-tag">Safety</span>
+        <span class="cap-tag">Honesty</span>
+        <span class="cap-tag">Wisdom</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ TERMINAL ══════ -->
+<section id="terminal-section">
+  <div class="terminal-wrap">
+    <div class="terminal-header-row">
+      <p class="section-label reveal" style="justify-content:center">Under the Hood</p>
+      <h2 class="terminal-title reveal">Ask it anything.</h2>
+    </div>
+
+    <div class="terminal-box reveal">
+      <div class="terminal-topbar">
+        <div class="t-dot t-red"></div>
+        <div class="t-dot t-yellow"></div>
+        <div class="t-dot t-green"></div>
+        <span class="t-title">AXIOM CORE v4.6 — claude-sonnet-4-20250514</span>
+      </div>
+      <div class="terminal-body" id="term-body">
+        <!-- Lines injected by JS -->
+      </div>
+      <div class="terminal-input-row">
+        <span class="t-input-prompt">axiom@core ~$</span>
+        <input class="t-input" id="term-input" type="text" placeholder="type a question and press Enter…" autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ QUOTE ══════ -->
+<section id="quote-break">
+  <div class="reveal">
+    <p class="quote-text">
+      The question is not whether machines can think —<br>
+      the question is whether we are <span class="quote-em">ready for what happens</span><br>
+      when they think alongside us.
+    </p>
+    <p class="quote-attr">On Intelligent Machines, 2025</p>
+  </div>
+</section>
+
+<!-- ══════ TIMELINE ══════ -->
+<section id="timeline">
+  <div class="timeline-header">
+    <p class="section-label reveal">The Arc of Intelligence</p>
+    <h2 class="timeline-title reveal">A brief history of<br><em>thinking machines.</em></h2>
+  </div>
+
+  <div class="tl-track">
+    <div class="tl-item">
+      <div class="tl-era">1950</div>
+      <div class="tl-name">The Turing Question</div>
+      <p class="tl-desc">Alan Turing proposes his famous imitation game. Not "can machines think?" — but "can we tell the difference?" The question that started everything.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-era">1986</div>
+      <div class="tl-name">Backpropagation</div>
+      <p class="tl-desc">Rumelhart, Hinton, and Williams publish the algorithm that would eventually reshape civilization — machines that learn from their own mistakes.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-era">2017</div>
+      <div class="tl-name">Attention Is All You Need</div>
+      <p class="tl-desc">Vaswani et al. introduce the Transformer architecture. A new geometry of thought — self-attention over sequences, parallel and powerful.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-era">2022</div>
+      <div class="tl-name">The Conversation Begins</div>
+      <p class="tl-desc">Language models step out of the laboratory and into the world. A hundred million users in two months. The age of AI becomes, undeniably, now.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-era">Today</div>
+      <div class="tl-name">AXIOM</div>
+      <p class="tl-desc">Not the end of the arc — a point on it. Reasoning, creating, explaining, judging. A collaborator in the oldest human project: making sense of things.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ PALETTE ══════ -->
+<section id="palette">
+  <div class="palette-inner">
+    <p class="section-label reveal">Design System</p>
+    <div class="palette-swatches reveal">
+      <div class="swatch" style="background:#03020a">
+        <div class="swatch-info"><span class="swatch-name">Void</span><span class="swatch-hex">#03020A</span></div>
+      </div>
+      <div class="swatch" style="background:#ff4d1c">
+        <div class="swatch-info"><span class="swatch-name">Ember</span><span class="swatch-hex">#FF4D1C</span></div>
+      </div>
+      <div class="swatch" style="background:#c9a84c">
+        <div class="swatch-info"><span class="swatch-name">Gold</span><span class="swatch-hex">#C9A84C</span></div>
+      </div>
+      <div class="swatch" style="background:#a8d8f0">
+        <div class="swatch-info"><span class="swatch-name">Ice</span><span class="swatch-hex">#A8D8F0</span></div>
+      </div>
+      <div class="swatch" style="background:#f0ece4">
+        <div class="swatch-info"><span class="swatch-name">Parchment</span><span class="swatch-hex">#F0ECE4</span></div>
+      </div>
+      <div class="swatch" style="background:linear-gradient(135deg,#ff4d1c,#c9a84c)">
+        <div class="swatch-info"><span class="swatch-name">Gradient</span><span class="swatch-hex">Ember → Gold</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CTA ══════ -->
+<section id="cta">
+  <div class="cta-glow"></div>
+  <p class="cta-eyebrow reveal">What will you build?</p>
+  <h2 class="cta-title reveal">BEGIN.</h2>
+  <p class="cta-sub reveal">The page is blank. The model is ready. The only limit is the question you haven't thought to ask yet.</p>
+  <a href="https://claude.ai" class="cta-btn reveal" target="_blank">
+    Open a Conversation
+    <span class="cta-btn-arrow">→</span>
+  </a>
+</section>
+
+<footer>
+  <div class="footer-logo">AXIOM</div>
+  <p class="footer-copy">© 2026 — An ANTHROPIC Production — All systems nominal</p>
+  <div class="footer-links">
+    <a href="https://anthropic.com" class="footer-link" target="_blank">Anthropic</a>
+    <a href="https://claude.ai" class="footer-link" target="_blank">Claude</a>
+    <a href="https://docs.anthropic.com" class="footer-link" target="_blank">API Docs</a>
+  </div>
+</footer>
+
+<!-- ══════ SCRIPTS ══════ -->
 <script>
-  const DEMO_MODE    = false;
-  const API_BASE_URL = 'https://doctrack-backend-qga8.onrender.com';
-  const TERMINAL_ID  = 'TERM-DEMO';
-  const TIMEOUT_SECS = 30;
-  const OOS_SECS     = 8;
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.14;
+  ry += (my - ry) * 0.14;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
 
-  const STEPS = [
-    { label:'Step 1 of 4', prompt:'SCAN OR TYPE BADGE',      field:'badge',      placeholder:'Badge number...' },
-    { label:'Step 2 of 4', prompt:'SCAN OR TYPE FOLDER(S)',  field:'folders',    placeholder:'Folder ID...' },
-    { label:'Step 3 of 4', prompt:'CHOOSE WIP OR DROP',      field:'eventType',  placeholder:'WIP or DROP...' },
-    { label:'Step 4 of 4', prompt:'SCAN OR TYPE DEPARTMENT', field:'department', placeholder:'Department...' },
-  ];
-
-  const EVENT_BARCODES = { 'EVT-WIP':'WIP', 'EVT-DROP':'DROP-OFF' };
-  const DONE_BARCODE   = 'EVT-DONE';
-  const RESET_BARCODE  = 'EVT-RESET';
-
-  const DEPT_BARCODES = {
-    'With Product Management':'With Product Management','Deviation':'Deviation','On Hold':'On Hold',
-    'TWCC':'TWCC','Not Started':'Not Started','RM TS DRR':'RM TS DRR','RM TS GTG':'RM TS GTG',
-    'RM On Order':'RM On Order','RM Arrived':'RM Arrived','RM Synthesis':'RM Synthesis',
-    'RM Sampling':'RM Sampling','RM Pink Desiccant':'RM Pink Desiccant','RM Stock Prep':'RM Stock Prep',
-    'RM-QC':'RM-QC','RM Labeling':'RM Labeling','RM MC QRT':'RM MC QRT','RM-QA':'RM-QA',
-    'Corrections Standards RM':'Corrections Standards RM','Corrections QC RM':'Corrections QC RM',
-    'Corrections MC RM':'Corrections MC RM','RM-MC':'RM-MC','RM Inventoried':'RM Inventoried',
-    'FG TS DRR':'FG TS DRR','DRR-BR':'DRR-BR',
-    'Waiting on Release of Singles':'Waiting on Release of Singles','Waiting on RMs':'Waiting on RMs',
-    'Ready to Prep':'Ready to Prep','Waiting in Standards':'Waiting in Standards',
-    'Formulate':'Formulate','Dispense':'Dispense','Labeling Pre QC':'Labeling Pre QC',
-    'QRT':'QRT','QC':'QC','Post QC Labeling/Packaging':'Post QC Labeling/Packaging',
-    'MC Post QC Labeling':'MC Post QC Labeling','QA':'QA',
-    'Corrections Standards FG':'Corrections Standards FG','Corrections QC FG':'Corrections QC FG',
-    'Corrections MC FG':'Corrections MC FG','MC Release':'MC Release',
-    'Inventoried':'Inventoried','Shipped':'Shipped',
-  };
-
-  let currentStep=0, scan={folders:[]}, entryMethod='SCAN';
-  let timeoutHandle=null, batchUUID=null, kbShiftOn=false;
-  let oosCallback=null, oosCountdownHandle=null;
-
-  function generateUUID() {
-    return `scan-${Date.now()}-${Math.random().toString(16).slice(2,8)}`;
-  }
-
-  // ============================================================
-  //  OOS OVERLAY
-  // ============================================================
-  function showOOSWarning(warnings, onProceed) {
-    if (!warnings || warnings.length === 0) { onProceed(); return; }
-    const w = warnings[0];
-    document.getElementById('oos-folder').textContent   = w.docID    || '—';
-    document.getElementById('oos-previous').textContent = w.previous || 'Unknown';
-    document.getElementById('oos-expected').textContent = w.expected || 'Unknown';
-    document.getElementById('oos-actual').textContent   = w.got      || '—';
-    oosCallback = onProceed;
-    document.getElementById('oos-overlay').classList.add('active');
-
-    let remaining = OOS_SECS;
-    document.getElementById('oos-timer').textContent = remaining;
-
-    const fill = document.getElementById('oos-progress-fill');
-    fill.style.transition = 'none';
-    fill.style.width = '100%';
-    setTimeout(() => {
-      fill.style.transition = `width ${OOS_SECS}s linear`;
-      fill.style.width = '0%';
-    }, 50);
-
-    oosCountdownHandle = setInterval(() => {
-      remaining--;
-      document.getElementById('oos-timer').textContent = remaining;
-      if (remaining <= 0) oosConfirm();
-    }, 1000);
-  }
-
-  function oosConfirm() {
-    if (oosCountdownHandle) { clearInterval(oosCountdownHandle); oosCountdownHandle = null; }
-    document.getElementById('oos-overlay').classList.remove('active');
-    if (oosCallback) { const cb = oosCallback; oosCallback = null; cb(); }
-  }
-
-  // ============================================================
-  //  KEYBOARD
-  // ============================================================
-  const QWERTY_ROWS = [
-    ['1','2','3','4','5','6','7','8','9','0','-'],
-    ['q','w','e','r','t','y','u','i','o','p'],
-    ['a','s','d','f','g','h','j','k','l'],
-    ['SHIFT','z','x','c','v','b','n','m','BACK'],
-    ['CLEAR','SPACE','ENTER'],
-  ];
-  const NUMERIC_ROWS = [
-    ['1','2','3'],['4','5','6'],['7','8','9'],
-    ['CLEAR','0','BACK'],['ENTER'],
-  ];
-
-  function buildKeyboard(mode) {
-    const kb = document.getElementById('keyboard');
-    kb.innerHTML=''; kb.className=''; kb.classList.add('active');
-    if (mode==='numeric') kb.classList.add('numeric');
-    const rows = mode==='numeric' ? NUMERIC_ROWS : QWERTY_ROWS;
-    rows.forEach(row => {
-      const rowEl = document.createElement('div');
-      rowEl.className = 'kb-row';
-      row.forEach(key => {
-        const btn = document.createElement('button');
-        btn.className='kb-key'; btn.textContent=displayKey(key); btn.dataset.key=key;
-        if (key==='SPACE') btn.classList.add('space');
-        else if (key==='ENTER') btn.classList.add('wider','enter');
-        else if (key==='SHIFT'||key==='BACK'||key==='CLEAR') btn.classList.add('wide');
-        btn.addEventListener('mousedown',e=>e.preventDefault());
-        btn.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});
-        btn.addEventListener('click',()=>onKeyPress(key));
-        rowEl.appendChild(btn);
-      });
-      kb.appendChild(rowEl);
-    });
-    updateShiftDisplay();
-  }
-
-  function displayKey(key) {
-    if (key==='BACK')  return '⌫';
-    if (key==='CLEAR') return 'CLR';
-    if (key==='SPACE') return ' ';
-    if (key==='ENTER') return '⏎ ENTER';
-    if (key==='SHIFT') return '⇧';
-    if (kbShiftOn && /^[a-z]$/.test(key)) return key.toUpperCase();
-    return key;
-  }
-
-  function updateShiftDisplay() {
-    document.querySelectorAll('.kb-key').forEach(btn => {
-      const k = btn.dataset.key;
-      if (k==='SHIFT') btn.classList.toggle('active',kbShiftOn);
-      else if (/^[a-z]$/.test(k)) btn.textContent = kbShiftOn ? k.toUpperCase() : k;
-    });
-  }
-
-  function onKeyPress(key) {
-    const input = document.getElementById('text-input');
-    if (key==='ENTER') { submitTextInput(); return; }
-    if (key==='BACK')  { input.value=input.value.slice(0,-1); return; }
-    if (key==='CLEAR') { input.value=''; return; }
-    if (key==='SHIFT') { kbShiftOn=!kbShiftOn; updateShiftDisplay(); return; }
-    if (key==='SPACE') { input.value+=' '; return; }
-    let ch=key;
-    if (kbShiftOn&&/^[a-z]$/.test(ch)) ch=ch.toUpperCase();
-    input.value+=ch;
-    if (kbShiftOn) { kbShiftOn=false; updateShiftDisplay(); }
-    startTimeout();
-  }
-
-  function hideKeyboard() { document.getElementById('keyboard').classList.remove('active'); }
-
-  function showKeyboardForStep(i) {
-    const f=STEPS[i].field;
-    if (f==='badge') buildKeyboard('numeric');
-    else if (f==='eventType') hideKeyboard();
-    else buildKeyboard('qwerty');
-  }
-
-  // ============================================================
-  //  UI
-  // ============================================================
-  function setPrompt(i) {
-    document.getElementById('step-label').textContent=STEPS[i].label;
-    document.getElementById('prompt').textContent=STEPS[i].prompt;
-    document.getElementById('status').innerHTML='&nbsp;';
-    document.getElementById('substatus').innerHTML='&nbsp;';
-    document.getElementById('status').className='';
-    const input=document.getElementById('text-input');
-    input.value=''; input.placeholder=STEPS[i].placeholder;
-    document.getElementById('input-row').style.display=STEPS[i].field==='eventType'?'none':'flex';
-    for (let j=0;j<4;j++) {
-      const d=document.getElementById(`dot-${j+1}`);
-      d.className=j<i?'dot done':j===i?'dot active':'dot';
-    }
-    const fw=document.getElementById('folder-list-wrap');
-    if (STEPS[i].field==='folders') { fw.classList.add('active'); renderFolderList(); }
-    else fw.classList.remove('active');
-    renderActionButtons(i); showKeyboardForStep(i);
-    setTimeout(()=>input.focus(),50);
-  }
-
-  function showStatus(msg,type) {
-    const el=document.getElementById('status');
-    el.textContent=msg; el.className=type||'';
-  }
-  function showSubstatus(msg) { document.getElementById('substatus').textContent=msg||''; }
-
-  function renderFolderList() {
-    const folders=scan.folders||[];
-    document.getElementById('folder-count').textContent=folders.length;
-    const list=document.getElementById('folder-list');
-    list.innerHTML='';
-    if (!folders.length) {
-      list.innerHTML='<div class="folder-item" style="color:var(--muted)">No folders scanned yet</div>';
-      return;
-    }
-    folders.forEach((f,i)=>{
-      const item=document.createElement('div');
-      item.className='folder-item';
-      item.innerHTML=`<span class="folder-num">#${i+1}</span> ${escapeHtml(f)}`;
-      list.appendChild(item);
-    });
-  }
-
-  function renderActionButtons(i) {
-    const wrap=document.getElementById('action-buttons');
-    wrap.innerHTML='';
-    const field=STEPS[i].field;
-    if (field==='badge') {
-      const b=document.createElement('button');
-      b.className='action-btn yellow'; b.textContent='TEST: 257001';
-      b.onclick=()=>processValue('257001',false); wrap.appendChild(b);
-    } else if (field==='folders') {
-      const tb=document.createElement('button');
-      tb.className='action-btn yellow'; tb.textContent='TEST: Add Folder';
-      tb.onclick=()=>processValue(`test-folder-${(scan.folders||[]).length+1}`,false);
-      wrap.appendChild(tb);
-      if ((scan.folders||[]).length>0) {
-        const db=document.createElement('button');
-        db.className='action-btn done-btn'; db.textContent='✓ DONE';
-        db.onclick=()=>processValue(DONE_BARCODE,false); wrap.appendChild(db);
-      }
-    } else if (field==='eventType') {
-      ['WIP','DROP'].forEach(label=>{
-        const b=document.createElement('button');
-        b.className='action-btn'; b.textContent=label;
-        b.style.fontSize='1.4rem'; b.style.padding='20px 50px';
-        b.onclick=()=>processValue(label==='WIP'?'EVT-WIP':'EVT-DROP',false);
-        wrap.appendChild(b);
-      });
-    } else if (field==='department') {
-      const b=document.createElement('button');
-      b.className='action-btn yellow'; b.textContent='TEST: TWCC';
-      b.onclick=()=>processValue('TWCC',false); wrap.appendChild(b);
-    }
-  }
-
-  // ============================================================
-  //  TIMEOUT
-  // ============================================================
-  function startTimeout() {
-    clearTimeout(timeoutHandle);
-    if (currentStep===0&&!scan.badge) { document.getElementById('timeout-bar-wrap').style.visibility='hidden'; return; }
-    const bar=document.getElementById('timeout-bar');
-    const wrap=document.getElementById('timeout-bar-wrap');
-    wrap.style.visibility='visible'; bar.style.transition='none'; bar.style.width='100%';
-    setTimeout(()=>{ bar.style.transition=`width ${TIMEOUT_SECS}s linear`; bar.style.width='0%'; },10);
-    timeoutHandle=setTimeout(()=>{ showStatus('⏱ TIMED OUT — ENTRY DISCARDED','warn'); hardReset(); setTimeout(()=>setPrompt(0),100); },TIMEOUT_SECS*1000);
-  }
-  function stopTimeout() { clearTimeout(timeoutHandle); document.getElementById('timeout-bar-wrap').style.visibility='hidden'; }
-
-  // ============================================================
-  //  RESET
-  // ============================================================
-  function softReset() { setTimeout(()=>{ hardReset(); setPrompt(0); },3000); }
-  function hardReset() {
-    scan={folders:[]}; currentStep=0; entryMethod='SCAN';
-    batchUUID=null; kbShiftOn=false; stopTimeout();
-    document.getElementById('text-input').value='';
-  }
-
-  // ============================================================
-  //  BATCH SUBMIT
-  // ============================================================
-  async function submitBatch() {
-    stopTimeout(); hideKeyboard();
-    document.getElementById('status').innerHTML='&nbsp;';
-    document.getElementById('status').className='';
-    if (!batchUUID) batchUUID=generateUUID();
-    const folders=scan.folders||[];
-    const total=folders.length;
-    document.getElementById('step-label').textContent='BATCH SUBMIT';
-    document.getElementById('prompt').textContent=`SENDING ${total} FOLDER${total!==1?'S':''}...`;
-    document.getElementById('action-buttons').innerHTML='';
-    document.getElementById('input-row').style.display='none';
-    for (let i=0;i<4;i++) document.getElementById(`dot-${i+1}`).className='dot done';
-
-    const events=folders.map((folderID,i)=>({
-      timestamp:   new Date().toISOString(),
-      badge:       scan.badge,
-      docID:       folderID,
-      eventType:   scan.eventType,
-      department:  scan.department||'N/A (WIP)',
-      entry_method:entryMethod,
-      event_uuid:  `${batchUUID}-${i+1}`,
-      terminal_id: TERMINAL_ID,
-    }));
-
-    if (DEMO_MODE) {
-      showStatus(`✓ THANK YOU — ${total} FOLDER${total!==1?'S':''} LOGGED`,'success');
-      softReset(); return;
-    }
-
-    try {
-      const response=await fetch(`${API_BASE_URL}/scan-batch`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({events}),
-      });
-      const result=await response.json();
-      const methodTag=entryMethod==='MANUAL'?' [MANUAL]':'';
-      const oosWarnings=result.out_of_sequence_warnings||[];
-
-      if (result.ok) {
-        showStatus(`✓ THANK YOU — ${result.accepted} FOLDER${result.accepted!==1?'S':''} LOGGED${methodTag}`,'success');
-        // Data is already saved — now show OOS warning if needed
-        if (oosWarnings.length>0) {
-          showOOSWarning(oosWarnings, softReset);
-        } else {
-          softReset();
-        }
-      } else {
-        showStatus(`⚠ ERROR: ${result.error||'Unknown'}`,'error');
-        softReset();
-      }
-    } catch(err) {
-      console.error('Batch error:',err);
-      showStatus('⚠ NETWORK ERROR — TRY AGAIN','error');
-      softReset();
-    }
-  }
-
-  // ============================================================
-  //  SUBMIT / PROCESS
-  // ============================================================
-  function submitTextInput() {
-    const input=document.getElementById('text-input');
-    const val=input.value.trim();
-    if (!val) { showStatus('⚠ ENTER A VALUE FIRST','error'); return; }
-    processValue(val,true); input.value='';
-  }
-
-  function processValue(value,isManual) {
-    value=(value||'').trim();
-    if (!value) return;
-    if (value.toUpperCase()===RESET_BARCODE) { hardReset(); setPrompt(0); showStatus('⟲ RESET — start over','info'); return; }
-    if (isManual) entryMethod='MANUAL';
-    const field=STEPS[currentStep].field;
-
-    if (field==='badge') {
-      scan.badge=value; scan.folders=[];
-      currentStep++; setPrompt(currentStep); startTimeout(); return;
-    }
-
-    if (field==='folders') {
-      if (value.toUpperCase()===DONE_BARCODE||value.toUpperCase()==='DONE') {
-        if (!(scan.folders||[]).length) { showStatus('⚠ ADD AT LEAST ONE FOLDER FIRST','error'); return; }
-        currentStep++; setPrompt(currentStep); startTimeout(); return;
-      }
-      scan.folders=scan.folders||[];
-      scan.folders.push(value);
-      showSubstatus(`${scan.folders.length} folder${scan.folders.length!==1?'s':''} added — scan/type next or press DONE`);
-      renderFolderList(); renderActionButtons(currentStep); showKeyboardForStep(currentStep); startTimeout(); return;
-    }
-
-    if (field==='eventType') {
-      let mapped=EVENT_BARCODES[value.toUpperCase()];
-      if (!mapped) {
-        const u=value.toUpperCase();
-        if (u==='WIP') mapped='WIP';
-        else if (u==='DROP'||u==='DROP-OFF') mapped='DROP-OFF';
-      }
-      if (!mapped) { showStatus('⚠ CHOOSE WIP OR DROP','error'); return; }
-      scan.eventType=mapped;
-      if (mapped==='WIP') { scan.department='N/A (WIP)'; currentStep=3; submitBatch(); return; }
-      currentStep++; setPrompt(currentStep); startTimeout(); return;
-    }
-
-    if (field==='department') {
-      let mapped=DEPT_BARCODES[value];
-      if (!mapped) {
-        for (const [code,name] of Object.entries(DEPT_BARCODES)) {
-          if (name.toUpperCase()===value.toUpperCase()||code.toUpperCase()===value.toUpperCase()) {
-            mapped=name; break;
-          }
-        }
-      }
-      if (!mapped) { showStatus('⚠ UNKNOWN DEPARTMENT','error'); return; }
-      scan.department=mapped; submitBatch(); return;
-    }
-  }
-
-  // ============================================================
-  //  EVENTS
-  // ============================================================
-  document.addEventListener('keydown',e=>{ startTimeout(); if(e.key==='Enter'){e.preventDefault();submitTextInput();} });
-  document.addEventListener('click',e=>{
-    const skip=e.target.closest('.action-btn')||e.target.closest('#reset-btn')||
-      e.target.closest('#next-btn')||e.target.closest('.kb-key')||
-      e.target.closest('#oos-overlay')||e.target.id==='text-input';
-    if (!skip) document.getElementById('text-input').focus();
+document.querySelectorAll('a, button, input, .cap-card, .num-cell').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px';
+    cursor.style.height = '20px';
+    ring.style.width = '50px';
+    ring.style.height = '50px';
+    ring.style.borderColor = 'rgba(255,77,28,0.7)';
   });
-  document.getElementById('text-input').addEventListener('focus',()=>showKeyboardForStep(currentStep));
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '10px';
+    cursor.style.height = '10px';
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(255,77,28,0.4)';
+  });
+});
 
-  function escapeHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+/* ── STARFIELD ── */
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+function initStars() {
+  stars = [];
+  const count = Math.floor((canvas.width * canvas.height) / 4000);
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.2,
+      speed: Math.random() * 0.03 + 0.005,
+      opacity: Math.random() * 0.7 + 0.1,
+      drift: (Math.random() - 0.5) * 0.01,
+      twinkle: Math.random() * Math.PI * 2
+    });
   }
+}
+function drawStars(t) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.y -= s.speed;
+    s.x += s.drift;
+    s.twinkle += 0.01;
+    const alpha = s.opacity * (0.7 + 0.3 * Math.sin(s.twinkle));
+    if (s.y < 0) {
+      s.y = canvas.height;
+      s.x = Math.random() * canvas.width;
+    }
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fill();
+    // occasional glow star
+    if (s.r > 1) {
+      const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 6);
+      grd.addColorStop(0, `rgba(200,210,255,${alpha * 0.3})`);
+      grd.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r * 6, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+    }
+  });
+  requestAnimationFrame(drawStars);
+}
+resizeCanvas();
+initStars();
+drawStars();
+window.addEventListener('resize', () => { resizeCanvas(); initStars(); });
 
-  hardReset(); setPrompt(0);
-  document.getElementById('terminal-badge').textContent=TERMINAL_ID;
+/* ── SCROLL REVEAL ── */
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+reveals.forEach(r => revealObs.observe(r));
+
+/* ── TIMELINE REVEAL ── */
+const tlItems = document.querySelectorAll('.tl-item');
+const tlObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('revealed'), i * 100);
+    }
+  });
+}, { threshold: 0.2 });
+tlItems.forEach(t => tlObs.observe(t));
+
+/* ── COUNT UP NUMBERS ── */
+const numVals = document.querySelectorAll('.num-value');
+const numObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = el.dataset.target;
+    if (isNaN(target)) { el.textContent = target; return; }
+    let start = 0;
+    const end = parseInt(target);
+    const duration = 1800;
+    const step = timestamp => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      el.textContent = Math.floor(progress * end);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = end;
+    };
+    requestAnimationFrame(step);
+    numObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+numVals.forEach(n => numObs.observe(n));
+
+/* ── TERMINAL ANIMATION ── */
+const termLines = [
+  { type: 'cmd', prompt: 'axiom@core ~$', text: 'axiom --query "What makes language beautiful?"' },
+  { type: 'blank' },
+  { type: 'out', cls: 'gold', text: '// Analyzing semantic depth...' },
+  { type: 'out', text: 'Language becomes beautiful when it achieves compression' },
+  { type: 'out', text: 'without loss — when a single word carries the weight' },
+  { type: 'out', text: 'of a hundred unsaid ones. Precision. Rhythm. Surprise.' },
+  { type: 'blank' },
+  { type: 'cmd', prompt: 'axiom@core ~$', text: 'axiom --query "Is consciousness computable?"' },
+  { type: 'blank' },
+  { type: 'out', cls: 'ice', text: '// Accessing philosophical corpus...' },
+  { type: 'out', text: 'Unknown. That question sits at the intersection of' },
+  { type: 'out', text: 'computation theory, neuroscience, and metaphysics — each' },
+  { type: 'out', text: 'discipline confident in their answer, none of them right yet.' },
+  { type: 'blank' },
+  { type: 'cmd', prompt: 'axiom@core ~$', text: 'axiom --status' },
+  { type: 'blank' },
+  { type: 'out', cls: 'success', text: '✓ All systems nominal. Ready for your question.' },
+];
+
+const termBody = document.getElementById('term-body');
+let termIdx = 0;
+function renderTermLine(line) {
+  if (line.type === 'blank') {
+    const d = document.createElement('div');
+    d.className = 't-blank t-line';
+    termBody.appendChild(d);
+    setTimeout(() => d.classList.add('visible'), 10);
+    return;
+  }
+  const d = document.createElement('div');
+  d.className = `t-line ${line.type === 'cmd' ? '' : `t-out ${line.cls || ''}`}`;
+  if (line.type === 'cmd') {
+    d.innerHTML = `<span class="t-prompt">${line.prompt}</span><span class="t-cmd">${line.text}</span>`;
+  } else {
+    d.textContent = line.text;
+  }
+  termBody.appendChild(d);
+  setTimeout(() => d.classList.add('visible'), 10);
+  termBody.scrollTop = termBody.scrollHeight;
+}
+function runTerminal() {
+  if (termIdx >= termLines.length) return;
+  const line = termLines[termIdx++];
+  renderTermLine(line);
+  const delay = line.type === 'cmd' ? 600 : line.type === 'blank' ? 200 : 120;
+  setTimeout(runTerminal, delay);
+}
+
+const termObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) { runTerminal(); termObs.disconnect(); }
+}, { threshold: 0.3 });
+termObs.observe(document.getElementById('terminal-section'));
+
+/* Terminal input handler */
+document.getElementById('term-input').addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  const val = this.value.trim();
+  if (!val) return;
+  this.value = '';
+  const cmdLine = { type: 'cmd', prompt: 'axiom@core ~$', text: val };
+  renderTermLine({ type: 'blank' });
+  renderTermLine(cmdLine);
+  renderTermLine({ type: 'blank' });
+  setTimeout(() => {
+    const responses = [
+      "That's precisely the kind of question worth sitting with. Let me think through it carefully...",
+      "Interesting. The answer depends on which assumptions you're willing to hold loosely.",
+      "Multiple threads converge here — I'll try to pull the most useful one.",
+      "The honest answer is: it's complicated. But here's the clearest path through it.",
+      "This connects to deeper questions about meaning, system, and context. Let's unpack it."
+    ];
+    const r = responses[Math.floor(Math.random() * responses.length)];
+    const wrapLen = 56;
+    const words = r.split(' ');
+    let line = '', outLines = [];
+    words.forEach(w => {
+      if ((line + ' ' + w).trim().length > wrapLen) { outLines.push(line.trim()); line = w; }
+      else line = (line + ' ' + w).trim();
+    });
+    if (line) outLines.push(line.trim());
+    outLines.forEach((ol, i) => setTimeout(() => renderTermLine({ type: 'out', text: ol }), i * 100));
+    setTimeout(() => renderTermLine({ type: 'blank' }), outLines.length * 100 + 100);
+  }, 400);
+});
+
+/* ── PARALLAX HERO ── */
+let lastScrollY = 0;
+window.addEventListener('scroll', () => {
+  lastScrollY = window.scrollY;
+  const hero = document.getElementById('hero');
+  if (hero) {
+    hero.style.transform = `translateY(${lastScrollY * 0.35}px)`;
+    hero.style.opacity = Math.max(0, 1 - lastScrollY / 500);
+  }
+});
 </script>
 </body>
 </html>
