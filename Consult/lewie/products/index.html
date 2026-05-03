@@ -4,19 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Products | Lewie’s Unlimited Outdoors</title>
+<title>Products | Lewie's Unlimited Outdoors</title>
 
-<meta name="description" content="Archery gear, bait, tackle, and licenses available in Adams, WI. Serving Wisconsin, Illinois, and surrounding regions.">
+<meta name="description" content="Archery gear, fishing tackle, live bait, hunting supplies, and Wisconsin DNR licenses available in Adams, WI. Real expertise from a competitive archer and lifelong outdoorsman.">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
+/* ================= GLOBAL ================= */
 
 body{
 margin:0;
 font-family:Inter,sans-serif;
 background:#f6f6f6;
 color:#111;
+line-height:1.55;
 }
 
 .container{
@@ -31,35 +34,91 @@ padding:60px 0;
 
 h1,h2,h3{
 margin:0 0 12px;
+line-height:1.1;
 }
 
 p{
+margin:0 0 16px;
 color:#444;
 }
 
-/* HEADER */
+a{
+text-decoration:none;
+color:inherit;
+}
+
+ul{
+margin:0;
+padding-left:20px;
+}
+
+li{
+margin-bottom:10px;
+color:#444;
+}
+
+/* ================= HEADER ================= */
 
 header{
 position:sticky;
 top:0;
 background:#1B3022;
 color:white;
-padding:14px 0;
 z-index:1000;
+padding:14px 0;
+box-shadow:0 4px 16px rgba(0,0,0,.12);
 }
 
 .header-inner{
 display:flex;
 justify-content:space-between;
 align-items:center;
+gap:14px;
 }
 
+.logo{
+font-weight:800;
+font-size:1rem;
+letter-spacing:-0.02em;
+}
+
+.nav{
+display:none;
+gap:16px;
+}
+
+.nav a{
+color:white;
+font-weight:600;
+text-decoration:none;
+opacity:.95;
+}
+
+.nav a:hover{
+opacity:1;
+}
+
+.nav a.active{
+opacity:1;
+text-decoration:underline;
+text-underline-offset:5px;
+}
+
+/* ================= BUTTONS ================= */
+
 .btn{
-padding:12px 16px;
-border-radius:10px;
+display:inline-block;
+padding:14px 18px;
+border-radius:12px;
 font-weight:700;
 text-decoration:none;
-display:inline-block;
+transition:.2s ease;
+border:none;
+cursor:pointer;
+}
+
+.btn:hover{
+transform:translateY(-1px);
 }
 
 .btn-primary{
@@ -72,84 +131,469 @@ background:white;
 color:#1B3022;
 }
 
-/* HERO */
+.btn-dark{
+background:#1B3022;
+color:white;
+}
+
+/* ================= HERO ================= */
 
 .hero{
 background:#1B3022;
 color:white;
-padding:70px 0;
+padding:70px 0 60px;
 }
 
 .hero h1{
 font-size:clamp(2rem,6vw,3.5rem);
+max-width:760px;
 }
 
 .hero p{
-color:#ccc;
-max-width:500px;
+color:#e4e4e4;
+max-width:620px;
+font-size:1.05rem;
 }
 
-/* GRID */
-
-.grid{
-display:grid;
-gap:18px;
+.hero-actions{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+margin-top:24px;
 }
 
-.card{
+.back-link{
+display:inline-block;
+color:#e4e4e4;
+font-weight:600;
+font-size:.9rem;
+margin-bottom:18px;
+}
+
+.back-link:hover{
+color:white;
+}
+
+/* ================= CATEGORY NAV ================= */
+
+.cat-nav{
 background:white;
-border-radius:16px;
-overflow:hidden;
-box-shadow:0 6px 20px rgba(0,0,0,.08);
+border-bottom:1px solid #e6e6e6;
+padding:14px 0;
+position:sticky;
+top:60px;
+z-index:999;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
 }
 
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
+.cat-nav-inner{
+display:flex;
+gap:8px;
+white-space:nowrap;
 }
 
-.card-body{
-padding:18px;
+.cat-nav a{
+padding:8px 16px;
+border-radius:30px;
+background:#f1f4f2;
+color:#1B3022;
+font-weight:700;
+font-size:.85rem;
+border:1px solid transparent;
+transition:.2s ease;
 }
 
-.card-body h3{
-margin:0 0 6px;
-}
-
-/* BOX */
-
-.box{
-background:white;
-padding:24px;
-border-radius:16px;
-box-shadow:0 6px 20px rgba(0,0,0,.06);
-}
-
-.box-dark{
+.cat-nav a:hover{
 background:#1B3022;
 color:white;
 }
 
-.box-dark p, .box-dark li{
-color:#ddd;
+/* ================= SECTION HEADER ================= */
+
+.cat-section{
+scroll-margin-top:140px;
 }
 
-/* INFO GRID */
-
-.info-grid{
-display:grid;
-gap:16px;
+.section-eyebrow{
+display:inline-block;
+font-size:.75rem;
+font-weight:800;
+letter-spacing:.12em;
+text-transform:uppercase;
+color:#FF5A1F;
+margin-bottom:8px;
 }
 
-.info{
+h2.section-title{
+font-size:clamp(1.6rem,4vw,2.4rem);
+margin-bottom:8px;
+}
+
+.section-intro{
+max-width:640px;
+margin-bottom:28px;
+}
+
+/* ================= LEWIE QUOTE ================= */
+
+.lewie-quote{
 background:white;
-padding:18px;
-border-radius:12px;
-font-weight:600;
+border-radius:18px;
+padding:24px;
+box-shadow:0 6px 20px rgba(0,0,0,.06);
+border-left:4px solid #FF5A1F;
+margin-bottom:32px;
+display:flex;
+gap:16px;
+align-items:flex-start;
 }
 
-/* FOOTER */
+.lewie-avatar{
+width:48px;
+height:48px;
+border-radius:50%;
+background:#1B3022;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:800;
+font-size:1.2rem;
+flex-shrink:0;
+}
+
+.lewie-quote blockquote{
+margin:0;
+font-size:1rem;
+line-height:1.65;
+color:#333;
+}
+
+.lewie-quote cite{
+display:block;
+margin-top:10px;
+font-style:normal;
+font-weight:700;
+font-size:.8rem;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:#1B3022;
+}
+
+/* ================= BRAND ROW ================= */
+
+.brand-label{
+font-size:.75rem;
+font-weight:800;
+letter-spacing:.12em;
+text-transform:uppercase;
+color:#6a6a6a;
+margin-bottom:14px;
+}
+
+.brand-row{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:32px;
+}
+
+.brand-chip{
+background:white;
+border:1px solid #e6e6e6;
+border-radius:10px;
+padding:10px 16px;
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:48px;
+min-width:90px;
+box-shadow:0 2px 8px rgba(0,0,0,.04);
+transition:.2s ease;
+}
+
+.brand-chip:hover{
+border-color:#1B3022;
+transform:translateY(-2px);
+box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+.brand-chip img{
+max-height:28px;
+max-width:110px;
+object-fit:contain;
+}
+
+.brand-chip .brand-text{
+font-weight:800;
+font-size:.85rem;
+color:#1B3022;
+letter-spacing:-0.01em;
+}
+
+/* ================= PRODUCT GRID ================= */
+
+.product-grid{
+display:grid;
+gap:18px;
+grid-template-columns:repeat(2,1fr);
+margin-bottom:16px;
+}
+
+.product-card{
+background:white;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 6px 20px rgba(0,0,0,.08);
+transition:.2s ease;
+display:flex;
+flex-direction:column;
+}
+
+.product-card:hover{
+transform:translateY(-3px);
+box-shadow:0 10px 28px rgba(0,0,0,.12);
+}
+
+.product-img-wrap{
+width:100%;
+height:180px;
+background:#f1f4f2;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+position:relative;
+}
+
+.product-img-wrap img{
+max-width:80%;
+max-height:80%;
+object-fit:contain;
+}
+
+.product-fallback{
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:16px;
+color:#1B3022;
+}
+
+.product-fallback strong{
+font-size:.9rem;
+display:block;
+margin-bottom:4px;
+}
+
+.product-fallback span{
+font-size:.7rem;
+text-transform:uppercase;
+letter-spacing:.1em;
+color:#888;
+}
+
+.product-body{
+padding:16px;
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.product-brand{
+font-size:.7rem;
+font-weight:800;
+letter-spacing:.12em;
+text-transform:uppercase;
+color:#FF5A1F;
+margin-bottom:4px;
+}
+
+.product-name{
+font-size:.95rem;
+font-weight:700;
+color:#111;
+line-height:1.3;
+margin:0;
+}
+
+.demo-banner{
+background:#fff8f3;
+border:1px dashed #FF5A1F;
+border-radius:12px;
+padding:10px 14px;
+font-size:.8rem;
+color:#c04514;
+text-align:center;
+font-weight:600;
+margin-bottom:16px;
+}
+
+/* ================= PRO BADGE ================= */
+
+.pro-badge{
+display:inline-flex;
+align-items:center;
+gap:8px;
+background:#FF5A1F;
+color:white;
+font-size:.75rem;
+font-weight:800;
+letter-spacing:.08em;
+text-transform:uppercase;
+padding:6px 14px;
+border-radius:30px;
+margin-bottom:16px;
+}
+
+.pro-badge::before{
+content:'★';
+font-size:.85rem;
+}
+
+/* ================= BAIT GRID ================= */
+
+.bait-grid{
+display:grid;
+gap:14px;
+grid-template-columns:repeat(2,1fr);
+margin-bottom:16px;
+}
+
+.bait-card{
+background:white;
+border-radius:16px;
+padding:22px 18px;
+text-align:center;
+box-shadow:0 6px 20px rgba(0,0,0,.06);
+transition:.2s ease;
+}
+
+.bait-card:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 24px rgba(0,0,0,.1);
+}
+
+.bait-card h4{
+margin:0 0 6px;
+font-size:1rem;
+color:#1B3022;
+font-weight:800;
+}
+
+.bait-card p{
+margin:0;
+font-size:.85rem;
+color:#666;
+line-height:1.5;
+}
+
+.live-badge{
+display:inline-flex;
+align-items:center;
+gap:6px;
+background:#1B3022;
+color:white;
+font-size:.7rem;
+font-weight:800;
+letter-spacing:.1em;
+text-transform:uppercase;
+padding:6px 14px;
+border-radius:30px;
+margin-bottom:16px;
+}
+
+.live-badge::before{
+content:'';
+width:8px;
+height:8px;
+background:#7dff9b;
+border-radius:50%;
+box-shadow:0 0 8px #7dff9b;
+}
+
+/* ================= SERVICES BOX ================= */
+
+.services-box{
+background:#1B3022;
+color:white;
+border-radius:18px;
+padding:24px 28px;
+margin-top:24px;
+}
+
+.services-box h3{
+color:white;
+font-size:1.15rem;
+margin-bottom:14px;
+}
+
+.services-box p{
+color:#d8ddd9;
+margin:0;
+font-size:.95rem;
+line-height:1.7;
+}
+
+/* ================= LICENSE GRID ================= */
+
+.license-grid{
+display:grid;
+gap:14px;
+grid-template-columns:repeat(2,1fr);
+margin-bottom:24px;
+}
+
+.license-card{
+background:white;
+border-radius:14px;
+padding:18px;
+box-shadow:0 4px 14px rgba(0,0,0,.06);
+border-left:3px solid #FF5A1F;
+transition:.2s ease;
+}
+
+.license-card:hover{
+transform:translateY(-2px);
+}
+
+.license-card h4{
+margin:0 0 4px;
+font-size:.95rem;
+color:#1B3022;
+font-weight:800;
+}
+
+.license-card p{
+margin:0;
+font-size:.8rem;
+color:#666;
+}
+
+.license-cta{
+background:linear-gradient(135deg,#1B3022,#0f1d14);
+color:white;
+border-radius:20px;
+padding:32px 28px;
+text-align:center;
+margin-top:8px;
+}
+
+.license-cta h3{
+color:white;
+font-size:1.4rem;
+margin-bottom:10px;
+}
+
+.license-cta p{
+color:#d8ddd9;
+margin-bottom:20px;
+}
+
+/* ================= FOOTER ================= */
 
 footer{
 background:#1B3022;
@@ -158,13 +602,42 @@ padding:40px 0;
 margin-top:40px;
 }
 
+footer p{
+color:#d8ddd9;
+margin:0 0 6px;
+font-size:.9rem;
+}
+
+footer .demo-tag{
+font-size:.75rem;
+opacity:.6;
+margin-top:10px;
+}
+
+/* ================= DESKTOP ================= */
+
 @media(min-width:768px){
-.grid{
+
+.nav{
+display:flex;
+}
+
+.product-grid{
+grid-template-columns:repeat(4,1fr);
+}
+
+.bait-grid{
+grid-template-columns:repeat(4,1fr);
+}
+
+.license-grid{
 grid-template-columns:repeat(3,1fr);
 }
-.info-grid{
-grid-template-columns:repeat(2,1fr);
+
+.section{
+padding:80px 0;
 }
+
 }
 
 </style>
@@ -172,9 +645,19 @@ grid-template-columns:repeat(2,1fr);
 
 <body>
 
+<!-- HEADER -->
 <header>
 <div class="container header-inner">
-<strong>Lewie’s Outdoors</strong>
+<div class="logo">Lewie's Outdoors</div>
+
+<div class="nav">
+<a href="../#shop">Shop</a>
+<a href="../#story">Story</a>
+<a href="../#services">Services</a>
+<a href="./" class="active">Products</a>
+<a href="../#visit">Visit</a>
+</div>
+
 <a href="tel:16083397664" class="btn btn-primary">Call</a>
 </div>
 </header>
@@ -182,167 +665,486 @@ grid-template-columns:repeat(2,1fr);
 <!-- HERO -->
 <section class="hero">
 <div class="container">
-<h1>Products & Services</h1>
-<p>Top gear. Custom builds. Real expertise. Call to confirm what’s in stock.</p>
+<a href="../" class="back-link">← Back to Home</a>
+<h1>Products & Gear</h1>
+<p>Top brands. Real recommendations. Backed by a competitive archer and lifelong outdoorsman who actually uses this stuff. Call to confirm what's in stock.</p>
+
+<div class="hero-actions">
+<a href="tel:16083397664" class="btn btn-primary">Call for Availability</a>
+<a href="https://www.google.com/maps/search/?api=1&query=2156+State+Hwy+13+Adams+WI+53910" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Get Directions</a>
+</div>
 </div>
 </section>
 
-<!-- AUTHORITY -->
-<section class="section">
+<!-- CATEGORY NAV -->
+<div class="cat-nav">
+<div class="container cat-nav-inner">
+<a href="#bait">Live Bait</a>
+<a href="#fishing">Fishing</a>
+<a href="#archery">Archery Pro Shop</a>
+<a href="#hunting">Hunting</a>
+<a href="#licenses">Licenses</a>
+</div>
+</div>
+
+<!-- ===== LIVE BAIT ===== -->
+<section class="section cat-section" id="bait">
 <div class="container">
 
-<div class="box" style="text-align:center;">
-<h2>Elite Archery Expertise</h2>
+<span class="live-badge">Live & In Stock</span>
+<span class="section-eyebrow">Category 01</span>
+<h2 class="section-title">Live Bait</h2>
+<p class="section-intro">One of the few shops in the area keeping live bait tanks running year-round. What you grab here is fresh — not sitting in a bag from two states away.</p>
 
-<p><strong>NFAA Pro Chairman</strong></p>
-<p><strong>World Ranked Archer (Top 500 Globally)</strong></p>
+<div class="bait-grid">
 
-<p>
-Custom arrow builds. Honest recommendations. No upselling — only what actually improves performance.
-</p>
+<div class="bait-card">
+<h4>Minnows</h4>
+<p>Live fathead & shiners. Always fresh, always in stock.</p>
+</div>
+
+<div class="bait-card">
+<h4>Nightcrawlers</h4>
+<p>Full crawlers and cuts. Great for walleye, bass & catfish.</p>
+</div>
+
+<div class="bait-card">
+<h4>Leeches</h4>
+<p>Classic Wisconsin walleye bait. Ask us what's working.</p>
+</div>
+
+<div class="bait-card">
+<h4>Wax Worms</h4>
+<p>Perfect for ice fishing panfish. Small but deadly.</p>
+</div>
 
 </div>
 
 </div>
 </section>
 
-<!-- CUSTOM ARROWS -->
-<section class="section">
+<!-- ===== FISHING ===== -->
+<section class="section cat-section" id="fishing" style="background:white;">
 <div class="container">
 
-<h2>Custom Arrow Builds</h2>
+<span class="section-eyebrow">Category 02</span>
+<h2 class="section-title">Fishing Tackle & Gear</h2>
+<p class="section-intro">From open water to hard water — tackle, rods, reels, terminal gear, and the local knowledge to match it to where you're heading.</p>
 
-<p>
-Every archer is different. Lewie builds arrows based on your setup, draw weight, and performance — not guesswork.
-</p>
+<div class="lewie-quote">
+<div class="lewie-avatar">L</div>
+<div>
+<blockquote>"I grew up outdoors — fields, woods, and water. From bowfishing to bass tournaments, I've competed and won doing what I love most. When you walk in asking what's biting or what setup to run, you're getting answers from someone who's actually been out there. Not a guess. Not a sales pitch."</blockquote>
+<cite>— Lewie, Owner</cite>
+</div>
+</div>
 
-<ul>
-<li>Precision arrow matching</li>
-<li>Component tuning</li>
-<li>Performance-first recommendations</li>
-<li>No unnecessary upsells</li>
-</ul>
+<p class="brand-label">Brands We Carry</p>
+<div class="brand-row">
 
-<a href="tel:16083397664" class="btn btn-primary">Call for Custom Setup</a>
+<div class="brand-chip">
+<img src="https://logos-world.net/wp-content/uploads/2022/05/Berkley-Logo.png" alt="Berkley" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+<span class="brand-text" style="display:none;">Berkley</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">PowerBait</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Strike King</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Yum</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Eagle Claw</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">HT Enterprises</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Cabela's</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Buzz King</span>
+</div>
+
+</div>
+
+<p class="brand-label">Featured Products</p>
+<div class="product-grid">
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://www.berkley-fishing.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-berkley-master-catalog/default/dwa9b0c87f/images/large/1531327.jpg" alt="Berkley Gulp Alive Minnows" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Gulp! Alive Minnow</strong>
+<span>Berkley</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">Berkley</p>
+<h4 class="product-name">Gulp! Alive Minnows</h4>
+</div>
+</div>
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://www.strikeking.com/cdn/shop/products/KVDSquareBill1.5_BlueGizzardShad.jpg" alt="Strike King KVD Square Bill" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>KVD Square Bill Crankbait</strong>
+<span>Strike King</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">Strike King</p>
+<h4 class="product-name">KVD Square Bill Crankbait</h4>
+</div>
+</div>
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/71kYJqI3QqL._AC_SL1500_.jpg" alt="HT Ice Fishing Combo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Ice Fishing Combo</strong>
+<span>HT Enterprises</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">HT Enterprises</p>
+<h4 class="product-name">Polar Gold Ice Combo</h4>
+</div>
+</div>
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/71qkV7nQbeL._AC_SL1500_.jpg" alt="PowerBait Trout Bait" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>PowerBait Natural Scent</strong>
+<span>Berkley</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">Berkley</p>
+<h4 class="product-name">PowerBait Natural Scent</h4>
+</div>
+</div>
+
+</div>
+
+<div class="demo-banner">📸 Demo only — real product photos coming soon</div>
 
 </div>
 </section>
 
-<!-- PRODUCTS -->
-<section class="section">
+<!-- ===== ARCHERY ===== -->
+<section class="section cat-section" id="archery">
 <div class="container">
 
-<h2>Featured Gear</h2>
+<span class="pro-badge">Pro Shop · Competitive Target Archer On Site</span>
+<span class="section-eyebrow">Category 03</span>
+<h2 class="section-title">Archery Pro Shop</h2>
+<p class="section-intro">Authorized dealer for Elite Archery and more. Full service pro shop with custom arrow builds, tuning, and competition-grade setup.</p>
 
-<div class="grid">
-
-<div class="card">
-<img src="https://via.placeholder.com/400x300?text=Bow+Sight">
-<div class="card-body">
-<h3>Bow Sights</h3>
-<p>Precision setups for serious archers.</p>
-</div>
-</div>
-
-<div class="card">
-<img src="https://via.placeholder.com/400x300?text=Arrows">
-<div class="card-body">
-<h3>Arrows</h3>
-<p>Matched to your build and performance needs.</p>
+<div class="lewie-quote">
+<div class="lewie-avatar">L</div>
+<div>
+<blockquote>"I've competed in target archery at a high level — where every millimeter of your setup matters. Whether you're just getting into archery or chasing a tighter grouping, I can help you get there. From selecting the right bow to tuning your rest, dialing your sight, and even choosing the right fletching for your arrow — I've been through it all myself. Come in and let's talk about what you're trying to do."</blockquote>
+<cite>— Lewie, Owner & Competitive Target Archer</cite>
 </div>
 </div>
 
-<div class="card">
-<img src="https://via.placeholder.com/400x300?text=Broadheads">
-<div class="card-body">
-<h3>Broadheads</h3>
-<p>Reliable, field-tested hunting setups.</p>
+<p class="brand-label">Authorized Dealer</p>
+<div class="brand-row">
+
+<div class="brand-chip">
+<span class="brand-text">Elite Archery</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">PSE</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Bear Archery</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Gold Tip</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Black Eagle</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Scott Releases</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">CBE</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Muzzy</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">GAS Bowstrings</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">AAE</span>
+</div>
+
+</div>
+
+<p class="brand-label">Featured Products</p>
+<div class="product-grid">
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/61hqYtHxfTL._AC_SL1500_.jpg" alt="Elite Archery Compound Bow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Compound Bow Lineup</strong>
+<span>Elite Archery</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">Elite Archery</p>
+<h4 class="product-name">Compound Bow Lineup</h4>
 </div>
 </div>
 
-<div class="card">
-<img src="https://via.placeholder.com/400x300?text=Fishing+Gear">
-<div class="card-body">
-<h3>Fishing Gear</h3>
-<p>Bait, tackle, and essentials for local waters.</p>
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/61ueJlqvhPL._AC_SL1500_.jpg" alt="Gold Tip Kinetic Arrows" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Kinetic Pierce Arrows</strong>
+<span>Gold Tip</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">Gold Tip</p>
+<h4 class="product-name">Kinetic Pierce Arrows</h4>
 </div>
 </div>
 
-<div class="card">
-<img src="https://via.placeholder.com/400x300?text=Live+Bait">
-<div class="card-body">
-<h3>Live Bait</h3>
-<p>Minnows, wax worms, nightcrawlers.</p>
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/71jvF5MmHfL._AC_SL1500_.jpg" alt="CBE Tek Hybrid Sight" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Tek Hybrid Sight</strong>
+<span>CBE</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">CBE</p>
+<h4 class="product-name">Tek Hybrid Bow Sight</h4>
 </div>
 </div>
 
-<div class="card">
-<img src="https://via.placeholder.com/400x300?text=Accessories">
-<div class="card-body">
-<h3>Accessories</h3>
-<p>Everything you need for setup and maintenance.</p>
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/61lPv8oqEAL._AC_SL1500_.jpg" alt="Scott Shark Release" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Shark Release Aid</strong>
+<span>Scott Releases</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">Scott Releases</p>
+<h4 class="product-name">Shark Release Aid</h4>
 </div>
 </div>
 
 </div>
+
+<div class="services-box">
+<h3>🛠 Pro Shop Services</h3>
+<p>Custom arrow builds · Bow tuning · String & cable replacement · Rest setup · Sight alignment · Spine selection · Full bow builds. Every setup done by a competitive archer who knows what precision actually feels like — no upselling, just what makes you shoot better.</p>
+</div>
+
+<div class="demo-banner" style="margin-top:20px;">📸 Demo only — real product photos coming soon</div>
 
 </div>
 </section>
 
-<!-- LICENSES -->
-<section class="section">
+<!-- ===== HUNTING ===== -->
+<section class="section cat-section" id="hunting" style="background:white;">
 <div class="container">
 
-<h2>Licenses Available In-Store</h2>
+<span class="section-eyebrow">Category 04</span>
+<h2 class="section-title">Hunting Gear</h2>
+<p class="section-intro">Broadheads, calls, scent control, and field essentials. Recommended by someone who's spent more time in a stand than behind a counter.</p>
 
-<p>
-Get your fishing and hunting licenses on the spot. Fast, simple, and local.
-</p>
+<div class="lewie-quote">
+<div class="lewie-avatar">L</div>
+<div>
+<blockquote>"Hunting isn't just something I sell — it's something I live. From whitetail to turkey, I've spent more time in the field than I can count. When you come in with questions about gear, calls, scents, or strategy for your next hunt — I'm not reading off a box. I've been there."</blockquote>
+<cite>— Lewie, Owner & Lifelong Hunter</cite>
+</div>
+</div>
 
-<ul>
-<li>Fishing licenses</li>
-<li>Deer (buck & doe)</li>
-<li>Seasonal hunting licenses</li>
-</ul>
+<p class="brand-label">Brands We Carry</p>
+<div class="brand-row">
+
+<div class="brand-chip">
+<span class="brand-text">Muzzy</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">NAP</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Rage</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Swhacker</span>
+</div>
+
+<div class="brand-chip">
+<span class="brand-text">Wildlife Research</span>
+</div>
+
+</div>
+
+<p class="brand-label">Featured Products</p>
+<div class="product-grid">
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/71fL5d8VS7L._AC_SL1500_.jpg" alt="Muzzy Trocar Broadheads" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Trocar Broadheads</strong>
+<span>Muzzy</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">Muzzy</p>
+<h4 class="product-name">Trocar Broadheads 3-Pack</h4>
+</div>
+</div>
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/71Ie3KdhXCL._AC_SL1500_.jpg" alt="Turkey Call" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Turkey & Deer Calls</strong>
+<span>In Store</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">In Store</p>
+<h4 class="product-name">Turkey & Deer Calls</h4>
+</div>
+</div>
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/71D8N3z8FaL._AC_SL1500_.jpg" alt="Scent Control" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Scent Control & Attractants</strong>
+<span>Wildlife Research</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">Wildlife Research</p>
+<h4 class="product-name">Scent Control & Attractants</h4>
+</div>
+</div>
+
+<div class="product-card">
+<div class="product-img-wrap">
+<img src="https://m.media-amazon.com/images/I/81qEHlmLR9L._AC_SL1500_.jpg" alt="Hunting Accessories" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+<div class="product-fallback">
+<strong>Hunting Accessories</strong>
+<span>In Store</span>
+</div>
+</div>
+<div class="product-body">
+<p class="product-brand">In Store</p>
+<h4 class="product-name">Field & Stand Accessories</h4>
+</div>
+</div>
+
+</div>
+
+<div class="demo-banner">📸 Demo only — real product photos coming soon</div>
 
 </div>
 </section>
 
-<!-- WHAT WE STOCK -->
-<section class="section">
+<!-- ===== LICENSES ===== -->
+<section class="section cat-section" id="licenses">
 <div class="container">
 
-<h2>What You’ll Find In-Store</h2>
+<span class="section-eyebrow">Category 05</span>
+<h2 class="section-title">Licenses & Permits</h2>
+<p class="section-intro">Wisconsin DNR licensed agent. Pick up your license while you grab your gear — no extra trip needed.</p>
 
-<div class="info-grid">
+<div class="license-grid">
 
-<div class="info">Arrows & Components</div>
-<div class="info">Archery Accessories</div>
-<div class="info">Bait & Fishing Gear</div>
-<div class="info">Hunting Essentials</div>
+<div class="license-card">
+<h4>Fishing License</h4>
+<p>Resident & Non-Resident</p>
+</div>
 
+<div class="license-card">
+<h4>Hunting License</h4>
+<p>Resident & Non-Resident</p>
+</div>
+
+<div class="license-card">
+<h4>Deer Tags</h4>
+<p>Archery, Gun & Muzzleloader</p>
+</div>
+
+<div class="license-card">
+<h4>Turkey Tags</h4>
+<p>Spring & Fall seasons</p>
+</div>
+
+<div class="license-card">
+<h4>Trapping License</h4>
+<p>Wisconsin DNR issued</p>
+</div>
+
+<div class="license-card">
+<h4>Small Game License</h4>
+<p>Pheasant, rabbit & more</p>
+</div>
+
+<div class="license-card">
+<h4>DNR Patron License</h4>
+<p>Includes fishing & hunting</p>
+</div>
+
+</div>
+
+<div class="license-cta">
+<h3>Ready to Head Out?</h3>
+<p>Stop in before your next trip. We'll get you licensed, geared up, and pointed in the right direction.</p>
+<a href="tel:16083397664" class="btn btn-primary">Call the Shop</a>
 </div>
 
 </div>
 </section>
 
-<!-- CTA -->
-<section class="section">
-<div class="container">
-
-<div class="box">
-<h2>Call Before You Drive</h2>
-<p>Inventory changes fast. Get real answers before heading out.</p>
-
-<a href="tel:16083397664" class="btn btn-primary">Call Now</a>
-</div>
-
-</div>
-</section>
-
+<!-- FOOTER -->
 <footer>
 <div class="container">
-<p>Lewie’s Unlimited Outdoors</p>
+<p><strong>Lewie's Unlimited Outdoors</strong> · 2156 State Hwy 13, Adams, WI 53910</p>
+<p>(608) 339-7664</p>
+<p class="demo-tag">Demo page · Product images for illustration purposes only</p>
 </div>
 </footer>
 
