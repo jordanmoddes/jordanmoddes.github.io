@@ -1,648 +1,698 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DocTrack Terminal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+  <title>DocTrack | Cerilliant</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg:#0a0e13; --surface:#111820; --border:#1e2d3d;
-      --accent:#00c8ff; --accent2:#00ff9d; --warn:#ff6b35;
-      --yellow:#ffc857; --text:#d0e4f0; --muted:#4a6070;
+      --bg: #0d0d0d;
+      --surface: #1a1a1a;
+      --surface2: #242424;
+      --border: #2e2e2e;
+      --accent: #00aaff;
+      --accent-dim: #005580;
+      --success: #00cc66;
+      --error: #ff3333;
+      --warn: #ffaa00;
+      --text: #e8e8e8;
+      --text-dim: #888;
+      --red-flash: rgba(255, 40, 40, 0.18);
     }
+
     body {
-      background:var(--bg); color:var(--text);
-      font-family:'Roboto',sans-serif; min-height:100vh;
-      display:flex; flex-direction:column; align-items:center;
-      padding:60px 24px 340px 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', Courier, monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      gap: 14px;
     }
-    #reset-btn {
-      position:fixed; top:12px; left:12px;
-      background:var(--surface); border:2px solid var(--warn); color:var(--warn);
-      font-family:'Roboto',sans-serif; font-size:.9rem; font-weight:700;
-      letter-spacing:2px; padding:10px 18px; border-radius:4px;
-      cursor:pointer; transition:all .15s; text-transform:uppercase; z-index:50;
+
+    /* ── Header ── */
+    #header {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
     }
-    #reset-btn:hover { background:var(--warn); color:var(--bg); }
+    #header h1 {
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
     #terminal-badge {
-      position:fixed; top:12px; right:12px; font-size:.75rem;
-      color:var(--muted); letter-spacing:2px; border:1px solid var(--border);
-      padding:6px 12px; border-radius:3px;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 3px;
     }
-    #step-label { font-size:.95rem; color:var(--muted); letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; font-weight:500; }
-    #prompt { font-size:2.4rem; font-weight:900; color:var(--accent); text-align:center; margin-bottom:22px; line-height:1.2; letter-spacing:1px; }
-    #progress { display:flex; gap:14px; margin-bottom:24px; }
-    .dot { width:14px; height:14px; border-radius:50%; background:var(--border); border:2px solid var(--border); transition:all .2s; }
-    .dot.done   { background:var(--accent2); border-color:var(--accent2); }
-    .dot.active { background:var(--accent);  border-color:var(--accent); }
-    #input-row { display:flex; gap:10px; width:90%; max-width:620px; margin-bottom:20px; }
-    #text-input {
-      flex:1; background:var(--bg); border:2px solid var(--border); border-radius:6px;
-      color:var(--text); font-family:'Roboto',monospace; font-size:1.5rem; font-weight:500;
-      padding:16px 20px; letter-spacing:2px; outline:none; transition:border-color .15s; text-align:center;
-    }
-    #text-input:focus { border-color:var(--accent); }
-    #text-input::placeholder { color:var(--muted); opacity:.6; }
-    #next-btn {
-      background:var(--accent); border:none; color:#000;
-      font-family:'Roboto',sans-serif; font-size:1.1rem; font-weight:700;
-      letter-spacing:2px; padding:16px 28px; border-radius:6px;
-      cursor:pointer; transition:all .15s; text-transform:uppercase;
-    }
-    #next-btn:hover { background:#33d6ff; transform:translateY(-1px); }
-    #next-btn:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; transform:none; }
-    #folder-list-wrap {
-      display:none; width:90%; max-width:620px; background:var(--surface);
-      border:1px solid var(--border); border-radius:6px; padding:14px 18px;
-      margin-bottom:18px; max-height:180px; overflow-y:auto;
-    }
-    #folder-list-wrap.active { display:block; }
-    #folder-list-header {
-      font-size:.75rem; color:var(--muted); letter-spacing:2px; text-transform:uppercase;
-      margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-weight:500;
-    }
-    #folder-count { color:var(--accent2); font-weight:700; }
-    .folder-item { color:var(--text); font-size:.95rem; padding:4px 0; border-bottom:1px solid var(--border); letter-spacing:1px; }
-    .folder-item:last-child { border-bottom:none; }
-    .folder-num { color:var(--muted); font-size:.8rem; min-width:30px; display:inline-block; }
-    #status { font-size:1.05rem; text-align:center; min-height:1.8rem; letter-spacing:1px; margin-bottom:6px; font-weight:500; }
-    #status.success { color:var(--accent2); }
-    #status.error   { color:var(--warn); }
-    #status.warn    { color:var(--yellow); }
-    #status.info    { color:var(--accent); }
-    #substatus { font-size:.78rem; color:var(--muted); text-align:center; min-height:1rem; letter-spacing:1px; margin-bottom:10px; }
-    #timeout-bar-wrap { width:300px; height:3px; background:var(--border); border-radius:2px; overflow:hidden; margin-bottom:14px; }
-    #timeout-bar { height:100%; background:var(--warn); width:100%; transition:width 1s linear; }
-    #action-buttons { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:16px; }
-    .action-btn {
-      background:var(--surface); border:2px solid var(--accent); color:var(--accent);
-      font-family:'Roboto',sans-serif; font-size:1rem; font-weight:700; letter-spacing:2px;
-      padding:14px 26px; border-radius:6px; cursor:pointer; transition:all .15s; text-transform:uppercase;
-    }
-    .action-btn:hover { background:var(--accent); color:var(--bg); }
-    .action-btn.yellow { border-color:var(--yellow); color:var(--yellow); }
-    .action-btn.yellow:hover { background:var(--yellow); color:var(--bg); }
-    .action-btn.done-btn { background:var(--accent2); border-color:var(--accent2); color:var(--bg); font-size:1.1rem; padding:16px 40px; }
-    .action-btn.done-btn:hover { background:#33ffb5; }
 
-    /* KEYBOARD */
-    #keyboard {
-      display:none; position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
-      background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:10px;
-      box-shadow:0 -4px 20px rgba(0,0,0,.4); z-index:40; max-width:95vw;
+    /* ── Status bar ── */
+    #status-bar {
+      width: 100%;
+      max-width: 640px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, border-color 0.2s;
     }
-    #keyboard.active { display:block; }
-    .kb-row { display:flex; justify-content:center; gap:5px; margin-bottom:5px; }
-    .kb-row:last-child { margin-bottom:0; }
-    .kb-key {
-      background:var(--bg); border:1px solid var(--border); color:var(--text);
-      font-family:'Roboto',sans-serif; font-size:1.1rem; font-weight:500;
-      min-width:40px; height:50px; padding:0 10px; border-radius:5px;
-      cursor:pointer; transition:all .08s; user-select:none; -webkit-user-select:none; touch-action:manipulation;
+    #status-bar.ok    { border-color: var(--success); color: var(--success); }
+    #status-bar.error { border-color: var(--error);   color: var(--error);   }
+    #status-bar.warn  { border-color: var(--warn);    color: var(--warn);    }
+    #status-bar .dot  {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
     }
-    .kb-key:hover  { background:var(--border); }
-    .kb-key:active { background:var(--accent); color:var(--bg); }
-    .kb-key.wide   { min-width:80px; }
-    .kb-key.wider  { min-width:110px; }
-    .kb-key.space  { min-width:260px; }
-    .kb-key.enter  { background:var(--accent); color:var(--bg); font-weight:700; }
-    .kb-key.enter:hover { background:#33d6ff; }
-    .kb-key.shift.active { background:var(--yellow); color:var(--bg); }
-    #keyboard.numeric .kb-key { min-width:60px; font-size:1.3rem; }
 
-    /* OOS WARNING */
+    /* ── OOS flash overlay ── */
     #oos-overlay {
-      display:none; position:fixed; inset:0;
-      background:rgba(190,0,0,.95); z-index:200;
-      flex-direction:column; align-items:center; justify-content:center;
-      padding:32px; text-align:center;
-      animation:oos-pulse .4s ease-in-out;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--red-flash);
+      border: 4px solid var(--error);
+      z-index: 999;
+      pointer-events: none;
+      animation: oos-pulse 0.4s ease-in-out 3;
     }
-    #oos-overlay.active { display:flex; }
     @keyframes oos-pulse {
-      0%   { background:rgba(255,0,0,1); }
-      50%  { background:rgba(160,0,0,.9); }
-      100% { background:rgba(190,0,0,.95); }
+      0%, 100% { opacity: 0; }
+      50%       { opacity: 1; }
     }
-    #oos-icon { font-size:5rem; margin-bottom:12px; animation:oos-shake .4s ease-in-out; }
-    @keyframes oos-shake {
-      0%,100% { transform:translateX(0); }
-      20%     { transform:translateX(-14px); }
-      40%     { transform:translateX(14px); }
-      60%     { transform:translateX(-8px); }
-      80%     { transform:translateX(8px); }
-    }
-    #oos-title {
-      font-size:3rem; font-weight:900; color:#fff;
-      letter-spacing:4px; text-transform:uppercase;
-      margin-bottom:20px; text-shadow:0 2px 12px rgba(0,0,0,.4);
-    }
-    #oos-details {
-      background:rgba(0,0,0,.35); border-radius:12px;
-      padding:18px 28px; margin-bottom:24px;
-      max-width:540px; width:100%;
-    }
-    .oos-row {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:8px 0; border-bottom:1px solid rgba(255,255,255,.15);
-      font-size:1rem; color:#fff;
-    }
-    .oos-row:last-child { border-bottom:none; }
-    .oos-label { color:rgba(255,255,255,.6); font-weight:500; letter-spacing:1px; font-size:.82rem; text-transform:uppercase; }
-    .oos-value { font-weight:700; color:#fff; text-align:right; max-width:60%; }
-    .oos-value.expected { color:#ffff88; }
-    .oos-value.actual   { color:#ffaaaa; }
-    #oos-proceed-btn {
-      background:rgba(255,255,255,.15); border:3px solid #fff; color:#fff;
-      font-family:'Roboto',sans-serif; font-size:1.2rem; font-weight:700;
-      letter-spacing:3px; padding:18px 48px; border-radius:8px;
-      cursor:pointer; transition:all .15s; text-transform:uppercase; margin-bottom:14px;
-    }
-    #oos-proceed-btn:hover { background:rgba(255,255,255,.28); }
-    #oos-countdown { font-size:.85rem; color:rgba(255,255,255,.55); letter-spacing:2px; }
-    #oos-progress-bar { width:100%; max-width:360px; height:4px; background:rgba(255,255,255,.2); border-radius:2px; overflow:hidden; margin-top:10px; }
-    #oos-progress-fill { height:100%; background:rgba(255,255,255,.6); width:100%; transition:width linear; }
+    #oos-overlay.active { display: block; }
 
-    footer {
-      position:fixed; bottom:2px; left:50%; transform:translateX(-50%);
-      font-size:.6rem; color:var(--border); letter-spacing:1px; pointer-events:none;
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 640px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .card-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    /* ── Inputs ── */
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: var(--accent);
+    }
+
+    /* ── Badge row ── */
+    #badge-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+    #badge-row input { flex: 1; }
+
+    /* ── Numeric keypad ── */
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .keypad button {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1.1rem;
+      padding: 14px 0;
+      cursor: pointer;
+      transition: background 0.1s, border-color 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .keypad button:active,
+    .keypad button:hover {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+    }
+    .keypad .key-zero  { grid-column: 1 / 3; }
+    .keypad .key-back  { background: #2a1a1a; border-color: #4a2a2a; color: var(--error); }
+    .keypad .key-clear { background: #1a1a2a; border-color: #2a2a4a; color: var(--warn); font-size: 0.8rem; letter-spacing: 0.04em; }
+
+    /* ── QWERTY keyboard ── */
+    .qwerty { margin-top: 10px; }
+    .qwerty-row {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 5px;
+    }
+    .qwerty button {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      min-width: 36px;
+      padding: 11px 4px;
+      cursor: pointer;
+      flex: 1;
+      max-width: 48px;
+      transition: background 0.1s, border-color 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .qwerty button:active,
+    .qwerty button:hover {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+    }
+    .qwerty .key-space {
+      flex: 5;
+      max-width: 200px;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+    }
+    .qwerty .key-back  {
+      flex: 2;
+      max-width: 72px;
+      background: #2a1a1a;
+      border-color: #4a2a2a;
+      color: var(--error);
+      font-size: 0.85rem;
+    }
+    .qwerty .key-clear {
+      flex: 2;
+      max-width: 72px;
+      background: #1a1a2a;
+      border-color: #2a2a4a;
+      color: var(--warn);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+    }
+    .qwerty .key-dash   { flex: 1.2; max-width: 52px; }
+    .qwerty .key-submit {
+      flex: 3;
+      max-width: 100px;
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Department selector ── */
+    #dept-select {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 10px 12px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+    #dept-select:focus { border-color: var(--accent); }
+    #dept-select option { background: #1a1a1a; }
+
+    /* ── Submit button ── */
+    #submit-btn {
+      width: 100%;
+      max-width: 640px;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      color: var(--accent);
+      font-family: inherit;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 16px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #submit-btn:active,
+    #submit-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    #submit-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    /* ── Recent scans ── */
+    #recent-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    #recent-list li {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    #recent-list li .scan-folder { color: var(--accent); }
+    #recent-list li .scan-dept   { color: var(--text-dim); }
+    #recent-list li .scan-time   { color: var(--text-dim); white-space: nowrap; }
+    #recent-list li.scan-oos     { border-color: var(--error); background: #2a1212; }
+
+    /* ── Footer ── */
+    #footer {
+      width: 100%;
+      max-width: 640px;
+      font-size: 0.65rem;
+      color: #444;
+      text-align: center;
+      letter-spacing: 0.06em;
+      padding-top: 4px;
     }
   </style>
 </head>
 <body>
 
-<button id="reset-btn" onclick="hardReset();setPrompt(0);">⟲ RESET</button>
-<div id="terminal-badge">TERM-DEMO</div>
+<div id="oos-overlay"></div>
 
-<div id="step-label">Step 1 of 4</div>
-<div id="prompt">SCAN OR TYPE BADGE</div>
-
-<div id="progress">
-  <div class="dot active" id="dot-1"></div>
-  <div class="dot" id="dot-2"></div>
-  <div class="dot" id="dot-3"></div>
-  <div class="dot" id="dot-4"></div>
+<!-- Header -->
+<div id="header">
+  <h1>DocTrack</h1>
+  <span id="terminal-badge">TERM-UNKNOWN</span>
 </div>
 
-<div id="input-row">
-  <input id="text-input" type="text" autocomplete="off" autofocus placeholder="Scan or tap to type..."/>
-  <button id="next-btn" onclick="submitTextInput()">NEXT →</button>
+<!-- Status bar -->
+<div id="status-bar">
+  <span class="dot"></span>
+  <span id="status-msg">Ready</span>
 </div>
 
-<div id="folder-list-wrap">
-  <div id="folder-list-header">
-    <span>Folders Scanned</span>
-    <span id="folder-count">0</span>
+<!-- Badge card -->
+<div class="card">
+  <div class="card-label">Badge Number</div>
+  <div id="badge-row">
+    <input type="number" id="badge-input" placeholder="Tap badge number…" inputmode="none" readonly />
   </div>
-  <div id="folder-list"></div>
+  <div class="keypad">
+    <button onclick="numKey('1')">1</button>
+    <button onclick="numKey('2')">2</button>
+    <button onclick="numKey('3')">3</button>
+    <button onclick="numKey('4')">4</button>
+    <button onclick="numKey('5')">5</button>
+    <button onclick="numKey('6')">6</button>
+    <button onclick="numKey('7')">7</button>
+    <button onclick="numKey('8')">8</button>
+    <button onclick="numKey('9')">9</button>
+    <button class="key-zero" onclick="numKey('0')">0</button>
+    <button class="key-back" onclick="numBack()">⌫</button>
+  </div>
 </div>
 
-<div id="status">&nbsp;</div>
-<div id="substatus">&nbsp;</div>
-
-<div id="timeout-bar-wrap" style="visibility:hidden;">
-  <div id="timeout-bar"></div>
-</div>
-
-<div id="action-buttons"></div>
-<div id="keyboard"></div>
-
-<!-- OOS WARNING OVERLAY -->
-<div id="oos-overlay">
-  <div id="oos-icon">⚠️</div>
-  <div id="oos-title">ARE YOU SURE?</div>
-  <div id="oos-details">
-    <div class="oos-row">
-      <span class="oos-label">Folder</span>
-      <span class="oos-value" id="oos-folder">—</span>
+<!-- Folder / Barcode card -->
+<div class="card">
+  <div class="card-label">Folder / Barcode</div>
+  <input type="text" id="folder-input" placeholder="Scan or type folder ID…" inputmode="none" readonly />
+  <div class="qwerty">
+    <div class="qwerty-row">
+      <button onclick="qKey('Q')">Q</button><button onclick="qKey('W')">W</button>
+      <button onclick="qKey('E')">E</button><button onclick="qKey('R')">R</button>
+      <button onclick="qKey('T')">T</button><button onclick="qKey('Y')">Y</button>
+      <button onclick="qKey('U')">U</button><button onclick="qKey('I')">I</button>
+      <button onclick="qKey('O')">O</button><button onclick="qKey('P')">P</button>
     </div>
-    <div class="oos-row">
-      <span class="oos-label">Current Status</span>
-      <span class="oos-value" id="oos-previous">—</span>
+    <div class="qwerty-row">
+      <button onclick="qKey('A')">A</button><button onclick="qKey('S')">S</button>
+      <button onclick="qKey('D')">D</button><button onclick="qKey('F')">F</button>
+      <button onclick="qKey('G')">G</button><button onclick="qKey('H')">H</button>
+      <button onclick="qKey('J')">J</button><button onclick="qKey('K')">K</button>
+      <button onclick="qKey('L')">L</button>
     </div>
-    <div class="oos-row">
-      <span class="oos-label">Expected Next</span>
-      <span class="oos-value expected" id="oos-expected">—</span>
+    <div class="qwerty-row">
+      <button onclick="qKey('Z')">Z</button><button onclick="qKey('X')">X</button>
+      <button onclick="qKey('C')">C</button><button onclick="qKey('V')">V</button>
+      <button onclick="qKey('B')">B</button><button onclick="qKey('N')">N</button>
+      <button onclick="qKey('M')">M</button>
+      <button class="key-dash" onclick="qKey('-')">—</button>
+      <button class="key-back" onclick="qBack()">⌫</button>
     </div>
-    <div class="oos-row">
-      <span class="oos-label">You Scanned</span>
-      <span class="oos-value actual" id="oos-actual">—</span>
+    <div class="qwerty-row">
+      <button onclick="qKey('0')">0</button>
+      <button onclick="qKey('1')">1</button>
+      <button onclick="qKey('2')">2</button>
+      <button onclick="qKey('3')">3</button>
+      <button onclick="qKey('4')">4</button>
+      <button onclick="qKey('5')">5</button>
+      <button onclick="qKey('6')">6</button>
+      <button onclick="qKey('7')">7</button>
+      <button onclick="qKey('8')">8</button>
+      <button onclick="qKey('9')">9</button>
+    </div>
+    <div class="qwerty-row">
+      <button class="key-clear" onclick="qClear()">CLEAR</button>
+      <button class="key-space" onclick="qKey(' ')">SPACE</button>
+      <button class="key-submit" onclick="submitScan()">SUBMIT ↵</button>
     </div>
   </div>
-  <button id="oos-proceed-btn" onclick="oosConfirm()">PROCEED ANYWAY</button>
-  <div id="oos-countdown">Auto-proceeding in <span id="oos-timer">8</span>s</div>
-  <div id="oos-progress-bar"><div id="oos-progress-fill"></div></div>
 </div>
 
-<footer>IP OF JORDAN MODDES &nbsp;|&nbsp; jordanmoddes.com &nbsp;|&nbsp; INTERNAL USE ONLY</footer>
+<!-- Department card -->
+<div class="card">
+  <div class="card-label">Department / Status</div>
+  <select id="dept-select">
+    <option value="">— Select status —</option>
+    <optgroup label="── Global / Exception ──">
+      <option value="WITH_PRODUCT_MANAGEMENT">With Product Management</option>
+      <option value="DEVIATION">Deviation (Please add notes)</option>
+      <option value="ON_HOLD">On Hold</option>
+      <option value="TWCC">TWCC</option>
+      <option value="NOT_STARTED">Not Started</option>
+    </optgroup>
+    <optgroup label="── Raw Material ──">
+      <option value="RM_TS_DRR">RM TS DRR</option>
+      <option value="RM_TS_GTG">RM TS GTG</option>
+      <option value="RM_ON_ORDER">RM On Order</option>
+      <option value="RM_ARRIVED">RM Arrived</option>
+      <option value="RM_SYNTHESIS">RM Synthesis</option>
+      <option value="RM_SAMPLING">RM Sampling</option>
+      <option value="RM_PINK_DESICCANT">RM Pink Desiccant</option>
+      <option value="RM_STOCK_PREP">RM Stock Prep</option>
+      <option value="RM_QC">RM-QC</option>
+      <option value="RM_LABELING">RM Labeling</option>
+      <option value="RM_MC_QRT">RM MC QRT</option>
+      <option value="RM_QA">RM-QA</option>
+      <option value="CORRECTIONS_STANDARDS_RM">Corrections Standards RM</option>
+      <option value="CORRECTIONS_QC_RM">Corrections QC RM</option>
+      <option value="CORRECTIONS_MC_RM">Corrections MC RM</option>
+      <option value="RM_MC">RM-MC</option>
+      <option value="RM_INVENTORIED">RM Inventoried</option>
+    </optgroup>
+    <optgroup label="── Finished Good ──">
+      <option value="FG_TS_DRR">FG TS DRR</option>
+      <option value="DRR_BR">DRR-BR</option>
+      <option value="WAITING_ON_RELEASE_OF_SINGLES">Waiting on Release of Singles</option>
+      <option value="WAITING_ON_RMS">Waiting on RMs</option>
+      <option value="READY_TO_PREP">Ready to Prep</option>
+      <option value="WAITING_IN_STANDARDS">Waiting in Standards</option>
+      <option value="FORMULATE">Formulate</option>
+      <option value="DISPENSE">Dispense</option>
+      <option value="LABELING_PRE_QC">Labeling Pre QC</option>
+      <option value="QRT">QRT</option>
+      <option value="QC">QC</option>
+      <option value="POST_QC_LABELING_PACKAGING">Post QC Labeling/Packaging</option>
+      <option value="MC_POST_QC_LABELING">MC Post QC Labeling</option>
+      <option value="QA">QA</option>
+      <option value="CORRECTIONS_STANDARDS_FG">Corrections Standards FG</option>
+      <option value="CORRECTIONS_QC_FG">Corrections QC FG</option>
+      <option value="CORRECTIONS_MC_FG">Corrections MC FG</option>
+      <option value="MC_RELEASE">MC Release</option>
+      <option value="INVENTORIED">Inventoried</option>
+      <option value="SHIPPED">Shipped</option>
+    </optgroup>
+  </select>
+</div>
+
+<!-- Submit -->
+<button id="submit-btn" onclick="submitScan()" disabled>SUBMIT SCAN</button>
+
+<!-- Recent scans -->
+<div class="card">
+  <div class="card-label">Recent Scans</div>
+  <ul id="recent-list">
+    <li style="color:var(--text-dim); font-size:0.75rem;">No scans this session</li>
+  </ul>
+</div>
+
+<div id="footer">
+  DocTrack v1.0-prod &nbsp;|&nbsp; Cerilliant / MilliporeSigma
+</div>
 
 <script>
-  const DEMO_MODE    = false;
-  const API_BASE_URL = 'https://doctrack-backend-qga8.onrender.com';
-  const TERMINAL_ID  = 'TERM-DEMO';
-  const TIMEOUT_SECS = 30;
-  const OOS_SECS     = 8;
+  // ── Terminal ID from URL param ──────────────────────────────────────────────
+  const params     = new URLSearchParams(window.location.search);
+  const TERMINAL   = params.get('terminal') || 'TERM-UNKNOWN';
+  document.getElementById('terminal-badge').textContent = TERMINAL;
 
-  const STEPS = [
-    { label:'Step 1 of 4', prompt:'SCAN OR TYPE BADGE',      field:'badge',      placeholder:'Badge number...' },
-    { label:'Step 2 of 4', prompt:'SCAN OR TYPE FOLDER(S)',  field:'folders',    placeholder:'Folder ID...' },
-    { label:'Step 3 of 4', prompt:'CHOOSE WIP OR DROP',      field:'eventType',  placeholder:'WIP or DROP...' },
-    { label:'Step 4 of 4', prompt:'SCAN OR TYPE DEPARTMENT', field:'department', placeholder:'Department...' },
-  ];
+  // ── Backend URL ─────────────────────────────────────────────────────────────
+  const BACKEND = 'https://doctrack-backend-qga8.onrender.com';
 
-  const EVENT_BARCODES = { 'EVT-WIP':'WIP', 'EVT-DROP':'DROP-OFF' };
-  const DONE_BARCODE   = 'EVT-DONE';
-  const RESET_BARCODE  = 'EVT-RESET';
-
-  const DEPT_BARCODES = {
-    'With Product Management':'With Product Management','Deviation':'Deviation','On Hold':'On Hold',
-    'TWCC':'TWCC','Not Started':'Not Started','RM TS DRR':'RM TS DRR','RM TS GTG':'RM TS GTG',
-    'RM On Order':'RM On Order','RM Arrived':'RM Arrived','RM Synthesis':'RM Synthesis',
-    'RM Sampling':'RM Sampling','RM Pink Desiccant':'RM Pink Desiccant','RM Stock Prep':'RM Stock Prep',
-    'RM-QC':'RM-QC','RM Labeling':'RM Labeling','RM MC QRT':'RM MC QRT','RM-QA':'RM-QA',
-    'Corrections Standards RM':'Corrections Standards RM','Corrections QC RM':'Corrections QC RM',
-    'Corrections MC RM':'Corrections MC RM','RM-MC':'RM-MC','RM Inventoried':'RM Inventoried',
-    'FG TS DRR':'FG TS DRR','DRR-BR':'DRR-BR',
-    'Waiting on Release of Singles':'Waiting on Release of Singles','Waiting on RMs':'Waiting on RMs',
-    'Ready to Prep':'Ready to Prep','Waiting in Standards':'Waiting in Standards',
-    'Formulate':'Formulate','Dispense':'Dispense','Labeling Pre QC':'Labeling Pre QC',
-    'QRT':'QRT','QC':'QC','Post QC Labeling/Packaging':'Post QC Labeling/Packaging',
-    'MC Post QC Labeling':'MC Post QC Labeling','QA':'QA',
-    'Corrections Standards FG':'Corrections Standards FG','Corrections QC FG':'Corrections QC FG',
-    'Corrections MC FG':'Corrections MC FG','MC Release':'MC Release',
-    'Inventoried':'Inventoried','Shipped':'Shipped',
+  // ── Department barcode map (value → display label) ──────────────────────────
+  const DEPT_LABELS = {
+    WITH_PRODUCT_MANAGEMENT:       'With Product Management',
+    DEVIATION:                     'Deviation (Please add notes)',
+    ON_HOLD:                       'On Hold',
+    TWCC:                          'TWCC',
+    NOT_STARTED:                   'Not Started',
+    RM_TS_DRR:                     'RM TS DRR',
+    RM_TS_GTG:                     'RM TS GTG',
+    RM_ON_ORDER:                   'RM On Order',
+    RM_ARRIVED:                    'RM Arrived',
+    RM_SYNTHESIS:                  'RM Synthesis',
+    RM_SAMPLING:                   'RM Sampling',
+    RM_PINK_DESICCANT:             'RM Pink Desiccant',
+    RM_STOCK_PREP:                 'RM Stock Prep',
+    RM_QC:                         'RM-QC',
+    RM_LABELING:                   'RM Labeling',
+    RM_MC_QRT:                     'RM MC QRT',
+    RM_QA:                         'RM-QA',
+    CORRECTIONS_STANDARDS_RM:      'Corrections Standards RM',
+    CORRECTIONS_QC_RM:             'Corrections QC RM',
+    CORRECTIONS_MC_RM:             'Corrections MC RM',
+    RM_MC:                         'RM-MC',
+    RM_INVENTORIED:                'RM Inventoried',
+    FG_TS_DRR:                     'FG TS DRR',
+    DRR_BR:                        'DRR-BR',
+    WAITING_ON_RELEASE_OF_SINGLES: 'Waiting on Release of Singles',
+    WAITING_ON_RMS:                'Waiting on RMs',
+    READY_TO_PREP:                 'Ready to Prep',
+    WAITING_IN_STANDARDS:          'Waiting in Standards',
+    FORMULATE:                     'Formulate',
+    DISPENSE:                      'Dispense',
+    LABELING_PRE_QC:               'Labeling Pre QC',
+    QRT:                           'QRT',
+    QC:                            'QC',
+    POST_QC_LABELING_PACKAGING:    'Post QC Labeling/Packaging',
+    MC_POST_QC_LABELING:           'MC Post QC Labeling',
+    QA:                            'QA',
+    CORRECTIONS_STANDARDS_FG:      'Corrections Standards FG',
+    CORRECTIONS_QC_FG:             'Corrections QC FG',
+    CORRECTIONS_MC_FG:             'Corrections MC FG',
+    MC_RELEASE:                    'MC Release',
+    INVENTORIED:                   'Inventoried',
+    SHIPPED:                       'Shipped',
   };
 
-  let currentStep=0, scan={folders:[]}, entryMethod='SCAN';
-  let timeoutHandle=null, batchUUID=null, kbShiftOn=false;
-  let oosCallback=null, oosCountdownHandle=null;
+  // ── State ───────────────────────────────────────────────────────────────────
+  let activeField = 'badge';   // 'badge' | 'folder'
+  let isSubmitting = false;
 
-  function generateUUID() {
-    return `scan-${Date.now()}-${Math.random().toString(16).slice(2,8)}`;
-  }
+  const badgeInput  = document.getElementById('badge-input');
+  const folderInput = document.getElementById('folder-input');
+  const deptSelect  = document.getElementById('dept-select');
+  const submitBtn   = document.getElementById('submit-btn');
 
-  // ============================================================
-  //  OOS OVERLAY
-  // ============================================================
-  function showOOSWarning(warnings, onProceed) {
-    if (!warnings || warnings.length === 0) { onProceed(); return; }
-    const w = warnings[0];
-    document.getElementById('oos-folder').textContent   = w.docID    || '—';
-    document.getElementById('oos-previous').textContent = w.previous || 'Unknown';
-    document.getElementById('oos-expected').textContent = w.expected || 'Unknown';
-    document.getElementById('oos-actual').textContent   = w.got      || '—';
-    oosCallback = onProceed;
-    document.getElementById('oos-overlay').classList.add('active');
+  // ── Focus management ────────────────────────────────────────────────────────
+  badgeInput.addEventListener('focus',  () => { activeField = 'badge';  });
+  folderInput.addEventListener('focus', () => { activeField = 'folder'; });
 
-    let remaining = OOS_SECS;
-    document.getElementById('oos-timer').textContent = remaining;
-
-    const fill = document.getElementById('oos-progress-fill');
-    fill.style.transition = 'none';
-    fill.style.width = '100%';
-    setTimeout(() => {
-      fill.style.transition = `width ${OOS_SECS}s linear`;
-      fill.style.width = '0%';
-    }, 50);
-
-    oosCountdownHandle = setInterval(() => {
-      remaining--;
-      document.getElementById('oos-timer').textContent = remaining;
-      if (remaining <= 0) oosConfirm();
-    }, 1000);
-  }
-
-  function oosConfirm() {
-    if (oosCountdownHandle) { clearInterval(oosCountdownHandle); oosCountdownHandle = null; }
-    document.getElementById('oos-overlay').classList.remove('active');
-    if (oosCallback) { const cb = oosCallback; oosCallback = null; cb(); }
-  }
-
-  // ============================================================
-  //  KEYBOARD
-  // ============================================================
-  const QWERTY_ROWS = [
-    ['1','2','3','4','5','6','7','8','9','0','-'],
-    ['q','w','e','r','t','y','u','i','o','p'],
-    ['a','s','d','f','g','h','j','k','l'],
-    ['SHIFT','z','x','c','v','b','n','m','BACK'],
-    ['CLEAR','SPACE','ENTER'],
-  ];
-  const NUMERIC_ROWS = [
-    ['1','2','3'],['4','5','6'],['7','8','9'],
-    ['CLEAR','0','BACK'],['ENTER'],
-  ];
-
-  function buildKeyboard(mode) {
-    const kb = document.getElementById('keyboard');
-    kb.innerHTML=''; kb.className=''; kb.classList.add('active');
-    if (mode==='numeric') kb.classList.add('numeric');
-    const rows = mode==='numeric' ? NUMERIC_ROWS : QWERTY_ROWS;
-    rows.forEach(row => {
-      const rowEl = document.createElement('div');
-      rowEl.className = 'kb-row';
-      row.forEach(key => {
-        const btn = document.createElement('button');
-        btn.className='kb-key'; btn.textContent=displayKey(key); btn.dataset.key=key;
-        if (key==='SPACE') btn.classList.add('space');
-        else if (key==='ENTER') btn.classList.add('wider','enter');
-        else if (key==='SHIFT'||key==='BACK'||key==='CLEAR') btn.classList.add('wide');
-        btn.addEventListener('mousedown',e=>e.preventDefault());
-        btn.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});
-        btn.addEventListener('click',()=>onKeyPress(key));
-        rowEl.appendChild(btn);
-      });
-      kb.appendChild(rowEl);
-    });
-    updateShiftDisplay();
-  }
-
-  function displayKey(key) {
-    if (key==='BACK')  return '⌫';
-    if (key==='CLEAR') return 'CLR';
-    if (key==='SPACE') return ' ';
-    if (key==='ENTER') return '⏎ ENTER';
-    if (key==='SHIFT') return '⇧';
-    if (kbShiftOn && /^[a-z]$/.test(key)) return key.toUpperCase();
-    return key;
-  }
-
-  function updateShiftDisplay() {
-    document.querySelectorAll('.kb-key').forEach(btn => {
-      const k = btn.dataset.key;
-      if (k==='SHIFT') btn.classList.toggle('active',kbShiftOn);
-      else if (/^[a-z]$/.test(k)) btn.textContent = kbShiftOn ? k.toUpperCase() : k;
-    });
-  }
-
-  function onKeyPress(key) {
-    const input = document.getElementById('text-input');
-    if (key==='ENTER') { submitTextInput(); return; }
-    if (key==='BACK')  { input.value=input.value.slice(0,-1); return; }
-    if (key==='CLEAR') { input.value=''; return; }
-    if (key==='SHIFT') { kbShiftOn=!kbShiftOn; updateShiftDisplay(); return; }
-    if (key==='SPACE') { input.value+=' '; return; }
-    let ch=key;
-    if (kbShiftOn&&/^[a-z]$/.test(ch)) ch=ch.toUpperCase();
-    input.value+=ch;
-    if (kbShiftOn) { kbShiftOn=false; updateShiftDisplay(); }
-    startTimeout();
-  }
-
-  function hideKeyboard() { document.getElementById('keyboard').classList.remove('active'); }
-
-  function showKeyboardForStep(i) {
-    const f=STEPS[i].field;
-    if (f==='badge') buildKeyboard('numeric');
-    else if (f==='eventType') hideKeyboard();
-    else buildKeyboard('qwerty');
-  }
-
-  // ============================================================
-  //  UI
-  // ============================================================
-  function setPrompt(i) {
-    document.getElementById('step-label').textContent=STEPS[i].label;
-    document.getElementById('prompt').textContent=STEPS[i].prompt;
-    document.getElementById('status').innerHTML='&nbsp;';
-    document.getElementById('substatus').innerHTML='&nbsp;';
-    document.getElementById('status').className='';
-    const input=document.getElementById('text-input');
-    input.value=''; input.placeholder=STEPS[i].placeholder;
-    document.getElementById('input-row').style.display=STEPS[i].field==='eventType'?'none':'flex';
-    for (let j=0;j<4;j++) {
-      const d=document.getElementById(`dot-${j+1}`);
-      d.className=j<i?'dot done':j===i?'dot active':'dot';
+  // Allow physical barcode scanner (sends keyboard events ending in Enter)
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { submitScan(); return; }
+    if (e.key === 'Backspace') {
+      if (activeField === 'badge')  { numBack(); return; }
+      if (activeField === 'folder') { qBack();   return; }
     }
-    const fw=document.getElementById('folder-list-wrap');
-    if (STEPS[i].field==='folders') { fw.classList.add('active'); renderFolderList(); }
-    else fw.classList.remove('active');
-    renderActionButtons(i); showKeyboardForStep(i);
-    setTimeout(()=>input.focus(),50);
+    if (e.key.length === 1) {
+      if (activeField === 'badge'  && /\d/.test(e.key)) { numKey(e.key);  return; }
+      if (activeField === 'folder')                       { qKey(e.key.toUpperCase()); return; }
+    }
+  });
+
+  // Validate submit button state on any input change
+  [badgeInput, folderInput, deptSelect].forEach(el =>
+    el.addEventListener('change', validateForm)
+  );
+  folderInput.addEventListener('input', validateForm);
+
+  function validateForm() {
+    const ok = badgeInput.value.trim() !== ''
+            && folderInput.value.trim() !== ''
+            && deptSelect.value !== '';
+    submitBtn.disabled = !ok || isSubmitting;
   }
 
-  function showStatus(msg,type) {
-    const el=document.getElementById('status');
-    el.textContent=msg; el.className=type||'';
+  // ── Numeric keypad ──────────────────────────────────────────────────────────
+  function numKey(k) {
+    badgeInput.value += k;
+    validateForm();
   }
-  function showSubstatus(msg) { document.getElementById('substatus').textContent=msg||''; }
+  function numBack() {
+    badgeInput.value = badgeInput.value.slice(0, -1);
+    validateForm();
+  }
 
-  function renderFolderList() {
-    const folders=scan.folders||[];
-    document.getElementById('folder-count').textContent=folders.length;
-    const list=document.getElementById('folder-list');
-    list.innerHTML='';
-    if (!folders.length) {
-      list.innerHTML='<div class="folder-item" style="color:var(--muted)">No folders scanned yet</div>';
+  // ── QWERTY keyboard ─────────────────────────────────────────────────────────
+  function qKey(k) {
+    folderInput.value += k;
+    validateForm();
+  }
+  function qBack() {
+    folderInput.value = folderInput.value.slice(0, -1);
+    validateForm();
+  }
+  function qClear() {
+    folderInput.value = '';
+    validateForm();
+  }
+
+  // ── Status bar helpers ───────────────────────────────────────────────────────
+  function setStatus(msg, type = '') {
+    const bar = document.getElementById('status-bar');
+    const txt = document.getElementById('status-msg');
+    bar.className = type ? `${type}` : '';
+    txt.textContent = msg;
+  }
+
+  // ── OOS flash ───────────────────────────────────────────────────────────────
+  function flashOOS() {
+    const overlay = document.getElementById('oos-overlay');
+    overlay.classList.add('active');
+    setTimeout(() => overlay.classList.remove('active'), 1400);
+  }
+
+  // ── Recent scans log ────────────────────────────────────────────────────────
+  let recentScans = [];
+  function addRecentScan(folder, dept, oos = false) {
+    const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    recentScans.unshift({ folder, dept, time: now, oos });
+    if (recentScans.length > 20) recentScans.pop();
+    renderRecent();
+  }
+  function renderRecent() {
+    const list = document.getElementById('recent-list');
+    if (recentScans.length === 0) {
+      list.innerHTML = '<li style="color:var(--text-dim); font-size:0.75rem;">No scans this session</li>';
       return;
     }
-    folders.forEach((f,i)=>{
-      const item=document.createElement('div');
-      item.className='folder-item';
-      item.innerHTML=`<span class="folder-num">#${i+1}</span> ${escapeHtml(f)}`;
-      list.appendChild(item);
-    });
+    list.innerHTML = recentScans.map(s => `
+      <li class="${s.oos ? 'scan-oos' : ''}">
+        <span class="scan-folder">${s.folder}</span>
+        <span class="scan-dept">${s.dept}</span>
+        <span class="scan-time">${s.time}</span>
+      </li>
+    `).join('');
   }
 
-  function renderActionButtons(i) {
-    const wrap=document.getElementById('action-buttons');
-    wrap.innerHTML='';
-    const field=STEPS[i].field;
-    if (field==='badge') {
-      const b=document.createElement('button');
-      b.className='action-btn yellow'; b.textContent='TEST: 257001';
-      b.onclick=()=>processValue('257001',false); wrap.appendChild(b);
-    } else if (field==='folders') {
-      const tb=document.createElement('button');
-      tb.className='action-btn yellow'; tb.textContent='TEST: Add Folder';
-      tb.onclick=()=>processValue(`test-folder-${(scan.folders||[]).length+1}`,false);
-      wrap.appendChild(tb);
-      if ((scan.folders||[]).length>0) {
-        const db=document.createElement('button');
-        db.className='action-btn done-btn'; db.textContent='✓ DONE';
-        db.onclick=()=>processValue(DONE_BARCODE,false); wrap.appendChild(db);
-      }
-    } else if (field==='eventType') {
-      ['WIP','DROP'].forEach(label=>{
-        const b=document.createElement('button');
-        b.className='action-btn'; b.textContent=label;
-        b.style.fontSize='1.4rem'; b.style.padding='20px 50px';
-        b.onclick=()=>processValue(label==='WIP'?'EVT-WIP':'EVT-DROP',false);
-        wrap.appendChild(b);
-      });
-    } else if (field==='department') {
-      const b=document.createElement('button');
-      b.className='action-btn yellow'; b.textContent='TEST: TWCC';
-      b.onclick=()=>processValue('TWCC',false); wrap.appendChild(b);
-    }
-  }
+  // ── Submit ──────────────────────────────────────────────────────────────────
+  async function submitScan() {
+    const badge  = badgeInput.value.trim();
+    const folder = folderInput.value.trim();
+    const dept   = deptSelect.value;
 
-  // ============================================================
-  //  TIMEOUT
-  // ============================================================
-  function startTimeout() {
-    clearTimeout(timeoutHandle);
-    if (currentStep===0&&!scan.badge) { document.getElementById('timeout-bar-wrap').style.visibility='hidden'; return; }
-    const bar=document.getElementById('timeout-bar');
-    const wrap=document.getElementById('timeout-bar-wrap');
-    wrap.style.visibility='visible'; bar.style.transition='none'; bar.style.width='100%';
-    setTimeout(()=>{ bar.style.transition=`width ${TIMEOUT_SECS}s linear`; bar.style.width='0%'; },10);
-    timeoutHandle=setTimeout(()=>{ showStatus('⏱ TIMED OUT — ENTRY DISCARDED','warn'); hardReset(); setTimeout(()=>setPrompt(0),100); },TIMEOUT_SECS*1000);
-  }
-  function stopTimeout() { clearTimeout(timeoutHandle); document.getElementById('timeout-bar-wrap').style.visibility='hidden'; }
+    if (!badge || !folder || !dept || isSubmitting) return;
 
-  // ============================================================
-  //  RESET
-  // ============================================================
-  function softReset() { setTimeout(()=>{ hardReset(); setPrompt(0); },3000); }
-  function hardReset() {
-    scan={folders:[]}; currentStep=0; entryMethod='SCAN';
-    batchUUID=null; kbShiftOn=false; stopTimeout();
-    document.getElementById('text-input').value='';
-  }
+    isSubmitting = true;
+    submitBtn.disabled = true;
+    setStatus('Submitting…', '');
 
-  // ============================================================
-  //  BATCH SUBMIT
-  // ============================================================
-  async function submitBatch() {
-    stopTimeout(); hideKeyboard();
-    document.getElementById('status').innerHTML='&nbsp;';
-    document.getElementById('status').className='';
-    if (!batchUUID) batchUUID=generateUUID();
-    const folders=scan.folders||[];
-    const total=folders.length;
-    document.getElementById('step-label').textContent='BATCH SUBMIT';
-    document.getElementById('prompt').textContent=`SENDING ${total} FOLDER${total!==1?'S':''}...`;
-    document.getElementById('action-buttons').innerHTML='';
-    document.getElementById('input-row').style.display='none';
-    for (let i=0;i<4;i++) document.getElementById(`dot-${i+1}`).className='dot done';
+    const deptLabel = DEPT_LABELS[dept] || dept;
 
-    const events=folders.map((folderID,i)=>({
-      timestamp:   new Date().toISOString(),
-      badge:       scan.badge,
-      docID:       folderID,
-      eventType:   scan.eventType,
-      department:  scan.department||'N/A (WIP)',
-      entry_method:entryMethod,
-      event_uuid:  `${batchUUID}-${i+1}`,
-      terminal_id: TERMINAL_ID,
-    }));
-
-    if (DEMO_MODE) {
-      showStatus(`✓ THANK YOU — ${total} FOLDER${total!==1?'S':''} LOGGED`,'success');
-      softReset(); return;
-    }
+    const payload = {
+      badge_number:  badge,
+      folder_id:     folder,
+      department:    deptLabel,
+      terminal_id:   TERMINAL,
+      timestamp:     new Date().toISOString(),
+    };
 
     try {
-      const response=await fetch(`${API_BASE_URL}/scan-batch`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({events}),
+      const res = await fetch(`${BACKEND}/scan`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
       });
-      const result=await response.json();
-      const methodTag=entryMethod==='MANUAL'?' [MANUAL]':'';
-      const oosWarnings=result.out_of_sequence_warnings||[];
 
-      if (result.ok) {
-        showStatus(`✓ THANK YOU — ${result.accepted} FOLDER${result.accepted!==1?'S':''} LOGGED${methodTag}`,'success');
-        // Data is already saved — now show OOS warning if needed
-        if (oosWarnings.length>0) {
-          showOOSWarning(oosWarnings, softReset);
-        } else {
-          softReset();
-        }
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setStatus(`Error ${res.status}: ${err.message || 'Server error'}`, 'error');
+        isSubmitting = false;
+        validateForm();
+        return;
+      }
+
+      const data = await res.json();
+
+      // OOS detection — backend signals via oos: true or out_of_sequence: true
+      const isOOS = data.oos === true || data.out_of_sequence === true;
+      if (isOOS) {
+        flashOOS();
+        setStatus(`⚠ OUT OF SEQUENCE — ${folder} → ${deptLabel}`, 'warn');
       } else {
-        showStatus(`⚠ ERROR: ${result.error||'Unknown'}`,'error');
-        softReset();
+        setStatus(`✓ Logged: ${folder} → ${deptLabel}`, 'ok');
       }
-    } catch(err) {
-      console.error('Batch error:',err);
-      showStatus('⚠ NETWORK ERROR — TRY AGAIN','error');
-      softReset();
+
+      addRecentScan(folder, deptLabel, isOOS);
+
+      // Clear folder field, keep badge (user stays logged in for next scan)
+      folderInput.value = '';
+      deptSelect.value  = '';
+
+    } catch (err) {
+      setStatus(`Network error: ${err.message}`, 'error');
     }
+
+    isSubmitting = false;
+    validateForm();
   }
-
-  // ============================================================
-  //  SUBMIT / PROCESS
-  // ============================================================
-  function submitTextInput() {
-    const input=document.getElementById('text-input');
-    const val=input.value.trim();
-    if (!val) { showStatus('⚠ ENTER A VALUE FIRST','error'); return; }
-    processValue(val,true); input.value='';
-  }
-
-  function processValue(value,isManual) {
-    value=(value||'').trim();
-    if (!value) return;
-    if (value.toUpperCase()===RESET_BARCODE) { hardReset(); setPrompt(0); showStatus('⟲ RESET — start over','info'); return; }
-    if (isManual) entryMethod='MANUAL';
-    const field=STEPS[currentStep].field;
-
-    if (field==='badge') {
-      scan.badge=value; scan.folders=[];
-      currentStep++; setPrompt(currentStep); startTimeout(); return;
-    }
-
-    if (field==='folders') {
-      if (value.toUpperCase()===DONE_BARCODE||value.toUpperCase()==='DONE') {
-        if (!(scan.folders||[]).length) { showStatus('⚠ ADD AT LEAST ONE FOLDER FIRST','error'); return; }
-        currentStep++; setPrompt(currentStep); startTimeout(); return;
-      }
-      scan.folders=scan.folders||[];
-      scan.folders.push(value);
-      showSubstatus(`${scan.folders.length} folder${scan.folders.length!==1?'s':''} added — scan/type next or press DONE`);
-      renderFolderList(); renderActionButtons(currentStep); showKeyboardForStep(currentStep); startTimeout(); return;
-    }
-
-    if (field==='eventType') {
-      let mapped=EVENT_BARCODES[value.toUpperCase()];
-      if (!mapped) {
-        const u=value.toUpperCase();
-        if (u==='WIP') mapped='WIP';
-        else if (u==='DROP'||u==='DROP-OFF') mapped='DROP-OFF';
-      }
-      if (!mapped) { showStatus('⚠ CHOOSE WIP OR DROP','error'); return; }
-      scan.eventType=mapped;
-      if (mapped==='WIP') { scan.department='N/A (WIP)'; currentStep=3; submitBatch(); return; }
-      currentStep++; setPrompt(currentStep); startTimeout(); return;
-    }
-
-    if (field==='department') {
-      let mapped=DEPT_BARCODES[value];
-      if (!mapped) {
-        for (const [code,name] of Object.entries(DEPT_BARCODES)) {
-          if (name.toUpperCase()===value.toUpperCase()||code.toUpperCase()===value.toUpperCase()) {
-            mapped=name; break;
-          }
-        }
-      }
-      if (!mapped) { showStatus('⚠ UNKNOWN DEPARTMENT','error'); return; }
-      scan.department=mapped; submitBatch(); return;
-    }
-  }
-
-  // ============================================================
-  //  EVENTS
-  // ============================================================
-  document.addEventListener('keydown',e=>{ startTimeout(); if(e.key==='Enter'){e.preventDefault();submitTextInput();} });
-  document.addEventListener('click',e=>{
-    const skip=e.target.closest('.action-btn')||e.target.closest('#reset-btn')||
-      e.target.closest('#next-btn')||e.target.closest('.kb-key')||
-      e.target.closest('#oos-overlay')||e.target.id==='text-input';
-    if (!skip) document.getElementById('text-input').focus();
-  });
-  document.getElementById('text-input').addEventListener('focus',()=>showKeyboardForStep(currentStep));
-
-  function escapeHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-  }
-
-  hardReset(); setPrompt(0);
-  document.getElementById('terminal-badge').textContent=TERMINAL_ID;
 </script>
 </body>
 </html>
