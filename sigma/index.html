@@ -242,7 +242,7 @@
   const params      = new URLSearchParams(window.location.search);
   const DEMO_MODE   = false;
   const API_BASE_URL= 'https://doctrack-backend-qga8.onrender.com';
-  const TERMINAL_ID = params.get('terminal') || window.location.hostname || 'TERM-UNKNOWN';
+  const TERMINAL_ID = params.get('terminal') || 'TERM-UNKNOWN';
   const TIMEOUT_SECS= 30;
   const OOS_SECS    = 8;
 
