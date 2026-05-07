@@ -53,8 +53,6 @@
   --r: 14px;
   --r2: 20px;
   --r3: 28px;
-
-  /* Apple-tier motion curves */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -75,11 +73,9 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   letter-spacing: -.005em;
-  /* Preserve native pull-to-refresh on mobile */
   overscroll-behavior-y: auto;
 }
 
-/* Fixed atmosphere — page stays anchored, content moves */
 .atmosphere {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
@@ -87,10 +83,7 @@ body {
     radial-gradient(ellipse 60% 40% at 85% 110%, rgba(82,232,160,.06) 0%, transparent 55%),
     radial-gradient(ellipse 50% 30% at 50% 50%, rgba(255,95,168,.025) 0%, transparent 60%);
 }
-
-/* Slow-drifting accent orbs — adds subtle depth, fixed to viewport */
-.atmosphere::before,
-.atmosphere::after {
+.atmosphere::before, .atmosphere::after {
   content: '';
   position: absolute;
   border-radius: 50%;
@@ -116,7 +109,6 @@ body {
   66% { transform: translate(-20px, 30px) scale(.95); }
 }
 
-/* Film-grain overlay — fixed to viewport, the "premium not flat" texture */
 .grain {
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
   opacity: .04;
@@ -125,7 +117,6 @@ body {
   background-size: 200px 200px;
 }
 
-/* Scroll progress bar — top of page, app-style */
 .scroll-progress {
   position: fixed; top: 0; left: 0; right: 0;
   height: 2px; z-index: 1000;
@@ -147,7 +138,6 @@ body {
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
 
-/* ───────── Header ───────── */
 header {
   position: sticky; top: 0; z-index: 100;
   background: rgba(4,8,15,.78);
@@ -159,9 +149,7 @@ header {
   max-width: var(--max); margin: 0 auto; padding: 13px 20px;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
 }
-.brand {
-  display: flex; align-items: center; gap: 11px; text-decoration: none;
-}
+.brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
 .brand-avatar {
   width: 36px; height: 36px; border-radius: 11px;
   background: linear-gradient(135deg, var(--blue), var(--green));
@@ -179,8 +167,7 @@ header {
 .header-right { display: flex; align-items: center; gap: 10px; }
 .lang-toggle {
   display: flex; background: var(--surface); border-radius: 999px;
-  border: 1px solid var(--border); overflow: hidden;
-  padding: 2px;
+  border: 1px solid var(--border); overflow: hidden; padding: 2px;
 }
 .lang-toggle button {
   background: none; border: none; color: var(--muted); cursor: pointer;
@@ -199,7 +186,6 @@ header {
 .header-cta:hover { opacity: .92; transform: translateY(-1px); }
 @media(min-width:640px) { .header-cta { display: inline-flex; } }
 
-/* ───────── Hero ───────── */
 .hero { padding: 56px 0 48px; }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
@@ -255,7 +241,6 @@ header {
 }
 .btn-ghost:hover { border-color: var(--border3); background: var(--surface); }
 
-/* Trust bar */
 .two-row-trust-bar { display: flex; flex-direction: column; gap: 14px; font-size: .88rem; color: var(--muted);
   animation: fadeUp .6s .4s ease both; }
 .trust-row { display: flex; gap: 18px; flex-wrap: wrap; }
@@ -265,52 +250,34 @@ header {
 .trust-text a { color: var(--blue); text-decoration: none; }
 .trust-text a:hover { text-decoration: underline; }
 
-/* ───────── Section primitives ───────── */
-.section-label {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
-}
-.section-label span {
-  font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
-  color: var(--muted);
-}
+.section-label { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.section-label span { font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 .section-title {
   font-size: clamp(1.6rem, 4.5vw, 2.3rem);
-  font-weight: 800; letter-spacing: -.025em; margin-bottom: 10px;
-  line-height: 1.15;
+  font-weight: 800; letter-spacing: -.025em; margin-bottom: 10px; line-height: 1.15;
 }
 .section-desc { color: var(--muted); font-weight: 400; max-width: 600px; margin-bottom: 36px; font-size: .98rem; }
 
-/* ───────── Recommender ───────── */
 .recommender-section { padding: 36px 0 56px; }
 .rec-header-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
 .rec-skip {
   font-size: .82rem; color: var(--muted); text-decoration: none;
   display: inline-flex; align-items: center; gap: 5px;
-  border-bottom: 1px dotted var(--faint);
-  padding-bottom: 1px;
-  transition: color .2s, border-color .2s;
-  flex: 0 0 auto;
+  border-bottom: 1px dotted var(--faint); padding-bottom: 1px;
+  transition: color .2s, border-color .2s; flex: 0 0 auto;
 }
 .rec-skip:hover { color: var(--text); border-color: var(--muted); }
 
 .rec-tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-  margin-bottom: 18px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; margin-bottom: 18px;
 }
 .rec-tile {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 22px 16px;
-  cursor: pointer;
-  font-family: inherit;
-  color: var(--text);
-  text-align: left;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2);
+  padding: 22px 16px; cursor: pointer; font-family: inherit; color: var(--text);
+  text-align: left; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
   transition: border-color var(--dur-fast) var(--ease-out-expo),
               background var(--dur-fast) var(--ease-out-expo),
               transform var(--dur-med) var(--ease-spring),
@@ -322,11 +289,7 @@ header {
   background: linear-gradient(135deg, rgba(79,168,255,.06), rgba(82,232,160,.04));
   opacity: 0; transition: opacity var(--dur-fast) var(--ease-out-expo);
 }
-.rec-tile:hover {
-  border-color: var(--border3);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px -8px rgba(0,0,0,.4);
-}
+.rec-tile:hover { border-color: var(--border3); transform: translateY(-3px); box-shadow: 0 8px 24px -8px rgba(0,0,0,.4); }
 .rec-tile:active { transform: translateY(-1px) scale(.98); }
 .rec-tile:hover::before { opacity: 1; }
 .rec-tile.active {
@@ -338,79 +301,50 @@ header {
   width: 36px; height: 36px; border-radius: 10px;
   background: var(--surface2); border: 1px solid var(--border);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  position: relative; z-index: 1;
+  font-size: 1.1rem; position: relative; z-index: 1;
 }
-.rec-tile.active .rec-tile-icon {
-  background: rgba(82,232,160,.12);
-  border-color: rgba(82,232,160,.3);
-}
+.rec-tile.active .rec-tile-icon { background: rgba(82,232,160,.12); border-color: rgba(82,232,160,.3); }
 .rec-tile-label { font-weight: 600; font-size: .94rem; position: relative; z-index: 1; letter-spacing: -.01em; }
 .rec-tile-sub { font-size: .76rem; color: var(--muted); font-weight: 400; position: relative; z-index: 1; line-height: 1.45; }
 
-/* Result card */
 .rec-result {
   margin-top: 6px;
   background: linear-gradient(135deg, var(--surface), var(--surface2));
-  border: 1px solid var(--border2);
-  border-radius: var(--r2);
-  padding: 0;
-  overflow: hidden;
-  max-height: 0;
+  border: 1px solid var(--border2); border-radius: var(--r2);
+  padding: 0; overflow: hidden; max-height: 0;
   transition: max-height var(--dur-slow) var(--ease-in-out-quart),
               padding var(--dur-slow) var(--ease-in-out-quart),
               margin-top var(--dur-slow) var(--ease-in-out-quart);
   position: relative;
 }
-.rec-result.open {
-  max-height: 800px;
-  padding: 26px 24px;
-  margin-top: 14px;
-}
-/* Animated gradient ring on result */
+.rec-result.open { max-height: 800px; padding: 26px 24px; margin-top: 14px; }
 .rec-result.open::before {
-  content: ''; position: absolute; inset: -1px;
-  border-radius: var(--r2);
-  padding: 1px;
+  content: ''; position: absolute; inset: -1px; border-radius: var(--r2); padding: 1px;
   background: linear-gradient(135deg, rgba(79,168,255,.5), rgba(82,232,160,.5), rgba(245,200,66,.4), rgba(79,168,255,.5));
   background-size: 300% 300%;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  animation: gradient-rotate 8s linear infinite;
-  opacity: .7;
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none; animation: gradient-rotate 8s linear infinite; opacity: .7;
 }
-@keyframes gradient-rotate {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
-}
-.rec-result-header {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
-}
+@keyframes gradient-rotate { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+.rec-result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
 .rec-result-header .check-circle {
   width: 26px; height: 26px; border-radius: 50%;
   background: rgba(82,232,160,.15); color: var(--green);
   display: flex; align-items: center; justify-content: center;
-  font-size: .85rem; flex: 0 0 auto;
-  border: 1px solid rgba(82,232,160,.25);
+  font-size: .85rem; flex: 0 0 auto; border: 1px solid rgba(82,232,160,.25);
 }
 .rec-result-title { font-size: .95rem; font-weight: 600; color: var(--text); }
-
 .rec-result-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
 @media(min-width: 600px) { .rec-result-grid { grid-template-columns: 1fr 1fr; } }
-
 .rec-pick {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 18px 18px 16px;
-  display: flex; flex-direction: column; gap: 4px;
-  text-decoration: none; color: inherit;
-  transition: border-color .2s, transform .2s;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 4px;
+  text-decoration: none; color: inherit; transition: border-color .2s, transform .2s;
 }
 .rec-pick:hover { border-color: var(--border3); transform: translateY(-1px); }
 .rec-pick.primary { border-color: rgba(82,232,160,.35); background: linear-gradient(135deg, rgba(82,232,160,.05), var(--surface)); }
-
 .rec-pick-rank { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
 .rec-pick.primary .rec-pick-rank { color: var(--green); }
 .rec-pick-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; }
@@ -419,164 +353,99 @@ header {
 .rec-pick-reason { font-size: .85rem; color: var(--muted); line-height: 1.55; margin-top: 6px; }
 .rec-pick-cta { margin-top: 10px; font-size: .8rem; color: var(--blue); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
 .rec-pick:hover .rec-pick-cta { gap: 7px; }
-
-.rec-result-text {
-  margin-top: 18px; font-size: .85rem; color: var(--muted);
-  padding-top: 16px; border-top: 1px solid var(--border);
-  line-height: 1.6;
-}
+.rec-result-text { margin-top: 18px; font-size: .85rem; color: var(--muted); padding-top: 16px; border-top: 1px solid var(--border); line-height: 1.6; }
 .rec-result-text a { color: var(--blue); text-decoration: none; font-weight: 600; }
 .rec-result-text a:hover { text-decoration: underline; }
 
-/* ───────── Heat apps ───────── */
 .heat-section { padding: 56px 0; }
-.heat-grid {
-  display: grid; gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
+.heat-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .heat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 22px 20px;
-  position: relative; overflow: hidden;
-  transition: border-color .25s, transform .25s;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2);
+  padding: 22px 20px; position: relative; overflow: hidden; transition: border-color .25s, transform .25s;
 }
 .heat-card:hover { border-color: var(--border3); transform: translateY(-2px); }
-.heat-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: var(--accent);
-}
+.heat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
 .heat-card.live { --accent: linear-gradient(90deg, #ff5fa8, #ff8ec7); }
 .heat-card.vod { --accent: linear-gradient(90deg, #4fa8ff, #6ec5ff); }
 .heat-card.ultra { --accent: linear-gradient(90deg, #ff9a5f, #ffc28a); }
 .heat-card.backup { --accent: linear-gradient(90deg, #b35fff, #d18eff); }
-
 .heat-icon {
-  width: 42px; height: 42px; border-radius: 11px;
-  background: var(--accent);
+  width: 42px; height: 42px; border-radius: 11px; background: var(--accent);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.15rem; font-weight: 800; color: #04080f;
-  margin-bottom: 14px;
-  letter-spacing: -.02em;
+  font-size: 1.15rem; font-weight: 800; color: #04080f; margin-bottom: 14px; letter-spacing: -.02em;
 }
 .heat-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 5px; letter-spacing: -.01em; }
 .heat-tag { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
 .heat-desc { font-size: .88rem; color: var(--muted); line-height: 1.6; }
 
-/* ───────── Setup walkthrough ───────── */
 .setup-section { padding: 56px 0; }
-.setup-headline {
-  font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; margin-bottom: 8px; letter-spacing: -.025em;
-}
+.setup-headline { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; margin-bottom: 8px; letter-spacing: -.025em; }
 .setup-headline em { font-style: normal; color: var(--green); }
-
 .setup-track {
   display: flex; gap: 12px; overflow-x: auto;
   padding: 8px 4px 16px; scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch; scrollbar-width: thin;
 }
 .setup-track::-webkit-scrollbar { height: 4px; }
 .setup-track::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
 .setup-track::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 4px; }
-
 .setup-step {
-  flex: 0 0 240px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 22px 20px 24px;
-  scroll-snap-align: start;
-  position: relative; overflow: hidden;
-  display: flex; flex-direction: column; gap: 10px;
+  flex: 0 0 240px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 22px 20px 24px; scroll-snap-align: start;
+  position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 10px;
   transition: border-color .25s;
 }
 .setup-step:hover { border-color: var(--border2); }
-
 .setup-step::after {
-  content: '';
-  position: absolute; top: 0; left: 0; height: 2px; width: 0;
-  background: linear-gradient(90deg, var(--blue), var(--green));
-  transition: width .8s ease;
+  content: ''; position: absolute; top: 0; left: 0; height: 2px; width: 0;
+  background: linear-gradient(90deg, var(--blue), var(--green)); transition: width .8s ease;
 }
 .setup-step.visible::after { width: 100%; }
-
-.setup-num {
-  font-size: 2rem; font-weight: 800; color: var(--border3);
-  line-height: 1; letter-spacing: -.04em;
-}
+.setup-num { font-size: 2rem; font-weight: 800; color: var(--border3); line-height: 1; letter-spacing: -.04em; }
 .setup-icon {
   width: 38px; height: 38px; border-radius: 10px;
   background: var(--surface2); border: 1px solid var(--border);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; flex: 0 0 auto;
-  margin-top: 4px;
+  font-size: 1.1rem; flex: 0 0 auto; margin-top: 4px;
 }
 .setup-step h4 { font-size: 1rem; font-weight: 700; letter-spacing: -.01em; }
 .setup-step p { color: var(--muted); font-size: .85rem; line-height: 1.55; }
-
 @media(min-width: 720px) {
   .setup-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; overflow: visible; }
   .setup-step { flex: initial; }
 }
-@media(min-width: 1000px) {
-  .setup-track { grid-template-columns: repeat(6, 1fr); }
-}
+@media(min-width: 1000px) { .setup-track { grid-template-columns: repeat(6, 1fr); } }
 
-/* ───────── Models ───────── */
 .models-section { padding: 56px 0; }
 .model-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-
 .model-card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2);
-  padding: 22px 20px; cursor: pointer;
-  text-decoration: none; color: inherit;
-  font-family: inherit;
+  padding: 22px 20px; cursor: pointer; text-decoration: none; color: inherit; font-family: inherit;
   transition: border-color var(--dur-fast) var(--ease-out-expo),
               transform var(--dur-fast) var(--ease-out-expo),
               background var(--dur-fast) var(--ease-out-expo),
               box-shadow var(--dur-med) var(--ease-out-expo);
-  display: block; position: relative; overflow: hidden;
-  text-align: left; width: 100%;
+  display: block; position: relative; overflow: hidden; text-align: left; width: 100%;
 }
 .model-card::before {
   content: ''; position: absolute; inset: 0; border-radius: var(--r2);
   background: linear-gradient(135deg, rgba(79,168,255,.05), rgba(82,232,160,.03));
-  opacity: 0; transition: opacity var(--dur-fast) var(--ease-out-expo);
-  pointer-events: none;
+  opacity: 0; transition: opacity var(--dur-fast) var(--ease-out-expo); pointer-events: none;
 }
-/* Shimmer sweep on hover (desktop) and once on viewport entry (mobile) */
 .model-card::after {
   content: ''; position: absolute; top: 0; left: -100%;
   width: 50%; height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,.04), transparent);
-  pointer-events: none;
-  transition: left .9s var(--ease-out-expo);
+  pointer-events: none; transition: left .9s var(--ease-out-expo);
 }
-.model-card:hover::after,
-.model-card.shimmered::after { left: 150%; }
-
+.model-card:hover::after, .model-card.shimmered::after { left: 150%; }
 .model-card:hover {
-  border-color: var(--border3);
-  transform: translateY(-3px);
+  border-color: var(--border3); transform: translateY(-3px);
   box-shadow: 0 12px 32px -8px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.04);
 }
 .model-card:hover::before { opacity: 1; }
-.model-card.popular {
-  border-color: rgba(82,232,160,.3);
-  background: linear-gradient(135deg, rgba(82,232,160,.05), var(--surface));
-}
-/* Popular card — animated gradient border ring */
-.model-card.popular {
-  position: relative;
-}
+.model-card.popular { border-color: rgba(82,232,160,.3); background: linear-gradient(135deg, rgba(82,232,160,.05), var(--surface)); }
 .model-card.popular > * { position: relative; z-index: 2; }
-.model-card.popular .model-arrow,
-.model-card.popular .model-tagline,
-.model-card.popular .model-price,
-.model-card.popular .model-name,
-.model-card.popular .model-badge { position: relative; z-index: 2; }
 
 .model-badge {
   display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .08em;
@@ -591,47 +460,33 @@ header {
 .model-price { font-size: 1.4rem; font-weight: 700; color: var(--text); margin-bottom: 4px; letter-spacing: -.02em; }
 .model-price sup { font-size: .72rem; vertical-align: super; font-weight: 600; }
 .model-tagline { font-size: .82rem; color: var(--muted); margin-bottom: 16px; min-height: 2.4em; line-height: 1.5; }
-.model-arrow {
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: .8rem; color: var(--muted); font-weight: 500;
-  position: relative; z-index: 1;
-}
+.model-arrow { display: flex; align-items: center; justify-content: space-between; font-size: .8rem; color: var(--muted); font-weight: 500; position: relative; z-index: 1; }
 .arrow-icon { transition: transform .2s; }
 .model-card:hover .arrow-icon { transform: translateX(3px); }
 
-/* ───────── Product detail (collapsible) ───────── */
 .product-detail {
-  border-top: 1px solid var(--border);
-  padding: 28px 0 0;
-  scroll-margin-top: 80px;
-  position: relative;
+  border-top: 1px solid var(--border); padding: 28px 0 0;
+  scroll-margin-top: 80px; position: relative;
   transition: border-color var(--dur-med) var(--ease-out-expo);
 }
 .product-detail.open { border-top-color: var(--border2); }
 .product-detail.open::before {
   content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, var(--blue), var(--green), transparent);
-  opacity: .5;
-  animation: border-glow var(--dur-slow) var(--ease-out-expo);
+  opacity: .5; animation: border-glow var(--dur-slow) var(--ease-out-expo);
 }
-@keyframes border-glow {
-  0% { opacity: 0; transform: scaleX(.3); }
-  100% { opacity: .5; transform: scaleX(1); }
-}
+@keyframes border-glow { 0% { opacity: 0; transform: scaleX(.3); } 100% { opacity: .5; transform: scaleX(1); } }
 
 .product-detail-toggle {
-  width: 100%; background: none; border: none; color: inherit;
-  font-family: inherit; cursor: pointer; padding: 24px 0;
+  width: 100%; background: none; border: none; color: inherit; font-family: inherit;
+  cursor: pointer; padding: 24px 0;
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  text-align: left;
-  transition: opacity var(--dur-fast) var(--ease-out-expo);
+  text-align: left; transition: opacity var(--dur-fast) var(--ease-out-expo);
 }
 .product-detail-toggle:hover { opacity: .92; }
 .product-detail-head-left { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
 .product-detail-head-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.product-detail-title {
-  font-size: clamp(1.3rem, 3.5vw, 1.7rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.15;
-}
+.product-detail-title { font-size: clamp(1.3rem, 3.5vw, 1.7rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
 .product-detail-sub { font-size: .82rem; color: var(--muted); font-weight: 500; }
 .product-detail-price-block { text-align: right; flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
 .product-detail-price { font-size: 1.4rem; font-weight: 700; color: var(--green); letter-spacing: -.02em; }
@@ -646,43 +501,18 @@ header {
               color var(--dur-fast) var(--ease-out-expo);
   flex: 0 0 auto;
 }
-.product-detail-toggle:hover .product-detail-chevron {
-  border-color: var(--border3);
-  background: var(--surface2);
-}
-.product-detail.open .product-detail-chevron {
-  transform: rotate(180deg);
-  border-color: rgba(82,232,160,.4);
-  background: rgba(82,232,160,.08);
-  color: var(--green);
-}
+.product-detail-toggle:hover .product-detail-chevron { border-color: var(--border3); background: var(--surface2); }
+.product-detail.open .product-detail-chevron { transform: rotate(180deg); border-color: rgba(82,232,160,.4); background: rgba(82,232,160,.08); color: var(--green); }
 
-.product-detail-body {
-  max-height: 0; overflow: hidden;
-  transition: max-height var(--dur-slow) var(--ease-in-out-quart);
-}
+.product-detail-body { max-height: 0; overflow: hidden; transition: max-height var(--dur-slow) var(--ease-in-out-quart); }
 .product-detail.open .product-detail-body { max-height: 4000px; }
 .product-detail-inner {
-  padding: 0 0 36px;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity var(--dur-med) var(--ease-out-expo) 100ms,
-              transform var(--dur-med) var(--ease-out-expo) 100ms;
+  padding: 0 0 36px; opacity: 0; transform: translateY(12px);
+  transition: opacity var(--dur-med) var(--ease-out-expo) 100ms, transform var(--dur-med) var(--ease-out-expo) 100ms;
 }
-.product-detail.open .product-detail-inner {
-  opacity: 1;
-  transform: translateY(0);
-}
-.product-detail-inner > * {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity var(--dur-med) var(--ease-out-expo),
-              transform var(--dur-med) var(--ease-out-expo);
-}
-.product-detail.open .product-detail-inner > * {
-  opacity: 1;
-  transform: translateY(0);
-}
+.product-detail.open .product-detail-inner { opacity: 1; transform: translateY(0); }
+.product-detail-inner > * { opacity: 0; transform: translateY(8px); transition: opacity var(--dur-med) var(--ease-out-expo), transform var(--dur-med) var(--ease-out-expo); }
+.product-detail.open .product-detail-inner > * { opacity: 1; transform: translateY(0); }
 .product-detail.open .product-detail-inner > *:nth-child(1) { transition-delay: 150ms; }
 .product-detail.open .product-detail-inner > *:nth-child(2) { transition-delay: 220ms; }
 .product-detail.open .product-detail-inner > *:nth-child(3) { transition-delay: 290ms; }
@@ -692,8 +522,7 @@ header {
 
 .img-strip {
   display: flex; gap: 10px; overflow-x: auto; margin-bottom: 28px;
-  padding-bottom: 4px; scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
 }
 .img-strip::-webkit-scrollbar { height: 4px; }
 .img-strip::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
@@ -715,19 +544,10 @@ header {
   .img-placeholder { flex: 0 0 320px; }
 }
 
-.detail-cols {
-  display: grid; grid-template-columns: 1fr; gap: 16px;
-}
+.detail-cols { display: grid; grid-template-columns: 1fr; gap: 16px; }
 @media(min-width:640px) { .detail-cols { grid-template-columns: 1fr 1fr; } }
-
-.detail-box {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
-  padding: 20px 18px;
-}
-.detail-box h4 {
-  font-size: .82rem; font-weight: 700; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
-}
+.detail-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px 18px; }
+.detail-box h4 { font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 
 .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .feature-list li { display: flex; align-items: flex-start; gap: 10px; font-size: .9rem; line-height: 1.5; }
@@ -741,15 +561,11 @@ header {
 .check svg { width: 9px; height: 9px; }
 
 .spec-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.spec-list li {
-  display: flex; justify-content: space-between; gap: 12px;
-  font-size: .85rem; padding-bottom: 8px; border-bottom: 1px solid var(--border);
-}
+.spec-list li { display: flex; justify-content: space-between; gap: 12px; font-size: .85rem; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 .spec-list li:last-child { border-bottom: none; padding-bottom: 0; }
 .spec-key { color: var(--muted); flex: 0 0 auto; }
 .spec-val { text-align: right; font-weight: 500; }
 
-/* ───────── Compare table ───────── */
 .compare-section { padding: 56px 0; }
 .compare-toggle {
   width: 100%; background: var(--surface); border: 1px solid var(--border);
@@ -757,37 +573,24 @@ header {
   font-family: inherit; color: var(--text);
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   margin-top: 16px; font-size: .95rem; font-weight: 600;
-  transition: border-color var(--dur-fast) var(--ease-out-expo),
-              background var(--dur-fast) var(--ease-out-expo);
+  transition: border-color var(--dur-fast) var(--ease-out-expo), background var(--dur-fast) var(--ease-out-expo);
 }
 .compare-toggle:hover { border-color: var(--border3); background: var(--surface2); }
-.compare-toggle .compare-chevron {
-  transition: transform var(--dur-med) var(--ease-spring);
-  color: var(--muted);
-}
+.compare-toggle .compare-chevron { transition: transform var(--dur-med) var(--ease-spring); color: var(--muted); }
 .compare-toggle.open .compare-chevron { transform: rotate(180deg); color: var(--green); }
-
 .compare-body { max-height: 0; overflow: hidden; transition: max-height var(--dur-slow) var(--ease-in-out-quart); }
 .compare-body.open { max-height: 1200px; }
 .compare-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r2); margin-top: 16px; }
-
 .compare-table { width: 100%; border-collapse: collapse; font-size: .87rem; }
-.compare-table th, .compare-table td {
-  padding: 13px 14px; text-align: center; border-bottom: 1px solid var(--border);
-}
-.compare-table th { font-weight: 700; font-size: .8rem; letter-spacing: .04em;
-  color: var(--muted); background: var(--surface); }
-.compare-table th:first-child, .compare-table td:first-child {
-  text-align: left; color: var(--muted); font-size: .82rem;
-}
+.compare-table th, .compare-table td { padding: 13px 14px; text-align: center; border-bottom: 1px solid var(--border); }
+.compare-table th { font-weight: 700; font-size: .8rem; letter-spacing: .04em; color: var(--muted); background: var(--surface); }
+.compare-table th:first-child, .compare-table td:first-child { text-align: left; color: var(--muted); font-size: .82rem; }
 .compare-table tr:last-child td { border-bottom: none; }
 .compare-table td.hi { color: var(--green); font-weight: 600; }
 .compare-table td.mid { color: var(--blue); font-weight: 500; }
 .compare-table .col-head { font-weight: 700; color: var(--text); font-size: .92rem; }
-
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-/* ───────── More Info section ───────── */
 .moreinfo-section { padding: 56px 0; }
 .moreinfo-toggle {
   width: 100%; background: var(--surface); border: 1px solid var(--border);
@@ -795,20 +598,14 @@ header {
   font-family: inherit; color: var(--text);
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   margin-top: 16px; font-size: .95rem; font-weight: 600;
-  transition: border-color var(--dur-fast) var(--ease-out-expo),
-              background var(--dur-fast) var(--ease-out-expo);
+  transition: border-color var(--dur-fast) var(--ease-out-expo), background var(--dur-fast) var(--ease-out-expo);
 }
 .moreinfo-toggle:hover { border-color: var(--border3); background: var(--surface2); }
-.moreinfo-toggle .moreinfo-chevron {
-  transition: transform var(--dur-med) var(--ease-spring);
-  color: var(--muted);
-}
+.moreinfo-toggle .moreinfo-chevron { transition: transform var(--dur-med) var(--ease-spring); color: var(--muted); }
 .moreinfo-toggle.open .moreinfo-chevron { transform: rotate(180deg); color: var(--green); }
-
 .moreinfo-body { max-height: 0; overflow: hidden; transition: max-height var(--dur-slow) var(--ease-in-out-quart); }
 .moreinfo-body.open { max-height: 4000px; }
 .moreinfo-inner { padding: 24px 0 8px; display: flex; flex-direction: column; gap: 28px; }
-
 .moreinfo-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r2); padding: 22px 20px; }
 .moreinfo-block h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -.01em; }
 .moreinfo-block p { color: var(--muted); font-size: .9rem; line-height: 1.65; margin-bottom: 10px; }
@@ -818,47 +615,36 @@ header {
 .moreinfo-block ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 .moreinfo-block ul li { display: flex; align-items: flex-start; gap: 10px; font-size: .88rem; color: var(--muted); }
 
-/* ───────── FAQ ───────── */
 .faq-section { padding: 56px 0; }
 .faq-list { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
-.faq-item {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
-  overflow: hidden;
-  transition: border-color .2s;
-}
+.faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; transition: border-color .2s; }
 .faq-item:hover { border-color: var(--border2); }
 .faq-question {
   width: 100%; background: none; border: none; color: var(--text); cursor: pointer;
   padding: 17px 20px; font-family: inherit; font-size: .94rem; font-weight: 500;
   text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  transition: background var(--dur-fast) var(--ease-out-expo),
-              color var(--dur-fast) var(--ease-out-expo);
+  transition: background var(--dur-fast) var(--ease-out-expo), color var(--dur-fast) var(--ease-out-expo);
   letter-spacing: -.005em;
 }
 .faq-question:hover { background: var(--surface2); }
 .faq-question[aria-expanded="true"] { color: var(--blue); }
 .faq-chevron {
   font-size: .75rem;
-  transition: transform var(--dur-med) var(--ease-spring),
-              color var(--dur-fast) var(--ease-out-expo);
+  transition: transform var(--dur-med) var(--ease-spring), color var(--dur-fast) var(--ease-out-expo);
   flex: 0 0 auto; color: var(--muted);
 }
 .faq-question[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); color: var(--blue); }
 .faq-answer {
   max-height: 0; overflow: hidden;
-  transition: max-height var(--dur-med) var(--ease-in-out-quart),
-              padding var(--dur-med) var(--ease-in-out-quart);
-  color: var(--muted); font-size: .9rem; font-weight: 400; line-height: 1.7;
-  padding: 0 20px;
+  transition: max-height var(--dur-med) var(--ease-in-out-quart), padding var(--dur-med) var(--ease-in-out-quart);
+  color: var(--muted); font-size: .9rem; font-weight: 400; line-height: 1.7; padding: 0 20px;
 }
 .faq-answer.open { max-height: 600px; padding: 0 20px 18px; }
 
-/* ───────── CTA / Footer ───────── */
 .cta-footer { padding: 56px 0 100px; }
 .cta-card {
   background: linear-gradient(135deg, var(--surface), var(--surface2));
-  border: 1px solid var(--border2);
-  border-radius: var(--r3); padding: 36px 28px;
+  border: 1px solid var(--border2); border-radius: var(--r3); padding: 36px 28px;
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
 }
@@ -871,34 +657,26 @@ header {
 .cta-card h2 { font-size: clamp(1.4rem, 3.8vw, 1.9rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.2; }
 .cta-card p { color: var(--muted); max-width: 520px; font-size: .95rem; line-height: 1.6; }
 .cta-card .btn-primary { font-size: 1rem; padding: 13px 24px; }
-
 @media(min-width: 720px) {
   .cta-card { flex-direction: row; align-items: center; justify-content: space-between; padding: 40px 36px; gap: 24px; }
   .cta-card-text { flex: 1; }
 }
 
-footer.site-footer {
-  border-top: 1px solid var(--border); padding: 24px 0 36px; color: var(--muted);
-  font-size: .82rem;
-}
+footer.site-footer { border-top: 1px solid var(--border); padding: 24px 0 36px; color: var(--muted); font-size: .82rem; }
 .footer-inner {
   max-width: var(--max); margin: 0 auto; padding: 0 20px;
-  display: flex; flex-wrap: wrap; align-items: center;
-  justify-content: space-between; gap: 12px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
 }
 .footer-left { display: flex; flex-direction: column; gap: 4px; }
 .footer-left a { color: var(--blue); text-decoration: none; }
 .footer-left a:hover { text-decoration: underline; }
 
-/* ───────── Sticky mobile button (chill corner style) ───────── */
 .mobile-fab {
   position: fixed; bottom: 16px; right: 16px; z-index: 200;
-  display: flex; align-items: center; gap: 8px;
-  padding: 12px 18px;
+  display: flex; align-items: center; gap: 8px; padding: 12px 18px;
   background: linear-gradient(135deg, var(--blue), var(--green));
   color: #04080f; font-weight: 700; font-size: .9rem; font-family: inherit;
-  border-radius: 999px;
-  text-decoration: none;
+  border-radius: 999px; text-decoration: none;
   box-shadow: 0 8px 24px rgba(4,8,15,.5), 0 0 0 1px rgba(255,255,255,.1);
   transition: transform .2s, box-shadow .2s;
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
@@ -908,24 +686,15 @@ footer.site-footer {
 .mobile-fab svg { width: 16px; height: 16px; }
 @media(min-width:900px) { .mobile-fab { display: none; } }
 
-/* ───────── Animations ───────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 .fade-in {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity var(--dur-slow) var(--ease-out-expo),
-              transform var(--dur-slow) var(--ease-out-expo);
+  opacity: 0; transform: translateY(28px);
+  transition: opacity var(--dur-slow) var(--ease-out-expo), transform var(--dur-slow) var(--ease-out-expo);
 }
 .fade-in.visible { opacity: 1; transform: none; }
-
-/* Hero entrance now uses Apple-tier easing */
 .hero h1, .hero-eyebrow, .hero-desc, .hero-distrib, .hero-actions, .two-row-trust-bar {
   animation-timing-function: var(--ease-out-expo) !important;
 }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
   .atmosphere::before, .atmosphere::after { animation: none !important; }
@@ -934,27 +703,15 @@ footer.site-footer {
 </style>
 
 <script>
-/* =========================================================
-   PRICE CONTROL PANEL — UPDATE PRICES HERE ONLY
-   ========================================================= */
 const PRICE_CONFIG = {
-  v6max: 260,
-  v6plus: 290,
-  eliteMini: 310,
-  eliteUltra: 450,
-  eliteUltraSetup: 50,
-  v6maxCase: 3800
+  v6max: 260, v6plus: 290, eliteMini: 310, eliteUltra: 450,
+  eliteUltraSetup: 50, v6maxCase: 3800
 };
-
-function formatPrice(value) {
-  return `$${Number(value).toLocaleString('en-US')}`;
-}
+function formatPrice(value) { return `$${Number(value).toLocaleString('en-US')}`; }
 function getPriceRangeText() {
   const values = [PRICE_CONFIG.v6max, PRICE_CONFIG.v6plus, PRICE_CONFIG.eliteMini, PRICE_CONFIG.eliteUltra];
   return `${formatPrice(Math.min(...values))} – ${formatPrice(Math.max(...values))}`;
 }
-
-/* JSON-LD structured data — Product, ItemList, FAQPage, LocalBusiness, HowTo */
 function buildStructuredData() {
   return {
     "@context": "https://schema.org",
@@ -967,22 +724,13 @@ function buildStructuredData() {
         "url": "https://www.jordanmoddes.com/vsee",
         "telephone": "+1-262-705-0853",
         "priceRange": getPriceRangeText(),
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Austin",
-          "addressRegion": "TX",
-          "addressCountry": "US"
-        },
+        "address": { "@type": "PostalAddress", "addressLocality": "Austin", "addressRegion": "TX", "addressCountry": "US" },
         "geo": { "@type": "GeoCoordinates", "latitude": 30.2672, "longitude": -97.7431 },
         "areaServed": [
-          { "@type": "City", "name": "Austin, TX" },
-          { "@type": "City", "name": "Round Rock, TX" },
-          { "@type": "City", "name": "San Marcos, TX" },
-          { "@type": "City", "name": "San Antonio, TX" },
-          { "@type": "City", "name": "Waco, TX" },
-          { "@type": "City", "name": "College Station, TX" },
-          { "@type": "City", "name": "Houston, TX" },
-          { "@type": "City", "name": "Dallas, TX" },
+          { "@type": "City", "name": "Austin, TX" }, { "@type": "City", "name": "Round Rock, TX" },
+          { "@type": "City", "name": "San Marcos, TX" }, { "@type": "City", "name": "San Antonio, TX" },
+          { "@type": "City", "name": "Waco, TX" }, { "@type": "City", "name": "College Station, TX" },
+          { "@type": "City", "name": "Houston, TX" }, { "@type": "City", "name": "Dallas, TX" },
           { "@type": "City", "name": "Fort Worth, TX" }
         ],
         "paymentAccepted": "Cash, Zelle"
@@ -992,26 +740,10 @@ function buildStructuredData() {
         "name": "VSeeBox Android TV Units — Austin TX",
         "description": `Locally stocked VSeeBox Android TV units available for in-person pickup in Austin and Round Rock, TX. 4 models from ${formatPrice(PRICE_CONFIG.v6max)}.`,
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "item": {
-              "@type": "Product", "name": "VSeeBox V6 Max",
-              "description": "Android 14 Android TV box with Heat apps, 4GB RAM, 64GB storage, dual-band Wi-Fi, 8K video decoding.",
-              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": String(PRICE_CONFIG.v6max), "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
-          }},
-          { "@type": "ListItem", "position": 2, "item": {
-              "@type": "Product", "name": "VSeeBox V6 Plus",
-              "description": "Android 14 Android TV box with split-screen, PIP, backlit remote, 4GB RAM, 64GB storage.",
-              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": String(PRICE_CONFIG.v6plus), "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
-          }},
-          { "@type": "ListItem", "position": 3, "item": {
-              "@type": "Product", "name": "VSeeBox Elite Mini",
-              "description": "Android 12 Android TV box with Wi-Fi 6, voice remote, ~10 bonus apps, 6K HDR, 4GB RAM, 32GB storage.",
-              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": String(PRICE_CONFIG.eliteMini), "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
-          }},
-          { "@type": "ListItem", "position": 4, "item": {
-              "@type": "Product", "name": "VSeeBox Elite Ultra",
-              "description": `Android 12 Android TV box with Wi-Fi 6, Gigabit Ethernet, ~24 apps, 128GB storage, voice remote. Optional pre-load & configuration service ${formatPrice(PRICE_CONFIG.eliteUltraSetup)}.`,
-              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": String(PRICE_CONFIG.eliteUltra), "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } }
-          }}
+          { "@type": "ListItem", "position": 1, "item": { "@type": "Product", "name": "VSeeBox V6 Max", "description": "Android 14 Android TV box with Heat apps, 4GB RAM, 64GB storage, dual-band Wi-Fi, 8K video decoding.", "offers": { "@type": "Offer", "priceCurrency": "USD", "price": String(PRICE_CONFIG.v6max), "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } } }},
+          { "@type": "ListItem", "position": 2, "item": { "@type": "Product", "name": "VSeeBox V6 Plus", "description": "Android 14 Android TV box with split-screen, PIP, backlit remote, 4GB RAM, 64GB storage.", "offers": { "@type": "Offer", "priceCurrency": "USD", "price": String(PRICE_CONFIG.v6plus), "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } } }},
+          { "@type": "ListItem", "position": 3, "item": { "@type": "Product", "name": "VSeeBox Elite Mini", "description": "Android 12 Android TV box with Wi-Fi 6, voice remote, ~10 bonus apps, 6K HDR, 4GB RAM, 32GB storage.", "offers": { "@type": "Offer", "priceCurrency": "USD", "price": String(PRICE_CONFIG.eliteMini), "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } } }},
+          { "@type": "ListItem", "position": 4, "item": { "@type": "Product", "name": "VSeeBox Elite Ultra", "description": `Android 12 Android TV box with Wi-Fi 6, Gigabit Ethernet, ~24 apps, 128GB storage, voice remote. Optional pre-load & configuration service ${formatPrice(PRICE_CONFIG.eliteUltraSetup)}.`, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": String(PRICE_CONFIG.eliteUltra), "availability": "https://schema.org/InStock", "seller": { "@type": "Person", "name": "Jordan Moddes" } } }}
         ]
       },
       {
@@ -1031,42 +763,30 @@ function buildStructuredData() {
       {
         "@type": "FAQPage",
         "mainEntity": [
-          { "@type": "Question", "name": "What is VSeeBox and how is it a cable alternative?",
-            "acceptedAnswer": { "@type": "Answer", "text": "VSeeBox is an Android TV set-top box with VSee Heat apps pre-installed, including Heat Live (live TV), Heat VOD (movies and shows), Heat Ultra (branded streaming content), and Heat Backup. It's a one-time purchase that replaces stacks of monthly cable and streaming subscriptions for a single up-front cost." } },
-          { "@type": "Question", "name": "How do I cut the cord on cable in Austin, Texas?",
-            "acceptedAnswer": { "@type": "Answer", "text": "A VSeeBox Android TV unit replaces cable and most streaming subscriptions with a one-time hardware purchase. Locally stocked in Austin, Round Rock, and San Marcos with in-person pickup — text Jordan to arrange a meetup." } },
-          { "@type": "Question", "name": "Where can I pick up my VSeeBox?",
-            "acceptedAnswer": { "@type": "Answer", "text": "In-person handoffs in the Austin, Round Rock, and San Marcos area. Buyers traveling through from San Antonio, Waco, College Station, Houston, or DFW are welcome to coordinate a pickup. Text Jordan to schedule." } },
-          { "@type": "Question", "name": "What payment methods do you accept?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Cash and Zelle only. Payment is made at the time of in-person pickup. No deposits required." } },
-          { "@type": "Question", "name": "Which VSeeBox model is right for me?",
-            "acceptedAnswer": { "@type": "Answer", "text": `Most living-room buyers go with the Elite Mini (${formatPrice(PRICE_CONFIG.eliteMini)}) — Wi-Fi 6, voice remote, and bonus apps cover most needs. Bedroom or starter setups do great with the V6 Max (${formatPrice(PRICE_CONFIG.v6max)}). Sports fans who want true HEAT-native picture-in-picture pick the V6 Plus. Power users who want max storage choose the Elite Ultra.` } },
-          { "@type": "Question", "name": "Do you sell in bulk for resellers or businesses?",
-            "acceptedAnswer": { "@type": "Answer", "text": `Yes. The V6 Max is available by the case at ${formatPrice(PRICE_CONFIG.v6maxCase)}. Text Jordan for bulk pricing on other models.` } },
-          { "@type": "Question", "name": "Are there monthly subscription fees on the device?",
-            "acceptedAnswer": { "@type": "Answer", "text": "The device is a one-time purchase. No device subscription. Some third-party apps may require their own accounts — confirm specifics by text." } },
-          { "@type": "Question", "name": "What's the difference between Android 12 and Android 14 on these models?",
-            "acceptedAnswer": { "@type": "Answer", "text": "V6 Max and V6 Plus run Android 14 for the broadest current app compatibility. Elite Mini and Elite Ultra run Android 12, which is stable, fully supported, and receives OTA updates." } },
-          { "@type": "Question", "name": "Do the Elite models receive over-the-air software updates?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Elite Mini and Elite Ultra both support OTA updates so firmware improvements arrive automatically." } }
+          { "@type": "Question", "name": "What is VSeeBox and how is it a cable alternative?", "acceptedAnswer": { "@type": "Answer", "text": "VSeeBox is an Android TV set-top box with VSee Heat apps pre-installed, including Heat Live (live TV), Heat VOD (movies and shows), Heat Ultra (branded streaming content), and Heat Backup. It's a one-time purchase that replaces stacks of monthly cable and streaming subscriptions for a single up-front cost." } },
+          { "@type": "Question", "name": "How do I cut the cord on cable in Austin, Texas?", "acceptedAnswer": { "@type": "Answer", "text": "A VSeeBox Android TV unit replaces cable and most streaming subscriptions with a one-time hardware purchase. Locally stocked in Austin, Round Rock, and San Marcos with in-person pickup — text Jordan to arrange a meetup." } },
+          { "@type": "Question", "name": "Where can I pick up my VSeeBox?", "acceptedAnswer": { "@type": "Answer", "text": "In-person handoffs in the Austin, Round Rock, and San Marcos area. Buyers traveling through from San Antonio, Waco, College Station, Houston, or DFW are welcome to coordinate a pickup. Text Jordan to schedule." } },
+          { "@type": "Question", "name": "Can you ship a VSeeBox?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Shipping is available for buyers outside the Austin area. $15 for the first box, plus $3 per additional box in the same order. Orders over 10 boxes: text Jordan to discuss options." } },
+          { "@type": "Question", "name": "What payment methods do you accept?", "acceptedAnswer": { "@type": "Answer", "text": "Cash and Zelle only. Payment is made at the time of in-person pickup. No deposits required." } },
+          { "@type": "Question", "name": "Which VSeeBox model is right for me?", "acceptedAnswer": { "@type": "Answer", "text": `Most living-room buyers go with the Elite Mini (${formatPrice(PRICE_CONFIG.eliteMini)}) — Wi-Fi 6, voice remote, and bonus apps cover most needs. Bedroom or starter setups do great with the V6 Max (${formatPrice(PRICE_CONFIG.v6max)}). Sports fans who want true HEAT-native picture-in-picture pick the V6 Plus. Power users who want max storage choose the Elite Ultra.` } },
+          { "@type": "Question", "name": "Do you sell in bulk for resellers or businesses?", "acceptedAnswer": { "@type": "Answer", "text": `Yes. The V6 Max is available by the case at ${formatPrice(PRICE_CONFIG.v6maxCase)}. Text Jordan for bulk pricing on other models.` } },
+          { "@type": "Question", "name": "Are there monthly subscription fees on the device?", "acceptedAnswer": { "@type": "Answer", "text": "The device is a one-time purchase. No device subscription. Some third-party apps may require their own accounts — confirm specifics by text." } },
+          { "@type": "Question", "name": "What's the difference between Android 12 and Android 14 on these models?", "acceptedAnswer": { "@type": "Answer", "text": "V6 Max and V6 Plus run Android 14 for the broadest current app compatibility. Elite Mini and Elite Ultra run Android 12, which is stable, fully supported, and receives OTA updates." } },
+          { "@type": "Question", "name": "Do the Elite models receive over-the-air software updates?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Elite Mini and Elite Ultra both support OTA updates so firmware improvements arrive automatically." } }
         ]
       }
     ]
   };
 }
 </script>
-
 <script id="structured-data-script" type="application/ld+json"></script>
 </head>
 
 <body>
-
-<!-- Fixed atmosphere layer — page stays anchored, content moves over it -->
 <div class="atmosphere" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress-fill"></div></div>
 
-<!-- ─────────── Header ─────────── -->
 <header role="banner">
   <div class="header-inner">
     <a class="brand" href="#top" aria-label="VSeeBoxATX home">
@@ -1090,26 +810,21 @@ function buildStructuredData() {
 
 <div class="wrap" id="top">
 
-<!-- ─────────── Hero ─────────── -->
 <section class="hero" aria-labelledby="hero-heading">
   <div class="hero-eyebrow" role="note">
     <div class="dot" aria-hidden="true"></div>
     <span data-en="Austin · Round Rock · San Marcos · In-person pickup" data-es="Austin · Round Rock · San Marcos · Recoge en persona">Austin · Round Rock · San Marcos · In-person pickup</span>
   </div>
-
   <h1 id="hero-heading">
     <span data-en="Cut the subscriptions." data-es="Corta las suscripciones.">Cut the subscriptions.</span><br>
     <em data-en="Keep everything." data-es="Quédate con todo.">Keep everything.</em>
   </h1>
-
   <p class="hero-desc" data-en="Four VSeeBox Android TV models in stock right now. Heat Live, VOD, Ultra, and Backup pre-loaded on every box. One-time purchase, no monthly fees, no contracts. Picked up in person around the Austin area." data-es="Cuatro modelos VSeeBox Android TV en existencia. Heat Live, VOD, Ultra y Backup preinstalados en cada equipo. Compra única, sin cuotas mensuales ni contratos. Recogida en persona en el área de Austin.">
     Four VSeeBox Android TV models in stock right now. Heat Live, VOD, Ultra, and Backup pre-loaded on every box. One-time purchase, no monthly fees, no contracts. Picked up in person around the Austin area.
   </p>
-
   <p class="hero-distrib" data-en='Authorized distributor through <a href="https://lisnupinstallations.com" target="_blank" rel="noopener">LisnUp Installations</a>.' data-es='Distribuidor autorizado a través de <a href="https://lisnupinstallations.com" target="_blank" rel="noopener">LisnUp Installations</a>.'>
     Authorized distributor through <a href="https://lisnupinstallations.com" target="_blank" rel="noopener">LisnUp Installations</a>.
   </p>
-
   <div class="hero-actions">
     <a class="btn-primary" href="#recommender" aria-label="Find the right box for you">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.7.5 1 1.3 1 2.1V18h6v-1.2c0-.8.3-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>
@@ -1120,38 +835,16 @@ function buildStructuredData() {
       <span aria-hidden="true">↓</span>
     </a>
   </div>
-
   <div class="two-row-trust-bar">
     <div class="trust-row">
-      <div class="trust-item">
-        <div class="trust-text">
-          <strong data-en="Austin / Round Rock" data-es="Austin / Round Rock">Austin / Round Rock</strong>
-          <span data-en="In-person pickup only" data-es="Solo recogida en persona">In-person pickup only</span>
-        </div>
-      </div>
-      <div class="trust-item">
-        <div class="trust-text">
-          <strong data-en="4 models in stock" data-es="4 modelos disponibles">4 models in stock</strong>
-          <span data-price-range="models"></span>
-        </div>
-      </div>
-      <div class="trust-item">
-        <div class="trust-text">
-          <strong data-en="Cash or Zelle" data-es="Efectivo o Zelle">Cash or Zelle</strong>
-          <span data-en="Pay at pickup" data-es="Paga al recoger">Pay at pickup</span>
-        </div>
-      </div>
-      <div class="trust-item">
-        <div class="trust-text">
-          <strong data-en="No subscriptions" data-es="Sin suscripciones">No subscriptions</strong>
-          <span data-en="One-time device purchase" data-es="Compra única del equipo">One-time device purchase</span>
-        </div>
-      </div>
+      <div class="trust-item"><div class="trust-text"><strong data-en="Austin / Round Rock" data-es="Austin / Round Rock">Austin / Round Rock</strong><span data-en="In-person pickup only" data-es="Solo recogida en persona">In-person pickup only</span></div></div>
+      <div class="trust-item"><div class="trust-text"><strong data-en="4 models in stock" data-es="4 modelos disponibles">4 models in stock</strong><span data-price-range="models"></span></div></div>
+      <div class="trust-item"><div class="trust-text"><strong data-en="Cash or Zelle" data-es="Efectivo o Zelle">Cash or Zelle</strong><span data-en="Pay at pickup" data-es="Paga al recoger">Pay at pickup</span></div></div>
+      <div class="trust-item"><div class="trust-text"><strong data-en="No subscriptions" data-es="Sin suscripciones">No subscriptions</strong><span data-en="One-time device purchase" data-es="Compra única del equipo">One-time device purchase</span></div></div>
     </div>
   </div>
 </section>
 
-<!-- ─────────── Recommender ─────────── -->
 <section class="recommender-section fade-in" id="recommender" aria-labelledby="rec-heading">
   <div class="section-label"><span data-en="Box Finder" data-es="Selector de equipo">Box Finder</span></div>
   <div class="rec-header-row">
@@ -1161,7 +854,6 @@ function buildStructuredData() {
     </div>
     <a class="rec-skip" href="#models" data-en="Just show me the boxes →" data-es="Solo muéstrame los equipos →">Just show me the boxes →</a>
   </div>
-
   <div class="rec-tiles" role="group" aria-label="Use case selector">
     <button class="rec-tile" type="button" data-usecase="bedroom" aria-pressed="false">
       <div class="rec-tile-icon" aria-hidden="true">🛏️</div>
@@ -1189,7 +881,6 @@ function buildStructuredData() {
       <div class="rec-tile-sub" data-en="Big library, deep catalog" data-es="Biblioteca enorme">Big library, deep catalog</div>
     </button>
   </div>
-
   <div class="rec-result" id="rec-result" aria-live="polite">
     <div class="rec-result-header">
       <div class="check-circle" aria-hidden="true">
@@ -1202,12 +893,10 @@ function buildStructuredData() {
   </div>
 </section>
 
-<!-- ─────────── Heat Apps ─────────── -->
 <section class="heat-section fade-in" aria-labelledby="heat-heading">
   <div class="section-label"><span data-en="What's on every box" data-es="Qué incluye cada equipo">What's on every box</span></div>
   <h2 class="section-title" id="heat-heading" data-en="The Heat app suite — pre-loaded, ready on first boot." data-es="La suite de apps Heat — preinstaladas, listas al primer encendido.">The Heat app suite — pre-loaded, ready on first boot.</h2>
   <p class="section-desc" data-en="Every VSeeBox ships with the four core Heat apps. This is what you'll actually use day to day." data-es="Cada VSeeBox viene con las cuatro apps Heat principales. Esto es lo que usarás todos los días.">Every VSeeBox ships with the four core Heat apps. This is what you'll actually use day to day.</p>
-
   <div class="heat-grid">
     <div class="heat-card live">
       <div class="heat-icon" aria-hidden="true">L</div>
@@ -1236,153 +925,98 @@ function buildStructuredData() {
   </div>
 </section>
 
-<!-- ─────────── Setup walkthrough ─────────── -->
 <section class="setup-section fade-in" aria-labelledby="setup-heading">
   <div class="section-label"><span data-en="Setup" data-es="Configuración">Setup</span></div>
   <h2 class="setup-headline" id="setup-heading" data-en="From box to watching in <em>under 5 minutes.</em>" data-es="De la caja a viendo TV en <em>menos de 5 minutos.</em>">From box to watching in <em>under 5 minutes.</em></h2>
   <p class="section-desc" data-en="Plug in, follow the on-screen prompts. No accounts, no PIN setup, no QR code dance." data-es="Conecta, sigue las instrucciones en pantalla. Sin cuentas, sin PIN, sin códigos QR.">Plug in, follow the on-screen prompts. No accounts, no PIN setup, no QR code dance.</p>
-
   <div class="setup-track" role="list">
     <div class="setup-step" role="listitem">
       <div class="setup-num">01</div>
-      <div class="setup-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      </div>
+      <div class="setup-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
       <h4 data-en="Plug in & power on" data-es="Conecta y enciende">Plug in & power on</h4>
       <p data-en="HDMI to the TV, power to the wall. Boot screen comes up." data-es="HDMI al TV, alimentación a la pared. Aparece la pantalla de inicio.">HDMI to the TV, power to the wall. Boot screen comes up.</p>
     </div>
     <div class="setup-step" role="listitem">
       <div class="setup-num">02</div>
-      <div class="setup-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg>
-      </div>
+      <div class="setup-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><circle cx="12" cy="18" r="1"/></svg></div>
       <h4 data-en="Pair the controller" data-es="Empareja el control">Pair the controller</h4>
       <p data-en="On-screen prompt walks you through it — usually OK + Volume Up." data-es="La pantalla te guía — usualmente OK + Volumen Arriba.">On-screen prompt walks you through it — usually OK + Volume Up.</p>
     </div>
     <div class="setup-step" role="listitem">
       <div class="setup-num">03</div>
-      <div class="setup-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
-      </div>
+      <div class="setup-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg></div>
       <h4 data-en="Pick a language" data-es="Elige idioma">Pick a language</h4>
       <p data-en="English, Spanish, others. Change later anytime in settings." data-es="Inglés, español, otros. Cambia luego desde ajustes.">English, Spanish, others. Change later anytime in settings.</p>
     </div>
     <div class="setup-step" role="listitem">
       <div class="setup-num">04</div>
-      <div class="setup-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
+      <div class="setup-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <h4 data-en="Set time zone" data-es="Define zona horaria">Set time zone</h4>
       <p data-en="So channel guides and schedules show the right times." data-es="Para que las guías y horarios muestren las horas correctas.">So channel guides and schedules show the right times.</p>
     </div>
     <div class="setup-step" role="listitem">
       <div class="setup-num">05</div>
-      <div class="setup-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
-      </div>
+      <div class="setup-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
       <h4 data-en="Connect to internet" data-es="Conecta a internet">Connect to internet</h4>
       <p data-en="Plug in Ethernet, or pick your Wi-Fi and enter the password." data-es="Conecta Ethernet, o elige tu Wi-Fi e ingresa la contraseña.">Plug in Ethernet, or pick your Wi-Fi and enter the password.</p>
     </div>
     <div class="setup-step" role="listitem">
       <div class="setup-num">06</div>
-      <div class="setup-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      </div>
+      <div class="setup-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
       <h4 data-en="Open any app" data-es="Abre cualquier app">Open any app</h4>
       <p data-en="First launch installs in under 30 seconds. Then you're watching." data-es="La primera vez instala en menos de 30 segundos. Listo, a ver TV.">First launch installs in under 30 seconds. Then you're watching.</p>
     </div>
   </div>
 </section>
 
-<!-- ─────────── Model cards ─────────── -->
 <section class="models-section fade-in" id="models" aria-labelledby="models-heading">
   <div class="section-label"><span data-en="Pick your box" data-es="Elige tu equipo">Pick your box</span></div>
   <h2 class="section-title" id="models-heading" data-en="Four models. One job: end the subscription pile." data-es="Cuatro modelos. Una misión: acabar con las suscripciones.">Four models. One job: end the subscription pile.</h2>
   <p class="section-desc" data-en="Tap any card to expand the full details, photos, features, and specs." data-es="Toca cualquier tarjeta para ver detalles completos, fotos, características y especificaciones.">Tap any card to expand the full details, photos, features, and specs.</p>
-
   <div class="model-grid" role="list">
     <a class="model-card" href="#v6max" role="listitem" aria-label="VSeeBox V6 Max">
       <div class="model-badge badge-white" data-en="Great starter" data-es="Buen inicio">Great starter</div>
       <div class="model-name">V6 Max</div>
       <div class="model-price"><sup>$</sup><span data-price="v6max"></span></div>
       <div class="model-tagline" data-en="Android 14 · 64GB · Heat apps · clean & fast" data-es="Android 14 · 64GB · Apps Heat · rápido y limpio">Android 14 · 64GB · Heat apps · clean & fast</div>
-      <div class="model-arrow">
-        <span data-en="See details" data-es="Ver detalles">See details</span>
-        <span class="arrow-icon" aria-hidden="true">→</span>
-      </div>
+      <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon" aria-hidden="true">→</span></div>
     </a>
-
     <a class="model-card" href="#v6plus" role="listitem" aria-label="VSeeBox V6 Plus">
       <div class="model-badge badge-blue" data-en="Watch 2 at once" data-es="Ve 2 a la vez">Watch 2 at once</div>
       <div class="model-name">V6 Plus</div>
       <div class="model-price"><sup>$</sup><span data-price="v6plus"></span></div>
       <div class="model-tagline" data-en="HEAT-native split-screen + PIP · backlit remote" data-es="Pantalla dividida + PIP nativos en HEAT · control iluminado">HEAT-native split-screen + PIP · backlit remote</div>
-      <div class="model-arrow">
-        <span data-en="See details" data-es="Ver detalles">See details</span>
-        <span class="arrow-icon" aria-hidden="true">→</span>
-      </div>
+      <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon" aria-hidden="true">→</span></div>
     </a>
-
     <a class="model-card popular" href="#elitemini" role="listitem" aria-label="VSeeBox Elite Mini — Most Popular">
       <div class="model-badge badge-green" data-en="Most popular" data-es="El más popular">Most popular</div>
       <div class="model-name">Elite Mini</div>
       <div class="model-price"><sup>$</sup><span data-price="eliteMini"></span></div>
       <div class="model-tagline" data-en="Wi-Fi 6 · voice remote · ~10 bonus apps · 6K HDR" data-es="Wi-Fi 6 · control por voz · ~10 apps extra · 6K HDR">Wi-Fi 6 · voice remote · ~10 bonus apps · 6K HDR</div>
-      <div class="model-arrow">
-        <span data-en="See details" data-es="Ver detalles">See details</span>
-        <span class="arrow-icon" aria-hidden="true">→</span>
-      </div>
+      <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon" aria-hidden="true">→</span></div>
     </a>
-
     <a class="model-card" href="#eliteultra" role="listitem" aria-label="VSeeBox Elite Ultra">
       <div class="model-badge badge-gold" data-en="Maximum specs" data-es="Máximas especificaciones">Maximum specs</div>
       <div class="model-name">Elite Ultra</div>
       <div class="model-price"><sup>$</sup><span data-price="eliteUltra"></span></div>
       <div class="model-tagline" data-en="Wi-Fi 6 · Gigabit · ~24 bonus apps · 128 GB" data-es="Wi-Fi 6 · Gigabit · ~24 apps extra · 128 GB">Wi-Fi 6 · Gigabit · ~24 bonus apps · 128 GB</div>
-      <div class="model-arrow">
-        <span data-en="See details" data-es="Ver detalles">See details</span>
-        <span class="arrow-icon" aria-hidden="true">→</span>
-      </div>
+      <div class="model-arrow"><span data-en="See details" data-es="Ver detalles">See details</span><span class="arrow-icon" aria-hidden="true">→</span></div>
     </a>
   </div>
-
-  <!-- ─── Product detail: V6 Max ─── -->
-  <article class="product-detail" id="v6max" aria-labelledby="v6max-heading">
+<article class="product-detail" id="v6max" aria-labelledby="v6max-heading">
     <button class="product-detail-toggle" type="button" aria-expanded="false" aria-controls="v6max-body">
-      <div class="product-detail-head-left">
-        <div class="product-detail-head-text">
-          <span class="product-detail-sub" data-en="Entry level · Android 14" data-es="Nivel inicial · Android 14">Entry level · Android 14</span>
-          <span class="product-detail-title" id="v6max-heading">V6 Max</span>
-        </div>
-      </div>
-      <div class="product-detail-price-block">
-        <div class="product-detail-price" data-price-display="v6max"></div>
-      </div>
-      <div class="product-detail-chevron" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
+      <div class="product-detail-head-left"><div class="product-detail-head-text"><span class="product-detail-sub" data-en="Entry level · Android 14" data-es="Nivel inicial · Android 14">Entry level · Android 14</span><span class="product-detail-title" id="v6max-heading">V6 Max</span></div></div>
+      <div class="product-detail-price-block"><div class="product-detail-price" data-price-display="v6max"></div></div>
+      <div class="product-detail-chevron" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     </button>
     <div class="product-detail-body" id="v6max-body">
       <div class="product-detail-inner">
-        <p class="product-desc" data-en="The sharpest entry into the lineup. Android 14 means current app compatibility right out of the box. Pre-loaded Heat apps and 8K@60 decoding cover most of what people actually need — at the lowest price." data-es="La entrada más inteligente a la línea. Android 14 significa compatibilidad con apps actuales desde el primer momento. Apps Heat preinstaladas y decodificación 8K@60 cubren lo que la mayoría necesita — al precio más bajo.">
-          The sharpest entry into the lineup. Android 14 means current app compatibility right out of the box. Pre-loaded Heat apps and 8K@60 decoding cover most of what people actually need — at the lowest price.
-        </p>
-
+        <p class="product-desc" data-en="The sharpest entry into the lineup. Android 14 means current app compatibility right out of the box. Pre-loaded Heat apps and 8K@60 decoding cover most of what people actually need — at the lowest price." data-es="La entrada más inteligente a la línea. Android 14 significa compatibilidad con apps actuales desde el primer momento. Apps Heat preinstaladas y decodificación 8K@60 cubren lo que la mayoría necesita — al precio más bajo.">The sharpest entry into the lineup. Android 14 means current app compatibility right out of the box. Pre-loaded Heat apps and 8K@60 decoding cover most of what people actually need — at the lowest price.</p>
         <div class="img-strip" aria-label="VSeeBox V6 Max product images">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/19-(1)_1800x.jpg?w=1000&h=1000&q=80"
-               alt="VSeeBox V6 Max — full kit and accessories"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('V6 Max — kit'), this); this.remove()">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/22-(1)_1800x.jpg?w=1000&h=1000&q=80"
-               alt="VSeeBox V6 Max — unit close-up"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('V6 Max — unit'), this); this.remove()">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/14-(1)_1800x.jpg?w=1000&h=1000&q=80"
-               alt="VSeeBox V6 Max — remote and connectors"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('V6 Max — remote'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/19-(1)_1800x.jpg?w=1000&h=1000&q=80" alt="VSeeBox V6 Max — full kit and accessories" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('V6 Max — kit'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/22-(1)_1800x.jpg?w=1000&h=1000&q=80" alt="VSeeBox V6 Max — unit close-up" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('V6 Max — unit'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/14-(1)_1800x.jpg?w=1000&h=1000&q=80" alt="VSeeBox V6 Max — remote and connectors" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('V6 Max — remote'), this); this.remove()">
         </div>
-
         <div class="detail-cols">
           <div class="detail-box">
             <h4 data-en="What's included" data-es="Qué incluye">What's included</h4>
@@ -1412,43 +1046,20 @@ function buildStructuredData() {
     </div>
   </article>
 
-  <!-- ─── Product detail: V6 Plus ─── -->
   <article class="product-detail" id="v6plus" aria-labelledby="v6plus-heading">
     <button class="product-detail-toggle" type="button" aria-expanded="false" aria-controls="v6plus-body">
-      <div class="product-detail-head-left">
-        <div class="product-detail-head-text">
-          <span class="product-detail-sub" data-en="Multi-screen · HEAT-native PIP" data-es="Multi-pantalla · PIP nativo HEAT">Multi-screen · HEAT-native PIP</span>
-          <span class="product-detail-title" id="v6plus-heading">V6 Plus</span>
-        </div>
-      </div>
-      <div class="product-detail-price-block">
-        <div class="product-detail-price" data-price-display="v6plus"></div>
-      </div>
-      <div class="product-detail-chevron" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
+      <div class="product-detail-head-left"><div class="product-detail-head-text"><span class="product-detail-sub" data-en="Multi-screen · HEAT-native PIP" data-es="Multi-pantalla · PIP nativo HEAT">Multi-screen · HEAT-native PIP</span><span class="product-detail-title" id="v6plus-heading">V6 Plus</span></div></div>
+      <div class="product-detail-price-block"><div class="product-detail-price" data-price-display="v6plus"></div></div>
+      <div class="product-detail-chevron" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     </button>
     <div class="product-detail-body" id="v6plus-body">
       <div class="product-detail-inner">
-        <p class="product-desc" data-en="Watching two streams at once — live scores while a show runs, two games side by side — is what this box is built for. The HEAT-native split-screen and PIP modes are smoother than third-party app workarounds. Backlit remote makes nighttime browsing easy." data-es="Ver dos transmisiones a la vez — marcador en vivo mientras corre una serie, dos juegos lado a lado — es para lo que sirve este equipo. Los modos de pantalla dividida y PIP nativos en HEAT son más fluidos que las soluciones de apps de terceros. El control iluminado facilita navegar de noche.">
-          Watching two streams at once — live scores while a show runs, two games side by side — is what this box is built for. The HEAT-native split-screen and PIP modes are smoother than third-party app workarounds. Backlit remote makes nighttime browsing easy.
-        </p>
-
+        <p class="product-desc" data-en="Watching two streams at once — live scores while a show runs, two games side by side — is what this box is built for. The HEAT-native split-screen and PIP modes are smoother than third-party app workarounds. Backlit remote makes nighttime browsing easy." data-es="Ver dos transmisiones a la vez — marcador en vivo mientras corre una serie, dos juegos lado a lado — es para lo que sirve este equipo. Los modos de pantalla dividida y PIP nativos en HEAT son más fluidos que las soluciones de apps de terceros. El control iluminado facilita navegar de noche.">Watching two streams at once — live scores while a show runs, two games side by side — is what this box is built for. The HEAT-native split-screen and PIP modes are smoother than third-party app workarounds. Backlit remote makes nighttime browsing easy.</p>
         <div class="img-strip" aria-label="VSeeBox V6 Plus product images">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/7_1800x.jpg?w=1000&h=1000&q=80"
-               alt="VSeeBox V6 Plus — front view with backlit remote"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('V6 Plus — front view'), this); this.remove()">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/9_1800x.jpg?w=1000&h=1000&q=80"
-               alt="VSeeBox V6 Plus — split-screen demo"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('V6 Plus — split-screen'), this); this.remove()">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/24_1800x.jpg?w=1000&h=1000&q=80"
-               alt="VSeeBox V6 Plus — kit and accessories"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('V6 Plus — kit'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/7_1800x.jpg?w=1000&h=1000&q=80" alt="VSeeBox V6 Plus — front view with backlit remote" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('V6 Plus — front view'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/9_1800x.jpg?w=1000&h=1000&q=80" alt="VSeeBox V6 Plus — split-screen demo" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('V6 Plus — split-screen'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/24_1800x.jpg?w=1000&h=1000&q=80" alt="VSeeBox V6 Plus — kit and accessories" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('V6 Plus — kit'), this); this.remove()">
         </div>
-
         <div class="detail-cols">
           <div class="detail-box">
             <h4 data-en="What's included" data-es="Qué incluye">What's included</h4>
@@ -1477,43 +1088,20 @@ function buildStructuredData() {
     </div>
   </article>
 
-  <!-- ─── Product detail: Elite Mini ─── -->
   <article class="product-detail" id="elitemini" aria-labelledby="elitemini-heading">
     <button class="product-detail-toggle" type="button" aria-expanded="false" aria-controls="elitemini-body">
-      <div class="product-detail-head-left">
-        <div class="product-detail-head-text">
-          <span class="product-detail-sub" data-en="Most popular · Wi-Fi 6 · voice remote" data-es="El más popular · Wi-Fi 6 · control por voz">Most popular · Wi-Fi 6 · voice remote</span>
-          <span class="product-detail-title" id="elitemini-heading">Elite Mini</span>
-        </div>
-      </div>
-      <div class="product-detail-price-block">
-        <div class="product-detail-price" data-price-display="eliteMini"></div>
-      </div>
-      <div class="product-detail-chevron" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
+      <div class="product-detail-head-left"><div class="product-detail-head-text"><span class="product-detail-sub" data-en="Most popular · Wi-Fi 6 · voice remote" data-es="El más popular · Wi-Fi 6 · control por voz">Most popular · Wi-Fi 6 · voice remote</span><span class="product-detail-title" id="elitemini-heading">Elite Mini</span></div></div>
+      <div class="product-detail-price-block"><div class="product-detail-price" data-price-display="eliteMini"></div></div>
+      <div class="product-detail-chevron" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     </button>
     <div class="product-detail-body" id="elitemini-body">
       <div class="product-detail-inner">
-        <p class="product-desc" data-en="The sweet spot of the lineup. Wi-Fi 6 keeps the connection rock-solid even on a busy network. Voice remote adds real convenience. The bonus apps extend content well beyond Heat — including a sports access app that pulls every televised sport that isn't on a regular channel. Compact, stable, and the box most buyers walk away with." data-es="El punto óptimo de la línea. Wi-Fi 6 mantiene la conexión estable incluso en redes saturadas. El control por voz añade comodidad real. Las apps adicionales amplían el contenido más allá de Heat — incluyendo una app de deportes que jala cada deporte televisado que no esté en canales regulares. Compacto, estable, y el equipo con el que la mayoría se va.">
-          The sweet spot of the lineup. Wi-Fi 6 keeps the connection rock-solid even on a busy network. Voice remote adds real convenience. The bonus apps extend content well beyond Heat — including a sports access app that pulls every televised sport that isn't on a regular channel. Compact, stable, and the box most buyers walk away with.
-        </p>
-
+        <p class="product-desc" data-en="The sweet spot of the lineup. Wi-Fi 6 keeps the connection rock-solid even on a busy network. Voice remote adds real convenience. The bonus apps extend content well beyond Heat — including a sports access app that pulls every televised sport that isn't on a regular channel. Compact, stable, and the box most buyers walk away with." data-es="El punto óptimo de la línea. Wi-Fi 6 mantiene la conexión estable incluso en redes saturadas. El control por voz añade comodidad real. Las apps adicionales amplían el contenido más allá de Heat — incluyendo una app de deportes que jala cada deporte televisado que no esté en canales regulares. Compacto, estable, y el equipo con el que la mayoría se va.">The sweet spot of the lineup. Wi-Fi 6 keeps the connection rock-solid even on a busy network. Voice remote adds real convenience. The bonus apps extend content well beyond Heat — including a sports access app that pulls every televised sport that isn't on a regular channel. Compact, stable, and the box most buyers walk away with.</p>
         <div class="img-strip" aria-label="VSeeBox Elite Mini product images">
-          <img src="https://vseeboxsell.com/cdn/shop/files/vSeeBox_Elite_Mini_8c1cde09-3173-4a1d-8866-c77e1643e5ed.jpg?v=1753127690&width=1445"
-               alt="VSeeBox Elite Mini — promotional product image"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('Elite Mini — promo'), this); this.remove()">
-          <img src="https://img-va.myshopline.com/image/store/1712032784228/vseebox-v5-pro-5.png?w=1920&h=1080"
-               alt="VSeeBox Elite Mini — kit and remote"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('Elite Mini — kit'), this); this.remove()">
-          <img src="https://img-va.myshopline.com/image/store/1712032784228/vseebox-v5-pro-w.png?w=800&h=800"
-               alt="VSeeBox Elite Mini — compact unit top view"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('Elite Mini — top view'), this); this.remove()">
+          <img src="https://vseeboxsell.com/cdn/shop/files/vSeeBox_Elite_Mini_8c1cde09-3173-4a1d-8866-c77e1643e5ed.jpg?v=1753127690&width=1445" alt="VSeeBox Elite Mini — promotional product image" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('Elite Mini — promo'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1712032784228/vseebox-v5-pro-5.png?w=1920&h=1080" alt="VSeeBox Elite Mini — kit and remote" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('Elite Mini — kit'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1712032784228/vseebox-v5-pro-w.png?w=800&h=800" alt="VSeeBox Elite Mini — compact unit top view" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('Elite Mini — top view'), this); this.remove()">
         </div>
-
         <div class="detail-cols">
           <div class="detail-box">
             <h4 data-en="What's included" data-es="Qué incluye">What's included</h4>
@@ -1542,43 +1130,20 @@ function buildStructuredData() {
     </div>
   </article>
 
-  <!-- ─── Product detail: Elite Ultra ─── -->
   <article class="product-detail" id="eliteultra" aria-labelledby="eliteultra-heading">
     <button class="product-detail-toggle" type="button" aria-expanded="false" aria-controls="eliteultra-body">
-      <div class="product-detail-head-left">
-        <div class="product-detail-head-text">
-          <span class="product-detail-sub" data-en="Maximum specs · 128 GB · Gigabit" data-es="Máximas especificaciones · 128 GB · Gigabit">Maximum specs · 128 GB · Gigabit</span>
-          <span class="product-detail-title" id="eliteultra-heading">Elite Ultra</span>
-        </div>
-      </div>
-      <div class="product-detail-price-block">
-        <div class="product-detail-price" data-price-display="eliteUltra"></div>
-      </div>
-      <div class="product-detail-chevron" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
+      <div class="product-detail-head-left"><div class="product-detail-head-text"><span class="product-detail-sub" data-en="Maximum specs · 128 GB · Gigabit" data-es="Máximas especificaciones · 128 GB · Gigabit">Maximum specs · 128 GB · Gigabit</span><span class="product-detail-title" id="eliteultra-heading">Elite Ultra</span></div></div>
+      <div class="product-detail-price-block"><div class="product-detail-price" data-price-display="eliteUltra"></div></div>
+      <div class="product-detail-chevron" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     </button>
     <div class="product-detail-body" id="eliteultra-body">
       <div class="product-detail-inner">
-        <p class="product-desc" data-en="Built for anyone who refuses to compromise. Gigabit Ethernet means streams don't stutter regardless of network traffic. 128 GB of storage gives room for every app you'd ever want. Wi-Fi 6, ~24 bonus apps, and OTA updates round it out." data-es="Diseñado para quien no quiere ceder en nada. Ethernet Gigabit significa que las transmisiones no se cortan sin importar el tráfico de red. 128 GB de almacenamiento dan espacio para todas las apps que quieras. Wi-Fi 6, ~24 apps adicionales y actualizaciones OTA completan el paquete.">
-          Built for anyone who refuses to compromise. Gigabit Ethernet means streams don't stutter regardless of network traffic. 128 GB of storage gives room for every app you'd ever want. Wi-Fi 6, ~24 bonus apps, and OTA updates round it out.
-        </p>
-
+        <p class="product-desc" data-en="Built for anyone who refuses to compromise. Gigabit Ethernet means streams don't stutter regardless of network traffic. 128 GB of storage gives room for every app you'd ever want. Wi-Fi 6, ~24 bonus apps, and OTA updates round it out." data-es="Diseñado para quien no quiere ceder en nada. Ethernet Gigabit significa que las transmisiones no se cortan sin importar el tráfico de red. 128 GB de almacenamiento dan espacio para todas las apps que quieras. Wi-Fi 6, ~24 apps adicionales y actualizaciones OTA completan el paquete.">Built for anyone who refuses to compromise. Gigabit Ethernet means streams don't stutter regardless of network traffic. 128 GB of storage gives room for every app you'd ever want. Wi-Fi 6, ~24 bonus apps, and OTA updates round it out.</p>
         <div class="img-strip" aria-label="VSeeBox Elite Ultra product images">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/--5_1800x.png?w=1000&h=1000&q=80"
-               alt="VSeeBox Elite Ultra — front view"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('Elite Ultra — front view'), this); this.remove()">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/-2_1800x.png?w=1000&h=1000&q=80"
-               alt="VSeeBox Elite Ultra — rear ports and connectors"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('Elite Ultra — rear ports'), this); this.remove()">
-          <img src="https://img-va.myshopline.com/image/store/1740222298153/vSeeBox-Elite-Ultra_1800x.jpeg?w=1600&h=1600&q=80"
-               alt="VSeeBox Elite Ultra — lifestyle hero image"
-               loading="lazy" decoding="async"
-               onerror="this.parentNode.insertBefore(makePlaceholder('Elite Ultra — hero'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/--5_1800x.png?w=1000&h=1000&q=80" alt="VSeeBox Elite Ultra — front view" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('Elite Ultra — front view'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/-2_1800x.png?w=1000&h=1000&q=80" alt="VSeeBox Elite Ultra — rear ports and connectors" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('Elite Ultra — rear ports'), this); this.remove()">
+          <img src="https://img-va.myshopline.com/image/store/1740222298153/vSeeBox-Elite-Ultra_1800x.jpeg?w=1600&h=1600&q=80" alt="VSeeBox Elite Ultra — lifestyle hero image" loading="lazy" decoding="async" onerror="this.parentNode.insertBefore(makePlaceholder('Elite Ultra — hero'), this); this.remove()">
         </div>
-
         <div class="detail-cols">
           <div class="detail-box">
             <h4 data-en="What's included" data-es="Qué incluye">What's included</h4>
@@ -1610,17 +1175,14 @@ function buildStructuredData() {
   </article>
 </section>
 
-<!-- ─────────── Compare ─────────── -->
 <section class="compare-section fade-in" aria-labelledby="compare-heading">
   <div class="section-label"><span data-en="Compare" data-es="Comparar">Compare</span></div>
   <h2 class="section-title" id="compare-heading" data-en="Side-by-side spec comparison" data-es="Comparación de especificaciones">Side-by-side spec comparison</h2>
   <p class="section-desc" data-en="For when you want to put all four next to each other." data-es="Para cuando quieres ver los cuatro lado a lado.">For when you want to put all four next to each other.</p>
-
   <button class="compare-toggle" type="button" aria-expanded="false" aria-controls="compare-body">
     <span data-en="Show comparison table" data-es="Mostrar tabla comparativa">Show comparison table</span>
     <svg class="compare-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
   </button>
-
   <div class="compare-body" id="compare-body">
     <div class="compare-wrap" role="region" aria-label="VSeeBox model comparison" tabindex="0">
       <table class="compare-table">
@@ -1635,13 +1197,7 @@ function buildStructuredData() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td data-en="Price (USD)" data-es="Precio (USD)">Price (USD)</td>
-            <td><span data-price-display="v6max"></span></td>
-            <td><span data-price-display="v6plus"></span></td>
-            <td><span data-price-display="eliteMini"></span></td>
-            <td class="hi"><span data-price-display="eliteUltra"></span></td>
-          </tr>
+          <tr><td data-en="Price (USD)" data-es="Precio (USD)">Price (USD)</td><td><span data-price-display="v6max"></span></td><td><span data-price-display="v6plus"></span></td><td><span data-price-display="eliteMini"></span></td><td class="hi"><span data-price-display="eliteUltra"></span></td></tr>
           <tr><td data-en="Android OS" data-es="Android SO">Android OS</td><td>14</td><td>14</td><td>12 + OTA</td><td>12 + OTA</td></tr>
           <tr><td data-en="RAM" data-es="RAM">RAM</td><td>4 GB</td><td>4 GB</td><td>4 GB</td><td>4 GB</td></tr>
           <tr><td data-en="Internal Storage" data-es="Almacenamiento">Internal Storage</td><td>64 GB</td><td>64 GB</td><td>32 GB</td><td class="hi">128 GB</td></tr>
@@ -1657,20 +1213,16 @@ function buildStructuredData() {
   </div>
 </section>
 
-<!-- ─────────── More Info (preserves all extras) ─────────── -->
 <section class="moreinfo-section fade-in" aria-labelledby="moreinfo-heading">
   <div class="section-label"><span data-en="More Info" data-es="Más información">More Info</span></div>
   <h2 class="section-title" id="moreinfo-heading" data-en="Extra details, bulk pricing, optional services" data-es="Detalles adicionales, precios al por mayor, servicios opcionales">Extra details, bulk pricing, optional services</h2>
   <p class="section-desc" data-en="Everything that doesn't need to live in the main flow but is here if you want it." data-es="Todo lo que no necesita estar en el flujo principal pero está aquí si lo quieres.">Everything that doesn't need to live in the main flow but is here if you want it.</p>
-
   <button class="moreinfo-toggle" type="button" aria-expanded="false" aria-controls="moreinfo-body">
     <span data-en="Open more info" data-es="Abrir más información">Open more info</span>
     <svg class="moreinfo-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
   </button>
-
   <div class="moreinfo-body" id="moreinfo-body">
     <div class="moreinfo-inner">
-
       <div class="moreinfo-block">
         <h3 data-en="Reseller / Bulk pricing" data-es="Precio para revendedores / al por mayor">Reseller / Bulk pricing</h3>
         <p data-en="V6 Max is available by the case for resellers and small businesses. Text Jordan for bulk pricing on other models." data-es="El V6 Max está disponible por caja para revendedores y pequeños negocios. Escríbele a Jordan para precios al por mayor de otros modelos.">V6 Max is available by the case for resellers and small businesses. Text Jordan for bulk pricing on other models.</p>
@@ -1678,7 +1230,6 @@ function buildStructuredData() {
           <li>📦 <span data-en="V6 Max case price:" data-es="Precio por caja del V6 Max:">V6 Max case price:</span>&nbsp;<strong style="color:var(--text)" data-price-display="v6maxCase"></strong></li>
         </ul>
       </div>
-
       <div class="moreinfo-block">
         <h3 data-en="Elite Ultra — optional setup service" data-es="Elite Ultra — servicio opcional de configuración">Elite Ultra — optional setup service</h3>
         <p data-en="Add-on for Elite Ultra buyers who'd rather skip the manual app install. Saves about 90 minutes." data-es="Complemento para compradores del Elite Ultra que prefieren saltarse la instalación manual de apps. Ahorra unos 90 minutos.">Add-on for Elite Ultra buyers who'd rather skip the manual app install. Saves about 90 minutes.</p>
@@ -1687,7 +1238,6 @@ function buildStructuredData() {
           <li>📋 <span data-en="Includes: full app pre-install; up to 5 favorite Heat Live channels pinned (you tell me which)." data-es="Incluye: pre-instalación completa de apps; hasta 5 canales favoritos de Heat Live fijados (tú me dices cuáles).">Includes: full app pre-install; up to 5 favorite Heat Live channels pinned (you tell me which).</span></li>
         </ul>
       </div>
-
       <div class="moreinfo-block">
         <h3 data-en="How buying works" data-es="Cómo funciona la compra">How buying works</h3>
         <ul>
@@ -1697,151 +1247,95 @@ function buildStructuredData() {
           <li>4️⃣ <span data-en="Brief setup walkthrough at pickup. Text support after." data-es="Guía breve de configuración al recoger. Soporte por texto después.">Brief setup walkthrough at pickup. Text support after.</span></li>
         </ul>
       </div>
-
       <div class="moreinfo-block">
         <h3 data-en="Service area" data-es="Área de servicio">Service area</h3>
         <p data-en="Primary in-person pickup: Austin, Round Rock, San Marcos." data-es="Recogida principal en persona: Austin, Round Rock, San Marcos.">Primary in-person pickup: Austin, Round Rock, San Marcos.</p>
         <p data-en="Coordinating from elsewhere in the Texas Triangle — San Antonio, Waco, College Station, Houston, DFW? Text and we'll figure out a meetup if you're traveling through." data-es="¿Coordinando desde otra parte del Triángulo de Texas — San Antonio, Waco, College Station, Houston, DFW? Escríbenos y vemos un punto de encuentro si pasas por aquí.">Coordinating from elsewhere in the Texas Triangle — San Antonio, Waco, College Station, Houston, DFW? Text and we'll figure out a meetup if you're traveling through.</p>
+        <!-- ── ADDED: shipping note ── -->
+        <p style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:.85rem;" data-en="Can't make a meetup work? Shipping is available — $15 for the first box, $3 per additional box in the same order. Ordering more than 10 boxes? Text Jordan and shipping options are discussed case by case." data-es="¿No puedes coordinar una recogida? El envío está disponible — $15 por el primer equipo, $3 por equipo adicional en el mismo pedido. ¿Más de 10 equipos? Escríbele a Jordan y se trabajan las opciones de envío caso por caso.">Can't make a meetup work? Shipping is available — $15 for the first box, $3 per additional box in the same order. Ordering more than 10 boxes? Text Jordan and shipping options are discussed case by case.</p>
       </div>
-
       <div class="moreinfo-block">
         <h3 data-en="Authorized distribution" data-es="Distribución autorizada">Authorized distribution</h3>
         <p data-en='VSeeBoxATX is run by Jordan Moddes as an authorized VSeeBox distributor through <a href="https://lisnupinstallations.com" target="_blank" rel="noopener">LisnUp Installations</a>.' data-es='VSeeBoxATX es operado por Jordan Moddes como distribuidor autorizado de VSeeBox a través de <a href="https://lisnupinstallations.com" target="_blank" rel="noopener">LisnUp Installations</a>.'>VSeeBoxATX is run by Jordan Moddes as an authorized VSeeBox distributor through <a href="https://lisnupinstallations.com" target="_blank" rel="noopener">LisnUp Installations</a>.</p>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ─────────── FAQ ─────────── -->
 <section class="faq-section fade-in" aria-labelledby="faq-heading">
   <div class="section-label"><span data-en="FAQ" data-es="Preguntas">FAQ</span></div>
   <h2 class="section-title" id="faq-heading" data-en="Common questions" data-es="Preguntas frecuentes">Common questions</h2>
-
   <div class="faq-list" role="list">
+
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq1-a">
-        <span data-en="What is VSeeBox and how is it a cable alternative?" data-es="¿Qué es VSeeBox y por qué es una alternativa al cable?">What is VSeeBox and how is it a cable alternative?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq1-a">
-        <span data-en="VSeeBox is an Android TV set-top box with the four core Heat apps pre-installed: Heat Live (live TV), Heat VOD (movies and shows), Heat Ultra (branded streaming content), and Heat Backup (failover live TV server). One-time purchase replaces the stack of monthly cable and streaming bills with a single up-front cost." data-es="VSeeBox es un decodificador Android TV con las cuatro apps Heat principales preinstaladas: Heat Live (TV en vivo), Heat VOD (películas y series), Heat Ultra (contenido streaming con marcas) y Heat Backup (servidor de respaldo en vivo). Una compra única reemplaza la pila de cuentas mensuales de cable y streaming con un solo costo inicial.">VSeeBox is an Android TV set-top box with the four core Heat apps pre-installed: Heat Live (live TV), Heat VOD (movies and shows), Heat Ultra (branded streaming content), and Heat Backup (failover live TV server). One-time purchase replaces the stack of monthly cable and streaming bills with a single up-front cost.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq1-a"><span data-en="What is VSeeBox and how is it a cable alternative?" data-es="¿Qué es VSeeBox y por qué es una alternativa al cable?">What is VSeeBox and how is it a cable alternative?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq1-a"><span data-en="VSeeBox is an Android TV set-top box with the four core Heat apps pre-installed: Heat Live (live TV), Heat VOD (movies and shows), Heat Ultra (branded streaming content), and Heat Backup (failover live TV server). One-time purchase replaces the stack of monthly cable and streaming bills with a single up-front cost." data-es="VSeeBox es un decodificador Android TV con las cuatro apps Heat principales preinstaladas: Heat Live (TV en vivo), Heat VOD (películas y series), Heat Ultra (contenido streaming con marcas) y Heat Backup (servidor de respaldo en vivo). Una compra única reemplaza la pila de cuentas mensuales de cable y streaming con un solo costo inicial.">VSeeBox is an Android TV set-top box with the four core Heat apps pre-installed: Heat Live (live TV), Heat VOD (movies and shows), Heat Ultra (branded streaming content), and Heat Backup (failover live TV server). One-time purchase replaces the stack of monthly cable and streaming bills with a single up-front cost.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq2-a">
-        <span data-en="How do I cut the cord on cable in Austin or the Texas Triangle?" data-es="¿Cómo corto el cable en Austin o en el Triángulo de Texas?">How do I cut the cord on cable in Austin or the Texas Triangle?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq2-a">
-        <span data-en="A VSeeBox Android TV unit replaces cable and most monthly streaming subscriptions with a one-time hardware purchase. Locally stocked in Austin, Round Rock, and San Marcos with in-person pickup. Buyers passing through from San Antonio, Waco, College Station, Houston, or DFW can text to coordinate a meetup." data-es="Un VSeeBox Android TV reemplaza el cable y la mayoría de suscripciones de streaming con una compra única. Disponible localmente en Austin, Round Rock y San Marcos con recogida en persona. Los compradores que pasen por San Antonio, Waco, College Station, Houston o DFW pueden escribir para coordinar un punto de encuentro.">A VSeeBox Android TV unit replaces cable and most monthly streaming subscriptions with a one-time hardware purchase. Locally stocked in Austin, Round Rock, and San Marcos with in-person pickup. Buyers passing through from San Antonio, Waco, College Station, Houston, or DFW can text to coordinate a meetup.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq2-a"><span data-en="How do I cut the cord on cable in Austin or the Texas Triangle?" data-es="¿Cómo corto el cable en Austin o en el Triángulo de Texas?">How do I cut the cord on cable in Austin or the Texas Triangle?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq2-a"><span data-en="A VSeeBox Android TV unit replaces cable and most monthly streaming subscriptions with a one-time hardware purchase. Locally stocked in Austin, Round Rock, and San Marcos with in-person pickup. Buyers passing through from San Antonio, Waco, College Station, Houston, or DFW can text to coordinate a meetup." data-es="Un VSeeBox Android TV reemplaza el cable y la mayoría de suscripciones de streaming con una compra única. Disponible localmente en Austin, Round Rock y San Marcos con recogida en persona. Los compradores que pasen por San Antonio, Waco, College Station, Houston o DFW pueden escribir para coordinar un punto de encuentro.">A VSeeBox Android TV unit replaces cable and most monthly streaming subscriptions with a one-time hardware purchase. Locally stocked in Austin, Round Rock, and San Marcos with in-person pickup. Buyers passing through from San Antonio, Waco, College Station, Houston, or DFW can text to coordinate a meetup.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq3-a">
-        <span data-en="Where can I pick up my VSeeBox?" data-es="¿Dónde puedo recoger mi VSeeBox?">Where can I pick up my VSeeBox?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq3-a">
-        <span data-en="In-person handoffs in the Austin, Round Rock, and San Marcos area. Usually same-week availability. Text Jordan to schedule a time and location that works for you." data-es="Entregas en persona en el área de Austin, Round Rock y San Marcos. Usualmente hay disponibilidad en la misma semana. Escríbele a Jordan para acordar hora y lugar.">In-person handoffs in the Austin, Round Rock, and San Marcos area. Usually same-week availability. Text Jordan to schedule a time and location that works for you.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq3-a"><span data-en="Where can I pick up my VSeeBox?" data-es="¿Dónde puedo recoger mi VSeeBox?">Where can I pick up my VSeeBox?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq3-a"><span data-en="In-person handoffs in the Austin, Round Rock, and San Marcos area. Usually same-week availability. Text Jordan to schedule a time and location that works for you." data-es="Entregas en persona en el área de Austin, Round Rock y San Marcos. Usualmente hay disponibilidad en la misma semana. Escríbele a Jordan para acordar hora y lugar.">In-person handoffs in the Austin, Round Rock, and San Marcos area. Usually same-week availability. Text Jordan to schedule a time and location that works for you.</span></div>
+    </div>
+
+    <!-- ── ADDED: shipping FAQ ── -->
+    <div class="faq-item" role="listitem">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq-ship-a"><span data-en="Too far to pick up in Austin — can you ship?" data-es="¿Demasiado lejos para recoger en Austin? ¿Puedes enviar?">Too far to pick up in Austin — can you ship?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq-ship-a"><span data-en="Yes — shipping is available for buyers outside the Austin area. It's $15 for the first box, plus $3 for each additional box in the same order. Ordering more than 10 boxes? Text Jordan and shipping options are worked out case by case." data-es="Sí — el envío está disponible para compradores fuera del área de Austin. Son $15 por el primer equipo, más $3 por cada equipo adicional en el mismo pedido. ¿Más de 10 equipos? Escríbele a Jordan y se trabajan las opciones caso por caso.">Yes — shipping is available for buyers outside the Austin area. It's $15 for the first box, plus $3 for each additional box in the same order. Ordering more than 10 boxes? Text Jordan and shipping options are worked out case by case.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq4-a">
-        <span data-en="What payment methods do you accept?" data-es="¿Qué métodos de pago aceptas?">What payment methods do you accept?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq4-a">
-        <span data-en="Cash and Zelle. Payment is at the time of in-person pickup — no deposits required." data-es="Efectivo y Zelle. El pago se hace al momento de recoger — sin depósitos.">Cash and Zelle. Payment is at the time of in-person pickup — no deposits required.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq4-a"><span data-en="What payment methods do you accept?" data-es="¿Qué métodos de pago aceptas?">What payment methods do you accept?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq4-a"><span data-en="Cash and Zelle. Payment is at the time of in-person pickup — no deposits required." data-es="Efectivo y Zelle. El pago se hace al momento de recoger — sin depósitos.">Cash and Zelle. Payment is at the time of in-person pickup — no deposits required.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq5-a">
-        <span data-en="Which model is best for a first-time buyer?" data-es="¿Qué modelo es mejor para alguien que compra por primera vez?">Which model is best for a first-time buyer?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq5-a">
-        <span data-en="Most living-room buyers go with the Elite Mini — Wi-Fi 6, voice remote, and bonus apps cover most needs. Bedrooms or starter setups are great with the V6 Max. Run the Box Finder above or text Jordan with a sentence about how you watch TV and he'll point you to the right one." data-es="La mayoría de compradores de sala van con el Elite Mini — Wi-Fi 6, control por voz y apps adicionales cubren casi todo. Para habitaciones o configuraciones iniciales, el V6 Max funciona excelente. Usa el Selector de equipo arriba o escríbele a Jordan describiendo cómo ves TV y te indicará el correcto.">Most living-room buyers go with the Elite Mini — Wi-Fi 6, voice remote, and bonus apps cover most needs. Bedrooms or starter setups are great with the V6 Max. Run the Box Finder above or text Jordan with a sentence about how you watch TV and he'll point you to the right one.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq5-a"><span data-en="Which model is best for a first-time buyer?" data-es="¿Qué modelo es mejor para alguien que compra por primera vez?">Which model is best for a first-time buyer?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq5-a"><span data-en="Most living-room buyers go with the Elite Mini — Wi-Fi 6, voice remote, and bonus apps cover most needs. Bedrooms or starter setups are great with the V6 Max. Run the Box Finder above or text Jordan with a sentence about how you watch TV and he'll point you to the right one." data-es="La mayoría de compradores de sala van con el Elite Mini — Wi-Fi 6, control por voz y apps adicionales cubren casi todo. Para habitaciones o configuraciones iniciales, el V6 Max funciona excelente. Usa el Selector de equipo arriba o escríbele a Jordan describiendo cómo ves TV y te indicará el correcto.">Most living-room buyers go with the Elite Mini — Wi-Fi 6, voice remote, and bonus apps cover most needs. Bedrooms or starter setups are great with the V6 Max. Run the Box Finder above or text Jordan with a sentence about how you watch TV and he'll point you to the right one.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq6-a">
-        <span data-en="Do you sell in bulk for resellers or small businesses?" data-es="¿Vendes al por mayor para revendedores o pequeños negocios?">Do you sell in bulk for resellers or small businesses?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq6-a">
-        <span data-en='Yes — V6 Max is available by the case. Text Jordan for current bulk pricing on other models. Details in the "More Info" section above.' data-es='Sí — el V6 Max está disponible por caja. Escríbele a Jordan para precios al por mayor actualizados de otros modelos. Detalles en la sección "Más información" arriba.'>Yes — V6 Max is available by the case. Text Jordan for current bulk pricing on other models. Details in the "More Info" section above.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq6-a"><span data-en="Do you sell in bulk for resellers or small businesses?" data-es="¿Vendes al por mayor para revendedores o pequeños negocios?">Do you sell in bulk for resellers or small businesses?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq6-a"><span data-en='Yes — V6 Max is available by the case. Text Jordan for current bulk pricing on other models. Details in the "More Info" section above.' data-es='Sí — el V6 Max está disponible por caja. Escríbele a Jordan para precios al por mayor actualizados de otros modelos. Detalles en la sección "Más información" arriba.'>Yes — V6 Max is available by the case. Text Jordan for current bulk pricing on other models. Details in the "More Info" section above.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq7-a">
-        <span data-en="Are there monthly subscription fees?" data-es="¿Hay cuotas mensuales de suscripción?">Are there monthly subscription fees?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq7-a">
-        <span data-en="The device is a one-time purchase with no device subscription. Some third-party apps may need their own accounts — confirm specifics by text." data-es="El equipo es una compra única sin suscripción del dispositivo. Algunas apps de terceros pueden requerir sus propias cuentas — confirma detalles por texto.">The device is a one-time purchase with no device subscription. Some third-party apps may need their own accounts — confirm specifics by text.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq7-a"><span data-en="Are there monthly subscription fees?" data-es="¿Hay cuotas mensuales de suscripción?">Are there monthly subscription fees?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq7-a"><span data-en="The device is a one-time purchase with no device subscription. Some third-party apps may need their own accounts — confirm specifics by text." data-es="El equipo es una compra única sin suscripción del dispositivo. Algunas apps de terceros pueden requerir sus propias cuentas — confirma detalles por texto.">The device is a one-time purchase with no device subscription. Some third-party apps may need their own accounts — confirm specifics by text.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq8-a">
-        <span data-en="What's the difference between Android 12 and Android 14?" data-es="¿Cuál es la diferencia entre Android 12 y Android 14?">What's the difference between Android 12 and Android 14?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq8-a">
-        <span data-en="V6 Max and V6 Plus run Android 14, the most current. Elite Mini and Elite Ultra run Android 12, which is stable, fully supported, and gets OTA updates." data-es="V6 Max y V6 Plus corren Android 14, lo más actual. Elite Mini y Elite Ultra corren Android 12, que es estable, completamente soportado y recibe actualizaciones OTA.">V6 Max and V6 Plus run Android 14, the most current. Elite Mini and Elite Ultra run Android 12, which is stable, fully supported, and gets OTA updates.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq8-a"><span data-en="What's the difference between Android 12 and Android 14?" data-es="¿Cuál es la diferencia entre Android 12 y Android 14?">What's the difference between Android 12 and Android 14?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq8-a"><span data-en="V6 Max and V6 Plus run Android 14, the most current. Elite Mini and Elite Ultra run Android 12, which is stable, fully supported, and gets OTA updates." data-es="V6 Max y V6 Plus corren Android 14, lo más actual. Elite Mini y Elite Ultra corren Android 12, que es estable, completamente soportado y recibe actualizaciones OTA.">V6 Max and V6 Plus run Android 14, the most current. Elite Mini and Elite Ultra run Android 12, which is stable, fully supported, and gets OTA updates.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq9-a">
-        <span data-en="Do the Elite models receive over-the-air updates?" data-es="¿Los modelos Elite reciben actualizaciones por aire?">Do the Elite models receive over-the-air updates?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq9-a">
-        <span data-en="Yes. Elite Mini and Elite Ultra both support OTA updates so firmware improvements arrive automatically." data-es="Sí. Tanto Elite Mini como Elite Ultra soportan actualizaciones OTA para que las mejoras de firmware lleguen automáticamente.">Yes. Elite Mini and Elite Ultra both support OTA updates so firmware improvements arrive automatically.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq9-a"><span data-en="Do the Elite models receive over-the-air updates?" data-es="¿Los modelos Elite reciben actualizaciones por aire?">Do the Elite models receive over-the-air updates?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq9-a"><span data-en="Yes. Elite Mini and Elite Ultra both support OTA updates so firmware improvements arrive automatically." data-es="Sí. Tanto Elite Mini como Elite Ultra soportan actualizaciones OTA para que las mejoras de firmware lleguen automáticamente.">Yes. Elite Mini and Elite Ultra both support OTA updates so firmware improvements arrive automatically.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq10-a">
-        <span data-en="Can one box serve more than one TV?" data-es="¿Un equipo puede servir a más de un TV?">Can one box serve more than one TV?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq10-a">
-        <span data-en="One box per TV. If you want it on the bedroom and the living room, you'd need two units." data-es="Un equipo por TV. Si lo quieres en la habitación y en la sala, necesitarías dos unidades.">One box per TV. If you want it on the bedroom and the living room, you'd need two units.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq10-a"><span data-en="Can one box serve more than one TV?" data-es="¿Un equipo puede servir a más de un TV?">Can one box serve more than one TV?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq10-a"><span data-en="One box per TV. If you want it on the bedroom and the living room, you'd need two units." data-es="Un equipo por TV. Si lo quieres en la habitación y en la sala, necesitarías dos unidades.">One box per TV. If you want it on the bedroom and the living room, you'd need two units.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq11-a">
-        <span data-en="Does it work on a phone or tablet?" data-es="¿Funciona en un teléfono o tablet?">Does it work on a phone or tablet?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq11-a">
-        <span data-en="No. The VSeeBox is a TV-connected device — it plugs into your TV via HDMI. Not a mobile app." data-es="No. El VSeeBox es un dispositivo conectado al TV — se conecta por HDMI. No es una app móvil.">No. The VSeeBox is a TV-connected device — it plugs into your TV via HDMI. Not a mobile app.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq11-a"><span data-en="Does it work on a phone or tablet?" data-es="¿Funciona en un teléfono o tablet?">Does it work on a phone or tablet?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq11-a"><span data-en="No. The VSeeBox is a TV-connected device — it plugs into your TV via HDMI. Not a mobile app." data-es="No. El VSeeBox es un dispositivo conectado al TV — se conecta por HDMI. No es una app móvil.">No. The VSeeBox is a TV-connected device — it plugs into your TV via HDMI. Not a mobile app.</span></div>
     </div>
 
     <div class="faq-item" role="listitem">
-      <button class="faq-question" aria-expanded="false" aria-controls="faq12-a">
-        <span data-en="How much delay is there on live channels?" data-es="¿Cuánto retraso hay en los canales en vivo?">How much delay is there on live channels?</span>
-        <svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer" id="faq12-a">
-        <span data-en="Heat Live runs roughly 30 to 120 seconds behind real-time, similar to most internet-streamed live TV." data-es="Heat Live va aproximadamente 30 a 120 segundos detrás del tiempo real, similar a la mayoría de TV en vivo por internet.">Heat Live runs roughly 30 to 120 seconds behind real-time, similar to most internet-streamed live TV.</span>
-      </div>
+      <button class="faq-question" aria-expanded="false" aria-controls="faq12-a"><span data-en="How much delay is there on live channels?" data-es="¿Cuánto retraso hay en los canales en vivo?">How much delay is there on live channels?</span><svg class="faq-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer" id="faq12-a"><span data-en="Heat Live runs roughly 30 to 120 seconds behind real-time, similar to most internet-streamed live TV." data-es="Heat Live va aproximadamente 30 a 120 segundos detrás del tiempo real, similar a la mayoría de TV en vivo por internet.">Heat Live runs roughly 30 to 120 seconds behind real-time, similar to most internet-streamed live TV.</span></div>
     </div>
+
   </div>
 </section>
 
-<!-- ─────────── CTA / Footer ─────────── -->
 <section class="cta-footer">
   <div class="cta-card">
     <div class="cta-card-text">
@@ -1873,7 +1367,6 @@ function buildStructuredData() {
 </a>
 
 <script>
-/* ─── Helpers ─── */
 function makePlaceholder(label) {
   const div = document.createElement('div');
   div.className = 'img-placeholder';
@@ -1881,7 +1374,6 @@ function makePlaceholder(label) {
   return div;
 }
 
-/* ─── Inject prices ─── */
 function injectPrices() {
   document.querySelectorAll('[data-price]').forEach(el => {
     const key = el.getAttribute('data-price');
@@ -1896,13 +1388,11 @@ function injectPrices() {
   });
 }
 
-/* ─── Inject structured data ─── */
 function injectStructuredData() {
   const el = document.getElementById('structured-data-script');
   if (el) el.textContent = JSON.stringify(buildStructuredData());
 }
 
-/* ─── Language toggle ─── */
 let currentLang = 'en';
 function setLang(lang) {
   currentLang = lang;
@@ -1917,107 +1407,73 @@ function setLang(lang) {
   });
 }
 
-/* ─── Recommender ─── */
 const RECOMMENDATIONS = {
   bedroom: {
     title: { en: 'For a bedroom — start here:', es: 'Para una habitación — empieza aquí:' },
-    primary: { id: 'v6max', key: 'v6max', name: 'V6 Max',
-      reason: { en: 'Clean, simple, the right size for one TV. Heat apps cover everything you need without paying for the bigger features you wouldn\'t use in a bedroom.',
-                es: 'Limpio, simple, del tamaño correcto para un TV. Las apps Heat cubren todo lo que necesitas sin pagar por funciones grandes que no usarías en una habitación.' } },
-    secondary: { id: 'v6plus', key: 'v6plus', name: 'V6 Plus',
-      reason: { en: 'If you watch sports in bed, the HEAT-native split-screen and PIP make this the bedroom upgrade — two streams at once on one screen.',
-                es: 'Si ves deportes en cama, la pantalla dividida y PIP nativos en HEAT hacen de este el upgrade de habitación — dos transmisiones en una pantalla.' } }
+    primary: { id: 'v6max', key: 'v6max', name: 'V6 Max', reason: { en: 'Clean, simple, the right size for one TV. Heat apps cover everything you need without paying for the bigger features you wouldn\'t use in a bedroom.', es: 'Limpio, simple, del tamaño correcto para un TV. Las apps Heat cubren todo lo que necesitas sin pagar por funciones grandes que no usarías en una habitación.' } },
+    secondary: { id: 'v6plus', key: 'v6plus', name: 'V6 Plus', reason: { en: 'If you watch sports in bed, the HEAT-native split-screen and PIP make this the bedroom upgrade — two streams at once on one screen.', es: 'Si ves deportes en cama, la pantalla dividida y PIP nativos en HEAT hacen de este el upgrade de habitación — dos transmisiones en una pantalla.' } }
   },
   family: {
     title: { en: 'For a family / living room — most people land here:', es: 'Para sala familiar — la mayoría llega aquí:' },
-    primary: { id: 'elitemini', key: 'eliteMini', name: 'Elite Mini',
-      reason: { en: 'Most popular for a reason. Wi-Fi 6 stays solid on a busy home network, voice remote is genuinely useful, and the bonus apps stretch the content library well past Heat.',
-                es: 'El más popular por algo. Wi-Fi 6 se mantiene estable en una red familiar saturada, el control por voz es realmente útil, y las apps adicionales amplían el contenido más allá de Heat.' } },
-    secondary: { id: 'v6plus', key: 'v6plus', name: 'V6 Plus',
-      reason: { en: 'Budget-friendlier living-room option, and the only box with HEAT-native split-screen and PIP if multi-stream watching matters in your house.',
-                es: 'Opción más económica para sala, y el único equipo con pantalla dividida y PIP nativos en HEAT si en tu casa importa ver varias transmisiones.' } }
+    primary: { id: 'elitemini', key: 'eliteMini', name: 'Elite Mini', reason: { en: 'Most popular for a reason. Wi-Fi 6 stays solid on a busy home network, voice remote is genuinely useful, and the bonus apps stretch the content library well past Heat.', es: 'El más popular por algo. Wi-Fi 6 se mantiene estable en una red familiar saturada, el control por voz es realmente útil, y las apps adicionales amplían el contenido más allá de Heat.' } },
+    secondary: { id: 'v6plus', key: 'v6plus', name: 'V6 Plus', reason: { en: 'Budget-friendlier living-room option, and the only box with HEAT-native split-screen and PIP if multi-stream watching matters in your house.', es: 'Opción más económica para sala, y el único equipo con pantalla dividida y PIP nativos en HEAT si en tu casa importa ver varias transmisiones.' } }
   },
   basic: {
     title: { en: 'For basic streaming — keep it simple:', es: 'Para streaming básico — fácil:' },
-    primary: { id: 'v6max', key: 'v6max', name: 'V6 Max',
-      reason: { en: 'You don\'t need the extra apps or fancy network gear. Heat Live, VOD, Ultra, and Backup do the job. Lowest price in the lineup.',
-                es: 'No necesitas las apps extras ni el equipo de red avanzado. Heat Live, VOD, Ultra y Backup hacen el trabajo. El precio más bajo de la línea.' } },
-    secondary: { id: 'elitemini', key: 'eliteMini', name: 'Elite Mini',
-      reason: { en: 'Worth the small bump if you want Wi-Fi 6 reliability and a voice remote — but not required for basic use.',
-                es: 'Vale la pequeña diferencia si quieres la confiabilidad de Wi-Fi 6 y un control por voz — pero no es necesario para uso básico.' } }
+    primary: { id: 'v6max', key: 'v6max', name: 'V6 Max', reason: { en: 'You don\'t need the extra apps or fancy network gear. Heat Live, VOD, Ultra, and Backup do the job. Lowest price in the lineup.', es: 'No necesitas las apps extras ni el equipo de red avanzado. Heat Live, VOD, Ultra y Backup hacen el trabajo. El precio más bajo de la línea.' } },
+    secondary: { id: 'elitemini', key: 'eliteMini', name: 'Elite Mini', reason: { en: 'Worth the small bump if you want Wi-Fi 6 reliability and a voice remote — but not required for basic use.', es: 'Vale la pequeña diferencia si quieres la confiabilidad de Wi-Fi 6 y un control por voz — pero no es necesario para uso básico.' } }
   },
   sports: {
     title: { en: 'For sports & PPV — two strong options:', es: 'Para deportes y PPV — dos buenas opciones:' },
-    primary: { id: 'elitemini', key: 'eliteMini', name: 'Elite Mini',
-      reason: { en: 'Bonus app suite includes a sports access app that pulls every televised sport that isn\'t on a regular channel. Wi-Fi 6 keeps the feed steady during big games and PPV nights.',
-                es: 'Las apps adicionales incluyen una app de deportes que jala cada deporte televisado que no esté en canales regulares. Wi-Fi 6 mantiene el feed estable en juegos grandes y noches de PPV.' } },
-    secondary: { id: 'v6plus', key: 'v6plus', name: 'V6 Plus',
-      reason: { en: 'The only box with HEAT-native PIP and split-screen — smoother than third-party app workarounds when you want two games on screen at once.',
-                es: 'El único equipo con PIP y pantalla dividida nativos en HEAT — más fluido que las soluciones con apps de terceros cuando quieres dos juegos a la vez.' } }
+    primary: { id: 'elitemini', key: 'eliteMini', name: 'Elite Mini', reason: { en: 'Bonus app suite includes a sports access app that pulls every televised sport that isn\'t on a regular channel. Wi-Fi 6 keeps the feed steady during big games and PPV nights.', es: 'Las apps adicionales incluyen una app de deportes que jala cada deporte televisado que no esté en canales regulares. Wi-Fi 6 mantiene el feed estable en juegos grandes y noches de PPV.' } },
+    secondary: { id: 'v6plus', key: 'v6plus', name: 'V6 Plus', reason: { en: 'The only box with HEAT-native PIP and split-screen — smoother than third-party app workarounds when you want two games on screen at once.', es: 'El único equipo con PIP y pantalla dividida nativos en HEAT — más fluido que las soluciones con apps de terceros cuando quieres dos juegos a la vez.' } }
   },
   movies: {
     title: { en: 'For movies — go for the catalog depth:', es: 'Para películas — busca biblioteca profunda:' },
-    primary: { id: 'elitemini', key: 'eliteMini', name: 'Elite Mini',
-      reason: { en: 'Heat VOD and Heat Ultra plus the bonus apps give you tens of thousands of movies and shows organized two different ways. 6K HDR makes the picture pop.',
-                es: 'Heat VOD y Heat Ultra más las apps adicionales te dan decenas de miles de películas y series organizadas de dos formas. 6K HDR hace que la imagen destaque.' } },
-    secondary: { id: 'eliteultra', key: 'eliteUltra', name: 'Elite Ultra',
-      reason: { en: 'For deepest catalogs and biggest storage — ~24 bonus apps, 128 GB. Built for cinephiles who want every option installed and ready.',
-                es: 'Para los catálogos más profundos y mayor almacenamiento — ~24 apps adicionales, 128 GB. Para cinéfilos que quieren todas las opciones instaladas y listas.' } }
+    primary: { id: 'elitemini', key: 'eliteMini', name: 'Elite Mini', reason: { en: 'Heat VOD and Heat Ultra plus the bonus apps give you tens of thousands of movies and shows organized two different ways. 6K HDR makes the picture pop.', es: 'Heat VOD y Heat Ultra más las apps adicionales te dan decenas de miles de películas y series organizadas de dos formas. 6K HDR hace que la imagen destaque.' } },
+    secondary: { id: 'eliteultra', key: 'eliteUltra', name: 'Elite Ultra', reason: { en: 'For deepest catalogs and biggest storage — ~24 bonus apps, 128 GB. Built for cinephiles who want every option installed and ready.', es: 'Para los catálogos más profundos y mayor almacenamiento — ~24 apps adicionales, 128 GB. Para cinéfilos que quieren todas las opciones instaladas y listas.' } }
   }
 };
 
 function showRecommendation(usecase) {
   const data = RECOMMENDATIONS[usecase];
   if (!data) return;
-
   document.querySelectorAll('.rec-tile').forEach(t => {
     const isActive = t.getAttribute('data-usecase') === usecase;
     t.classList.toggle('active', isActive);
     t.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
-
   const result = document.getElementById('rec-result');
   const titleEl = document.getElementById('rec-result-title');
   const gridEl = document.getElementById('rec-result-grid');
   const textEl = document.getElementById('rec-result-text');
-
   titleEl.textContent = data.title[currentLang];
-
   const buildPick = (pick, rank) => {
     const rankLabel = rank === 'primary'
       ? (currentLang === 'en' ? 'Top pick' : 'Mejor opción')
       : (currentLang === 'en' ? 'Also a great fit' : 'También buena opción');
-    return `
-      <a class="rec-pick ${rank}" href="#${pick.id}" data-target="${pick.id}">
-        <div class="rec-pick-rank">${rankLabel}</div>
-        <div class="rec-pick-name">${pick.name}</div>
-        <div class="rec-pick-price"><strong>${formatPrice(PRICE_CONFIG[pick.key])}</strong></div>
-        <div class="rec-pick-reason">${pick.reason[currentLang]}</div>
-        <div class="rec-pick-cta">${currentLang === 'en' ? 'See details' : 'Ver detalles'} →</div>
-      </a>`;
+    return `<a class="rec-pick ${rank}" href="#${pick.id}" data-target="${pick.id}">
+      <div class="rec-pick-rank">${rankLabel}</div>
+      <div class="rec-pick-name">${pick.name}</div>
+      <div class="rec-pick-price"><strong>${formatPrice(PRICE_CONFIG[pick.key])}</strong></div>
+      <div class="rec-pick-reason">${pick.reason[currentLang]}</div>
+      <div class="rec-pick-cta">${currentLang === 'en' ? 'See details' : 'Ver detalles'} →</div>
+    </a>`;
   };
-
   gridEl.innerHTML = buildPick(data.primary, 'primary') + buildPick(data.secondary, 'secondary');
-
   textEl.innerHTML = currentLang === 'en'
     ? 'Still unsure? <a href="sms:2627050853">Text Jordan</a> with a sentence about how you watch TV — usually a 2-minute decision.'
     : '¿Aún no estás seguro? <a href="sms:2627050853">Escríbele a Jordan</a> con una frase sobre cómo ves TV — usualmente es decisión de 2 minutos.';
-
   result.classList.add('open');
-
-  // Auto-open the corresponding product detail when clicking pick
   gridEl.querySelectorAll('.rec-pick').forEach(pick => {
-    pick.addEventListener('click', (e) => {
+    pick.addEventListener('click', () => {
       const target = pick.getAttribute('data-target');
       const detail = document.getElementById(target);
-      if (detail && !detail.classList.contains('open')) {
-        toggleProductDetail(detail);
-      }
+      if (detail && !detail.classList.contains('open')) toggleProductDetail(detail);
     });
   });
 }
 
-/* ─── Collapsibles ─── */
 function toggleProductDetail(detailEl) {
   const toggle = detailEl.querySelector('.product-detail-toggle');
   const isOpen = detailEl.classList.toggle('open');
@@ -2025,13 +1481,10 @@ function toggleProductDetail(detailEl) {
 }
 
 function initCollapsibles() {
-  // Product details
   document.querySelectorAll('.product-detail').forEach(detail => {
     const toggle = detail.querySelector('.product-detail-toggle');
     toggle.addEventListener('click', () => toggleProductDetail(detail));
   });
-
-  // Compare
   const compareToggle = document.querySelector('.compare-toggle');
   const compareBody = document.getElementById('compare-body');
   if (compareToggle && compareBody) {
@@ -2042,13 +1495,10 @@ function initCollapsibles() {
       const labelEn = isOpen ? 'Hide comparison table' : 'Show comparison table';
       const labelEs = isOpen ? 'Ocultar tabla comparativa' : 'Mostrar tabla comparativa';
       const span = compareToggle.querySelector('span');
-      span.setAttribute('data-en', labelEn);
-      span.setAttribute('data-es', labelEs);
+      span.setAttribute('data-en', labelEn); span.setAttribute('data-es', labelEs);
       span.textContent = currentLang === 'en' ? labelEn : labelEs;
     });
   }
-
-  // More info
   const miToggle = document.querySelector('.moreinfo-toggle');
   const miBody = document.getElementById('moreinfo-body');
   if (miToggle && miBody) {
@@ -2059,13 +1509,10 @@ function initCollapsibles() {
       const labelEn = isOpen ? 'Close more info' : 'Open more info';
       const labelEs = isOpen ? 'Cerrar más información' : 'Abrir más información';
       const span = miToggle.querySelector('span');
-      span.setAttribute('data-en', labelEn);
-      span.setAttribute('data-es', labelEs);
+      span.setAttribute('data-en', labelEn); span.setAttribute('data-es', labelEs);
       span.textContent = currentLang === 'en' ? labelEn : labelEs;
     });
   }
-
-  // FAQ
   document.querySelectorAll('.faq-question').forEach(q => {
     q.addEventListener('click', () => {
       const expanded = q.getAttribute('aria-expanded') === 'true';
@@ -2076,7 +1523,6 @@ function initCollapsibles() {
   });
 }
 
-/* ─── Auto-expand product detail on hash navigation ─── */
 function handleHashNav() {
   const hash = window.location.hash.replace('#', '');
   if (!hash) return;
@@ -2098,43 +1544,26 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
-/* ─── Fade-in on scroll ─── */
 function initFadeIn() {
   const els = document.querySelectorAll('.fade-in');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(el => el.classList.add('visible'));
-    return;
-  }
+  if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('visible')); return; }
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        obs.unobserve(entry.target);
-      }
-    });
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); } });
   }, { rootMargin: '0px 0px -60px 0px', threshold: 0.05 });
   els.forEach(el => obs.observe(el));
 }
 
-/* ─── Setup step animation ─── */
 function initSetupSteps() {
   const steps = document.querySelectorAll('.setup-step');
-  if (!('IntersectionObserver' in window)) {
-    steps.forEach(s => s.classList.add('visible'));
-    return;
-  }
+  if (!('IntersectionObserver' in window)) { steps.forEach(s => s.classList.add('visible')); return; }
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        obs.unobserve(entry.target);
-      }
+      if (entry.isIntersecting) { setTimeout(() => entry.target.classList.add('visible'), i * 80); obs.unobserve(entry.target); }
     });
   }, { threshold: 0.2 });
   steps.forEach(s => obs.observe(s));
 }
 
-/* ─── Scroll progress bar ─── */
 function initScrollProgress() {
   const fill = document.querySelector('.scroll-progress-fill');
   if (!fill) return;
@@ -2146,26 +1575,17 @@ function initScrollProgress() {
     fill.style.width = pct + '%';
     ticking = false;
   }
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(update);
-      ticking = true;
-    }
-  }, { passive: true });
+  window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(update); ticking = true; } }, { passive: true });
   update();
 }
 
-/* ─── Model card shimmer on viewport entry (mobile-friendly) ─── */
 function initCardShimmer() {
   const cards = document.querySelectorAll('.model-card');
   if (!('IntersectionObserver' in window)) return;
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('shimmered');
-          setTimeout(() => entry.target.classList.remove('shimmered'), 1000);
-        }, i * 120);
+        setTimeout(() => { entry.target.classList.add('shimmered'); setTimeout(() => entry.target.classList.remove('shimmered'), 1000); }, i * 120);
         obs.unobserve(entry.target);
       }
     });
@@ -2173,7 +1593,6 @@ function initCardShimmer() {
   cards.forEach(c => obs.observe(c));
 }
 
-/* ─── Init ─── */
 document.addEventListener('DOMContentLoaded', () => {
   injectPrices();
   injectStructuredData();
@@ -2184,7 +1603,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
   initCardShimmer();
   handleHashNav();
-
   document.querySelectorAll('.rec-tile').forEach(tile => {
     tile.addEventListener('click', () => showRecommendation(tile.getAttribute('data-usecase')));
   });
