@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RRK Document Routing Workflow</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+
+  :root {
+    --navy: #0f1f3d;
+    --blue: #1a4a8a;
+    --mid: #2563b0;
+    --accent: #3b9eff;
+    --gold: #f0a500;
+    --green: #1db87a;
+    --red: #e53e3e;
+    --purple: #7c3aed;
+    --bg: #070d1a;
+    --surface: #0d1a2e;
+    --card: #111f38;
+    --border: #1e3a5f;
+    --text: #e2eaf5;
+    --muted: #6b8cae;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,158,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,158,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,158,255,0.12);
+    border: 1px solid rgba(59,158,255,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* PHASE SECTIONS */
+  .phase {
+    margin-bottom: 8px;
+  }
+
+  .phase-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    padding-left: 4px;
+  }
+
+  /* FLOW ROW */
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 4px;
+  }
+
+  /* STEP CARD */
+  .step {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--step-color, var(--mid));
+    transition: height 0.2s ease;
+  }
+
+  .step:hover {
+    border-color: var(--step-color, var(--accent));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .step:hover::before { height: 4px; }
+
+  .step.active {
+    border-color: var(--step-color, var(--accent));
+    background: rgba(59,158,255,0.08);
+    box-shadow: 0 0 0 1px var(--step-color, var(--accent)), 0 8px 32px rgba(59,158,255,0.15);
+  }
+
+  .step-dept {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    opacity: 0.7;
+  }
+
+  .step-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .step-trigger {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .step-trigger strong {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* CONNECTOR */
+  .connector {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    flex-shrink: 0;
+    color: var(--muted);
+    font-size: 16px;
+    position: relative;
+  }
+
+  .connector::after {
+    content: '→';
+  }
+
+  .connector.branch::after {
+    content: '⤵';
+    font-size: 14px;
+  }
+
+  /* CONDITIONAL BRANCH */
+  .branch-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    margin-left: 24px;
+    padding-left: 16px;
+    border-left: 2px dashed var(--border);
+  }
+
+  .branch-step {
+    flex: 1;
+    background: rgba(124,58,237,0.08);
+    border: 1px dashed rgba(124,58,237,0.4);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+
+  .branch-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 3px;
+  }
+
+  .branch-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 3px;
+  }
+
+  .branch-trigger {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0;
+    margin-top: 24px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .detail-panel.open {
+    max-height: 500px;
+    padding: 24px;
+    opacity: 1;
+  }
+
+  .detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .detail-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .detail-dept-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .detail-section h4 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .detail-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .detail-item-icon {
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-top: 1px;
+  }
+
+  .close-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .close-btn:hover { color: var(--text); border-color: var(--muted); }
+
+  /* DPMO BANNER */
+  .dpmo-banner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 32px 0;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .dpmo-stat {
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+
+  .dpmo-value {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .dpmo-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .stat-bad { color: var(--red); }
+  .stat-warn { color: var(--gold); }
+  .stat-good { color: var(--green); }
+  .stat-info { color: var(--accent); }
+
+  /* DEPT COLORS */
+  .dept-ops { --step-color: #3b9eff; }
+  .dept-synthesis { --step-color: #a855f7; }
+  .dept-standards { --step-color: #f59e0b; }
+  .dept-qc { --step-color: #10b981; }
+  .dept-qa { --step-color: #ec4899; }
+  .dept-mc { --step-color: #f97316; }
+
+  .hint {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 700px) {
+    .flow-row { flex-direction: column; }
+    .connector { display: none; }
+    .dpmo-banner { grid-template-columns: repeat(2,1fr); }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-badge">RRK Facility · Smartsheet Process Map</div>
+    <h1>Document Routing <span>Workflow</span></h1>
+    <p class="subtitle">End-to-end RM → FG process · Data mesh & automation triggers</p>
+  </div>
+
+  <!-- DPMO Stats -->
+  <div class="dpmo-banner">
+    <div class="dpmo-stat">
+      <span class="dpmo-value stat-bad">220,000</span>
+      <span class="dpmo-label">Current DPMO</span>
+    </div>
+    <div class="dpmo-stat">
+      <span class="dpmo-value stat-warn">11/wk</span>
+      <span class="dpmo-label">Avg VPMs Observed</span>
+    </div>
+    <div class="dpmo-stat">
+      <span class="dpmo-value stat-good">&lt;2,500</span>
+      <span class="dpmo-label">Target DPMO</span>
+    </div>
+    <div class="dpmo-stat">
+      <span class="dpmo-value stat-info">6–8</span>
+      <span class="dpmo-label">Departments in Path</span>
+    </div>
+  </div>
+
+  <p class="hint">↓ Click any step to see details, triggers, and automation logic</p>
+
+  <!-- WORKFLOW STEPS -->
+  <div id="workflow"></div>
+
+  <!-- Detail Panel -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-header">
+      <div>
+        <div class="detail-title" id="detail-title"></div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;font-family:var(--mono)" id="detail-dept"></div>
+      </div>
+      <button class="close-btn" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-section">
+        <h4>🔁 Automation Trigger</h4>
+        <div id="detail-trigger"></div>
+      </div>
+      <div class="detail-section">
+        <h4>⚠️ VPM Risk</h4>
+        <div id="detail-vpm"></div>
+      </div>
+      <div class="detail-section">
+        <h4>📋 What the Dept Does</h4>
+        <div id="detail-action"></div>
+      </div>
+      <div class="detail-section">
+        <h4>✅ Advance Condition</h4>
+        <div id="detail-advance"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend" style="margin-top:32px;">
+    <div class="legend-item"><div class="legend-dot" style="background:#3b9eff"></div>Operations</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div>Synthesis</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Standards</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>QC</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div>QA</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>Material Control</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(124,58,237,0.6);border:1px dashed rgba(124,58,237,0.8)"></div>Conditional Path</div>
+  </div>
+
+</div>
+
+<script>
+const steps = [
+  {
+    id: 'rm-order',
+    phase: 'RAW MATERIAL PHASE',
+    dept: 'Operations',
+    deptClass: 'dept-ops',
+    name: 'RM Ordered / Arrived',
+    trigger: 'Anticipated arrival date entered manually',
+    triggerShort: 'Manual date entry → red if past due',
+    vpm: 'High — ops must manually monitor and follow up on overdue orders. No automated alert.',
+    action: 'Ops enters anticipated arrival date. Monitors for past-due (cell turns red). Checks "Arrived" checkbox when RM is received.',
+    advance: 'Arrived checkbox checked → Step Status advances to RM Sampling',
+  },
+  {
+    id: 'synthesis',
+    phase: null,
+    dept: 'Synthesis',
+    deptClass: 'dept-synthesis',
+    name: 'Synthesis',
+    trigger: 'Priorities Sheet pulls step status & due date from Synthesis Smartsheet via lot #',
+    triggerShort: 'Data mesh pull from Synthesis sheet',
+    vpm: 'Medium — if Synthesis lead fails to update their sheet, Priorities Sheet stays stale and RM Sampling queue is wrong.',
+    action: 'Synthesis team executes synthesis protocol. Lead updates step status on Synthesis sheet to "QC" when complete.',
+    advance: 'Synthesis sheet status → QC: auto-triggers automation to advance Priorities step to RM Sampling',
+    isSynthesis: true
+  },
+  {
+    id: 'rm-sampling',
+    phase: null,
+    dept: 'Standards',
+    deptClass: 'dept-standards',
+    name: 'RM Sampling',
+    trigger: 'Priorities sheet populates Standards queue. Standards adds to Production Planning Sheet.',
+    triggerShort: 'Priorities → Standards Production Planning Sheet',
+    vpm: 'High — Standards must manually add to their Planning Sheet. Missed entries = invisible projects.',
+    action: 'Standards receives BR or RMR. Pulls info from Priorities sheet (RM name, lot #, storage, test spec, POP #, prep week). Schedules sampling.',
+    advance: 'Status = "Complete" on Production Planning Sheet → auto-checks RM Sampling Complete → advances to RM-QC',
+  },
+  {
+    id: 'rm-qc',
+    phase: null,
+    dept: 'QC',
+    deptClass: 'dept-qc',
+    name: 'RM-QC',
+    trigger: 'Advance from RM Sampling populates QC New Project sheet. QC assigns to source sheet.',
+    triggerShort: 'Auto-populate to QC New Project sheet',
+    vpm: 'Medium — QC must manually transfer to source sheet. Lag between arrival and assignment is a blind spot.',
+    action: 'QC transfers project to appropriate source sheet. Assigns analyst. Logs expected out date.',
+    advance: '"Send to QA Reviewer" → Quality Assurance: auto-checks RM-QC Complete → advances to RM-QA',
+  },
+  {
+    id: 'rm-qa',
+    phase: null,
+    dept: 'QA',
+    deptClass: 'dept-qa',
+    name: 'RM-QA',
+    trigger: 'Priorities pulls from QC sheet via RM lot number. QA Release Date populates Priorities.',
+    triggerShort: 'Data mesh pull by lot # → QA Report',
+    vpm: 'Medium — corrections loop requires manual step status override. Loop can stall without visibility.',
+    action: 'QA reviews RM record. If corrections needed: manually sets status to "Corrections RM" and identifies responsible group. Otherwise enters QA Release Date.',
+    advance: 'QA checks RM-QA Complete → auto-advances to RM-MC',
+    hasCorrections: true,
+    correctionsLabel: 'If Corrections Needed',
+    correctionsName: 'Corrections RM Loop',
+    correctionsTrigger: 'QA manually sets Step Status → Corrections RM + responsible dept identified',
+  },
+  {
+    id: 'rm-mc',
+    phase: null,
+    dept: 'Material Control',
+    deptClass: 'dept-mc',
+    name: 'RM-MC Release',
+    trigger: 'Priorities pulls MC release date via RM lot number. Prep week & priority shown.',
+    triggerShort: 'Data mesh pull by lot # to MC RM Release Report',
+    vpm: 'Low-Medium — MC fills in release date manually. Past-due cell turns red. Checkbox-driven advance is reliable.',
+    action: 'MC fills in release date. Prioritizes using prep weeks and priority flags. Executes release.',
+    advance: 'MC-MC Complete checkbox → auto-updates RM GTG. If record not issued: → DRR-BR. If issued: → Ready to Prep',
+    hasCorrections: true,
+    correctionsLabel: 'Conditional Branch',
+    correctionsName: 'Record Not Issued → DRR-BR',
+    correctionsTrigger: 'If BR not yet issued: Step status → DRR-BR (record issuance required before Prep)',
+  },
+];
+
+const fgSteps = [
+  {
+    id: 'standards-fg',
+    phase: 'FINISHED GOODS PHASE',
+    dept: 'Standards',
+    deptClass: 'dept-standards',
+    name: 'Standards — Formulation / Dispensing / Labeling',
+    trigger: 'Ops moves project via Moved to Standards Report. Links to Priorities by FG lot #.',
+    triggerShort: 'Moved to Standards Report → FG lot # link',
+    vpm: 'High — Standards Production Planning Sheet is manually populated. Multiple sub-steps (Formulate/Dispense/Label) each require sheet updates. Most complex VPM exposure in the workflow.',
+    action: 'Standards schedules team using Production Planning Sheet. Tracks sub-steps: Formulate → Dispense → Label/Pkg → MC Quarantine.',
+    advance: 'Each sub-status on Standards sheet advances Priorities step: Formulate→Dispense→Label/Pkg→QRT. Past-due cells turn red.',
+  },
+  {
+    id: 'mc-qrt',
+    phase: null,
+    dept: 'Material Control',
+    deptClass: 'dept-mc',
+    name: 'MC Quarantine',
+    trigger: 'Priorities QRT status populates MC QRT Report automatically.',
+    triggerShort: 'QRT status → auto-populate MC QRT Report',
+    vpm: 'Low — MC adds quarantine date manually. Checkbox-driven advance is reliable at this stage.',
+    action: 'MC adds anticipated quarantine date. Quarantines product. Records sample count.',
+    advance: 'MC QRT Complete checkbox → auto-advances step to QC and populates QC New Product sheet',
+  },
+  {
+    id: 'qc-fg',
+    phase: null,
+    dept: 'QC',
+    deptClass: 'dept-qc',
+    name: 'QC — Finished Goods',
+    trigger: 'QC New Product Sheet auto-populated. QC transfers to source sheet by test type.',
+    triggerShort: 'Auto-populate QC New Product → source sheet',
+    vpm: 'Medium — same as RM-QC. Manual transfer to source sheet. Out date and status lag possible.',
+    action: 'QC assigns analysts by test type. Updates expected out date. Tracks to completion.',
+    advance: 'QC Reviewer → "Send to QA" or "Post QC Labeling": auto-checks correct box and routes step status',
+    hasCorrections: true,
+    correctionsLabel: 'Post-QC Path',
+    correctionsName: 'Post QC Labeling (if needed)',
+    correctionsTrigger: 'If product needs labeling/packaging after QC → routes to Standards Post QC Labeling before MC',
+  },
+  {
+    id: 'qa-fg',
+    phase: null,
+    dept: 'QA',
+    deptClass: 'dept-qa',
+    name: 'QA — Finished Goods Review',
+    trigger: 'QA Report pulls from multiple Smartsheets. Organized by step status and priority.',
+    triggerShort: 'Multi-sheet pull → QA Report by priority',
+    vpm: 'Medium — same corrections loop risk as RM-QA. Manual status override required if corrections needed.',
+    action: 'QA reviews FG record. Enters release date. If corrections: manually sets "Corrections FG" + responsible dept.',
+    advance: 'QA Release Complete checkbox → Priorities updates to MC Release',
+    hasCorrections: true,
+    correctionsLabel: 'If Corrections Needed',
+    correctionsName: 'Corrections FG Loop',
+    correctionsTrigger: 'QA manually sets Step Status → Corrections FG + responsible dept. Record stalls until resolved.',
+  },
+  {
+    id: 'mc-release',
+    phase: null,
+    dept: 'Material Control',
+    deptClass: 'dept-mc',
+    name: 'MC Release — Inventoried',
+    trigger: 'MC FG Release Report populated. MC fills in release date and executes.',
+    triggerShort: 'MC FG Release Report → Priorities by lot #',
+    vpm: 'Low — final checkbox-driven step. Reliable automation at end of chain.',
+    action: 'MC fills in release date. Prioritizes using priority order. Executes final product release.',
+    advance: '"Inventoried" checkbox checked → Step Status updates to Inventoried. Project complete.',
+  },
+];
+
+const allSteps = [...steps, ...fgSteps];
+let activeStep = null;
+
+function renderSteps(stepsArr) {
+  let html = '';
+  stepsArr.forEach((step, i) => {
+    if (step.phase) {
+      html += `<div class="phase-label" style="margin-top:${i>0?'28px':'0'}">${step.phase}</div>`;
+    }
+
+    html += `<div class="flow-row">`;
+    html += `<div class="step ${step.deptClass}" id="step-${step.id}" onclick="toggleDetail('${step.id}')">
+      <div class="step-dept" style="color:var(--step-color)">${step.dept}</div>
+      <div class="step-name">${step.name}</div>
+      <div class="step-trigger"><strong>⚡</strong> ${step.triggerShort}</div>
+    </div>`;
+
+    if (i < stepsArr.length - 1 && !stepsArr[i+1].phase) {
+      html += `<div class="connector"></div>`;
+    }
+    html += `</div>`;
+
+    if (step.hasCorrections) {
+      html += `<div class="branch-row">
+        <div class="branch-step">
+          <div class="branch-label">⤷ ${step.correctionsLabel}</div>
+          <div class="branch-name">${step.correctionsName}</div>
+          <div class="branch-trigger">${step.correctionsTrigger}</div>
+        </div>
+      </div>`;
+    }
+  });
+  return html;
+}
+
+document.getElementById('workflow').innerHTML =
+  renderSteps(steps) + renderSteps(fgSteps);
+
+function toggleDetail(id) {
+  const step = allSteps.find(s => s.id === id);
+  if (!step) return;
+
+  if (activeStep === id) {
+    closeDetail();
+    return;
+  }
+
+  // Remove active from all
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+  document.getElementById('step-' + id).classList.add('active');
+  activeStep = id;
+
+  document.getElementById('detail-title').textContent = step.name;
+  document.getElementById('detail-dept').textContent = '[ ' + step.dept + ' ]';
+
+  document.getElementById('detail-trigger').innerHTML =
+    `<div class="detail-item"><span class="detail-item-icon">⚡</span><span>${step.trigger}</span></div>`;
+  document.getElementById('detail-vpm').innerHTML =
+    `<div class="detail-item"><span class="detail-item-icon">⚠️</span><span>${step.vpm}</span></div>`;
+  document.getElementById('detail-action').innerHTML =
+    `<div class="detail-item"><span class="detail-item-icon">→</span><span>${step.action}</span></div>`;
+  document.getElementById('detail-advance').innerHTML =
+    `<div class="detail-item"><span class="detail-item-icon">✓</span><span>${step.advance}</span></div>`;
+
+  const panel = document.getElementById('detail-panel');
+  panel.classList.add('open');
+  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+function closeDetail() {
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+  document.getElementById('detail-panel').classList.remove('open');
+  activeStep = null;
+}
+</script>
+</body>
+</html>
