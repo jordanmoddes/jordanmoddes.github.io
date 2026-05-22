@@ -169,6 +169,13 @@
       position:fixed; bottom:2px; left:50%; transform:translateX(-50%);
       font-size:.6rem; color:var(--border); letter-spacing:1px; pointer-events:none;
     }
+
+    /* Step 3 scan hint */
+    #scan-hint {
+      font-size:.78rem; color:var(--muted); letter-spacing:2px;
+      text-align:center; margin-bottom:10px; display:none;
+    }
+    #scan-hint.active { display:block; }
   </style>
 </head>
 <body>
@@ -185,6 +192,8 @@
   <div class="dot" id="dot-3"></div>
   <div class="dot" id="dot-4"></div>
 </div>
+
+<div id="scan-hint">Scan EVT-WIP or EVT-DROP — or tap a button below</div>
 
 <div id="input-row">
   <input id="text-input" type="text" autocomplete="off" autofocus placeholder="Scan or tap to type..."/>
@@ -249,7 +258,7 @@
   const STEPS = [
     { label:'Step 1 of 4', prompt:'SCAN OR TYPE BADGE',      field:'badge',      placeholder:'Badge number...' },
     { label:'Step 2 of 4', prompt:'SCAN OR TYPE FOLDER(S)',  field:'folders',    placeholder:'Folder ID...' },
-    { label:'Step 3 of 4', prompt:'CHOOSE WIP OR DROP',      field:'eventType',  placeholder:'WIP or DROP...' },
+    { label:'Step 3 of 4', prompt:'CHOOSE WIP OR DROP',      field:'eventType',  placeholder:'Scan EVT-WIP or EVT-DROP...' },
     { label:'Step 4 of 4', prompt:'SCAN OR TYPE DEPARTMENT', field:'department', placeholder:'Department...' },
   ];
 
@@ -397,7 +406,6 @@
   function showKeyboardForStep(i) {
     const f=STEPS[i].field;
     if (f==='badge') buildKeyboard('numeric');
-    else if (f==='eventType') hideKeyboard();
     else buildKeyboard('qwerty');
   }
 
@@ -412,7 +420,18 @@
     document.getElementById('status').className='';
     const input=document.getElementById('text-input');
     input.value=''; input.placeholder=STEPS[i].placeholder;
-    document.getElementById('input-row').style.display=STEPS[i].field==='eventType'?'none':'flex';
+
+    // Always show input row — scanner needs it active at every step including Step 3
+    document.getElementById('input-row').style.display='flex';
+
+    // Show scan hint only on Step 3
+    const hint = document.getElementById('scan-hint');
+    if (STEPS[i].field === 'eventType') {
+      hint.classList.add('active');
+    } else {
+      hint.classList.remove('active');
+    }
+
     for (let j=0;j<4;j++) {
       const d=document.getElementById(`dot-${j+1}`);
       d.className=j<i?'dot done':j===i?'dot active':'dot';
@@ -451,9 +470,7 @@
     const wrap=document.getElementById('action-buttons');
     wrap.innerHTML='';
     const field=STEPS[i].field;
-    if (field==='badge') {
-      // no test buttons in production
-    } else if (field==='folders') {
+    if (field==='folders') {
       if ((scan.folders||[]).length>0) {
         const db=document.createElement('button');
         db.className='action-btn done-btn'; db.textContent='✓ DONE';
@@ -467,8 +484,6 @@
         b.onclick=()=>processValue(label==='WIP'?'EVT-WIP':'EVT-DROP',false);
         wrap.appendChild(b);
       });
-    } else if (field==='department') {
-      // no test buttons in production
     }
   }
 
@@ -510,6 +525,7 @@
     document.getElementById('prompt').textContent=`SENDING ${total} FOLDER${total!==1?'S':''}...`;
     document.getElementById('action-buttons').innerHTML='';
     document.getElementById('input-row').style.display='none';
+    document.getElementById('scan-hint').classList.remove('active');
     for (let i=0;i<4;i++) document.getElementById(`dot-${i+1}`).className='dot done';
 
     const events=folders.map((folderID,i)=>({
@@ -540,7 +556,6 @@
 
       if (result.ok) {
         showStatus(`✓ THANK YOU — ${result.accepted} FOLDER${result.accepted!==1?'S':''} LOGGED${methodTag}`,'success');
-        // Data is already saved — now show OOS warning if needed
         if (oosWarnings.length>0) {
           showOOSWarning(oosWarnings, softReset);
         } else {
@@ -596,7 +611,7 @@
         if (u==='WIP') mapped='WIP';
         else if (u==='DROP'||u==='DROP-OFF') mapped='DROP-OFF';
       }
-      if (!mapped) { showStatus('⚠ CHOOSE WIP OR DROP','error'); return; }
+      if (!mapped) { showStatus('⚠ SCAN EVT-WIP, EVT-DROP, OR TAP A BUTTON','error'); return; }
       scan.eventType=mapped;
       if (mapped==='WIP') { scan.department='N/A (WIP)'; currentStep=3; submitBatch(); return; }
       currentStep++; setPrompt(currentStep); startTimeout(); return;
