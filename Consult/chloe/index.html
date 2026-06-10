@@ -511,6 +511,103 @@
     100% { left: 100%; }
   }
 
+  /* ── PHOTO REVEAL OVERLAY ── */
+  .photo-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  .photo-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .photo-overlay-inner {
+    position: relative;
+    width: min(380px, 90vw);
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    box-shadow: 0 0 80px rgba(255,31,110,0.3);
+  }
+
+  .photo-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+    filter: blur(18px) brightness(0.55) saturate(0.7);
+    transform: scale(1.12);
+    transition: filter 0.4s ease;
+  }
+
+  .photo-overlay.active .photo-bg {
+    animation: blurpulse 3s ease-in-out infinite;
+  }
+
+  @keyframes blurpulse {
+    0%, 100% { filter: blur(18px) brightness(0.55) saturate(0.7); }
+    50% { filter: blur(14px) brightness(0.6) saturate(0.8); }
+  }
+
+  .photo-blur {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,0,8,0.9) 0%, rgba(10,0,8,0.2) 60%, transparent 100%);
+  }
+
+  .photo-lock-card {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    padding: 1.2rem 2rem;
+    border: 1px solid rgba(255,31,110,0.4);
+    background: rgba(10,0,8,0.7);
+    backdrop-filter: blur(8px);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    width: 80%;
+  }
+
+  .photo-lock-card:hover {
+    border-color: var(--magenta);
+    background: rgba(255,31,110,0.12);
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  .photo-lock-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 10px rgba(255,31,110,0.7));
+  }
+
+  .photo-lock-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--offwhite);
+    text-align: center;
+  }
+
+  .photo-lock-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--magenta);
+    text-transform: uppercase;
+  }
+
   /* ── FOOTER ── */
   footer {
     padding: 2rem;
@@ -654,7 +751,7 @@
 
   <!-- PHOTO: swap the src below with Chloe's hosted image link -->
   <div class="creator-photo reveal">
-    <img src="https://faponic.com/data/c/h/chloe-miyu/1000/chloe-miyu_0001.jpg" alt="chloe.miyu" />
+    <img src="YOUR_IMAGE_URL_HERE" alt="chloe.miyu" />
   </div>
 </section>
 
@@ -700,17 +797,42 @@
   reveals.forEach(el => observer.observe(el));
 
   // tease tile click
+  const PHOTO_URL = 'YOUR_IMAGE_URL_HERE';
+
   function revealTile(tile) {
-    tile.classList.toggle('revealed');
-    // after all 9 revealed, nudge to OF
+    if (tile.classList.contains('revealed')) return;
+    tile.classList.add('revealed');
+
     const grid = document.getElementById('teaseGrid');
     const revealed = grid.querySelectorAll('.revealed').length;
-    if (revealed >= 7) {
-      setTimeout(() => {
-        window.open('https://onlyfans.com/chloe.miyu', '_blank');
-      }, 600);
+    const total = grid.querySelectorAll('.tease-tile').length;
+
+    if (revealed >= total) {
+      setTimeout(() => showPhotoReveal(), 300);
     }
   }
+
+  function showPhotoReveal() {
+    const overlay = document.getElementById('photoReveal');
+    overlay.classList.add('active');
+  }
+
+  document.getElementById('photoReveal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+  });
 </script>
+<!-- PHOTO REVEAL OVERLAY -->
+<div id="photoReveal" class="photo-overlay">
+  <div class="photo-overlay-inner">
+    <div class="photo-bg" style="background-image: url('https://faponic.com/data/c/h/chloe-miyu/1000/chloe-miyu_0001.jpg')"></div>
+    <div class="photo-blur"></div>
+    <a href="https://onlyfans.com/chloe.miyu" target="_blank" class="photo-lock-card">
+      <span class="photo-lock-icon">🔒</span>
+      <span class="photo-lock-text">see the full photo</span>
+      <span class="photo-lock-sub">onlyfans.com/chloe.miyu</span>
+    </a>
+  </div>
+</div>
+
 </body>
 </html>
