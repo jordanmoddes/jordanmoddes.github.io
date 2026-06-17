@@ -1,1 +1,1245 @@
-Hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Pages 101 — Your Airbnb Website Cheat Sheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #F7F5F0;
+    --card: #FFFFFF;
+    --ink: #1A1A1A;
+    --muted: #6B6660;
+    --accent: #D4622A;
+    --accent-soft: #FBE9DF;
+    --green: #2A7D4F;
+    --green-soft: #DDF0E7;
+    --blue: #1D5FA8;
+    --blue-soft: #DDE8F7;
+    --yellow: #C89B00;
+    --yellow-soft: #FFF5CC;
+    --border: #E2DDD8;
+    --code-bg: #1E1E2E;
+    --code-text: #CDD6F4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    color: white;
+    padding: 64px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, #D4622A22, transparent);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 6vw, 60px);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    color: #A8A4A0;
+    font-size: 17px;
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+
+  /* CSS illustration: a tiny browser window */
+  .browser-illo {
+    display: inline-block;
+    background: #2A2A3A;
+    border-radius: 12px;
+    padding: 0;
+    width: min(420px, 90vw);
+    text-align: left;
+    box-shadow: 0 24px 60px rgba(0,0,0,.5);
+    overflow: hidden;
+  }
+
+  .browser-bar {
+    background: #3A3A4A;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .browser-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .browser-dots span {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: block;
+  }
+  .dot-r { background: #FF5F57; }
+  .dot-y { background: #FFBD2E; }
+  .dot-g { background: #28C840; }
+
+  .browser-url {
+    flex: 1;
+    background: #1E1E2E;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #89B4FA;
+  }
+
+  .browser-url .typed {
+    border-right: 2px solid var(--accent);
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .browser-body {
+    padding: 20px;
+    min-height: 100px;
+    background: #16162A;
+  }
+
+  .fake-page-line {
+    height: 10px;
+    border-radius: 4px;
+    background: #2A2A3A;
+    margin-bottom: 10px;
+  }
+  .fake-page-line.short { width: 55%; }
+  .fake-page-line.accent { background: #D4622A44; }
+  .fake-page-hero {
+    height: 48px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #D4622A33, #1D5FA833);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #D4622A;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ── THE BIG CONCEPT ── */
+  .concept-section {
+    padding: 56px 20px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 800;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .lead {
+    color: var(--muted);
+    font-size: 17px;
+    margin-bottom: 32px;
+    max-width: 600px;
+  }
+
+  /* THE KEY FORMULA */
+  .formula-card {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 32px;
+    color: white;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .formula-card::after {
+    content: '🔑';
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    font-size: 32px;
+    opacity: .4;
+  }
+
+  .formula-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .formula {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 3vw, 17px);
+    margin-bottom: 20px;
+  }
+
+  .formula .folder {
+    background: #D4622A;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+
+  .formula .file {
+    background: #2A7D4F;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+
+  .formula .slash {
+    color: #888;
+  }
+
+  .formula .equals {
+    color: var(--accent);
+    font-size: 20px;
+    margin: 0 4px;
+  }
+
+  .formula .url-result {
+    background: #1D5FA8;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+
+  .formula-note {
+    color: #A8A4A0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .formula-note strong { color: white; }
+
+  /* ── STEPS ── */
+  .steps-section {
+    padding: 0 20px 64px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .step-card.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .step-num {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-num.green { background: var(--green); }
+  .step-num.blue { background: var(--blue); }
+  .step-num.purple { background: #7C3AED; }
+  .step-num.yellow { background: var(--yellow); }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .step-desc {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 20px;
+    line-height: 1.65;
+  }
+
+  /* CSS ILLUSTRATIONS */
+
+  /* GitHub logo area */
+  .illo-github {
+    background: #0D1117;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .github-octocat {
+    width: 48px; height: 48px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .github-text { color: #E6EDF3; }
+  .github-text strong { color: white; display: block; font-size: 15px; margin-bottom: 2px; }
+  .github-text span { font-size: 12px; color: #7D8590; }
+
+  /* Repo visual */
+  .illo-repo {
+    background: #0D1117;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .repo-topbar {
+    background: #161B22;
+    padding: 12px 16px;
+    border-bottom: 1px solid #30363D;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #58A6FF;
+  }
+
+  .repo-topbar .repo-icon {
+    font-size: 16px;
+  }
+
+  .repo-topbar .repo-name {
+    font-weight: 600;
+  }
+
+  .repo-topbar .repo-visibility {
+    background: #21262D;
+    border: 1px solid #30363D;
+    color: #8B949E;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 20px;
+  }
+
+  .repo-files {
+    padding: 8px 0;
+  }
+
+  .repo-file-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #E6EDF3;
+    border-bottom: 1px solid #21262D;
+    transition: background .15s;
+  }
+
+  .repo-file-row:last-child { border-bottom: none; }
+
+  .repo-file-row .icon { font-size: 15px; }
+  .repo-file-row .name { flex: 1; }
+  .repo-file-row.folder .name { color: #58A6FF; }
+  .repo-file-row .commit-msg { font-size: 11px; color: #7D8590; flex: 1; text-align: right; overflow: hidden; white-space: nowrap; }
+
+  .repo-file-row.new-folder {
+    background: #1A2F1A;
+    border-left: 3px solid var(--green);
+    animation: pulse-green 2s ease infinite;
+  }
+
+  @keyframes pulse-green {
+    0%,100% { background: #1A2F1A; }
+    50% { background: #1F3B1F; }
+  }
+
+  /* File path input visual */
+  .illo-filepath {
+    background: #0D1117;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .filepath-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #7D8590;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .filepath-input-row {
+    display: flex;
+    align-items: center;
+    background: #161B22;
+    border: 1px solid #30363D;
+    border-radius: 6px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+
+  .filepath-prefix {
+    padding: 10px 14px;
+    background: #21262D;
+    color: #7D8590;
+    border-right: 1px solid #30363D;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .filepath-typed {
+    padding: 10px 14px;
+    color: #E6EDF3;
+    flex: 1;
+  }
+
+  .filepath-typed .highlight-folder { color: #79C0FF; font-weight: 600; }
+  .filepath-typed .highlight-file { color: #7EE787; font-weight: 600; }
+  .filepath-typed .slash { color: #7D8590; }
+
+  /* URL mapping visual */
+  .url-map {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .url-box {
+    background: #0D1117;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .url-box .url-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .url-box.github .url-label { color: #8B949E; }
+  .url-box.live .url-label { color: var(--green); }
+
+  .url-box .url-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .url-box.github .url-val { color: #79C0FF; }
+  .url-box.live .url-val { color: #7EE787; }
+
+  .url-box .path-chunk {
+    display: inline-block;
+    background: rgba(255,255,255,.08);
+    border-radius: 4px;
+    padding: 0 4px;
+    margin: 1px 0;
+  }
+
+  .url-arrow {
+    color: var(--accent);
+    font-size: 20px;
+    text-align: center;
+  }
+
+  /* Settings illustration */
+  .illo-settings {
+    background: #0D1117;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .settings-topbar {
+    background: #161B22;
+    padding: 10px 16px;
+    border-bottom: 1px solid #30363D;
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+  }
+
+  .settings-tab {
+    font-size: 13px;
+    color: #7D8590;
+    white-space: nowrap;
+    padding: 4px 0;
+    cursor: default;
+  }
+
+  .settings-tab.active {
+    color: #E6EDF3;
+    border-bottom: 2px solid #D4622A;
+  }
+
+  .settings-body {
+    padding: 16px;
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid #21262D;
+  }
+
+  .settings-row:last-child { border-bottom: none; }
+
+  .settings-row-label {
+    font-size: 13px;
+    color: #E6EDF3;
+    font-weight: 500;
+  }
+
+  .settings-row-desc {
+    font-size: 11px;
+    color: #7D8590;
+    margin-top: 2px;
+  }
+
+  .settings-select {
+    background: #21262D;
+    border: 1px solid #30363D;
+    border-radius: 6px;
+    padding: 6px 28px 6px 10px;
+    color: #E6EDF3;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237D8590'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    cursor: default;
+  }
+
+  .settings-badge {
+    background: #2A7D4F;
+    color: white;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+
+  .code-block-header {
+    background: #2A2A3E;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .code-block-header span {
+    color: #7D7D9A;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .code-copy-btn {
+    background: none;
+    border: 1px solid #3A3A5A;
+    color: #7D7D9A;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+  }
+  .code-copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .code-block pre {
+    padding: 16px;
+    overflow-x: auto;
+    color: var(--code-text);
+    line-height: 1.7;
+  }
+
+  .code-block pre .c-tag { color: #F38BA8; }
+  .code-block pre .c-attr { color: #89DCEB; }
+  .code-block pre .c-val { color: #A6E3A1; }
+  .code-block pre .c-txt { color: #CDD6F4; }
+  .code-block pre .c-com { color: #6C7086; font-style: italic; }
+
+  /* ── TIP BOXES ── */
+  .tip {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    align-items: flex-start;
+  }
+
+  .tip.green { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .tip.blue { background: var(--blue-soft); border-left: 3px solid var(--blue); }
+  .tip.yellow { background: var(--yellow-soft); border-left: 3px solid var(--yellow); }
+  .tip.orange { background: var(--accent-soft); border-left: 3px solid var(--accent); }
+
+  .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  .tip strong { display: block; margin-bottom: 2px; color: var(--ink); }
+  .tip p { color: var(--muted); margin: 0; line-height: 1.5; }
+
+  /* ── EXAMPLES GRID ── */
+  .examples-section {
+    padding: 0 20px 64px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .example-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .example-card-thumb {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+
+  .example-card-thumb.rooms { background: linear-gradient(135deg, #FFE8CC, #FFD4A0); }
+  .example-card-thumb.contact { background: linear-gradient(135deg, #CCE8FF, #A0C8FF); }
+  .example-card-thumb.rules { background: linear-gradient(135deg, #CCFFE8, #A0FFD4); }
+  .example-card-thumb.gallery { background: linear-gradient(135deg, #F0CCFF, #D4A0FF); }
+  .example-card-thumb.book { background: linear-gradient(135deg, #FFE8CC, #FF8C00); }
+
+  .example-card-body {
+    padding: 12px 14px;
+  }
+
+  .example-card-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .example-card-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .example-card-url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* ── CHEAT SHEET ── */
+  .cheatsheet-section {
+    padding: 0 20px 80px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .cheatsheet-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: var(--card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-top: 24px;
+  }
+
+  .cheatsheet-table th {
+    background: var(--ink);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .cheatsheet-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .cheatsheet-table tr:last-child td { border-bottom: none; }
+  .cheatsheet-table tr:nth-child(even) td { background: #FAFAFA; }
+
+  .cheatsheet-table .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .cheatsheet-table .muted { color: var(--muted); font-size: 13px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 20px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 520px) {
+    .url-map { grid-template-columns: 1fr; }
+    .url-arrow { transform: rotate(90deg); }
+    .formula { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">✈️ GitHub Pages 101 · Airbnb Edition</div>
+  <h1>Your website,<br><em>your rules.</em></h1>
+  <p class="hero-sub">No code background needed. This guide shows you exactly how to add new pages to your GitHub-hosted site in under 5 minutes.</p>
+
+  <div class="browser-illo">
+    <div class="browser-bar">
+      <div class="browser-dots">
+        <span class="dot-r"></span>
+        <span class="dot-y"></span>
+        <span class="dot-g"></span>
+      </div>
+      <div class="browser-url">
+        yourname.github.io/<span class="typed">rooms</span>
+      </div>
+    </div>
+    <div class="browser-body">
+      <div class="fake-page-hero">🏡 &nbsp; Welcome to My Place</div>
+      <div class="fake-page-line"></div>
+      <div class="fake-page-line short"></div>
+      <div class="fake-page-line accent"></div>
+      <div class="fake-page-line short"></div>
+    </div>
+  </div>
+</div>
+
+<!-- THE ONE RULE -->
+<div class="concept-section">
+  <div class="section-label">The only thing you need to know</div>
+  <h2>One formula. Every page.</h2>
+  <p class="lead">GitHub Pages has a magic trick. The name of the folder you create becomes the URL path. That's it. That's the whole secret.</p>
+
+  <div class="formula-card">
+    <div class="formula-label">📐 The Formula</div>
+    <div class="formula">
+      <span class="folder">rooms</span>
+      <span class="slash"> / </span>
+      <span class="file">index.html</span>
+      <span class="equals">→</span>
+      <span class="url-result">yoursite.com/rooms</span>
+    </div>
+    <p class="formula-note">
+      <strong>Folder name</strong> = URL path &nbsp;·&nbsp; <strong>index.html</strong> inside it = the actual page.<br>
+      Make a folder. Drop an index.html inside it. GitHub does the rest.
+    </p>
+  </div>
+
+  <div class="url-map">
+    <div class="url-box github">
+      <div class="url-label">📁 In your repo</div>
+      <div class="url-val">
+        <span class="path-chunk">contact/</span><br>
+        <span class="path-chunk">index.html</span>
+      </div>
+    </div>
+    <div class="url-arrow">→</div>
+    <div class="url-box live">
+      <div class="url-label">🌐 On the web</div>
+      <div class="url-val">yoursite.com/<span class="path-chunk">contact</span></div>
+    </div>
+  </div>
+
+  <div class="tip green">
+    <div class="tip-icon">💡</div>
+    <div>
+      <strong>Why index.html specifically?</strong>
+      <p>Web servers are trained to look for a file called <code>index.html</code> when someone visits a folder URL. It's been a universal web rule since the 90s — GitHub follows it too.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- STEPS -->
+<div class="steps-section" style="padding-top: 56px;">
+  <div class="container">
+    <div class="section-label">Step by step</div>
+    <h2>How to add a new page</h2>
+    <p class="lead">Follow these 4 steps every single time you want a new page on your site.</p>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">Go to your repository on GitHub</div>
+    </div>
+    <p class="step-desc">Head to <strong>github.com</strong>, sign in, and click on your website's repository. It'll look something like <code>yourname.github.io</code>.</p>
+
+    <div class="illo-github">
+      <div class="github-octocat">🐙</div>
+      <div class="github-text">
+        <strong>github.com / yourname / yourname.github.io</strong>
+        <span>Your main website repository</span>
+      </div>
+    </div>
+
+    <div class="illo-repo">
+      <div class="repo-topbar">
+        <span class="repo-icon">📦</span>
+        <span class="repo-name">yourname.github.io</span>
+        <span class="repo-visibility">Public</span>
+      </div>
+      <div class="repo-files">
+        <div class="repo-file-row folder">
+          <span class="icon">📁</span>
+          <span class="name">about</span>
+          <span class="commit-msg">add about page</span>
+        </div>
+        <div class="repo-file-row">
+          <span class="icon">📄</span>
+          <span class="name">index.html</span>
+          <span class="commit-msg">initial commit</span>
+        </div>
+        <div class="repo-file-row">
+          <span class="icon">📄</span>
+          <span class="name">style.css</span>
+          <span class="commit-msg">initial commit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-card highlight">
+    <div class="step-header">
+      <div class="step-num green">2</div>
+      <div class="step-title">Click "Add file" → "Create new file"</div>
+    </div>
+    <p class="step-desc">At the top right of your file list, click the <strong>Add file</strong> button and choose <strong>Create new file</strong>. A text editor will open with an empty filename box at the top.</p>
+
+    <div class="tip orange">
+      <div class="tip-icon">👆</div>
+      <div>
+        <strong>The filename box is where the magic happens.</strong>
+        <p>What you type there determines both the folder name AND the URL. Keep reading — it's super simple.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-card highlight">
+    <div class="step-header">
+      <div class="step-num blue">3</div>
+      <div class="step-title">Type your folder name, a slash, then "index.html"</div>
+    </div>
+    <p class="step-desc">In the filename box, type the page name you want, then a forward slash <code>/</code>, then <code>index.html</code>. The moment you type the slash, GitHub automatically turns it into a folder. ✨</p>
+
+    <div class="illo-filepath">
+      <div class="filepath-label">Name your file</div>
+      <div class="filepath-input-row">
+        <div class="filepath-prefix">yourname.github.io /</div>
+        <div class="filepath-typed">
+          <span class="highlight-folder">rooms</span><span class="slash">/</span><span class="highlight-file">index.html</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="illo-repo" style="margin-bottom:16px;">
+      <div class="repo-topbar">
+        <span class="repo-icon">📦</span>
+        <span class="repo-name">yourname.github.io</span>
+      </div>
+      <div class="repo-files">
+        <div class="repo-file-row folder">
+          <span class="icon">📁</span>
+          <span class="name">about</span>
+          <span class="commit-msg">existing</span>
+        </div>
+        <div class="repo-file-row folder new-folder">
+          <span class="icon">📁</span>
+          <span class="name">rooms</span>
+          <span class="commit-msg">← just created!</span>
+        </div>
+        <div class="repo-file-row">
+          <span class="icon">📄</span>
+          <span class="name">index.html</span>
+          <span class="commit-msg">home page</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip blue">
+      <div class="tip-icon">⚡</div>
+      <div>
+        <strong>Type the slash to create the folder automatically.</strong>
+        <p>You don't create folders separately on GitHub. Just type <code>foldername/index.html</code> and GitHub handles it. The folder appears the moment you type <code>/</code>.</p>
+      </div>
+    </div>
+
+    <div class="tip yellow">
+      <div class="tip-icon">🚫</div>
+      <div>
+        <strong>Keep folder names simple.</strong>
+        <p>Lowercase letters, hyphens instead of spaces. Examples: <code>my-rooms</code>, <code>contact</code>, <code>book-now</code>. No spaces, no capitals.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num purple">4</div>
+      <div class="step-title">Paste in your HTML and commit</div>
+    </div>
+    <p class="step-desc">In the big editing area below the filename, paste your page's HTML code. Then scroll down, click <strong>"Commit new file"</strong>, and you're done. GitHub will publish it automatically.</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>rooms/index.html · starter template</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <pre>&lt;!DOCTYPE html&gt;
+&lt;<span class="c-tag">html</span> <span class="c-attr">lang</span>=<span class="c-val">"en"</span>&gt;
+&lt;<span class="c-tag">head</span>&gt;
+  &lt;<span class="c-tag">meta</span> <span class="c-attr">charset</span>=<span class="c-val">"UTF-8"</span>&gt;
+  &lt;<span class="c-tag">meta</span> <span class="c-attr">name</span>=<span class="c-val">"viewport"</span> <span class="c-attr">content</span>=<span class="c-val">"width=device-width, initial-scale=1.0"</span>&gt;
+  &lt;<span class="c-tag">title</span>&gt;<span class="c-txt">Rooms — My Airbnb</span>&lt;/<span class="c-tag">title</span>&gt;
+&lt;/<span class="c-tag">head</span>&gt;
+&lt;<span class="c-tag">body</span>&gt;
+
+  &lt;<span class="c-tag">h1</span>&gt;<span class="c-txt">Our Rooms 🛏️</span>&lt;/<span class="c-tag">h1</span>&gt;
+  &lt;<span class="c-tag">p</span>&gt;<span class="c-txt">Describe your space here!</span>&lt;/<span class="c-tag">p</span>&gt;
+
+  <span class="c-com">&lt;!-- Put your content here --&gt;</span>
+
+&lt;/<span class="c-tag">body</span>&gt;
+&lt;/<span class="c-tag">html</span>&gt;</pre>
+    </div>
+
+    <div class="tip green">
+      <div class="tip-icon">⏱️</div>
+      <div>
+        <strong>Wait ~60 seconds after committing.</strong>
+        <p>GitHub needs a moment to rebuild your site. Give it a minute, then visit the URL. If it's not up yet, wait another 30 seconds and refresh.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: Enable Pages (first time only) -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num yellow">★</div>
+      <div class="step-title">First time? Enable GitHub Pages (one time only)</div>
+    </div>
+    <p class="step-desc">You only do this once, ever. Go to your repo → <strong>Settings</strong> → <strong>Pages</strong>. Under "Source," choose your <code>main</code> branch. Hit Save. Done forever.</p>
+
+    <div class="illo-settings">
+      <div class="settings-topbar">
+        <div class="settings-tab">General</div>
+        <div class="settings-tab">Branches</div>
+        <div class="settings-tab active">Pages</div>
+        <div class="settings-tab">Secrets</div>
+        <div class="settings-tab">Actions</div>
+      </div>
+      <div class="settings-body">
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label">Branch</div>
+            <div class="settings-row-desc">GitHub Pages will build from this branch</div>
+          </div>
+          <select class="settings-select">
+            <option>main</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label">Status</div>
+            <div class="settings-row-desc">Your site is live at yourname.github.io</div>
+          </div>
+          <span class="settings-badge">✓ Live</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- EXAMPLES -->
+<div class="examples-section">
+  <div class="section-label">Ideas for your airbnb site</div>
+  <h2>Page ideas & their URLs</h2>
+  <p class="lead">Here are real examples — what to name the folder and what URL it creates. Copy any of these patterns.</p>
+
+  <div class="examples-grid">
+    <div class="example-card">
+      <div class="example-card-thumb rooms">🛏️</div>
+      <div class="example-card-body">
+        <div class="example-card-path">rooms/index.html</div>
+        <div class="example-card-label">Rooms & Spaces</div>
+        <div class="example-card-url">yoursite.com/rooms</div>
+      </div>
+    </div>
+    <div class="example-card">
+      <div class="example-card-thumb contact">📞</div>
+      <div class="example-card-body">
+        <div class="example-card-path">contact/index.html</div>
+        <div class="example-card-label">Contact Me</div>
+        <div class="example-card-url">yoursite.com/contact</div>
+      </div>
+    </div>
+    <div class="example-card">
+      <div class="example-card-thumb rules">📋</div>
+      <div class="example-card-body">
+        <div class="example-card-path">house-rules/index.html</div>
+        <div class="example-card-label">House Rules</div>
+        <div class="example-card-url">yoursite.com/house-rules</div>
+      </div>
+    </div>
+    <div class="example-card">
+      <div class="example-card-thumb gallery">🖼️</div>
+      <div class="example-card-body">
+        <div class="example-card-path">gallery/index.html</div>
+        <div class="example-card-label">Photo Gallery</div>
+        <div class="example-card-url">yoursite.com/gallery</div>
+      </div>
+    </div>
+    <div class="example-card">
+      <div class="example-card-thumb book">📅</div>
+      <div class="example-card-body">
+        <div class="example-card-path">book-now/index.html</div>
+        <div class="example-card-label">Book Now</div>
+        <div class="example-card-url">yoursite.com/book-now</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- CHEAT SHEET -->
+<div class="cheatsheet-section" style="padding-top: 56px;">
+  <div class="section-label">Quick reference</div>
+  <h2>Cheat sheet</h2>
+  <p class="lead">Bookmark this. Everything you need in one table.</p>
+
+  <table class="cheatsheet-table">
+    <thead>
+      <tr>
+        <th>What you want</th>
+        <th>What to type in filename box</th>
+        <th>Your URL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>A Rooms page</td>
+        <td><span class="mono">rooms/index.html</span></td>
+        <td><span class="mono">yoursite.com/rooms</span></td>
+      </tr>
+      <tr>
+        <td>A Contact page</td>
+        <td><span class="mono">contact/index.html</span></td>
+        <td><span class="mono">yoursite.com/contact</span></td>
+      </tr>
+      <tr>
+        <td>A House Rules page</td>
+        <td><span class="mono">house-rules/index.html</span></td>
+        <td><span class="mono">yoursite.com/house-rules</span></td>
+      </tr>
+      <tr>
+        <td>A Gallery page</td>
+        <td><span class="mono">gallery/index.html</span></td>
+        <td><span class="mono">gallery/index.html</span></td>
+      </tr>
+      <tr>
+        <td>A "Book Now" page</td>
+        <td><span class="mono">book-now/index.html</span></td>
+        <td><span class="mono">yoursite.com/book-now</span></td>
+      </tr>
+      <tr>
+        <td class="muted" colspan="3">🔁 Same 4 steps every time. Folder name → URL path. Always.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 24px;">
+    <div class="tip green">
+      <div class="tip-icon">🔗</div>
+      <div>
+        <strong>Link between pages</strong>
+        <p>On any page you can add a link with <code>&lt;a href="/rooms"&gt;See Rooms&lt;/a&gt;</code>. Use the URL path (starting with <code>/</code>) and GitHub handles the rest.</p>
+      </div>
+    </div>
+    <div class="tip blue">
+      <div class="tip-icon">🎨</div>
+      <div>
+        <strong>Sharing one stylesheet across all pages</strong>
+        <p>Put <code>style.css</code> in your root folder. Reference it from any subfolder page with <code>&lt;link rel="stylesheet" href="/style.css"&gt;</code>. The leading <code>/</code> means "start from the root."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Made with 🧡 for a friend you bum bitch <3.<br>
+  You've got this. One folder. One file. One URL. Repeat.
+</div>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    const text = pre.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.style.borderColor = '#2A7D4F';
+      btn.style.color = '#2A7D4F';
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
