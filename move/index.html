@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relocation Budget — Austin TX → Easton PA/Phillipsburg NJ</title>
+<title>Relocation Budget — Austin TX → Easton PA</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
 
@@ -37,18 +37,17 @@
   }
 
   .page {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
     padding: 48px 32px 80px;
   }
 
-  /* Header */
+  /* ── Header ── */
   .doc-header {
     border-bottom: 2px solid var(--ink);
     padding-bottom: 20px;
     margin-bottom: 32px;
   }
-
   .doc-label {
     font-family: var(--tag-font);
     font-size: 10px;
@@ -58,7 +57,6 @@
     color: var(--ink-light);
     margin-bottom: 8px;
   }
-
   .doc-title {
     font-size: 26px;
     font-weight: 600;
@@ -66,148 +64,86 @@
     line-height: 1.2;
     margin-bottom: 6px;
   }
-
   .doc-route {
     font-family: var(--tag-font);
     font-size: 12px;
     color: var(--ink-mid);
   }
-
   .doc-meta {
     display: flex;
     gap: 32px;
     margin-top: 14px;
     flex-wrap: wrap;
   }
+  .doc-meta-item { font-size: 12px; color: var(--ink-mid); }
+  .doc-meta-item strong { font-weight: 600; color: var(--ink); }
 
-  .doc-meta-item {
-    font-size: 12px;
-    color: var(--ink-mid);
-  }
-
-  .doc-meta-item strong {
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  /* Section */
-  .section {
-    margin-bottom: 40px;
-  }
-
+  /* ── Sections ── */
+  .section { margin-bottom: 44px; }
   .section-header {
     display: flex;
     align-items: baseline;
     gap: 12px;
     border-bottom: 1px solid var(--rule);
     padding-bottom: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
+  .section-num { font-family: var(--tag-font); font-size: 10px; color: var(--ink-light); letter-spacing: 0.1em; }
+  .section-title { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
 
-  .section-num {
-    font-family: var(--tag-font);
-    font-size: 10px;
-    color: var(--ink-light);
-    letter-spacing: 0.1em;
-  }
-
-  .section-title {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  /* Tax Block */
-  .tax-grid {
+  /* ── Editable inputs ── */
+  .field-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 12px;
+    margin-bottom: 20px;
   }
-
-  @media (max-width: 620px) { .tax-grid { grid-template-columns: 1fr; } }
-
-  .tax-card {
-    border: 1px solid var(--rule);
+  .field {
     background: var(--white);
-    padding: 16px 18px;
+    border: 1px solid var(--rule);
+    padding: 12px 14px;
   }
-
-  .tax-card-label {
+  .field label {
+    display: block;
     font-family: var(--tag-font);
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-light);
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
-
-  .tax-row {
+  .field-row {
     display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
+    align-items: center;
+    gap: 6px;
+  }
+  .field-row span {
+    font-family: var(--tag-font);
     font-size: 13px;
-    border-bottom: 1px solid var(--rule);
+    color: var(--ink-mid);
   }
-
-  .tax-row:last-child { border-bottom: none; font-weight: 600; }
-  .tax-row.net { background: var(--green-bg); margin: 6px -4px -4px; padding: 6px 4px; border-radius: 2px; color: var(--green-accent); }
-  .tax-row.net-bad { background: var(--red-bg); margin: 6px -4px -4px; padding: 6px 4px; border-radius: 2px; color: var(--red-accent); }
-
-  .tax-note {
-    font-size: 11px;
-    color: var(--ink-light);
-    margin-top: 10px;
-    font-style: italic;
-  }
-
-  /* Cost Table */
-  .cost-table {
+  .field input {
+    font-family: var(--tag-font);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--ink);
     width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
+    padding: 2px 0;
+    outline: none;
   }
-
-  .cost-table th {
-    font-family: var(--tag-font);
+  .field input:focus { border-bottom-color: var(--blue-accent); }
+  .field .sub {
     font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     color: var(--ink-light);
-    text-align: left;
-    padding: 6px 8px;
-    border-bottom: 1px solid var(--ink);
-    font-weight: 600;
-  }
-
-  .cost-table th.num { text-align: right; }
-
-  .cost-table td {
-    padding: 7px 8px;
-    border-bottom: 1px solid var(--rule);
-    vertical-align: top;
-  }
-
-  .cost-table td.num {
-    text-align: right;
-    font-family: var(--tag-font);
-    font-size: 12px;
-    white-space: nowrap;
-  }
-
-  .cost-table tr.subtotal td {
-    font-weight: 600;
-    background: #f0eeea;
-    border-bottom: 1px solid var(--ink);
-  }
-
-  .cost-table .note-cell {
-    font-size: 11px;
-    color: var(--ink-light);
+    margin-top: 4px;
     font-style: italic;
   }
 
+  /* ── Tag ── */
   .tag {
     display: inline-block;
     font-family: var(--tag-font);
@@ -220,89 +156,121 @@
     margin-left: 4px;
     vertical-align: middle;
   }
+  .tag.fixed  { background: var(--blue-bg);  color: var(--blue-accent); }
+  .tag.income { background: var(--green-bg); color: var(--green-accent); }
+  .tag.cost   { background: var(--red-bg);   color: var(--red-accent); }
+  .tag.warn   { background: var(--amber-bg); color: var(--amber-accent); }
 
-  .tag.best { background: var(--green-bg); color: var(--green-accent); }
-  .tag.lean { background: var(--amber-bg); color: var(--amber-accent); }
-  .tag.risk { background: var(--red-bg); color: var(--red-accent); }
-  .tag.fixed { background: var(--blue-bg); color: var(--blue-accent); }
-
-  /* Budget cards */
-  .budget-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+  /* ── Summary panel ── */
+  .summary-panel {
+    background: var(--ink);
+    color: #fff;
+    padding: 28px 32px;
+    margin-bottom: 32px;
   }
-
-  @media (max-width: 620px) { .budget-grid { grid-template-columns: 1fr; } }
-
-  .budget-card {
-    border: 1px solid var(--rule);
-    background: var(--white);
-    padding: 20px;
-  }
-
-  .budget-card.comfortable { border-top: 3px solid var(--green-accent); }
-  .budget-card.lean { border-top: 3px solid var(--amber-accent); }
-
-  .budget-card-label {
+  .summary-panel .sum-label {
     font-family: var(--tag-font);
     font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--ink-light);
-    margin-bottom: 6px;
+    color: #888;
+    margin-bottom: 20px;
   }
-
-  .budget-headline {
-    font-size: 22px;
+  .sum-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 640px) { .sum-grid { grid-template-columns: 1fr; } }
+  .sum-block {}
+  .sum-block .s-label {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+  .sum-block .s-val {
+    font-family: var(--tag-font);
+    font-size: 26px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    margin-bottom: 14px;
   }
-
-  .budget-headline span {
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--ink-mid);
-    margin-left: 4px;
+  .sum-block .s-val.green { color: #6ec97e; }
+  .sum-block .s-val.red   { color: #e07070; }
+  .sum-block .s-val.amber { color: #f0c060; }
+  .sum-block .s-sub {
+    font-size: 11px;
+    color: #666;
+    margin-top: 3px;
   }
-
-  .budget-line {
+  .sum-divider {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 20px 0;
+  }
+  .sum-row {
     display: flex;
     justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px solid var(--rule);
+    font-size: 13px;
+    padding: 4px 0;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .sum-row:last-child { border-bottom: none; }
+  .sum-row .sr-label { color: #aaa; }
+  .sum-row .sr-val { font-family: var(--tag-font); font-size: 12px; }
+  .sum-row .sr-val.g { color: #6ec97e; }
+  .sum-row .sr-val.r { color: #e07070; }
+
+  /* ── Cost table ── */
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
     font-size: 13px;
   }
-
-  .budget-line:last-of-type { border-bottom: none; }
-
-  .budget-line .label { color: var(--ink-mid); }
-  .budget-line .val {
+  .cost-table th {
     font-family: var(--tag-font);
-    font-size: 12px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--ink);
     font-weight: 600;
   }
-
-  .budget-line .val.pos { color: var(--green-accent); }
-  .budget-line .val.neg { color: var(--red-accent); }
-
-  .budget-divider {
-    border-top: 1.5px solid var(--ink);
-    margin: 8px 0;
+  .cost-table th.num { text-align: right; }
+  .cost-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
   }
-
-  .verdict {
+  .cost-table td.num {
+    text-align: right;
+    font-family: var(--tag-font);
     font-size: 12px;
-    line-height: 1.6;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--rule);
-    color: var(--ink-mid);
+    white-space: nowrap;
+  }
+  .cost-table tr.subtotal td {
+    font-weight: 600;
+    background: #f0eeea;
+    border-bottom: 1px solid var(--ink);
+  }
+  .cost-table tr.income-row td { background: #f0f7f1; }
+  .cost-table .note-cell {
+    font-size: 11px;
+    color: var(--ink-light);
+    font-style: italic;
+  }
+  .cat-header td {
+    padding-top: 14px;
+    padding-bottom: 4px;
+    font-family: var(--tag-font);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
   }
 
-  /* Risk callouts */
+  /* ── Callouts ── */
   .callout {
     padding: 12px 16px;
     margin-top: 12px;
@@ -310,51 +278,13 @@
     line-height: 1.6;
     border-left: 3px solid;
   }
-
-  .callout.risk {
-    background: var(--red-bg);
-    border-color: var(--red-accent);
-    color: #5a1a17;
-  }
-
-  .callout.warn {
-    background: var(--amber-bg);
-    border-color: var(--amber-accent);
-    color: #5a3d00;
-  }
-
-  .callout.ok {
-    background: var(--green-bg);
-    border-color: var(--green-accent);
-    color: #1a4a1e;
-  }
-
+  .callout.risk  { background: var(--red-bg);   border-color: var(--red-accent);   color: #5a1a17; }
+  .callout.warn  { background: var(--amber-bg); border-color: var(--amber-accent); color: #5a3d00; }
+  .callout.ok    { background: var(--green-bg); border-color: var(--green-accent); color: #1a4a1e; }
+  .callout.info  { background: var(--blue-bg);  border-color: var(--blue-accent);  color: #0d2d55; }
   .callout strong { font-weight: 600; }
 
-  /* Tradeoff list */
-  .tradeoff-list {
-    list-style: none;
-    margin-top: 8px;
-  }
-
-  .tradeoff-list li {
-    display: flex;
-    gap: 10px;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--rule);
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  .tradeoff-list li:last-child { border-bottom: none; }
-
-  .tradeoff-icon {
-    flex-shrink: 0;
-    font-size: 14px;
-    margin-top: 1px;
-  }
-
-  /* Ask employer */
+  /* ── Ask box ── */
   .ask-box {
     background: var(--blue-bg);
     border: 1px solid #b0c8e8;
@@ -362,7 +292,6 @@
     font-size: 13px;
     line-height: 1.7;
   }
-
   .ask-box-title {
     font-family: var(--tag-font);
     font-size: 10px;
@@ -372,13 +301,8 @@
     color: var(--blue-accent);
     margin-bottom: 8px;
   }
-
-  .ask-box ol {
-    padding-left: 18px;
-    color: var(--ink-mid);
-  }
-
-  .ask-box li { margin-bottom: 4px; }
+  .ask-box ol { padding-left: 18px; color: var(--ink-mid); }
+  .ask-box li { margin-bottom: 6px; }
 
   footer {
     margin-top: 48px;
@@ -388,357 +312,424 @@
     color: var(--ink-light);
     font-style: italic;
   }
+
+  /* ── Tax detail ── */
+  .tax-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 620px) { .tax-grid { grid-template-columns: 1fr; } }
+  .tax-card { border: 1px solid var(--rule); background: var(--white); padding: 16px 18px; }
+  .tax-card-label {
+    font-family: var(--tag-font); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 10px;
+  }
+  .tax-row {
+    display: flex; justify-content: space-between;
+    padding: 4px 0; font-size: 13px; border-bottom: 1px solid var(--rule);
+  }
+  .tax-row:last-child { border-bottom: none; font-weight: 600; }
+  .tax-row.net     { background: var(--green-bg); margin: 6px -4px -4px; padding: 6px 4px; border-radius: 2px; color: var(--green-accent); }
+  .tax-row.net-bad { background: var(--red-bg);   margin: 6px -4px -4px; padding: 6px 4px; border-radius: 2px; color: var(--red-accent); }
+  .tax-note { font-size: 11px; color: var(--ink-light); margin-top: 10px; font-style: italic; }
 </style>
 </head>
 <body>
 <div class="page">
 
+  <!-- ══ HEADER ══ -->
   <div class="doc-header">
     <div class="doc-label">Relocation Cost Analysis · August 2026</div>
     <div class="doc-title">Austin, TX → Easton, PA / Phillipsburg, NJ</div>
-    <div class="doc-route">1,700-mile interstate relocation · employer lump sum scenarios</div>
+    <div class="doc-route">1,700-mile interstate relocation · live budget calculator</div>
     <div class="doc-meta">
-      <div class="doc-meta-item"><strong>Distance</strong> ~1,700 mi</div>
-      <div class="doc-meta-item"><strong>Lease termination</strong> $4,290 (confirmed flat fee as its 2 months rent)</div>
-      <div class="doc-meta-item"><strong>Scenarios modeled</strong> $10K target · $5K floor</div>
-      <div class="doc-meta-item"><strong>Tax note</strong> Lump sum = ordinary income unless grossed up</div>
+      <div class="doc-meta-item"><strong>Load</strong> 2BR · couch + loveseat + dining table (specialty crate) · ~4,200 lbs</div>
+      <div class="doc-meta-item"><strong>Vehicle</strong> 2016 Audi A7 · enclosed transport</div>
+      <div class="doc-meta-item"><strong>Lease fee</strong> $4,290 flat (2 months · real penalty ≈ ~$1,072)</div>
+      <div class="doc-meta-item"><strong>Lump sum</strong> before tax · confirmed</div>
     </div>
   </div>
 
-  <!-- TAX SECTION -->
+  <!-- ══ 01 · INPUTS ══ -->
   <div class="section">
     <div class="section-header">
       <span class="section-num">01</span>
-      <span class="section-title">What You Actually Net After Tax</span>
+      <span class="section-title">Your Numbers — Edit Any Field</span>
     </div>
 
-    <p style="font-size:13px; color:var(--ink-mid); margin-bottom:14px;">
-      Since the TCJA moving expense deduction was made permanent by the One Big Beautiful Bill Act (July 2025), your lump sum is fully taxable ordinary income. No deduction offsets it. Federal supplemental withholding is 22%, but if your total income puts you in the 24% bracket, you'll owe the difference at filing. Pennsylvania also has a 3.07% flat income tax (and NJ has 5.53% at this income level) — factor in whichever state applies to your residency when you receive the payment.
-    </p>
+    <div class="field-grid">
 
-    <div class="tax-grid">
-      <div class="tax-card">
-        <div class="tax-card-label">$10,000 Lump Sum · Not Grossed Up (Taxed)</div>
-        <div class="tax-row"><span>Gross lump sum</span><span>$10,000</span></div>
-        <div class="tax-row"><span>Federal (22% supplemental)</span><span>−$2,200</span></div>
-        <div class="tax-row"><span>FICA (7.65% employee share)</span><span>−$765</span></div>
-        <div class="tax-row"><span>PA state tax (est. 3.07%)</span><span>−$307</span></div>
-        <div class="tax-row net"><span>Estimated net-in-pocket</span><span>~$6,728</span></div>
-        <p class="tax-note">Actual net depends on filing bracket. If you land in the 24% bracket, add ~$200 owed at filing. TX has no state income tax, so timing of receipt matters if you're still a TX resident when paid.</p>
+      <div class="field">
+        <label>Employer Lump Sum (gross)</label>
+        <div class="field-row"><span>$</span><input type="number" id="lumpsum" value="10000" min="0" step="500"></div>
+        <div class="sub">Before tax · confirmed before-tax payment</div>
       </div>
 
-      <div class="tax-card">
-        <div class="tax-card-label">$10,000 Grossed Up · Full Value Protected</div>
-        <div class="tax-row"><span>Gross payment (employer-inflated)</span><span>~$13,260</span></div>
-        <div class="tax-row"><span>Taxes withheld (~32.72% combined)</span><span>−$3,260</span></div>
-        <div class="tax-row net"><span>Net-in-pocket</span><span>$10,000</span></div>
-        <p class="tax-note">Gross-up formula: lump sum ÷ (1 − tax rate). Employer adds ~$3,260 in supplemental pay so you keep the full $10K. 53% of employers now gross up; ask directly.</p>
+      <div class="field">
+        <label>PTO Payout (gross)</label>
+        <div class="field-row"><span>$</span><input type="number" id="pto" value="0" min="0" step="100"></div>
+        <div class="sub">48 hrs confirmed = $2,538 · vacation TBD · enter 0 until confirmed</div>
       </div>
 
-      <div class="tax-card">
-        <div class="tax-card-label">$5,000 Lump Sum · Not Grossed Up (Taxed)</div>
-        <div class="tax-row"><span>Gross lump sum</span><span>$5,000</span></div>
-        <div class="tax-row"><span>Federal (22% supplemental)</span><span>−$1,100</span></div>
-        <div class="tax-row"><span>FICA (7.65%)</span><span>−$383</span></div>
-        <div class="tax-row"><span>PA state tax (est. 3.07%)</span><span>−$154</span></div>
-        <div class="tax-row net-bad"><span>Estimated net-in-pocket</span><span>~$3,363</span></div>
-        <p class="tax-note">At $3,363 net with a $4,290 lease termination alone — this doesn't close the gap without significant cash reserves or furniture liquidation.</p>
+      <div class="field">
+        <label>Lease Termination Fee</label>
+        <div class="field-row"><span>$</span><input type="number" id="lease" value="4290" min="0" step="50"></div>
+        <div class="sub">2 months · cash outflow regardless of net penalty</div>
       </div>
 
-      <div class="tax-card">
-        <div class="tax-card-label">$5,000 Grossed Up · Full Value Protected</div>
-        <div class="tax-row"><span>Gross payment (employer-inflated)</span><span>~$6,630</span></div>
-        <div class="tax-row"><span>Taxes withheld (~32.72%)</span><span>−$1,630</span></div>
-        <div class="tax-row net"><span>Net-in-pocket</span><span>$5,000</span></div>
-        <p class="tax-note">Even grossed up, $5K is tight. The math still works — but only under the leanest scenario with no surprises.</p>
+      <div class="field">
+        <label>Full-Service Movers</label>
+        <div class="field-row"><span>$</span><input type="number" id="movers" value="4700" min="0" step="50"></div>
+        <div class="sub">3 men · binding quote target · incl. labor</div>
       </div>
-    </div>
 
-    <div class="callout warn" style="margin-top:16px;">
-      <strong>Timing tip:</strong> If the lump sum is paid while you're still a Texas resident, you owe zero TX state tax (TX has none). If payment happens after you've established PA residency, PA's 3.07% applies. Ask your employer when payroll will issue the payment relative to your start date — it may be worth requesting early disbursement.
+      <div class="field">
+        <label>Specialty Crating (dining table)</label>
+        <div class="field-row"><span>$</span><input type="number" id="crating" value="700" min="0" step="50"></div>
+        <div class="sub">5×5 · 350 lbs · separate service</div>
+      </div>
+
+      <div class="field">
+        <label>Enclosed Car Transport (A7)</label>
+        <div class="field-row"><span>$</span><input type="number" id="cartransport" value="2650" min="0" step="50"></div>
+        <div class="sub">Open × 1.6–1.7 premium · 1,700 mi</div>
+      </div>
+
+      <div class="field">
+        <label>Security Deposit</label>
+        <div class="field-row"><span>$</span><input type="number" id="deposit" value="1600" min="0" step="50"></div>
+        <div class="sub">~1 month rent · Phillipsburg NJ median</div>
+      </div>
+
+      <div class="field">
+        <label>First Month's Rent</label>
+        <div class="field-row"><span>$</span><input type="number" id="rent" value="1600" min="0" step="50"></div>
+        <div class="sub">Phillipsburg NJ ~$1,595 · Easton PA ~$1,730</div>
+      </div>
+
+      <div class="field">
+        <label>Mover Tips</label>
+        <div class="field-row"><span>$</span><input type="number" id="tips" value="200" min="0" step="50"></div>
+        <div class="sub">3 guys · tough long-distance job · ~$65/ea</div>
+      </div>
+
+      <div class="field">
+        <label>Misc Setup / Supplies</label>
+        <div class="field-row"><span>$</span><input type="number" id="misc" value="300" min="0" step="50"></div>
+        <div class="sub">Target run · cleaning · hardware · first week</div>
+      </div>
+
+      <div class="field">
+        <label>Federal Tax Rate</label>
+        <div class="field-row"><span></span><input type="number" id="fedrate" value="22" min="0" max="50" step="1"><span>%</span></div>
+        <div class="sub">22% supplemental withholding · may owe more at filing if in 24% bracket</div>
+      </div>
+
+      <div class="field">
+        <label>State Tax Rate</label>
+        <div class="field-row"><span></span><input type="number" id="staterate" value="3.07" min="0" max="15" step="0.01"><span>%</span></div>
+        <div class="sub">PA 3.07% · NJ 5.53% · TX 0% if paid before residency change</div>
+      </div>
+
     </div>
   </div>
 
-  <!-- COST BREAKDOWN -->
+  <!-- ══ 02 · LIVE SUMMARY ══ -->
   <div class="section">
     <div class="section-header">
       <span class="section-num">02</span>
-      <span class="section-title">Full Cost Breakdown by Category</span>
+      <span class="section-title">Live Summary</span>
+    </div>
+
+    <div class="summary-panel">
+      <div class="sum-label">All figures update as you edit inputs above</div>
+
+      <div class="sum-grid">
+        <div class="sum-block">
+          <div class="s-label">Total Move Cost</div>
+          <div class="s-val red" id="s-totalcost">—</div>
+          <div class="s-sub">Everything going out the door</div>
+        </div>
+        <div class="sum-block">
+          <div class="s-label">Total Net-In-Pocket</div>
+          <div class="s-val green" id="s-totalnet">—</div>
+          <div class="s-sub">Lump sum + PTO after all taxes</div>
+        </div>
+        <div class="sum-block">
+          <div class="s-label">Out-of-Pocket Gap</div>
+          <div class="s-val amber" id="s-gap">—</div>
+          <div class="s-sub">Personal cash you need to bridge</div>
+        </div>
+      </div>
+
+      <hr class="sum-divider">
+
+      <div class="sum-row"><span class="sr-label">Lump sum gross</span><span class="sr-val g" id="sr-lumpgross">—</span></div>
+      <div class="sum-row"><span class="sr-label">Federal withholding (lump sum)</span><span class="sr-val r" id="sr-fedfull">—</span></div>
+      <div class="sum-row"><span class="sr-label">FICA (7.65% · lump sum)</span><span class="sr-val r" id="sr-ficafull">—</span></div>
+      <div class="sum-row"><span class="sr-label">State tax (lump sum)</span><span class="sr-val r" id="sr-statefull">—</span></div>
+      <div class="sum-row"><span class="sr-label">Lump sum net</span><span class="sr-val g" id="sr-lumpnet">—</span></div>
+      <div class="sum-row"><span class="sr-label">PTO gross</span><span class="sr-val g" id="sr-ptogross">—</span></div>
+      <div class="sum-row"><span class="sr-label">PTO net (after same tax rates)</span><span class="sr-val g" id="sr-ptonet">—</span></div>
+    </div>
+  </div>
+
+  <!-- ══ 03 · COST BREAKDOWN ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Full Cost Breakdown — Your Specific Move</span>
     </div>
 
     <table class="cost-table">
       <thead>
         <tr>
-          <th style="width:36%">Item</th>
-          <th class="num" style="width:18%">Full-Service<br>High Est.</th>
-          <th class="num" style="width:18%">DIY / Lean<br>Low Est.</th>
-          <th style="width:28%">Notes</th>
+          <th style="width:38%">Item</th>
+          <th class="num" style="width:16%">Amount</th>
+          <th style="width:46%">Notes</th>
         </tr>
       </thead>
       <tbody>
 
-        <!-- FIXED -->
+        <tr class="cat-header"><td colspan="3">Fixed Obligations</td></tr>
         <tr>
           <td><strong>Lease Termination Fee</strong> <span class="tag fixed">Fixed</span></td>
           <td class="num">$4,290</td>
-          <td class="num">$4,290</td>
-          <td class="note-cell">Confirmed flat fee. Non-negotiable.</td>
+          <td class="note-cell">2 months rent · $2,145/mo. Cash outflow confirmed. Real economic penalty is ~$1,072 (the 2 weeks of month 2 you won't use) — but you're still writing the check for $4,290.</td>
         </tr>
 
-        <!-- MOVING -->
+        <tr class="cat-header"><td colspan="3">Household Goods — Full-Service</td></tr>
         <tr>
-          <td colspan="4" style="padding-top:14px; padding-bottom:4px; font-family:var(--tag-font); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-light);">Moving — Household Goods</td>
+          <td>Full-service movers (3 men) <span class="tag cost">Primary</span></td>
+          <td class="num">$4,700</td>
+          <td class="note-cell">Based on ~4,200 lbs × $0.65/lb transport + 3 movers × 8 hrs labor + fuel surcharge + admin. Get a binding quote — not non-binding. Mid-week booking saves 15–25%.</td>
         </tr>
         <tr>
-          <td>Full-service movers (1BR load) <span class="tag best">Comfortable</span></td>
-          <td class="num">$3,200–4,500</td>
-          <td class="num">—</td>
-          <td class="note-cell">Door-to-door, crew packs/drives/unpacks. Use ~$3,500 as planning figure for 1BR. Book 4–6 weeks out; mid-week saves 15–25%.</td>
+          <td>Specialty crating — dining table <span class="tag warn">Extra</span></td>
+          <td class="num">$700</td>
+          <td class="note-cell">5×5 · 350 lbs · previously required standalone crating service. Line-itemed separately on mover estimate. Confirm they have in-house crating vs. subcontracting.</td>
         </tr>
         <tr>
-          <td>Moving container (PODS / 1-800-Pack-Rat) <span class="tag lean">Middle</span></td>
-          <td class="num">$2,200–2,800</td>
-          <td class="num">$1,800–2,200</td>
-          <td class="note-cell">You pack, they transport. ~44% less than full-service. Flexible delivery window. Good if you're not in a rush.</td>
-        </tr>
-        <tr>
-          <td>DIY truck rental (Penske 16ft, 1-way) <span class="tag lean">Lean</span></td>
-          <td class="num">—</td>
-          <td class="num">$1,200–1,800</td>
-          <td class="note-cell">Unlimited mileage on 1-way. Add ~$650–750 gas (11 MPG avg, 1,700 mi). Penske = newer trucks vs U-Haul. Plan 2–3 days driving.</td>
-        </tr>
-        <tr>
-          <td>Packing supplies</td>
-          <td class="num">$0</td>
-          <td class="num">$100–200</td>
-          <td class="note-cell">Movers supply materials. DIY: buy boxes; get free ones from Marketplace.</td>
+          <td>Couch + loveseat — keeping both</td>
+          <td class="note-cell" style="text-align:left; font-style:normal;">Included in mover weight/labor above</td>
+          <td class="note-cell">Selling 1 dresser + 1 bed frame before move to reduce load. Estimated Marketplace value: $200–$400.</td>
         </tr>
         <tr class="subtotal">
-          <td>Moving subtotal range</td>
-          <td class="num">$3,200–4,500</td>
-          <td class="num">$1,300–2,550</td>
+          <td>Moving subtotal</td>
+          <td class="num">$5,400</td>
           <td></td>
         </tr>
 
-        <!-- CAR -->
+        <tr class="cat-header"><td colspan="3">Vehicle — 2016 Audi A7</td></tr>
         <tr>
-          <td colspan="4" style="padding-top:14px; padding-bottom:4px; font-family:var(--tag-font); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-light);">Vehicle Transport — 2016 Audi A7</td>
-        </tr>
-        <tr>
-          <td>Open-transport car shipping <span class="tag best">Recommended</span></td>
-          <td class="num">$1,425–2,050</td>
-          <td class="num">$1,100–1,400</td>
-          <td class="note-cell">TX→PA is a high-volume corridor; good carrier availability. 3–9 days. Flexible pickup window gets lower quotes. Open = fine for A7 unless you want enclosed for paint.</td>
-        </tr>
-        <tr>
-          <td>Enclosed transport</td>
-          <td class="num">$2,100–3,000</td>
-          <td class="num">—</td>
-          <td class="note-cell">50–70% premium over open. Consider for a concours-condition car, otherwise unnecessary.</td>
-        </tr>
-        <tr>
-          <td>Drive it yourself (if NOT renting a truck)</td>
-          <td class="num">—</td>
-          <td class="num">$400–550</td>
-          <td class="note-cell">Gas at ~28 MPG highway. 1,700 mi ÷ 28 × ~$3.10/gal ≈ $188 fuel + 2 nights lodging ($150–200) + meals. Adds ~1,700 mi to the car.</td>
-        </tr>
-        <tr>
-          <td>Drive it + rent a truck (conflict!)</td>
-          <td class="num">—</td>
-          <td class="num">N/A</td>
-          <td class="note-cell">Can't drive the truck AND your car. If DIY truck, either ship the car or find someone to drive it.</td>
+          <td>Enclosed auto transport <span class="tag cost">Non-negotiable</span></td>
+          <td class="num">$2,650</td>
+          <td class="note-cell">Open TX→PA runs $1,425–$2,051. Enclosed premium is 50–70% above open. A7 at 72K miles / $16–18K value — enclosed is the right call. 5–9 day transit. TX→PA is a high-volume corridor; get 3 quotes.</td>
         </tr>
         <tr class="subtotal">
-          <td>Vehicle subtotal range</td>
-          <td class="num">$1,425–2,050</td>
-          <td class="num">$400–1,400</td>
+          <td>Vehicle subtotal</td>
+          <td class="num">$2,650</td>
           <td></td>
         </tr>
 
-        <!-- SETUP -->
+        <tr class="cat-header"><td colspan="3">Destination Setup</td></tr>
         <tr>
-          <td colspan="4" style="padding-top:14px; padding-bottom:4px; font-family:var(--tag-font); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-light);">Destination Setup Costs</td>
+          <td>Security deposit</td>
+          <td class="num">$1,600</td>
+          <td class="note-cell">Phillipsburg NJ median ~$1,595. NJ caps deposit at 1.5× monthly rent. PA (Easton) typically 1 month. Land on Phillipsburg side to keep this number down.</td>
         </tr>
         <tr>
-          <td>Security deposit (1BR, Phillipsburg NJ) <span class="tag lean">Lower cost side</span></td>
-          <td class="num">$1,595–1,800</td>
-          <td class="num">$1,200–1,595</td>
-          <td class="note-cell">Median Phillipsburg rent ~$1,595. NJ law caps deposit at 1.5x monthly rent. PA (Easton, ~$1,700 avg) tends to be 1 month deposit.</td>
+          <td>First month's rent</td>
+          <td class="num">$1,600</td>
+          <td class="note-cell">Due at lease signing before movers arrive. Phillipsburg ~$1,595 vs. Easton ~$1,730. Lock your lease timing to avoid any gap / temp lodging cost.</td>
         </tr>
         <tr>
-          <td>First month's rent (upfront)</td>
-          <td class="num">$1,700–1,800</td>
-          <td class="num">$1,200–1,700</td>
-          <td class="note-cell">You'll need this at lease signing regardless of when movers arrive. Budget both deposit + first month together.</td>
+          <td>Mover tips</td>
+          <td class="num">$200</td>
+          <td class="note-cell">3 guys on a long hard job. ~$65 each. Not required but they earned it.</td>
         </tr>
         <tr>
-          <td>Temporary lodging (if gap between move-out / move-in)</td>
-          <td class="num">$400–700</td>
-          <td class="num">$0–300</td>
-          <td class="note-cell">If your new lease starts day 1, avoid this entirely. Extended Stay hotels run ~$75–100/night. Plan to close the gap with timing.</td>
-        </tr>
-        <tr>
-          <td>Travel to PA (your flight or drive)</td>
-          <td class="num">$250–400</td>
-          <td class="num">$0–200</td>
-          <td class="note-cell">If you drive the truck, this is built in. If you ship car and fly separately, budget a one-way flight ($150–350 ATX→ABE/EWR).</td>
-        </tr>
-        <tr>
-          <td>Utility deposits / setup</td>
-          <td class="num">$200–400</td>
-          <td class="num">$0–200</td>
-          <td class="note-cell">Electric, gas, internet setup fees. Many waive with good credit. PA utilities typically require no deposit above 640 score.</td>
-        </tr>
-        <tr>
-          <td>Misc setup (cleaning supplies, hardware, small items)</td>
-          <td class="num">$200–350</td>
-          <td class="num">$100–200</td>
-          <td class="note-cell">First-trip Target run. Unavoidable but controllable.</td>
+          <td>Misc setup / supplies</td>
+          <td class="num">$300</td>
+          <td class="note-cell">First Target run · cleaning supplies · hardware · lightbulbs · internet setup. Unavoidable.</td>
         </tr>
         <tr class="subtotal">
-          <td>Setup subtotal range</td>
-          <td class="num">$2,750–3,650</td>
-          <td class="num">$1,300–2,395</td>
+          <td>Setup subtotal</td>
+          <td class="num">$3,700</td>
           <td></td>
         </tr>
 
-        <!-- TOTALS -->
+        <!-- TOTAL ROW -->
         <tr style="background:#1a1a1a; color:#fff;">
-          <td style="font-weight:600; padding: 10px 8px;">TOTAL (all-in estimate)</td>
-          <td class="num" style="color:#8bc8a0; font-size:13px; padding:10px 8px;">$11,665–14,490</td>
-          <td class="num" style="color:#f0c060; font-size:13px; padding:10px 8px;">$7,290–10,235</td>
-          <td style="font-size:11px; color:#aaa; padding:10px 8px;">Comfortable full-service vs. lean DIY</td>
+          <td style="font-weight:600; padding:10px 8px;">TOTAL MOVE COST</td>
+          <td class="num" style="color:#e07070; font-size:14px; padding:10px 8px; font-weight:700;">$16,040</td>
+          <td style="font-size:11px; color:#aaa; padding:10px 8px;">Your specific load · enclosed transport · full-service movers</td>
+        </tr>
+
+        <!-- INCOME ROWS -->
+        <tr class="cat-header"><td colspan="3">Offsetting Income</td></tr>
+        <tr class="income-row">
+          <td><strong>Employer lump sum</strong> <span class="tag income">Income</span></td>
+          <td class="num" style="color:var(--green-accent);">$10,000</td>
+          <td class="note-cell">Gross · before-tax confirmed · nets ~$6,728 after fed + FICA + PA state</td>
+        </tr>
+        <tr class="income-row">
+          <td><strong>PTO payout (48 hrs confirmed)</strong> <span class="tag income">Income</span></td>
+          <td class="num" style="color:var(--green-accent);">$2,538</td>
+          <td class="note-cell">48 hrs ÷ 2,080 × $110,000. Nets ~$1,800. Vacation days unknown — update input above when confirmed. Currently set to $0 in calculator.</td>
+        </tr>
+        <tr style="background:#0a2a0a; color:#fff;">
+          <td style="font-weight:600; padding:10px 8px;">OUT-OF-POCKET GAP (at $10K lump, no PTO)</td>
+          <td class="num" style="color:#f0c060; font-size:14px; padding:10px 8px; font-weight:700;" id="static-gap">—</td>
+          <td style="font-size:11px; color:#aaa; padding:10px 8px;">Updates live from your inputs above</td>
         </tr>
 
       </tbody>
     </table>
-  </div>
 
-  <!-- BUDGET SCENARIOS -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <span class="section-title">The Two Budgets</span>
-    </div>
-
-    <div class="budget-grid">
-
-      <!-- $10K COMFORTABLE -->
-      <div class="budget-card comfortable">
-        <div class="budget-card-label">Scenario A · Target Budget</div>
-        <div class="budget-headline">$10,000 <span>grossed up / net</span></div>
-
-        <div class="budget-line"><span class="label">Lease termination</span><span class="val neg">−$4,290</span></div>
-        <div class="budget-line"><span class="label">Full-service movers (1BR)</span><span class="val neg">−$3,200</span></div>
-        <div class="budget-line"><span class="label">Open car shipping</span><span class="val neg">−$1,425</span></div>
-        <div class="budget-line"><span class="label">Security deposit (Phillipsburg)</span><span class="val neg">−$1,595</span></div>
-        <div class="budget-line"><span class="label">First month's rent</span><span class="val neg">−$1,595</span></div>
-        <div class="budget-line"><span class="label">Travel / misc setup</span><span class="val neg">−$450</span></div>
-        <div class="budget-divider"></div>
-        <div class="budget-line"><span class="label">Total spend</span><span class="val neg">−$12,555</span></div>
-        <div class="budget-line"><span class="label">Lump sum (net)</span><span class="val pos">+$10,000</span></div>
-        <div class="budget-line"><span class="label"><strong>Out-of-pocket gap</strong></span><span class="val neg"><strong>−$2,555</strong></span></div>
-
-        <div class="verdict">
-          <strong>What this means:</strong> Even the "comfortable" scenario at $10K grossed up leaves a ~$2,500 personal gap if you're going full-service. You close it by either (a) choosing a container over full-service movers (saves ~$1,000–1,200), (b) landing on the Phillipsburg NJ side where rents average ~$1,595 vs. Easton's ~$1,700+, or (c) bringing a small cash buffer. At $10K with movers + first/last + deposit, you're close but not flush.
-        </div>
-      </div>
-
-      <!-- $5K LEAN -->
-      <div class="budget-card lean">
-        <div class="budget-card-label">Scenario B · Floor Budget</div>
-        <div class="budget-headline">$5,000 <span>grossed up / net</span></div>
-
-        <div class="budget-line"><span class="label">Lease termination</span><span class="val neg">−$4,290</span></div>
-        <div class="budget-line"><span class="label">DIY truck rental + gas</span><span class="val neg">−$1,900</span></div>
-        <div class="budget-line"><span class="label">Drive your own car <em>(can't ship it)</em></span><span class="val neg">−$0</span></div>
-        <div class="budget-line"><span class="label">Security deposit</span><span class="val neg">−$1,200</span></div>
-        <div class="budget-line"><span class="label">First month's rent</span><span class="val neg">−$1,400</span></div>
-        <div class="budget-line"><span class="label">Misc setup (minimal)</span><span class="val neg">−$150</span></div>
-        <div class="budget-divider"></div>
-        <div class="budget-line"><span class="label">Total spend</span><span class="val neg">−$8,940</span></div>
-        <div class="budget-line"><span class="label">Lump sum (net, grossed up)</span><span class="val pos">+$5,000</span></div>
-        <div class="budget-line"><span class="label"><strong>Out-of-pocket gap</strong></span><span class="val neg"><strong>−$3,940</strong></span></div>
-
-        <div class="verdict">
-          <strong>What this means:</strong> Even the leanest version of this move — DIY truck, driving your own car (meaning someone else drives the truck or you make two trips), cheapest apartment, minimal deposit — costs nearly $9K. The $5K lump sum covers the lease termination and almost nothing else. You need ~$4K in personal cash reserves OR you need to sell furniture to reduce your truck size and moving cost.
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Not taxed scenario note -->
     <div class="callout risk" style="margin-top:16px;">
-      <strong>If the $10K is NOT grossed up</strong> and withheld at 22% federal + FICA + PA state, you net approximately <strong>$6,728</strong>. That leaves a ~$5,800 personal gap against the comfortable scenario, or ~$2,200 gap against the leanest version. That's meaningful. The difference between grossed-up and not is roughly $3,270 on a $10K package — ask specifically before signing.
+      <strong>The headline number:</strong> This move costs ~$16,040. Your $10K lump sum nets ~$6,728. You're writing a personal check for roughly <strong>$9,300</strong> on top of the relocation package — before PTO payout. With confirmed 48-hr PTO ($1,800 net), that gap closes to ~$7,500. Every vacation day you confirm adds ~$423 net to that offset.
     </div>
 
-    <div class="callout risk" style="margin-top:10px;">
-      <strong>If the $5K is NOT grossed up</strong> you net approximately <strong>$3,363</strong> — which is less than the lease termination fee alone. At that point you're looking at a ~$5,600 personal shortfall. The $5K non-grossed-up scenario is not a budget; it's a partial offset. You'd need to cover nearly the full move cost from savings.
+    <div class="callout warn" style="margin-top:10px;">
+      <strong>Lease termination reframe:</strong> The $4,290 is the cash outflow, but your real economic penalty is ~$1,072 — the 2 weeks of month 2 you're paying for but won't use. Month 1 you'd be paying rent regardless. This matters for how you frame the ask to Will: you're not asking the company to cover your rent, you're asking them to cover an ~$1,072 penalty you're eating specifically because you're taking their job.
     </div>
   </div>
 
-  <!-- TRADE-OFFS -->
+  <!-- ══ 04 · TAX DETAIL ══ -->
   <div class="section">
     <div class="section-header">
       <span class="section-num">04</span>
-      <span class="section-title">Trade-offs to Close the Gap at $5K</span>
+      <span class="section-title">Tax Detail — Lump Sum Scenarios</span>
     </div>
 
-    <ul class="tradeoff-list">
-      <li>
-        <span class="tradeoff-icon">🛋️</span>
-        <div><strong>Sell heavy furniture before you leave.</strong> A couch, bed frame, dresser, and dining set could realistically bring $400–900 on Facebook Marketplace (Austin market is active). Smaller truck size = lower DIY rental cost. Reduces the load enough to potentially drop one truck size, saving $200–400 in rental fees and reducing gas by ~$50–80.</div>
-      </li>
-      <li>
-        <span class="tradeoff-icon">🚚</span>
-        <div><strong>Container over truck if you can wait on delivery.</strong> PODS/Pack-Rat on a flexible delivery window can come in at $1,800–2,000 — comparable to DIY truck rental but without the driving burden. You'd still need to get yourself to PA separately (one-way flight ~$150–250).</div>
-      </li>
-      <li>
-        <span class="tradeoff-icon">🚗</span>
-        <div><strong>Drive the car, don't ship it.</strong> Saves $1,100–1,400 vs. open transport, costs $200–300 in gas and 2 days of time. Non-negotiable at $5K — car shipping is the first thing to cut.</div>
-      </li>
-      <li>
-        <span class="tradeoff-icon">🏠</span>
-        <div><strong>Land on the Phillipsburg NJ side.</strong> Median rent ~$1,595 vs. Easton PA ~$1,700–1,730. Small difference per month but also means a smaller deposit. NJ also still allows a state-level moving expense deduction — worth checking at tax time.</div>
-      </li>
-      <li>
-        <span class="tradeoff-icon">📅</span>
-        <div><strong>Align your new lease start date with move-out.</strong> Avoid paying any temporary lodging. Even 5 nights at an Extended Stay adds $375–500 you don't have room for at $5K.</div>
-      </li>
-      <li>
-        <span class="tradeoff-icon">💳</span>
-        <div><strong>Use a 0% intro APR card strategically.</strong> If you have a card with a 0% window (many offer 12–15 months), float the deposit and first month's rent on credit and pay it off from your first few paychecks. This is NOT a long-term solution but it removes the cash-on-hand crunch at move time.</div>
-      </li>
-      <li>
-        <span class="tradeoff-icon">⚠️</span>
-        <div><strong>The real risk at $5K un-grossed:</strong> You genuinely cannot do this move out-of-pocket at $3,363 net unless you arrive with ~$5,500+ in personal savings to bridge the gap. The lease termination alone consumes more than the entire net payment. This isn't a tight budget situation — it's a structural shortfall that requires either negotiating the package, negotiating the lease fee, or arriving with cash.</div>
-      </li>
-    </ul>
+    <p style="font-size:13px; color:var(--ink-mid); margin-bottom:14px;">
+      The TCJA moving expense deduction was made permanent in July 2025 (One Big Beautiful Bill Act). Every dollar of your lump sum is taxable ordinary income. No deduction offsets it. Federal supplemental withholding is 22% but if $110K salary + lump sum pushes you into the 24% bracket, you'll owe ~$200 more at filing. The state tax depends on where you're a resident when payroll issues the check — receive it while still a TX resident and you owe zero state tax.
+    </p>
+
+    <div class="tax-grid">
+      <div class="tax-card">
+        <div class="tax-card-label">$10,000 Gross · Before-Tax (Your Reality)</div>
+        <div class="tax-row"><span>Gross lump sum</span><span>$10,000</span></div>
+        <div class="tax-row"><span>Federal (22% supplemental)</span><span>−$2,200</span></div>
+        <div class="tax-row"><span>FICA (7.65%)</span><span>−$765</span></div>
+        <div class="tax-row"><span>PA state (3.07%)</span><span>−$307</span></div>
+        <div class="tax-row net"><span>Net-in-pocket</span><span>~$6,728</span></div>
+        <p class="tax-note">If paid while TX resident: net bumps to ~$7,035 (no state tax). Ask Will when payroll issues it relative to your start date.</p>
+      </div>
+
+      <div class="tax-card">
+        <div class="tax-card-label">$5,000 Gross · If Counter-Offer Holds</div>
+        <div class="tax-row"><span>Gross lump sum</span><span>$5,000</span></div>
+        <div class="tax-row"><span>Federal (22%)</span><span>−$1,100</span></div>
+        <div class="tax-row"><span>FICA (7.65%)</span><span>−$383</span></div>
+        <div class="tax-row"><span>PA state (3.07%)</span><span>−$154</span></div>
+        <div class="tax-row net-bad"><span>Net-in-pocket</span><span>~$3,363</span></div>
+        <p class="tax-note">$3,363 net does not cover the lease termination fee alone. At $5K, you need ~$12,700 in personal cash to close the full gap on this move as specified.</p>
+      </div>
+
+      <div class="tax-card">
+        <div class="tax-card-label">48-hr PTO Payout · Confirmed</div>
+        <div class="tax-row"><span>Gross (48 hrs · $110K salary)</span><span>$2,538</span></div>
+        <div class="tax-row"><span>Federal (22%)</span><span>−$558</span></div>
+        <div class="tax-row"><span>FICA (7.65%)</span><span>−$194</span></div>
+        <div class="tax-row"><span>PA state (3.07%)</span><span>−$78</span></div>
+        <div class="tax-row net"><span>Net-in-pocket</span><span>~$1,708</span></div>
+        <p class="tax-note">Confirmed floor. Each additional vacation day adds ~$529 gross / ~$373 net. Confirm balance in SuccessFactors under Time &amp; Attendance.</p>
+      </div>
+
+      <div class="tax-card">
+        <div class="tax-card-label">If Vacation Days Confirmed (e.g. +5 days)</div>
+        <div class="tax-row"><span>PTO gross (48 hrs)</span><span>$2,538</span></div>
+        <div class="tax-row"><span>Vacation gross (+5 days)</span><span>+$2,115</span></div>
+        <div class="tax-row"><span>Combined gross</span><span>$4,653</span></div>
+        <div class="tax-row"><span>Taxes (~32.72%)</span><span>−$1,523</span></div>
+        <div class="tax-row net"><span>Combined net</span><span>~$3,130</span></div>
+        <p class="tax-note">5 vacation days brings your PTO net to ~$3,130 — meaningful. 10 days would net ~$4,800 and cut your gap by nearly half.</p>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top:16px;">
+      <strong>Timing play:</strong> If payroll issues the lump sum before you establish PA residency, you save $307 in state tax (PA 3.07% × $10K). Worth asking Will whether the lump sum can be issued on your last TX paycheck vs. first PA paycheck. Small but real.
+    </div>
   </div>
 
-  <!-- ASK EMPLOYER -->
+  <!-- ══ 05 · NEGOTIATION ══ -->
   <div class="section">
     <div class="section-header">
       <span class="section-num">05</span>
-      <span class="section-title">What to Ask Your Employer — Before You Commit</span>
+      <span class="section-title">What Will Should Be Pushing For</span>
     </div>
 
     <div class="ask-box">
-      <div class="ask-box-title">Questions for HR / Comp Team</div>
+      <div class="ask-box-title">The Real Ask — In Priority Order</div>
       <ol>
-        <li><strong>Is the lump sum grossed up?</strong> Specifically: will you receive $10,000 net in hand, or $10,000 gross before withholding? This is the single most important question — it changes your actual budget by $3,270.</li>
-        <li><strong>When is the lump sum paid?</strong> Before your start date, with your first paycheck, or on a reimbursement schedule? Timing affects your cash flow at the moment of the move and determines your state tax exposure (TX resident = no state tax).</li>
-        <li><strong>Is there a clawback provision?</strong> Most relocation agreements require repayment on a pro-rated schedule if you leave within 1–2 years. Know this before you sign.</li>
-        <li><strong>Can you negotiate the amount?</strong> The industry benchmark for a renter relocation is ~$14,600–21,800. A $10K gross offer (especially un-grossed-up) is on the low end. If this is a Senior Ops Manager offer at $130K+, pushing for $15K or a grossed-up $12K is reasonable.</li>
-        <li><strong>Does the offer cover direct expenses vs. lump sum?</strong> If your employer will pay the lease termination fee directly (rather than reimbursing it through your lump sum), that $4,290 is off the table and your entire lump sum is available for moving costs.</li>
+        <li><strong>Lease termination paid directly.</strong> $4,290 is a documented, verifiable, unavoidable penalty that exists solely because you're accepting their offer. If the company pays it outside the lump sum, your entire $6,728 net goes toward the actual move. This is the highest-leverage ask — frame it to Will as a cost-reimbursement, not a lifestyle perk.</li>
+        <li><strong>Clarify whether the $10K ask is approved or still being negotiated.</strong> If Will's pushing for $10K and they counter at $5K, the math on this specific move makes $5K effectively symbolic — it covers the lease fee and nothing else after tax.</li>
+        <li><strong>Timing of disbursement.</strong> Lump sum paid while you're a TX resident = $307 more in your pocket. Ask whether it can be processed with your final Austin paycheck.</li>
+        <li><strong>Clawback terms.</strong> Most relocation agreements require pro-rated repayment if you leave within 1–2 years. Get this in writing before signing — especially important since you're targeting this as a stepping-stone role.</li>
+        <li><strong>The industry benchmark context for Will.</strong> Average renter relocation packages run $14,600–$21,800. $10K gross at before-tax is below midpoint. For a Sr. Ops Manager hire at $110K, $15K gross or a managed relocation covering movers + car transport directly is not unreasonable. Will should know this number before he walks into that conversation.</li>
       </ol>
     </div>
   </div>
 
   <footer>
-    Cost figures sourced from moveBuddha, GoodMigrations, A1 Auto Transport, Sherpa Auto Transport, and Apartments.com market data (July–August 2026). Tax figures reflect IRS 2026 supplemental withholding rate (22%), FICA employee share (7.65%), and PA flat income tax (3.07%). All figures are estimates; get binding quotes before committing.
+    Cost figures: moveBuddha, GoodMigrations, A1 Auto Transport, Sherpa Auto Transport, Apartments.com (July–August 2026). Mover estimate based on ~4,200 lbs × $0.65/lb + 3-man labor. Enclosed transport at open-rate × 1.6 premium. Tax: IRS 2026 supplemental rate 22%, FICA 7.65%, PA flat 3.07%. All figures estimates — get binding quotes before committing. Last updated August 17, 2026.
   </footer>
 
 </div>
+
+<script>
+  const ids = ['lumpsum','pto','lease','movers','crating','cartransport','deposit','rent','tips','misc','fedrate','staterate'];
+
+  function fmt(n) {
+    return (n < 0 ? '−$' : '$') + Math.abs(Math.round(n)).toLocaleString();
+  }
+
+  function calc() {
+    const lumpsum     = +document.getElementById('lumpsum').value     || 0;
+    const pto         = +document.getElementById('pto').value         || 0;
+    const lease       = +document.getElementById('lease').value       || 0;
+    const movers      = +document.getElementById('movers').value      || 0;
+    const crating     = +document.getElementById('crating').value     || 0;
+    const cartransport= +document.getElementById('cartransport').value|| 0;
+    const deposit     = +document.getElementById('deposit').value     || 0;
+    const rent        = +document.getElementById('rent').value        || 0;
+    const tips        = +document.getElementById('tips').value        || 0;
+    const misc        = +document.getElementById('misc').value        || 0;
+    const fedrate     = (+document.getElementById('fedrate').value    || 0) / 100;
+    const staterate   = (+document.getElementById('staterate').value  || 0) / 100;
+
+    const fica = 0.0765;
+    const totalTaxRate = fedrate + fica + staterate;
+
+    const lumpNet = lumpsum * (1 - totalTaxRate);
+    const ptoNet  = pto     * (1 - totalTaxRate);
+    const totalNet = lumpNet + ptoNet;
+
+    const totalCost = lease + movers + crating + cartransport + deposit + rent + tips + misc;
+    const gap = totalCost - totalNet;
+
+    // Summary panel
+    document.getElementById('s-totalcost').textContent = fmt(totalCost);
+    document.getElementById('s-totalnet').textContent  = fmt(totalNet);
+
+    const gapEl = document.getElementById('s-gap');
+    gapEl.textContent = fmt(gap);
+    gapEl.className = 's-val ' + (gap > 0 ? 'red' : 'green');
+
+    // Detail rows
+    document.getElementById('sr-lumpgross').textContent  = fmt(lumpsum);
+    document.getElementById('sr-fedfull').textContent    = fmt(-lumpsum * fedrate);
+    document.getElementById('sr-ficafull').textContent   = fmt(-lumpsum * fica);
+    document.getElementById('sr-statefull').textContent  = fmt(-lumpsum * staterate);
+    document.getElementById('sr-lumpnet').textContent    = fmt(lumpNet);
+    document.getElementById('sr-ptogross').textContent   = fmt(pto);
+    document.getElementById('sr-ptonet').textContent     = fmt(ptoNet);
+
+    // Static gap row in table
+    document.getElementById('static-gap').textContent = fmt(gap);
+  }
+
+  ids.forEach(id => document.getElementById(id).addEventListener('input', calc));
+  calc();
+</script>
 </body>
 </html>
