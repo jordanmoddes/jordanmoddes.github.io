@@ -155,22 +155,13 @@
   .hero-photo{
     width:100%;
     aspect-ratio: 4/3;
-    background:
-      linear-gradient(160deg, #4a3524 0%, #2a1c12 60%, #1c130c 100%);
     position:relative;
     overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
   }
-  .hero-photo svg{ width: 46%; opacity:0.9; }
-  .hero-photo .cap{
-    position:absolute;
-    bottom:10px; left:10px;
-    font-size:0.68rem;
-    color:rgba(255,255,255,0.55);
-    font-weight:600;
-    letter-spacing:0.03em;
+  .hero-photo img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
   }
   .hero-content{ padding: 34px 26px 0; text-align:center; }
   .hero h1{
@@ -237,12 +228,14 @@
     width:100%;
     aspect-ratio: 4/3;
     margin-bottom: 26px;
-    background: linear-gradient(160deg, #5a3a1f 0%, #3a2412 65%, #241608 100%);
-    display:flex; align-items:center; justify-content:center;
     position:relative;
     overflow:hidden;
   }
-  .menu-photo svg{ width: 40%; opacity:0.92; }
+  .menu-photo img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
+  }
   .menu-item h3{
     font-size: 1.5rem;
     color: var(--ink);
@@ -401,10 +394,7 @@
 <div id="top"></div>
 <section class="hero">
   <div class="hero-photo">
-    <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 55c0-14 8-24 14-30-3-8 0-16 8-18 2 5 5 8 8 8h0c3 0 6-3 8-8 8 2 11 10 8 18 6 6 14 16 14 30" fill="none" stroke="#E8CBA0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
-    </svg>
-    <span class="cap">Photo placeholder — swap in a real brisket shot</span>
+    <img src="https://loremflickr.com/800/600/brisket,bbq,smoked" alt="Smoked brisket sliced on a cutting board">
   </div>
   <div class="hero-content wrap">
     <h1 class="display">Smoked Turkey Legs &amp; Brisket</h1>
@@ -441,19 +431,14 @@
     <div class="menu-grid">
       <div class="menu-item">
         <div class="menu-photo">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 20c8 6 12 16 8 24 6 3 9 10 6 17-4 8-14 12-22 9-8 3-18-1-22-9-3-7 0-14 6-17-4-8 0-18 8-24 3 6 6 9 8 9s5-3 8-9z" fill="none" stroke="#E8CBA0" stroke-width="2.2" stroke-linejoin="round" opacity="0.85"/>
-          </svg>
+          <img src="https://loremflickr.com/700/700/turkeyleg,smoked,bbq" alt="Smoked turkey leg">
         </div>
         <h3 class="display">Smoked Turkey Legs</h3>
         <p>Brined, smoked low and slow, and served hot off the smoker. Each leg is a piece of heritage, seasoned with our signature rub and smoked for 12+ hours.</p>
       </div>
       <div class="menu-item">
         <div class="menu-photo">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <rect x="20" y="38" width="60" height="26" rx="3" fill="none" stroke="#E8CBA0" stroke-width="2.2" opacity="0.85"/>
-            <path d="M25 45h50M25 51h50M25 57h50" stroke="#E8CBA0" stroke-width="1.4" opacity="0.7"/>
-          </svg>
+          <img src="https://loremflickr.com/700/700/brisket,bbq,texas" alt="Texas-style smoked brisket">
         </div>
         <h3 class="display">Texas-Style Brisket</h3>
         <p>Long smoke, proper rest, and sliced fresh to order. Our brisket is smoked for 12+ hours, then rested for 12 hours before being sliced and served hot.</p>
