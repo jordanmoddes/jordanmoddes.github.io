@@ -1,834 +1,400 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Consult | Jordan Moddes | Jmod Co.</title>
-  <meta name="description" content="Operations + systems consulting. Fix bottlenecks, build dashboards, automate workflows, ship measurable outcomes." />
-  <meta name="robots" content="index,follow" />
-  <meta property="og:title" content="Consult | Jordan Moddes" />
-  <meta property="og:description" content="Operations + systems consulting. Fix bottlenecks, build dashboards, automate workflows, ship measurable outcomes." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.jordanmoddes.com/Consult/" />
-  <meta name="theme-color" content="#0b1220" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jordan Moddes — Websites for small businesses</title>
+<meta name="description" content="A straightforward website for your business, built on Wix. See a free preview first. No jargon, no surprise bills." />
+<meta name="theme-color" content="#faf7f1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg0:#070b14;
-      --bg1:#0b1220;
-      --card:#0f1a2f;
-      --card2:#0c1528;
-      --text:#e8eefc;
-      --muted:#a9b7dd;
-      --muted2:#7f92c7;
-      --line:rgba(149,173,255,.18);
-      --chip:rgba(149,173,255,.14);
-      --glow:rgba(99,135,255,.22);
-      --accent:#8fb2ff;
-      --accent2:#59d5ff;
-      --good:#7cf0c4;
-      --warn:#ffd27a;
-      --shadow: 0 20px 60px rgba(0,0,0,.45);
-      --radius: 18px;
-      --radius2: 26px;
-      --max: 1120px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--sans);
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(99,135,255,.18), transparent 60%),
-        radial-gradient(1000px 600px at 80% 20%, rgba(89,213,255,.10), transparent 55%),
-        radial-gradient(900px 600px at 50% 100%, rgba(124,240,196,.06), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow-x:hidden;
-    }
-
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
-    .topbar{
-      position:sticky; top:0; z-index:20;
-      backdrop-filter: blur(14px);
-      background: rgba(7,11,20,.55);
-      border-bottom:1px solid var(--line);
-    }
-    .topbar .row{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
-      gap:14px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-      min-width:240px;
-    }
-    .logo{
-      width:38px; height:38px; border-radius:12px;
-      background:
-        radial-gradient(18px 18px at 30% 35%, rgba(143,178,255,.9), rgba(143,178,255,.12) 60%, transparent 70%),
-        radial-gradient(22px 22px at 70% 65%, rgba(89,213,255,.8), rgba(89,213,255,.10) 60%, transparent 70%),
-        linear-gradient(135deg, rgba(149,173,255,.22), rgba(89,213,255,.12));
-      border:1px solid rgba(149,173,255,.28);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      position:relative;
-      overflow:hidden;
-    }
-    .logo:after{
-      content:"";
-      position:absolute; inset:-40%;
-      background: conic-gradient(from 180deg, transparent 0 40%, rgba(143,178,255,.35) 55%, transparent 70% 100%);
-      opacity:.55;
-      animation: spin 6s linear infinite;
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    .brand .t{
-      display:flex; flex-direction:column; line-height:1.05;
-    }
-    .brand .t b{font-size:14px; letter-spacing:.4px}
-    .brand .t span{font-size:12px; color:var(--muted); font-family:var(--mono)}
-    nav{
-      display:flex; gap:10px; flex-wrap:wrap;
-      justify-content:center;
-    }
-    .navlink{
-      padding:9px 12px;
-      border:1px solid transparent;
-      border-radius:999px;
-      color:var(--muted);
-      font-size:13px;
-    }
-    .navlink:hover{
-      border-color:var(--line);
-      background:rgba(149,173,255,.06);
-      color:var(--text);
-    }
-    .cta{
-      display:flex; gap:10px; align-items:center; justify-content:flex-end;
-      min-width:240px;
-    }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(149,173,255,.06);
-      color:var(--text);
-      font-size:13px;
-      gap:8px;
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      white-space:nowrap;
-    }
-    .btn:hover{transform: translateY(-1px); border-color:rgba(143,178,255,.55); background:rgba(149,173,255,.10)}
-    .btn.primary{
-      border-color: rgba(89,213,255,.45);
-      background: linear-gradient(135deg, rgba(143,178,255,.20), rgba(89,213,255,.12));
-      box-shadow: 0 18px 60px rgba(89,213,255,.12);
-    }
-    .btn.primary:hover{border-color: rgba(89,213,255,.75)}
-    .btn .dot{
-      width:8px; height:8px; border-radius:99px;
-      background: var(--accent2);
-      box-shadow:0 0 0 6px rgba(89,213,255,.12);
-    }
-
-    header.hero{
-      padding:56px 0 28px;
-      position:relative;
-    }
-    .gridfx{
-      position:absolute; inset:-160px -140px auto;
-      height:420px;
-      background:
-        linear-gradient(transparent 0 24px, rgba(149,173,255,.08) 24px 25px, transparent 25px 48px),
-        linear-gradient(90deg, transparent 0 24px, rgba(149,173,255,.08) 24px 25px, transparent 25px 48px);
-      background-size:48px 48px;
-      mask-image: radial-gradient(closest-side at 50% 50%, rgba(0,0,0,.85), transparent 70%);
-      opacity:.55;
-      pointer-events:none;
-      transform: translateY(10px);
-    }
-    .hero .row{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:22px;
-      align-items:stretch;
-    }
-    .panel{
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,26,47,.72), rgba(12,21,40,.72));
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .panel:before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(600px 180px at 20% 0%, rgba(143,178,255,.22), transparent 55%),
-                  radial-gradient(520px 180px at 90% 20%, rgba(89,213,255,.16), transparent 55%);
-      pointer-events:none;
-      opacity:.95;
-    }
-    .panel .in{position:relative; padding:26px}
-    .chips{
-      display:flex; flex-wrap:wrap; gap:10px;
-      margin-bottom:14px;
-    }
-    .chip{
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted);
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(149,173,255,.06);
-    }
-    h1{
-      margin:10px 0 10px;
-      font-size:40px;
-      line-height:1.05;
-      letter-spacing:-.5px;
-    }
-    .sub{
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.55;
-      max-width:60ch;
-    }
-    .heroactions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:16px;
-      align-items:center;
-    }
-
-    .mini{
-      display:grid;
-      grid-template-rows:auto 1fr;
-    }
-    .mini .in{padding:22px}
-    .kpis{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:14px;
-    }
-    .kpi{
-      border:1px solid var(--line);
-      background: rgba(149,173,255,.05);
-      border-radius:14px;
-      padding:12px;
-    }
-    .kpi b{
-      display:block;
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .kpi span{
-      display:block;
-      font-size:16px;
-      letter-spacing:.1px;
-    }
-    .kpi .tag{
-      margin-top:8px;
-      font-family:var(--mono);
-      font-size:11px;
-      color:var(--muted2);
-    }
-
-    section{
-      padding:20px 0;
-    }
-    .section-title{
-      display:flex; align-items:flex-end; justify-content:space-between;
-      gap:12px;
-      margin:6px 0 12px;
-    }
-    .section-title h2{
-      margin:0;
-      font-size:20px;
-      letter-spacing:-.2px;
-    }
-    .section-title .hint{
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted2);
-    }
-
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-    .card{
-      border:1px solid var(--line);
-      background: rgba(15,26,47,.55);
-      border-radius: var(--radius);
-      padding:16px;
-      position:relative;
-      overflow:hidden;
-    }
-    .card:before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(420px 120px at 20% 0%, rgba(143,178,255,.12), transparent 55%),
-                  radial-gradient(360px 140px at 90% 20%, rgba(89,213,255,.09), transparent 55%);
-      opacity:.8;
-      pointer-events:none;
-    }
-    .card .in{position:relative}
-    .card h3{
-      margin:0 0 8px;
-      font-size:15px;
-      letter-spacing:-.2px;
-    }
-    .card p{
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.55;
-    }
-    .bullet{
-      margin-top:12px;
-      display:grid;
-      gap:8px;
-    }
-    .bullet div{
-      display:flex;
-      gap:8px;
-      align-items:flex-start;
-      color:var(--muted);
-      font-size:12.5px;
-      line-height:1.45;
-    }
-    .tick{
-      width:18px; height:18px; flex:0 0 18px;
-      border-radius:6px;
-      border:1px solid var(--line);
-      background: rgba(124,240,196,.08);
-      position:relative;
-      margin-top:1px;
-    }
-    .tick:after{
-      content:"";
-      position:absolute;
-      left:5px; top:4px;
-      width:6px; height:3px;
-      border-left:2px solid rgba(124,240,196,.95);
-      border-bottom:2px solid rgba(124,240,196,.95);
-      transform: rotate(-45deg);
-    }
-
-    .twocol{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    .steps{
-      display:grid;
-      gap:10px;
-    }
-    .step{
-      border:1px solid var(--line);
-      background: rgba(12,21,40,.55);
-      border-radius: var(--radius);
-      padding:14px;
-      display:grid;
-      grid-template-columns: 44px 1fr;
-      gap:12px;
-      align-items:start;
-    }
-    .num{
-      width:44px; height:44px;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background: rgba(149,173,255,.06);
-      display:grid; place-items:center;
-      font-family:var(--mono);
-      color:var(--accent);
-      box-shadow: 0 14px 40px rgba(0,0,0,.25);
-    }
-    .step b{display:block; margin:2px 0 6px; font-size:14px}
-    .step span{display:block; color:var(--muted); font-size:13px; line-height:1.5}
-
-    .proof{
-      display:grid;
-      gap:10px;
-    }
-    .proof .card{padding:14px}
-    .proof .metric{
-      display:flex; justify-content:space-between; gap:10px; align-items:baseline;
-      margin-bottom:6px;
-    }
-    .proof .metric b{font-size:13px}
-    .proof .metric i{
-      font-style:normal;
-      font-family:var(--mono);
-      color:var(--good);
-      font-size:12px;
-    }
-    .proof p{font-size:13px}
-
-    .faq{
-      display:grid;
-      gap:10px;
-    }
-    details{
-      border:1px solid var(--line);
-      background: rgba(15,26,47,.48);
-      border-radius: var(--radius);
-      padding:14px 14px;
-    }
-    summary{
-      cursor:pointer;
-      list-style:none;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:14px;
-      font-size:14px;
-    }
-    summary::-webkit-details-marker{display:none}
-    .chev{
-      width:26px; height:26px;
-      border-radius:10px;
-      border:1px solid var(--line);
-      display:grid; place-items:center;
-      background: rgba(149,173,255,.06);
-      flex:0 0 26px;
-      transition: transform .15s ease;
-    }
-    details[open] .chev{transform: rotate(180deg)}
-    details p{
-      margin:10px 0 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
-    }
-
-    footer{
-      padding:28px 0 46px;
-      color:var(--muted2);
-      font-size:12px;
-      border-top:1px solid var(--line);
-      margin-top:24px;
-    }
-    .foot{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap;
-    }
-    .foot .small{
-      font-family:var(--mono);
-    }
-
-    .badge{
-      display:inline-flex; gap:8px; align-items:center;
-      border:1px solid var(--line);
-      background: rgba(149,173,255,.06);
-      padding:8px 10px;
-      border-radius:999px;
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted);
-    }
-    .pulse{
-      width:8px; height:8px; border-radius:99px;
-      background: var(--good);
-      box-shadow:0 0 0 0 rgba(124,240,196,.22);
-      animation: pulse 1.8s ease-out infinite;
-    }
-    @keyframes pulse{
-      0%{box-shadow:0 0 0 0 rgba(124,240,196,.22)}
-      70%{box-shadow:0 0 0 10px rgba(124,240,196,0)}
-      100%{box-shadow:0 0 0 0 rgba(124,240,196,0)}
-    }
-
-    /* Responsive */
-    @media (max-width: 980px){
-      .hero .row{grid-template-columns:1fr; }
-      .cta{min-width:auto}
-      .brand{min-width:auto}
-      .cards{grid-template-columns:1fr; }
-      .twocol{grid-template-columns:1fr; }
-      nav{display:none}
-    }
-    @media (max-width: 520px){
-      h1{font-size:32px}
-      .kpis{grid-template-columns:1fr}
-      .btn{width:100%; justify-content:center}
-      .heroactions{flex-direction:column; align-items:stretch}
-      .topbar .row{gap:10px}
-    }
-  </style>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Consult | Jordan Moddes",
-    "url": "https://www.jordanmoddes.com/Consult/",
-    "description": "Operations + systems consulting. Fix bottlenecks, build dashboards, automate workflows, ship measurable outcomes.",
-    "publisher": { "@type": "Organization", "name": "Jmod Co." }
+<style>
+  :root{
+    --bg:#faf7f1;
+    --surface:#ffffff;
+    --surface-2:#f1ebdd;
+    --ink:#211d16;
+    --muted:#6f6555;
+    --line:#e6ddc9;
+    --accent:#2f6f5e;
+    --accent-dark:#204d40;
+    --gold:#c1852f;
+    --max:1080px;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  </script>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  img,svg{display:block;max-width:100%}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
+  p{margin:0}
+  :focus-visible{outline:2px solid var(--accent-dark);outline-offset:3px}
+  @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+
+  .topbar{padding:18px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(250,247,241,.92);backdrop-filter:blur(6px);z-index:10}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .id{display:flex;flex-direction:column;text-decoration:none;color:inherit;line-height:1.2}
+  .id b{font-family:var(--serif);font-size:18px;font-weight:600}
+  .id small{font-size:12px;color:var(--muted);font-weight:500}
+  .topcta{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--accent);color:#fff;
+    padding:9px 16px;border-radius:8px;
+    font-size:13.5px;font-weight:600;
+    text-decoration:none;white-space:nowrap;
+  }
+  .topcta:hover{background:var(--accent-dark)}
+
+  .hero{padding:44px 0 36px}
+  .hero .eyebrow{font-size:13.5px;color:var(--accent-dark);font-weight:600;margin-bottom:14px}
+  .hero h1{font-size:34px;line-height:1.15;max-width:15ch}
+  .hero .lede{margin-top:16px;font-size:16.5px;color:var(--muted);max-width:40ch;line-height:1.6}
+  .hero .actions{margin-top:24px;display:flex;flex-wrap:wrap;gap:12px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:13px 20px;border-radius:9px;font-weight:600;font-size:14.5px;
+    text-decoration:none;border:1px solid transparent;
+  }
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:var(--accent-dark)}
+  .btn.ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+
+  .hero-panel{margin-top:32px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .hero-panel .row{display:flex;align-items:flex-start;gap:14px;padding:12px 0}
+  .hero-panel .row + .row{border-top:1px solid var(--line)}
+  .hero-panel .num{
+    flex:0 0 32px;height:32px;border-radius:50%;
+    background:var(--surface-2);color:var(--accent-dark);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-size:14px;font-weight:600;
+  }
+  .hero-panel .txt b{display:block;font-size:14.5px}
+  .hero-panel .txt span{display:block;font-size:13px;color:var(--muted);margin-top:2px;line-height:1.5}
+
+  section{padding:44px 0}
+  .band{background:var(--surface-2)}
+  .kicker{font-size:13px;font-weight:600;color:var(--accent-dark);margin-bottom:10px}
+  .head{max-width:48ch}
+  .head h2{font-size:25px;line-height:1.25}
+  .head p{margin-top:12px;color:var(--muted);font-size:15px;line-height:1.6}
+
+  .paths{margin-top:28px;display:grid;gap:16px}
+  .path{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .path.build{border-color:var(--accent);border-width:2px}
+  .path .tag{display:inline-block;font-size:11.5px;font-weight:600;color:var(--accent-dark);background:var(--surface-2);padding:5px 10px;border-radius:999px;margin-bottom:14px}
+  .path h3{font-size:20px}
+  .path .price{font-family:var(--serif);font-size:23px;margin-top:8px}
+  .path .price span{font-family:var(--sans);font-size:12.5px;color:var(--muted);font-weight:500}
+  .path ul{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+  .path li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink)}
+  .path li svg{flex:0 0 18px;margin-top:2px}
+  .path .fine{margin-top:16px;font-size:12.5px;color:var(--muted);line-height:1.55}
+
+  .steps{margin-top:28px}
+  .step{display:grid;grid-template-columns:38px 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--line)}
+  .step:last-child{border-bottom:1px solid var(--line)}
+  .step .n{font-family:var(--serif);font-size:19px;color:var(--accent-dark)}
+  .step h3{font-size:16px;margin-bottom:5px}
+  .step p{color:var(--muted);font-size:14px;line-height:1.6;max-width:54ch}
+
+  .promise-grid{margin-top:28px;display:grid;gap:14px}
+  .promise{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .promise h3{font-size:15.5px;display:flex;gap:10px;align-items:center}
+  .promise h3 svg{flex:0 0 20px}
+  .promise p{margin-top:8px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+  .helpcard{margin-top:28px;background:var(--accent-dark);color:#fdfbf6;border-radius:16px;padding:26px;display:grid;gap:18px}
+  .helpcard h3{color:#fff;font-size:19px}
+  .helpcard p{color:#e4e9e6;font-size:14px;line-height:1.65;margin-top:8px}
+  .helpcard .two{display:grid;gap:14px}
+  .helpcard .box{background:rgba(255,255,255,.08);border-radius:10px;padding:16px}
+  .helpcard .box b{display:block;font-size:14px;margin-bottom:6px}
+  .helpcard .box span{font-size:13px;color:#dce4e0;line-height:1.55}
+
+  .work{margin-top:28px;display:grid;gap:14px}
+  .job{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:6px}
+  .job b{font-size:15px}
+  .job span{font-size:13.5px;color:var(--muted);line-height:1.55}
+  .job .loc{font-size:12px;color:var(--gold);font-weight:600}
+
+  .contact-box{margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:grid;gap:16px}
+  .field{display:grid;gap:6px}
+  .field label{font-size:13px;font-weight:600}
+  .field input,.field select,.field textarea{
+    font-family:var(--sans);font-size:14.5px;
+    padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);
+    color:var(--ink);width:100%;
+  }
+  .field textarea{resize:vertical;min-height:88px}
+  .contact-box .submit{margin-top:2px}
+  .note{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+  footer{padding:30px 0;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+  footer b{color:var(--ink)}
+
+  @media (min-width:700px){
+    .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
+    .hero h1{font-size:42px}
+    .hero-panel{margin-top:0}
+    .paths{grid-template-columns:1fr 1fr;align-items:start}
+    .promise-grid{grid-template-columns:1fr 1fr}
+    .helpcard .two{grid-template-columns:1fr 1fr}
+    .work{grid-template-columns:1fr 1fr}
+    .contact-box{grid-template-columns:1fr 1fr;align-items:start}
+    .contact-box .submit,.contact-box .note{grid-column:1/-1}
+  }
+  @media (min-width:980px){
+    .hero h1{font-size:48px}
+    .head h2{font-size:29px}
+  }
+</style>
 </head>
-
 <body>
-  <div class="topbar">
-    <div class="wrap">
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="id" href="#top">
+      <b>Jordan Moddes</b>
+      <small>Websites for local businesses</small>
+    </a>
+    <a class="topcta" href="#contact">Get a free preview</a>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">For small business owners</div>
+      <h1>See your new website before you spend a dollar.</h1>
+      <p class="lede">I build small businesses a real, working website on Wix — free to look at first. If you like it, we talk price. If you don't, you've lost nothing.</p>
+      <div class="actions">
+        <a class="btn primary" href="#contact">Get a free preview</a>
+        <a class="btn ghost" href="#paths">See how it works</a>
+      </div>
+    </div>
+
+    <div class="hero-panel">
       <div class="row">
-        <a class="brand" href="/">
-          <div class="logo" aria-hidden="true"></div>
-          <div class="t">
-            <b>Jordan Moddes</b>
-            <span>Jmod Co. | Consulting</span>
-          </div>
-        </a>
+        <div class="num">1</div>
+        <div class="txt"><b>I build a preview first</b><span>Using your real business info — no cost, no commitment.</span></div>
+      </div>
+      <div class="row">
+        <div class="num">2</div>
+        <div class="txt"><b>You decide how to run it</b><span>Own the account yourself, or have me manage it monthly.</span></div>
+      </div>
+      <div class="row">
+        <div class="num">3</div>
+        <div class="txt"><b>I help it get found</b><span>Google Business Profile set up right, plus simple social media guidance.</span></div>
+      </div>
+    </div>
+  </div>
+</header>
 
-        <nav aria-label="Primary">
-          <a class="navlink" href="#services">Services</a>
-          <a class="navlink" href="#process">Process</a>
-          <a class="navlink" href="#proof">Proof</a>
-          <a class="navlink" href="#faq">FAQ</a>
-        </nav>
+<section id="paths">
+  <div class="wrap">
+    <div class="kicker">Two ways to work together</div>
+    <div class="head">
+      <h2>Pick the setup that fits how hands-on you want to be.</h2>
+      <p>Both start the same way — a free preview, built on Wix, so you can see the actual site before deciding anything.</p>
+    </div>
 
-        <div class="cta">
-          <a class="btn" href="mailto:jmodops@gmail.com?subject=Consulting%20Inquiry%20-%20JordanModdes.com&body=Goal%3A%0AContext%3A%0ATimeline%3A%0ABudget%3A%0AData%20sources%3A%0A">Email</a>
-          <a class="btn primary" href="#contact"><span class="dot"></span>Request a consult</a>
+    <div class="paths">
+      <div class="path build">
+        <span class="tag">Most owners start here</span>
+        <h3>One-time build</h3>
+        <div class="price">Flat rate <span>quoted after your preview</span></div>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>I build the whole site and hand you the finished Wix account</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>You get full admin access — it's your account, not mine</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>One payment, no ongoing bill from me</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>A short walkthrough so you can make small edits yourself</li>
+        </ul>
+        <p class="fine">Good fit if you're comfortable logging in occasionally to update hours, photos, or a menu.</p>
+      </div>
+
+      <div class="path">
+        <span class="tag">Set it and forget it</span>
+        <h3>Managed monthly</h3>
+        <div class="price">Small monthly fee <span>quoted after your preview</span></div>
+        <ul>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>I keep the site updated — hours, seasonal offers, new photos</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>You email or call me changes instead of learning Wix</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Cancel anytime — the account is still yours, I just admin it</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority when something looks off or breaks</li>
+        </ul>
+        <p class="fine">Good fit if you'd rather run your business than think about your website.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="process">
+  <div class="wrap">
+    <div class="kicker">How this actually goes</div>
+    <div class="head">
+      <h2>Four steps, and you can stop after any of them.</h2>
+      <p>Nothing gets built without your say-so, and nothing costs you anything until step three.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Tell me about your business</h3>
+          <p>A quick call or a few notes — what you offer, who your customers are, and what you already have online (even if it's just a Facebook page).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>I build a free preview on Wix</h3>
+          <p>A real, working site using your actual business details — not a stock template with placeholder text. You get a link to look at it whenever you want.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>You choose a path, or you don't</h3>
+          <p>If it's not for you, no hard feelings and no charge. If it is, we pick one-time build or managed monthly and I get it live.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div>
+          <h3>We make sure people can find it</h3>
+          <p>I set up or clean up your Google Business Profile, and give you plain, specific suggestions for social media — what to post and where, in language that makes sense.</p>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <header class="hero">
-    <div class="gridfx" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="row">
-        <div class="panel">
-          <div class="in">
-            <div class="chips">
-              <span class="chip">Ops → Systems</span>
-              <span class="chip">Dashboards</span>
-              <span class="chip">Automation</span>
-              <span class="chip">Root-cause</span>
-              <span class="chip">Exec-ready</span>
-            </div>
+<section id="transparency">
+  <div class="wrap">
+    <div class="kicker">Transparency, not fine print</div>
+    <div class="head">
+      <h2>What I will and won't do — before you ask.</h2>
+      <p>Most bad experiences with a "web guy" come from unclear expectations. Here's mine, in plain terms.</p>
+    </div>
 
-            <h1>Consulting that ships outcomes.</h1>
-            <p class="sub">
-              I help operators and builders remove bottlenecks, harden processes, and stand up reporting + automation that actually gets used.
-              If it can’t be measured, it doesn’t count.
-            </p>
-
-            <div class="heroactions">
-              <a class="btn primary" href="#contact"><span class="dot"></span>Book a call</a>
-              <a class="btn" href="#services">See packages</a>
-              <span class="badge"><span class="pulse"></span>Availability: limited slots</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel mini">
-          <div class="in">
-            <div class="chips">
-              <span class="chip">What you get</span>
-              <span class="chip">Fast + blunt</span>
-            </div>
-            <div class="kpis">
-              <div class="kpi">
-                <b>Deliverable</b>
-                <span>Clear plan + owner map</span>
-                <div class="tag">PDF + action checklist</div>
-              </div>
-              <div class="kpi">
-                <b>Speed</b>
-                <span>Days, not months</span>
-                <div class="tag">Depends on scope</div>
-              </div>
-              <div class="kpi">
-                <b>Focus</b>
-                <span>Cost / time / quality</span>
-                <div class="tag">No vanity metrics</div>
-              </div>
-              <div class="kpi">
-                <b>Tooling</b>
-                <span>Sheets • BI • Scripts</span>
-                <div class="tag">Low-friction stack</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+    <div class="promise-grid">
+      <div class="promise">
+        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Free means free</h3>
+        <p>The preview isn't a bait-and-switch. You can look at it, share it with your spouse or business partner, and walk away with no invoice.</p>
+      </div>
+      <div class="promise">
+        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>You always own the account</h3>
+        <p>Whether you pick one-time or managed, the Wix account is registered to your business. If we ever part ways, the site goes with you.</p>
+      </div>
+      <div class="promise">
+        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Pricing before commitment</h3>
+        <p>You'll know the exact number for either path before you agree to anything — never a vague "it depends" after the fact.</p>
+      </div>
+      <div class="promise">
+        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Honest recommendations</h3>
+        <p>If your business doesn't need a website yet, or a free Google Business Profile alone would do more for you, I'll tell you that instead of selling you a build.</p>
       </div>
     </div>
-  </header>
+  </div>
+</section>
 
-  <main>
-    <section id="services">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>Services</h2>
-          <div class="hint">Pick a lane. Don’t boil the ocean.</div>
+<section class="band" id="visibility">
+  <div class="wrap">
+    <div class="kicker">Beyond the website</div>
+    <div class="head">
+      <h2>A site only helps if people can find it.</h2>
+      <p>This part is included with every build — one-time or managed.</p>
+    </div>
+
+    <div class="helpcard">
+      <h3>Getting found, without you needing to become a marketer</h3>
+      <p>Most small business owners I work with aren't trying to become social media experts — they're trying to run a shop, a garage, or a store. That's the part I handle for you.</p>
+      <div class="two">
+        <div class="box">
+          <b>Google Business Profile</b>
+          <span>I'll set it up or fix what's already there — hours, photos, categories, and your address linked so customers can get directions in one tap.</span>
         </div>
-
-        <div class="cards">
-          <div class="card">
-            <div class="in">
-              <h3>Ops Diagnosis (1–2 sessions)</h3>
-              <p>Find the constraint, quantify it, and turn it into a clean execution plan.</p>
-              <div class="bullet">
-                <div><span class="tick"></span><span>Process map + failure points</span></div>
-                <div><span class="tick"></span><span>KPI set that actually indicates health</span></div>
-                <div><span class="tick"></span><span>30-day action plan with owners</span></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="in">
-              <h3>Dashboards + Reporting</h3>
-              <p>One source of truth. Exec-ready. Zero nonsense.</p>
-              <div class="bullet">
-                <div><span class="tick"></span><span>Metric definitions + data dictionary</span></div>
-                <div><span class="tick"></span><span>Daily/weekly views + drilldowns</span></div>
-                <div><span class="tick"></span><span>Alerting + SLA tracking where needed</span></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="in">
-              <h3>Automation + Workflow</h3>
-              <p>Remove manual steps. Reduce error rate. Make it idiot-proof.</p>
-              <div class="bullet">
-                <div><span class="tick"></span><span>Intake → triage → execution loop</span></div>
-                <div><span class="tick"></span><span>Integrations (email/forms/sheets)</span></div>
-                <div><span class="tick"></span><span>Governance: logs, roles, guardrails</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <section id="process">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>Process</h2>
-          <div class="hint">Simple. Fast. Measurable.</div>
-        </div>
-
-        <div class="twocol">
-          <div class="steps">
-            <div class="step">
-              <div class="num">01</div>
-              <div>
-                <b>Scope in 15 minutes</b>
-                <span>What’s broken, what it costs, what “fixed” looks like. We lock deliverables.</span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">02</div>
-              <div>
-                <b>Diagnose the constraint</b>
-                <span>We identify the bottleneck and the drivers. No broad “process improvement” fluff.</span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">03</div>
-              <div>
-                <b>Ship the fix</b>
-                <span>Plan, dashboard, automation, SOP, training — whatever closes the loop.</span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">04</div>
-              <div>
-                <b>Prove impact</b>
-                <span>Before/after, KPI movement, and a maintenance plan so it doesn’t decay.</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="in">
-              <h3>Typical engagements</h3>
-              <p>Choose a shape that matches reality.</p>
-              <div class="bullet">
-                <div><span class="tick"></span><span><b style="color:var(--text)">One-time:</b>&nbsp;diagnosis + plan + deliverable package</span></div>
-                <div><span class="tick"></span><span><b style="color:var(--text)">Sprint:</b>&nbsp;1–3 weeks to implement + handoff</span></div>
-                <div><span class="tick"></span><span><b style="color:var(--text)">Retainer:</b>&nbsp;monthly ops + systems support</span></div>
-              </div>
-
-              <div style="margin-top:14px; border-top:1px solid var(--line); padding-top:14px;">
-                <div class="badge"><span class="pulse"></span>Preferred: sprint + handoff</div>
-                <div style="height:10px"></div>
-                <a class="btn primary" href="#contact"><span class="dot"></span>Start intake</a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <section id="proof">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>Proof</h2>
-          <div class="hint">Real numbers, not adjectives.</div>
-        </div>
-
-        <div class="twocol">
-          <div class="proof">
-            <div class="card">
-              <div class="in">
-                <div class="metric"><b>Lane Dash investment case</b><i>ROI: 5.5 months</i></div>
-                <p>$1.28M investment with forecasted annual entitlement ~ $3.6M. Built the logic, alignment, and execution path.</p>
-              </div>
-            </div>
-            <div class="card">
-              <div class="in">
-                <div class="metric"><b>Outbound putbacks reduction</b><i>3 pallets → ¼ pallet / 10 hrs</i></div>
-                <p>Found root cause (bad damage classification), rebuilt training, and stabilized quality + labor loss.</p>
-              </div>
-            </div>
-            <div class="card">
-              <div class="in">
-                <div class="metric"><b>Rapid Improvement Team turnaround</b><i>31% → 89% in 2 months</i></div>
-                <p>Revamped inbound controls and execution cadence; moved audit compliance from failing to stable.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="in">
-              <h3>What I’m good at</h3>
-              <p>Fast pattern recognition + ruthless simplification.</p>
-              <div class="bullet">
-                <div><span class="tick"></span><span>Translating chaos into a plan leadership will fund</span></div>
-                <div><span class="tick"></span><span>Building dashboards that teams actually use</span></div>
-                <div><span class="tick"></span><span>Automation that reduces manual touch + errors</span></div>
-                <div><span class="tick"></span><span>Handoffs: SOPs, training, and ownership clarity</span></div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <section id="faq">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>FAQ</h2>
-          <div class="hint">If you’re unsure, start with diagnosis.</div>
-        </div>
-
-        <div class="faq">
-          <details>
-            <summary>
-              What kinds of clients do you work with?
-              <span class="chev">⌄</span>
-            </summary>
-            <p>Operators: warehouses, manufacturing, supply chain, logistics, and any team drowning in manual workflows + unclear metrics.</p>
-          </details>
-
-          <details>
-            <summary>
-              Do you write code / build automation?
-              <span class="chev">⌄</span>
-            </summary>
-            <p>Yes when it’s the fastest path to impact. If code adds friction, I’ll use a simpler stack. Outcome > tech flex.</p>
-          </details>
-
-          <details>
-            <summary>
-              What do you need from me to start?
-              <span class="chev">⌄</span>
-            </summary>
-            <p>A clear goal, current workflow, data sources (even messy), and who owns decisions. If you have nothing, we start with a 15-minute scoping call.</p>
-          </details>
-
-          <details>
-            <summary>
-              How do you price work?
-              <span class="chev">⌄</span>
-            </summary>
-            <p>By engagement shape: one-time diagnosis, sprint implementation, or monthly retainer. I’ll quote after scoping.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <div class="wrap">
-        <div class="section-title">
-          <h2>Contact</h2>
-          <div class="hint">Email is fastest. Include goal + timeline.</div>
-        </div>
-
-        <div class="card">
-          <div class="in">
-            <div class="twocol">
-              <div>
-                <h3>Send the intake</h3>
-                <p>Keep it short. I’ll reply with next steps and a scope proposal.</p>
-                <div style="height:12px"></div>
-                <a class="btn primary" href="mailto:jmodops@gmail.com?subject=Consulting%20Intake%20-%20JordanModdes.com&body=Goal%3A%0A%0AWhat%27s%20broken%20(today)%3A%0A%0AWhat%20it%20costs%20(time%2F%24%2Frisk)%3A%0A%0ATimeline%3A%0A%0ABudget%3A%0A%0ATools%2FData%20sources%3A%0A%0AStakeholders%2FOwners%3A%0A">
-                  <span class="dot"></span> Email consulting intake
-                </a>
-                <div style="height:10px"></div>
-                <a class="btn" href="/">Back to home</a>
-              </div>
-
-              <div>
-                <h3>What to include</h3>
-                <div class="bullet">
-                  <div><span class="tick"></span><span>1–2 sentence goal + success criteria</span></div>
-                  <div><span class="tick"></span><span>Current state + where it breaks</span></div>
-                  <div><span class="tick"></span><span>Any numbers you have (volume, SLA, costs)</span></div>
-                  <div><span class="tick"></span><span>Timeline + decision maker</span></div>
-                </div>
-
-                <div style="margin-top:14px; border-top:1px solid var(--line); padding-top:14px;">
-                  <span class="badge">Note: I don’t take “open-ended” scope.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <div class="foot">
-        <div>
-          <div class="small">© <span id="y"></span> Jordan Moddes • Jmod Co.</div>
-          <div style="height:6px"></div>
-          <div>Ops + systems consulting. Built for measurable impact.</div>
-        </div>
-        <div class="small">
-          <div>Contact: <a class="navlink" style="padding:0" href="mailto:jmodops@gmail.com">jmodops@gmail.com</a></div>
-          <div style="height:6px"></div>
-          <div><a class="navlink" style="padding:0" href="/Consult/">/Consult/</a></div>
+        <div class="box">
+          <b>Social media, in plain terms</b>
+          <span>I'll tell you specifically what to post, how often, and on which platform — a short, concrete plan instead of vague advice to "post more."</span>
         </div>
       </div>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
+<section id="work">
+    <div class="work">
+      <div class="job">
+        <b>Lisnup Installations</b>
+        <span class="loc">Kenosha, WI</span>
+        <span>Remote Start & Car Alarm Installation</span>
+      </div>
+  </div>
+</section>
+
+<section class="band" id="contact">
+  <div class="wrap">
+    <div class="kicker">Start here</div>
+    <div class="head">
+      <h2>Get your free preview.</h2>
+      <p>Fill this out and I'll put together a real preview of what your site could look like — no cost, no obligation.</p>
+    </div>
+
+    <form class="contact-box" onsubmit="return false;">
+      <div class="field">
+        <label for="biz">Business name</label>
+        <input id="biz" type="text" placeholder="e.g. Lisnup Installations" />
+      </div>
+      <div class="field">
+        <label for="loc">City &amp; state</label>
+        <input id="loc" type="text" placeholder="e.g. Kenosha, WI" />
+      </div>
+      <div class="field">
+        <label for="email">Email or phone</label>
+        <input id="email" type="text" placeholder="Best way to reach you" />
+      </div>
+      <div class="field">
+        <label for="have">What do you have online now?</label>
+        <select id="have">
+          <option>Nothing yet</option>
+          <option>Facebook or Instagram only</option>
+          <option>An old website</option>
+          <option>Google Business Profile only</option>
+        </select>
+      </div>
+      <div class="field" style="grid-column:1/-1">
+        <label for="notes">Anything I should know?</label>
+        <textarea id="notes" placeholder="Services you offer, a link to your Facebook page, anything you want carried over to the new site"></textarea>
+      </div>
+      <div class="submit">
+        <button type="submit" class="btn primary" style="cursor:pointer">Request my free preview</button>
+        <p class="note">This goes straight to Jordan. No account needed, no spam.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b>Jordan Moddes</b> — websites for small businesses, built on Wix</div>
+    <div>Free preview, clear pricing, and you always keep ownership of your site.</div>
+  </div>
+</footer>
+
 </body>
 </html>
