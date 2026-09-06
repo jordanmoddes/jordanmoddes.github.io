@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasty Pete — Turkey Legs & Brisket, Made With Love</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:        #F3E9D2;
+    --paper-light:  #FAF5E8;
+    --kraft:        #DFC89C;
+    --kraft-dark:   #C7A874;
+    --ink:          #2B2118;
+    --ink-soft:     #574A3B;
+    --oxblood:      #8A2E22;
+    --oxblood-dark: #6E241B;
+    --ember:        #C8862E;
+    --twine:        #E9E1CC;
+    --max: 1120px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img{ max-width:100%; display:block; }
+
+  h1, h2, h3, .display{
+    font-family: 'Rye', serif;
+    font-weight: 400;
+    line-height: 1.08;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  button{ font-family: inherit; cursor: pointer; }
+
+  .wrap{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* subtle paper grain */
+  .grain{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    z-index: 999;
+    background-image:
+      radial-gradient(circle at 20% 30%, #000 0.5px, transparent 0.5px),
+      radial-gradient(circle at 70% 60%, #000 0.5px, transparent 0.5px),
+      radial-gradient(circle at 40% 80%, #000 0.5px, transparent 0.5px);
+    background-size: 3px 3px, 4px 4px, 5px 5px;
+  }
+
+  /* ---------- Twine divider ---------- */
+  .twine-divider{
+    width: 100%;
+    height: 22px;
+    display: block;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper-light);
+    border-bottom: 3px solid var(--ink);
+  }
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding: 14px 20px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand svg{ width:38px; height:38px; flex-shrink:0; }
+  .brand-name{
+    font-family:'Rye', serif;
+    font-size: 1.35rem;
+    color: var(--oxblood);
+  }
+  nav.links{
+    display:none;
+    gap: 28px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+  nav.links a:hover{ color: var(--oxblood); }
+  .call-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background: var(--oxblood);
+    color: var(--paper-light);
+    padding: 10px 16px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    white-space: nowrap;
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .call-btn:hover{
+    transform: translate(1px,1px);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .call-btn svg{ width:16px; height:16px; }
+  .burger{
+    display:flex;
+    background:none;
+    border: 2px solid var(--ink);
+    border-radius:3px;
+    width: 40px; height:40px;
+    align-items:center;
+    justify-content:center;
+  }
+  .burger span, .burger span::before, .burger span::after{
+    content:'';
+    display:block;
+    width: 18px; height: 2px;
+    background: var(--ink);
+    position:relative;
+  }
+  .burger span::before{ position:absolute; top:-6px; }
+  .burger span::after{ position:absolute; top:6px; }
+
+  .mobile-menu{
+    display:none;
+    flex-direction:column;
+    background: var(--paper-light);
+    border-bottom: 3px solid var(--ink);
+  }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a{
+    padding: 14px 20px;
+    border-top: 1px solid var(--kraft-dark);
+    font-weight:600;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    background: var(--kraft);
+    padding: 56px 0 40px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+      repeating-linear-gradient(135deg, rgba(43,33,24,0.035) 0 2px, transparent 2px 14px);
+    pointer-events:none;
+  }
+  .stamp{
+    width: 128px;
+    height: 128px;
+    margin: 0 auto 22px;
+    position:relative;
+    z-index:1;
+  }
+  .hero-kicker{
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--oxblood-dark);
+    margin-bottom: 6px;
+    position:relative;
+    z-index:1;
+  }
+  .hero h1{
+    font-size: 2.55rem;
+    margin: 0 auto 16px;
+    max-width: 11.5ch;
+    position:relative;
+    z-index:1;
+    color: var(--ink);
+  }
+  .hero h1 .accent{ color: var(--oxblood); }
+  .hero p.sub{
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 34ch;
+    margin: 0 auto 28px;
+    line-height: 1.5;
+    position:relative;
+    z-index:1;
+  }
+  .hero-ctas{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:center;
+    position:relative;
+    z-index:1;
+  }
+  .btn-primary{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background: var(--oxblood);
+    color: var(--paper-light);
+    padding: 16px 30px;
+    font-weight:700;
+    font-size: 1.05rem;
+    border-radius: 4px;
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary:hover{ transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
+  .btn-primary svg{ width:20px; height:20px; }
+  .btn-ghost{
+    font-weight:700;
+    color: var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 2px;
+    font-size: 0.95rem;
+  }
+
+  /* ---------- Section shell ---------- */
+  section{ padding: 54px 0; }
+  .section-head{
+    text-align:center;
+    max-width: 46ch;
+    margin: 0 auto 34px;
+  }
+  .section-head h2{
+    font-size: 1.9rem;
+    margin: 0 0 12px;
+  }
+  .section-head p{
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    line-height: 1.55;
+    margin:0;
+  }
+
+  /* ---------- About ---------- */
+  .about{ background: var(--paper-light); }
+  .about-inner{
+    display:flex;
+    flex-direction:column;
+    gap: 28px;
+  }
+  .about-card{
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 26px 22px;
+    position:relative;
+  }
+  .about-card::after{
+    content:'';
+    position:absolute;
+    top:-10px; left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 62px; height: 20px;
+    background: var(--twine);
+    border: 1px solid var(--kraft-dark);
+  }
+  .about-card h3{
+    font-size: 1.35rem;
+    color: var(--oxblood);
+    margin: 0 0 10px;
+  }
+  .about-card p{
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin: 0 0 12px;
+    font-size: 1.01rem;
+  }
+  .about-card p:last-child{ margin-bottom:0; }
+  .about-stats{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .stat{
+    background: var(--paper-light);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 16px 12px;
+    text-align:center;
+  }
+  .stat .num{
+    font-family:'Rye', serif;
+    font-size: 1.6rem;
+    color: var(--oxblood);
+    display:block;
+  }
+  .stat .label{
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  /* ---------- Menu ---------- */
+  .menu{ background: var(--paper); }
+  .menu-grid{
+    display:flex;
+    flex-direction:column;
+    gap: 18px;
+  }
+  .menu-item{
+    background: var(--paper-light);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 22px;
+    display:flex;
+    gap: 16px;
+    align-items:flex-start;
+  }
+  .menu-item .icon{
+    width: 46px; height:46px;
+    flex-shrink:0;
+    color: var(--oxblood);
+  }
+  .menu-item h3{
+    font-size: 1.25rem;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .menu-item p{
+    color: var(--ink-soft);
+    font-size: 0.97rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .menu-item .tag{
+    display:inline-block;
+    margin-top:10px;
+    font-size: 0.78rem;
+    font-weight:700;
+    color: var(--oxblood-dark);
+    background: rgba(138,46,34,0.08);
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .menu-note{
+    text-align:center;
+    margin-top: 26px;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Reviews ---------- */
+  .reviews{ background: var(--kraft); position:relative; }
+  .reviews::before{
+    content:'';
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(135deg, rgba(43,33,24,0.035) 0 2px, transparent 2px 14px);
+    pointer-events:none;
+  }
+  .review-scroll{
+    display:flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 4px 4px 14px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    position:relative;
+    z-index:1;
+  }
+  .review-scroll::-webkit-scrollbar{ height: 6px; }
+  .review-scroll::-webkit-scrollbar-thumb{ background: var(--ink); border-radius: 4px; }
+  .review-card{
+    scroll-snap-align: start;
+    flex: 0 0 82%;
+    background: var(--paper-light);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 22px;
+  }
+  .review-card .stars{ color: var(--ember); font-size: 1rem; margin-bottom: 10px; letter-spacing: 2px; }
+  .review-card p{
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+  .review-card .who{
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Order / Contact ---------- */
+  .order{ background: var(--ink); color: var(--paper-light); }
+  .order .section-head h2{ color: var(--paper-light); }
+  .order .section-head p{ color: #C9BDA9; }
+  .order-grid{
+    display:flex;
+    flex-direction:column;
+    gap: 26px;
+  }
+  .order-call{
+    background: var(--oxblood);
+    border-radius: 6px;
+    padding: 30px 24px;
+    text-align:center;
+  }
+  .order-call .phone{
+    font-family:'Rye', serif;
+    font-size: 2rem;
+    display:block;
+    margin: 10px 0 18px;
+    color: var(--paper-light);
+  }
+  .order-call p{
+    color: #F1D9CD;
+    margin: 0 0 4px;
+    font-size: 0.95rem;
+  }
+  .order-call .call-big{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background: var(--paper-light);
+    color: var(--oxblood);
+    padding: 14px 26px;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .order-call .call-big svg{ width:18px; height:18px; }
+
+  .order-form{
+    background: #3A2E22;
+    border-radius: 6px;
+    padding: 26px 22px;
+  }
+  .order-form h3{
+    font-family:'Rye', serif;
+    font-size: 1.3rem;
+    margin: 0 0 6px;
+    color: var(--paper-light);
+  }
+  .order-form > p{
+    color: #C9BDA9;
+    font-size: 0.92rem;
+    margin: 0 0 18px;
+    line-height: 1.5;
+  }
+  .field{ margin-bottom: 14px; }
+  .field label{
+    display:block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #D8CBB6;
+    margin-bottom: 6px;
+  }
+  .field input, .field textarea{
+    width:100%;
+    background: var(--paper-light);
+    border: none;
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .field textarea{ resize: vertical; min-height: 80px; }
+  .submit-btn{
+    width:100%;
+    background: var(--ember);
+    color: var(--ink);
+    border: none;
+    border-radius: 4px;
+    padding: 14px;
+    font-weight: 800;
+    font-size: 0.98rem;
+  }
+  .form-success{
+    display:none;
+    background: #2E4432;
+    color: #DDF0DE;
+    padding: 16px;
+    border-radius: 4px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .form-success.show{ display:block; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background: var(--paper-light);
+    border-top: 3px solid var(--ink);
+    padding: 34px 0 20px;
+  }
+  .footer-top{
+    display:flex;
+    flex-direction:column;
+    gap: 20px;
+    align-items:center;
+    text-align:center;
+    margin-bottom: 22px;
+  }
+  .footer-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .footer-brand svg{ width:30px; height:30px; }
+  .footer-brand span{
+    font-family:'Rye', serif;
+    font-size: 1.15rem;
+    color: var(--oxblood);
+  }
+  .footer-tag{
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    max-width: 30ch;
+  }
+  .footer-links{
+    display:flex;
+    gap: 20px;
+    flex-wrap:wrap;
+    justify-content:center;
+    font-size: 0.9rem;
+    font-weight:600;
+    color: var(--ink-soft);
+  }
+  .footer-bottom{
+    border-top: 1px solid var(--kraft-dark);
+    padding-top: 16px;
+    text-align:center;
+    font-size: 0.78rem;
+    color: #8A7C68;
+  }
+  .footer-bottom a{ color: #8A7C68; text-decoration: underline; }
+
+  /* =========================================================
+     Tablet
+  ========================================================= */
+  @media (min-width: 700px){
+    nav.links{ display:flex; }
+    .burger{ display:none; }
+
+    .hero{ padding: 76px 0 60px; }
+    .hero h1{ font-size: 3.4rem; max-width: 15ch; }
+    .hero p.sub{ font-size: 1.18rem; max-width: 42ch; }
+    .hero-ctas{ flex-direction: row; }
+
+    .about-inner{
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .about-card{ flex: 1.3; }
+    .about-stats{ flex: 1; align-content:center; }
+
+    .menu-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .review-card{ flex: 0 0 46%; }
+
+    .order-grid{
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .order-call, .order-form{ flex:1; }
+    .order-call{ display:flex; flex-direction:column; justify-content:center; }
+
+    .footer-top{
+      flex-direction: row;
+      justify-content: space-between;
+      text-align:left;
+    }
+    .footer-tag{ text-align:left; }
+  }
+
+  /* =========================================================
+     Desktop
+  ========================================================= */
+  @media (min-width: 1020px){
+    .hero h1{ font-size: 4rem; }
+    .section-head h2{ font-size: 2.3rem; }
+
+    .menu-grid{ grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .menu-item{ padding: 28px; }
+
+    .review-card{ flex: 0 0 32%; }
+
+    .about-card{ padding: 34px 30px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ scroll-behavior: auto !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav-row">
+    <a href="#top" class="brand">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="30" stroke="#8A2E22" stroke-width="2.5"/>
+        <circle cx="32" cy="32" r="24" stroke="#8A2E22" stroke-width="1.5" stroke-dasharray="2 3"/>
+        <path d="M20 40c0-5 2-8 4-10-2-3-1-7 2-8 1 2 2 3 3 3h6c1 0 2-1 3-3 3 1 4 5 2 8 2 2 4 5 4 10" stroke="#8A2E22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M26 22c-1-2-1-4 0-5M38 22c1-2 1-4 0-5" stroke="#8A2E22" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">Tasty Pete</span>
+    </a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#order">Order</a>
+    </nav>
+    <a href="tel:5129397013" class="call-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      512-939-7013
+    </a>
+    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#order">Order</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div id="top"></div>
+<section class="hero">
+  <div class="wrap">
+    <svg class="stamp" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="64" cy="64" r="60" stroke="#8A2E22" stroke-width="3"/>
+      <circle cx="64" cy="64" r="49" stroke="#8A2E22" stroke-width="1.5" stroke-dasharray="3 4"/>
+      <path d="M40 78c0-9 4-15 7-19-3-6-2-13 3-15 2 4 4 6 6 6h10c2 0 4-2 6-6 5 2 6 9 3 15 3 4 7 10 7 19" stroke="#8A2E22" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M52 44c-2-4-2-8 0-10M78 44c2-4 2-8 0-10" stroke="#8A2E22" stroke-width="3.5" stroke-linecap="round"/>
+      <text x="64" y="105" text-anchor="middle" font-family="Rye, serif" font-size="9" fill="#8A2E22">EST. AUSTIN, TX</text>
+    </svg>
+    <p class="hero-kicker">Central Texas smoked BBQ</p>
+    <h1>Turkey legs and <span class="accent">brisket</span>, made with love</h1>
+    <p class="sub">Low and slow, off a real wood-fired pit. Call ahead, tell Pete what you're feeding, and it'll be ready when you get there.</p>
+    <div class="hero-ctas">
+      <a href="tel:5129397013" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call 512-939-7013
+      </a>
+      <a href="#menu" class="btn-ghost">See what's smoking</a>
+    </div>
+  </div>
+</section>
+
+<!-- twine divider -->
+<svg class="twine-divider" viewBox="0 0 400 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 11 Q 25 2, 50 11 T 100 11 T 150 11 T 200 11 T 250 11 T 300 11 T 350 11 T 400 11" fill="none" stroke="#C7A874" stroke-width="2"/>
+</svg>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>A backyard pit that outgrew the backyard</h2>
+      <p>No storefront, no drive-thru — just a smoker, good wood, and word of mouth that wouldn't quit.</p>
+    </div>
+    <div class="about-inner">
+      <div class="about-card">
+        <h3>How Pete does it</h3>
+        <p>Tasty Pete runs on one rule: nothing leaves the smoker until it's ready, not until the clock says so. Turkey legs go in early and come out dark, juicy, and falling off the bone. Brisket gets the long haul — trimmed, rubbed, and rested properly before it's ever sliced.</p>
+        <p>There's no dining room and no drive-thru. You call, you order, you pick it up hot. That's the whole operation, and that's exactly why it tastes like someone's actually paying attention.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat"><span class="num">2</span><span class="label">Signature smokes</span></div>
+        <div class="stat"><span class="num">100%</span><span class="label">Made to order</span></div>
+        <div class="stat"><span class="num">512</span><span class="label">Austin area code</span></div>
+        <div class="stat"><span class="num">1</span><span class="label">Pit, no shortcuts</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Off the smoker</h2>
+      <p>Two things, done right. Call ahead for quantities — Pete smokes to order, not to sit under a heat lamp.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 6c6 4 8 10 6 15 4 2 6 6 4 11-2 5-8 8-14 6-6 2-12-1-14-6-2-5 0-9 4-11-2-5 0-11 6-15 2 4 4 6 4 6s2-2 4-6z" stroke="#8A2E22" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M18 20l2 12M30 20l-2 12" stroke="#8A2E22" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h3>Smoked turkey legs</h3>
+          <p>Big, dark, and tender all the way to the bone — brined first, then smoked low and slow until the skin turns nearly mahogany.</p>
+          <span class="tag">Sold by the leg</span>
+        </div>
+      </div>
+      <div class="menu-item">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="16" width="32" height="16" rx="3" stroke="#8A2E22" stroke-width="2"/>
+          <path d="M12 20h24M12 24h24M12 28h24" stroke="#8A2E22" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h3>Texas-style brisket</h3>
+          <p>A long smoke, a proper rest, and a bark that holds up to the knife. Sliced fresh when you order, not before.</p>
+          <span class="tag">Sold by the pound</span>
+        </div>
+      </div>
+    </div>
+    <p class="menu-note">Ask about sides and full trays for parties, tailgates, and church functions — call to check what's available that day.</p>
+  </div>
+</section>
+
+<!-- twine divider -->
+<svg class="twine-divider" viewBox="0 0 400 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 11 Q 25 20, 50 11 T 100 11 T 150 11 T 200 11 T 250 11 T 300 11 T 350 11 T 400 11" fill="none" stroke="#C7A874" stroke-width="2"/>
+</svg>
+
+<!-- ============ REVIEWS ============ -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What people say after they call</h2>
+      <p>Tasty Pete runs on referrals — here's the kind of thing that gets repeated.</p>
+    </div>
+    <div class="review-scroll">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>Called at 10am, picked up a turkey leg by lunch and it was still hot from the smoker. Best one I've had outside of a fair.</p>
+        <div class="who">— Phone order, Austin</div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>Got a full brisket for a family thing on short notice. Bark was perfect, and it fed way more people than I expected.</p>
+        <div class="who">— Repeat customer</div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>Word of mouth got me here and now I'm the one spreading the word. No menu board, no website — just really good BBQ.</p>
+        <div class="who">— First-time caller</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ORDER / CONTACT ============ -->
+<section class="order" id="order">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ready to order?</h2>
+      <p>Tasty Pete takes orders by phone. Call ahead, especially for brisket by the pound or trays for a group.</p>
+    </div>
+    <div class="order-grid">
+      <div class="order-call">
+        <p>Fastest way to get fed</p>
+        <span class="phone">512-939-7013</span>
+        <a href="tel:5129397013" class="call-big">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Tap to call Pete
+        </a>
+      </div>
+      <div class="order-form">
+        <h3>Or request a callback</h3>
+        <p>Leave your info and what you're looking for — Pete will call you back to confirm your order and pickup time.</p>
+        <form id="orderForm">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" required placeholder="Your name">
+          </div>
+          <div class="field">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" required placeholder="(512) 000-0000">
+          </div>
+          <div class="field">
+            <label for="details">What are you looking for?</label>
+            <textarea id="details" placeholder="e.g. 2 turkey legs and 2 lbs of brisket, pickup around 6pm"></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Request callback</button>
+        </form>
+        <div class="form-success" id="formSuccess">Got it — Pete will give you a call back to confirm your order and pickup time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" stroke="#8A2E22" stroke-width="2.5"/>
+          <path d="M20 40c0-5 2-8 4-10-2-3-1-7 2-8 1 2 2 3 3 3h6c1 0 2-1 3-3 3 1 4 5 2 8 2 2 4 5 4 10" stroke="#8A2E22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Tasty Pete</span>
+      </div>
+      <p class="footer-tag">Turkey legs and brisket, made with love. Austin, TX — order by phone.</p>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#order">Order</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      Site Admined by <a href="https://jordanmoddes.com" target="_blank">Jmod Co.</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burgerBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  const form = document.getElementById('orderForm');
+  const success = document.getElementById('formSuccess');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    form.style.display = 'none';
+    success.classList.add('show');
+  });
+</script>
+
+</body>
+</html>
