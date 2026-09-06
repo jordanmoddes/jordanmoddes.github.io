@@ -1,389 +1,497 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Jordan Moddes — Websites for small businesses</title>
-<meta name="description" content="A straightforward website for your business, built on Wix. See a free preview first. No jargon, no surprise bills." />
-<meta name="theme-color" content="#faf7f1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasty Pete — Smoked Turkey Legs & Brisket</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Playfair+Display:wght@600;700&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#faf7f1;
-    --surface:#ffffff;
-    --surface-2:#f1ebdd;
-    --ink:#211d16;
-    --muted:#6f6555;
-    --line:#e6ddc9;
-    --accent:#2f6f5e;
-    --accent-dark:#204d40;
-    --gold:#c1852f;
-    --max:1080px;
-    --serif: "Fraunces", Georgia, serif;
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --cream:      #F7EFDD;
+    --cream-alt:  #EFE2C4;
+    --mustard:    #C98A33;
+    --oxblood:    #8B3A2A;
+    --oxblood-dk: #6E2C1F;
+    --near-black: #241A11;
+    --cream-text: #F4E9D8;
+    --ink:        #2B2118;
+    --ink-soft:   #5A4C3C;
+    --rule:       #A9502F;
+    --max: 760px;
   }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
   body{
     margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:var(--sans);
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Mulish', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-  a{color:inherit}
-  img,svg{display:block;max-width:100%}
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
-  h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
-  p{margin:0}
-  :focus-visible{outline:2px solid var(--accent-dark);outline-offset:3px}
-  @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+  img{ max-width:100%; display:block; }
+  a{ color: inherit; text-decoration: none; }
+  button{ font-family: inherit; cursor: pointer; }
 
-  .topbar{padding:18px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(250,247,241,.92);backdrop-filter:blur(6px);z-index:10}
-  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px}
-  .id{display:flex;flex-direction:column;text-decoration:none;color:inherit;line-height:1.2}
-  .id b{font-family:var(--serif);font-size:18px;font-weight:600}
-  .id small{font-size:12px;color:var(--muted);font-weight:500}
-  .topcta{
-    display:inline-flex;align-items:center;gap:8px;
-    background:var(--accent);color:#fff;
-    padding:9px 16px;border-radius:8px;
-    font-size:13.5px;font-weight:600;
-    text-decoration:none;white-space:nowrap;
+  .wrap{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 26px;
   }
-  .topcta:hover{background:var(--accent-dark)}
 
-  .hero{padding:44px 0 36px}
-  .hero .eyebrow{font-size:13.5px;color:var(--accent-dark);font-weight:600;margin-bottom:14px}
-  .hero h1{font-size:34px;line-height:1.15;max-width:15ch}
-  .hero .lede{margin-top:16px;font-size:16.5px;color:var(--muted);max-width:40ch;line-height:1.6}
-  .hero .actions{margin-top:24px;display:flex;flex-wrap:wrap;gap:12px}
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    padding:13px 20px;border-radius:9px;font-weight:600;font-size:14.5px;
-    text-decoration:none;border:1px solid transparent;
+  /* Outlined wood-type display headings */
+  .display{
+    font-family: 'Rye', serif;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    -webkit-text-stroke: 0.6px currentColor;
   }
-  .btn.primary{background:var(--accent);color:#fff}
-  .btn.primary:hover{background:var(--accent-dark)}
-  .btn.ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
-  .btn.ghost:hover{background:var(--ink);color:#fff}
+  h1.display, h2.display{ text-transform: none; }
 
-  .hero-panel{margin-top:32px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
-  .hero-panel .row{display:flex;align-items:flex-start;gap:14px;padding:12px 0}
-  .hero-panel .row + .row{border-top:1px solid var(--line)}
-  .hero-panel .num{
-    flex:0 0 32px;height:32px;border-radius:50%;
-    background:var(--surface-2);color:var(--accent-dark);
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--serif);font-size:14px;font-weight:600;
+  /* ---------- Header ---------- */
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--mustard);
   }
-  .hero-panel .txt b{display:block;font-size:14.5px}
-  .hero-panel .txt span{display:block;font-size:13px;color:var(--muted);margin-top:2px;line-height:1.5}
-
-  section{padding:44px 0}
-  .band{background:var(--surface-2)}
-  .kicker{font-size:13px;font-weight:600;color:var(--accent-dark);margin-bottom:10px}
-  .head{max-width:48ch}
-  .head h2{font-size:25px;line-height:1.25}
-  .head p{margin-top:12px;color:var(--muted);font-size:15px;line-height:1.6}
-
-  .paths{margin-top:28px;display:grid;gap:16px}
-  .path{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
-  .path.build{border-color:var(--accent);border-width:2px}
-  .path .tag{display:inline-block;font-size:11.5px;font-weight:600;color:var(--accent-dark);background:var(--surface-2);padding:5px 10px;border-radius:999px;margin-bottom:14px}
-  .path h3{font-size:20px}
-  .path .price{font-family:var(--serif);font-size:23px;margin-top:8px}
-  .path .price span{font-family:var(--sans);font-size:12.5px;color:var(--muted);font-weight:500}
-  .path ul{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
-  .path li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink)}
-  .path li svg{flex:0 0 18px;margin-top:2px}
-  .path .fine{margin-top:16px;font-size:12.5px;color:var(--muted);line-height:1.55}
-
-  .steps{margin-top:28px}
-  .step{display:grid;grid-template-columns:38px 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--line)}
-  .step:last-child{border-bottom:1px solid var(--line)}
-  .step .n{font-family:var(--serif);font-size:19px;color:var(--accent-dark)}
-  .step h3{font-size:16px;margin-bottom:5px}
-  .step p{color:var(--muted);font-size:14px;line-height:1.6;max-width:54ch}
-
-  .promise-grid{margin-top:28px;display:grid;gap:14px}
-  .promise{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
-  .promise h3{font-size:15.5px;display:flex;gap:10px;align-items:center}
-  .promise h3 svg{flex:0 0 20px}
-  .promise p{margin-top:8px;color:var(--muted);font-size:13.5px;line-height:1.6}
-
-  .helpcard{margin-top:28px;background:var(--accent-dark);color:#fdfbf6;border-radius:16px;padding:26px;display:grid;gap:18px}
-  .helpcard h3{color:#fff;font-size:19px}
-  .helpcard p{color:#e4e9e6;font-size:14px;line-height:1.65;margin-top:8px}
-  .helpcard .two{display:grid;gap:14px}
-  .helpcard .box{background:rgba(255,255,255,.08);border-radius:10px;padding:16px}
-  .helpcard .box b{display:block;font-size:14px;margin-bottom:6px}
-  .helpcard .box span{font-size:13px;color:#dce4e0;line-height:1.55}
-
-  .work{margin-top:28px;display:grid;gap:14px}
-  .job{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:6px;max-width:420px}
-  .job b{font-size:15px}
-  .job span{font-size:13.5px;color:var(--muted);line-height:1.55}
-  .job .loc{font-size:12px;color:var(--gold);font-weight:600}
-
-  .contact-box{margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:grid;gap:16px}
-  .field{display:grid;gap:6px}
-  .field label{font-size:13px;font-weight:600}
-  .field input,.field select,.field textarea{
-    font-family:var(--sans);font-size:14.5px;
-    padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);
-    color:var(--ink);width:100%;
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding: 16px 26px;
+    max-width: var(--max);
+    margin: 0 auto;
   }
-  .field textarea{resize:vertical;min-height:88px}
-  .contact-box .submit{margin-top:2px}
-  .note{font-size:12.5px;color:var(--muted);margin-top:4px}
-
-  footer{padding:30px 0;border-top:1px solid var(--line)}
-  footer .wrap{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
-  footer b{color:var(--ink)}
-
-  @media (min-width:700px){
-    .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
-    .hero h1{font-size:42px}
-    .hero-panel{margin-top:0}
-    .paths{grid-template-columns:1fr 1fr;align-items:start}
-    .promise-grid{grid-template-columns:1fr 1fr}
-    .helpcard .two{grid-template-columns:1fr 1fr}
-    .contact-box{grid-template-columns:1fr 1fr;align-items:start}
-    .contact-box .submit,.contact-box .note{grid-column:1/-1}
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand .mark{
+    width: 44px; height:44px;
+    border-radius: 50%;
+    border: 2px solid var(--oxblood);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    position:relative;
   }
-  @media (min-width:980px){
-    .hero h1{font-size:48px}
-    .head h2{font-size:29px}
+  .brand .mark::after{
+    content:'';
+    position:absolute; inset:4px;
+    border: 1px solid var(--oxblood);
+    border-radius:50%;
+  }
+  .brand .mark span{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size: 1.15rem;
+    color: var(--oxblood);
+    position:relative; z-index:1;
+  }
+  .brand-name{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size: 1.3rem;
+    color: var(--ink);
+  }
+  nav.links{
+    display:none;
+    gap: 26px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+  nav.links a:hover{ color: var(--oxblood); }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 12px 26px;
+    white-space: nowrap;
+  }
+  .pill-solid{ background: var(--oxblood); color: var(--cream-text); border: none; }
+  .pill-solid:hover{ background: var(--oxblood-dk); }
+  .pill-outline{ background: var(--cream); color: var(--oxblood); border: 2px solid var(--oxblood); }
+  .pill-outline.on-dark{ background: transparent; color: var(--cream-text); border: 2px solid var(--cream-text); }
+
+  .burger{
+    display:flex;
+    background:none;
+    border:none;
+    width: 34px; height:26px;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:0;
+  }
+  .burger span{ display:block; height:2.5px; width:100%; background: var(--ink); border-radius:2px; }
+
+  .mobile-menu{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    gap: 22px;
+    background: var(--cream);
+    padding: 30px 26px 40px;
+  }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a{
+    font-weight:600;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+  .mobile-menu a.underline{ text-decoration: underline; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background: var(--mustard);
+    padding-bottom: 44px;
+  }
+  .hero-photo{
+    width:100%;
+    aspect-ratio: 4/3;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-photo img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
+  }
+  .hero-content{ padding: 34px 26px 0; text-align:center; }
+  .hero h1{
+    font-size: 2.05rem;
+    color: var(--cream-text);
+    margin: 0 0 16px;
+  }
+  .hero p.sub{
+    color: var(--cream-text);
+    font-size: 1.02rem;
+    line-height: 1.6;
+    max-width: 34ch;
+    margin: 0 auto 26px;
+  }
+  .hero-ctas{
+    display:flex;
+    flex-direction:column;
+    gap: 14px;
+    align-items:center;
+  }
+  .hero-ctas .pill{ width: 100%; max-width: 280px; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding: 58px 0; text-align:center; }
+  .section-head h2{
+    font-size: 1.9rem;
+    color: var(--ink);
+    margin: 0 0 20px;
+  }
+  section.on-dark .section-head h2{ color: var(--cream-text); }
+
+  /* ---------- Backyard Roots ---------- */
+  .roots{ background: var(--cream); }
+  .roots p.body{
+    color: var(--ink-soft);
+    font-size: 1.03rem;
+    line-height: 1.7;
+    max-width: 42ch;
+    margin: 0 auto 30px;
+  }
+  .rule{
+    width: 140px;
+    height: 2px;
+    background: var(--rule);
+    margin: 0 auto 34px;
+    border:none;
+  }
+  .stats{
+    display:flex;
+    flex-direction:column;
+    gap: 16px;
+  }
+  .stats .stat{
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ---------- Menu ---------- */
+  .menu{ background: var(--cream-alt); }
+  .menu-item{ margin-bottom: 54px; }
+  .menu-item:last-of-type{ margin-bottom: 0; }
+  .menu-photo{
+    width:100%;
+    aspect-ratio: 4/3;
+    margin-bottom: 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .menu-photo img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
+  }
+  .menu-item h3{
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+  .menu-item p{
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 40ch;
+    margin: 0 auto;
+  }
+  .menu-note{
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    max-width: 38ch;
+    margin: 22px auto 0;
+    line-height: 1.6;
+  }
+
+  /* ---------- Reviews ---------- */
+  .reviews{ background: var(--near-black); }
+  .reviews .section-head p{
+    color: var(--cream-text);
+    opacity: 0.85;
+    font-size: 1rem;
+    max-width: 40ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .review{ margin-top: 46px; }
+  .review blockquote{
+    font-family: 'Rye', serif;
+    -webkit-text-stroke: 0.4px currentColor;
+    color: var(--cream-text);
+    font-size: 1.1rem;
+    line-height: 1.65;
+    max-width: 32ch;
+    margin: 0 auto 18px;
+  }
+  .review .who{
+    font-family: 'Mulish', sans-serif;
+    font-weight: 600;
+    color: var(--cream-text);
+    opacity: 0.9;
+    font-size: 0.98rem;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background: var(--cream);
+    padding: 54px 0 40px;
+    text-align: center;
+  }
+  .footer-brand{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .footer-brand .mark{
+    width: 46px; height:46px;
+    border-radius: 50%;
+    border: 2px solid var(--oxblood);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .footer-brand .mark::after{
+    content:'';
+    position:absolute; inset:4px;
+    border: 1px solid var(--oxblood);
+    border-radius:50%;
+  }
+  .footer-brand .mark span{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size: 1.2rem;
+    color: var(--oxblood);
+    position:relative; z-index:1;
+  }
+  .footer-brand .name{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size: 1.35rem;
+    color: var(--ink);
+  }
+  footer .tagline{
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    max-width: 34ch;
+    margin: 0 auto 20px;
+    line-height: 1.55;
+  }
+  footer .credit{
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    opacity: 0.85;
+  }
+  footer .credit a{ text-decoration: underline; }
+
+  /* =========================================================
+     Tablet / Desktop
+  ========================================================= */
+  @media (min-width: 700px){
+    nav.links{ display:flex; align-items:center; }
+    .burger{ display:none; }
+    .nav-row{ padding: 20px 26px; }
+
+    .hero-content{ padding-top: 44px; }
+    .hero h1{ font-size: 2.7rem; }
+    .hero p.sub{ font-size: 1.1rem; max-width: 44ch; }
+    .hero-ctas{ flex-direction: row; justify-content:center; }
+    .hero-ctas .pill{ width: auto; }
+
+    section{ padding: 76px 0; }
+    .section-head h2{ font-size: 2.2rem; }
+
+    .menu-grid{ display:flex; gap: 32px; }
+    .menu-item{ flex:1; margin-bottom:0; text-align:left; }
+    .menu-item p{ margin: 0; }
+    .menu-note{ margin-top: 40px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ scroll-behavior: auto !important; }
   }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="wrap">
-    <a class="id" href="#top">
-      <b>Jordan Moddes</b>
-      <small>Websites for local businesses</small>
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="nav-row">
+    <a href="#top" class="brand">
+      <span class="mark"><span>P</span></span>
+      <span class="brand-name">Tasty Pete</span>
     </a>
-    <a class="topcta" href="#contact">Get a free preview</a>
+    <nav class="links">
+      <a href="#roots">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#reviews">Reviews</a>
+      <a href="tel:5129397013" class="pill pill-solid">Call to Order</a>
+    </nav>
+    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
-</div>
-
-<header class="hero" id="top">
-  <div class="wrap">
-    <div>
-      <div class="eyebrow">For small business owners</div>
-      <h1>See your new website before you spend a dollar.</h1>
-      <p class="lede">I build small businesses a real, working website on Wix — free to look at first. If you like it, we talk price. If you don't, you've lost nothing.</p>
-      <div class="actions">
-        <a class="btn primary" href="#contact">Get a free preview</a>
-        <a class="btn ghost" href="#paths">See how it works</a>
-      </div>
-    </div>
-
-    <div class="hero-panel">
-      <div class="row">
-        <div class="num">1</div>
-        <div class="txt"><b>I build a preview first</b><span>Using your real business info — no cost, no commitment.</span></div>
-      </div>
-      <div class="row">
-        <div class="num">2</div>
-        <div class="txt"><b>You decide how to run it</b><span>Own the account yourself, or have me manage it monthly.</span></div>
-      </div>
-      <div class="row">
-        <div class="num">3</div>
-        <div class="txt"><b>I help it get found</b><span>Google Business Profile, set up or cleaned up so customers can actually find you.</span></div>
-      </div>
-    </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#top" class="underline">Home</a>
+    <a href="#menu">Inquiry Services Page</a>
+    <a href="tel:5129397013" class="pill pill-solid">Call to Order</a>
   </div>
 </header>
 
-<section id="paths">
-  <div class="wrap">
-    <div class="kicker">Two ways to work together</div>
-    <div class="head">
-      <h2>Pick the setup that fits how hands-on you want to be.</h2>
-      <p>Both start the same way — a free preview, built on Wix, so you can see the actual site before deciding anything.</p>
-    </div>
-
-    <div class="paths">
-      <div class="path build">
-        <span class="tag">Most owners start here</span>
-        <h3>One-time build</h3>
-        <div class="price">Flat rate <span>quoted after your preview</span></div>
-        <ul>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>I build the whole site and hand you the finished Wix account</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>You get full admin access — it's your account, not mine</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>One payment, no ongoing bill from me</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>A short walkthrough so you can make small edits yourself</li>
-        </ul>
-        <p class="fine">Good fit if you're comfortable logging in occasionally to update hours, photos, or a menu.</p>
-      </div>
-
-      <div class="path">
-        <span class="tag">Set it and forget it</span>
-        <h3>Managed monthly</h3>
-        <div class="price">Small monthly fee <span>quoted after your preview</span></div>
-        <ul>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>I keep the site updated — hours, seasonal offers, new photos</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>You email or call me changes instead of learning Wix</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Cancel anytime — the account is still yours, I just admin it</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority when something looks off or breaks</li>
-        </ul>
-        <p class="fine">Good fit if you'd rather run your business than think about your website.</p>
-      </div>
+<!-- ============ HERO ============ -->
+<div id="top"></div>
+<section class="hero">
+  <div class="hero-photo">
+    <img src="https://loremflickr.com/800/600/brisket,bbq,smoked" alt="Smoked brisket sliced on a cutting board">
+  </div>
+  <div class="hero-content wrap">
+    <h1 class="display">Smoked Turkey Legs &amp; Brisket</h1>
+    <p class="sub">Call ahead to order our signature smokes. Pick up hot off the smoker for a backyard pit experience you'll never forget.</p>
+    <div class="hero-ctas">
+      <a href="tel:5129397013" class="pill pill-solid">Call to Order</a>
+      <a href="#menu" class="pill pill-outline">View Menu</a>
     </div>
   </div>
 </section>
 
-<section class="band" id="process">
+<!-- ============ BACKYARD ROOTS ============ -->
+<section class="roots" id="roots">
   <div class="wrap">
-    <div class="kicker">How this actually goes</div>
-    <div class="head">
-      <h2>Four steps, and you can stop after any of them.</h2>
-      <p>Nothing gets built without your say-so, and nothing costs you anything until step three.</p>
+    <div class="section-head">
+      <h2 class="display">Backyard Roots</h2>
     </div>
-
-    <div class="steps">
-      <div class="step">
-        <div class="n">1</div>
-        <div>
-          <h3>Tell me about your business</h3>
-          <p>A quick call or a few notes — what you offer, who your customers are, and what you already have online (even if it's just a Facebook page).</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="n">2</div>
-        <div>
-          <h3>I build a free preview on Wix</h3>
-          <p>A real, working site using your actual business details — not a stock template with placeholder text. You get a link to look at it whenever you want.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="n">3</div>
-        <div>
-          <h3>You choose a path, or you don't</h3>
-          <p>If it's not for you, no hard feelings and no charge. If it is, we pick one-time build or managed monthly and I get it live.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="n">4</div>
-        <div>
-          <h3>We make sure people can find it</h3>
-          <p>I set up or clean up your Google Business Profile — that's the part that actually gets you found on Google. Social media isn't something I handle; I'll say so upfront rather than pretend otherwise.</p>
-        </div>
-      </div>
+    <p class="body">We started as a backyard pit in Central Texas, where the only customers were the neighbors and the smoke. Our story is one of tradition, slow-smoked turkey legs and brisket made with love, and a commitment to the craft that has grown by word of mouth.</p>
+    <hr class="rule">
+    <div class="stats">
+      <div class="stat">2 Signature Smokes</div>
+      <div class="stat">100% Made to Order</div>
+      <div class="stat">512 Austin Area</div>
     </div>
   </div>
 </section>
 
-<section id="transparency">
+<!-- ============ MENU ============ -->
+<section class="menu" id="menu">
   <div class="wrap">
-    <div class="kicker">Transparency, not fine print</div>
-    <div class="head">
-      <h2>What I will and won't do — before you ask.</h2>
-      <p>Most bad experiences with a "web guy" come from unclear expectations. Here's mine, in plain terms.</p>
+    <div class="section-head">
+      <h2 class="display">The Menu</h2>
     </div>
-
-    <div class="promise-grid">
-      <div class="promise">
-        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Free means free</h3>
-        <p>The preview isn't a bait-and-switch. You can look at it, share it with your spouse or business partner, and walk away with no invoice.</p>
-      </div>
-      <div class="promise">
-        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>You always own the account</h3>
-        <p>Whether you pick one-time or managed, the Wix account is registered to your business. If we ever part ways, the site goes with you.</p>
-      </div>
-      <div class="promise">
-        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Pricing before commitment</h3>
-        <p>You'll know the exact number for either path before you agree to anything — never a vague "it depends" after the fact.</p>
-      </div>
-      <div class="promise">
-        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Honest recommendations</h3>
-        <p>If your business doesn't need a website yet, or a free Google Business Profile alone would do more for you, I'll tell you that instead of selling you a build.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="band" id="visibility">
-  <div class="wrap">
-    <div class="kicker">Beyond the website</div>
-    <div class="head">
-      <h2>A site only helps if people can find it.</h2>
-      <p>This part is included with every build — one-time or managed.</p>
-    </div>
-
-    <div class="helpcard">
-      <h3>Getting found on Google</h3>
-      <p>A website alone doesn't put you in front of customers searching nearby. I'll set up or fix your Google Business Profile — hours, photos, categories, and your address linked so customers can get directions in one tap.</p>
-      <div class="two">
-        <div class="box">
-          <b>What's included</b>
-          <span>Full setup or cleanup of your Google Business Profile, done right, as part of every build.</span>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-photo">
+          <img src="https://loremflickr.com/700/700/turkeyleg,smoked,bbq" alt="Smoked turkey leg">
         </div>
-        <div class="box">
-          <b>What's not included</b>
-          <span>Social media. I'm not a marketing service and won't pretend to be one — that's outside what I do.</span>
+        <h3 class="display">Smoked Turkey Legs</h3>
+        <p>Brined, smoked low and slow, and served hot off the smoker. Each leg is a piece of heritage, seasoned with our signature rub and smoked for 12+ hours.</p>
+      </div>
+      <div class="menu-item">
+        <div class="menu-photo">
+          <img src="https://loremflickr.com/700/700/brisket,bbq,texas" alt="Texas-style smoked brisket">
         </div>
+        <h3 class="display">Texas-Style Brisket</h3>
+        <p>Long smoke, proper rest, and sliced fresh to order. Our brisket is smoked for 12+ hours, then rested for 12 hours before being sliced and served hot.</p>
       </div>
     </div>
+    <p class="menu-note">Call us to ask about party trays and bulk orders for tailgates and gatherings.</p>
   </div>
 </section>
 
-<section class="band" id="contact">
+<!-- ============ REVIEWS ============ -->
+<section class="reviews on-dark" id="reviews">
   <div class="wrap">
-    <div class="kicker">Start here</div>
-    <div class="head">
-      <h2>Get your free preview.</h2>
-      <p>Fill this out and I'll put together a real preview of what your site could look like — no cost, no obligation.</p>
+    <div class="section-head">
+      <h2 class="display">Customer Reviews</h2>
+      <p>Real feedback from those who've picked up the hot-smoked goodness from our backyard pit.</p>
     </div>
-
-    <form class="contact-box" onsubmit="return false;">
-      <div class="field">
-        <label for="biz">Business name</label>
-        <input id="biz" type="text" placeholder="e.g. Lisnup Installations" />
-      </div>
-      <div class="field">
-        <label for="loc">City &amp; state</label>
-        <input id="loc" type="text" placeholder="e.g. Kenosha, WI" />
-      </div>
-      <div class="field">
-        <label for="email">Email or phone</label>
-        <input id="email" type="text" placeholder="Best way to reach you" />
-      </div>
-      <div class="field">
-        <label for="have">What do you have online now?</label>
-        <select id="have">
-          <option>Nothing yet</option>
-          <option>Facebook or Instagram only</option>
-          <option>An old website</option>
-          <option>Google Business Profile only</option>
-        </select>
-      </div>
-      <div class="field" style="grid-column:1/-1">
-        <label for="notes">Anything I should know?</label>
-        <textarea id="notes" placeholder="Services you offer, a link to your Facebook page, anything you want carried over to the new site"></textarea>
-      </div>
-      <div class="submit">
-        <button type="submit" class="btn primary" style="cursor:pointer">Request my free preview</button>
-        <p class="note">This goes straight to Jordan. No account needed, no spam.</p>
-      </div>
-    </form>
+    <div class="review">
+      <blockquote>"The brisket was the best I've had in Austin. Smoked low and slow, it was ready when I arrived. Truly a backyard pit gem."</blockquote>
+      <div class="who">— Marcus R., Austin</div>
+    </div>
+    <div class="review">
+      <blockquote>"Calling in for my turkey legs was easy. They were hot off the smoker and the brining was perfect. A must for any tailgate."</blockquote>
+      <div class="who">— Sarah L., Austin</div>
+    </div>
+    <div class="review">
+      <blockquote>"The quality is unmatched. Everything is smoked to order and it's always ready when you pick it up. Highly recommend."</blockquote>
+      <div class="who">— David K., Austin</div>
+    </div>
   </div>
 </section>
 
+<!-- ============ FOOTER ============ -->
 <footer>
   <div class="wrap">
-    <div><b>Jordan Moddes</b> — websites for small businesses, built on Wix</div>
-    <div>Free preview, clear pricing, and you always keep ownership of your site.</div>
+    <div class="footer-brand">
+      <span class="mark"><span>P</span></span>
+      <span class="name">Tasty Pete</span>
+    </div>
+    <p class="tagline">Turkey legs and brisket, made with love. Austin, TX — order by phone.</p>
+    <div class="credit">Site Admined by <a href="https://jordanmoddes.com" target="_blank">Jmod Co.</a> — jordanmoddes.com</div>
   </div>
 </footer>
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burgerBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+</script>
 
 </body>
 </html>
