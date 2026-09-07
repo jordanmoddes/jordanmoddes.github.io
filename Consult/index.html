@@ -351,10 +351,10 @@
       <p>Fill this out and I'll put together a real preview of what your site could look like — no cost, no obligation.</p>
     </div>
 
-    <form class="contact-box" onsubmit="return false;">
+    <form class="contact-box" id="previewForm" onsubmit="return sendPreviewRequest(event);">
       <div class="field">
         <label for="biz">Business name</label>
-        <input id="biz" type="text" placeholder="e.g. Lewie's Unlimited Outdoors" />
+        <input id="biz" type="text" placeholder="e.g. Lewie's Unlimited Outdoors" required />
       </div>
       <div class="field">
         <label for="loc">City &amp; state</label>
@@ -362,7 +362,7 @@
       </div>
       <div class="field">
         <label for="email">Email or phone</label>
-        <input id="email" type="text" placeholder="Best way to reach you" />
+        <input id="email" type="text" placeholder="Best way to reach you" required />
       </div>
       <div class="field">
         <label for="have">What do you have online now?</label>
@@ -379,11 +379,37 @@
       </div>
       <div class="submit">
         <button type="submit" class="btn primary" style="cursor:pointer">Request my free preview</button>
-        <p class="note">This goes straight to Jordan. No account needed, no spam.</p>
+        <p class="note">This opens your email app addressed to Jordan. No account needed, no spam.</p>
       </div>
     </form>
   </div>
 </section>
+
+<script>
+  function sendPreviewRequest(e){
+    e.preventDefault();
+    var biz = document.getElementById('biz').value.trim();
+    var loc = document.getElementById('loc').value.trim();
+    var contact = document.getElementById('email').value.trim();
+    var have = document.getElementById('have').value;
+    var notes = document.getElementById('notes').value.trim();
+
+    var subject = 'Free preview request' + (biz ? ' — ' + biz : '');
+    var bodyLines = [
+      'Business name: ' + (biz || '(not provided)'),
+      'City & state: ' + (loc || '(not provided)'),
+      'Best way to reach you: ' + (contact || '(not provided)'),
+      'What they have online now: ' + have,
+      '',
+      'Notes:',
+      notes || '(none)'
+    ];
+    var body = bodyLines.join('\n');
+
+    window.location.href = 'mailto:jmodops@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    return false;
+  }
+</script>
 
 <footer>
   <div class="wrap">
