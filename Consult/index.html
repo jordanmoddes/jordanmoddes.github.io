@@ -14,12 +14,15 @@
   :root{
     --bg:#faf7f1;
     --surface:#ffffff;
-    --surface-2:#f1ebdd;
+    --surface-2:#f1ecdf;
     --ink:#211d16;
     --muted:#6f6555;
     --line:#e6ddc9;
-    --accent:#2f6f5e;
-    --accent-dark:#204d40;
+    --line-strong:#d8cdb4;
+    --accent:#0f9d80;
+    --accent-glow:#0f9d80;
+    --accent-dark:#0a725c;
+    --field-bg:#faf7f1;
     --gold:#c1852f;
     --max:1080px;
     --serif: "Fraunces", Georgia, serif;
@@ -58,6 +61,19 @@
   .topcta:hover{background:var(--accent-dark)}
 
   .hero{padding:44px 0 36px}
+  .hero-canvas-wrap{
+    position:relative;height:210px;border-radius:14px;overflow:hidden;margin-bottom:22px;
+    background:radial-gradient(circle at 50% 40%, #f3ecdc, #ece1c8 70%);
+    border:1px solid var(--line);
+  }
+  .hero-canvas-wrap canvas{display:block;width:100%;height:100%}
+  .hero-canvas-fallback{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  }
+  .hero-canvas-fallback .dot{
+    width:14px;height:14px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 7px rgba(15,157,128,.14);
+  }
   .hero .eyebrow{font-size:13.5px;color:var(--accent-dark);font-weight:600;margin-bottom:14px}
   .hero h1{font-size:34px;line-height:1.15;max-width:15ch}
   .hero .lede{margin-top:16px;font-size:16.5px;color:var(--muted);max-width:40ch;line-height:1.6}
@@ -70,13 +86,13 @@
   .btn.primary{background:var(--accent);color:#fff}
   .btn.primary:hover{background:var(--accent-dark)}
   .btn.ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
-  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn.ghost:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 
   .hero-stage{perspective:1000px}
   .hero-panel{
     margin-top:32px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;
     transform-style:preserve-3d;will-change:transform;
-    box-shadow:0 30px 60px -30px rgba(32,77,64,.25);
+    box-shadow:0 24px 50px -30px rgba(30,40,35,.28);
   }
   .hero-panel .row{display:flex;align-items:flex-start;gap:14px;padding:12px 0;transform:translateZ(10px)}
   .hero-panel .row:nth-child(1){transform:translateZ(18px)}
@@ -98,9 +114,10 @@
   }
   .hero-panel .num{
     flex:0 0 32px;height:32px;border-radius:50%;
-    background:var(--surface-2);color:var(--accent-dark);
+    background:var(--accent);color:#fff;
     display:flex;align-items:center;justify-content:center;
     font-family:var(--serif);font-size:14px;font-weight:600;
+    box-shadow:0 3px 8px rgba(15,157,128,.3);
   }
   .hero-panel .txt b{display:block;font-size:14.5px}
   .hero-panel .txt span{display:block;font-size:13px;color:var(--muted);margin-top:2px;line-height:1.5}
@@ -127,7 +144,12 @@
   .steps{margin-top:28px}
   .step{display:grid;grid-template-columns:38px 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--line)}
   .step:last-child{border-bottom:1px solid var(--line)}
-  .step .n{font-family:var(--serif);font-size:19px;color:var(--accent-dark)}
+  .step .n{
+    width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-size:16px;font-weight:600;
+    box-shadow:0 3px 8px rgba(15,157,128,.28);
+  }
   .step h3{font-size:16px;margin-bottom:5px}
   .step p{color:var(--muted);font-size:14px;line-height:1.6;max-width:54ch}
 
@@ -137,7 +159,10 @@
   .promise h3 svg{flex:0 0 20px}
   .promise p{margin-top:8px;color:var(--muted);font-size:13.5px;line-height:1.6}
 
-  .helpcard{margin-top:28px;background:var(--accent-dark);color:#fdfbf6;border-radius:16px;padding:26px;display:grid;gap:18px}
+  .helpcard{
+    margin-top:28px;background:var(--accent-dark);
+    color:#fdfbf6;border-radius:16px;padding:26px;display:grid;gap:18px;
+  }
   .helpcard h3{color:#fff;font-size:19px}
   .helpcard p{color:#e4e9e6;font-size:14px;line-height:1.65;margin-top:8px}
   .helpcard .two{display:grid;gap:14px}
@@ -158,6 +183,9 @@
     font-family:var(--sans);font-size:14.5px;
     padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);
     color:var(--ink);width:100%;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{
+    outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(15,157,128,.15);
   }
   .field textarea{resize:vertical;min-height:88px}
   .contact-box .submit{margin-top:2px}
@@ -198,8 +226,11 @@
 <header class="hero" id="top">
   <div class="wrap">
     <div>
+      <div class="hero-canvas-wrap" id="pinStage">
+        <canvas id="pinCanvas"></canvas>
+      </div>
       <div class="eyebrow">For small business owners</div>
-      <h1>See your new website before you spend a dollar.</h1>
+      <h1>Get put on the map.</h1>
       <p class="lede">I build small businesses a real, working website on Wix — free to look at first. If you like it, we talk price. If you don't, you've lost nothing.</p>
       <div class="actions">
         <a class="btn primary" href="#contact">Get a free preview</a>
@@ -211,7 +242,7 @@
     <div class="hero-panel" id="heroPanel">
       <div class="row">
         <div class="num">1</div>
-        <div class="txt"><b>I build a preview first</b><span>Starting from what's already online about you — no cost, no commitment.</span></div>
+        <div class="txt"><b>I build a preview first</b><span>Starting from what's already online about you — ready within 1 business day, no cost.</span></div>
       </div>
       <div class="row">
         <div class="num">2</div>
@@ -226,6 +257,18 @@
   </div>
 </header>
 
+<section id="about" style="padding:8px 0 36px">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px">
+      <img src="https://media.licdn.com/dms/image/v2/D5603AQEWO42OJhTNyw/profile-displayphoto-scale_200_200/B56ZmWhhWfIsAY-/0/1759166995337?e=2147483647&v=beta&t=087XzjiNbfUQOD0rlC5SDRoihhNCwAN04-u5XeBwEQg" alt="Jordan Moddes" style="width:56px;height:56px;border-radius:50%;object-fit:cover;flex:0 0 56px;border:2px solid var(--accent)" />
+      <div>
+        <div style="font-family:var(--serif);font-weight:600;font-size:15px">Hi, I'm Jordan.</div>
+        <div style="font-size:13.5px;color:var(--muted);line-height:1.5;margin-top:2px">I'm from Kenosha, and I've watched too many small businesses get stuck — no website, a site that doesn't do them justice, or a Facebook page trying to do all the work alone. I started this to close that gap for owners just getting going or ready to scale, bringing the same no-nonsense approach I use running warehouse operations in my day job.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="paths">
   <div class="wrap">
     <div class="kicker">Two ways to work together</div>
@@ -238,25 +281,25 @@
       <div class="path build reveal-tilt">
         <span class="tag">Most owners start here</span>
         <h3>One-time build</h3>
-        <div class="price">Flat rate <span>quoted after your preview</span></div>
+        <div class="price">$150 flat <span>single page + Google Business Profile setup</span></div>
         <ul>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>I build the whole site and hand you the finished Wix account</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>You get full admin access — it's your account, not mine</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>One payment, no ongoing bill from me</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>A short walkthrough so you can make small edits yourself</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#0f9d80"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>I build the whole site and hand you the finished Wix account</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#0f9d80"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>You get full admin access — it's your account, not mine</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#0f9d80"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>One payment, no ongoing bill from me</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#0f9d80"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>A short walkthrough so you can make small edits yourself</li>
         </ul>
-        <p class="fine">Good fit if you're comfortable logging in occasionally to update hours, photos, or a menu.</p>
+        <p class="fine">Good fit if you're comfortable logging in occasionally to update hours, photos, or a menu. Wix hosting and your domain are billed to you directly by Wix — I don't mark those up.</p>
       </div>
 
       <div class="path reveal-tilt">
         <span class="tag">Set it and forget it</span>
         <h3>Managed monthly</h3>
-        <div class="price">Small monthly fee <span>quoted after your preview</span></div>
+        <div class="price">Starting at $25<span>/mo — plus your Wix plan, billed separately</span></div>
         <ul>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>I keep the site updated — hours, seasonal offers, new photos</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>You email or call me changes instead of learning Wix</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Cancel anytime — the account is still yours, I just admin it</li>
-          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#2f6f5e"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority when something looks off or breaks</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#0f9d80"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>I keep the site updated — hours, seasonal offers, new photos</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#0f9d80"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>You email or call me changes instead of learning Wix</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#0f9d80"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Cancel anytime — the account is still yours, I just admin it</li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#0f9d80"/><path d="M5 9.3l2.4 2.4L13 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority when something looks off or breaks</li>
         </ul>
         <p class="fine">Good fit if you'd rather run your business than think about your website.</p>
       </div>
@@ -284,7 +327,7 @@
         <div class="n">2</div>
         <div>
           <h3>I build a free preview on Wix</h3>
-          <p>A real, working site laid out around your business — built from what I found, with placeholders standing in for anything I don't have yet. You get a link to look at it whenever you want.</p>
+          <p>A real, working site laid out around your business — built from what I found, with placeholders standing in for anything I don't have yet. Usually ready within 1 business day, and you get a link to look at it whenever you want.</p>
         </div>
       </div>
       <div class="step">
@@ -322,19 +365,19 @@
 
     <div class="promise-grid">
       <div class="promise reveal-tilt">
-        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Free means free</h3>
+        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#e2f3ee"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#0a725c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Free means free</h3>
         <p>The preview isn't a bait-and-switch. You can look at it, share it with your spouse or business partner, and walk away with no invoice.</p>
       </div>
       <div class="promise reveal-tilt">
-        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>You always own the account</h3>
+        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#e2f3ee"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#0a725c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>You always own the account</h3>
         <p>Whether you pick one-time or managed, the Wix account is registered to your business. If we ever part ways, the site goes with you.</p>
       </div>
       <div class="promise reveal-tilt">
-        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Pricing before commitment</h3>
+        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#e2f3ee"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#0a725c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Pricing before commitment</h3>
         <p>You'll know the exact number for either path before you agree to anything — never a vague "it depends" after the fact.</p>
       </div>
       <div class="promise reveal-tilt">
-        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Honest recommendations</h3>
+        <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#e2f3ee"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#0a725c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Honest recommendations</h3>
         <p>If your business doesn't need a website yet, or a free Google Business Profile alone would do more for you, I'll tell you that instead of selling you a build.</p>
       </div>
     </div>
@@ -401,8 +444,8 @@
         <textarea id="notes" placeholder="Services you offer, a link to your Facebook page, anything you want carried over to the new site"></textarea>
       </div>
       <div class="submit">
-        <button type="submit" class="btn primary" style="cursor:pointer">Request my free preview</button>
-        <p class="note">This opens your email app addressed to Jordan. No account needed, no spam.</p>
+        <button type="submit" id="previewSubmitBtn" class="btn primary" style="cursor:pointer">Request my free preview</button>
+        <p class="note" id="previewNote">This opens your email app addressed to Jordan. No account needed, no spam — expect your preview within 1 business day.</p>
       </div>
     </form>
   </div>
@@ -429,7 +472,18 @@
     ];
     var body = bodyLines.join('\n');
 
+    var btn = document.getElementById('previewSubmitBtn');
+    var note = document.getElementById('previewNote');
+    btn.textContent = 'Opening your email app…';
+    note.textContent = "If your email app doesn't open, reach me directly at jmodops@gmail.com.";
+
     window.location.href = 'mailto:jmodops@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
+    setTimeout(function(){
+      btn.textContent = 'Request my free preview';
+      note.textContent = "This opens your email app addressed to Jordan. No account needed, no spam — expect your preview within 1 business day.";
+    }, 4000);
+
     return false;
   }
 
@@ -487,6 +541,161 @@
       stage.addEventListener('touchend', function(){ dragging = false; targetRx = 0; targetRy = 0; ensureLoop(); });
     }
   }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var wrap = document.getElementById('pinStage');
+  var canvas = document.getElementById('pinCanvas');
+  if(!wrap || !canvas) return;
+
+  function showFallback(){
+    canvas.remove();
+    var fb = document.createElement('div');
+    fb.className = 'hero-canvas-fallback';
+    fb.innerHTML = '<div class="dot"></div>';
+    wrap.appendChild(fb);
+  }
+
+  if(typeof THREE === 'undefined'){ showFallback(); return; }
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    // still render a single static landed frame, no animation loop
+  }
+
+  try{
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf3ecdc);
+
+    var camera = new THREE.PerspectiveCamera(45, wrap.clientWidth / wrap.clientHeight, 0.1, 100);
+    camera.position.set(0, 5.2, 6.5);
+    camera.lookAt(0, 0, 0);
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+
+    var ground = new THREE.Group();
+    scene.add(ground);
+
+    var grid = new THREE.GridHelper(16, 16, 0xcdbfa0, 0xe4dcc7);
+    ground.add(grid);
+
+    scene.add(new THREE.AmbientLight(0xfff6e6, 1.7));
+    var sun = new THREE.DirectionalLight(0xfff0d8, 0.5);
+    sun.position.set(3, 6, 4);
+    scene.add(sun);
+
+    function makeMarker(color, emissive, scale){
+      var g = new THREE.Group();
+      var stickMat = new THREE.MeshStandardMaterial({ color: color, emissive: emissive || 0x000000, emissiveIntensity: emissive ? 0.55 : 0, roughness: 0.7 });
+      var stick = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.4, 8), stickMat);
+      stick.position.y = 0.2;
+      g.add(stick);
+      var head = new THREE.Mesh(new THREE.SphereGeometry(0.15, 14, 14), stickMat);
+      head.position.y = 0.42;
+      g.add(head);
+      g.scale.setScalar(scale || 1);
+      return g;
+    }
+
+    var dimPositions = [[-4.5,-2.2],[3.8,-3],[5.5,1.5],[-5.8,1.8],[-2.2,3.6],[2.6,4.2],[-6.2,-3.6],[6.2,-1.2]];
+    dimPositions.forEach(function(p){
+      var m = makeMarker(0xb9ac8c, 0x000000, 0.9);
+      m.position.set(p[0], 0, p[1]);
+      ground.add(m);
+    });
+
+    var heroMarker = makeMarker(0x0f9d80, 0x0f9d80, 1.15);
+    ground.add(heroMarker);
+
+    var heroLight = new THREE.PointLight(0x0f9d80, 0.6, 4);
+    heroLight.position.set(0, 1.1, 0);
+    heroMarker.add(heroLight);
+
+    var ringGeo = new THREE.RingGeometry(0.1, 0.16, 40);
+    var ringMat = new THREE.MeshBasicMaterial({ color: 0x0f9d80, transparent: true, opacity: 0, side: THREE.DoubleSide });
+    var ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 0.01;
+    ground.add(ring);
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var startY = 5;
+    var dropDelay = 400;
+    var dropDuration = 1100;
+    var landed = false;
+    var rippleStart = null;
+    var start = performance.now();
+
+    function easeOutBounce(t){
+      var n1 = 7.5625, d1 = 2.75;
+      if(t < 1/d1) return n1*t*t;
+      if(t < 2/d1){ t -= 1.5/d1; return n1*t*t + 0.75; }
+      if(t < 2.5/d1){ t -= 2.25/d1; return n1*t*t + 0.9375; }
+      t -= 2.625/d1; return n1*t*t + 0.984375;
+    }
+
+    if(reduced){
+      heroMarker.position.y = 0;
+      ringMat.opacity = 0;
+    }
+
+    var pointerX = 0, pointerY = 0;
+    if(!reduced){
+      wrap.addEventListener('pointermove', function(e){
+        var r = wrap.getBoundingClientRect();
+        pointerX = ((e.clientX - r.left) / r.width - 0.5);
+        pointerY = ((e.clientY - r.top) / r.height - 0.5);
+      });
+    }
+
+    function frame(now){
+      var elapsed = now - start;
+
+      if(!reduced){
+        if(elapsed > dropDelay){
+          var p = Math.min((elapsed - dropDelay) / dropDuration, 1);
+          heroMarker.position.y = startY * (1 - easeOutBounce(p));
+          if(p >= 1 && !landed){
+            landed = true;
+            rippleStart = now;
+          }
+        } else {
+          heroMarker.position.y = startY;
+        }
+
+        if(rippleStart !== null){
+          var rp = (now - rippleStart) / 1400;
+          if(rp <= 1){
+            var s = 1 + rp * 10;
+            ring.scale.set(s, s, s);
+            ringMat.opacity = 0.6 * (1 - rp);
+          } else {
+            ringMat.opacity = 0;
+          }
+        }
+
+        ground.rotation.y += 0.0018;
+        camera.position.x += (pointerX * 1.6 - camera.position.x) * 0.04;
+        camera.position.y += (5.2 - pointerY * 0.8 - camera.position.y) * 0.04;
+        camera.lookAt(0, 0, 0);
+      }
+
+      renderer.render(scene, camera);
+      if(!reduced) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    window.addEventListener('resize', function(){
+      camera.aspect = wrap.clientWidth / wrap.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+    });
+  } catch(err){
+    showFallback();
+  }
+})();
 </script>
 
 <footer>
