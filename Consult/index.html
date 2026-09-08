@@ -72,9 +72,30 @@
   .btn.ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
   .btn.ghost:hover{background:var(--ink);color:#fff}
 
-  .hero-panel{margin-top:32px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
-  .hero-panel .row{display:flex;align-items:flex-start;gap:14px;padding:12px 0}
+  .hero-stage{perspective:1000px}
+  .hero-panel{
+    margin-top:32px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;
+    transform-style:preserve-3d;will-change:transform;
+    box-shadow:0 30px 60px -30px rgba(32,77,64,.25);
+  }
+  .hero-panel .row{display:flex;align-items:flex-start;gap:14px;padding:12px 0;transform:translateZ(10px)}
+  .hero-panel .row:nth-child(1){transform:translateZ(18px)}
+  .hero-panel .row:nth-child(3){transform:translateZ(26px)}
   .hero-panel .row + .row{border-top:1px solid var(--line)}
+  .hero-panel .num{transform:translateZ(14px)}
+
+  .reveal-tilt{
+    opacity:0;
+    transform:perspective(800px) rotateX(-10deg) translateY(26px);
+    transition:opacity .55s ease, transform .55s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal-tilt.is-visible{opacity:1;transform:perspective(800px) rotateX(0deg) translateY(0)}
+
+  @media (prefers-reduced-motion: reduce){
+    .hero-panel{transform:none!important;box-shadow:none}
+    .hero-panel .row,.hero-panel .row:nth-child(1),.hero-panel .row:nth-child(3),.hero-panel .num{transform:none}
+    .reveal-tilt{opacity:1;transform:none;transition:none}
+  }
   .hero-panel .num{
     flex:0 0 32px;height:32px;border-radius:50%;
     background:var(--surface-2);color:var(--accent-dark);
@@ -186,7 +207,8 @@
       </div>
     </div>
 
-    <div class="hero-panel">
+    <div class="hero-stage">
+    <div class="hero-panel" id="heroPanel">
       <div class="row">
         <div class="num">1</div>
         <div class="txt"><b>I build a preview first</b><span>Starting from what's already online about you — no cost, no commitment.</span></div>
@@ -200,6 +222,7 @@
         <div class="txt"><b>I help it get found</b><span>Google Business Profile, set up or cleaned up so customers can actually find you.</span></div>
       </div>
     </div>
+    </div>
   </div>
 </header>
 
@@ -212,7 +235,7 @@
     </div>
 
     <div class="paths">
-      <div class="path build">
+      <div class="path build reveal-tilt">
         <span class="tag">Most owners start here</span>
         <h3>One-time build</h3>
         <div class="price">Flat rate <span>quoted after your preview</span></div>
@@ -225,7 +248,7 @@
         <p class="fine">Good fit if you're comfortable logging in occasionally to update hours, photos, or a menu.</p>
       </div>
 
-      <div class="path">
+      <div class="path reveal-tilt">
         <span class="tag">Set it and forget it</span>
         <h3>Managed monthly</h3>
         <div class="price">Small monthly fee <span>quoted after your preview</span></div>
@@ -298,19 +321,19 @@
     </div>
 
     <div class="promise-grid">
-      <div class="promise">
+      <div class="promise reveal-tilt">
         <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Free means free</h3>
         <p>The preview isn't a bait-and-switch. You can look at it, share it with your spouse or business partner, and walk away with no invoice.</p>
       </div>
-      <div class="promise">
+      <div class="promise reveal-tilt">
         <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>You always own the account</h3>
         <p>Whether you pick one-time or managed, the Wix account is registered to your business. If we ever part ways, the site goes with you.</p>
       </div>
-      <div class="promise">
+      <div class="promise reveal-tilt">
         <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Pricing before commitment</h3>
         <p>You'll know the exact number for either path before you agree to anything — never a vague "it depends" after the fact.</p>
       </div>
-      <div class="promise">
+      <div class="promise reveal-tilt">
         <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#f1ebdd"/><path d="M6 10.3l2.6 2.6L14 7" stroke="#204d40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Honest recommendations</h3>
         <p>If your business doesn't need a website yet, or a free Google Business Profile alone would do more for you, I'll tell you that instead of selling you a build.</p>
       </div>
@@ -326,7 +349,7 @@
       <p>This part is included with every build — one-time or managed.</p>
     </div>
 
-    <div class="helpcard">
+    <div class="helpcard reveal-tilt">
       <h3>Getting found on Google</h3>
       <p>A website alone doesn't put you in front of customers searching nearby. I'll set up or fix your Google Business Profile — hours, photos, categories, and your address linked so customers can get directions in one tap.</p>
       <div class="two">
@@ -408,6 +431,61 @@
 
     window.location.href = 'mailto:jmodops@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     return false;
+  }
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(!prefersReduced && 'IntersectionObserver' in window){
+    var revealEls = document.querySelectorAll('.reveal-tilt');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if(entry.isIntersecting){
+          var delay = (i % 4) * 70;
+          setTimeout(function(){ entry.target.classList.add('is-visible'); }, delay);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal-tilt').forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  if(!prefersReduced){
+    var stage = document.querySelector('.hero-stage');
+    var panel = document.getElementById('heroPanel');
+    if(stage && panel){
+      var rx = 0, ry = 0, targetRx = 0, targetRy = 0;
+      var dragging = false, rafRunning = false;
+
+      function applyTilt(){
+        rx += (targetRx - rx) * 0.12;
+        ry += (targetRy - ry) * 0.12;
+        panel.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+        if(dragging || Math.abs(targetRx - rx) > 0.05 || Math.abs(targetRy - ry) > 0.05){
+          requestAnimationFrame(applyTilt);
+        } else {
+          rafRunning = false;
+        }
+      }
+      function ensureLoop(){
+        if(!rafRunning){ rafRunning = true; requestAnimationFrame(applyTilt); }
+      }
+      function setFromPoint(clientX, clientY){
+        var rect = stage.getBoundingClientRect();
+        var px = (clientX - rect.left) / rect.width;
+        var py = (clientY - rect.top) / rect.height;
+        targetRy = (px - 0.5) * 16;
+        targetRx = (0.5 - py) * 10;
+      }
+
+      stage.addEventListener('pointerdown', function(e){ dragging = true; setFromPoint(e.clientX, e.clientY); ensureLoop(); });
+      stage.addEventListener('pointermove', function(e){ if(dragging){ setFromPoint(e.clientX, e.clientY); } });
+      window.addEventListener('pointerup', function(){ if(dragging){ dragging = false; targetRx = 0; targetRy = 0; ensureLoop(); } });
+      stage.addEventListener('touchstart', function(e){ dragging = true; var t = e.touches[0]; setFromPoint(t.clientX, t.clientY); ensureLoop(); }, { passive: true });
+      stage.addEventListener('touchmove', function(e){ var t = e.touches[0]; setFromPoint(t.clientX, t.clientY); }, { passive: true });
+      stage.addEventListener('touchend', function(){ dragging = false; targetRx = 0; targetRy = 0; ensureLoop(); });
+    }
   }
 </script>
 
