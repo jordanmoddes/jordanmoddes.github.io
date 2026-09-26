@@ -15,8 +15,6 @@
     --gold:#c9962e;
     --gold-soft:#e8c877;
     --stamp:#b3402e;
-    --stamp-blue:#2e5a8a;
-    --blush:#e8a0a8;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
@@ -27,7 +25,6 @@
     min-height:100dvh;
     display:flex;
     justify-content:center;
-    padding:0;
   }
   .book{
     width:100%;
@@ -70,17 +67,11 @@
     font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;
     color:var(--gold);margin-bottom:12px;font-weight:bold;
   }
-  h1{
-    font-size:2rem;line-height:1.15;margin-bottom:14px;
-    text-wrap:balance;
-  }
+  h1{font-size:2rem;line-height:1.15;margin-bottom:14px;text-wrap:balance}
   h2{font-size:1.55rem;line-height:1.2;margin-bottom:12px;text-wrap:balance}
   p.body{font-size:1.02rem;line-height:1.75;margin-bottom:14px;color:var(--ink)}
   p.body em{font-style:italic}
-  .rule{
-    border:0;border-top:2px solid var(--gold);
-    width:64px;margin:18px 0;
-  }
+  .rule{border:0;border-top:2px solid var(--gold);width:64px;margin:18px 0}
   .btn{
     display:inline-block;
     background:var(--green);
@@ -122,14 +113,8 @@
   /* ---------- COVER ---------- */
   .cover-ornament{text-align:center;font-size:1.4rem;letter-spacing:.5em;color:var(--gold);margin:34px 0 10px}
   .cover-kicker{text-align:center}
-  .cover-title{
-    text-align:center;font-size:2.6rem;line-height:1.12;
-    margin:10px 0 8px;
-  }
-  .cover-sub{
-    text-align:center;font-style:italic;color:var(--ink-soft);
-    font-size:1.05rem;margin-bottom:6px;
-  }
+  .cover-title{text-align:center;font-size:2.5rem;line-height:1.12;margin:10px 0 8px}
+  .cover-sub{text-align:center;font-style:italic;color:var(--ink-soft);font-size:1.05rem;margin-bottom:6px}
   .cover-book{
     width:210px;height:290px;margin:30px auto;
     background:linear-gradient(135deg,#274d35,#16291d);
@@ -144,70 +129,60 @@
     content:"";position:absolute;left:14px;top:0;bottom:0;width:2px;
     background:rgba(232,200,119,.5);
   }
-  .cover-book .cb-title{font-size:1.35rem;text-align:center;line-height:1.3;margin-bottom:10px}
+  .cover-book .cb-title{font-size:1.3rem;text-align:center;line-height:1.3;margin-bottom:10px}
   .cover-book .cb-for{font-style:italic;color:var(--gold-soft);font-size:.95rem}
-  .cover-book .cb-plane{font-size:2.2rem;margin-bottom:12px}
+  .cover-book .cb-orn{font-size:2rem;margin-bottom:12px;color:var(--gold-soft)}
   .cover-cta{text-align:center;margin-top:8px}
   .cover-fine{text-align:center;font-size:.85rem;color:var(--ink-soft);margin-top:14px;font-style:italic}
 
-  /* ---------- CHAPTER 1 : date stamps ---------- */
-  .due-card{
-    background:#fffdf6;
-    border:1px solid #d8cba6;
-    border-radius:10px;
-    padding:20px;
-    margin:22px 0;
-    box-shadow:0 4px 14px rgba(0,0,0,.08);
-    transform:rotate(.5deg);
+  /* ---------- CHAPTER 1 : rescue kit ---------- */
+  .kit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+  .kit-opt{
+    font-family:inherit;font-size:.93rem;line-height:1.35;
+    padding:14px 12px;min-height:62px;
+    border-radius:12px;border:2px solid #d8cba6;
+    background:#fffdf6;cursor:pointer;color:var(--ink);
+    transition:border-color .15s, background .15s;
   }
-  .due-card h3{
-    font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--ink-soft);margin-bottom:4px;
-  }
-  .due-card .lib-name{font-style:italic;color:var(--ink-soft);font-size:.9rem;margin-bottom:14px}
-  .stamps{display:flex;gap:12px;flex-wrap:wrap}
-  .stamp{
-    font-family:'Courier New',monospace;font-weight:bold;font-size:1.05rem;
-    border:3px solid var(--stamp-blue);color:var(--stamp-blue);
-    border-radius:8px;padding:12px 16px;cursor:pointer;background:transparent;
-    transform:rotate(-4deg);
-    transition:transform .15s;
-    min-height:56px;
-  }
-  .stamp:nth-child(2){border-color:var(--stamp);color:var(--stamp);transform:rotate(3deg)}
-  .stamp:nth-child(3){transform:rotate(-2deg)}
-  .stamp:hover{transform:rotate(0) scale(1.06)}
-  .stamp.picked{outline:3px solid var(--gold);outline-offset:3px}
-  .stamp.right{border-color:var(--green);color:var(--green);background:rgba(30,58,42,.07)}
+  .kit-opt:hover{border-color:var(--gold)}
+  .kit-opt.sel{border-color:var(--green);background:#e6efe4}
+  .kit-opt.sel::after{content:" \2713";color:var(--green);font-weight:bold}
+  .kit-opt.nope{border-color:var(--stamp);animation:shakeX .3s}
+  @keyframes shakeX{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .kit-count{font-size:.85rem;color:var(--ink-soft);font-style:italic;margin-bottom:4px}
 
-  /* ---------- CHAPTER 2 : bookshelf ---------- */
-  .shelf{
-    background:linear-gradient(to bottom,#6b4a2c,#4e3420);
-    border-radius:10px;
-    padding:26px 16px 18px;margin:22px 0;
-    box-shadow:inset 0 6px 12px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.2);
-  }
-  .books{display:flex;gap:10px;align-items:flex-end;justify-content:center;flex-wrap:wrap}
-  .spine{
-    width:64px;min-height:190px;border:0;border-radius:4px;cursor:pointer;
-    color:#f3ead6;font-family:Georgia,serif;font-size:.72rem;line-height:1.35;
-    padding:14px 8px;writing-mode:vertical-rl;text-orientation:mixed;
+  /* ---------- CHAPTER 2 : the trio ---------- */
+  .trio-slots{display:flex;gap:10px;justify-content:center;margin:20px 0}
+  .trio-slot{
+    width:96px;height:64px;border:2px dashed var(--gold);border-radius:12px;
     display:flex;align-items:center;justify-content:center;
-    transition:transform .18s;
-    box-shadow:inset -4px 0 6px rgba(0,0,0,.35);
+    font-size:1.05rem;color:var(--ink-soft);background:rgba(201,150,46,.06);
   }
-  .spine:hover{transform:translateY(-10px)}
-  .spine.s1{background:linear-gradient(to right,#8a2f2b,#a8433c)}
-  .spine.s2{background:linear-gradient(to right,#2b4d6e,#3a6a94)}
-  .spine.s3{background:linear-gradient(to right,#1e3a2a,#2c5a3e);width:74px;box-shadow:inset -4px 0 6px rgba(0,0,0,.35), 0 0 0 2px var(--gold-soft)}
-  .spine.s4{background:linear-gradient(to right,#5c4a72,#755d8f)}
-  .spine.s5{background:linear-gradient(to right,#8a6a2b,#b08a3a)}
-  .shelf-base{
-    height:14px;background:#3a2716;border-radius:0 0 8px 8px;margin-top:0;
-    box-shadow:0 8px 14px rgba(0,0,0,.35);
+  .trio-slot.filled{border-style:solid;color:var(--ink);background:#fffdf6;font-weight:bold}
+  .trio-order-label{text-align:center;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px}
+  .name-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .name-btn{
+    font-family:inherit;font-size:1.05rem;font-weight:bold;
+    padding:14px 26px;min-height:56px;border-radius:999px;
+    border:2px solid var(--green);background:transparent;color:var(--green);cursor:pointer;
+    transition:all .15s;
   }
+  .name-btn:hover{background:var(--green);color:var(--paper)}
 
-  /* ---------- CHAPTER 3 : combination ---------- */
+  /* ---------- CHAPTER 3 : locked page ---------- */
+  .lib-card{
+    background:#fffdf6;border:1px solid #d8cba6;border-radius:10px;
+    padding:16px 18px;margin:20px 0;transform:rotate(-1deg);
+    box-shadow:0 4px 14px rgba(0,0,0,.08);
+  }
+  .lib-card .lc-top{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+  .lib-card .lc-stamp{
+    display:inline-block;margin-top:10px;
+    font-family:'Courier New',monospace;font-weight:bold;font-size:1.3rem;
+    color:var(--stamp);border:3px solid var(--stamp);border-radius:8px;
+    padding:8px 18px;transform:rotate(-4deg);
+  }
+  .lib-card .lc-note{font-style:italic;color:var(--ink-soft);font-size:.9rem;margin-top:10px}
   .lockbox{
     background:var(--green-deep);color:var(--paper);
     border-radius:14px;padding:28px 22px;margin:22px 0;text-align:center;
@@ -222,6 +197,12 @@
     border:2px solid var(--gold);border-radius:10px;
   }
   .dial:focus{outline:3px solid var(--gold-soft)}
+  .lock-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center}
+  .linklike{
+    background:none;border:0;cursor:pointer;
+    font-family:inherit;font-size:.9rem;color:var(--gold-soft);
+    text-decoration:underline;padding:12px;min-height:46px;
+  }
   .diary{
     display:none;background:#fffdf6;border-radius:10px;
     padding:24px;margin:22px 0;transform:rotate(-.7deg);
@@ -291,26 +272,20 @@
     width:min(320px,72vw);
     transition:transform 4.6s cubic-bezier(.3,.6,.4,1), opacity 1s;
   }
-  .taxi .plane-wrap{animation:shake .1s linear infinite}
-  @keyframes shake{
+  .taxi .plane-wrap{animation:pshake .1s linear infinite}
+  @keyframes pshake{
     0%{transform:translateX(-50%) translateY(0)}
     50%{transform:translateX(calc(-50% - 2px)) translateY(1.5px)}
     100%{transform:translateX(calc(-50% + 2px)) translateY(0)}
   }
-  .climb .plane-wrap{
-    animation:none;
-    transform:translateX(-50%) translateY(-52vh) scale(.45);
-  }
+  .climb .plane-wrap{animation:none;transform:translateX(-50%) translateY(-52vh) scale(.45)}
   .done .plane-wrap{transform:translateX(-50%) translateY(-58vh) scale(.38);opacity:.95}
   .plane-svg{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 18px rgba(0,0,0,.35))}
   .navl{animation:blink 1s steps(2) infinite}
   .navr{animation:blink 1s steps(2) infinite;animation-delay:.5s}
   .strobe{animation:blink .8s steps(2) infinite;animation-delay:.25s}
   @keyframes blink{50%{opacity:.15}}
-  .contrail{
-    stroke:#fff;stroke-width:5;stroke-linecap:round;opacity:0;
-    stroke-dasharray:300;stroke-dashoffset:300;
-  }
+  .contrail{stroke:#fff;stroke-width:5;stroke-linecap:round;opacity:0;stroke-dasharray:300;stroke-dashoffset:300}
   .climb .contrail{opacity:.75;animation:trail 4.6s ease-out forwards}
   @keyframes trail{to{stroke-dashoffset:0;opacity:0}}
   .sky-caption{
@@ -340,7 +315,7 @@
   .status-line.show{opacity:1}
   @media (prefers-reduced-motion: reduce){
     .page{animation:none}
-    .cloud,.taxi .plane-wrap,.taxi .runway .dashes,.climb .runway .dashes{animation:none !important}
+    .cloud,.taxi .plane-wrap,.taxi .runway .dashes,.climb .runway .dashes,.kit-opt.nope{animation:none !important}
     .plane-wrap{transition:none}
   }
   @media (max-width:420px){
@@ -348,6 +323,7 @@
     .cover-title{font-size:2.1rem}
     .page{padding:22px 20px 60px}
     .dial{width:52px;height:66px}
+    .trio-slot{width:84px}
   }
 </style>
 </head>
@@ -355,19 +331,19 @@
 <div class="book">
 
   <div class="progress" aria-hidden="true">
-    <span id="chap-label">The Library of Firsts</span>
+    <span id="chap-label">The Book of Small Things</span>
     <span class="dots" id="chap-dots"><span></span><span></span><span></span></span>
   </div>
 
   <!-- ================= COVER ================= -->
   <section class="page active" id="page-cover" aria-label="Cover">
-    <div class="cover-ornament">❦ ❦ ❦</div>
-    <p class="kicker cover-kicker">The Library of Firsts presents</p>
-    <h1 class="cover-title">The Girl Who&rsquo;d<br>Never Flown</h1>
-    <p class="cover-sub">A mystery in three chapters &mdash; written for Brittany</p>
+    <div class="cover-ornament">&#10086; &#10086; &#10086;</div>
+    <p class="kicker cover-kicker">A mystery in three chapters</p>
+    <h1 class="cover-title">The Book of<br>Small Things</h1>
+    <p class="cover-sub">written for Brittany &mdash; proof that someone was paying attention</p>
     <div class="cover-book" aria-hidden="true">
-      <div class="cb-plane">✈</div>
-      <div class="cb-title">The Girl Who&rsquo;d<br>Never Flown</div>
+      <div class="cb-orn">&#10086;</div>
+      <div class="cb-title">The Book of<br>Small Things</div>
       <div class="cb-for">for Brittany</div>
     </div>
     <p class="margin-note">*A whole website. For you. Try to act surprised when it&rsquo;s cute.*</p>
@@ -380,21 +356,20 @@
   <!-- ================= CHAPTER ONE ================= -->
   <section class="page" id="page-ch1" aria-label="Chapter one">
     <p class="kicker">Chapter One</p>
-    <h2>In Which a Date Matters</h2>
+    <h2>The Rescue Kit</h2>
     <hr class="rule">
-    <p class="body">Every good story has a date the librarian can&rsquo;t stop stamping. This one has three candidates. <em>Only one of them changed everything.</em></p>
-    <div class="due-card">
-      <h3>Date due</h3>
-      <p class="lib-name">Kenosha Memorial Library &mdash; please stamp clearly</p>
-      <div class="stamps">
-        <button class="stamp" data-date="03-14">MAR 14</button>
-        <button class="stamp" data-date="09-26">SEP 26</button>
-        <button class="stamp" data-date="12-25">DEC 25</button>
-      </div>
+    <p class="body">Everyone gets crabby. Hers has a cure, and it comes in three parts. Someone wrote it down. <em>Tap the three things that fix a crabby Brittany.</em></p>
+    <p class="kit-count" id="kit-count">0 of 3 found</p>
+    <div class="kit-grid">
+      <button class="kit-opt" data-kit="nuggets">10-piece nuggets</button>
+      <button class="kit-opt" data-kit="breakfast">Big breakfast platter</button>
+      <button class="kit-opt" data-kit="quiet">A quiet room + a book thrown at her</button>
+      <button class="kit-opt" data-kit="wine">Glass of dry red wine</button>
+      <button class="kit-opt" data-kit="burger">Double cheeseburger</button>
+      <button class="kit-opt" data-kit="brunch">Loud, crowded brunch</button>
     </div>
-    <p class="body"><strong>Which date is the one?</strong> (Hint: check your calendar &mdash; its anniversary is this week.)</p>
-    <p class="margin-note">*He remembers dates, by the way. File that away for later.*</p>
-    <div class="librarian" id="lib1" aria-live="polite">The librarian waits, stamp in hand&hellip;</div>
+    <p class="margin-note">*He remembers the small stuff. This is your first warning.*</p>
+    <div class="librarian" id="lib1" aria-live="polite">Three correct. Three impostors. Choose wisely.</div>
     <div class="next-wrap" id="next1">
       <button class="btn" onclick="go('page-ch2',2)">Turn the page &rarr;</button>
     </div>
@@ -403,21 +378,23 @@
   <!-- ================= CHAPTER TWO ================= -->
   <section class="page" id="page-ch2" aria-label="Chapter two">
     <p class="kicker">Chapter Two</p>
-    <h2>The Shelf of Almosts</h2>
+    <h2>The Trio</h2>
     <hr class="rule">
-    <p class="body">The library keeps a shelf of books about that September day. Most of them are decoys. <em>One of them is true.</em> Find it.</p>
-    <div class="shelf">
-      <div class="books">
-        <button class="spine s1" data-book="dragons" data-quip="A thrilling tale of dragons. Not your story. Try again.">Dragons of the Midwest</button>
-        <button class="spine s2" data-book="missed" data-quip="She didn't miss it. She was on it. Keep looking.">101 Ways to Miss Your Flight</button>
-        <button class="spine s3" data-book="ground" data-quip="">The Girl Who&rsquo;d Never Left the Ground</button>
-        <button class="spine s4" data-book="tuesdays" data-quip="A fascinating history. Completely irrelevant.">A Brief History of Tuesdays</button>
-        <button class="spine s5" data-book="layovers" data-quip="Catchy title. Wrong book, bookworm.">Love in the Time of Layovers</button>
-      </div>
-      <div class="shelf-base"></div>
+    <p class="body">Three small humans run her world. Someone knows all three names &mdash; and exactly what order they go in. <em>Tap them youngest &rarr; oldest.</em></p>
+    <p class="trio-order-label">Youngest &rarr; oldest</p>
+    <div class="trio-slots">
+      <div class="trio-slot" id="slot0">?</div>
+      <div class="trio-slot" id="slot1">?</div>
+      <div class="trio-slot" id="slot2">?</div>
     </div>
-    <p class="margin-note">*The narrator has read every book on this shelf. He&rsquo;s very cultured.*</p>
-    <div class="librarian" id="lib2" aria-live="polite">Run your finger along the spines. One of them hums.</div>
+    <div class="name-btns">
+      <button class="name-btn" data-name="brody">Brody</button>
+      <button class="name-btn" data-name="skyler">Skyler</button>
+      <button class="name-btn" data-name="zoey">Zoey</button>
+    </div>
+    <p class="margin-note">*It&rsquo;s Cody. Not Cory. He knows. He double-checked.*</p>
+    <p class="margin-note">*Future pediatric nurse, by the way &mdash; BSN, pediatrics. The trio is just the beginning.*</p>
+    <div class="librarian" id="lib2" aria-live="polite">Youngest first. The trio is watching.</div>
     <div class="next-wrap" id="next2">
       <button class="btn" onclick="go('page-ch3',3)">Turn the page &rarr;</button>
     </div>
@@ -426,9 +403,14 @@
   <!-- ================= CHAPTER THREE ================= -->
   <section class="page" id="page-ch3" aria-label="Chapter three">
     <p class="kicker">Chapter Three</p>
-    <h2>The Locked Diary</h2>
+    <h2>The Locked Page</h2>
     <hr class="rule">
-    <p class="body">Her diary from that week is locked. The combination is four digits &mdash; and you&rsquo;ve already seen them. <em>The librarian believes in you.</em></p>
+    <p class="body">One page is still locked. The combination is a date &mdash; the day of the most firsts. <em>Someone tucked the library card into the back cover.</em></p>
+    <div class="lib-card">
+      <p class="lc-top">Kenosha Memorial Library &mdash; card no. 0926</p>
+      <div class="lc-stamp">SEP 26</div>
+      <p class="lc-note">the day of the most firsts</p>
+    </div>
     <div class="lockbox" id="lockbox">
       <h3>Enter the combination</h3>
       <div class="dials">
@@ -437,13 +419,16 @@
         <input class="dial" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Third digit">
         <input class="dial" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Fourth digit">
       </div>
-      <button class="btn btn--gold" id="unlock-btn">Unlock the diary</button>
+      <div class="lock-actions">
+        <button class="btn btn--gold" id="unlock-btn">Unlock the page</button>
+        <button class="linklike" id="lock-reset">Start over</button>
+      </div>
     </div>
     <div class="diary" id="diary">
       <p class="d-date">Sept 26 &mdash; diary entry</p>
-      <p>Today I did something I&rsquo;d never done in my whole life: I got on an airplane. My first flight, EVER! I was nervous and excited all at once&hellip; and honestly? I never wanted it to land. &mdash; B &#9992;</p>
+      <p>Myrtle Beach. Today I did something I&rsquo;d never done in my whole life: I got on an airplane. My first flight, EVER! I was nervous and excited all at once&hellip; and honestly? I never wanted it to land. &mdash; B &#9992;</p>
     </div>
-    <p class="margin-note">*No peeking at the last page. The narrator will know.*</p>
+    <p class="margin-note">*She&rsquo;s on record liking &ldquo;dominant masculine energy.&rdquo; The narrator has taken this under advisement.*</p>
     <div class="librarian" id="lib3" aria-live="polite">Four little dials. One big secret.</div>
     <div class="next-wrap" id="next3">
       <button class="btn" onclick="go('page-final',3)">Read the last page &rarr;</button>
@@ -458,7 +443,7 @@
       <h2>The answer, at last.</h2>
       <p class="reveal-line" id="reveal-line"></p>
       <p>Sources say the in-flight beverage service was <strong>excellent</strong>, and that she never wanted it to land.</p>
-      <p>Someone remembered the date. Someone remembered it was her <strong>first</strong>. Someone built her an entire website about it.</p>
+      <p>Someone remembered the date. Someone remembered it was her <strong>first</strong>. Someone remembered Myrtle Beach &mdash; and built her an entire website about it.</p>
       <p><strong>Happy 1st flight anniversary, Brittany.</strong></p>
       <div style="margin-top:20px">
         <button class="btn btn--gold" onclick="takeOff()">Watch it take off &rarr;</button>
@@ -492,7 +477,6 @@
           <rect x="56" y="202" width="36" height="22" rx="11" fill="#d9c89c" stroke="#8a6f3c" stroke-width="3"/>
           <rect x="228" y="202" width="36" height="22" rx="11" fill="#d9c89c" stroke="#8a6f3c" stroke-width="3"/>
           <ellipse cx="160" cy="152" rx="54" ry="64" fill="#f7f0dc" stroke="#8a6f3c" stroke-width="3"/>
-          <ellipse cx="160" cy="152" rx="54" ry="64" fill="none" stroke="#c9962e" stroke-width="2" stroke-dasharray="6 8" opacity=".7" transform="translate(0,6) scale(1,.94) translate(0,-9)"/>
           <circle cx="160" cy="202" r="9" fill="#5c4f3a"/>
           <circle class="navl" cx="38" cy="212" r="6" fill="#d33"/>
           <circle class="navr" cx="282" cy="212" r="6" fill="#2a2"/>
@@ -515,7 +499,7 @@
 <script>
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var labels = ['The Library of Firsts','Chapter One','Chapter Two','Chapter Three','The Last Page'];
+  var labels = ['The Book of Small Things','Chapter One','Chapter Two','Chapter Three','The Last Page'];
   function go(id, chap){
     document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
     document.getElementById(id).classList.add('active');
@@ -532,42 +516,80 @@
     var word = isAnniv ? 'today' : 'tomorrow';
     document.getElementById('reveal-line').innerHTML =
       'One year ago ' + word + ' &mdash; <strong>September 26th, 2025</strong> &mdash; ' +
-      'Brittany did something she&rsquo;d never done before in her entire life.<br><br>' +
-      'She got on an airplane. Her <strong>first flight</strong>. Ever.';
+      'Brittany boarded a plane to <strong>Myrtle Beach</strong>.<br><br>' +
+      'Her <strong>first flight</strong>. Ever.';
   })();
 
-  /* ---------- Chapter 1 : date stamps ---------- */
-  var wrongDates = [
-    'A fine date, but not <strong>THE</strong> date. The librarian shakes her head slowly.',
-    'Nope. Somewhere, a due-date stamp weeps.',
-    'Close in spirit. Wrong in fact. Try again, detective.'
-  ];
-  var dateTries = 0;
-  document.querySelectorAll('.stamp').forEach(function(s){
-    s.addEventListener('click', function(){
-      document.querySelectorAll('.stamp').forEach(function(x){ x.classList.remove('picked'); });
-      s.classList.add('picked');
+  /* ---------- Chapter 1 : rescue kit ---------- */
+  var kitRight = {
+    nuggets: 'Correct. Ten. Not nine. She counts.',
+    quiet:   'Correct. Lock the door, throw the book. Doctor\u2019s orders.',
+    burger:  'Correct. Double cheeseburger. Someone pays attention.'
+  };
+  var kitWrong = {
+    breakfast: 'She\u2019s not big on breakfast. At all.',
+    wine:      'Dry red? She\u2019d sooner take the cheap sweet colorful stuff.',
+    brunch:    'Loud and crowded is the opposite of the prescription.'
+  };
+  var kitPicked = [];
+  document.querySelectorAll('.kit-opt').forEach(function(b){
+    b.addEventListener('click', function(){
+      var key = b.dataset.kit;
       var lib = document.getElementById('lib1');
-      if(s.dataset.date === '09-26'){
-        s.classList.add('right');
-        lib.innerHTML = '<strong>Correct.</strong> September 26th. But <em>what happened</em> that day? The card doesn&rsquo;t say. Turn the page&hellip;';
-        document.getElementById('next1').classList.add('show');
+      if(kitRight[key]){
+        if(kitPicked.indexOf(key) === -1){
+          kitPicked.push(key);
+          b.classList.add('sel');
+          document.getElementById('kit-count').textContent = kitPicked.length + ' of 3 found';
+          if(kitPicked.length === 3){
+            lib.innerHTML = '<strong>That\u2019s the kit.</strong> Nuggets, quiet, and a burger. Someone knows her.';
+            document.getElementById('next1').classList.add('show');
+          } else {
+            lib.innerHTML = '<strong>' + kitPicked.length + ' of 3.</strong> ' + kitRight[key];
+          }
+        }
       } else {
-        lib.innerHTML = wrongDates[dateTries % wrongDates.length];
-        dateTries++;
+        lib.innerHTML = kitWrong[key];
+        b.classList.add('nope');
+        setTimeout(function(){ b.classList.remove('nope'); }, 650);
       }
     });
   });
 
-  /* ---------- Chapter 2 : bookshelf ---------- */
-  document.querySelectorAll('.spine').forEach(function(b){
+  /* ---------- Chapter 2 : the trio ---------- */
+  var trioOrder = ['zoey','brody','skyler'];
+  var trioNames = {zoey:'Zoey', brody:'Brody', skyler:'Skyler'};
+  var trioPicked = [];
+  function renderSlots(){
+    trioPicked.forEach(function(key, i){
+      var s = document.getElementById('slot' + i);
+      s.textContent = trioNames[key];
+      s.classList.add('filled');
+    });
+    for(var i = trioPicked.length; i < 3; i++){
+      var s2 = document.getElementById('slot' + i);
+      s2.textContent = '?';
+      s2.classList.remove('filled');
+    }
+  }
+  document.querySelectorAll('.name-btn').forEach(function(b){
     b.addEventListener('click', function(){
+      var key = b.dataset.name;
       var lib = document.getElementById('lib2');
-      if(b.dataset.book === 'ground'){
-        lib.innerHTML = '<strong>There it is.</strong> She&rsquo;d never left the ground &mdash; not once, ever. Until that September day. One chapter left&hellip;';
-        document.getElementById('next2').classList.add('show');
+      if(trioPicked.indexOf(key) !== -1) return;
+      if(key === trioOrder[trioPicked.length]){
+        trioPicked.push(key);
+        renderSlots();
+        if(trioPicked.length === 3){
+          lib.innerHTML = '<strong>Zoey, Brody, Skyler.</strong> Youngest to oldest. Someone did his homework.';
+          document.getElementById('next2').classList.add('show');
+        } else {
+          lib.innerHTML = 'Good. ' + (3 - trioPicked.length) + ' to go &mdash; next oldest.';
+        }
       } else {
-        lib.innerHTML = b.dataset.quip;
+        trioPicked = [];
+        renderSlots();
+        lib.innerHTML = 'Wrong order \u2014 the trio shuffles back into place. Youngest first.';
       }
     });
   });
@@ -585,6 +607,12 @@
     });
   });
   document.getElementById('unlock-btn').addEventListener('click', checkCombo);
+  document.getElementById('lock-reset').addEventListener('click', function(){
+    dials.forEach(function(d){ d.value = ''; });
+    comboTries = 0;
+    document.getElementById('lib3').innerHTML = 'Fresh start. The card is right up there. You\u2019ve got this.';
+    dials[0].focus();
+  });
   var comboTries = 0;
   function checkCombo(){
     var code = dials.map(function(d){ return d.value; }).join('');
@@ -592,14 +620,14 @@
     if(code === '0926'){
       document.getElementById('lockbox').style.display = 'none';
       document.getElementById('diary').classList.add('show');
-      lib.innerHTML = '<strong>Click.</strong> The diary falls open to exactly one entry&hellip;';
+      lib.innerHTML = '<strong>Click.</strong> The page falls open to exactly one entry&hellip;';
       document.getElementById('next3').classList.add('show');
     } else if(code.length === 4){
       comboTries++;
       lib.innerHTML = comboTries === 1
-        ? 'The lock rattles smugly. You&rsquo;ve <em>seen</em> these four digits&hellip;'
-        : 'Still locked. Hint: it&rsquo;s the date from Chapter One. MMDD.';
-      dials.forEach(function(d){ d.value=''; });
+        ? 'The lock rattles smugly. You\u2019ve <em>seen</em> these four digits\u2026'
+        : 'Still locked. Fine \u2014 a bigger hint: it\u2019s the date stamped on the library card. MMDD.';
+      dials.forEach(function(d){ d.value = ''; });
       dials[0].focus();
     }
   }
