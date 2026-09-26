@@ -189,6 +189,26 @@
     padding:8px 18px;transform:rotate(-4deg);
   }
   .lib-card .lc-note{font-style:italic;color:var(--ink-soft);font-size:.9rem;margin-top:10px}
+  .redact{
+    background:#2c2317;color:#2c2317;border-radius:4px;
+    padding:0 10px;user-select:none;
+  }
+  .clues{display:grid;gap:10px;margin:20px 0}
+  .clue{
+    background:#fffdf6;border:1px solid #d8cba6;border-radius:10px;
+    padding:14px 16px;display:flex;gap:14px;align-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.06);
+  }
+  .clue:nth-child(odd){transform:rotate(.3deg)}
+  .clue:nth-child(even){transform:rotate(-.3deg)}
+  .clue .n{
+    flex:0 0 34px;height:34px;border-radius:50%;
+    background:var(--green);color:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:bold;font-size:1rem;
+  }
+  .clue p{font-size:.98rem;line-height:1.55;color:#4a3a28}
+  .clue p em{color:var(--ink)}
   .lockbox{
     background:var(--green-deep);color:var(--paper);
     border-radius:14px;padding:28px 22px;margin:22px 0;text-align:center;
@@ -355,7 +375,7 @@
     </div>
     <p class="margin-note">*A whole website. For you. Try to act surprised when it&rsquo;s cute.*</p>
     <div class="cover-cta">
-      <button class="btn btn--gold" onclick="go('page-ch1',1)">Open the book &rarr;</button>
+      <button class="btn btn--gold" onclick="go('page-cover',0);go('page-ch1',1)">Open the book &rarr;</button>
     </div>
     <p class="cover-fine">No spoilers. The ending is worth it.</p>
   </section>
@@ -415,11 +435,17 @@
     <p class="kicker">Chapter Three</p>
     <h2>The Locked Page</h2>
     <hr class="rule">
-    <p class="body">One page is still locked. The combination is a date &mdash; the day of the most firsts. <em>Someone tucked the library card into the back cover.</em></p>
+    <p class="body">The last page is locked with four dials &mdash; and the narrator has hidden the combination <em>inside the book itself</em>. Four clues. Four dials. No freebies.</p>
     <div class="lib-card">
-      <p class="lc-top">Kenosha Memorial Library &mdash; card no. 0926</p>
-      <div class="lc-stamp">SEP 26</div>
-      <p class="lc-note">the day of the most firsts</p>
+      <p class="lc-top">Kenosha Memorial Library &mdash; special collections</p>
+      <div class="lc-stamp">SEP <span class="redact">26</span></div>
+      <p class="lc-note">day redacted by the narrator, who is enjoying this far too much</p>
+    </div>
+    <div class="clues">
+      <div class="clue"><span class="n">1</span><p>Dial one: the number of <em>flights</em> she&rsquo;d taken before that day.</p></div>
+      <div class="clue"><span class="n">2</span><p>Dial two: September, as a number.</p></div>
+      <div class="clue"><span class="n">3</span><p>Dial three: the chapters that came before this one.</p></div>
+      <div class="clue"><span class="n">4</span><p>Dial four: the letters in the hidden word.</p></div>
     </div>
     <div class="lockbox" id="lockbox">
       <h3>Enter the combination</h3>
@@ -439,7 +465,7 @@
       <p>Myrtle Beach. Today I did something I&rsquo;d never done in my whole life: I got on an airplane. My first flight, EVER! I was nervous and excited all at once&hellip; and honestly? I never wanted it to land. &mdash; B &#9992;</p>
     </div>
     <p class="margin-note">*She&rsquo;s on record liking &ldquo;dominant masculine energy.&rdquo; The narrator has taken this under advisement.*</p>
-    <div class="librarian" id="lib3" aria-live="polite">Four little dials. One big secret.</div>
+    <div class="librarian" id="lib3" aria-live="polite">Four dials. Four clues. Zero mercy.</div>
     <div class="next-wrap" id="next3">
       <button class="btn" onclick="go('page-final',3)">Read the last page &rarr;</button>
     </div>
@@ -594,7 +620,7 @@
   document.getElementById('lock-reset').addEventListener('click', function(){
     dials.forEach(function(d){ d.value = ''; });
     comboTries = 0;
-    document.getElementById('lib3').innerHTML = 'Fresh start. The card is right up there. You\u2019ve got this.';
+    document.getElementById('lib3').innerHTML = 'Fresh start. Four clues, four dials. You\u2019ve got this.';
     dials[0].focus();
   });
   var comboTries = 0;
@@ -608,9 +634,13 @@
       document.getElementById('next3').classList.add('show');
     } else if(code.length === 4){
       comboTries++;
-      lib.innerHTML = comboTries === 1
-        ? 'The lock rattles smugly. You\u2019ve <em>seen</em> these four digits\u2026'
-        : 'Still locked. Fine \u2014 a bigger hint: it\u2019s the date stamped on the library card. MMDD.';
+      if(comboTries === 1){
+        lib.innerHTML = 'The lock rattles smugly. Read the clues again &mdash; <em>slowly</em>. The narrator believes in you. Mostly.';
+      } else if(comboTries === 2){
+        lib.innerHTML = 'Still locked. Fun fact: the narrator knows the combination by heart. He\u2019d probably tell you&hellip; he does like the sound of his phone buzzing. Just saying.';
+      } else {
+        lib.innerHTML = 'Okay, one freebie, because he\u2019s soft: <strong>dial two is 9</strong>. The rest is between you and the author. He accepts bribes. &#128521;';
+      }
       dials.forEach(function(d){ d.value = ''; });
       dials[0].focus();
     }
