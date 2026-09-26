@@ -18,7 +18,15 @@
   "description": "Free website previews for small business owners, built in Framer, with one-time or managed pricing and Google Business Profile setup included.",
   "priceRange": "$150-$600",
   "areaServed": "US",
-  "knowsAbout": ["Small business websites", "Google Business Profile", "Framer web design"]
+  "knowsAbout": ["Small business websites", "Google Business Profile", "Framer web design"],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Website plans",
+    "itemListElement": [
+      {"@type": "Offer", "name": "One-time build", "price": "600", "priceCurrency": "USD"},
+      {"@type": "Offer", "name": "Managed monthly", "price": "150", "priceCurrency": "USD", "description": "Plus $75/mo ongoing"}
+    ]
+  }
 }
 </script>
 
@@ -383,9 +391,46 @@
   .foot-links{display:flex; gap:22px; list-style:none; padding:0; margin:0;}
   .foot-links a{font-size:13.5px; font-weight:600; text-decoration:none; color:var(--ink-soft);}
   .foot-links a:hover{color:var(--ink);}
+
+  /* skip link */
+  .skip-link{
+    position:absolute; left:12px; top:-60px; z-index:100; background:var(--amber); color:#241505;
+    padding:10px 16px; border-radius:8px; font-weight:700; text-decoration:none; transition:top .2s ease;
+  }
+  .skip-link:focus{top:12px;}
+
+  /* named fears */
+  .fear-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:820px){ .fear-grid{grid-template-columns:1fr;} }
+  .fear-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); padding:24px 24px 22px; position:relative;}
+  .fear-card .fear-x{color:var(--rust); font-size:12.5px; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .fear-card h3{font-size:16px; font-weight:700; margin-top:10px;}
+  .fear-card p.fear-body{margin-top:8px; font-size:14px; color:var(--ink-soft);}
+  .fear-fix{margin-top:14px; padding-top:14px; border-top:1px dashed var(--line); font-size:13.5px; color:var(--moss); font-weight:600; display:flex; gap:8px;}
+  .fear-fix svg{flex:none; margin-top:2px;}
+
+  /* sticky mobile cta */
+  .sticky-cta{
+    position:fixed; left:0; right:0; bottom:0; z-index:60; display:none;
+    background:var(--header-bg); padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
+    box-shadow:0 -8px 24px -12px rgba(0,0,0,.4);
+    transform:translateY(120%); transition:transform .25s ease;
+  }
+  .sticky-cta.show{transform:translateY(0);}
+  @media (max-width:640px){ .sticky-cta{display:block;} }
+
+  /* form success */
+  .f-success{display:none; text-align:center; padding:18px 6px;}
+  .f-success.show{display:block;}
+  .f-success svg{color:var(--moss); margin-bottom:10px;}
+  .f-success h3{font-size:18px; font-weight:700;}
+  .f-success p{margin-top:8px; font-size:14px; color:var(--ink-soft);}
+  form.intake.submitted > *:not(.f-success){display:none;}
 </style>
 </head>
 <body>
+
+<a href="#top" class="skip-link">Skip to main content</a>
 
 <header id="site-header">
   <div class="nav">
@@ -477,6 +522,35 @@
           <span class="n">03</span>
           <h3>I help it get found</h3>
           <p>Your Google Business Profile, set up or cleaned up, so customers can actually find you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAMED FEARS -->
+  <section class="section" aria-label="Common concerns, addressed">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Here's what usually goes wrong with a "web guy" — and what I do instead.</h2>
+      </div>
+      <div class="fear-grid">
+        <div class="fear-card">
+          <span class="fear-x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>The quote balloons</span>
+          <h3>Surprise invoices after you've said yes</h3>
+          <p class="fear-body">You agree to a number, then extra pages, "hosting fees," and revisions start showing up on the bill.</p>
+          <div class="fear-fix"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>You see the exact price, and what's billed separately, before you agree to anything.</div>
+        </div>
+        <div class="fear-card">
+          <span class="fear-x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>You don't hold the keys</span>
+          <h3>Locked out of your own website</h3>
+          <p class="fear-body">The account's in their name. If they disappear or you fall out, you've got no way to move your own site.</p>
+          <div class="fear-fix"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Your account, your domain, your name on both — on either plan, from day one.</div>
+        </div>
+        <div class="fear-card">
+          <span class="fear-x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Then radio silence</span>
+          <h3>They vanish after launch</h3>
+          <p class="fear-body">Site goes live, then good luck getting a reply when something needs to change or breaks.</p>
+          <div class="fear-fix"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Managed plan gets you a 2-business-day turnaround on edits, month to month, cancel anytime.</div>
         </div>
       </div>
     </div>
@@ -599,51 +673,51 @@
         <div class="t-item on open">
           <span class="t-dot"></span>
           <div class="t-body">
-            <button class="t-btn">
+            <button class="t-btn" aria-expanded="true" aria-controls="t-detail-1" id="t-btn-1">
               <span><span class="tt">Step 1 · no cost</span><h3>I look up what's already out there</h3></span>
               <svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="t-detail"><p>I find whatever exists about your business online — Google listing, Facebook, reviews, a logo if there is one — and use it to put together a bare-bones starting structure.</p></div>
+            <div class="t-detail" id="t-detail-1" role="region" aria-labelledby="t-btn-1"><p>I find whatever exists about your business online — Google listing, Facebook, reviews, a logo if there is one — and use it to put together a bare-bones starting structure.</p></div>
           </div>
         </div>
         <div class="t-item on">
           <span class="t-dot"></span>
           <div class="t-body">
-            <button class="t-btn">
+            <button class="t-btn" aria-expanded="true" aria-controls="t-detail-2" id="t-btn-2">
               <span><span class="tt">Step 2 · no cost</span><h3>I design a free preview</h3></span>
               <svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="t-detail"><p>A real, working site laid out around your business, with placeholders standing in for anything I don't have yet. Usually ready within 1 business day, and you get a link to look at whenever you want.</p></div>
+            <div class="t-detail" id="t-detail-2" role="region" aria-labelledby="t-btn-2"><p>A real, working site laid out around your business, with placeholders standing in for anything I don't have yet. Usually ready within 1 business day, and you get a link to look at whenever you want.</p></div>
           </div>
         </div>
         <div class="t-item">
           <span class="t-dot"></span>
           <div class="t-body">
-            <button class="t-btn">
+            <button class="t-btn" aria-expanded="false" aria-controls="t-detail-3" id="t-btn-3">
               <span><span class="tt">Step 3 · your call</span><h3>You choose a path, or you don't</h3></span>
               <svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="t-detail"><p>If it's not for you, no hard feelings and no charge. If it is, we pick one-time build or managed monthly and I get it live on your own account.</p></div>
+            <div class="t-detail" id="t-detail-3" role="region" aria-labelledby="t-btn-3"><p>If it's not for you, no hard feelings and no charge. If it is, we pick one-time build or managed monthly and I get it live on your own account.</p></div>
           </div>
         </div>
         <div class="t-item">
           <span class="t-dot"></span>
           <div class="t-body">
-            <button class="t-btn">
+            <button class="t-btn" aria-expanded="false" aria-controls="t-detail-4" id="t-btn-4">
               <span><span class="tt">Step 4</span><h3>You send me the real details</h3></span>
               <svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="t-detail"><p>You hand off anything you want in the finished site — photos, exact copy, corrections, whatever's missing — and I swap it in for the placeholders.</p></div>
+            <div class="t-detail" id="t-detail-4" role="region" aria-labelledby="t-btn-4"><p>You hand off anything you want in the finished site — photos, exact copy, corrections, whatever's missing — and I swap it in for the placeholders.</p></div>
           </div>
         </div>
         <div class="t-item">
           <span class="t-dot"></span>
           <div class="t-body">
-            <button class="t-btn">
+            <button class="t-btn" aria-expanded="false" aria-controls="t-detail-5" id="t-btn-5">
               <span><span class="tt">Step 5</span><h3>We make sure people can find it</h3></span>
               <svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="t-detail"><p>I set up or clean up your Google Business Profile — the part that actually gets you found on Google. Social media isn't something I handle; I'll say so upfront rather than pretend otherwise.</p></div>
+            <div class="t-detail" id="t-detail-5" role="region" aria-labelledby="t-btn-5"><p>I set up or clean up your Google Business Profile — the part that actually gets you found on Google. Social media isn't something I handle; I'll say so upfront rather than pretend otherwise.</p></div>
           </div>
         </div>
       </div>
@@ -725,28 +799,36 @@
       </div>
       <div id="faqList">
         <div class="faq-item">
-          <button class="faq-btn"><h3>What if I don't like the preview?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-          <div class="faq-a"><p>No charge, no hard feelings. You can walk away with nothing owed — the preview is yours to look at either way.</p></div>
+          <button class="faq-btn" aria-expanded="false" aria-controls="faq-panel-1" id="faq-btn-1"><h3>What if I don't like the preview?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-a" id="faq-panel-1" role="region" aria-labelledby="faq-btn-1"><p>No charge, no hard feelings. You can walk away with nothing owed — the preview is yours to look at either way.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-btn"><h3>Do I actually need a website?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-          <div class="faq-a"><p>Sometimes not yet. If a well-run Google Business Profile alone would do more for you right now, I'll tell you that instead of selling you a build.</p></div>
+          <button class="faq-btn" aria-expanded="false" aria-controls="faq-panel-2" id="faq-btn-2"><h3>Do I actually need a website?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-a" id="faq-panel-2" role="region" aria-labelledby="faq-btn-2"><p>Sometimes not yet. If a well-run Google Business Profile alone would do more for you right now, I'll tell you that instead of selling you a build.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-btn"><h3>What's an "edit" on the managed plan?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-          <div class="faq-a"><p>One change to a block of text or one photo. Up to 5 photos sent together in one batch count as a single edit. Extra edits are $20 each.</p></div>
+          <button class="faq-btn" aria-expanded="false" aria-controls="faq-panel-3" id="faq-btn-3"><h3>What's an "edit" on the managed plan?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-a" id="faq-panel-3" role="region" aria-labelledby="faq-btn-3"><p>One change to a block of text or one photo. Up to 5 photos sent together in one batch count as a single edit. Extra edits are $20 each.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-btn"><h3>What does hosting cost after the first year?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-          <div class="faq-a"><p>About $10/month, billed to you directly by Framer — never marked up by me. Your domain renews yearly through your registrar at their rate.</p></div>
+          <button class="faq-btn" aria-expanded="false" aria-controls="faq-panel-4" id="faq-btn-4"><h3>What does hosting cost after the first year?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-a" id="faq-panel-4" role="region" aria-labelledby="faq-btn-4"><p>About $10/month, billed to you directly by Framer — never marked up by me. Your domain renews yearly through your registrar at their rate.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-btn"><h3>Do you handle social media?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-          <div class="faq-a"><p>No — I'm not a marketing service and won't pretend to be one. I focus on the site and getting you found on Google, and I'll say so upfront.</p></div>
+          <button class="faq-btn" aria-expanded="false" aria-controls="faq-panel-5" id="faq-btn-5"><h3>Do you handle social media?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-a" id="faq-panel-5" role="region" aria-labelledby="faq-btn-5"><p>No — I'm not a marketing service and won't pretend to be one. I focus on the site and getting you found on Google, and I'll say so upfront.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-btn"><h3>Who actually owns the site and domain?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-          <div class="faq-a"><p>You do, from day one, on either plan. I'm added on as a collaborator to build and manage it — I never hold the only keys to your own account.</p></div>
+          <button class="faq-btn" aria-expanded="false" aria-controls="faq-panel-6" id="faq-btn-6"><h3>Who actually owns the site and domain?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-a" id="faq-panel-6" role="region" aria-labelledby="faq-btn-6"><p>You do, from day one, on either plan. I'm added on as a collaborator to build and manage it — I never hold the only keys to your own account.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" aria-expanded="false" aria-controls="faq-panel-7" id="faq-btn-7"><h3>Why Framer, and not WordPress or Wix?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-a" id="faq-panel-7" role="region" aria-labelledby="faq-btn-7"><p>It's fast, it looks clean without a theme fighting you, and handing you the keys is simple — no plugins to maintain, no separate hosting account to juggle. If you already have a strong reason to be on something else, say so before I start the preview.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" aria-expanded="false" aria-controls="faq-panel-8" id="faq-btn-8"><h3>I already have a website. Is this still worth it?</h3><svg class="t-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="faq-a" id="faq-panel-8" role="region" aria-labelledby="faq-btn-8"><p>Tell me what you've got and what's bugging you about it. Sometimes a rebuild helps, sometimes it's really just your Google Business Profile that needs the work — I'll say which, before you spend anything.</p></div>
         </div>
       </div>
     </div>
@@ -795,6 +877,11 @@
           </div>
           <button type="submit" class="btn btn-primary btn-block">Request my free preview</button>
           <p class="f-note">This opens your email app addressed to Jordan. Expect your preview within 1 business day.</p>
+          <div class="f-success" id="fSuccess" role="status">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg>
+            <h3>Your email app should be open now.</h3>
+            <p>Didn't pop up? Email <strong>hello@jordanmoddes.com</strong> directly with the same details — I'll reply within 1 business day.</p>
+          </div>
         </form>
       </div>
     </div>
@@ -815,6 +902,10 @@
     </ul>
   </div>
 </footer>
+
+<div class="sticky-cta" id="stickyCta">
+  <a href="#start" class="btn btn-primary btn-block">Get my free preview</a>
+</div>
 
 <script>
 (function(){
@@ -855,7 +946,8 @@
   // timeline accordion
   document.querySelectorAll('#timeline .t-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
-      btn.closest('.t-item').classList.toggle('open');
+      var open = btn.closest('.t-item').classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
     });
   });
 
@@ -864,8 +956,11 @@
     btn.addEventListener('click', function(){
       var item = btn.closest('.faq-item');
       var wasOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function(i){ i.classList.remove('open'); });
-      if(!wasOpen) item.classList.add('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(i){
+        i.classList.remove('open');
+        i.querySelector('.faq-btn').setAttribute('aria-expanded','false');
+      });
+      if(!wasOpen){ item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
     });
   });
 
@@ -899,10 +994,12 @@
     }
   }
 
-  // intake form -> mailto
+  // intake form -> mailto, with an in-page success state
   var form = document.getElementById('intakeForm');
+  var fSuccess = document.getElementById('fSuccess');
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    if(!form.reportValidity()) return;
     var d = new FormData(form);
     var subject = encodeURIComponent('Free preview request — ' + (d.get('bizName') || ''));
     var bodyLines = [
@@ -914,7 +1011,27 @@
     ];
     var body = encodeURIComponent(bodyLines.join('\n'));
     window.location.href = 'mailto:hello@jordanmoddes.com?subject=' + subject + '&body=' + body;
+    form.classList.add('submitted');
+    fSuccess.classList.add('show');
+    fSuccess.style.display = 'block';
   });
+
+  // sticky mobile CTA: show once hero is scrolled past, hide once the real form is in view
+  var stickyCta = document.getElementById('stickyCta');
+  var startSection = document.getElementById('start');
+  if('IntersectionObserver' in window && stickyCta){
+    var heroSeen = false;
+    var heroIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ heroSeen = !e.isIntersecting; updateSticky(); });
+    }, {threshold:0});
+    heroIo.observe(hero);
+    var formHidden = true;
+    var formIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ formHidden = !e.isIntersecting; updateSticky(); });
+    }, {threshold:.2});
+    formIo.observe(startSection);
+    function updateSticky(){ stickyCta.classList.toggle('show', heroSeen && formHidden); }
+  }
 })();
 </script>
 </body>
