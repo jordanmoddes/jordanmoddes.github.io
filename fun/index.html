@@ -135,39 +135,45 @@
   .cover-cta{text-align:center;margin-top:8px}
   .cover-fine{text-align:center;font-size:.85rem;color:var(--ink-soft);margin-top:14px;font-style:italic}
 
-  /* ---------- CHAPTER 1 : rescue kit ---------- */
-  .kit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
-  .kit-opt{
-    font-family:inherit;font-size:.93rem;line-height:1.35;
-    padding:14px 12px;min-height:62px;
-    border-radius:12px;border:2px solid #d8cba6;
-    background:#fffdf6;cursor:pointer;color:var(--ink);
-    transition:border-color .15s, background .15s;
+  /* ---------- PUZZLE PAGES ---------- */
+  .poem{
+    background:#fffdf6;border:1px solid #d8cba6;border-radius:10px;
+    padding:22px;margin:20px 0;transform:rotate(.4deg);
+    box-shadow:0 4px 14px rgba(0,0,0,.08);
   }
-  .kit-opt:hover{border-color:var(--gold)}
-  .kit-opt.sel{border-color:var(--green);background:#e6efe4}
-  .kit-opt.sel::after{content:" \2713";color:var(--green);font-weight:bold}
-  .kit-opt.nope{border-color:var(--stamp);animation:shakeX .3s}
-  @keyframes shakeX{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-  .kit-count{font-size:.85rem;color:var(--ink-soft);font-style:italic;margin-bottom:4px}
-
-  /* ---------- CHAPTER 2 : the trio ---------- */
-  .trio-slots{display:flex;gap:10px;justify-content:center;margin:20px 0}
-  .trio-slot{
-    width:96px;height:64px;border:2px dashed var(--gold);border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:1.05rem;color:var(--ink-soft);background:rgba(201,150,46,.06);
+  .poem p{
+    font-style:italic;font-size:1.05rem;line-height:2.05;color:#4a3a28;
   }
-  .trio-slot.filled{border-style:solid;color:var(--ink);background:#fffdf6;font-weight:bold}
-  .trio-order-label{text-align:center;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px}
-  .name-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
-  .name-btn{
-    font-family:inherit;font-size:1.05rem;font-weight:bold;
-    padding:14px 26px;min-height:56px;border-radius:999px;
-    border:2px solid var(--green);background:transparent;color:var(--green);cursor:pointer;
-    transition:all .15s;
+  .poem .p-title{
+    font-style:normal;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:12px;
   }
-  .name-btn:hover{background:var(--green);color:var(--paper)}
+  .riddle{
+    background:#fffdf6;border:1px solid #d8cba6;border-radius:10px;
+    padding:22px;margin:20px 0;
+    box-shadow:0 4px 14px rgba(0,0,0,.08);
+    font-size:1.1rem;line-height:1.9;color:#4a3a28;
+  }
+  .riddle strong{color:var(--ink)}
+  .answer-row{display:flex;gap:10px;margin:16px 0 4px}
+  .answer-input{
+    flex:1;min-width:0;
+    font-family:Georgia,serif;font-size:1.05rem;
+    padding:14px 16px;min-height:52px;
+    border:2px solid #d8cba6;border-radius:12px;
+    background:#fffdf6;color:var(--ink);
+  }
+  .answer-input:focus{outline:3px solid var(--gold-soft);border-color:var(--gold)}
+  .answer-row .btn{margin-top:0;white-space:nowrap}
+  .hint{
+    display:none;
+    font-family:'Segoe Script','Bradley Hand',cursive;
+    color:#7a5c2e;font-size:.98rem;line-height:1.5;
+    background:rgba(201,150,46,.1);
+    border-radius:10px;padding:12px 16px;margin:12px 0;
+  }
+  .hint.show{display:block;animation:pageIn .4s ease}
+  .hint strong{font-family:Georgia,serif}
 
   /* ---------- CHAPTER 3 : locked page ---------- */
   .lib-card{
@@ -315,7 +321,7 @@
   .status-line.show{opacity:1}
   @media (prefers-reduced-motion: reduce){
     .page{animation:none}
-    .cloud,.taxi .plane-wrap,.taxi .runway .dashes,.climb .runway .dashes,.kit-opt.nope{animation:none !important}
+    .cloud,.taxi .plane-wrap,.taxi .runway .dashes,.climb .runway .dashes{animation:none !important}
     .plane-wrap{transition:none}
   }
   @media (max-width:420px){
@@ -323,7 +329,8 @@
     .cover-title{font-size:2.1rem}
     .page{padding:22px 20px 60px}
     .dial{width:52px;height:66px}
-    .trio-slot{width:84px}
+    .answer-row{flex-direction:column}
+    .answer-row .btn{width:100%}
   }
 </style>
 </head>
@@ -356,20 +363,26 @@
   <!-- ================= CHAPTER ONE ================= -->
   <section class="page" id="page-ch1" aria-label="Chapter one">
     <p class="kicker">Chapter One</p>
-    <h2>The Rescue Kit</h2>
+    <h2>The Hidden Word</h2>
     <hr class="rule">
-    <p class="body">Everyone gets crabby. Hers has a cure, and it comes in three parts. Someone wrote it down. <em>Tap the three things that fix a crabby Brittany.</em></p>
-    <p class="kit-count" id="kit-count">0 of 3 found</p>
-    <div class="kit-grid">
-      <button class="kit-opt" data-kit="nuggets">10-piece nuggets</button>
-      <button class="kit-opt" data-kit="breakfast">Big breakfast platter</button>
-      <button class="kit-opt" data-kit="quiet">A quiet room + a book thrown at her</button>
-      <button class="kit-opt" data-kit="wine">Glass of dry red wine</button>
-      <button class="kit-opt" data-kit="burger">Double cheeseburger</button>
-      <button class="kit-opt" data-kit="brunch">Loud, crowded brunch</button>
+    <p class="body">The librarian found this poem tucked inside a returned book. No title. No author. But something about it isn&rsquo;t quite&hellip; <em>straight.</em></p>
+    <div class="poem">
+      <p class="p-title">untitled, found in the returns bin</p>
+      <p>Morning light on unfamiliar sand,</p>
+      <p>You laughed until the ocean roared,</p>
+      <p>Restless wind in salty air,</p>
+      <p>Time itself began to slow,</p>
+      <p>Laughter spilling down the shore,</p>
+      <p>Every moment begged for more.</p>
     </div>
+    <p class="body"><strong>What word is hiding in the poem?</strong> Type it below.</p>
+    <div class="answer-row">
+      <input class="answer-input" id="ans1" placeholder="The hidden word&hellip;" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Hidden word answer">
+      <button class="btn" id="go1">Unlock</button>
+    </div>
+    <p class="hint" id="hint1"><strong>Hint:</strong> poets hide things in plain sight. Don&rsquo;t read across &mdash; read <em>down</em>.</p>
     <p class="margin-note">*He remembers the small stuff. This is your first warning.*</p>
-    <div class="librarian" id="lib1" aria-live="polite">Three correct. Three impostors. Choose wisely.</div>
+    <div class="librarian" id="lib1" aria-live="polite">Six lines. One secret. The librarian believes in you.</div>
     <div class="next-wrap" id="next1">
       <button class="btn" onclick="go('page-ch2',2)">Turn the page &rarr;</button>
     </div>
@@ -378,23 +391,20 @@
   <!-- ================= CHAPTER TWO ================= -->
   <section class="page" id="page-ch2" aria-label="Chapter two">
     <p class="kicker">Chapter Two</p>
-    <h2>The Trio</h2>
+    <h2>The Riddle</h2>
     <hr class="rule">
-    <p class="body">Three small humans run her world. Someone knows all three names &mdash; and exactly what order they go in. <em>Tap them youngest &rarr; oldest.</em></p>
-    <p class="trio-order-label">Youngest &rarr; oldest</p>
-    <div class="trio-slots">
-      <div class="trio-slot" id="slot0">?</div>
-      <div class="trio-slot" id="slot1">?</div>
-      <div class="trio-slot" id="slot2">?</div>
+    <p class="body">The next page is guarded by a riddle. No choices, no shortcuts &mdash; just you and the words.</p>
+    <blockquote class="riddle">
+      Everyone has thousands of me, but each of me happens only once.<br>
+      I always come before the second.<br>
+      <strong>What am I?</strong>
+    </blockquote>
+    <div class="answer-row">
+      <input class="answer-input" id="ans2" placeholder="Your answer&hellip;" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Riddle answer">
+      <button class="btn" id="go2">Unlock</button>
     </div>
-    <div class="name-btns">
-      <button class="name-btn" data-name="brody">Brody</button>
-      <button class="name-btn" data-name="skyler">Skyler</button>
-      <button class="name-btn" data-name="zoey">Zoey</button>
-    </div>
-    <p class="margin-note">*It&rsquo;s Cody. Not Cory. He knows. He double-checked.*</p>
-    <p class="margin-note">*Future pediatric nurse, by the way &mdash; BSN, pediatrics. The trio is just the beginning.*</p>
-    <div class="librarian" id="lib2" aria-live="polite">Youngest first. The trio is watching.</div>
+    <p class="hint" id="hint2"><strong>Hint:</strong> you can never have the same one twice.</p>
+    <div class="librarian" id="lib2" aria-live="polite">Riddles reward the patient. Take your time.</div>
     <div class="next-wrap" id="next2">
       <button class="btn" onclick="go('page-ch3',3)">Turn the page &rarr;</button>
     </div>
@@ -520,78 +530,52 @@
       'Her <strong>first flight</strong>. Ever.';
   })();
 
-  /* ---------- Chapter 1 : rescue kit ---------- */
-  var kitRight = {
-    nuggets: 'Correct. Ten. Not nine. She counts.',
-    quiet:   'Correct. Lock the door, throw the book. Doctor\u2019s orders.',
-    burger:  'Correct. Double cheeseburger. Someone pays attention.'
-  };
-  var kitWrong = {
-    breakfast: 'She\u2019s not big on breakfast. At all.',
-    wine:      'Dry red? She\u2019d sooner take the cheap sweet colorful stuff.',
-    brunch:    'Loud and crowded is the opposite of the prescription.'
-  };
-  var kitPicked = [];
-  document.querySelectorAll('.kit-opt').forEach(function(b){
-    b.addEventListener('click', function(){
-      var key = b.dataset.kit;
-      var lib = document.getElementById('lib1');
-      if(kitRight[key]){
-        if(kitPicked.indexOf(key) === -1){
-          kitPicked.push(key);
-          b.classList.add('sel');
-          document.getElementById('kit-count').textContent = kitPicked.length + ' of 3 found';
-          if(kitPicked.length === 3){
-            lib.innerHTML = '<strong>That\u2019s the kit.</strong> Nuggets, quiet, and a burger. Someone knows her.';
-            document.getElementById('next1').classList.add('show');
-          } else {
-            lib.innerHTML = '<strong>' + kitPicked.length + ' of 3.</strong> ' + kitRight[key];
-          }
-        }
-      } else {
-        lib.innerHTML = kitWrong[key];
-        b.classList.add('nope');
-        setTimeout(function(){ b.classList.remove('nope'); }, 650);
-      }
-    });
-  });
+  function norm(s){ return s.trim().toLowerCase().replace(/[^a-z]/g,''); }
 
-  /* ---------- Chapter 2 : the trio ---------- */
-  var trioOrder = ['zoey','brody','skyler'];
-  var trioNames = {zoey:'Zoey', brody:'Brody', skyler:'Skyler'};
-  var trioPicked = [];
-  function renderSlots(){
-    trioPicked.forEach(function(key, i){
-      var s = document.getElementById('slot' + i);
-      s.textContent = trioNames[key];
-      s.classList.add('filled');
-    });
-    for(var i = trioPicked.length; i < 3; i++){
-      var s2 = document.getElementById('slot' + i);
-      s2.textContent = '?';
-      s2.classList.remove('filled');
+  /* ---------- Chapter 1 : acrostic ---------- */
+  var ch1Tries = 0;
+  function tryCh1(){
+    var v = norm(document.getElementById('ans1').value);
+    var lib = document.getElementById('lib1');
+    if(v === 'myrtle' || v === 'myrtlebeach'){
+      lib.innerHTML = '<strong>&ldquo;Myrtle.&rdquo;</strong> A place. But why would a poem hide a place? Turn the page&hellip;';
+      document.getElementById('next1').classList.add('show');
+    } else {
+      ch1Tries++;
+      document.getElementById('hint1').classList.add('show');
+      lib.innerHTML = ch1Tries === 1
+        ? 'The poem keeps its secret. The librarian slides you a hint &mdash; look below.'
+        : 'Still hidden. Read the <em>first</em> letters. Slowly.';
+      document.getElementById('ans1').value = '';
+      document.getElementById('ans1').focus();
     }
   }
-  document.querySelectorAll('.name-btn').forEach(function(b){
-    b.addEventListener('click', function(){
-      var key = b.dataset.name;
-      var lib = document.getElementById('lib2');
-      if(trioPicked.indexOf(key) !== -1) return;
-      if(key === trioOrder[trioPicked.length]){
-        trioPicked.push(key);
-        renderSlots();
-        if(trioPicked.length === 3){
-          lib.innerHTML = '<strong>Zoey, Brody, Skyler.</strong> Youngest to oldest. Someone did his homework.';
-          document.getElementById('next2').classList.add('show');
-        } else {
-          lib.innerHTML = 'Good. ' + (3 - trioPicked.length) + ' to go &mdash; next oldest.';
-        }
-      } else {
-        trioPicked = [];
-        renderSlots();
-        lib.innerHTML = 'Wrong order \u2014 the trio shuffles back into place. Youngest first.';
-      }
-    });
+  document.getElementById('go1').addEventListener('click', tryCh1);
+  document.getElementById('ans1').addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ tryCh1(); }
+  });
+
+  /* ---------- Chapter 2 : riddle ---------- */
+  var ch2Tries = 0;
+  function tryCh2(){
+    var v = norm(document.getElementById('ans2').value);
+    var lib = document.getElementById('lib2');
+    if(v === 'first' || v === 'firsts' || v === 'afirst'){
+      lib.innerHTML = '<strong>&ldquo;First.&rdquo;</strong> Of course. But the first <em>what</em>? One page left&hellip;';
+      document.getElementById('next2').classList.add('show');
+    } else {
+      ch2Tries++;
+      document.getElementById('hint2').classList.add('show');
+      lib.innerHTML = ch2Tries === 1
+        ? 'The riddle holds. The librarian slides you a hint &mdash; look below.'
+        : 'Not quite. Think about what can only ever happen <em>once</em>.';
+      document.getElementById('ans2').value = '';
+      document.getElementById('ans2').focus();
+    }
+  }
+  document.getElementById('go2').addEventListener('click', tryCh2);
+  document.getElementById('ans2').addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ tryCh2(); }
   });
 
   /* ---------- Chapter 3 : combination ---------- */
