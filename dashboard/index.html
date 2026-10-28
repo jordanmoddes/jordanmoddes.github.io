@@ -577,20 +577,42 @@ setInterval(tickClock,1000); tickClock();
 (async()=>{ try{
   const r=await fetch(`${WORKER}/ticker?sources=nfl,f1,general`); const items=await r.json();
   if(!Array.isArray(items)||!items.length) throw 0;
-  const F1_RE=/\b(f1|formula\s?(1|one)|grand prix|verstappen|norris|piastri|leclerc|hamilton|russell|antonelli|sainz|alonso|stroll|albon|gasly|ocon|tsunoda|lawson|hadjar|bortoleto|hulkenberg|bearman|colapinto|red bull racing|mclaren|ferrari|aston martin|haas|sauber|cadillac|fia|qualifying|paddock|pit stop)\b/i;
+  const F1_RE=/\b(f1|formula\s?(1|one)|grand prix|verstappen|norris|piastri|leclerc|antonelli|hadjar|bortoleto|hulkenberg|bearman|colapinto|tsunoda|lewis hamilton|george russell|carlos sainz|fernando alonso|lance stroll|alex albon|pierre gasly|esteban ocon|liam lawson|red bull racing|mclaren|ferrari|aston martin|haas f1|sauber|fia|paddock|pit stop)\b/i;
   const NFL_RE=/\b(nfl|super bowl|quarterback|touchdown|chiefs|eagles|cowboys|49ers|niners|packers|bills|ravens|bengals|lions|texans|dolphins|patriots|jets|giants|commanders|steelers|browns|colts|jaguars|titans|broncos|raiders|chargers|seahawks|rams|cardinals|saints|falcons|panthers|buccaneers|vikings|bears)\b/i;
+  // A source field only counts if it is exactly "f1" or "nfl" — never a combined/echoed value like "nfl,f1,general".
+  const exact=x=>{
+    for(const v of [x.source,x.sport,x.category,x.tag,x.feed,x.type,x.league]){
+      const t=String(v||"").trim().toLowerCase();
+      if(/^(f1|formula[\s-]?(1|one))$/.test(t)) return "f1";
+      if(/^(nfl|football)$/.test(t)) return "nfl";
+    }
+    return null;
+  };
   const kind=x=>{
-    const tag=[x.source,x.sport,x.category,x.tag,x.feed,x.type,x.league].filter(Boolean).join(" ");
-    if(/f1|formula/i.test(tag)) return "f1";
-    if(/nfl|football/i.test(tag)) return "nfl";
+    const e=exact(x); if(e) return e;
     const t=String(x.title||"");
     if(F1_RE.test(t)) return "f1";
     if(NFL_RE.test(t)) return "nfl";
     return "news";
   };
   const LABEL={f1:"F1",nfl:"NFL",news:"NEWS"};
-  const html=items.map(x=>{ const k=kind(x); return `<span class="tk tk-${k}"><b>${LABEL[k]}</b>${esc(x.title)}</span>`; }).join(" &nbsp;&nbsp; ");
-  $("#ticker").innerHTML=html+" &nbsp; "+html;
+  const counts={f1:0,nfl:0,news:0};
+  const unit=items.map(x=>{ const k=kind(x); counts[k]++; return `<span class="tk tk-${k}"><b>${LABEL[k]}</b>${esc(x.title)}</span>`; }).join(" &nbsp;&nbsp;&nbsp; ")+" &nbsp;&nbsp;&nbsp; ";
+  const strip=document.querySelector(".headline-strip"), tk=$("#ticker");
+  strip.title=`Ticker: F1 ${counts.f1} · NFL ${counts.nfl} · NEWS ${counts.news}`;
+  console.info("[ticker]",counts,"of",items.length,"items");
+  // Constant scroll speed: duration follows the real text width, so fewer/more headlines never change how fast it moves.
+  const TICKER_PX_PER_SEC = 45;          // <- raise to speed up, lower to slow down
+  function layout(){
+    tk.style.animation="none"; tk.innerHTML=unit;
+    const uw=tk.scrollWidth||1, n=Math.max(1,Math.ceil((strip.clientWidth+80)/uw));
+    tk.innerHTML=unit.repeat(2*n);
+    tk.style.animation="";                // back to the stylesheet animation
+    tk.style.animationDuration=(uw*n/TICKER_PX_PER_SEC).toFixed(1)+"s";
+  }
+  layout();
+  document.fonts?.ready.then(layout);
+  addEventListener("resize",()=>{ clearTimeout(layout.t); layout.t=setTimeout(layout,250); });
 }catch{ $("#ticker").textContent="Headlines unavailable"; } })();
 
 /* ===== WEATHER ===== */
